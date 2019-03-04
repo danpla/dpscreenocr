@@ -18,23 +18,6 @@ namespace dpso {
 namespace backend {
 
 
-static void printScreenDpi(Display* display)
-{
-    static const auto mmInInch = 25.4f;
-
-    const auto defaultScreen = XDefaultScreen(display);
-    const float hDpi = (float)DisplayWidth(display, defaultScreen) * mmInInch /
-            DisplayWidthMM(display, defaultScreen);
-    printf(
-        "Hdpi: %f %i %i %i %i\n",
-        hDpi,
-        DisplayWidth(display, defaultScreen),
-        DisplayWidthMM(display, defaultScreen),
-        WidthOfScreen(XScreenOfDisplay(display, defaultScreen)),
-        WidthMMOfScreen(XScreenOfDisplay(display, defaultScreen)));
-}
-
-
 static Point getMousePosition(Display* display)
 {
     Window rootWindow, childWindow;
@@ -83,7 +66,6 @@ X11Selection::X11Selection(Display* display)
     , origin {}
     , geom {}
 {
-    printScreenDpi(display);
     XSetWindowAttributes windowAttrs;
     windowAttrs.override_redirect = True;
 
