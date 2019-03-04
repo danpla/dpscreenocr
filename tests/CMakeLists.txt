@@ -30,6 +30,9 @@ target_link_libraries(tests dpso)
 add_dependencies(tests dpso_utils)
 target_link_libraries(tests dpso_utils)
 
+if (NOT TARGET common)
+    add_subdirectory(../src/ui/common ${CMAKE_BINARY_DIR}/common)
+endif()
 add_dependencies(tests common)
 target_link_libraries(tests common)
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dpScreenOCR)
 
-set(DPSO_UI "qt" CACHE STRING "UI to use: qt")
+set(DPSO_UI "qt" CACHE STRING "UI to use: qt or none")
 option(DPSO_COMPILE_PO "Compile gettext message catalogs" YES)
 option(DPSO_BUILD_EXAMPLE "Build example" NO)
 option(DPSO_BUILD_TESTS "Build tests" NO)
@@ -30,6 +30,7 @@ add_subdirectory(src/dpso_utils)
 
 if (DPSO_UI STREQUAL "qt")
     add_subdirectory(src/ui/qt)
+elseif (DPSO_UI STREQUAL "none")
 else()
     message(FATAL_ERROR "Unknown UI \"${DPSO_UI}\"")
 endif()
