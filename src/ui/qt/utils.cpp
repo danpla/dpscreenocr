@@ -57,6 +57,7 @@ bool confirmation(
 
     auto* cancelButton = confirmBox.addButton(
         cancelText, QMessageBox::RejectRole);
+    confirmBox.setDefaultButton(cancelButton);
     confirmBox.addButton(okText, QMessageBox::AcceptRole);
 
     confirmBox.exec();
