@@ -1,0 +1,30 @@
+Some notes about code
+
+* Don't use UTF-8 string literals (u8""). Since C++20, their type is
+    changed from char to char8_t, breaking the backward compatibility.
+
+    To insert UTF-8 bytes in a string, use 3 digit octal escape
+    sequences. Don't use hex sequences, as they consume as much valid
+    hex characters as possible. The only exception is when they are
+    separated from the rest of the string by literal concatenation:
+
+        "\xC2\xA9" "2018" (gives ©2018)
+
+* In Qt code, you can implicitly create QStrings from UTF-8 data.
+    Qt 5 uses fromUtf8() to convert from const char* and QByteArray.
+    For Qt 4, which uses fromAscii(), we have setCodecForCStrings() in
+    main.cpp.
+
+* Unfortunately, Tesseract requires "C" locale during OCR (see
+    src/dpso/ocr.* for details), forcing gettext to return English. As
+    a workaround, we need to cache translatable strings that are set
+    while OCR is active. By convention, such strings are grouped in
+    structs named DynamicStrings.
+
+* By convention, all global configuration macros and CMake options
+    have DPSO_ prefix.
+
+* ENABLE_NLS=1 macro should be defined to enable gettext. If you use
+    dpso_utils/intl.h, this can be done with DPSO_ENABLE_NLS CMake
+    option (enabled by default). If you use your own gettext.h, set
+    ENABLE_NLS manually.

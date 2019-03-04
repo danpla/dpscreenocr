@@ -1,0 +1,65 @@
+
+#include "utils.h"
+
+#include <QDir>
+#include <QFileInfo>
+#include <QMessageBox>
+#include <QPushButton>
+
+
+#ifndef DPSO_QT_NO_RCC_ICONS
+static QIcon getIconFromRcc(const QString &name)
+{
+    QIcon icon;
+
+    static const auto sizeList = (
+        QDir(":/icons").entryList(QDir::Dirs));
+    for (int i = 0; i < sizeList.size(); ++i) {
+        const QFileInfo fileInfo(
+            QString(":/icons/%1/%2.png").arg(sizeList.at(i), name));
+        if (!fileInfo.exists())
+            continue;
+
+        icon.addFile(fileInfo.filePath());
+    }
+
+    return icon;
+}
+#endif
+
+
+QIcon getIcon(const QString &name)
+{
+    #ifdef DPSO_QT_NO_RCC_ICONS
+
+    return QIcon::fromTheme(name);
+
+    #else
+
+    if (QIcon::hasThemeIcon(name))
+        return QIcon::fromTheme(name);
+
+    return getIconFromRcc(name);
+
+    #endif
+}
+
+
+bool confirmation(
+    QWidget* parent,
+    const QString& text,
+    const QString& cancelText,
+    const QString& okText)
+{
+    QMessageBox confirmBox(parent);
+    confirmBox.setText(text);
+    confirmBox.setIcon(QMessageBox::Question);
+
+    auto* cancelButton = confirmBox.addButton(
+        cancelText, QMessageBox::RejectRole);
+    confirmBox.addButton(okText, QMessageBox::AcceptRole);
+
+    confirmBox.exec();
+
+    return confirmBox.clickedButton() != cancelButton;
+}

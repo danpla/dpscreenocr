@@ -1,0 +1,18 @@
+
+set(
+    CPACK_PACKAGE_DESCRIPTION_SUMMARY
+    "Program to recognize text on screen"
+)
+
+set(CPACK_PACKAGE_VERSION_MAJOR "${APP_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${APP_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${APP_VERSION_PATCH}")
+set(CPACK_PACKAGE_VERSION "${APP_VERSION}")
+
+set(CPACK_PACKAGE_VENDOR "${APP_AUTHOR}")
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    include(dist_deb)
+endif()
+
+include(CPack)

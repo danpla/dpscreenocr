@@ -1,0 +1,5 @@
+
+#include "paths.h"
+
+
+const char* localeDir = "@APP_LOCALE_DIR@";

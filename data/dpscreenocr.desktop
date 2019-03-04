@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=dpScreenOCR
+Exec=dpscreenocr
+Icon=dpscreenocr
+Categories=Utility;
+Terminal=false
+Comment=Program to recognize text on screen
+Comment[ru]=Программа для распознавания текста на экране

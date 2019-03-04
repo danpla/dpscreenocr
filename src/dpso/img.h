@@ -1,0 +1,74 @@
+
+#pragma once
+
+#include <cstdint>
+
+
+namespace dpso {
+
+
+class ProgressTracker;
+
+
+namespace img {
+
+
+inline unsigned getMaskRightShift(unsigned mask)
+{
+    if (mask == 0)
+        return 0;
+
+    unsigned shift = 0;
+    while (!(mask & 1)) {
+        mask >>= 1;
+        ++shift;
+    }
+    return shift;
+}
+
+
+inline std::uint8_t expandTo8Bit(std::uint8_t c, unsigned numBits)
+{
+    return c << (8 - numBits) | c >> (2 * numBits - 8);
+}
+
+
+inline std::uint8_t rgbToGray(
+    std::uint8_t r, std::uint8_t g, std::uint8_t b)
+{
+    return (r * 2126 + g * 7152 + b * 722) / 10000;
+}
+
+
+void resize(
+    const std::uint8_t* src, int srcW, int srcH, int srcPitch,
+    std::uint8_t* dst, int dstW, int dstH, int dstPitch,
+    ProgressTracker* progressTracker = nullptr);
+
+
+void boxBlur(
+    const std::uint8_t* src, int srcPitch,
+    std::uint8_t* dst, int dstPitch,
+    std::uint8_t* tmp, int tmpPitch,
+    int w, int h, int radius,
+    int numIters,
+    ProgressTracker* progressTracker = nullptr);
+
+
+void unsharpMask(
+    const std::uint8_t* src, int srcPitch,
+    std::uint8_t* dst, int dstPitch,
+    std::uint8_t* tmp, int tmpPitch,
+    int w, int h,
+    int radius,
+    float amount,
+    ProgressTracker* progressTracker = nullptr);
+
+
+void savePgm(
+    const char* fileName,
+    const std::uint8_t* data, int w, int h, int pitch);
+
+
+}
+}

@@ -1,0 +1,6 @@
+src/dpso_utils/lang_name.cpp
+src/ui/qt/about.cpp
+src/ui/qt/history.cpp
+src/ui/qt/hotkey_editor.cpp
+src/ui/qt/lang_browser.cpp
+src/ui/qt/main_window.cpp

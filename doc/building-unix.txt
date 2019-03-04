@@ -1,0 +1,123 @@
+Dependencies
+============
+
+To build dpScreenOCR, you need the following tools and development
+libraries:
+
+  * C++ compiler with C++11 support
+  * CMake 2.8.12 or newer
+  * Make
+  * Qt (4 or 5)
+  * libtesseract
+  * libx11
+  * libxext - for XShape (X11 Nonrectangular Window Shape Extension)
+  * Optionally:
+    * pkg-config - to find the libtesseract. If not installed, or if
+        you have an old OS distributive where libtesseract comes
+        without a .pc file for pkg-config, the include directory is
+        assumed to be "/usr/include" and the library name is
+        "libtesseract".
+    * Qt 5 X11 extras - to fix a bug in Qt 5 < 5.3.2 (see below)
+    * libintl. On some systems it's a part of GNU C library and
+        don't need to be installed separately.
+    * gettext utilities - msgfmt is needed to compile gettext message
+        catalogs.
+
+
+Building
+========
+
+In the simplest case, you can build dpScreenOCR with the following
+commands:
+
+    cd path_to_dpscreenocr_source
+    mkdir build
+    cd build
+    cmake -G "Unix Makefiles" -D CMAKE_BUILD_TYPE=Release ..
+    make
+
+Along with standard CMake options (like CMAKE_BUILD_TYPE and
+CMAKE_INSTALL_PREFIX), there are several options specific to the
+dpScreenOCR. All such options have "DPSO_" prefix. To list all
+options, run:
+
+    cmake -LH ..
+
+Most options are pretty self-descriptive, but some of them need a more
+detailed description:
+
+  * DPSO_ENABLE_NLS (ON by default) enables gettext support (libintl).
+      On systems where libintl is not a part of GNU libc, it have to
+      be installed separately.
+
+      This option does not affect compiling the PO files, which is
+      controlled by DPSO_COMPILE_PO.
+
+  * DPSO_COMPILE_PO (ON by default) enables compiling gettext catalogs
+      (from PO to MO). This option requires gettext utilities, namely
+      the msgfmt program.
+
+      The MO files will be written to the "locale" directory, which
+      will have structure expected by libintl.
+
+      If dpScreenOCR was built with DPSO_QT_LOCAL_DATA option enabled
+      and you want to move the executable to a different location,
+      move the "locale" directory as well, or the interface will only
+      be available in English.
+
+  * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like
+      localization files for gettext) from the executable's directory.
+
+      On Unix-like systems, where data is installed globally, the
+      local data has preference over the global. It therefore makes
+      sense to disable this option unless you want to use dpScreenOCR
+      without installation.
+
+      Currently, this option does not affect icons, which are either
+      embedded in the executable (DPSO_QT_RCC_ICON) or, like all other
+      files, are installed globally on Unix-like systems.
+
+  * DPSO_QT_RCC_ICONS (ON by default) specifies whether to embed icons
+      in the Qt executable.
+
+      On Unix-like systems, where icons are installed globally like
+      all other data files, enabling this option only makes sense if
+      want to use dpScreenOCR without installation, in particular
+      because globally installed icons has a preference over the
+      embedded ones. Note that this differs from the behavior of the
+      DPSO_QT_LOCAL_DATA option, where local data has a preference
+      over the global.
+
+  * DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND (ON by default) enables
+      a workaround for a bug in Qt 5 < 5.3.2. This option requires
+      Qt 5 X11 extras.
+
+      As the name implies, the bug affects changing of the main window
+      title: it's not updated if you don't interact with the window.
+      This is a problem since dpScreenOCR uses the title to show the
+      progress to user, which is useful when the window is minimized.
+
+      If your Qt 5 version is >= 5.3.2, this option is ignored, even
+      if enabled.
+
+In summary:
+
+  * If you don't need localization (that is, you only need English),
+      disable both DPSO_ENABLE_NLS and DPSO_COMPILE_PO.
+
+  * Unless you want to use dpScreenOCR without installation, disable
+      both DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS.
+
+
+Installing
+==========
+
+Installing dpScreenOCR is completely optional. You can use the program
+by simply running the executable. However, if you want to move it from
+the "build" directory to a different location, don't forget to move
+the "locale" folder as well, or the interface will only be available
+in English (the "locale" directory is only created if the program was
+built with DPSO_COMPILE_PO option enabled).
+
+There are two ways to install dpScreenOCR: running the standard
+"make install", or creating a DEB package.
