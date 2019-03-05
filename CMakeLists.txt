@@ -40,4 +40,5 @@ if (DPSO_BUILD_TESTS)
 endif()
 
 include(install)
+include(uninstall)
 include(dist)

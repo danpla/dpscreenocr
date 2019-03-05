@@ -121,3 +121,11 @@ built with DPSO_COMPILE_PO option enabled).
 
 There are two ways to install dpScreenOCR: running the standard
 "make install", or creating a DEB package.
+
+Make
+----
+
+You can install and remove dpScreenOCR using the standard Make
+commands "make install" and "make uninstall". To choose the
+installation prefix, set the CMAKE_INSTALL_PREFIX at the build stage.
+The default prefix is /usr/local.
