@@ -30,12 +30,6 @@ target_link_libraries(tests dpso)
 add_dependencies(tests dpso_utils)
 target_link_libraries(tests dpso_utils)
 
-if (NOT TARGET common)
-    add_subdirectory(../src/ui/common ${CMAKE_BINARY_DIR}/common)
-endif()
-add_dependencies(tests common)
-target_link_libraries(tests common)
-
 
 add_executable(test-c-compilation test_c_compilation.c)
 
@@ -52,3 +46,9 @@ target_link_libraries(test-c-compilation dpso)
 
 add_dependencies(test-c-compilation dpso_utils)
 target_link_libraries(test-c-compilation dpso_utils)
+
+if (NOT TARGET common)
+    add_subdirectory(../src/ui/common ${CMAKE_BINARY_DIR}/common)
+endif()
+add_dependencies(test-c-compilation common)
+target_link_libraries(test-c-compilation common)
