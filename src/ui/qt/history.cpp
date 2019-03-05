@@ -12,9 +12,7 @@
 #include "dpso_utils/intl.h"
 #define _(S) gettext(S)
 
-#include "common/app_info.h"
-#include "common/cfg_keys.h"
-#include "common/file_names.h"
+#include "common/common.h"
 
 #include "utils.h"
 

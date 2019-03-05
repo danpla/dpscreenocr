@@ -7,7 +7,7 @@
 #include "dpso_utils/dpso_utils.h"
 #include "dpso_utils/intl.h"
 
-#include "common/cfg_keys.h"
+#include "common/common.h"
 
 
 LangBrowser::LangBrowser(QWidget* parent)

@@ -11,7 +11,7 @@
 #include "dpso_utils/intl.h"
 #define _(S) gettext(S)
 
-#include "common/app_info.h"
+#include "common/common.h"
 
 
 About::About()

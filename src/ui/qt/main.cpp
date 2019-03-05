@@ -7,8 +7,7 @@
 
 #include "dpso_utils/intl.h"
 
-#include "common/file_names.h"
-#include "common/paths.h"
+#include "common/common.h"
 
 #include "main_window.h"
 
