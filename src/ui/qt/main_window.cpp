@@ -262,6 +262,11 @@ QWidget* MainWindow::createActionsTab()
 }
 
 
+// The purpose of dummy widgets in createHistoryTab() and
+// createAboutTab() is their layouts that will add margins around
+// History and About widgets.
+
+
 QWidget* MainWindow::createHistoryTab()
 {
     history = new History();
