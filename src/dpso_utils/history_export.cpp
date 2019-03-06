@@ -9,18 +9,8 @@
 #include "os.h"
 
 
-// Please note that we intentionally use fopen() without 'b' flag,
-// enabling CRLF line endings on Windows. This is not required by any
-// export format, but is useful for people that will open files in
-// Notepad.
-
-
-static void exportPlainText(const char* fileName)
+static void exportPlainText(std::FILE* fp)
 {
-    auto* fp = dpso::fopenUtf8(fileName, "w");
-    if (!fp)
-        return;
-
     for (int i = 0; i < dpsoHistoryCount(); ++i) {
         if (i > 0)
             std::fputs("\n\n", fp);
@@ -34,18 +24,12 @@ static void exportPlainText(const char* fileName)
 
         std::fputs(e.text, fp);
     }
-
-    std::fclose(fp);
 }
 
 
 // W3C Markup Validator: https://validator.w3.org/
-static void exportHtml(const char* fileName)
+static void exportHtml(std::FILE* fp)
 {
-    auto* fp = dpso::fopenUtf8(fileName, "w");
-    if (!fp)
-        return;
-
     std::fputs(
         "<!DOCTYPE html>\n"
         "<html>\n"
@@ -120,19 +104,13 @@ static void exportHtml(const char* fileName)
         "  </body>\n"
         "</html>\n",
         fp);
-
-    std::fclose(fp);
 }
 
 
 // To validate JSON:
 //   python3 -m json.tool *.json > /dev/null
-static void exportJson(const char* fileName)
+static void exportJson(std::FILE* fp)
 {
-    auto* fp = dpso::fopenUtf8(fileName, "w");
-    if (!fp)
-        return;
-
     std::fputs("[\n", fp);
 
     for (int i = 0; i < dpsoHistoryCount(); ++i) {
@@ -185,20 +163,28 @@ static void exportJson(const char* fileName)
     }
 
     std::fputs("]\n", fp);
-
-    std::fclose(fp);
 }
 
 
 void dpsoHistoryExport(
     const char* fileName, DpsoHistoryExportFormat exportFormat)
 {
+    // We intentionally use fopen() without 'b' flag, enabling CRLF
+    // line endings on Windows. This is not required by any export
+    // format, but is useful for people that will open files in
+    // Notepad.
+    auto* fp = dpso::fopenUtf8(fileName, "w");
+    if (!fp)
+        return;
+
     if (exportFormat == dpsoHistoryExportFormatPlainText)
-        exportPlainText(fileName);
+        exportPlainText(fp);
     else if (exportFormat == dpsoHistoryExportFormatHtml)
-        exportHtml(fileName);
+        exportHtml(fp);
     else if (exportFormat == dpsoHistoryExportFormatJson)
-        exportJson(fileName);
+        exportJson(fp);
+
+    std::fclose(fp);
 }
 
 
