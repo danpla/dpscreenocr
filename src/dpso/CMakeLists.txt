@@ -27,9 +27,11 @@ add_library(
     str.cpp
 )
 
-if (DPSO_FORCE_TIMING)
-    target_compile_definitions(dpso PRIVATE DPSO_FORCE_TIMING)
-endif()
+target_compile_definitions(
+    dpso
+    PRIVATE
+    DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
+)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")

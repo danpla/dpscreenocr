@@ -27,8 +27,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 # CMP0071: Let AUTOMOC and AUTOUIC process GENERATED files.
-# We don't rely on this behavior; we just need to suppress the warning, as it's
-# triggered for the generated .rcc files.
+# We don't rely on this behavior; we just need to suppress the warning,
+# as it's triggered for the generated .rcc files.
 if(POLICY CMP0071)
     cmake_policy(SET CMP0071 NEW)
 endif()
@@ -67,17 +67,12 @@ endif()
 
 add_executable(dpscreenocr-qt ${SRCS})
 
-if (NOT DPSO_QT_LOCAL_DATA)
-    target_compile_definitions(
-        dpscreenocr-qt PRIVATE DPSO_QT_NO_LOCAL_DATA
-    )
-endif()
-
-if (NOT DPSO_QT_RCC_ICONS)
-    target_compile_definitions(
-        dpscreenocr-qt PRIVATE DPSO_QT_NO_RCC_ICONS
-    )
-endif()
+target_compile_definitions(
+    dpscreenocr-qt
+    PRIVATE
+    DPSO_QT_LOCAL_DATA=$<BOOL:${DPSO_QT_LOCAL_DATA}>
+    DPSO_QT_RCC_ICONS=$<BOOL:${DPSO_QT_RCC_ICONS}>
+)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -127,6 +122,12 @@ if (NOT DPSO_QT4
     target_compile_definitions(
         dpscreenocr-qt
         PRIVATE
-        DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
+        DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1
+    )
+else()
+    target_compile_definitions(
+        dpscreenocr-qt
+        PRIVATE
+        DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=0
     )
 endif()

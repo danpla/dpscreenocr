@@ -14,6 +14,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+#include "default_config.h"
+
 // Workaround for QTBUG-33775
 #if DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
 #include <QX11Info>

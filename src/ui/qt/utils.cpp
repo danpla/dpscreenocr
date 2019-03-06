@@ -6,8 +6,10 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include "default_config.h"
 
-#ifndef DPSO_QT_NO_RCC_ICONS
+
+#if DPSO_QT_RCC_ICONS
 static QIcon getIconFromRcc(const QString &name)
 {
     QIcon icon;
@@ -30,16 +32,16 @@ static QIcon getIconFromRcc(const QString &name)
 
 QIcon getIcon(const QString &name)
 {
-    #ifdef DPSO_QT_NO_RCC_ICONS
-
-    return QIcon::fromTheme(name);
-
-    #else
+    #if DPSO_QT_RCC_ICONS
 
     if (QIcon::hasThemeIcon(name))
         return QIcon::fromTheme(name);
 
     return getIconFromRcc(name);
+
+    #else
+
+    return QIcon::fromTheme(name);
 
     #endif
 }

@@ -9,6 +9,7 @@
 
 #include "common/common.h"
 
+#include "default_config.h"
 #include "main_window.h"
 
 
@@ -27,11 +28,7 @@ int main(int argc, char *argv[])
 
     std::setlocale(LC_ALL, "");
 
-    #ifdef DPSO_QT_NO_LOCAL_DATA
-
-    bindtextdomain(appFileName, localeDir);
-
-    #else
+    #if DPSO_QT_LOCAL_DATA
 
     const auto localLocaleDir = QDir::toNativeSeparators(
         QCoreApplication::applicationDirPath() + "/locale");
@@ -40,6 +37,10 @@ int main(int argc, char *argv[])
             appFileName, localLocaleDir.toLocal8Bit().data());
     else
         bindtextdomain(appFileName, localeDir);
+
+    #else
+
+    bindtextdomain(appFileName, localeDir);
 
     #endif
 

@@ -39,6 +39,11 @@ target_include_directories(dpso_utils PUBLIC ..)
 add_dependencies(dpso_utils dpso)
 target_link_libraries(dpso_utils dpso)
 
+target_compile_definitions(
+    dpso_utils
+    PUBLIC
+    ENABLE_NLS=$<BOOL:${DPSO_ENABLE_NLS}>
+)
 if (DPSO_ENABLE_NLS)
     find_package(Intl REQUIRED)
     target_include_directories(
@@ -49,10 +54,5 @@ if (DPSO_ENABLE_NLS)
     target_link_libraries(
         dpso_utils
         ${Intl_LIBRARIES}
-    )
-    target_compile_definitions(
-        dpso_utils
-        PUBLIC
-        ENABLE_NLS=1
     )
 endif()
