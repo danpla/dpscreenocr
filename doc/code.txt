@@ -1,4 +1,3 @@
-Some notes about code
 
 * Don't use UTF-8 string literals (u8""). Since C++20, their type is
     changed from char to char8_t, breaking the backward compatibility.
@@ -22,7 +21,10 @@ Some notes about code
     structs named DynamicStrings.
 
 * By convention, all global configuration macros and CMake options
-    have DPSO_ prefix.
+    have DPSO_ prefix. A CMakeLists file should explicitly set the
+    macro value in target_compile_definitions() rather than leaving
+    it undefined; an undefined macro will be set to a default value in
+    the source code, and that default may not match the CMake option.
 
 * ENABLE_NLS=1 macro should be defined to enable gettext. If you use
     dpso_utils/intl.h, this can be done with DPSO_ENABLE_NLS CMake
