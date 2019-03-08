@@ -394,6 +394,8 @@ static void processJob(const Job& job)
     assert(job.screenshot);
     assert(!job.tessLangsStr.empty());
 
+    // There are 3 progress jobs: resizing and unsharp masking in
+    // prepareScreenshot() and OCR.
     dpso::ProgressTracker progressTracker(3, progressTrackerFn);
     progressTracker.start();
 
