@@ -178,7 +178,7 @@ QWidget* MainWindow::createMainTab()
     splitTextBlocksCheck = new QCheckBox(
         _("Split text blocks"));
     splitTextBlocksCheck->setToolTip(
-        _("Detect and split independent text blocks, e.g. columns"));
+        _("Split independent text blocks, e.g. columns"));
     ocrGroupLayout->addWidget(splitTextBlocksCheck);
 
     ocrGroupLayout->addWidget(new QLabel(_("Languages:")));
