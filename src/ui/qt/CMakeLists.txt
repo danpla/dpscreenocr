@@ -14,7 +14,7 @@ option(DPSO_QT_RCC_ICONS "Embed icons in Qt executable" YES)
 # affect Qt 4.
 option(
     DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
-    "Use workaround for setWindowTitle() bug in Qt < 5.3.2 with X11"
+    "Use workaround for setWindowTitle() bug in Qt 5 < 5.3.2 with X11"
     YES
 )
 
