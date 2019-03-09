@@ -256,9 +256,9 @@ QWidget* MainWindow::createActionsTab()
 
     tabLayout->addStretch();
 
-    auto* tab = new QWidget();
-    tab->setLayout(tabLayout);
-    return tab;
+    actionsTab = new QWidget();
+    actionsTab->setLayout(tabLayout);
+    return actionsTab;
 }
 
 
@@ -464,6 +464,8 @@ void MainWindow::updateStatus()
     DpsoProgress progress;
     int progressIsNew;
     dpsoGetProgress(&progress, &progressIsNew);
+
+    actionsTab->setEnabled(progress.totalJobs == 0);
 
     if (progress.totalJobs > 0) {
         // Update status when the progress ends.

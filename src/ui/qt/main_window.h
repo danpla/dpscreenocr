@@ -68,6 +68,7 @@ private:
     LangBrowser* langBrowser;
     HotkeyEditor* hotkeyEditor;
 
+    QWidget* actionsTab;
     QCheckBox* copyToClipboardCheck;
     QCheckBox* addToHistoryCheck;
     QCheckBox* runExeCheck;
