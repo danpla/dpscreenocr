@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "delay.h"
 #include "hotkeys.h"
 #include "ocr.h"
 #include "selection.h"

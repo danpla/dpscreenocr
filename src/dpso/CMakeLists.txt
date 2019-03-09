@@ -16,6 +16,7 @@ add_library(
     backend/x11/x11_key_manager.cpp
     backend/x11/x11_screenshot.cpp
     backend/x11/x11_selection.cpp
+    delay.cpp
     dpso.cpp
     geometry.cpp
     hotkeys.cpp

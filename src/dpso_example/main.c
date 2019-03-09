@@ -6,8 +6,6 @@
 
 #include "dpso/dpso.h"
 
-#include "delay.h"
-
 
 static void setupLanguages()
 {
@@ -129,7 +127,7 @@ int main()
         checkResult();
         checkHotkeyActions();
 
-        delay(1000 / 60);
+        dpsoDelay(1000 / 60);
     }
 
     dpsoShutdown();
