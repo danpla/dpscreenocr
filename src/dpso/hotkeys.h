@@ -136,7 +136,7 @@ const char* dpsoHotkeyToString(const struct DpsoHotkey* hotkey);
  * dpsoHotkeyToString()). The only requirement is that a key name
  * (if any) should always be after the modifiers.
  *
- * Keep in mind that a space withing a key name is not ignored. For
+ * Keep in mind that a space within a key name is not ignored. For
  * example "Page Up" is a valid key name, but "Page   Up" or
  * "Page\tUp" is not.
  */
