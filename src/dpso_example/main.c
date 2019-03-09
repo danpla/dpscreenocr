@@ -20,7 +20,7 @@ static void setupLanguages()
     for (i = 0; i < dpsoGetNumLangs(); ++i)
         if (strcmp(dpsoGetLangCode(i), "eng") == 0) {
             dpsoSetLangIsActive(i, true);
-            break;
+            return;
         }
 
     printf(
