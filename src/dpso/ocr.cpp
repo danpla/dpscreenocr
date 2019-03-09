@@ -440,7 +440,12 @@ static void processJob(const Job& job)
 
     std::unique_ptr<char[]> text(tess->GetUTF8Text());
     if (!text)
-        return;
+        // Return an empty string in case of a Tesseract error. A
+        // successful dpsoQueueJob() must always give a result, making
+        // the dpsoQueueJob()/dpsoFetchResults() pair reliable for
+        // starting and ending some action, like disabling a widget
+        // during OCR.
+        text.reset(new char[1]());
 
     // Initialize textLen with 0 rather than {} to avoid an error
     // in old GCC versions (< 5.2):
