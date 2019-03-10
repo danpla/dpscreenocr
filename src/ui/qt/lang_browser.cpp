@@ -69,10 +69,10 @@ void LangBrowser::loadState()
 
         auto* item = new QTreeWidgetItem(this);
 
+        item->setData(columnIdxCheckbox, Qt::UserRole, i);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         item->setCheckState(
             columnIdxCheckbox, state ? Qt::Checked : Qt::Unchecked);
-        item->setData(columnIdxCheckbox, Qt::UserRole, i);
 
         item->setText(
             columnIdxName,
