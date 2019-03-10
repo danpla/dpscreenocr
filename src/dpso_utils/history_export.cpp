@@ -40,6 +40,7 @@ static void exportHtml(std::FILE* fp)
         "      .text {\n"
         "         margin-left: 2em;\n"
         "         margin-bottom: 2em;\n"
+        "         line-height: 1.6;\n"
         "       }\n"
         "    </style>\n"
         "  </head>\n"
