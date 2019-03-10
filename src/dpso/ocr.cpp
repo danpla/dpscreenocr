@@ -109,7 +109,7 @@ static void cacheLangs()
 
     for (int i = 0; i < langCodes.size(); ++i) {
         const auto& langCode = langCodes[i];
-        if (langCode == "osd")
+        if (langCode == "osd" || langCode == "equ")
             continue;
 
         langs.push_back({langCode.c_str(), false});
