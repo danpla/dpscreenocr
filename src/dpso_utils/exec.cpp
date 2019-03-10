@@ -15,7 +15,12 @@ void dpsoExec(const char* exePath, const char* arg1)
 
     const char* args[] = {exePath, arg1, nullptr};
     execvp(args[0], (char* const*)args);
-    std::exit(EXIT_FAILURE);
+
+    // Use _Exit() instead of exit() since we don't want to call C++
+    // destructors. In particular, this removes messages from
+    // Tesseract 4 ("~ObjectCache(): WARNING! LEAK!") and std::thread
+    // ("terminate called without an active exception").
+    std::_Exit(EXIT_FAILURE);
 }
 
 
