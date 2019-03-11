@@ -2,6 +2,7 @@
 #pragma once
 
 #include <QCheckBox>
+#include <QPushButton>
 #include <QTextEdit>
 #include <QWidget>
 
@@ -34,10 +35,15 @@ private:
     } dynStr;
 
     QCheckBox* wordWrapCheck;
+
     QTextEdit* textEdit;
     QTextCharFormat charFormat;
     QTextBlockFormat blockFormat;
     int blockMargin;
 
+    QPushButton* clearButton;
+    QPushButton* saveAsButton;
+
+    void setButtonsEnabled(bool enabled);
     void appendToTextEdit(const char* text, const char* timestamp);
 };

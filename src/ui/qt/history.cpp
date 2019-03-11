@@ -5,7 +5,6 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QHBoxLayout>
-#include <QPushButton>
 #include <QVBoxLayout>
 
 #include "dpso_utils/dpso_utils.h"
@@ -35,16 +34,19 @@ History::History(QWidget* parent)
         140, QTextBlockFormat::ProportionalHeight);
     blockMargin = QFontMetrics(charFormat.font()).height();
 
-    auto* clearButton = new QPushButton(_("Clear"));
+    clearButton = new QPushButton(_("Clear"));
     connect(
         clearButton, SIGNAL(clicked()),
         this, SLOT(clear()));
-    auto* saveAsButton = new QPushButton(_("Save as\342\200\246"));
+
+    saveAsButton = new QPushButton(_("Save as\342\200\246"));
     saveAsButton->setToolTip(
         _("Save the history as plain text, HTML, or JSON"));
     connect(
         saveAsButton, SIGNAL(clicked()),
         this, SLOT(saveAs()));
+
+    setButtonsEnabled(false);
 
     auto* layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
@@ -73,6 +75,13 @@ History::DynamicStrings::DynamicStrings()
 }
 
 
+void History::setButtonsEnabled(bool enabled)
+{
+    clearButton->setEnabled(enabled);
+    saveAsButton->setEnabled(enabled);
+}
+
+
 void History::setWordWrap(bool wordWrap)
 {
     textEdit->setWordWrapMode(
@@ -89,6 +98,7 @@ void History::clear()
 
     dpsoHistoryClear();
     textEdit->clear();
+    setButtonsEnabled(false);
 }
 
 
@@ -144,6 +154,8 @@ void History::append(const char* text, const char* timestamp)
     dpsoHistoryAppend(&entry);
 
     appendToTextEdit(text, timestamp);
+
+    setButtonsEnabled(true);
 }
 
 
@@ -194,6 +206,8 @@ void History::loadState()
         dpsoHistoryGet(i, &entry);
         appendToTextEdit(entry.text, entry.timestamp);
     }
+
+    setButtonsEnabled(dpsoHistoryCount() > 0);
 }
 
 
