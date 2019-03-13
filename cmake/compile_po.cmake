@@ -7,7 +7,7 @@ find_package(Gettext REQUIRED)
 # The full path of a MO file will be:
 #
 #   build_dir/{LANGUAGE}/LC_MESSAGES/${APP_FILE_NAME}.mo
-function(COMPILE_PO target_name build_dir)
+function(compile_po target_name build_dir)
     set(MO_FILES)
     file(STRINGS "po/LINGUAS" LANGS REGEX "^[^#].*")
     foreach(LANG ${LANGS})
