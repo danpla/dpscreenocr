@@ -21,6 +21,10 @@ if (DPSO_COMPILE_PO)
     COMPILE_PO(
         mo_files
         "${CMAKE_CURRENT_BINARY_DIR}/locale"
-        "${CMAKE_INSTALL_LOCALEDIR}"
+    )
+    install(
+        # Note the trailing slash.
+        DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/locale/"
+        DESTINATION "${CMAKE_INSTALL_LOCALEDIR}"
     )
 endif()

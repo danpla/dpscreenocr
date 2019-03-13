@@ -2,13 +2,12 @@
 find_package(Gettext REQUIRED)
 
 # The function compiles PO files for languages listed in po/LINGUAS,
-# writing MOs to build_dir, and optionally installing them to
-# install_dir. If you don't need to install MOs, leave install_dir
-# empty.
+# writing MOs to build_dir.
 #
-# The full path of a MO file will be build_dir/install_dir +
-# "${LANG}/LC_MESSAGES/${APP_FILE_NAME}.mo".
-function(COMPILE_PO target_name build_dir install_dir)
+# The full path of a MO file will be:
+#
+#   build_dir/{LANGUAGE}/LC_MESSAGES/${APP_FILE_NAME}.mo
+function(COMPILE_PO target_name build_dir)
     set(MO_FILES)
     file(STRINGS "po/LINGUAS" LANGS REGEX "^[^#].*")
     foreach(LANG ${LANGS})
@@ -30,13 +29,6 @@ function(COMPILE_PO target_name build_dir install_dir)
             DEPENDS "${MO_DIR}" "${PO_FILE}"
             VERBATIM
         )
-
-        if (NOT install_dir STREQUAL "")
-            install(
-                FILES "${MO_FILE}"
-                DESTINATION "${install_dir}/${LANG}/LC_MESSAGES"
-            )
-        endif()
 
         list(APPEND MO_FILES "${MO_FILE}")
     endforeach()
