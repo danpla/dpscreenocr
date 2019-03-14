@@ -1,5 +1,8 @@
 
-find_package(Gettext REQUIRED)
+find_program(MSGFMT_EXE msgfmt)
+if (NOT MSGFMT_EXE)
+    message(SEND_ERROR "msgfmt not found")
+endif()
 
 # The function compiles PO files for languages listed in po/LINGUAS,
 # writing MOs to build_dir.
@@ -24,8 +27,7 @@ function(compile_po target_name build_dir)
 
         add_custom_command(
             OUTPUT "${MO_FILE}"
-            COMMAND
-                "${GETTEXT_MSGFMT_EXECUTABLE}" -o "${MO_FILE}" "${PO_FILE}"
+            COMMAND "${MSGFMT_EXE}" -o "${MO_FILE}" "${PO_FILE}"
             DEPENDS "${MO_DIR}" "${PO_FILE}"
             VERBATIM
         )
