@@ -12,7 +12,7 @@ endif()
 #   build_dir/{LANGUAGE}/LC_MESSAGES/${APP_FILE_NAME}.mo
 function(compile_po target_name build_dir)
     set(MO_FILES)
-    file(STRINGS "po/LINGUAS" LANGS REGEX "^[^#].*")
+    file(STRINGS "${CMAKE_SOURCE_DIR}/po/LINGUAS" LANGS REGEX "^[^#].*")
     foreach(LANG ${LANGS})
         set(PO_FILE "${CMAKE_SOURCE_DIR}/po/${LANG}.po")
         set(MO_DIR "${build_dir}/${LANG}/LC_MESSAGES")
