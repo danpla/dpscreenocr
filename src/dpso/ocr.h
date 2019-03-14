@@ -92,8 +92,8 @@ typedef enum {
  * Unfortunately, Tesseract only works with "C" locale. This locale
  * is automatically set on dpsoQueueJob() calls, and restored after
  * dpsoWaitForResults(), dpsoTerminateJobs(), and dpsoFetchResults()
- * with fetchChain=1 that returns 1. Don't change the locale between
- * these two points.
+ * when all jobs are completed. Don't change the locale between these
+ * two points.
  */
 int dpsoQueueJob(int x, int y, int w, int h, int jobFlags);
 

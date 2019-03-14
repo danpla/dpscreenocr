@@ -596,6 +596,9 @@ int dpsoFetchResults(int fetchChain)
         returnResults.push_back(
             {result.text.get(), result.textLen, result.timestamp});
 
+    if (!link.jobsPending())
+        restoreLocale();
+
     return true;
 }
 
