@@ -75,8 +75,7 @@ private:
     QLineEdit* exeLineEdit;
 
     QString copyToClipboardTextSeparator;
-    QString runExeTextSeparator;
-    bool sameTextSeparators;
+    bool runExeWaitToComplete;
 
     History* history;
 

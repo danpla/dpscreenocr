@@ -5,32 +5,46 @@
 #if defined(__unix__)
 
 #include <cstdlib>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 
-void dpsoExec(const char* exePath, const char* arg1)
+void dpsoExec(const char* exePath, const char* arg, int wait)
 {
-    if (fork() != 0)
-        return;
+    const auto pid = fork();
 
-    const char* args[] = {exePath, arg1, nullptr};
-    execvp(args[0], (char* const*)args);
-
-    // Use _Exit() instead of exit() since we don't want to call C++
-    // destructors. In particular, this removes messages from
-    // Tesseract 4 ("~ObjectCache(): WARNING! LEAK!") and std::thread
-    // ("terminate called without an active exception").
-    std::_Exit(EXIT_FAILURE);
+    switch (pid) {
+        case -1:
+            return;
+            break;
+        case 0: {
+            const char* args[] = {exePath, arg, nullptr};
+            execvp(args[0], (char* const*)args);
+            // Use _Exit() instead of exit() since we don't want to
+            // call C++ destructors. In particular, this removes
+            // messages from Tesseract 4 ("~ObjectCache(): WARNING!
+            // LEAK!") and std::thread ("terminate called without an
+            // active exception").
+            std::_Exit(EXIT_FAILURE);
+            break;
+        }
+        default:
+            if (wait)
+                waitpid(pid, nullptr, 0);
+            break;
+    }
 }
 
 
 #else
 
 
-void dpsoExec(const char* exePath, const char* arg1)
+void dpsoExec(const char* exePath, const char* arg, int wait)
 {
     (void)exePath;
-    (void)arg1;
+    (void)arg;
+    (void)wait;
 }
 
 

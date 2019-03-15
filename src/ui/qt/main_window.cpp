@@ -323,10 +323,8 @@ void MainWindow::loadState()
 
     copyToClipboardTextSeparator = dpsoCfgGetStr(
         cfgKeyActionCopyToClipboardTextSeparator, "\n\n");
-    runExeTextSeparator = dpsoCfgGetStr(
-        cfgKeyActionRunExecutableTextSeparator, "\n\n");
-    sameTextSeparators = (
-        copyToClipboardTextSeparator == runExeTextSeparator);
+    runExeWaitToComplete = dpsoCfgGetBool(
+        cfgKeyActionRunExecutableWaitToComplete, true);
 
     tabs->setCurrentIndex(dpsoCfgGetInt(cfgKeyUiActiveTab, 0));
 
@@ -357,9 +355,9 @@ void MainWindow::initReadOnlyCfgKeys() const
     dpsoCfgSetStr(
         cfgKeyActionCopyToClipboardTextSeparator,
         copyToClipboardTextSeparator.toUtf8().data());
-    dpsoCfgSetStr(
-        cfgKeyActionRunExecutableTextSeparator,
-        runExeTextSeparator.toUtf8().data());
+    dpsoCfgSetBool(
+        cfgKeyActionRunExecutableWaitToComplete,
+        runExeWaitToComplete);
 
     dpsoCfgSetBool(cfgKeyOcrAllowQueuing, ocrAllowQueuing);
     dpsoCfgSetBool(
@@ -525,23 +523,6 @@ void MainWindow::updateStatus()
 }
 
 
-static void concatResults(
-    const DpsoJobResult* results,
-    int numResults,
-    const QString& separator,
-    QString& str)
-{
-    str.clear();
-
-    for (int i = 0; i < numResults; ++i) {
-        if (!str.isEmpty())
-            str += separator;
-
-        str += results[i].text;
-    }
-}
-
-
 void MainWindow::checkResult()
 {
     if (!dpsoFetchResults(true))
@@ -551,37 +532,32 @@ void MainWindow::checkResult()
     int numResults;
     dpsoGetFetchedResults(&results, &numResults);
 
-    if (copyToClipboardCheck->isChecked()
-            || runExeCheck->isChecked()) {
+    if (copyToClipboardCheck->isChecked()) {
         static QString fullText;
         fullText.clear();
 
-        if (copyToClipboardCheck->isChecked()) {
-            concatResults(
-                results, numResults,
-                copyToClipboardTextSeparator, fullText);
+        for (int i = 0; i < numResults; ++i) {
+            if (!fullText.isEmpty())
+                fullText += copyToClipboardTextSeparator;
 
-            auto* clipboard = QApplication::clipboard();
-            clipboard->setText(fullText, QClipboard::Clipboard);
-            clipboard->setText(fullText, QClipboard::Selection);
+            fullText += results[i].text;
         }
 
-        if (runExeCheck->isChecked()) {
-            if (fullText.isEmpty() || !sameTextSeparators)
-                concatResults(
-                    results, numResults,
-                    runExeTextSeparator, fullText);
-
-            dpsoExec(
-                exeLineEdit->text().toUtf8().data(),
-                fullText.toUtf8().data());
-        }
+        auto* clipboard = QApplication::clipboard();
+        clipboard->setText(fullText, QClipboard::Clipboard);
+        clipboard->setText(fullText, QClipboard::Selection);
     }
 
-    if (addToHistoryCheck->isChecked()) {
+    if (addToHistoryCheck->isChecked())
         for (int i = 0; i < numResults; ++i)
             history->append(results[i].text, results[i].timestamp);
-    }
+
+    if (runExeCheck->isChecked())
+        for (int i = 0; i < numResults; ++i)
+            dpsoExec(
+                exeLineEdit->text().toUtf8().data(),
+                results[i].text,
+                runExeWaitToComplete);
 }
 
 

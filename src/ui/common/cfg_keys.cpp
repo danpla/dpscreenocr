@@ -9,8 +9,8 @@ const char* cfgKeyActionCopyToClipboardTextSeparator = (
 const char* cfgKeyActionRunExecutable = "action_run_executable";
 const char* cfgKeyActionRunExecutablePath = (
     "action_run_executable_path");
-const char* cfgKeyActionRunExecutableTextSeparator = (
-    "action_run_executable_text_separator");
+const char* cfgKeyActionRunExecutableWaitToComplete = (
+    "action_run_executable_wait_to_complete");
 const char* cfgKeyHistoryExportDir = "history_export_dir";
 const char* cfgKeyHistoryWrapWords = "history_wrap_words";
 const char* cfgKeyHotkeyCancelSelection = "hotkey_cancel_selection";

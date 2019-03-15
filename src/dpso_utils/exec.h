@@ -10,9 +10,10 @@ extern "C" {
 /**
  * Run an executable.
  *
- * arg1 becomes argv[1].
+ * arg becomes argv[1]. If wait is 1, the function will wait for the
+ * executable to terminate, blocking the caller's thread.
  */
-void dpsoExec(const char* exePath, const char* arg1);
+void dpsoExec(const char* exePath, const char* arg, int wait);
 
 
 #ifdef __cplusplus
