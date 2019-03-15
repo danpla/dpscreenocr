@@ -58,7 +58,6 @@ MainWindow::MainWindow()
         QMessageBox::critical(
             nullptr, QString(appName) + " error", dpsoGetError());
         std::exit(EXIT_FAILURE);
-        return;
     }
 
     dpsoSetHotheysEnabled(true);
