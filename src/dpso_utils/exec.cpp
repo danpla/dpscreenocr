@@ -10,7 +10,8 @@
 #include <unistd.h>
 
 
-void dpsoExec(const char* exePath, const char* arg, int wait)
+void dpsoExec(
+    const char* exePath, const char* arg, int waitToComplete)
 {
     const auto pid = fork();
 
@@ -30,7 +31,7 @@ void dpsoExec(const char* exePath, const char* arg, int wait)
             break;
         }
         default:
-            if (wait)
+            if (waitToComplete)
                 waitpid(pid, nullptr, 0);
             break;
     }
@@ -40,11 +41,12 @@ void dpsoExec(const char* exePath, const char* arg, int wait)
 #else
 
 
-void dpsoExec(const char* exePath, const char* arg, int wait)
+void dpsoExec(
+    const char* exePath, const char* arg, int waitToComplete)
 {
     (void)exePath;
     (void)arg;
-    (void)wait;
+    (void)waitToComplete;
 }
 
 
