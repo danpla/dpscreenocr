@@ -3,6 +3,8 @@
 
 dpScreenOCR is a program to recognize text on screen.
 
+Website: [https://danpla.github.io/dpscreenocr](https://danpla.github.io/dpscreenocr)
+
 
 ## Docs
 
