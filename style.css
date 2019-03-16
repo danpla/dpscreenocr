@@ -1,0 +1,64 @@
+body {
+  margin: 3em auto 0em auto;
+  max-width: 46em;
+  font-size: 14pt;
+  font-family: Helvetica, Arial, Liberation Sans, Noto Sans, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  border-bottom: 0.1em solid;
+}
+
+body article {
+  margin-left: 12em;
+  margin-right: 1em;
+}
+
+header {
+  float: left;
+  margin-left: 1em;
+}
+
+header img {
+  width: 9em;
+}
+
+footer {
+  padding: 1em 0;
+  margin-top: 2em;
+  border-top: 0.12em solid #bbbbbb;
+  font-size: 0.8em;
+}
+
+#dllist p {
+  margin: 0.5em 0;
+  font-size: 0.8em;
+}
+
+pre {
+  font-size: 0.8em;
+  padding: 1em;
+  white-space: pre;
+  background: #dfdfdf;
+}
+
+@media screen and (max-width: 40em) {
+  body {
+    font-size: 12pt;
+    margin-top: 1em;
+  }
+
+  body article {
+    margin-left: 1em;
+  }
+
+  header {
+    float: none;
+  }
+
+  header img {
+    width: 7em;
+  }
+}

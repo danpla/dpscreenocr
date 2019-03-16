@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dpScreenOCR Manual</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.line-block{white-space: pre-line;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="manual-data/manual.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">dpScreenOCR Manual</h1>
+</header>
+<nav id="TOC">
+<h2 id="toctitle">Table of contents</h2>
+<ul>
+<li><a href="#about-dpscreenocr"><span class="toc-section-number">1</span> About dpScreenOCR</a></li>
+<li><a href="#installation"><span class="toc-section-number">2</span> Installation</a><ul>
+<li><a href="#installing-dpscreenocr"><span class="toc-section-number">2.1</span> Installing dpScreenOCR</a></li>
+<li><a href="#installing-languages"><span class="toc-section-number">2.2</span> Installing languages</a></li>
+</ul></li>
+<li><a href="#usage"><span class="toc-section-number">3</span> Usage</a><ul>
+<li><a href="#overview"><span class="toc-section-number">3.1</span> Overview</a></li>
+<li><a href="#main-tab"><span class="toc-section-number">3.2</span> Main tab</a><ul>
+<li><a href="#status"><span class="toc-section-number">3.2.1</span> Status</a></li>
+<li><a href="#character-recognition"><span class="toc-section-number">3.2.2</span> Character recognition</a></li>
+<li><a href="#hotkey"><span class="toc-section-number">3.2.3</span> Hotkey</a></li>
+</ul></li>
+<li><a href="#actions-tab"><span class="toc-section-number">3.3</span> Actions tab</a><ul>
+<li><a href="#copy-text-to-clipboard"><span class="toc-section-number">3.3.1</span> Copy text to clipboard</a></li>
+<li><a href="#add-text-to-history"><span class="toc-section-number">3.3.2</span> Add text to history</a></li>
+<li><a href="#run-executable"><span class="toc-section-number">3.3.3</span> Run executable</a></li>
+</ul></li>
+<li><a href="#history-tab"><span class="toc-section-number">3.4</span> History tab</a></li>
+</ul></li>
+<li><a href="#tweaking"><span class="toc-section-number">4</span> Tweaking</a></li>
+<li><a href="#troubleshooting"><span class="toc-section-number">5</span> Troubleshooting</a></li>
+</ul>
+</nav>
+<h1 id="about-dpscreenocr"><span class="header-section-number">1</span> About dpScreenOCR</h1>
+<p>dpScreenOCR is a program to recognize text on screen. Powered by <a href="https://en.wikipedia.org/wiki/Tesseract_(software)">Tesseract</a>, it supports more than 100 languages and can split independent text blocks, e.g. columns. dpScreenOCR is free and open source software that works on GNU/Linux and any other Unix-like system with X11.</p>
+<h1 id="installation"><span class="header-section-number">2</span> Installation</h1>
+<h2 id="installing-dpscreenocr"><span class="header-section-number">2.1</span> Installing dpScreenOCR</h2>
+<p>The <a href="https://danpla.github.io/dpscreenocr">dpScreenOCR website</a> provides several download options, including repositories and packages for Debian, Ubuntu, and derivative systems. Downloads for other systems may be added later.</p>
+<p>If you don’t find a suitable choice for your system, download the source code tarball, unpack it anywhere, and follow the instructions in the <code>doc/building-unix.txt</code> file.</p>
+<h2 id="installing-languages"><span class="header-section-number">2.2</span> Installing languages</h2>
+<p>Use your package manager to install language packs for Tesseract. The package names may vary slightly across systems, but they usually start with “tesseract” and end with a language code or name. For example, the package for German have the following names:</p>
+<ul>
+<li><code>tesseract-ocr-deu</code> on Debian, Ubuntu, and derivatives</li>
+<li><code>tesseract-data-deu</code> on Arch Linux</li>
+<li><code>tesseract-langpack-deu</code> on Fedora</li>
+<li><code>tesseract-ocr-traineddata-german</code> on openSUSE</li>
+</ul>
+<p>Be aware that on some systems (like Fedora) English is a part of the main <code>tesseract</code> package.</p>
+<p>There are also two special packs that provide extra features rather than languages: <code>osd</code> (automatic script and orientation detection) and <code>equ</code> (math and equation detection). dpScreenOCR don’t use them.</p>
+<h1 id="usage"><span class="header-section-number">3</span> Usage</h1>
+<h2 id="overview"><span class="header-section-number">3.1</span> Overview</h2>
+<p>dpScreenOCR is simple to use:</p>
+<ol type="1">
+<li>Choose some languages in the <a href="#main-tab">Main tab</a>.</li>
+<li>Move the mouse pointer near the screen area containing text and press the hotkey shown in the <a href="#main-tab">Main tab</a> to start the selection.</li>
+<li>Move the mouse so that the selection covers the text and press the hotkey again.</li>
+</ol>
+<p>After these steps, dpScreenOCR will recognize the text from the selected area and process it according to the actions from the <a href="#actions-tab">Actions tab</a>.</p>
+<h2 id="main-tab"><span class="header-section-number">3.2</span> Main tab</h2>
+<p><img src="manual-data/main-tab.png" /></p>
+<h3 id="status"><span class="header-section-number">3.2.1</span> Status</h3>
+<p>The status shows the state of dpScreenOCR:</p>
+<ul>
+<li><p>Green: The program is ready to use. You can press the <a href="#hotkey">hotkey</a> to start a new selection.</p></li>
+<li><p>Yellow: The program recognizes text. This status text will show you the progress.</p></li>
+<li><p>Red: The program needs some setup. There may be three reasons:</p>
+<ul>
+<li><p>No languages are available. Please install some language packs for Tesseract as described in the “<a href="#installing-languages">Installing languages</a>” section and restart dpScreenOCR.</p></li>
+<li><p>No languages are selected. You need to select at least one language in the language list.</p></li>
+<li><p>No actions are selected. You need to select at least one action in the <a href="#actions-tab">Actions tab</a>.</p></li>
+</ul></li>
+</ul>
+<p>The yellow and red status messages are also displayed in the title of the dpScreenOCR’s window.</p>
+<h3 id="character-recognition"><span class="header-section-number">3.2.2</span> Character recognition</h3>
+<p>Options in this section control how dpScreenOCR will recognize text.</p>
+<h4 id="split-text-blocks"><span class="header-section-number">3.2.2.1</span> Split text blocks</h4>
+<p>If this option is enabled, dpScreenOCR will try to detect and split independent text blocks, e.g. columns. This behavior is best described by the following picture:</p>
+<p><img src="manual-data/split.png" /></p>
+<h4 id="languages"><span class="header-section-number">3.2.2.2</span> Languages</h4>
+<p>The language list shows all available language packs that dpScreenOCR can use to recognize text. You can choose more than one language, but be aware that this may slow down recognition and reduce its accuracy.</p>
+<p>If you want to install more language packs, read the “<a href="#installing-languages">Installing languages</a>” section.</p>
+<h3 id="hotkey"><span class="header-section-number">3.2.3</span> Hotkey</h3>
+<p>The hotkey is used to start and end the on-screen selection. The default is Control + Grave accent. To cancel the selection, press Escape.</p>
+<p>The hotkey is global: it works even if dpScreenOCR’s window is minimized. If pressing the hotkey has no effect, it probably means that another program is already using it. In this case, try to choose a different key combination.</p>
+<h2 id="actions-tab"><span class="header-section-number">3.3</span> Actions tab</h2>
+<p>The Actions tab allows you to choose what dpScreenOCR will do with the recognized text.</p>
+<h3 id="copy-text-to-clipboard"><span class="header-section-number">3.3.1</span> Copy text to clipboard</h3>
+<p>This action will copy the text to the clipboard.</p>
+<h3 id="add-text-to-history"><span class="header-section-number">3.3.2</span> Add text to history</h3>
+<p>This action will add the text to the history located in the <a href="#history-tab">History tab</a>. You can later save the history to a file in plain text, HTML, or JSON format.</p>
+<h3 id="run-executable"><span class="header-section-number">3.3.3</span> Run executable</h3>
+<p>This action will run an executable with the text as the first argument. The “Run executable” entry expects either an absolute path to the executable, or just its name in case it’s located in one of the paths of your <code>PATH</code> environment variable.</p>
+<p>The “Run executable” action is useful for those who have knowledge of a scripting language, such as Unix shell, Python, or Perl. Before using your script, make sure it starts with a proper <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> and you have execute permission (run <code>chmod u+x your_script...</code>).</p>
+<p>Here is an example Unix shell script that translates the recognized text to your native language using <a href="https://www.soimort.org/translate-shell/">Translate Shell</a>, appends both original and translation to the <code>translations.txt</code> file in your home directory, and displays the translation as a desktop notification.</p>
+<pre><code>#!/bin/sh
+
+TR=$(trans -b &quot;$1&quot;)
+
+printf &quot;&gt; Original\n\n%s\n&quot; &quot;$1&quot; &gt;&gt; ~/translations.txt
+printf &quot;&gt; Translated\n\n%s\n\n\n&quot; &quot;$TR&quot; &gt;&gt; ~/translations.txt
+
+notify-send &quot;Translation&quot; &quot;$TR&quot;</code></pre>
+<h2 id="history-tab"><span class="header-section-number">3.4</span> History tab</h2>
+<p>The History tab shows the history of recognized texts. A text is only added here if the corresponding action is enabled in the <a href="#actions-tab">Actions tab</a>. Every text in the list has a timestamp taken at the moment you finish the selection.</p>
+<p>You can save the history to a file in plain text, HTML, or JSON format.</p>
+<h1 id="tweaking"><span class="header-section-number">4</span> Tweaking</h1>
+<p>This section is intended for advanced users and developers. It describes how to change some settings that are not available in the dpScreenOCR’s interface.</p>
+<p>dpScreenOCR saves settings in the <code>~/.config/dpscreenocr/settings.cfg</code> file, which you can modify with any text editor. To reset an option to the default value, remove it from the file; to reset all options, clear the file or delete it. Be aware that dpScreenOCR rewrites settings on exit, so make sure you close the program before making changes.</p>
+<p>An option value can be one of the following types:</p>
+<ul>
+<li><p>String - an arbitrary sequence of characters, like a file path.</p>
+<p>If the string should have leading or trailing whitespace, enclose it in double quotes. Obviously, quoting is also necessary if the string is actually starts and ends with a double quote.</p>
+<p>Strings can contain the following escape sequences:</p>
+<ul>
+<li><code>\b</code> - backspace</li>
+<li><code>\f</code> - form feed</li>
+<li><code>\n</code> - line feed</li>
+<li><code>\r</code> - carriage return</li>
+<li><code>\t</code> - tabulation</li>
+<li><code>\\</code> - backslash</li>
+</ul>
+<p>Escaping tabulation is optional. Escaping the backslash is optional too, unless the backslash and the next character create one of the escape sequences.</p></li>
+<li><p>Boolean: <code>true</code> or <code>false</code>.</p></li>
+<li><p>Number, like <code>10</code> or <code>-5</code>.</p></li>
+</ul>
+<p>Here is the list of all options that can only be changed by editing the settings file:</p>
+<ul>
+<li><p><code>action_copy_to_clipboard_text_separator</code> (<code>\n\n</code> by default) specify the separator for multiple texts for “Copy text to clipboard” action. This option only has effect if queuing is enabled (see <code>ocr_allow_queuing</code>).</p>
+<p>Keep in mind that every text, if not empty, ends with a newline.</p></li>
+<li><p><code>action_run_executable_wait_to_complete</code> (<code>true</code> by default) whether to wait executable to complete.</p></li>
+<li><p><code>hotkey_cancel_selection</code> (<code>Escape</code> by default) - hotkey to cancel selection.</p></li>
+<li><p><code>ocr_allow_queuing</code> (<code>true</code> by default) allows to queue a new selection for recognition without waiting for the previous one to complete.</p>
+<p>If this option is enabled, “Copy text to clipboard” action may receive more than one text at a time, in which case texts will be joined together using <code>action_copy_to_clipboard_text_separator</code>.</p>
+<p>If this option is disabled, pressing the hotkey will have no effect until the recognition is done. This guarantees that the clipboard will receive exactly one text.</p></li>
+<li><p><code>ocr_dump_debug_image</code> (<code>false</code> by default) dump the image passed to Tesseract as <code>dpso_debug.pgm</code> to the current working directory.</p></li>
+<li><p><code>ui_native_file_dialogs</code> (<code>true</code> by default) use file dialogs native to your platform instead of the ones specific to the GUI framework.</p></li>
+</ul>
+<h1 id="troubleshooting"><span class="header-section-number">5</span> Troubleshooting</h1>
+<p>This section contains the list of common issues and solutions to them. If the solutions don’t help, or you have an issue that is not listed here, please report the problem on the <a href="https://github.com/danpla/dpscreenocr/issues">issue tracker</a>.</p>
+<ul>
+<li><p><strong>The recognized text contains garbage</strong></p>
+<ul>
+<li>Make sure that you use the minimal set of <a href="#languages">languages</a> needed to recognize the text. Don’t enable languages just in case: this will dramatically reduce the accuracy of recognition.</li>
+</ul></li>
+<li><p><strong>Pressing the <a href="#hotkey">hotkey</a> has no effect</strong></p>
+<ul>
+<li><p>This hotkey is probably used by another program. Try to choose another key combination.</p></li>
+<li><p>Are you using Wayland? It’s not yet supported. If possible, switch to X11 session.</p></li>
+</ul></li>
+<li><p><strong>“<a href="#run-executable">Run executable</a>” action has no effect</strong></p>
+<ul>
+<li><p>Make sure you have execute permission. Run <code>chmod u+x your_executable...</code>.</p></li>
+<li><p>If your executable is a script, make sure it starts with a proper <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a>.</p></li>
+<li><p>Make sure that the “Run executable” entry contains either an absolute path to the executable, or just the name of the executable that resides in one of the paths of the <code>PATH</code> environment variable.</p></li>
+</ul></li>
+<li><p><strong>Texts are not added to the history</strong></p>
+<ul>
+<li>Make sure that “<a href="#add-text-to-history">Add text to history</a>” is enabled in the <a href="#actions-tab">Actions tab</a>.</li>
+</ul></li>
+</ul>
+</body>
+</html>
