@@ -44,7 +44,7 @@ main `tesseract` package.
 
 There are also two special packs that provide extra features rather
 than languages: `osd` (automatic script and orientation detection) and
-`equ` (math and equation detection). dpScreenOCR don't use them.
+`equ` (math and equation detection). dpScreenOCR doesn't use them.
 
 
 # Usage #
