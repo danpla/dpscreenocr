@@ -25,3 +25,26 @@ if (DPSO_COMPILE_PO)
         DESTINATION "${CMAKE_INSTALL_LOCALEDIR}"
     )
 endif()
+
+# DOCDIR uses PROJECT_NAME, which is in title case.
+string(
+    REPLACE
+    "${PROJECT_NAME}" "${APP_FILE_NAME}"
+    CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DOCDIR}
+)
+if (DPSO_GEN_HTML_MANUAL)
+    include(gen_manual)
+    gen_html_manual(html_manual "${CMAKE_BINARY_DIR}/manual")
+
+    install(
+        # Note the trailing slash.
+        DIRECTORY "${CMAKE_BINARY_DIR}/manual/"
+        DESTINATION "${CMAKE_INSTALL_DOCDIR}"
+    )
+else()
+    install(
+        FILES "${CMAKE_SOURCE_DIR}/doc/manual.md"
+        DESTINATION "${CMAKE_INSTALL_DOCDIR}"
+        RENAME "manual.txt"
+    )
+endif()

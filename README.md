@@ -7,6 +7,7 @@ dpScreenOCR is a program to recognize text on screen.
 ## Docs
 
 * [doc/building-unix.txt](doc/building-unix.txt) - building instructions
+* [doc/manual.md](doc/manual.md) - user manual
 * [doc/code-notes.txt](doc/code-notes.txt) - some notes about the code
 
 

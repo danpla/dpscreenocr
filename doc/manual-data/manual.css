@@ -1,0 +1,24 @@
+body {
+    max-width: 38em;
+    margin: 0 auto;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13pt;
+    line-height: 1.5;
+}
+
+#TOC ul {
+  list-style-type: none;
+}
+
+code {
+    font-size: 0.8em;
+    background: #dfdfdf;
+    padding: 0.1em 0.4em;
+    white-space: pre;
+}
+
+pre code {
+    display: block;
+    white-space: pre;
+    padding: 1em;
+}
