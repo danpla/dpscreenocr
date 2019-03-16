@@ -18,10 +18,18 @@ libraries:
         assumed to be "/usr/include" and the library name is
         "libtesseract".
     * Qt 5 X11 extras - to fix a bug in Qt 5 < 5.3.2 (see below)
-    * libintl. On some systems it's a part of GNU C library and
-        don't need to be installed separately.
+    * libintl - for translated user interface. On some systems libintl
+        is a part of GNU C library and don't need to be installed
+        separately.
     * gettext utilities - msgfmt is needed to compile gettext message
         catalogs.
+    * pandoc - to generate HTML manual.
+
+To install dependencies on Debian, Ubuntu, and derivatives, run:
+
+    sudo apt-get install cmake make pkg-config g++ qtbase5-dev \
+        libqt5x11extras5-dev libtesseract-dev libx11-dev libxext-dev \
+        gettext pandoc
 
 
 Building
@@ -43,8 +51,7 @@ options, run:
 
     cmake -LH ..
 
-Most options are pretty self-descriptive, but some of them need a more
-detailed description:
+Let's look at some of the options in more detail:
 
   * DPSO_ENABLE_NLS (ON by default) enables gettext support (libintl).
       On systems where libintl is not a part of GNU libc, it have to
@@ -59,11 +66,6 @@ detailed description:
 
       The MO files will be written to the "locale" directory, which
       will have structure expected by libintl.
-
-      If dpScreenOCR was built with DPSO_QT_LOCAL_DATA option enabled
-      and you want to move the executable to a different location,
-      move the "locale" directory as well, or the interface will only
-      be available in English.
 
   * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like
       localization files for gettext) from the executable's directory.
@@ -102,34 +104,35 @@ detailed description:
 
 In summary:
 
-  * If you don't need localization (that is, you only need English),
-      disable both DPSO_ENABLE_NLS and DPSO_COMPILE_PO.
+  * If you don't need the translated interface (that is, you only need
+      English), disable both DPSO_ENABLE_NLS and DPSO_COMPILE_PO.
 
   * Unless you want to use dpScreenOCR without installation, disable
-      both DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS.
+      both DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS. Otherwise, see
+      "Using uninstalled" section below for more information.
 
 
 Installing
 ==========
 
-Installing dpScreenOCR is completely optional. You can use the program
-by simply running the executable. However, if you want to move it from
-the "build" directory to a different location, don't forget to move
-the "locale" folder as well, or the interface will only be available
-in English (the "locale" directory is only created if the program was
-built with DPSO_COMPILE_PO option enabled).
+You can install dpScreenOCR with "make install" or from a DEB package.
+The latter is preferable: installing the package will automatically
+resolve all dependencies, and you don't need to keep the "build"
+directory to remove the program later.
 
-There are two ways to install dpScreenOCR: running the standard
-"make install", or creating a DEB package.
+It's also possible to use dpScreenOCR without installation.
 
 
-Make
-----
+Using uninstalled
+-----------------
 
-You can install and remove dpScreenOCR using the standard Make
-commands "make install" and "make uninstall". To choose the
-installation prefix, set the CMAKE_INSTALL_PREFIX at the build stage.
-The default prefix is /usr/local.
+When built with DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS options
+enabled, dpScreenOCR doesn't need installation: you can use the
+program by simply running the executable. However, if you want to move
+it from the "build" directory to a different location, don't forget to
+move the "locale" folder as well, or the interface will only be
+available in English. The "locale" directory is only created if the
+program was built with DPSO_COMPILE_PO option enabled.
 
 
 DEB package
@@ -140,6 +143,21 @@ package with a single command:
 
     cpack -G DEB
 
-Using a DEB package is preferable to "make install": installing the
-package will automatically resolve all dependencies, and you don't
-need to keep the "build" directory to remove the program later.
+To install the package, double-click it in your file manager or use
+gdebi:
+
+    sudo apt-get install gdebi
+    sudo gdebi dpscreenocr*.deb
+
+To remove the package:
+
+    sudo apt-get purge dpscreenocr
+
+
+Make
+----
+
+You can install and remove dpScreenOCR using the standard Make
+commands "make install" and "make uninstall". To choose the
+installation prefix, set the CMAKE_INSTALL_PREFIX at the build stage.
+The default prefix is "/usr/local".
