@@ -2,7 +2,7 @@
 [dpScreenOCR website]: https://danpla.github.io/dpscreenocr
 
 
-# About dpScreenOCR #
+# About dpScreenOCR
 
 dpScreenOCR is a program to recognize text on screen. Powered by
 [Tesseract][], it supports more than 100 languages and can split
@@ -13,10 +13,10 @@ with X11.
 [Tesseract]: https://en.wikipedia.org/wiki/Tesseract_(software)
 
 
-# Installation #
+# Installation
 
 
-## Installing dpScreenOCR ##
+## Installing dpScreenOCR
 
 The [dpScreenOCR website][] provides several download options,
 including repositories and packages for Debian, Ubuntu, and derivative
@@ -27,7 +27,7 @@ source code tarball, unpack it anywhere, and follow the instructions
 in the `doc/building-unix.txt` file.
 
 
-## Installing languages ##
+## Installing languages
 
 Use your package manager to install language packs for Tesseract. The
 package names may vary slightly across systems, but they usually start
@@ -47,10 +47,10 @@ than languages: `osd` (automatic script and orientation detection) and
 `equ` (math and equation detection). dpScreenOCR doesn't use them.
 
 
-# Usage #
+# Usage
 
 
-## Overview ##
+## Overview
 
 dpScreenOCR is simple to use:
 
@@ -65,12 +65,12 @@ selected area and process it according to the actions from the
 [Actions tab].
 
 
-## Main tab ##
+## Main tab
 
 ![](manual-data/main-tab.png)
 
 
-### Status ###
+### Status
 
 The status shows the state of dpScreenOCR:
 
@@ -96,12 +96,12 @@ The yellow and red status messages are also displayed in the title of
 the dpScreenOCR's window.
 
 
-### Character recognition ###
+### Character recognition
 
 Options in this section control how dpScreenOCR will recognize text.
 
 
-#### Split text blocks ####
+#### Split text blocks
 
 If this option is enabled, dpScreenOCR will try to detect and split
 independent text blocks, e.g. columns. This behavior is best described
@@ -110,7 +110,7 @@ by the following picture:
 ![](manual-data/split.png)
 
 
-#### Languages #####
+#### Languages
 
 The language list shows all available language packs that dpScreenOCR
 can use to recognize text. You can choose more than one language, but
@@ -120,7 +120,7 @@ If you want to install more language packs, read the
 "[Installing languages]" section.
 
 
-### Hotkey ###
+### Hotkey
 
 The hotkey is used to start and end the on-screen selection. The
 default is Control + Grave accent. To cancel the selection, press
@@ -132,25 +132,25 @@ that another program is already using it. In this case, try to choose
 a different key combination.
 
 
-## Actions tab ##
+## Actions tab
 
 The Actions tab allows you to choose what dpScreenOCR will do with the
 recognized text.
 
 
-### Copy text to clipboard ###
+### Copy text to clipboard
 
 This action will copy the text to the clipboard.
 
 
-### Add text to history ###
+### Add text to history
 
 This action will add the text to the history located in the
 [History tab]. You can later save the history to a file in plain text,
 HTML, or JSON format.
 
 
-### Run executable ###
+### Run executable
 
 This action will run an executable with the text as the first
 argument. The "Run executable" entry expects either an absolute path
@@ -180,7 +180,7 @@ directory, and displays the translation as a desktop notification.
 [Translate Shell]: https://www.soimort.org/translate-shell/
 
 
-## History tab ##
+## History tab
 
 The History tab shows the history of recognized texts. A text is only
 added here if the corresponding action is enabled in the
@@ -191,7 +191,7 @@ You can save the history to a file in plain text, HTML, or JSON
 format.
 
 
-# Tweaking #
+# Tweaking
 
 This section is intended for advanced users and developers. It
 describes how to change some settings that are not available in the
@@ -265,7 +265,7 @@ the settings file:
     framework.
 
 
-# Troubleshooting #
+# Troubleshooting
 
 This section contains the list of common issues and solutions to them.
 If the solutions don't help, or you have an issue that is not listed
