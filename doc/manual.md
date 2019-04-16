@@ -210,7 +210,7 @@ An option value can be one of the following types:
 
     If the string should have leading or trailing whitespace, enclose
     it in double quotes. Obviously, quoting is also necessary if the
-    string is actually starts and ends with a double quote.
+    string actually starts and ends with a double quote.
 
     Strings can contain the following escape sequences:
 
