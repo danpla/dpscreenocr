@@ -13,7 +13,7 @@ namespace backend {
 
 class X11Selection : public Selection, public X11BackendComponent {
 public:
-    X11Selection(Display* display);
+    explicit X11Selection(Display* display);
     ~X11Selection();
 
     bool getIsEnabled() const override;

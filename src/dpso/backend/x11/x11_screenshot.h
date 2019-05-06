@@ -23,7 +23,7 @@ public:
 private:
     XImage* image;
 
-    X11Screenshot(XImage* image);
+    explicit X11Screenshot(XImage* image);
 };
 
 
