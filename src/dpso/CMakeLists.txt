@@ -18,6 +18,12 @@ if (UNIX AND NOT APPLE)
         backend/x11/x11_screenshot.cpp
         backend/x11/x11_selection.cpp
     )
+elseif(WIN32)
+    set(BACKEND_DEFINITION "DPSO_BACKEND_WINDOWS")
+    list(
+        APPEND BACKEND_SRCS
+        backend/windows/windows_backend.cpp
+    )
 else()
     message(
         FATAL_ERROR
