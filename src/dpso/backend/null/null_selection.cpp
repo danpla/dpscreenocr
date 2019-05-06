@@ -1,6 +1,8 @@
 
 #include "backend/null/null_selection.h"
 
+#include <cstdio>
+
 
 namespace dpso {
 namespace backend {
