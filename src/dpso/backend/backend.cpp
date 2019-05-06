@@ -1,5 +1,10 @@
 
-#include "backend/x11/x11_backend.h"
+#ifdef DPSO_BACKEND_UNIX_NONAPPLE
+    #include "backend/x11/x11_backend.h"
+    using BackendImpl = dpso::backend::X11Backend;
+#else
+    #error "Please choose a backend"
+#endif
 
 
 namespace dpso {
@@ -11,7 +16,7 @@ static Backend* backend;
 
 void init()
 {
-    backend = new X11Backend();
+    backend = new BackendImpl();
 }
 
 

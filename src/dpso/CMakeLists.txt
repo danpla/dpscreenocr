@@ -8,14 +8,27 @@ option(
     NO
 )
 
+set(BACKEND_SRCS)
+if (UNIX AND NOT APPLE)
+    set(BACKEND_DEFINITION "DPSO_BACKEND_UNIX_NONAPPLE")
+    list(
+        APPEND BACKEND_SRCS
+        backend/x11/x11_backend.cpp
+        backend/x11/x11_key_manager.cpp
+        backend/x11/x11_screenshot.cpp
+        backend/x11/x11_selection.cpp
+    )
+else()
+    message(
+        FATAL_ERROR
+        "The current system (${CMAKE_SYSTEM_NAME}) is not supported"
+    )
+endif()
+
 add_library(
     dpso
 
     backend/backend.cpp
-    backend/x11/x11_backend.cpp
-    backend/x11/x11_key_manager.cpp
-    backend/x11/x11_screenshot.cpp
-    backend/x11/x11_selection.cpp
     delay.cpp
     dpso.cpp
     geometry.cpp
@@ -26,11 +39,14 @@ add_library(
     progress_tracker.cpp
     selection.cpp
     str.cpp
+
+    ${BACKEND_SRCS}
 )
 
 target_compile_definitions(
     dpso
     PRIVATE
+    ${BACKEND_DEFINITION}
     DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
 )
 
