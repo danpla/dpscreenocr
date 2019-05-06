@@ -80,22 +80,24 @@ if(CMAKE_USE_PTHREADS_INIT)
 endif()
 target_link_libraries(dpso ${CMAKE_THREAD_LIBS_INIT})
 
-find_package(X11 REQUIRED)
-target_include_directories(
-    dpso
-    PRIVATE
-    ${X11_INCLUDE_DIR}
-)
-target_link_libraries(
-    dpso
-    ${X11_LIBRARIES}
-)
+if (UNIX AND NOT APPLE)
+    find_package(X11 REQUIRED)
+    target_include_directories(
+        dpso
+        PRIVATE
+        ${X11_INCLUDE_DIR}
+    )
+    target_link_libraries(
+        dpso
+        ${X11_LIBRARIES}
+    )
 
-if (NOT X11_Xshape_FOUND)
-    message(SEND_ERROR "X11 Shape Extension is not found")
+    if (NOT X11_Xshape_FOUND)
+        message(SEND_ERROR "X11 Shape Extension is not found")
+    endif()
+    target_include_directories(dpso PRIVATE ${X11_Xshape_INCLUDE_PATH})
+    target_link_libraries(dpso ${X11_Xext_LIB})
 endif()
-target_include_directories(dpso PRIVATE ${X11_Xshape_INCLUDE_PATH})
-target_link_libraries(dpso ${X11_Xext_LIB})
 
 find_package(PkgConfig)
 if (PKG_CONFIG_FOUND)
