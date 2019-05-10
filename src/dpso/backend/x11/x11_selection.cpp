@@ -71,7 +71,8 @@ X11Selection::X11Selection(Display* display)
 
     window = XCreateWindow(
         display, XDefaultRootWindow(display),
-        0, 0, borderWidth * 2, borderWidth * 2,
+        geom.x - borderWidth, geom.y - borderWidth,
+        geom.w + borderWidth * 2, geom.h + borderWidth * 2,
         0,
         CopyFromParent,
         CopyFromParent,
@@ -93,6 +94,8 @@ X11Selection::X11Selection(Display* display)
         GCForeground | GCBackground | GCLineWidth | GCLineStyle
             | GCDashList,
         &gcval);
+
+    reshapeWindow();
 }
 
 
@@ -117,7 +120,7 @@ void X11Selection::setIsEnabled(bool newIsEnabled)
     isEnabled = newIsEnabled;
     if (isEnabled) {
         origin = getMousePosition(display);
-        setGeometry({origin.x, origin.y, 0, 0}, true);
+        setGeometry({origin.x, origin.y, 0, 0});
         XMapWindow(display, window);
     } else
         XUnmapWindow(display, window);
@@ -132,30 +135,30 @@ Rect X11Selection::getGeometry() const
 }
 
 
-void X11Selection::setGeometry(const Rect& newGeom, bool force)
+void X11Selection::setGeometry(const Rect& newGeom)
 {
     XWindowChanges windowChanges;
     unsigned valueMask = 0;
 
-    if (newGeom.x != geom.x || force) {
+    if (newGeom.x != geom.x) {
         windowChanges.x = newGeom.x - borderWidth;
         valueMask |= CWX;
         geom.x = newGeom.x;
     }
 
-    if (newGeom.y != geom.y || force) {
+    if (newGeom.y != geom.y) {
         windowChanges.y = newGeom.y - borderWidth;
         valueMask |= CWY;
         geom.y = newGeom.y;
     }
 
-    if (newGeom.w != geom.w || force) {
+    if (newGeom.w != geom.w) {
         windowChanges.width = newGeom.w + borderWidth * 2;
         valueMask |= CWWidth;
         geom.w = newGeom.w;
     }
 
-    if (newGeom.h != geom.h || force) {
+    if (newGeom.h != geom.h) {
         windowChanges.height = newGeom.h + borderWidth * 2;
         valueMask |= CWHeight;
         geom.h = newGeom.h;
@@ -175,9 +178,7 @@ void X11Selection::updateStart()
     if (!isEnabled)
         return;
 
-    setGeometry(
-        getCurrentSelectionRect(display, origin),
-        false);
+    setGeometry(getCurrentSelectionRect(display, origin));
 }
 
 

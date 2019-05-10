@@ -32,7 +32,7 @@ private:
     Point origin;
     Rect geom;
 
-    void setGeometry(const Rect& newGeom, bool force);
+    void setGeometry(const Rect& newGeom);
     void reshapeWindow();
     void drawSelection();
 };
