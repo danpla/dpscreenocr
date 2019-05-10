@@ -17,7 +17,7 @@ public:
     ~X11Selection();
 
     bool getIsEnabled() const override;
-    void setIsEnabled(bool newEnabled) override;
+    void setIsEnabled(bool newIsEnabled) override;
 
     Rect getGeometry() const override;
 
