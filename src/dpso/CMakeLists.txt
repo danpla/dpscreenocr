@@ -23,6 +23,7 @@ elseif(WIN32)
     list(
         APPEND BACKEND_SRCS
         backend/windows/windows_backend.cpp
+        backend/windows/windows_key_manager.cpp
     )
 else()
     message(
