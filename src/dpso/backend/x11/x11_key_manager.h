@@ -7,7 +7,6 @@
 
 #include "backend/backend.h"
 #include "backend/x11/x11_backend_component.h"
-#include "types.h"
 
 
 namespace dpso {
