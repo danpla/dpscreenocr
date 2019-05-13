@@ -166,4 +166,3 @@ struct DpsoHotkey {
  * dpsoUnbindAction() instead.
  */
 typedef int DpsoHotkeyAction;
-

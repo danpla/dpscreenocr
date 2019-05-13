@@ -74,4 +74,3 @@ void dpsoUpdate(void)
 {
     dpso::backend::getBackend().update();
 }
-
