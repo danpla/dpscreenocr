@@ -59,6 +59,11 @@ public:
 };
 
 
+/**
+ * Selection.
+ *
+ * See selection.h for more information.
+ */
 class Selection {
 public:
     Selection() = default;
