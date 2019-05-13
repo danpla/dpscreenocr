@@ -52,7 +52,7 @@ static void changeBindingGrab(
 X11KeyManager::X11KeyManager(Display* display)
     : display {display}
     , x11bindings {}
-    , hotkeysEnabled {true}
+    , hotkeysEnabled {}
     , hotkeyAction {-1}
 {
 

@@ -20,6 +20,8 @@ extern "C" {
  * Enabling and disabling hotkeys only affects
  * dpsoGetLastHotkeyAction(), which will always return -1 if hotkeys
  * are disabled.
+ *
+ * Hotkeys are disabled by default.
  */
 int dpsoGetHotkeysEnabled(void);
 

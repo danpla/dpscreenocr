@@ -136,7 +136,7 @@ static void changeHotkeyState(
 
 WindowsKeyManager::WindowsKeyManager()
     : bindings {}
-    , hotkeysEnabled {true}
+    , hotkeysEnabled {}
     , hotkeyAction {-1}
 {
 
