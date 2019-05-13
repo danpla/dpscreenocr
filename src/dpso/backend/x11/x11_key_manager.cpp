@@ -59,6 +59,13 @@ X11KeyManager::X11KeyManager(Display* display)
 }
 
 
+X11KeyManager::~X11KeyManager()
+{
+    // Make sure we ungrab everything.
+    setHotkeysEnabled(false);
+}
+
+
 bool X11KeyManager::getHotkeysEnabled() const
 {
     return hotkeysEnabled;

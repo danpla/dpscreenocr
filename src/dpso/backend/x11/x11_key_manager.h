@@ -22,6 +22,7 @@ struct X11HotkeyBinding {
 class X11KeyManager : public KeyManager, public X11BackendComponent {
 public:
     explicit X11KeyManager(Display* display);
+    ~X11KeyManager();
 
     bool getHotkeysEnabled() const override;
     void setHotkeysEnabled(bool newHotkeysEnabled) override;
