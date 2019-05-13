@@ -21,6 +21,19 @@ struct HotkeyBinding {
 };
 
 
+/**
+ * Key manager.
+ *
+ * See hotkeys.h for more information.
+ *
+ * Preconditions:
+ *
+ *   * bindHotkey():
+ *       * hotkey.key >= 0 and < dpsoNumKeys
+ *       * action >= 0
+ *   * getBinding(), removeBinding():
+ *       * idx >= 0 and < getNumBindings()
+ */
 class KeyManager {
 public:
     KeyManager() = default;

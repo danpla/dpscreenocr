@@ -180,9 +180,6 @@ DpsoHotkeyAction WindowsKeyManager::getLastHotkeyAction() const
 bool WindowsKeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
-    if (action < 0)
-        return false;
-
     if (auto* existingBinding = findBindingByHotkey(hotkey)) {
         existingBinding->action = action;
         return true;
@@ -210,18 +207,12 @@ int WindowsKeyManager::getNumBindings() const
 void WindowsKeyManager::getBinding(
     int idx, HotkeyBinding& hotkeyBinding) const
 {
-    assert(idx >= 0);
-    assert(idx < static_cast<int>(bindings.size()));
-
     hotkeyBinding = bindings[idx];
 }
 
 
 void WindowsKeyManager::removeBinding(int idx)
 {
-    assert(idx >= 0);
-    assert(idx < static_cast<int>(bindings.size()));
-
     if (hotkeysEnabled)
         changeHotkeyState(bindings[idx].hotkey, false);
 

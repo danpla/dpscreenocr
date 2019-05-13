@@ -36,7 +36,8 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void)
 int dpsoBindHotkey(
     const struct DpsoHotkey* hotkey, DpsoHotkeyAction action)
 {
-    if (!hotkey)
+    if (!hotkey || hotkey->key < 0 || hotkey->key >= dpsoNumKeys
+            || action < 0)
         return false;
 
     return getKeyManager().bindHotkey(*hotkey, action);
@@ -213,6 +214,3 @@ void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey)
         break;
     }
 }
-
-
-

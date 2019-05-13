@@ -1,8 +1,6 @@
 
 #include "backend/x11/x11_key_manager.h"
 
-#include <cassert>
-
 #include <X11/keysym.h>
 
 
@@ -130,9 +128,6 @@ DpsoHotkeyAction X11KeyManager::getLastHotkeyAction() const
 bool X11KeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
-    if (action < 0)
-        return false;
-
     for (auto& x11binding : x11bindings)
         if (x11binding.binding.hotkey.key == hotkey.key
                 && x11binding.binding.hotkey.mods == hotkey.mods) {
@@ -162,18 +157,12 @@ int X11KeyManager::getNumBindings() const
 void X11KeyManager::getBinding(
     int idx, HotkeyBinding& hotkeyBinding) const
 {
-    assert(idx >= 0);
-    assert(idx < static_cast<int>(x11bindings.size()));
-
     hotkeyBinding = x11bindings[idx].binding;
 }
 
 
 void X11KeyManager::removeBinding(int idx)
 {
-    assert(idx >= 0);
-    assert(idx < static_cast<int>(x11bindings.size()));
-
     if (hotkeysEnabled)
         changeBindingGrab(display, x11bindings[idx], false);
 
