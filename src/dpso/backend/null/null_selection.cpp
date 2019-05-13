@@ -8,8 +8,7 @@ namespace dpso {
 namespace backend {
 
 
-#define MSG(FMT, ...) \
-    std::printf("NullSelection: " FMT, __VA_ARGS__)
+#define MSG(...) std::printf("NullSelection: " __VA_ARGS__)
 
 
 NullSelection::NullSelection()

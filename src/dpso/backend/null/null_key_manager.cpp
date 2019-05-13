@@ -11,8 +11,7 @@ namespace dpso {
 namespace backend {
 
 
-#define MSG(FMT, ...) \
-    std::printf("NullKeyManager: " FMT, __VA_ARGS__)
+#define MSG(...) std::printf("NullKeyManager: " __VA_ARGS__)
 
 
 NullKeyManager::NullKeyManager()

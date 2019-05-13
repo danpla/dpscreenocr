@@ -8,8 +8,7 @@ namespace dpso {
 namespace backend {
 
 
-#define MSG(FMT, ...) \
-    std::printf("NullScreenshot: " FMT, __VA_ARGS__)
+#define MSG(...) std::printf("NullScreenshot: " __VA_ARGS__)
 
 
 NullScreenshot::NullScreenshot(const Rect& rect)
