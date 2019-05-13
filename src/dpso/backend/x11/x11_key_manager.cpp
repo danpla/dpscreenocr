@@ -9,47 +9,8 @@ namespace backend {
 
 
 static KeyCode keyToKeyCode(Display* display, DpsoKey key);
-
-
-// Mod1Mask - Alt
-// Mod2Mask - Num Lock
-// Mod3Mask - Scroll Lock
-// Mod4Mask - Super
-// Mod5Mask - ???
-
-
-static int x11ModsToDpsoMods(unsigned x11Mods)
-{
-    int dpsoMods = dpsoKeyModNone;
-
-    if (x11Mods & ShiftMask)
-        dpsoMods |= dpsoKeyModShift;
-    if (x11Mods & ControlMask)
-        dpsoMods |= dpsoKeyModCtrl;
-    if (x11Mods & Mod1Mask)
-        dpsoMods |= dpsoKeyModAlt;
-    if (x11Mods & Mod4Mask)
-        dpsoMods |= dpsoKeyModWin;
-
-    return dpsoMods;
-}
-
-
-static unsigned dpsoModsToX11Mods(int dpsoMods)
-{
-    unsigned x11Mods = 0;
-
-    if (dpsoMods & dpsoKeyModShift)
-        x11Mods |= ShiftMask;
-    if (dpsoMods & dpsoKeyModCtrl)
-        x11Mods |= ControlMask;
-    if (dpsoMods & dpsoKeyModAlt)
-        x11Mods |= Mod1Mask;
-    if (dpsoMods & dpsoKeyModWin)
-        x11Mods |= Mod4Mask;
-
-    return x11Mods;
-}
+static int x11ModsToDpsoMods(unsigned x11Mods);
+static unsigned dpsoModsToX11Mods(int dpsoMods);
 
 
 static void changeBindingGrab(
@@ -306,6 +267,47 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
 
     const auto keySym = keyToKeySym[key];
     return XKeysymToKeycode(display, keySym);
+}
+
+
+// Mod1Mask - Alt
+// Mod2Mask - Num Lock
+// Mod3Mask - Scroll Lock
+// Mod4Mask - Super
+// Mod5Mask - ???
+
+
+static int x11ModsToDpsoMods(unsigned x11Mods)
+{
+    int dpsoMods = dpsoKeyModNone;
+
+    if (x11Mods & ShiftMask)
+        dpsoMods |= dpsoKeyModShift;
+    if (x11Mods & ControlMask)
+        dpsoMods |= dpsoKeyModCtrl;
+    if (x11Mods & Mod1Mask)
+        dpsoMods |= dpsoKeyModAlt;
+    if (x11Mods & Mod4Mask)
+        dpsoMods |= dpsoKeyModWin;
+
+    return dpsoMods;
+}
+
+
+static unsigned dpsoModsToX11Mods(int dpsoMods)
+{
+    unsigned x11Mods = 0;
+
+    if (dpsoMods & dpsoKeyModShift)
+        x11Mods |= ShiftMask;
+    if (dpsoMods & dpsoKeyModCtrl)
+        x11Mods |= ControlMask;
+    if (dpsoMods & dpsoKeyModAlt)
+        x11Mods |= Mod1Mask;
+    if (dpsoMods & dpsoKeyModWin)
+        x11Mods |= Mod4Mask;
+
+    return x11Mods;
 }
 
 
