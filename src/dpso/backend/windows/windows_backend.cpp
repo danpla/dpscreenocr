@@ -2,7 +2,8 @@
 #include "backend/windows/windows_backend.h"
 
 #include <windows.h>
-#include "backend/null/null_screenshot.h"
+
+#include "backend/windows/windows_screenshot.h"
 
 
 namespace dpso {

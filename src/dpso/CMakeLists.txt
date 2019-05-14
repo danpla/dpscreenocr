@@ -25,6 +25,7 @@ elseif(WIN32)
         backend/windows/utils.cpp
         backend/windows/windows_backend.cpp
         backend/windows/windows_key_manager.cpp
+        backend/windows/windows_screenshot.cpp
         backend/windows/windows_selection.cpp
     )
 else()
