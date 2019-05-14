@@ -36,8 +36,6 @@ private:
         HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
     LRESULT processMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 
-    void throwLastError(const char* description);
-
     bool createPens();
     void setGeometry(const Rect& newGeom);
     void draw(HDC dc);

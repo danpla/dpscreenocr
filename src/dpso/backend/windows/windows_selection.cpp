@@ -83,6 +83,13 @@ static Point getMousePosition()
 }
 
 
+static void throwLastError(const char* description)
+{
+    throw BackendError(
+        std::string(description) + ": " + getLastErrorMessage());
+}
+
+
 const auto* windowClassName = "SelectionWindow";
 
 
@@ -157,13 +164,6 @@ WindowsSelection::~WindowsSelection()
         DeleteObject(pen);
 
     DestroyWindow(window);
-}
-
-
-void WindowsSelection::throwLastError(const char* description)
-{
-    throw BackendError(
-        std::string(description) + ": " + getLastErrorMessage());
 }
 
 
