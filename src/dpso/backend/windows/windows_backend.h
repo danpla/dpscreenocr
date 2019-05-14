@@ -5,7 +5,7 @@
 
 #include "backend/backend.h"
 #include "backend/windows/windows_key_manager.h"
-#include "backend/null/null_selection.h"
+#include "backend/windows/windows_selection.h"
 
 
 namespace dpso {
@@ -23,7 +23,7 @@ public:
     void update() override;
 private:
     std::unique_ptr<WindowsKeyManager> keyManager;
-    std::unique_ptr<NullSelection> selection;
+    std::unique_ptr<WindowsSelection> selection;
 };
 
 

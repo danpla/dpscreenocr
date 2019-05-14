@@ -22,8 +22,10 @@ elseif(WIN32)
     set(BACKEND_DEFINITION "DPSO_BACKEND_WINDOWS")
     list(
         APPEND BACKEND_SRCS
+        backend/windows/utils.cpp
         backend/windows/windows_backend.cpp
         backend/windows/windows_key_manager.cpp
+        backend/windows/windows_selection.cpp
     )
 else()
     message(

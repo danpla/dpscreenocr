@@ -12,8 +12,9 @@ namespace backend {
 WindowsBackend::WindowsBackend()
 {
     keyManager.reset(new WindowsKeyManager());
-    selection.reset(new NullSelection());
+    selection.reset(new WindowsSelection());
 }
+
 
 KeyManager& WindowsBackend::getKeyManager()
 {
@@ -29,13 +30,16 @@ Selection& WindowsBackend::getSelection()
 
 Screenshot* WindowsBackend::takeScreenshot(const Rect& rect)
 {
-    return new NullScreenshot(rect);
+    return WindowsScreenshot::take(rect);
 }
 
 
 void WindowsBackend::update()
 {
     keyManager->clearLastHotkeyAction();
+    // Update the selection before handling events so that we
+    // resize and repaint it on this update() rather than on the next.
+    selection->update();
 
     MSG msg;
     while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
