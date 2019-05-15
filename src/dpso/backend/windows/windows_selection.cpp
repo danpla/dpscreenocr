@@ -1,8 +1,6 @@
 
 #include "backend/windows/windows_selection.h"
 
-#include "backend/windows/utils.h"
-
 
 // We use window regions (SetWindowRgn()) for selection.
 //
@@ -54,14 +52,13 @@ const int borderWidth96Dpi = 4;
 // and newer.
 static int getBorderWidth()
 {
-    auto dc = GetDC(nullptr);
+    auto dc = getDc(nullptr);
     if (!dc)
         return borderWidth96Dpi;
 
     // LOGPIXELSX and LOGPIXELSY are identical (as well as values
     // returned by GetDpiForMonitor()).
-    const auto dpi = GetDeviceCaps(dc, LOGPIXELSX);
-    ReleaseDC(nullptr, dc);
+    const auto dpi = GetDeviceCaps(dc.get(), LOGPIXELSX);
 
     const auto scale = dpi / 96.0f;
 
@@ -127,7 +124,7 @@ WindowsSelection::WindowsSelection()
     , pens {}
 {
     registerWindowClass(WindowsSelection::wndProc);
-    window = CreateWindowExA(
+    window.reset(CreateWindowExA(
         WS_EX_TOPMOST
             | WS_EX_TOOLWINDOW, // Hide from taskbar.
         windowClassName,
@@ -139,35 +136,21 @@ WindowsSelection::WindowsSelection()
         nullptr,
         nullptr,
         GetModuleHandle(nullptr),
-        nullptr);
+        nullptr));
 
     if (!window)
         throwLastError("Can't create selection window");
 
-    if (!SetPropA(window, "this", this)) {
-        DestroyWindow(window);
+    if (!SetPropA(window.get(), "this", this))
         throwLastError("Can't set window property");
-    }
 
     updateWindowRegion();
 
-    if (!createPens()) {
-        DestroyWindow(window);
-        throwLastError("Can't create pens");
-    }
+    createPens();
 }
 
 
-WindowsSelection::~WindowsSelection()
-{
-    for (auto pen : pens)
-        DeleteObject(pen);
-
-    DestroyWindow(window);
-}
-
-
-bool WindowsSelection::createPens()
+void WindowsSelection::createPens()
 {
     const auto commonStyle = (
         PS_GEOMETRIC | PS_ENDCAP_FLAT | PS_JOIN_MITER);
@@ -175,10 +158,10 @@ bool WindowsSelection::createPens()
     // White background.
     LOGBRUSH lb {BS_SOLID, RGB(255, 255, 255), 0};
 
-    pens[0] = ExtCreatePen(
-        commonStyle | PS_SOLID, borderWidth, &lb, 0, nullptr);
+    pens[0].reset(ExtCreatePen(
+        commonStyle | PS_SOLID, borderWidth, &lb, 0, nullptr));
     if (!pens[0])
-        return false;
+        throwLastError("Can't create background pen");
 
     // Black dashes.
     lb.lbColor = RGB(0, 0, 0);
@@ -190,15 +173,11 @@ bool WindowsSelection::createPens()
         static_cast<DWORD>(borderWidth * 3)
     };
 
-    pens[1] = ExtCreatePen(
+    pens[1].reset(ExtCreatePen(
         commonStyle | PS_USERSTYLE, borderWidth, &lb,
-        sizeof(dashes) / sizeof(*dashes), dashes);
-    if (!pens[1]) {
-        DeleteObject(pens[0]);
-        return false;
-    }
-
-    return true;
+        sizeof(dashes) / sizeof(*dashes), dashes));
+    if (!pens[1])
+        throwLastError("Can't create dash pen");
 }
 
 
@@ -220,7 +199,7 @@ void WindowsSelection::setIsEnabled(bool newIsEnabled)
         setGeometry({origin.x, origin.y, 0, 0});
     }
 
-    ShowWindow(window, isEnabled ? SW_SHOWNA : SW_HIDE);
+    ShowWindow(window.get(), isEnabled ? SW_SHOWNA : SW_HIDE);
 }
 
 
@@ -266,12 +245,12 @@ LRESULT WindowsSelection::processMessage(
         return 1;
     } else if (msg == WM_PAINT) {
         static PAINTSTRUCT ps;
-        auto dc = BeginPaint(window, &ps);
+        auto dc = BeginPaint(window.get(), &ps);
         draw(dc);
-        EndPaint(window, &ps);
+        EndPaint(window.get(), &ps);
         return 0;
     } else
-        return DefWindowProc(window, msg, wParam, lParam);
+        return DefWindowProc(window.get(), msg, wParam, lParam);
 }
 
 
@@ -291,7 +270,7 @@ void WindowsSelection::setGeometry(const Rect& newGeom)
     geom = newGeom;
 
     SetWindowPos(
-        window, 0,
+        window.get(), 0,
         geom.x - borderWidth, geom.y - borderWidth,
         geom.w + borderWidth * 2, geom.h + borderWidth * 2,
         flags);
@@ -313,39 +292,32 @@ void WindowsSelection::draw(HDC dc)
     const auto rectRight = rectLeft + geom.w + borderWidth + 1;
     const auto rectBottom = rectTop + geom.h + borderWidth + 1;
 
-    auto oldBrush = SelectObject(dc, GetStockObject(NULL_BRUSH));
-
-    for (auto pen : pens) {
-        auto oldPen = SelectObject(dc, pen);
+    const ObjectSelector brushSelector(
+        dc, GetStockObject(NULL_BRUSH));
+    for (const auto& pen : pens) {
+        const ObjectSelector penSelector(dc, pen.get());
         Rectangle(dc, rectLeft, rectTop, rectRight, rectBottom);
-        SelectObject(dc, oldPen);
     }
-
-    SelectObject(dc, oldBrush);
 }
 
 
 void WindowsSelection::updateWindowRegion()
 {
-    auto region = CreateRectRgn(
-        0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2);
+    ObjectPtr<HRGN> region (CreateRectRgn(
+        0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2));
     if (!region)
         return;
 
-    auto holeRegion = CreateRectRgn(
+    ObjectPtr<HRGN> holeRegion(CreateRectRgn(
         borderWidth, borderWidth,
-        borderWidth + geom.w, borderWidth + geom.h);
-    if (!holeRegion) {
-        DeleteObject(region);
+        borderWidth + geom.w, borderWidth + geom.h));
+    if (!holeRegion)
         return;
-    }
 
-    CombineRgn(region, region, holeRegion, RGN_XOR);
-    if (SetWindowRgn(window, region, TRUE) == 0)
-        DeleteObject(region);
-    // else region is owned by the window.
-
-    DeleteObject(holeRegion);
+    CombineRgn(region.get(), region.get(), holeRegion.get(), RGN_XOR);
+    if (SetWindowRgn(window.get(), region.get(), TRUE) != 0)
+        // The region is now owned by the window.
+        region.release();
 }
 
 

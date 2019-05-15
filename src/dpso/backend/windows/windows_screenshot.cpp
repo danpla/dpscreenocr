@@ -2,9 +2,11 @@
 #include "backend/windows/windows_screenshot.h"
 
 #include <cassert>
+#include <utility>
 
 #include <windows.h>
 
+#include "backend/windows/utils.h"
 #include "img.h"
 
 
@@ -25,32 +27,30 @@ WindowsScreenshot* WindowsScreenshot::take(const Rect& rect)
     if (captureRect.empty())
         return nullptr;
 
-    auto screenDc = GetDC(nullptr);
+    auto screenDc = getDc(nullptr);
     if (!screenDc)
         return nullptr;
 
-    auto imageDc = CreateCompatibleDC(screenDc);
-    if (!imageDc) {
-        ReleaseDC(nullptr, screenDc);
+    auto imageDc = createCompatibleDc(screenDc.get());
+    if (!imageDc)
         return nullptr;
-    }
 
-    auto imageBitmap = CreateCompatibleBitmap(
-        screenDc, captureRect.w, captureRect.h);
-    if (!imageBitmap) {
-        DeleteDC(imageDc);
-        ReleaseDC(nullptr, screenDc);
+    ObjectPtr<HBITMAP> imageBitmap(CreateCompatibleBitmap(
+        screenDc.get(), captureRect.w, captureRect.h));
+    if (!imageBitmap)
         return nullptr;
-    }
 
-    auto oldBitmap = SelectObject(imageDc, imageBitmap);
-    BitBlt(
-        imageDc, 0, 0, captureRect.w, captureRect.h,
-        screenDc, captureRect.x, captureRect.y,
-        SRCCOPY);
     // The GetDIBits() docs say that the bitmap must not be selected
     // into a DC when calling the function.
-    SelectObject(imageDc, oldBitmap);
+    {
+        const ObjectSelector bitmapSelector(
+            imageDc.get(), imageBitmap.get());
+
+        BitBlt(
+            imageDc.get(), 0, 0, captureRect.w, captureRect.h,
+            screenDc.get(), captureRect.x, captureRect.y,
+            SRCCOPY);
+    }
 
     BITMAPINFOHEADER bi;
     bi.biSize = sizeof(BITMAPINFOHEADER);
@@ -67,41 +67,31 @@ WindowsScreenshot* WindowsScreenshot::take(const Rect& rect)
 
     // Pitch is called "stride" in Microsoft docs.
     const auto pitch = (captureRect.w * bi.biBitCount + 31) / 32 * 4;
-    auto* buf = new std::uint8_t[pitch * captureRect.h];
+    BufPtr buf(new std::uint8_t[pitch * captureRect.h]);
 
     GetDIBits(
-        imageDc, imageBitmap,
+        imageDc.get(), imageBitmap.get(),
         0, captureRect.h,
-        buf,
+        buf.get(),
         reinterpret_cast<BITMAPINFO*>(&bi),
         DIB_RGB_COLORS);
 
-    DeleteObject(imageBitmap);
-    DeleteDC(imageDc);
-    ReleaseDC(nullptr, screenDc);
-
     return new WindowsScreenshot(
-        buf, captureRect.w, captureRect.h, pitch);
+        std::move(buf), captureRect.w, captureRect.h, pitch);
 }
 
 
 WindowsScreenshot::WindowsScreenshot(
-        unsigned char* buf, int w, int h, int pitch)
-    : buf {buf}
+        BufPtr buf, int w, int h, int pitch)
+    : buf {std::move(buf)}
     , w {w}
     , h {h}
     , pitch {pitch}
 {
-    assert(buf);
+    assert(this->buf);
     assert(w > 0);
     assert(h > 0);
     assert(pitch >= w);
-}
-
-
-WindowsScreenshot::~WindowsScreenshot()
-{
-    delete[] buf;
 }
 
 
@@ -121,7 +111,7 @@ void WindowsScreenshot::getGrayscaleData(
     std::uint8_t* buf, int pitch) const
 {
     for (int y = 0; y < h; ++y) {
-        const auto* srcRow = this->buf + this->pitch * y;
+        const auto* srcRow = this->buf.get() + this->pitch * y;
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < w; ++x) {

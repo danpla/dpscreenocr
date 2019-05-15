@@ -1,8 +1,6 @@
 
 #include "backend/windows/utils.h"
 
-#include <windows.h>
-
 
 namespace dpso {
 namespace backend {

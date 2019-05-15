@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "backend/backend.h"
+#include "backend/windows/utils.h"
 
 
 namespace dpso {
@@ -13,7 +14,6 @@ namespace backend {
 class WindowsSelection : public Selection {
 public:
     WindowsSelection();
-    ~WindowsSelection();
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
@@ -27,16 +27,16 @@ private:
     Point origin;
     Rect geom;
 
-    HWND window;
+    WindowPtr window;
 
     static const int numPens = 2;
-    HPEN pens[numPens];
+    ObjectPtr<HPEN> pens[numPens];
 
     static LRESULT CALLBACK wndProc(
         HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
     LRESULT processMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 
-    bool createPens();
+    void createPens();
     void setGeometry(const Rect& newGeom);
     void draw(HDC dc);
     void updateWindowRegion();
