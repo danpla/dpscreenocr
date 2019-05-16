@@ -6,7 +6,7 @@ if (UNIX AND NOT APPLE)
     include(GNUInstallDirs)
     set(APP_LOCALE_DIR "${CMAKE_INSTALL_FULL_LOCALEDIR}")
 else()
-    message(SEND_ERROR "Set APP_LOCALE_DIR for this platform")
+    set(APP_LOCALE_DIR "")
 endif()
 
 
