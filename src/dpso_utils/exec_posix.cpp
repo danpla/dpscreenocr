@@ -1,9 +1,6 @@
 
 #include "exec.h"
 
-
-#if defined(__unix__)
-
 #include <cstdlib>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -30,18 +27,3 @@ void dpsoExec(
     if (waitToComplete)
         waitpid(pid, nullptr, 0);
 }
-
-
-#else
-
-
-void dpsoExec(
-    const char* exePath, const char* arg, int waitToComplete)
-{
-    (void)exePath;
-    (void)arg;
-    (void)waitToComplete;
-}
-
-
-#endif

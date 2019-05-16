@@ -1,18 +1,13 @@
 
 #include "cfg_path.h"
 
+#include <cerrno>
 #include <cstdlib>
 #include <string>
-
-#include "os.h"
-
-
-#if defined(__unix__) && !defined(__APPLE__)
-
-
-#include <cerrno>
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#include "os.h"
 
 
 static bool makeDirs(char* path, mode_t mode)
@@ -68,8 +63,3 @@ FILE* dpsoCfgPathFopen(
     path += fileName;
     return dpso::fopenUtf8(path.c_str(), mode);
 }
-
-
-#else
-    #error "Not implemented"
-#endif

@@ -4,19 +4,45 @@ project(dpso_utils)
 
 option(DPSO_ENABLE_NLS "Enable gettext support" YES)
 
+set(PLATFORM_SRCS)
+
+if (UNIX)
+    list(
+        APPEND PLATFORM_SRCS
+        exec_posix.cpp
+        os_unix.cpp
+    )
+endif()
+
+if (UNIX AND NOT APPLE)
+    list(
+        APPEND PLATFORM_SRCS
+        cfg_path_unix_xdg.cpp
+    )
+elseif(WIN32)
+    list(
+        APPEND PLATFORM_SRCS
+        exec_null.cpp
+    )
+else()
+    message(
+        FATAL_ERROR
+        "The current system (${CMAKE_SYSTEM_NAME}) is not supported"
+    )
+endif()
+
 add_library(
     dpso_utils
 
     cfg.cpp
     cfg_ext.cpp
-    cfg_path.cpp
-    exec.cpp
     history.cpp
     history_export.cpp
     intl.cpp
     lang_name.cpp
-    os.cpp
     str_format.cpp
+
+    ${PLATFORM_SRCS}
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
