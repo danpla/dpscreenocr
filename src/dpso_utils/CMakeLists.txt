@@ -23,6 +23,7 @@ elseif(WIN32)
     list(
         APPEND PLATFORM_SRCS
         exec_null.cpp
+        windows_utils.cpp
     )
 else()
     message(

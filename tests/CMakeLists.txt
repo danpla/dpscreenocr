@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dpScreenOCR-Tests)
 
+set(PLATFORM_SRCS)
+if(WIN32)
+    list(
+        APPEND PLATFORM_SRCS
+        test_windows_utils.cpp
+    )
+endif()
+
 add_executable(
     tests
 
@@ -14,6 +22,8 @@ add_executable(
     test_str.cpp
     test_str_format.cpp
     utils.cpp
+
+    ${PLATFORM_SRCS}
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"

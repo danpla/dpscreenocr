@@ -10,6 +10,12 @@
 #include "test_str.h"
 #include "test_str_format.h"
 
+// TODO: Make a static plugin system so we don't have to include and
+// call the tests explicitly.
+#ifdef _WIN32
+#include "test_windows_utils.h"
+#endif
+
 
 int main()
 {
@@ -19,6 +25,9 @@ int main()
     testHotkeys();
     testStr();
     testStrFormat();
+    #ifdef _WIN32
+    testWindowsUtils();
+    #endif
 
     const auto numFailures = test::getNumFailures();
     if (numFailures == 0)
