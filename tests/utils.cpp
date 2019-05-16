@@ -38,7 +38,7 @@ std::string escapeStr(const char* str)
                     static char buf[5];
                     std::snprintf(
                         buf, sizeof(buf),
-                        "\\x%.2x", static_cast<unsigned>(c));
+                        "\\x%.2x", static_cast<unsigned char>(c));
                     result += buf;
                 } else
                     result += c;
