@@ -13,6 +13,7 @@
 const char* dpsoGetCfgPath(const char* appName)
 {
     static std::string path;
+    // Fall back to the current working directory in case of errors.
     path = ".";
 
     // We use SHGetFolderPath() for XP support; Vista and later has
