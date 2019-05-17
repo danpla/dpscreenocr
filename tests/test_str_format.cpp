@@ -1,6 +1,4 @@
 
-#include "test_str_format.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -106,7 +104,10 @@ static void testStrNamedFormat()
 }
 
 
-void testStrFormat()
+static void testStrFormat()
 {
     testStrNamedFormat();
 }
+
+
+REGISTER_TEST("str_format", testStrFormat);

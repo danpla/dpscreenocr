@@ -1,6 +1,4 @@
 
-#include "test_hotkeys.h"
-
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
@@ -108,8 +106,11 @@ static void testHotkeyFromString()
 }
 
 
-void testHotkeys()
+static void testHotkeys()
 {
     testHotkeyToString();
     testHotkeyFromString();
 }
+
+
+REGISTER_TEST("hotkeys", testHotkeys);

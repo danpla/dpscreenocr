@@ -1,6 +1,4 @@
 
-#include "test_windows_utils.h"
-
 #include <cstdio>
 
 #include "dpso_utils/windows_utils.h"
@@ -63,8 +61,10 @@ static void testUtfConversions()
 }
 
 
-void testWindowsUtils()
+static void testWindowsUtils()
 {
     testUtfConversions();
 }
 
+
+REGISTER_TEST("windows_utils", testWindowsUtils);

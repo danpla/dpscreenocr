@@ -1,6 +1,4 @@
 
-#include "test_geometry.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -113,8 +111,11 @@ static void testRect()
 }
 
 
-void testGeometry()
+static void testGeometry()
 {
     testPoint();
     testRect();
 }
+
+
+REGISTER_TEST("geometry", testGeometry);

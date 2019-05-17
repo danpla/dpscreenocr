@@ -1,6 +1,4 @@
 
-#include "test_cfg.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -317,7 +315,7 @@ static void reload()
 }
 
 
-void testCfg()
+static void testCfg()
 {
     dpsoCfgClear();
 
@@ -335,3 +333,6 @@ void testCfg()
     getBool();
     getHotkey();
 }
+
+
+REGISTER_TEST("cfg", testCfg);

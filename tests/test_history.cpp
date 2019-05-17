@@ -1,6 +1,4 @@
 
-#include "test_history.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -62,7 +60,7 @@ static void testCount(int expected, int line)
 #define TEST_COUNT(expected) testCount(expected, __LINE__)
 
 
-void testHistory()
+static void testHistory()
 {
     static const DpsoHistoryEntry entries[] = {
         {
@@ -122,3 +120,6 @@ void testHistory()
         CMP_ENTRIES(inEntry, outEntry);
     }
 }
+
+
+REGISTER_TEST("history", testHistory);

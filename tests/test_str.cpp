@@ -1,6 +1,4 @@
 
-#include "test_str.h"
-
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
@@ -90,7 +88,10 @@ static void testCmpSubStr()
 }
 
 
-void testStr()
+static void testStr()
 {
     testCmpSubStr();
 }
+
+
+REGISTER_TEST("str", testStr);
