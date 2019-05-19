@@ -7,7 +7,7 @@ namespace dpso {
 namespace backend {
 
 
-static Backend* X11Backend::create()
+Backend* X11Backend::create()
 {
     return new X11Backend();
 }
