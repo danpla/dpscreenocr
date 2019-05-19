@@ -22,8 +22,13 @@ elseif(WIN32)
     set(BACKEND_DEFINITION "DPSO_BACKEND_WINDOWS")
     list(
         APPEND BACKEND_SRCS
+        backend/windows/execution_layer/action_executor.cpp
+        backend/windows/execution_layer/backend_executor.cpp
+        backend/windows/execution_layer/key_manager_executor.cpp
+        backend/windows/execution_layer/selection_executor.cpp
         backend/windows/utils.cpp
         backend/windows/windows_backend.cpp
+        backend/windows/windows_backend_impl.cpp
         backend/windows/windows_key_manager.cpp
         backend/windows/windows_screenshot.cpp
         backend/windows/windows_selection.cpp

@@ -7,6 +7,12 @@ namespace dpso {
 namespace backend {
 
 
+static Backend* X11Backend::create()
+{
+    return new X11Backend();
+}
+
+
 X11Backend::X11Backend()
     : display {XOpenDisplay(nullptr), XCloseDisplay}
 {

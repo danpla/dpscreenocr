@@ -16,7 +16,7 @@ namespace backend {
 
 class X11Backend : public Backend {
 public:
-    X11Backend();
+    static Backend* create();
 
     KeyManager& getKeyManager() override;
     Selection& getSelection() override;
@@ -24,6 +24,8 @@ public:
 
     void update() override;
 private:
+    X11Backend();
+
     std::unique_ptr<Display, decltype(&XCloseDisplay)> display;
 
     std::unique_ptr<X11KeyManager> keyManager;

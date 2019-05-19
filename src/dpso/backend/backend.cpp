@@ -19,7 +19,7 @@ static Backend* backend;
 
 void init()
 {
-    backend = new BackendImpl();
+    backend = BackendImpl::create();
 }
 
 
