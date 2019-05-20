@@ -6,10 +6,6 @@ namespace dpso {
 namespace backend {
 
 
-#define EXEC_DELEGATE(CALL) \
-    execute(actionExecutor, [&](){ return backend->CALL; })
-
-
 WindowsBackendExecutor::WindowsBackendExecutor()
     : actionExecutor {}
     , backend {}
