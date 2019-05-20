@@ -46,6 +46,10 @@ set(
     utils.cpp
 )
 
+if (WIN32)
+    list(APPEND SRCS ../resource.rc)
+endif()
+
 # qtX_ macros come from QtCore
 if (DPSO_QT4)
     find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
