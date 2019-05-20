@@ -1,5 +1,9 @@
 
-#include <clocale>
+// On Windows, libintl patches setlocale with a macro that expands to
+// libintl_setlocale. std::setlocale becomes std::libintl_setlocale,
+// so we must use <locale.h> rather than <clocale>.
+#include <locale.h>
+
 #include <cstddef>
 
 #include <QApplication>
@@ -65,7 +69,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    std::setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "");
 
     #if DPSO_QT_LOCAL_DATA
 
