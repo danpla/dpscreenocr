@@ -1,6 +1,8 @@
 
 #include "backend/windows/windows_backend_impl.h"
 
+#include <string>
+
 #include <windows.h>
 
 #include "backend/windows/windows_screenshot.h"
@@ -14,8 +16,19 @@ WindowsBackendImpl::WindowsBackendImpl()
     : keyManager {}
     , selection {}
 {
-    keyManager.reset(new WindowsKeyManager());
-    selection.reset(new WindowsSelection());
+    try {
+        keyManager.reset(new WindowsKeyManager());
+    } catch (BackendError& e) {
+        throw BackendError(
+            std::string("Can't create key manager: ") + e.what());
+    }
+
+    try {
+        selection.reset(new WindowsSelection());
+    } catch (BackendError& e) {
+        throw BackendError(
+            std::string("Can't create selection: ") + e.what());
+    }
 }
 
 
