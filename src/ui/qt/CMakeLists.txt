@@ -89,6 +89,16 @@ set_target_properties(
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
+
+if (WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
+    # Hide console window.
+    set_target_properties(
+        dpscreenocr-qt
+        PROPERTIES
+        WIN32_EXECUTABLE TRUE
+    )
+endif()
+
 target_link_libraries(dpscreenocr-qt common)
 
 add_dependencies(dpscreenocr-qt dpso)
