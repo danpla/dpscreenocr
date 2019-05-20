@@ -34,19 +34,20 @@ WindowsBackendExecutor::~WindowsBackendExecutor()
 }
 
 
-KeyManager& WindowsBackendExecutor::getKeyManager()
+KeyManagerExecutor& WindowsBackendExecutor::getKeyManager()
 {
     return *keyManagerExecutor;
 }
 
 
-Selection& WindowsBackendExecutor::getSelection()
+SelectionExecutor& WindowsBackendExecutor::getSelection()
 {
     return *selectionExecutor;
 }
 
 
-Screenshot* WindowsBackendExecutor::takeScreenshot(const Rect& rect)
+WindowsScreenshot* WindowsBackendExecutor::takeScreenshot(
+    const Rect& rect)
 {
     // We can take screenshots form any thread.
     return backend->takeScreenshot(rect);

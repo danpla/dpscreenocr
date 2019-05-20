@@ -5,8 +5,6 @@
 
 #include <windows.h>
 
-#include "backend/windows/windows_screenshot.h"
-
 
 namespace dpso {
 namespace backend {
@@ -44,7 +42,8 @@ WindowsSelection& WindowsBackendImpl::getSelection()
 }
 
 
-Screenshot* WindowsBackendImpl::takeScreenshot(const Rect& rect)
+WindowsScreenshot* WindowsBackendImpl::takeScreenshot(
+    const Rect& rect)
 {
     return WindowsScreenshot::take(rect);
 }
