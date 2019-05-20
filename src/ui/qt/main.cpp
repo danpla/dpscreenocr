@@ -1,9 +1,11 @@
 
 #include <clocale>
+#include <cstddef>
 
 #include <QApplication>
 #include <QDir>
 #include <QTextCodec>
+#include <QTranslator>
 
 #include "dpso_utils/intl.h"
 
@@ -11,6 +13,43 @@
 
 #include "default_config.h"
 #include "main_window.h"
+
+
+static void installQtTranslations(QApplication& app)
+{
+    // Only on Windows for now.
+    #ifdef Q_OS_WIN
+
+    const auto qtTranslationsPath = (
+        QCoreApplication::applicationDirPath() + "/translations");
+    const auto qtLocaleName = QLocale::system().name();
+
+    const QString translations[] = {
+        "qt",
+        #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        "qtbase",
+        #endif
+    };
+    static const auto numTranslations = (
+        sizeof(translations) / sizeof(*translations));
+
+    static QTranslator translators[numTranslations];
+
+    for (std::size_t i = 0; i < numTranslations; ++i) {
+        const auto& translation = translations[i];
+        auto& translator = translators[i];
+
+        translator.load(
+            translation + "_" + qtLocaleName, qtTranslationsPath);
+        app.installTranslator(&translator);
+    }
+
+    #else
+
+    (void)app;
+
+    #endif
+}
 
 
 int main(int argc, char *argv[])
@@ -46,6 +85,8 @@ int main(int argc, char *argv[])
 
     bind_textdomain_codeset(appFileName, "UTF-8");
     textdomain(appFileName);
+
+    installQtTranslations(app);
 
     MainWindow mainWindow;
     mainWindow.show();
