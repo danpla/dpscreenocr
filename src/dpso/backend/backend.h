@@ -12,7 +12,9 @@ namespace dpso {
 namespace backend {
 
 
-using BackendError = std::runtime_error;
+class BackendError : public std::runtime_error {
+    using runtime_error::runtime_error;
+};
 
 
 struct HotkeyBinding {
