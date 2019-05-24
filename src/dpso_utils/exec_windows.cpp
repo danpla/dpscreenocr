@@ -1,8 +1,6 @@
 #include "exec.h"
 
-#include <cstddef>
 #include <cstring>
-#include <cwchar>
 #include <string>
 
 #include <windows.h>
