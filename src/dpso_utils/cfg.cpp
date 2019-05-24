@@ -5,7 +5,6 @@
 #include <cctype>
 #include <cstdio>
 #include <cstdlib>
-#include <cstring>
 #include <string>
 #include <utility>
 #include <vector>
@@ -255,10 +254,7 @@ static void writeKeyValue(
                 std::fputs("\\t", fp);
                 break;
             case '\\':
-                std::fputc(c, fp);
-                if (*s && std::strchr("bfnrt", *s))
-                    std::fputc(c, fp);
-
+                std::fputs("\\\\", fp);
                 break;
             default:
                 std::fputc(c, fp);
