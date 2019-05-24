@@ -1,6 +1,8 @@
 
 #include "windows_utils.h"
 
+#include <cstring>
+
 #include <windows.h>
 
 
@@ -96,6 +98,63 @@ std::string utf16ToUtf8(const wchar_t* utf16Str)
 
     return result;
 }
+
+
+// https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/
+static void appendArgEscaped(std::string& s, const char* arg)
+{
+    // Don't escape if not necessary.
+    if (*arg && !std::strpbrk(arg, " \"\r\n\t\v\f")) {
+        s += arg;
+        return;
+    }
+
+    s += '"';
+
+    while (true) {
+        std::size_t numBackslashes = 0;
+
+        while (*arg == '\\') {
+            ++numBackslashes;
+            ++arg;
+        }
+
+        const auto c = *arg;
+        ++arg;
+
+        // Escape quotes and double their preceding backslashes.
+        if (!c) {
+            // Escape trailing backslashes.
+            s.append(numBackslashes * 2, '\\');
+            break;
+        } else if (c == '"')
+            // Escape backslashes and the following quote.
+            s.append(numBackslashes * 2 + 1, '\\');
+        else
+            // Leave backslashes as is.
+            s.append(numBackslashes, '\\');
+
+        s += c;
+    }
+
+    s += '"';
+}
+
+
+std::string argvToCmdLine(const char** argv, std::size_t argc)
+{
+    std::string result;
+
+    for (std::size_t i = 0; i < argc; ++i) {
+        if (!result.empty())
+            result += ' ';
+
+        appendArgEscaped(result, argv[i]);
+    }
+
+    return result;
+}
+
 
 }
 }

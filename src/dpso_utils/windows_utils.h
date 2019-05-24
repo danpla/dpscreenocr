@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <stdexcept>
 #include <string>
 
@@ -34,6 +35,17 @@ inline std::string utf16ToUtf8(const std::wstring& utf16Str)
     return utf16ToUtf8(utf16Str.c_str());
 }
 
+
+/**
+ * Convert arguments to command line using CommandLineToArgv() rules.
+ */
+std::string argvToCmdLine(const char** argv, std::size_t argc);
+
+template<std::size_t N>
+std::string argvToCmdLine(const char* (&argv)[N])
+{
+    return argvToCmdLine(argv, N);
+}
 
 
 }

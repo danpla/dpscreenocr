@@ -23,7 +23,7 @@ elseif(WIN32)
     list(
         APPEND PLATFORM_SRCS
         cfg_path_windows.cpp
-        exec_null.cpp
+        exec_windows.cpp
         os_windows.cpp
         windows_utils.cpp
     )
