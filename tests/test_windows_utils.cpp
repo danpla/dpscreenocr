@@ -1,5 +1,10 @@
 
+#include <algorithm>
 #include <cstdio>
+#include <initializer_list>
+#include <vector>
+
+#include <windows.h>
 
 #include "dpso_utils/windows_utils.h"
 
@@ -61,9 +66,109 @@ static void testUtfConversions()
 }
 
 
+// Wrapper around CommandLineToArgvW()
+static std::vector<std::string> cmdLineToArgv(
+    const std::string& cmdLine)
+{
+    int argc;
+    wchar_t** argv = CommandLineToArgvW(
+        dpso::win::utf8ToUtf16(cmdLine).c_str(), &argc);
+
+    if (!argv) {
+        std::fprintf(
+            stderr,
+            "CommandLineToArgvW(%s) failed with error %lu.\n",
+            cmdLine.c_str(), GetLastError());
+        return {};
+    }
+
+    std::vector<std::string> result;
+    result.reserve(argc);
+
+    for (int i = 0; i < argc; ++i)
+        result.push_back(dpso::win::utf16ToUtf8(argv[i]));
+
+    LocalFree(argv);
+    return result;
+}
+
+
+template<typename T>
+std::string rangeToString(T begin, T end)
+{
+    std::string result = "[";
+
+    for (; begin != end; ++begin) {
+        if (result.size() > 1)
+            result += ", ";
+
+        result += *begin;
+    }
+
+    result += ']';
+    return result;
+}
+
+
+static void testArgv(std::initializer_list<const char*> argv)
+{
+    using namespace dpso::win;
+
+    const auto cmdLine = createCmdLine(
+        *argv.begin(), argv.begin() + 1, argv.size() - 1);
+
+    const auto gotArgv = cmdLineToArgv(cmdLine);
+
+    if (gotArgv.size() != argv.size()) {
+        std::fprintf(
+            stderr,
+            "CommandLineTogotArgvW(%s) returned a different number "
+            "of arguments: %zu (was %zu in original array). "
+            "Returned array:\n"
+            "  %s\n",
+            cmdLine.c_str(), gotArgv.size(), argv.size(),
+            rangeToString(gotArgv.begin(), gotArgv.end()).c_str());
+        test::failure();
+        return;
+    }
+
+    if (!std::equal(gotArgv.begin(), gotArgv.end(), argv.begin())) {
+        std::fprintf(
+            stderr,
+            "createCmdLine() and CommandLineTogotArgvW() don't "
+            "match.\n"
+            "  createCmdLine() string:\n"
+            "    %s\n"
+            "  Original argv passed to createCmdLine():\n"
+            "    %s\n"
+            "  CommandLineTogotArgvW() from createCmdLine() string:\n"
+            "    %s\n",
+            cmdLine.c_str(),
+            rangeToString(argv.begin(), argv.end()).c_str(),
+            rangeToString(gotArgv.begin(), gotArgv.end()).c_str());
+        test::failure();
+    }
+}
+
+
+static void testCreateCmdLine()
+{
+    const char* programName = "program name";
+    const std::initializer_list<const char*> argvs[] = {
+        {programName, "a\\\\b", "de fg", "h"},
+        {programName, "a\\\"b", "c", "d"},
+        {programName, "a\\\\b c", "d", "e"},
+    };
+
+    for (const auto& argv : argvs)
+        testArgv(argv);
+}
+
+
 static void testWindowsUtils()
 {
     testUtfConversions();
+    testCreateCmdLine();
 }
 
 
