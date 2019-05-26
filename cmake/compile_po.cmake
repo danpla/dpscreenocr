@@ -11,14 +11,14 @@ endif()
 #
 # The full path of a MO file will be:
 #
-#   dst_dir/{LANGUAGE}/LC_MESSAGES/${APP_FILE_NAME}.mo
-function(compile_po target_name dst_dir)
+#   dst_dir/{LANGUAGE}/LC_MESSAGES/${mo_name}.mo
+function(compile_po target_name dst_dir mo_name)
     set(MO_FILES)
     get_linguas(LANGS)
     foreach(LANG ${LANGS})
         set(PO_FILE "${CMAKE_SOURCE_DIR}/po/${LANG}.po")
         set(MO_DIR "${dst_dir}/${LANG}/LC_MESSAGES")
-        set(MO_FILE "${MO_DIR}/${APP_FILE_NAME}.mo")
+        set(MO_FILE "${MO_DIR}/${mo_name}.mo")
 
         add_custom_command(
             OUTPUT "${MO_FILE}"

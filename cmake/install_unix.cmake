@@ -17,7 +17,9 @@ install(
 
 if (DPSO_COMPILE_PO)
     include(compile_po)
-    compile_po(mo_files "${CMAKE_BINARY_DIR}/locale")
+    compile_po(
+        mo_files "${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}"
+    )
 
     install(
         # Note the trailing slash.
