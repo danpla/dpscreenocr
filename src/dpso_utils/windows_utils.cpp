@@ -153,7 +153,7 @@ static void appendArgEscaped(std::string& s, const char* arg)
 // The double quote after "b" enables "in quotes" mode, so all spaces
 // till the end of the string are treated as part of the argument
 // rather than as separators. CommandLineToArgvW() will thus return 2
-// arguments rather than 3: "a\\\" and  "b c d".
+// arguments rather than 3: "a\\\" and "b c d".
 //
 // See:
 // * CommandLineToArgv()
