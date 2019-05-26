@@ -32,6 +32,9 @@ if (DPSO_UI STREQUAL "qt")
             LANGUAGES ${LANGS}
             COMPONENTS qt qtbase
         )
-        install(DIRECTORY "translations" DESTINATION .)
+        install(
+            DIRECTORY "${CMAKE_BINARY_DIR}/translations"
+            DESTINATION .
+        )
     endif()
 endif()
