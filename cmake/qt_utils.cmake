@@ -1,20 +1,20 @@
 
 include(CMakeParseArguments)
-include(get_linguas)
 
 
 # Copy standard Qt translations from src_dir to dst_dir.
 #
 # copy_qt_translations(
 #   src_dir dst_dir
+#   LANGUAGES languages...
 #   COMPONENTS components...)
 function(copy_qt_translations src_dir dst_dir)
-    cmake_parse_arguments(ARG "" "" "COMPONENTS" ${ARGN})
+    cmake_parse_arguments(ARG "" "" "LANGUAGES;COMPONENTS" ${ARGN})
 
     get_linguas(LANGS)
 
     set(SRC_QMS)
-    foreach(LANG ${LANGS})
+    foreach(LANG ${ARG_LANGUAGES})
         foreach(COMPONENT ${ARG_COMPONENTS})
             set(QM "${src_dir}/${COMPONENT}_${LANG}.qm")
             if (NOT EXISTS "${QM}")
