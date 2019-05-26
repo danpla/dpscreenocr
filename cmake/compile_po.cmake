@@ -18,17 +18,12 @@ function(compile_po target_name build_dir)
         set(MO_DIR "${build_dir}/${LANG}/LC_MESSAGES")
         set(MO_FILE "${MO_DIR}/${APP_FILE_NAME}.mo")
 
-        # msgfmt doesn't create intermediate directories.
-        add_custom_command(
-            OUTPUT "${MO_DIR}"
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${MO_DIR}"
-            VERBATIM
-        )
-
         add_custom_command(
             OUTPUT "${MO_FILE}"
+            # msgfmt doesn't create intermediate directories.
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${MO_DIR}"
             COMMAND "${MSGFMT_EXE}" -o "${MO_FILE}" "${PO_FILE}"
-            DEPENDS "${MO_DIR}" "${PO_FILE}"
+            DEPENDS "${PO_FILE}"
             VERBATIM
         )
 

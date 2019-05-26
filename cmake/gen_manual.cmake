@@ -8,12 +8,6 @@ endif()
 function(gen_html_manual target_name build_dir)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
 
-    add_custom_command(
-        OUTPUT "${build_dir}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${build_dir}"
-        VERBATIM
-    )
-
     set(MANUAL_BUILD_HTML "${build_dir}/manual.html")
     separate_arguments(
         PANDOC_ARGS
@@ -23,19 +17,13 @@ function(gen_html_manual target_name build_dir)
 
     add_custom_command(
         OUTPUT "${MANUAL_BUILD_HTML}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${build_dir}"
         COMMAND "${PANDOC_EXE}" ${PANDOC_ARGS}
-        DEPENDS "${build_dir}" "${DOC_DIR}/manual.md" "${DOC_DIR}/manual-data/manual.css" "${DOC_DIR}/manual-data/template.html"
+        DEPENDS "${DOC_DIR}/manual.md" "${DOC_DIR}/manual-data/manual.css" "${DOC_DIR}/manual-data/template.html"
         VERBATIM
     )
 
     set(MANUAL_DATA_BUILD_DIR "${build_dir}/manual-data")
-
-    add_custom_command(
-        OUTPUT "${MANUAL_DATA_BUILD_DIR}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${MANUAL_DATA_BUILD_DIR}"
-        DEPENDS "${build_dir}"
-        VERBATIM
-    )
 
     file(
         GLOB
@@ -53,7 +41,7 @@ function(gen_html_manual target_name build_dir)
         add_custom_command(
             OUTPUT "${DATA_BUILD_FILE}"
             COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DATA_FILE}" "${DATA_BUILD_FILE}"
-            DEPENDS "${MANUAL_DATA_BUILD_DIR}" "${DATA_FILE}"
+            DEPENDS "${DATA_FILE}"
             VERBATIM
         )
     endforeach()
