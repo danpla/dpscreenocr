@@ -7,17 +7,17 @@ if (NOT MSGFMT_EXE)
 endif()
 
 # The function compiles PO files for languages listed in po/LINGUAS,
-# writing MOs to build_dir.
+# writing MOs to dst_dir.
 #
 # The full path of a MO file will be:
 #
-#   build_dir/{LANGUAGE}/LC_MESSAGES/${APP_FILE_NAME}.mo
-function(compile_po target_name build_dir)
+#   dst_dir/{LANGUAGE}/LC_MESSAGES/${APP_FILE_NAME}.mo
+function(compile_po target_name dst_dir)
     set(MO_FILES)
     get_linguas(LANGS)
     foreach(LANG ${LANGS})
         set(PO_FILE "${CMAKE_SOURCE_DIR}/po/${LANG}.po")
-        set(MO_DIR "${build_dir}/${LANG}/LC_MESSAGES")
+        set(MO_DIR "${dst_dir}/${LANG}/LC_MESSAGES")
         set(MO_FILE "${MO_DIR}/${APP_FILE_NAME}.mo")
 
         add_custom_command(
