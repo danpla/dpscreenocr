@@ -8,24 +8,7 @@
 #include <sys/types.h>
 
 #include "os.h"
-
-
-static bool makeDirs(char* path, mode_t mode)
-{
-    for (auto* s = &path[1]; *s; ++s) {
-        if (*s != '/')
-            continue;
-
-        *s = 0;
-        const auto ret = mkdir(path, mode);
-        *s = '/';
-
-        if (ret != 0 && errno != EEXIST)
-            return false;
-    }
-
-    return mkdir(path, mode) == 0 || errno == EEXIST;
-}
+#include "unix_utils.h"
 
 
 // https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
@@ -49,7 +32,7 @@ const char* dpsoGetCfgPath(const char* appName)
 
     path += appName;
 
-    makeDirs(&path[0], 0777);
+    dpso::unix::makeDirs(&path[0]);
 
     return path.c_str();
 }

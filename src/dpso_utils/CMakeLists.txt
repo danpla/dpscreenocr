@@ -11,6 +11,7 @@ if (UNIX)
         APPEND PLATFORM_SRCS
         exec_posix.cpp
         os_unix.cpp
+        unix_utils.cpp
     )
 endif()
 
