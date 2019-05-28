@@ -1,11 +1,8 @@
 
 #include "cfg_path.h"
 
-#include <cerrno>
 #include <cstdlib>
 #include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 #include "os.h"
 #include "unix_utils.h"
