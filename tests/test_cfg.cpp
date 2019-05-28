@@ -129,7 +129,7 @@ static void getDefault()
 
 static void testWhitespaceStr(bool set)
 {
-    static const char* whitespaceStrings[] = {
+    static const char* const whitespaceStrings[] = {
         " ",
         " a",
         "a ",

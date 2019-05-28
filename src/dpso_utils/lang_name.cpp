@@ -36,7 +36,7 @@ struct LangName {
 // Useful links:
 //   https://en.wikipedia.org/wiki/List_of_ISO_639-3_codes
 //   https://github.com/tesseract-ocr/tesseract/wiki/Data-Files
-static const LangName names[] = {
+const LangName names[] = {
     {"afr",      N_("Afrikaans")},
     {"amh",      N_("Amharic")},
     {"ara",      N_("Arabic")},

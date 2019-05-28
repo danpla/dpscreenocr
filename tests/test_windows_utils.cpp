@@ -56,7 +56,7 @@ static void testUtfConverion(const char* utf8Str)
 
 static void testUtfConversions()
 {
-    const char* utf8Strings[] = {
+    const char* const utf8Strings[] = {
         // Юникод
         "\320\256\320\275\320\270\320\272\320\276\320\264"
     };

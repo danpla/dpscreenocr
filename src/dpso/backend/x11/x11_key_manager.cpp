@@ -165,7 +165,7 @@ void X11KeyManager::handleEvent(const XEvent& event)
 }
 
 
-static const KeySym keyToKeySym[dpsoNumKeys] = {
+const KeySym keyToKeySym[dpsoNumKeys] = {
     XK_a,
     XK_b,
     XK_c,

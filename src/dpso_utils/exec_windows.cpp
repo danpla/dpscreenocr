@@ -99,7 +99,7 @@ void dpsoExec(
             // No fucking way! See the comments above.
             return;
 
-    const char* args[] = {arg};
+    const char* const args[] = {arg};
     const auto cmdLine = dpso::win::createCmdLine("", args);
 
     std::wstring exePathUtf16;

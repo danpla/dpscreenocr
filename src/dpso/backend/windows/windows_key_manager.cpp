@@ -264,7 +264,7 @@ HotkeyBinding* WindowsKeyManager::findBindingByHotkey(
 }
 
 
-static const UINT keyToVk[dpsoNumKeys] = {
+const UINT keyToVk[dpsoNumKeys] = {
     0x41,
     0x42,
     0x43,

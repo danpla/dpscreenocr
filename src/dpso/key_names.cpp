@@ -7,7 +7,7 @@
 namespace dpso {
 
 
-static const char* keyNames[dpsoNumKeys] = {
+const char* const keyNames[dpsoNumKeys] = {
     "A",
     "B",
     "C",
@@ -179,12 +179,12 @@ const char* keyModAltNames[numKeyModAltNames + 1] = {
 };
 
 
-const char* keyModCtrlNames[] = {"Ctrl", nullptr};
-const char* keyModShiftNames[] = {"Shift", nullptr};
+const char* const keyModCtrlNames[] = {"Ctrl", nullptr};
+const char* const keyModShiftNames[] = {"Shift", nullptr};
 
 
 struct ModName {
-    const char** names;
+    const char* const* names;
     std::size_t nativeNameIdx;
     DpsoKeyMod mod;
 };
@@ -214,7 +214,7 @@ const char* modToString(DpsoKeyMod mod)
 DpsoKeyMod modFromString(const char* str, std::size_t strLen)
 {
     for (const auto& modName : modNames)
-        for (const auto** names = modName.names; *names; ++names)
+        for (const auto* const* names = modName.names; *names; ++names)
             if (str::cmpSubStr(*names, str, strLen, true) == 0)
                 return modName.mod;
 
