@@ -9,6 +9,8 @@ function(copy_tessdata dst_dir)
     add_custom_command(
         OUTPUT "${dst_dir}/tessdata"
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${SRC_DIR}" "${dst_dir}/tessdata"
+        COMMAND ${CMAKE_COMMAND} -E remove -f "${dst_dir}/tessdata/osd.traineddata"
+        COMMAND ${CMAKE_COMMAND} -E remove -f "${dst_dir}/tessdata/equ.traineddata"
         DEPENDS "${SRC_DIR}"
         VERBATIM
     )
