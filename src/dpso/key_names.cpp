@@ -149,7 +149,7 @@ const auto nativeKeyModWinName =
     #endif
 
 
-const char* keyModWinNames[numKeyModWinNames + 1] = {
+const char* const keyModWinNames[numKeyModWinNames + 1] = {
     "Windows",
     "Command",
     "Super",
@@ -172,7 +172,7 @@ const auto nativeKeyModAltName =
     #endif
 
 
-const char* keyModAltNames[numKeyModAltNames + 1] = {
+const char* const keyModAltNames[numKeyModAltNames + 1] = {
     "Alt",
     "Option",
     nullptr
