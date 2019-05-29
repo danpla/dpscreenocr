@@ -30,7 +30,6 @@ private:
     WindowPtr window;
 
     DWORD dashPenPattern[2];
-    static const int numPens = 2;
     ObjectPtr<HPEN> pens[numPens];
 
     static LRESULT CALLBACK wndProc(
