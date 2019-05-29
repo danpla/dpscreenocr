@@ -30,7 +30,7 @@ private:
     WindowPtr window;
 
     DWORD dashPenPattern[2];
-    ObjectPtr<HPEN> pens[numPens];
+    ObjectPtr<HPEN> pens[2];
 
     static LRESULT CALLBACK wndProc(
         HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);

@@ -52,7 +52,7 @@ std::string createCmdLine(
 
 template<std::size_t N>
 std::string createCmdLine(
-    const char* programName, const char* (&args)[N])
+    const char* programName, const char* const (&args)[N])
 {
     return createCmdLine(programName, args, N);
 }
