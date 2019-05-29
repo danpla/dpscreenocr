@@ -121,6 +121,7 @@ WindowsSelection::WindowsSelection()
     , origin {}
     , geom {}
     , window {}
+    , dashPenPattern {}
     , pens {}
 {
     registerWindowClass(WindowsSelection::wndProc);
@@ -167,15 +168,14 @@ void WindowsSelection::createPens()
     lb.lbColor = RGB(0, 0, 0);
 
     // The docs don't say whether ExtCreatePen() copies the array, so
-    // make it static just in case.
-    static const DWORD dashes[] = {
-        static_cast<DWORD>(borderWidth * 3),
-        static_cast<DWORD>(borderWidth * 3)
-    };
+    // it's a class member just in case.
+    dashPenPattern[0] = borderWidth * 3;
+    dashPenPattern[1] = borderWidth * 3;
 
     pens[1].reset(ExtCreatePen(
         commonStyle | PS_USERSTYLE, borderWidth, &lb,
-        sizeof(dashes) / sizeof(*dashes), dashes));
+        sizeof(dashPenPattern) / sizeof(*dashPenPattern),
+        dashPenPattern));
     if (!pens[1])
         throwLastError("Can't create dash pen");
 }
