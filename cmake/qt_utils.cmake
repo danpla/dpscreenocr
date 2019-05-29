@@ -11,8 +11,6 @@ include(CMakeParseArguments)
 function(copy_qt_translations src_dir dst_dir)
     cmake_parse_arguments(ARG "" "" "LANGUAGES;COMPONENTS" ${ARGN})
 
-    get_linguas(LANGS)
-
     set(SRC_QMS)
     foreach(LANG ${ARG_LANGUAGES})
         foreach(COMPONENT ${ARG_COMPONENTS})
