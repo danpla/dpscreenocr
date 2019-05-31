@@ -1,0 +1,32 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  margin: 1em;
+}
+
+body p {
+  max-width: 38em;
+}
+
+a {
+  text-decoration: none;
+  border-bottom: 0.1em solid;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 0.25em 0.5em;
+  border-bottom: 0.1em solid #dddddd;
+}
+
+th {
+  text-align: left;
+  font-weight: bold;
+}
+
+.iso-code {
+  font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
+}
