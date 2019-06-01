@@ -9,7 +9,7 @@
 
 static void setupLanguages()
 {
-    int i;
+    int engLangIdx;
 
     if (dpsoGetNumLangs() == 0) {
         fprintf(
@@ -17,11 +17,11 @@ static void setupLanguages()
         exit(EXIT_FAILURE);
     }
 
-    for (i = 0; i < dpsoGetNumLangs(); ++i)
-        if (strcmp(dpsoGetLangCode(i), "eng") == 0) {
-            dpsoSetLangIsActive(i, true);
-            return;
-        }
+    engLangIdx = dpsoGetLangIdx("eng", -1);
+    if (engLangIdx != -1) {
+        dpsoSetLangIsActive(engLangIdx, true);
+        return;
+    }
 
     printf(
         "English is not available; using %s\n", dpsoGetLangCode(0));

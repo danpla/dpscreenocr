@@ -19,10 +19,9 @@ static void disableAllLangs()
 
 static void enableLang(const char* langCode, std::size_t langCodeLen)
 {
-    for (int i = 0; i < dpsoGetNumLangs(); ++i)
-        if (dpso::str::cmpSubStr(
-                dpsoGetLangCode(i), langCode, langCodeLen) == 0)
-            dpsoSetLangIsActive(i, true);
+    const auto langIdx = dpsoGetLangIdx(langCode, langCodeLen);
+    if (langIdx != -1)
+        dpsoSetLangIsActive(langIdx, true);
 }
 
 

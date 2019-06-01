@@ -1,6 +1,7 @@
 
 #include "ocr_private.h"
 
+#include <algorithm>
 #include <cassert>
 #include <chrono>
 #include <clocale>
@@ -155,6 +156,37 @@ const char* dpsoGetLangCode(int langIdx)
         return "";
 
     return langs[langIdx].code.c_str();
+}
+
+
+int dpsoGetLangIdx(const char* langCode, size_t langCodeLen)
+{
+    struct CmpByCode {
+        explicit CmpByCode(std::size_t langCodeLen)
+            : langCodeLen {langCodeLen}
+        {
+
+        }
+
+        bool operator()(
+            const Lang& lang, const char* langCode) const
+        {
+            return dpso::str::cmpSubStr(
+                lang.code.c_str(), langCode, langCodeLen) < 0;
+        }
+
+        std::size_t langCodeLen;
+    };
+
+    const auto iter = std::lower_bound(
+        langs.begin(), langs.end(), langCode, CmpByCode(langCodeLen));
+
+    if (iter != langs.end()
+            && dpso::str::cmpSubStr(
+                iter->code.c_str(), langCode, langCodeLen) == 0)
+        return iter - langs.begin();
+
+    return -1;
 }
 
 

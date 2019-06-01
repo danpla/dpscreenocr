@@ -40,6 +40,19 @@ const char* dpsoGetLangCode(int langIdx);
 
 
 /**
+ * Get language index.
+ *
+ * The function searches for the given language using up to
+ * langCodeLen characters of langCode for comparison. The comparison
+ * also stops at null character, so you can use -1 or SIZE_MAX as
+ * langCodeLen instead of calling strlen().
+ *
+ * Returns -1 if the language with the given code is not available.
+ */
+int dpsoGetLangIdx(const char* langCode, size_t langCodeLen);
+
+
+/**
  * Get whether the language is active.
  *
  * \param idx Language index [0, dpsoGetNumLangs())
@@ -250,4 +263,3 @@ void dpsoTerminateJobs(void);
 #ifdef __cplusplus
 }
 #endif
-
