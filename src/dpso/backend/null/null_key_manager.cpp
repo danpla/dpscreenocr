@@ -1,7 +1,6 @@
 
 #include "backend/null/null_key_manager.h"
 
-#include <cassert>
 #include <cstdio>
 
 #include "hotkeys.h"
@@ -69,9 +68,6 @@ int NullKeyManager::getNumBindings() const
 void NullKeyManager::getBinding(
     int idx, HotkeyBinding& hotkeyBinding) const
 {
-    assert(idx >= 0);
-    assert(idx < static_cast<int>(bindings.size()));
-
     hotkeyBinding = bindings[idx];
     MSG(
         "Get binding %i (%s; action %i)\n",
@@ -83,9 +79,6 @@ void NullKeyManager::getBinding(
 
 void NullKeyManager::removeBinding(int idx)
 {
-    assert(idx >= 0);
-    assert(idx < static_cast<int>(bindings.size()));
-
     MSG(
         "Remove binding %i (%s; action %i)\n",
         idx,
