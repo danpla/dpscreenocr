@@ -11,43 +11,41 @@ if (NOT PANDOC_EXE)
 endif()
 
 
-function(gen_html_manual target_name build_dir)
+function(gen_html_manual target_name dst_dir)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
 
-    set(MANUAL_BUILD_HTML "${build_dir}/manual.html")
+    set(DST_HTML "${dst_dir}/manual.html")
     separate_arguments(
         PANDOC_ARGS
         UNIX_COMMAND
-        "--to=html5 --standalone --css=manual-data/manual.css --output=${MANUAL_BUILD_HTML} --template=${DOC_DIR}/manual-data/template.html --toc --number-sections -V \"title:dpScreenOCR Manual\" -V \"toctitle:Table of contents\" -V \"pagetitle:dpScreenOCR Manual\" --from=markdown ${DOC_DIR}/manual.md"
+        "--to=html5 --standalone --css=manual-data/manual.css --output=${DST_HTML} --template=${DOC_DIR}/manual-data/template.html --toc --number-sections -V \"title:dpScreenOCR Manual\" -V \"toctitle:Table of contents\" -V \"pagetitle:dpScreenOCR Manual\" --from=markdown ${DOC_DIR}/manual.md"
     )
 
     add_custom_command(
-        OUTPUT "${MANUAL_BUILD_HTML}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${build_dir}"
+        OUTPUT "${DST_HTML}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}"
         COMMAND "${PANDOC_EXE}" ${PANDOC_ARGS}
         DEPENDS "${DOC_DIR}/manual.md" "${DOC_DIR}/manual-data/manual.css" "${DOC_DIR}/manual-data/template.html"
         VERBATIM
     )
 
-    set(MANUAL_DATA_BUILD_DIR "${build_dir}/manual-data")
-
     file(
         GLOB
-        MANUAL_DATA_FILES
+        SRC_DATA_FILES
         "${DOC_DIR}/manual-data/*.png"
         "${DOC_DIR}/manual-data/*css"
     )
 
-    set(MANUAL_BUILD_DATA)
-    foreach(DATA_FILE ${MANUAL_DATA_FILES})
-        get_filename_component(DATA_FILE_NAME "${DATA_FILE}" NAME)
-        set(DATA_BUILD_FILE "${MANUAL_DATA_BUILD_DIR}/${DATA_FILE_NAME}")
-        list(APPEND MANUAL_BUILD_DATA "${DATA_BUILD_FILE}")
+    set(DST_DATA_FILES)
+    foreach(SRC_FILE ${SRC_DATA_FILES})
+        get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
+        set(DST_FILE "${dst_dir}/manual-data/${SRC_FILE_NAME}")
+        list(APPEND DST_DATA_FILES "${DST_FILE}")
 
         add_custom_command(
-            OUTPUT "${DATA_BUILD_FILE}"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DATA_FILE}" "${DATA_BUILD_FILE}"
-            DEPENDS "${DATA_FILE}"
+            OUTPUT "${DST_FILE}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SRC_FILE}" "${DST_FILE}"
+            DEPENDS "${SRC_FILE}"
             VERBATIM
         )
     endforeach()
@@ -55,6 +53,6 @@ function(gen_html_manual target_name build_dir)
     add_custom_target(
         "${target_name}"
         ALL
-        DEPENDS "${MANUAL_BUILD_HTML}" ${MANUAL_BUILD_DATA}
+        DEPENDS "${DST_HTML}" ${DST_DATA_FILES}
     )
 endfunction()
