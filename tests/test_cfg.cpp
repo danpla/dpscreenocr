@@ -1,4 +1,5 @@
 
+#include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -18,6 +19,26 @@ static void testGet(
     int lineNum)
 {
     const auto* gotVal = dpsoCfgGetStr(key, defaultVal);
+
+    if (!gotVal) {
+        // dpsoCfgGetStr() only returns null if the default is null.
+        assert(!defaultVal);
+
+        if (!expectedVal)
+            return;
+
+        // We expected that key doesn't exist.
+        std::fprintf(
+            stderr,
+            "line %i: dpsoGetStr(\"%s\", NULL): "
+            "expected NULL, got \"%s\"\n",
+            lineNum,
+            key,
+            test::utils::escapeStr(gotVal).c_str());
+        test::failure();
+        return;
+    }
+
     if (std::strcmp(gotVal, expectedVal) == 0)
         return;
 
@@ -118,6 +139,7 @@ static void testGet(
 
 static void getDefault()
 {
+    TEST_GET("default", nullptr, nullptr);
     TEST_GET("default", "", "");
     TEST_GET("default", "default_value", "default_value");
     TEST_GET("default", 0, 0);
@@ -179,6 +201,7 @@ static void getString()
 {
     testWhitespaceStr(false);
 
+    TEST_GET("str_default", nullptr, nullptr);
     TEST_GET("str_default", "default", "default");
 
     TEST_GET("str_empty", "default", "");
