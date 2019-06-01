@@ -48,9 +48,9 @@ static void installQtTranslations(QApplication& app)
         const auto& translation = translations[i];
         auto& translator = translators[i];
 
-        translator.load(
-            translation + "_" + qtLocaleName, qtTranslationsPath);
-        app.installTranslator(&translator);
+        if (translator.load(
+                translation + "_" + qtLocaleName, qtTranslationsPath))
+            app.installTranslator(&translator);
     }
 }
 
