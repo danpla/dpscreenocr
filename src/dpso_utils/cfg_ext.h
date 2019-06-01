@@ -21,12 +21,14 @@ struct DpsoHotkey;
 /**
  * Get hotkey.
  *
- * If the key does not exist, defaultHotkey is returned.
+ * If the cfg key does not exist, defaultHotkey is returned.
  *
  * If the string is empty, the hotkey will be {dpsoUnknownKey,
  * dpsoKeyModNone}. Otherwise, the hotkey is set to the result of
- * dpsoHotkeyFromString(). If the key of the result is dpsoUnknownKey,
- * the hotkey is set to defaultHotkey.
+ * dpsoHotkeyFromString(). If the result's key is dpsoUnknownKey, the
+ * hotkey is set to defaultHotkey.
+ *
+ * If defaultHotkey is null, {dpsoUnknownKey, dpsoKeyModNone} is used.
  *
  * Note that a string that only consists of modifiers and doesn't
  * contain a key will always result in defaultHotkey. This mirrors
