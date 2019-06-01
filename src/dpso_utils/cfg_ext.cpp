@@ -29,11 +29,17 @@ static void enableLang(const char* langCode, std::size_t langCodeLen)
 const char langsSeparator = ',';
 
 
-void dpsoCfgLoadActiveLangs(const char* key)
+void dpsoCfgLoadActiveLangs(
+    const char* key, const char* fallbackLangCode)
 {
     disableAllLangs();
 
-    const auto* s = dpsoCfgGetStr(key, "");
+    const auto* s = dpsoCfgGetStr(key, nullptr);
+
+    if (!s) {
+        enableLang(fallbackLangCode, -1);
+        return;
+    }
 
     while (true) {
         while (std::isspace(*s))
