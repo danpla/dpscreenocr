@@ -8,6 +8,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QLibraryInfo>
 #include <QTextCodec>
 #include <QTranslator>
 
@@ -21,11 +22,14 @@
 
 static void installQtTranslations(QApplication& app)
 {
-    // Only on Windows for now.
-    #ifdef Q_OS_WIN
-
     const auto qtTranslationsPath = (
-        QCoreApplication::applicationDirPath() + "/translations");
+        #ifdef Q_OS_WIN
+        QCoreApplication::applicationDirPath() + "/translations"
+        #else
+        QLibraryInfo::location(QLibraryInfo::TranslationsPath)
+        #endif
+    );
+
     const auto qtLocaleName = QLocale::system().name();
 
     const QString translations[] = {
@@ -47,12 +51,6 @@ static void installQtTranslations(QApplication& app)
             translation + "_" + qtLocaleName, qtTranslationsPath);
         app.installTranslator(&translator);
     }
-
-    #else
-
-    (void)app;
-
-    #endif
 }
 
 
