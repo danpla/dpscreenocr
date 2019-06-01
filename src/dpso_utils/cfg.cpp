@@ -299,6 +299,14 @@ void dpsoCfgClear(void)
 }
 
 
+int dpsoCfgKeyExists(const char* key)
+{
+    bool found;
+    keyValuesLowerBound(key, &found);
+    return found;
+}
+
+
 const char* dpsoCfgGetStr(const char* key, const char* defaultVal)
 {
     bool found;

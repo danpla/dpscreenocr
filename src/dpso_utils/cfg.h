@@ -54,6 +54,14 @@ void dpsoCfgClear(void);
 
 
 /**
+ * Check whether the given key exists.
+ *
+ * Returns 1 if the key exists, 0 otherwise.
+ */
+int dpsoCfgKeyExists(const char* key);
+
+
+/**
  * Get string.
  *
  * The function returns the value of the key, or defaultVal if the key
