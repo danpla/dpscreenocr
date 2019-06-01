@@ -303,7 +303,7 @@ void WindowsSelection::draw(HDC dc)
 
 void WindowsSelection::updateWindowRegion()
 {
-    ObjectPtr<HRGN> region (CreateRectRgn(
+    ObjectPtr<HRGN> region(CreateRectRgn(
         0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2));
     if (!region)
         return;
