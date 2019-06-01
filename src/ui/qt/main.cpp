@@ -9,6 +9,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QLibraryInfo>
+#include <QLocale>
 #include <QTextCodec>
 #include <QTranslator>
 
