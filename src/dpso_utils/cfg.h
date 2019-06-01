@@ -57,7 +57,8 @@ void dpsoCfgClear(void);
  * Get string.
  *
  * The function returns the value of the key, or defaultVal if the key
- * does not exist.
+ * does not exist. You can use null for defaultVal to distinguish
+ * between an empty value and a nonexistent key.
  *
  * The returned pointer is valid till the next call to a function that
  * changes the config, like dpsoCfgLoad(), dpsoCfgClear(), and
