@@ -47,10 +47,32 @@ public:
     KeyManager(KeyManager&& other) = delete;
     KeyManager& operator=(KeyManager&& other) = delete;
 
+    /**
+     * Get whether hotkeys are enabled.
+     *
+     * \sa dpsoGetHotkeysEnabled()
+     */
     virtual bool getHotkeysEnabled() const = 0;
+
+    /**
+     * Set whether hotkeys are enabled.
+     *
+     * \sa dpsoSetHotheysEnabled()
+     */
     virtual void setHotkeysEnabled(bool newHotkeysEnabled) = 0;
+
+    /**
+     * Get action of the pressed hotkey.
+     *
+     * \sa dpsoGetLastHotkeyAction()
+     */
     virtual DpsoHotkeyAction getLastHotkeyAction() const = 0;
 
+    /**
+     * Bind hotkey to action.
+     *
+     * \sa dpsoBindHotkey()
+     */
     virtual bool bindHotkey(
         const DpsoHotkey& hotkey, DpsoHotkeyAction action) = 0;
 
@@ -77,9 +99,25 @@ public:
     Selection(Selection&& other) = delete;
     Selection& operator=(Selection&& other) = delete;
 
+    /**
+     * Get whether selection is enabled.
+     *
+     * \sa dpsoGetSelectionIsEnabled()
+     */
     virtual bool getIsEnabled() const = 0;
+
+    /**
+     * Set whether selection is enabled.
+     *
+     * \sa dpsoSetSelectionIsEnabled()
+     */
     virtual void setIsEnabled(bool newIsEnabled) = 0;
 
+    /**
+     * Get selection geometry.
+     *
+     * \sa dpsoGetSelectionGeometry()
+     */
     virtual Rect getGeometry() const = 0;
 };
 
@@ -115,6 +153,15 @@ public:
 
     virtual KeyManager& getKeyManager() = 0;
     virtual Selection& getSelection() = 0;
+
+    /**
+     * Take screenshot.
+     *
+     * The rect should be clamped to screen.
+     *
+     * Returns null on errors. It's left for you to decide whether
+     * an empty rectangle (after clamping to screen) is an error.
+     */
     virtual Screenshot* takeScreenshot(const Rect& rect) = 0;
 
     virtual void update() = 0;
