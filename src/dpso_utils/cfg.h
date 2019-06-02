@@ -66,7 +66,8 @@ int dpsoCfgKeyExists(const char* key);
  *
  * The function returns the value of the key, or defaultVal if the key
  * does not exist. You can use null for defaultVal to distinguish
- * between an empty value and a nonexistent key.
+ * between an empty value and a nonexistent key (or explicitly call
+ * dpsoCfgKeyExists() instead).
  *
  * The returned pointer is valid till the next call to a function that
  * changes the config, like dpsoCfgLoad(), dpsoCfgClear(), and
