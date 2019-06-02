@@ -95,7 +95,8 @@ void dpsoExec(
     const char* exePath, const char* arg, int waitToComplete)
 {
     if (const auto* p = std::strrchr(exePath, '.'))
-        if (dpso::str::cmpIc(p, ".bat") == 0)
+        if (dpso::str::cmpIc(p, ".bat") == 0
+                || dpso::str::cmpIc(p, ".cmd") == 0)
             // No fucking way! See the comments above.
             return;
 
