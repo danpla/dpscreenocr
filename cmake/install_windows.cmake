@@ -6,6 +6,7 @@ endif()
 install(
     PROGRAMS "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}.exe"
     DESTINATION .
+    COMPONENT Required
 )
 
 file(GLOB DLLS "${CMAKE_BINARY_DIR}/*.dll")
@@ -14,6 +15,7 @@ install(FILES ${DLLS} DESTINATION .)
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/tessdata"
     DESTINATION .
+    COMPONENT Required
 )
 
 if (DPSO_COMPILE_PO)
@@ -25,6 +27,7 @@ if (DPSO_COMPILE_PO)
     install(
         DIRECTORY "${CMAKE_BINARY_DIR}/locale"
         DESTINATION .
+        COMPONENT localization
     )
 endif()
 
@@ -50,4 +53,5 @@ unix2dos(
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/doc"
     DESTINATION .
+    COMPONENT Required
 )

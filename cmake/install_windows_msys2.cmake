@@ -38,6 +38,7 @@ if (DPSO_UI STREQUAL "qt")
         install(
             DIRECTORY "${CMAKE_BINARY_DIR}/translations"
             DESTINATION .
+            COMPONENT localization
         )
     endif()
 endif()

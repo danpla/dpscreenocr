@@ -1,0 +1,15 @@
+
+include(dist_installer_common)
+
+set(CPACK_WIX_UPGRADE_GUID "98CA2F9D-3464-49EC-81B9-A2DB0509A327")
+
+set(
+    CPACK_WIX_PRODUCT_ICON
+    "${CMAKE_SOURCE_DIR}/data/icons/${APP_FILE_NAME}.ico"
+)
+
+set(CPACK_WIX_PROPERTY_ARPHELPLINK "${APP_URL}")
+set(CPACK_WIX_PROPERTY_ARPURLINFOABOUT "${APP_URL}")
+
+set(CPACK_WIX_UI_BANNER "${CMAKE_SOURCE_DIR}/data/wix/banner.bmp")
+set(CPACK_WIX_UI_DIALOG "${CMAKE_SOURCE_DIR}/data/wix/dialog.bmp")

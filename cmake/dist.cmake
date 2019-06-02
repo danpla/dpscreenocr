@@ -11,8 +11,22 @@ set(CPACK_PACKAGE_VERSION "${APP_VERSION}")
 
 set(CPACK_PACKAGE_VENDOR "${APP_AUTHOR}")
 
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
+
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     include(dist_deb)
+elseif (WIN32)
+    include(dist_nsis)
+    include(dist_wix)
 endif()
+
+configure_file(
+    "${CMAKE_CURRENT_LIST_DIR}/cpack_options.cmake.in"
+    "${CMAKE_BINARY_DIR}/cpack_options.cmake" @ONLY
+)
+set(
+    CPACK_PROJECT_CONFIG_FILE
+    "${CMAKE_BINARY_DIR}/cpack_options.cmake"
+)
 
 include(CPack)
