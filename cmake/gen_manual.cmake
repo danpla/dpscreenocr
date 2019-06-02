@@ -44,7 +44,7 @@ function(gen_html_manual target_name dst_dir)
 
         add_custom_command(
             OUTPUT "${DST_FILE}"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SRC_FILE}" "${DST_FILE}"
+            COMMAND ${CMAKE_COMMAND} -E copy "${SRC_FILE}" "${DST_FILE}"
             DEPENDS "${SRC_FILE}"
             VERBATIM
         )
