@@ -201,7 +201,7 @@ void dpsoCfgLoad(const char* appName, const char* cfgName)
 {
     keyValues.clear();
 
-    auto* fp = dpsoCfgPathFopen(appName, cfgName, "rb");
+    auto* fp = dpsoCfgPathFopen(appName, cfgName, "r");
     if (!fp)
         return;
 
@@ -284,7 +284,7 @@ void dpsoCfgSaveFp(FILE* fp)
 
 void dpsoCfgSave(const char* appName, const char* cfgName)
 {
-    auto* fp = dpsoCfgPathFopen(appName, cfgName, "wb");
+    auto* fp = dpsoCfgPathFopen(appName, cfgName, "w");
     if (!fp)
         return;
 
