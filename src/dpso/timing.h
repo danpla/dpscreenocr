@@ -2,8 +2,7 @@
 #pragma once
 
 
-#if defined(DPSO_FORCE_TIMING) || !defined(NDEBUG)
-
+#if DPSO_FORCE_TIMING || !defined(NDEBUG)
 
 #include <chrono>
 #include <cstdarg>
