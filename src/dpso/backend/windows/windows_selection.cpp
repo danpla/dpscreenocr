@@ -11,24 +11,24 @@
 //   * The bigger the window, the higher is CPU load.
 //
 //   * Resizing a layered window forces all underlying windows to be
-//       repainted, even under transparent areas. This results in
-//       flashing widgets with some applications.
+//     repainted, even under transparent areas. This results in
+//     flashing widgets with some applications.
 //
-//       This is also probably one of the reasons of high CPU load.
+//     This is also probably one of the reasons of high CPU load.
 //
 //   * Layered window always repaints its background, even with dummy
-//       WM_ERASEBKGND that returns 1; if hbrBackground is NULL, the
-//       color is black. During resizing, the background flashes
-//       before WM_PAINT event. Setting the background color to
-//       LWA_COLORKEY results in blinking.
+//     WM_ERASEBKGND that returns 1; if hbrBackground is NULL, the
+//     color is black. During resizing, the background flashes before
+//     WM_PAINT event. Setting the background color to LWA_COLORKEY
+//     results in blinking.
 //
-//       Moving all drawing from WM_PAINT to WM_ERASEBKGND doesn't
-//       solve the issue completely: when the window is enlarged, its
-//       right and bottom portions flash with background color even
-//       before WM_ERASEBKGND event.
+//     Moving all drawing from WM_PAINT to WM_ERASEBKGND doesn't solve
+//     the issue completely: when the window is enlarged, its right
+//     and bottom portions flash with background color even before
+//     WM_ERASEBKGND event.
 //
-//       In combination with all previous issues, this also causes
-//       vertical stuttering.
+//     In combination with all previous issues, this also causes
+//     vertical stuttering.
 //
 // Window regions have no such problems; they work well both with
 // and without Aero.
