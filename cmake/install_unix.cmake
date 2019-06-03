@@ -52,6 +52,12 @@ else()
 endif()
 
 install(
+    FILES "${CMAKE_SOURCE_DIR}/doc/changelog.txt"
+    DESTINATION "${CMAKE_INSTALL_DOCDIR}"
+    RENAME "changelog"
+)
+
+install(
     FILES "${CMAKE_SOURCE_DIR}/LICENSE.txt"
     DESTINATION "${CMAKE_INSTALL_DOCDIR}"
 )

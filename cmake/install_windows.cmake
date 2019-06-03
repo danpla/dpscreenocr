@@ -45,6 +45,12 @@ else()
 endif()
 
 unix2dos(
+    "unix2dos_changelog"
+    "${CMAKE_SOURCE_DIR}/doc/changelog.txt"
+    "${CMAKE_BINARY_DIR}/doc/changelog.txt"
+)
+
+unix2dos(
     "unix2dos_license"
     "${CMAKE_SOURCE_DIR}/LICENSE.txt"
     "${CMAKE_BINARY_DIR}/doc/license.txt"
