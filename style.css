@@ -38,6 +38,7 @@ footer {
 }
 
 pre {
+  font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
   font-size: 0.8em;
   padding: 1em;
   white-space: pre;
