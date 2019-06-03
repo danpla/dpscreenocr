@@ -8,9 +8,12 @@ Website: [https://danpla.github.io/dpscreenocr](https://danpla.github.io/dpscree
 
 ## Docs
 
-* [doc/building-unix.txt](doc/building-unix.txt) - building instructions
-* [doc/manual.md](doc/manual.md) - user manual
-* [doc/code-notes.txt](doc/code-notes.txt) - some notes about the code
+* [User manual](doc/manual.md)
+* [Changelog](doc/changelog.txt)
+* Building instructions
+    * [Windows](doc/building-windows-msys2.txt) (MSYS2)
+    * [Unix-like systems](doc/building-unix.txt)
+* [Notes about the code](doc/code-notes.txt)
 
 
 ## Contributing
@@ -18,7 +21,5 @@ Website: [https://danpla.github.io/dpscreenocr](https://danpla.github.io/dpscree
 There are several ways you can help the project:
 
 *   Translate the program into your language
-
 *   Create a package for your system
-
-*   Help to port the program to Windows, macOS, or another system
+*   Help to port the program to macOS
