@@ -13,6 +13,8 @@
 
 #include "common/common.h"
 
+#include "utils.h"
+
 
 About::About()
 {
@@ -53,7 +55,11 @@ About::About()
 
     auto* licenseTextEdit = new QTextEdit();
     licenseTextEdit->setReadOnly(true);
-    licenseTextEdit->setFontFamily("monospace");
+
+    auto font = licenseTextEdit->currentFont();
+    setMonospace(font);
+    licenseTextEdit->setCurrentFont(font);
+
     licenseTextEdit->setText(appLicense);
     licenseTextEdit->setVisible(false);
 

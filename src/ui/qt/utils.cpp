@@ -66,3 +66,14 @@ bool confirmation(
 
     return confirmBox.clickedButton() != cancelButton;
 }
+
+
+void setMonospace(QFont& font)
+{
+    #ifdef Q_OS_WIN
+    font.setFamily("Consolas");
+    #else
+    font.setFamily("monospace");
+    #endif
+    font.setStyleHint(QFont::Monospace);
+}
