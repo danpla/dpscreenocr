@@ -40,14 +40,14 @@ else()
     unix2dos(
         "unix2dos_manual"
         "${CMAKE_SOURCE_DIR}/doc/manual.md"
-        "doc/manual.txt"
+        "${CMAKE_BINARY_DIR}/doc/manual.txt"
     )
 endif()
 
 unix2dos(
     "unix2dos_license"
     "${CMAKE_SOURCE_DIR}/LICENSE.txt"
-    "doc/LICENSE.txt"
+    "${CMAKE_BINARY_DIR}/doc/license.txt"
 )
 
 install(
