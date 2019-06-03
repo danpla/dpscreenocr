@@ -11,6 +11,7 @@ body {
 }
 
 code {
+    font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
     font-size: 0.8em;
     background: #dfdfdf;
     padding: 0.1em 0.4em;
