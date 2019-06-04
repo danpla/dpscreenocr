@@ -95,8 +95,7 @@ static void testGet(
     DpsoHotkey gotVal;
     dpsoCfgGetHotkey(key, &gotVal, &defaultVal);
 
-    if (gotVal.key == expectedVal.key
-            && gotVal.mods == expectedVal.mods)
+    if (gotVal == expectedVal)
         return;
 
     std::fprintf(

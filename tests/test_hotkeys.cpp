@@ -16,7 +16,7 @@ static void checkHotkeyToString(const DpsoHotkey& hotkey, int line)
     DpsoHotkey outHotkey;
     dpsoHotkeyFromString(str, &outHotkey);
 
-    if (hotkey.key == outHotkey.key && hotkey.mods == outHotkey.mods)
+    if (hotkey == outHotkey)
         return;
 
     std::fprintf(
@@ -58,17 +58,18 @@ static void checkHotkeyFromString(
     DpsoHotkey got;
     dpsoHotkeyFromString(str, &got);
 
-    if (got.key != expected.key || got.mods != expected.mods) {
-        std::fprintf(
-            stderr,
-            "line %i: dpsoHotkeyFromString(\"%s\"): "
-            "expected (%i %i), got (%i %i)\n",
-            lineNum,
-            str,
-            expected.key, expected.mods,
-            got.key, got.mods);
-        test::failure();
-    }
+    if (got == expected)
+        return;
+
+    std::fprintf(
+        stderr,
+        "line %i: dpsoHotkeyFromString(\"%s\"): "
+        "expected (%i %i), got (%i %i)\n",
+        lineNum,
+        str,
+        expected.key, expected.mods,
+        got.key, got.mods);
+    test::failure();
 }
 
 
