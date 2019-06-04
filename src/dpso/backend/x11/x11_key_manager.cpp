@@ -97,8 +97,7 @@ bool X11KeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
     for (auto& x11binding : x11bindings)
-        if (x11binding.binding.hotkey.key == hotkey.key
-                && x11binding.binding.hotkey.mods == hotkey.mods) {
+        if (x11binding.binding.hotkey == hotkey) {
             x11binding.binding.action = action;
             return true;
         }

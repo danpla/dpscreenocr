@@ -256,8 +256,7 @@ HotkeyBinding* WindowsKeyManager::findBindingByHotkey(
     const DpsoHotkey& hotkey)
 {
     for (auto& binding : bindings)
-        if (binding.hotkey.key == hotkey.key
-                && binding.hotkey.mods == hotkey.mods)
+        if (binding.hotkey == hotkey)
             return &binding;
 
     return nullptr;

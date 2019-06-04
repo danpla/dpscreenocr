@@ -48,8 +48,7 @@ bool NullKeyManager::bindHotkey(
         dpsoHotkeyToString(&hotkey), action);
 
     for (auto& binding : bindings)
-        if (binding.hotkey.key == hotkey.key
-                && binding.hotkey.mods == hotkey.mods) {
+        if (binding.hotkey == hotkey) {
             binding.action = action;
             return true;
         }

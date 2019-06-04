@@ -151,6 +151,24 @@ struct DpsoHotkey {
 };
 
 
+#ifdef __cplusplus
+
+
+inline bool operator==(const DpsoHotkey& a, const DpsoHotkey& b)
+{
+    return a.key == b.key && a.mods == b.mods;
+}
+
+
+inline bool operator!=(const DpsoHotkey& a, const DpsoHotkey& b)
+{
+    return !(a == b);
+}
+
+
+#endif
+
+
 /**
  * Hotkey action.
  *

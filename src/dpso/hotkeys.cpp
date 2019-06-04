@@ -52,8 +52,7 @@ void dpsoUnbindHotkey(const struct DpsoHotkey* hotkey)
     for (int i = 0; i < getKeyManager().getNumBindings(); ++i) {
         dpso::backend::HotkeyBinding binding;
         getKeyManager().getBinding(i, binding);
-        if (binding.hotkey.key == hotkey->key
-                && binding.hotkey.mods == hotkey->mods) {
+        if (binding.hotkey == *hotkey) {
             getKeyManager().removeBinding(i);
             break;
         }
@@ -105,8 +104,7 @@ DpsoHotkeyAction dpsoFindHotkeyAction(const struct DpsoHotkey* hotkey)
     for (int i = 0; i < getKeyManager().getNumBindings(); ++i) {
         dpso::backend::HotkeyBinding binding;
         getKeyManager().getBinding(i, binding);
-        if (binding.hotkey.key == hotkey->key
-                && binding.hotkey.mods == hotkey->mods)
+        if (binding.hotkey == *hotkey)
             return binding.action;
     }
 
