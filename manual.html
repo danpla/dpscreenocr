@@ -27,8 +27,14 @@
 <ul>
 <li><a href="#about-dpscreenocr"><span class="toc-section-number">1</span> About dpScreenOCR</a></li>
 <li><a href="#installation"><span class="toc-section-number">2</span> Installation</a><ul>
-<li><a href="#installing-dpscreenocr"><span class="toc-section-number">2.1</span> Installing dpScreenOCR</a></li>
-<li><a href="#installing-languages"><span class="toc-section-number">2.2</span> Installing languages</a></li>
+<li><a href="#installing-dpscreenocr"><span class="toc-section-number">2.1</span> Installing dpScreenOCR</a><ul>
+<li><a href="#windows"><span class="toc-section-number">2.1.1</span> Windows</a></li>
+<li><a href="#unix-like-systems"><span class="toc-section-number">2.1.2</span> Unix-like systems</a></li>
+</ul></li>
+<li><a href="#installing-languages"><span class="toc-section-number">2.2</span> Installing languages</a><ul>
+<li><a href="#windows-1"><span class="toc-section-number">2.2.1</span> Windows</a></li>
+<li><a href="#unix-like-systems-1"><span class="toc-section-number">2.2.2</span> Unix-like systems</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#usage"><span class="toc-section-number">3</span> Usage</a><ul>
 <li><a href="#overview"><span class="toc-section-number">3.1</span> Overview</a></li>
@@ -49,12 +55,19 @@
 </ul>
 </nav>
 <h1 id="about-dpscreenocr"><span class="header-section-number">1</span> About dpScreenOCR</h1>
-<p>dpScreenOCR is a program to recognize text on screen. Powered by <a href="https://en.wikipedia.org/wiki/Tesseract_(software)">Tesseract</a>, it supports more than 100 languages and can split independent text blocks, e.g. columns. dpScreenOCR is free and open source software that works on GNU/Linux and any other Unix-like system with X11.</p>
+<p>dpScreenOCR is a program to recognize text on screen. Powered by <a href="https://en.wikipedia.org/wiki/Tesseract_(software)">Tesseract</a>, it supports more than 100 languages and can split independent text blocks, e.g. columns. dpScreenOCR is free and open source software that works on Windows and Unix-like systems with X11.</p>
 <h1 id="installation"><span class="header-section-number">2</span> Installation</h1>
 <h2 id="installing-dpscreenocr"><span class="header-section-number">2.1</span> Installing dpScreenOCR</h2>
+<h3 id="windows"><span class="header-section-number">2.1.1</span> Windows</h3>
+<p>The <a href="https://danpla.github.io/dpscreenocr">dpScreenOCR website</a> provides an installer and a ZIP archive. The latter doesn’t need installation: unpack it anywhere you want and run <code>dpscreenocr.exe</code>.</p>
+<h3 id="unix-like-systems"><span class="header-section-number">2.1.2</span> Unix-like systems</h3>
 <p>The <a href="https://danpla.github.io/dpscreenocr">dpScreenOCR website</a> provides several download options, including repositories and packages for Debian, Ubuntu, and derivative systems. Downloads for other systems may be added later.</p>
 <p>If you don’t find a suitable choice for your system, download the source code tarball, unpack it anywhere, and follow the instructions in the <code>doc/building-unix.txt</code> file.</p>
 <h2 id="installing-languages"><span class="header-section-number">2.2</span> Installing languages</h2>
+<h3 id="windows-1"><span class="header-section-number">2.2.1</span> Windows</h3>
+<p>dpScreenOCR for Windows is shipped with the English language pack. To install other languages, visit the <a href="https://danpla.github.io/dpscreenocr/languages">Languages</a> page, download <code>.traineddata</code> files you want, and place them in the <code>tessdata</code> directory located in the same folder as the dpScreenOCR executable.</p>
+<p>You can also download languages from other places, but make sure they are intended for Tesseract 4.0. An attempt to use data designed for another Tesseract version will cause dpScreenOCR to crash.</p>
+<h3 id="unix-like-systems-1"><span class="header-section-number">2.2.2</span> Unix-like systems</h3>
 <p>Use your package manager to install language packs for Tesseract. The package names may vary slightly across systems, but they usually start with “tesseract” and end with a language code or name. For example, the package for German have the following names:</p>
 <ul>
 <li><code>tesseract-ocr-deu</code> on Debian, Ubuntu, and derivatives</li>
@@ -106,8 +119,35 @@
 <h3 id="add-text-to-history"><span class="header-section-number">3.3.2</span> Add text to history</h3>
 <p>This action will add the text to the history located in the <a href="#history-tab">History tab</a>. You can later save the history to a file in plain text, HTML, or JSON format.</p>
 <h3 id="run-executable"><span class="header-section-number">3.3.3</span> Run executable</h3>
-<p>This action will run an executable with the text as the first argument. The “Run executable” entry expects either an absolute path to the executable, or just its name in case it’s located in one of the paths of your <code>PATH</code> environment variable.</p>
-<p>The “Run executable” action is useful for those who have knowledge of a scripting language, such as Unix shell, Python, or Perl. Before using your script, make sure it starts with a proper <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> and you have execute permission (run <code>chmod u+x your_script...</code>).</p>
+<p>This action will run an executable with the recognized text as the first argument. The “Run executable” entry expects either an absolute path to the executable, or just its name in case it’s located in one of the paths of your <code>PATH</code> environment variable.</p>
+<h4 id="using-dpscreenocr-with-goldendict"><span class="header-section-number">3.3.3.1</span> Using dpScreenOCR with <a href="https://en.wikipedia.org/wiki/GoldenDict">GoldenDict</a></h4>
+<p>Point “Run executable” to the path of the GoldenDict’s executable (or just its name on Unix-like platforms) and make sure GoldenDict is running. This way GoldenDict will receive the text from dpScreenOCR and show it in a pop-up window.</p>
+<h4 id="running-scripts-on-windows"><span class="header-section-number">3.3.3.2</span> Running scripts on Windows</h4>
+<h5 id="batch-files"><span class="header-section-number">3.3.3.2.1</span> Batch files</h5>
+<p>dpScreenOCR doesn’t run batch files (“.bat” or “.cmd”) for security reasons. Please use Python or any other scripting language instead.</p>
+<h5 id="creating-file-associations"><span class="header-section-number">3.3.3.2.2</span> Creating file associations</h5>
+<p>Before using a script, make sure that the file association is configured correctly so that you can launch the script just by its file name, without mentioning the interpreter explicitly. The simplest way to test this is to type the name of the script with some command-line arguments in <code>cmd.exe</code>. If the script runs and receives all arguments, you can skip this section.</p>
+<p>We will use Python as an example, but for other languages the process is similar. Open <code>cmd.exe</code> as administrator and run:</p>
+<pre><code>C:\&gt;assoc .py</code></pre>
+<ul>
+<li><p>If the association doesn’t exist, create a new one:</p>
+<pre><code>C:\&gt;assoc .py=Python.File
+C:\&gt;ftype Python.File=Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre></li>
+<li><p>If the association exists (<code>assoc</code> prints something like <code>.py=Python.File</code>), run <code>ftype</code> to see what command is used:</p>
+<pre><code>C:\&gt;ftype Python.File
+Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre>
+<p>If the command doesn’t end with <code>%*</code>, fix it:</p>
+<pre><code>C:\&gt;ftype Python.File=Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre></li>
+</ul>
+<p>If the script still receives only one argument (path to the script), this means that Windows actually use a different association for the given extension and ignores the one set with <code>assoc/ftype</code>. To fix that, open <code>regedit</code> and make sure the values of the following keys end with <code>%*</code>:</p>
+<pre><code>HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command
+HKEY_CLASSES_ROOT\py_auto_file\shell\open\command</code></pre>
+<p>A special tip for Python users: note that in the examples above the association uses Python Launcher (<code>py.exe</code>) rather than a concrete Python executable (<code>python.exe</code>). This allows using Unix-style <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> lines to select the Python version on per-script basis. For more information, read <a href="https://docs.python.org/3/using/windows.html">Using Python on Windows</a>.</p>
+<h5 id="hiding-console-window"><span class="header-section-number">3.3.3.2.3</span> Hiding console window</h5>
+<p>Almost all scripting language interpreters for Windows are shipped with a special version of the executable that doesn’t show the console window. For example, it’s <code>pythonw.exe</code> for Python and <code>wperl.exe</code> for Perl.</p>
+<p>A special file association is usually added during installation, so you can hide the console window by simply changing the extension of the script. For example, Python scripts with <code>.pyw</code> extension are associated with <code>pythonw.exe</code> instead of <code>python.exe</code>. Other languages have their own conventions, like <code>.wpl</code> for Perl (<code>wperl.exe</code>), <code>.rbw</code> for Ruby (<code>rubyw.exe</code>), <code>.wlua</code> for Lua (<code>wlua.exe</code>), etc. If such an association does not exist, you can create it manually as described in the previous section.</p>
+<h4 id="running-scripts-on-unix-like-systems"><span class="header-section-number">3.3.3.3</span> Running scripts on Unix-like systems</h4>
+<p>Before using your script, make sure it starts with a proper <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> and you have execute permission (run <code>chmod u+x your_script...</code>).</p>
 <p>Here is an example Unix shell script that translates the recognized text to your native language using <a href="https://www.soimort.org/translate-shell/">Translate Shell</a>, appends both original and translation to the <code>translations.txt</code> file in your home directory, and displays the translation as a desktop notification.</p>
 <pre><code>#!/bin/sh
 
@@ -122,7 +162,17 @@ notify-send &quot;Translation&quot; &quot;$TR&quot;</code></pre>
 <p>You can save the history to a file in plain text, HTML, or JSON format.</p>
 <h1 id="tweaking"><span class="header-section-number">4</span> Tweaking</h1>
 <p>This section is intended for advanced users and developers. It describes how to change some settings that are not available in the dpScreenOCR’s interface.</p>
-<p>dpScreenOCR saves settings in the <code>~/.config/dpscreenocr/settings.cfg</code> file, which you can modify with any text editor. To reset an option to the default value, remove it from the file; to reset all options, clear the file or delete it. Be aware that dpScreenOCR rewrites settings on exit, so make sure you close the program before making changes.</p>
+<p>dpScreenOCR saves settings in the <code>settings.cfg</code> file. Depending on the platform, you can find it in the following directories:</p>
+<ul>
+<li><p>Windows:</p>
+<ul>
+<li>Vista and newer: <code>%LOCALAPPDATA%\dpscreenocr</code></li>
+<li>XP: <code>%USERPROFILE%\Local Settings\Application Data\dpscreenocr</code></li>
+</ul>
+<p>The strings within <code>%</code> are standard environment variables. You can copy these paths directly to the folder address bar of Explorer to open them.</p></li>
+<li><p>Unix-like systems: <code>~/.config/dpscreenocr</code></p></li>
+</ul>
+<p>You can modify the file with any text editor. To reset an option to the default value, remove it from the file; to reset all options, clear the file or delete it. Be aware that dpScreenOCR rewrites settings on exit, so make sure you close the program before making changes.</p>
 <p>An option value can be one of the following types:</p>
 <ul>
 <li><p>String - an arbitrary sequence of characters, like a file path.</p>
@@ -142,9 +192,10 @@ notify-send &quot;Translation&quot; &quot;$TR&quot;</code></pre>
 </ul>
 <p>Here is the list of all options that can only be changed by editing the settings file:</p>
 <ul>
-<li><p><code>action_copy_to_clipboard_text_separator</code> (<code>\n\n</code> by default) specify the separator for multiple texts for “Copy text to clipboard” action. This option only has effect if queuing is enabled (see <code>ocr_allow_queuing</code>).</p>
+<li><p><code>action_copy_to_clipboard_text_separator</code> (<code>\n\n</code> by default) specify the separator for multiple texts for “Copy text to clipboard” action. This option only has effect if <code>ocr_allow_queuing</code> is enabled.</p>
 <p>Keep in mind that every text, if not empty, ends with a newline.</p></li>
-<li><p><code>action_run_executable_wait_to_complete</code> (<code>true</code> by default) whether to wait executable to complete.</p></li>
+<li><p><code>action_run_executable_wait_to_complete</code> (<code>true</code> by default) whether to wait for the executable to complete.</p>
+<p>If this option is disabled, several instances of the executable can run simultaneously.</p></li>
 <li><p><code>hotkey_cancel_selection</code> (<code>Escape</code> by default) - hotkey to cancel selection.</p></li>
 <li><p><code>ocr_allow_queuing</code> (<code>true</code> by default) allows to queue a new selection for recognition without waiting for the previous one to complete.</p>
 <p>If this option is enabled, “Copy text to clipboard” action may receive more than one text at a time, in which case texts will be joined together using <code>action_copy_to_clipboard_text_separator</code>.</p>
@@ -156,24 +207,27 @@ notify-send &quot;Translation&quot; &quot;$TR&quot;</code></pre>
 <p>This section contains the list of common issues and solutions to them. If the solutions don’t help, or you have an issue that is not listed here, please report the problem on the <a href="https://github.com/danpla/dpscreenocr/issues">issue tracker</a>.</p>
 <ul>
 <li><p><strong>The recognized text contains garbage</strong></p>
-<ul>
-<li>Make sure that you use the minimal set of <a href="#languages">languages</a> needed to recognize the text. Don’t enable languages just in case: this will dramatically reduce the accuracy of recognition.</li>
-</ul></li>
+<p>Make sure that you use the minimal set of <a href="#languages">languages</a> needed to recognize the text. Don’t enable languages just in case: this will dramatically reduce the accuracy of recognition.</p></li>
 <li><p><strong>Pressing the <a href="#hotkey">hotkey</a> has no effect</strong></p>
 <ul>
 <li><p>This hotkey is probably used by another program. Try to choose another key combination.</p></li>
-<li><p>Are you using Wayland? It’s not yet supported. If possible, switch to X11 session.</p></li>
-</ul></li>
-<li><p><strong>“<a href="#run-executable">Run executable</a>” action has no effect</strong></p>
-<ul>
-<li><p>Make sure you have execute permission. Run <code>chmod u+x your_executable...</code>.</p></li>
-<li><p>If your executable is a script, make sure it starts with a proper <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a>.</p></li>
-<li><p>Make sure that the “Run executable” entry contains either an absolute path to the executable, or just the name of the executable that resides in one of the paths of the <code>PATH</code> environment variable.</p></li>
+<li><p>(Unix) Are you using Wayland? It’s not yet supported. If possible, switch to X11 session.</p></li>
 </ul></li>
 <li><p><strong>Texts are not added to the history</strong></p>
+<p>Make sure that “<a href="#add-text-to-history">Add text to history</a>” is enabled in the <a href="#actions-tab">Actions tab</a>.</p></li>
+<li><p><strong>“Run executable” has no effect</strong></p>
 <ul>
-<li>Make sure that “<a href="#add-text-to-history">Add text to history</a>” is enabled in the <a href="#actions-tab">Actions tab</a>.</li>
+<li><p>Make sure that the “Run executable” entry contains either an absolute path to the executable, or just the name of the executable that resides in one of the paths of the <code>PATH</code> environment variable.</p></li>
+<li><p>(Windows) Are you trying to use a batch file (“.bat” or “.cmd”)? This is not allowed for security reasons. Please use Python or another scripting language instead.</p></li>
+<li><p>(Unix) Make sure you have execute permission. Run <code>chmod u+x executable...</code>.</p></li>
+<li><p>(Unix) If your executable is a script, make sure it starts with a proper <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a>.</p></li>
 </ul></li>
+<li><p><strong>“Run executable” hangs dpScreenOCR</strong></p>
+<p>This happens because dpScreenOCR waits for the executable to exit. You can disable waiting with the <code>action_run_executable_wait_to_complete</code> option as described in the “<a href="#tweaking">Tweaking</a>” section.</p></li>
+<li><p><strong>(Windows) “Run executable” opens the script in a text editor instead of running it</strong></p>
+<p>See <a href="#creating-file-associations">Creating file associations</a>.</p></li>
+<li><p><strong>(Windows) “Run executable” runs the script without an argument</strong></p>
+<p>See <a href="#creating-file-associations">Creating file associations</a>.</p></li>
 </ul>
 </body>
 </html>
