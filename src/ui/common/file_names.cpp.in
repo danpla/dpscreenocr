@@ -2,6 +2,6 @@
 #include "file_names.h"
 
 
-const char* appFileName = "dpscreenocr";
+const char* appFileName = "@APP_FILE_NAME@";
 const char* cfgFileName = "settings.cfg";
 const char* historyFileName = "history.txt";

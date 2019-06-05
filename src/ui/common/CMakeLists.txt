@@ -10,7 +10,7 @@ else()
 endif()
 
 
-set(IN_SRCS app_info.cpp paths.cpp)
+set(IN_SRCS app_info.cpp file_names.cpp paths.cpp)
 set(CONFIGURED_SRCS "")
 foreach(IN_SRC ${IN_SRCS})
     configure_file(
@@ -30,7 +30,6 @@ add_library(
     common
 
     cfg_keys.cpp
-    file_names.cpp
     ${CONFIGURED_SRCS}
 )
 
