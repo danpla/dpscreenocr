@@ -1,5 +1,6 @@
 
 [dpScreenOCR website]: https://danpla.github.io/dpscreenocr
+[Language packs]: https://danpla.github.io/dpscreenocr/languages
 
 
 # About dpScreenOCR
@@ -7,8 +8,7 @@
 dpScreenOCR is a program to recognize text on screen. Powered by
 [Tesseract][], it supports more than 100 languages and can split
 independent text blocks, e.g. columns. dpScreenOCR is free and open
-source software that works on GNU/Linux and any other Unix-like system
-with X11.
+source software that works on Windows and Unix-like systems with X11.
 
 [Tesseract]: https://en.wikipedia.org/wiki/Tesseract_(software)
 
@@ -17,6 +17,16 @@ with X11.
 
 
 ## Installing dpScreenOCR
+
+
+### Windows
+
+The [dpScreenOCR website][] provides an installer and a ZIP archive.
+The latter doesn't need installation: unpack it anywhere you want and
+run `dpscreenocr.exe`.
+
+
+### Unix-like systems
 
 The [dpScreenOCR website][] provides several download options,
 including repositories and packages for Debian, Ubuntu, and derivative
@@ -28,6 +38,22 @@ in the `doc/building-unix.txt` file.
 
 
 ## Installing languages
+
+
+### Windows
+
+dpScreenOCR for Windows is shipped with the English language pack.
+To install other languages, visit the [Languages][Language packs]
+page, download `.traineddata` files you want, and place them in the
+`tessdata` directory located in the same folder as the dpScreenOCR
+executable.
+
+You can also download languages from other places, but make sure they
+are intended for Tesseract 4.0. An attempt to use data designed for
+another Tesseract version will cause dpScreenOCR to crash.
+
+
+### Unix-like systems
 
 Use your package manager to install language packs for Tesseract. The
 package names may vary slightly across systems, but they usually start
@@ -152,15 +178,100 @@ HTML, or JSON format.
 
 ### Run executable
 
-This action will run an executable with the text as the first
-argument. The "Run executable" entry expects either an absolute path
-to the executable, or just its name in case it's located in one of the
-paths of your `PATH` environment variable.
+This action will run an executable with the recognized text as the
+first argument. The "Run executable" entry expects either an absolute
+path to the executable, or just its name in case it's located in one
+of the paths of your `PATH` environment variable.
 
-The "Run executable" action is useful for those who have knowledge of
-a scripting language, such as Unix shell, Python, or Perl. Before
-using your script, make sure it starts with a proper [shebang][] and
-you have execute permission (run `chmod u+x your_script...`).
+
+#### Using dpScreenOCR with [GoldenDict][]
+
+Point "Run executable" to the path of the GoldenDict's executable (or
+just its name on Unix-like platforms) and make sure GoldenDict is
+running. This way GoldenDict will receive the text from dpScreenOCR
+and show it in a pop-up window.
+
+[GoldenDict]: https://en.wikipedia.org/wiki/GoldenDict
+
+
+#### Running scripts on Windows
+
+
+##### Batch files
+
+dpScreenOCR doesn't run batch files (".bat" or ".cmd") for security
+reasons. Please use Python or any other scripting language instead.
+
+
+##### Creating file associations
+
+Before using a script, make sure that the file association is
+configured correctly so that you can launch the script just by its
+file name, without mentioning the interpreter explicitly. The simplest
+way to test this is to type the name of the script with some
+command-line arguments in `cmd.exe`. If the script runs and receives
+all arguments, you can skip this section.
+
+We will use Python as an example, but for other languages the process
+is similar. Open `cmd.exe` as administrator and run:
+
+    C:\>assoc .py
+
+  * If the association doesn't exist, create a new one:
+
+        C:\>assoc .py=Python.File
+        C:\>ftype Python.File=Python.File="C:\Windows\py.exe" "%L" %*
+
+  * If the association exists (`assoc` prints something like
+    `.py=Python.File`), run `ftype` to see what command is used:
+
+        C:\>ftype Python.File
+        Python.File="C:\Windows\py.exe" "%L" %*
+
+    If the command doesn't end with `%*`, fix it:
+
+        C:\>ftype Python.File=Python.File="C:\Windows\py.exe" "%L" %*
+
+If the script still receives only one argument (path to the script),
+this means that Windows actually use a different association for the
+given extension and ignores the one set with `assoc/ftype`. To fix
+that, open `regedit` and make sure the values of the following keys
+end with `%*`:
+
+    HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command
+    HKEY_CLASSES_ROOT\py_auto_file\shell\open\command
+
+A special tip for Python users: note that in the examples above the
+association uses Python Launcher (`py.exe`) rather than a concrete
+Python executable (`python.exe`). This allows using Unix-style
+[shebang][] lines to select the Python version on per-script basis.
+For more information, read [Using Python on Windows][].
+
+[Using Python on Windows]: https://docs.python.org/3/using/windows.html
+
+
+##### Hiding console window
+
+Almost all scripting language interpreters for Windows are shipped
+with a special version of the executable that doesn't show the console
+window. For example, it's `pythonw.exe` for Python and `wperl.exe` for
+Perl.
+
+A special file association is usually added during installation, so
+you can hide the console window by simply changing the extension of
+the script. For example, Python scripts with `.pyw` extension are
+associated with `pythonw.exe` instead of `python.exe`. Other languages
+have their own conventions, like `.wpl` for Perl (`wperl.exe`), `.rbw`
+for Ruby (`rubyw.exe`), `.wlua` for Lua (`wlua.exe`), etc.  If such an
+association does not exist, you can create it manually as described in
+the previous section.
+
+
+#### Running scripts on Unix-like systems
+
+Before using your script, make sure it starts with a proper
+[shebang][] and you have execute permission (run
+`chmod u+x your_script...`).
 
 Here is an example Unix shell script that translates the recognized
 text to your native language using [Translate Shell][], appends both
@@ -197,8 +308,21 @@ This section is intended for advanced users and developers. It
 describes how to change some settings that are not available in the
 dpScreenOCR's interface.
 
-dpScreenOCR saves settings in the `~/.config/dpscreenocr/settings.cfg`
-file, which you can modify with any text editor. To reset an option to
+dpScreenOCR saves settings in the `settings.cfg` file. Depending on
+the platform, you can find it in the following directories:
+
+ *  Windows:
+
+    * Vista and newer: `%LOCALAPPDATA%\dpscreenocr`
+    * XP: `%USERPROFILE%\Local Settings\Application Data\dpscreenocr`
+
+    The strings within `%` are standard environment variables. You can
+    copy these paths directly to the folder address bar of Explorer to
+    open them.
+
+ *  Unix-like systems: `~/.config/dpscreenocr`
+
+You can modify the file with any text editor. To reset an option to
 the default value, remove it from the file; to reset all options,
 clear the file or delete it. Be aware that dpScreenOCR rewrites
 settings on exit, so make sure you close the program before making
@@ -234,13 +358,16 @@ the settings file:
 
  *  `action_copy_to_clipboard_text_separator` (`\n\n` by default)
     specify the separator for multiple texts for "Copy text to
-    clipboard" action. This option only has effect if queuing is
-    enabled (see `ocr_allow_queuing`).
+    clipboard" action. This option only has effect if
+    `ocr_allow_queuing` is enabled.
 
     Keep in mind that every text, if not empty, ends with a newline.
 
  *  `action_run_executable_wait_to_complete` (`true` by default)
-    whether to wait executable to complete.
+    whether to wait for the executable to complete.
+
+    If this option is disabled, several instances of the executable
+    can run simultaneously.
 
  *  `hotkey_cancel_selection` (`Escape` by default) - hotkey to cancel
     selection.
@@ -275,33 +402,53 @@ here, please report the problem on the [issue tracker][].
 
  *  **The recognized text contains garbage**
 
-    * Make sure that you use the minimal set of [languages] needed to
-      recognize the text. Don't enable languages just in case: this
-      will dramatically reduce the accuracy of recognition.
+    Make sure that you use the minimal set of [languages] needed to
+    recognize the text. Don't enable languages just in case: this will
+    dramatically reduce the accuracy of recognition.
 
  *  **Pressing the [hotkey] has no effect**
 
     * This hotkey is probably used by another program. Try to choose
       another key combination.
 
-    * Are you using Wayland? It's not yet supported. If possible,
-      switch to X11 session.
+    * (Unix) Are you using Wayland? It's not yet supported. If
+      possible, switch to X11 session.
 
- *  **"[Run executable]" action has no effect**
+ *  **Texts are not added to the history**
 
-    * Make sure you have execute permission. Run
-      `chmod u+x your_executable...`.
+    Make sure that "[Add text to history]" is enabled in the
+    [Actions tab].
 
-    * If your executable is a script, make sure it starts with a
-      proper [shebang][].
+ *  **"Run executable" has no effect**
 
     * Make sure that the "Run executable" entry contains either an
       absolute path to the executable, or just the name of the
       executable that resides in one of the paths of the `PATH`
       environment variable.
 
- *  **Texts are not added to the history**
+    * (Windows) Are you trying to use a batch file (".bat" or ".cmd")?
+      This is not allowed for security reasons. Please use Python or
+      another scripting language instead.
 
-    * Make sure that "[Add text to history]" is enabled in the
-      [Actions tab].
+    * (Unix) Make sure you have execute permission. Run
+      `chmod u+x executable...`.
 
+    * (Unix) If your executable is a script, make sure it starts with
+      a proper [shebang][].
+
+ *  **"Run executable" hangs dpScreenOCR**
+
+    This happens because dpScreenOCR waits for the executable to exit.
+    You can disable waiting with the
+    `action_run_executable_wait_to_complete` option as described in
+    the "[Tweaking]" section.
+
+ *  **(Windows) "Run executable" opens the script in a text editor
+    instead of running it**
+
+    See [Creating file associations].
+
+ *  **(Windows) "Run executable" runs the script without an
+    argument**
+
+    See [Creating file associations].
