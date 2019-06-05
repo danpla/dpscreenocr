@@ -18,14 +18,6 @@ option(
     YES
 )
 
-# Add the common lib early to avoid AUTOMOC
-if (NOT TARGET common)
-    add_subdirectory(../common ${CMAKE_BINARY_DIR}/common)
-endif()
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-
 # CMP0071: Let AUTOMOC and AUTOUIC process GENERATED files.
 # We don't rely on this behavior; we just need to suppress the warning,
 # as it's triggered for the generated .rcc files.
@@ -47,7 +39,8 @@ set(
 )
 
 if (WIN32)
-    list(APPEND SRCS ../resource.rc)
+    add_subdirectory(../windows_rc ${CMAKE_BINARY_DIR}/windows_rc)
+    list(APPEND SRCS $<TARGET_OBJECTS:windows_rc>)
 endif()
 
 # qtX_ macros come from QtCore
@@ -68,6 +61,14 @@ if (DPSO_QT_RCC_ICONS)
     # target_sources() is added in CMake 3.1
     set(SRCS ${SRCS} ${RCC_ICONS})
 endif()
+
+# Add the common lib early to avoid AUTOMOC
+if (NOT TARGET common)
+    add_subdirectory(../common ${CMAKE_BINARY_DIR}/common)
+endif()
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
 
 add_executable(dpscreenocr-qt ${SRCS})
 
