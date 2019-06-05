@@ -90,7 +90,7 @@ static void throwLastError(const char* description)
 const auto* windowClassName = "SelectionWindow";
 
 
-static void registerWindowClass(WNDPROC wndProc)
+static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 {
     static bool registered;
     if (registered)
@@ -102,7 +102,7 @@ static void registerWindowClass(WNDPROC wndProc)
     wcx.lpfnWndProc = wndProc;
     wcx.cbClsExtra = 0;
     wcx.cbWndExtra = 0;
-    wcx.hInstance = GetModuleHandle(nullptr);
+    wcx.hInstance = instance;
     wcx.hIcon = nullptr;
     wcx.hCursor = LoadCursor(nullptr, IDC_ARROW);;
     wcx.hbrBackground = nullptr;
@@ -115,7 +115,7 @@ static void registerWindowClass(WNDPROC wndProc)
 }
 
 
-WindowsSelection::WindowsSelection()
+WindowsSelection::WindowsSelection(HINSTANCE instance)
     : borderWidth {getBorderWidth()}
     , isEnabled {}
     , origin {}
@@ -124,7 +124,7 @@ WindowsSelection::WindowsSelection()
     , dashPenPattern {}
     , pens {}
 {
-    registerWindowClass(WindowsSelection::wndProc);
+    registerWindowClass(instance, WindowsSelection::wndProc);
     window.reset(CreateWindowExA(
         WS_EX_TOPMOST
             | WS_EX_TOOLWINDOW, // Hide from taskbar.
@@ -136,7 +136,7 @@ WindowsSelection::WindowsSelection()
         geom.h + borderWidth * 2,
         nullptr,
         nullptr,
-        GetModuleHandle(nullptr),
+        instance,
         nullptr));
 
     if (!window)

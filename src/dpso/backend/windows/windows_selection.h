@@ -13,7 +13,7 @@ namespace backend {
 
 class WindowsSelection : public Selection {
 public:
-    WindowsSelection();
+    explicit WindowsSelection(HINSTANCE instance);
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;

@@ -5,15 +5,22 @@
 
 #include <windows.h>
 
+#include "utils.h"
+
 
 namespace dpso {
 namespace backend {
 
 
 WindowsBackendImpl::WindowsBackendImpl()
-    : keyManager {}
+    : instance {GetModuleHandleA(nullptr)}
+    , keyManager {}
     , selection {}
 {
+    if (!instance)
+        throw BackendError(
+            "GetModuleHandle() failed: " + getLastErrorMessage());
+
     try {
         keyManager.reset(new WindowsKeyManager());
     } catch (BackendError& e) {
@@ -22,7 +29,7 @@ WindowsBackendImpl::WindowsBackendImpl()
     }
 
     try {
-        selection.reset(new WindowsSelection());
+        selection.reset(new WindowsSelection(instance));
     } catch (BackendError& e) {
         throw BackendError(
             std::string("Can't create selection: ") + e.what());

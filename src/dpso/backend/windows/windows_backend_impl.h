@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include <windows.h>
+
 #include "backend/backend.h"
 #include "backend/windows/windows_key_manager.h"
 #include "backend/windows/windows_screenshot.h"
@@ -23,6 +25,8 @@ public:
 
     void update() override;
 private:
+    HINSTANCE instance;
+
     std::unique_ptr<WindowsKeyManager> keyManager;
     std::unique_ptr<WindowsSelection> selection;
 };
