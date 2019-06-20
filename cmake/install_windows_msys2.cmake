@@ -22,7 +22,24 @@ endfunction()
 copy_tessdata("${CMAKE_BINARY_DIR}")
 
 
+function(copy_qt5_plugins dst_dir)
+    set(SRC_DIR "$ENV{MINGW_PREFIX}/share/qt5/plugins")
+
+    add_custom_command(
+        OUTPUT "${dst_dir}/platforms"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}/platforms"
+        COMMAND ${CMAKE_COMMAND} -E copy "${SRC_DIR}/platforms/qwindows.dll" "${dst_dir}/platforms"
+        DEPENDS "${SRC_DIR}"
+        VERBATIM
+    )
+
+    add_custom_target("qt5_plugins" ALL DEPENDS "${dst_dir}/platforms")
+endfunction()
+
+
 if (DPSO_UI STREQUAL "qt")
+    copy_qt5_plugins("${CMAKE_BINARY_DIR}")
+
     include(qt_utils)
     include(get_linguas)
 

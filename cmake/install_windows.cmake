@@ -12,6 +12,8 @@ install(
 file(GLOB DLLS "${CMAKE_BINARY_DIR}/*.dll")
 install(FILES ${DLLS} DESTINATION .)
 
+install(DIRECTORY "${CMAKE_BINARY_DIR}/platforms" DESTINATION .)
+
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/tessdata"
     DESTINATION .

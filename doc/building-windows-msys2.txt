@@ -162,6 +162,8 @@ necessary data files:
   * "locale" dir - compiled gettext catalogs. Only created if the
     DPSO_COMPILE_PO is enabled.
 
+  * "platforms" dir - platform-specific Qt plugins
+
   * "tessdata" dir - Tesseract data files. CMake will copy that
     directory from "$MINGW_PREFIX/share", and then remove "osd" and
     "equ" traineddata files, which are not used by dpScreenOCR.
@@ -177,8 +179,9 @@ section below.
 2.2 Copying DLLs
 ----------------
 
-CMake doesn't copy DLL files, so you have to do this yourself with the
-following command:
+CMake only copies DLL files from the "$MINGW_PREFIX/share/qt5/plugins"
+directory. Other DLLs need to be copied manually with the following
+command:
 
     cp $(sed -e "s:^:$MINGW_PREFIX/bin/:" ../doc/msys2-dlls.txt) .
 
