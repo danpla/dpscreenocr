@@ -1,4 +1,10 @@
 
+1.0.2 (2019-06-20)
+==================
+
+* Fixed Windows startup error due to missing Qt platform plugin (#1)
+
+
 1.0.1 (2019-06-05)
 ==================
 
