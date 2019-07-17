@@ -13,6 +13,7 @@ static const char* argsToStr(
     const std::initializer_list<const DpsoFormatArg>& args)
 {
     static std::string result;
+    result.clear();
 
     for (const auto& arg : args) {
         if (!result.empty())
