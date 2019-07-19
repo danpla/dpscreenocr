@@ -147,7 +147,7 @@ static void appendArgEscaped(std::string& s, const char* arg)
 //
 //   "a\\\"b" c d
 //
-// The part within double double quotes in parsed as program name as
+// The part within double quotes is parsed as the program name since
 // the backslashes are not treated especially. Then the next argument
 // (starts with "b") comes immediately after the closing double quote.
 // The double quote after "b" enables "in quotes" mode, so all spaces
