@@ -111,11 +111,11 @@ DpsoKeyMod dpsoGetKeyModAt(int idx);
 /**
  * Convert hotkey to string.
  *
- * The function returns the the string containing modifiers followed
- * by the key separated by " + ", for example, "Ctrl + Shift + F1".
- * If you need to query the name of a single modifier key, set
- * key to dpsoUnknownKey. Using dpsoUnknownKey with dpsoKeyModNone
- * will give an empty string.
+ * The function returns the string containing modifiers followed by
+ * the key separated by " + ", for example, "Ctrl + Shift + F1". If
+ * you need to query the name of a single modifier key, set key to
+ * dpsoUnknownKey. Using dpsoUnknownKey with dpsoKeyModNone will give
+ * an empty string.
  *
  * Some names depend on the platform. The name of the Windows key is
  * "Windows" on Windows, "Command" on macOS, and "Super" on Unix-like
