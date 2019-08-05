@@ -8,6 +8,7 @@
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QMessageBox>
@@ -138,16 +139,25 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::chooseExe()
 {
+    auto exePath = QDir::fromNativeSeparators(
+        exeLineEdit->text().trimmed());
+
+    auto exeDir = QFileInfo(exePath).dir().path();
+    if (exeDir == '.')
+        // The line edit is either empty or contains just an exe name.
+        exeDir = QDir::homePath();
+
     QFileDialog::Options options = 0;
     if (!dpsoCfgGetBool(cfgKeyUiNativeFileDialogs, true))
         options |= QFileDialog::DontUseNativeDialog;
 
-    const auto fileName = QFileDialog::getOpenFileName(
-        this, dynStr.chooseExeDialogTitle, "", "", nullptr, options);
-    if (fileName.isEmpty())
+    exePath = QFileDialog::getOpenFileName(
+        this,
+        dynStr.chooseExeDialogTitle, exeDir, "", nullptr, options);
+    if (exePath.isEmpty())
         return;
 
-    exeLineEdit->setText(QDir::toNativeSeparators(fileName));
+    exeLineEdit->setText(QDir::toNativeSeparators(exePath));
 }
 
 
