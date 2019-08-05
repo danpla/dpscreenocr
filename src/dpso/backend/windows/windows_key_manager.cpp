@@ -23,8 +23,8 @@ namespace backend {
 // atom. The only thing too keep in mind that an integer atom has the
 // range 0x0001 - 0xBFFF; 0x0000 is not a valid value.
 //
-// It thus possible to make our life simpler if we will ever need to
-// use this library as a DLL:
+// It thus possible to make our life simpler if we ever need to use
+// this library as a DLL:
 //
 // 1. First, we make an integer atom by packing a hotkey to the first
 //    15 bits of an integer:
