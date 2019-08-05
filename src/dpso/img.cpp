@@ -312,15 +312,10 @@ static void savePnm(
     if (!fp)
         return;
 
-    char magicNum;
-    if (bytesPerPixel == 1)
-        magicNum = '5';
-    else
-        magicNum = '6';
-
-    std::fprintf(fp, "P%c\n", magicNum);
-    std::fprintf(fp, "%i %i\n", w, h);
-    std::fputs("255\n", fp);
+    std::fprintf(
+        fp,
+        "P%c\n%i %i\n255\n",
+        bytesPerPixel == 1 ? '5' : '6', w, h);
     for (int y = 0; y < h; ++y)
         std::fwrite(data + y * pitch, 1, w * bytesPerPixel, fp);
 
