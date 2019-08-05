@@ -8,7 +8,7 @@ namespace backend {
 
 BgThreadActionExecutor::BgThreadActionExecutor()
     : thread {}
-    , cv {}
+    , condVar {}
     , mutex {}
     , terminate {}
     , currentAction {}
@@ -33,12 +33,12 @@ void BgThreadActionExecutor::execute(Action& action)
         currentAction = &action;
     }
 
-    cv.notify_one();
+    condVar.notify_one();
 
     {
         std::unique_lock<std::mutex> lock(mutex);
         while (currentAction)
-            cv.wait(lock);
+            condVar.wait(lock);
     }
 
     if (actionException)
@@ -51,7 +51,7 @@ void BgThreadActionExecutor::threadLoop()
     while (!terminate) {
         std::unique_lock<std::mutex> lock(mutex);
         while (!currentAction)
-            cv.wait(lock);
+            condVar.wait(lock);
 
         try {
             currentAction->action();
@@ -64,7 +64,7 @@ void BgThreadActionExecutor::threadLoop()
         // Unlock manually to avoid waking up the caller's thread only
         // to block again.
         lock.unlock();
-        cv.notify_one();
+        condVar.notify_one();
     }
 }
 

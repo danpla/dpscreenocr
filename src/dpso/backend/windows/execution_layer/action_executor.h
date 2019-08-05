@@ -52,7 +52,7 @@ public:
     void execute(Action& action) override;
 private:
     std::thread thread;
-    std::condition_variable cv;
+    std::condition_variable condVar;
     std::mutex mutex;
 
     bool terminate;
