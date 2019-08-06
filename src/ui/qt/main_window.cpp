@@ -143,8 +143,10 @@ void MainWindow::chooseExe()
         exeLineEdit->text().trimmed());
 
     auto exeDir = QFileInfo(exePath).dir().path();
-    if (exeDir == '.')
-        // The line edit is either empty or contains just an exe name.
+    if (exeDir == '.' || !QDir(exeDir).exists())
+        // exeDir is '.' when QDir is constructed with an empty
+        // string. This happens if the line edit is either empty or
+        // contains just an exe name.
         exeDir = QDir::homePath();
 
     QFileDialog::Options options = 0;
