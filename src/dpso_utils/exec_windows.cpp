@@ -1,5 +1,6 @@
 #include "exec.h"
 
+#include <cctype>
 #include <cstring>
 #include <string>
 
@@ -91,14 +92,40 @@
 // [1] https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/
 
 
+static bool allowExecute(const char* exePath)
+{
+    // Don't execute an empty string since ShellExecute() opens
+    // current working directory in Explorer in this case.
+    while (std::isspace(*exePath))
+        ++exePath;
+    if (!*exePath)
+        return false;
+
+    // Don't execute batch scripts, taking into account the fact that
+    // the string can contain trailing whitespace that will be
+    // stripped by ShellExecute().
+    if (const auto* ext = std::strrchr(exePath, '.')) {
+        std::size_t extLen = 0;
+        for (const auto* s = ext; *s; ++s)
+            if (!std::isspace(*s))
+                extLen = s - ext + 1;
+
+        static const char* const batchExts[] = {".bat", ".cmd"};
+        for (const auto* batchExt : batchExts)
+            if (dpso::str::cmpSubStr(
+                    batchExt, ext, extLen, true) == 0)
+                return false;
+    }
+
+    return true;
+}
+
+
 void dpsoExec(
     const char* exePath, const char* arg, int waitToComplete)
 {
-    if (const auto* p = std::strrchr(exePath, '.'))
-        if (dpso::str::cmpIc(p, ".bat") == 0
-                || dpso::str::cmpIc(p, ".cmd") == 0)
-            // No fucking way! See the comments above.
-            return;
+    if (!allowExecute(exePath))
+        return;
 
     const char* const args[] = {arg};
     const auto cmdLine = dpso::win::createCmdLine("", args);
