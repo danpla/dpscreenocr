@@ -126,7 +126,8 @@ void History::saveAs()
 
     dialog.setViewMode(QFileDialog::Detail);
 
-    const QDir dir(dpsoCfgGetStr(cfgKeyHistoryExportDir, ""));
+    const QDir dir(dpsoCfgGetStr(
+        cfgKeyHistoryExportDir, QDir::home().path().toUtf8().data()));
     if (dir.exists())
         dialog.setDirectory(dir);
 
