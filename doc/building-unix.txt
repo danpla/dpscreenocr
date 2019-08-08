@@ -53,19 +53,17 @@ options, run:
 
 Let's look at some of the options in more detail:
 
-  * DPSO_ENABLE_NLS (ON by default) enables gettext support (libintl).
-      On systems where libintl is not a part of GNU libc, it have to
-      be installed separately.
+  * DPSO_ENABLE_NLS (ON by default) enables native language support
+      (translated user interface).
 
-      This option does not affect compiling the PO files, which is
-      controlled by DPSO_COMPILE_PO.
+      This option requires gettext runtime library - libintl. On
+      systems where libintl is not a part of GNU libc, it has to be
+      installed separately.
 
-  * DPSO_COMPILE_PO (ON by default) enables compiling gettext catalogs
-      (from PO to MO). This option requires gettext utilities, namely
-      the msgfmt program.
-
-      The MO files will be written to the "locale" directory, which
-      will have structure expected by libintl.
+      The option also requires gettext utilities (namely the msgfmt
+      program) to compile gettext catalogs. The MO files will be
+      written to the "locale" directory, which will have structure
+      expected by libintl.
 
   * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like
       localization files for gettext) from the executable's directory.
@@ -105,7 +103,7 @@ Let's look at some of the options in more detail:
 In summary:
 
   * If you don't need the translated interface (that is, you only need
-      English), disable both DPSO_ENABLE_NLS and DPSO_COMPILE_PO.
+      English), disable DPSO_ENABLE_NLS.
 
   * Unless you want to use dpScreenOCR without installation, disable
       both DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS. Otherwise, see
@@ -132,7 +130,7 @@ program by simply running the executable. However, if you want to move
 it from the "build" directory to a different location, don't forget to
 move the "locale" folder as well, or the interface will only be
 available in English. The "locale" directory is only created if the
-program was built with DPSO_COMPILE_PO option enabled.
+program was built with DPSO_ENABLE_NLS option enabled.
 
 
 DEB package

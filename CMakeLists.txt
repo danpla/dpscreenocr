@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.12)
 project(dpScreenOCR)
 
 set(DPSO_UI "qt" CACHE STRING "UI to use: qt or none")
-option(DPSO_COMPILE_PO "Compile gettext message catalogs" YES)
+option(DPSO_ENABLE_NLS "Enable native language support" YES)
 option(DPSO_GEN_HTML_MANUAL "Generate HTML manual. Requires Pandoc." YES)
 option(DPSO_BUILD_EXAMPLE "Build example" NO)
 option(DPSO_BUILD_TESTS "Build tests" NO)

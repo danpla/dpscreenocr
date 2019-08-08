@@ -20,7 +20,7 @@ install(
     COMPONENT Required
 )
 
-if (DPSO_COMPILE_PO)
+if (DPSO_ENABLE_NLS)
     include(compile_po)
     compile_po(
         mo_files "${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}"

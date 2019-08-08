@@ -43,7 +43,7 @@ if (DPSO_UI STREQUAL "qt")
     include(qt_utils)
     include(get_linguas)
 
-    if (DPSO_COMPILE_PO)
+    if (DPSO_ENABLE_NLS)
         get_linguas(LANGS)
         copy_qt_translations(
             # MSYS2 only provides Qt version 5.

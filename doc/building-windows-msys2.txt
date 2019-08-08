@@ -38,7 +38,7 @@ Optional; can be disabled with CMake options:
 
   * libintl (gettext runtime; DPSO_ENABLE_NLS option)
   * gettext tools (msgfmt is needed to compile message catalogs;
-      DPSO_COMPILE_PO option)
+      DPSO_ENABLE_NLS option)
   * pandoc (to generate HTML manual; DPSO_GEN_HTML_MANUAL option)
 
 
@@ -160,7 +160,7 @@ necessary data files:
     enabled, the manual will be either in plain text or HTML format.
 
   * "locale" dir - compiled gettext catalogs. Only created if the
-    DPSO_COMPILE_PO is enabled.
+    DPSO_ENABLE_NLS is enabled.
 
   * "platforms" dir - platform-specific Qt plugins
 
@@ -169,7 +169,7 @@ necessary data files:
     "equ" traineddata files, which are not used by dpScreenOCR.
 
   * "translations" dir - standard Qt translations. Only created if the
-    DPSO_COMPILE_PO is enabled.
+    DPSO_ENABLE_NLS is enabled.
 
 However, you will not be able to run the executable yet, because CMake
 doesn't copy DLL files. Copying DLLs in described in the corresponding
@@ -236,7 +236,7 @@ Non-standard options specific to dpScreenOCR have "DPSO_" prefix.
 Several notes:
 
   * If you don't need the translated interface (that is, you only need
-    English), disable both DPSO_ENABLE_NLS and DPSO_COMPILE_PO.
+    English), disable DPSO_ENABLE_NLS.
 
   * Some options specific to Qt (like DPSO_QT_LOCAL_DATA and
     DPSO_QT_RCC_ICONS) are intended for non-Windows platforms, so you

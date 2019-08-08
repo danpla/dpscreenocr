@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dpso_utils)
 
-option(DPSO_ENABLE_NLS "Enable gettext support" YES)
+option(DPSO_ENABLE_NLS "Enable native language support" YES)
 
 set(PLATFORM_SRCS)
 
