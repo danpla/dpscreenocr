@@ -560,7 +560,7 @@ int dpsoQueueJob(
     static const int minScreenshotSize = 5;
     if (screenshot->getWidth() < minScreenshotSize
             || screenshot->getHeight() < minScreenshotSize)
-        return true;
+        return false;
 
     Job job {std::move(screenshot), tessLangsStr, {}, jobFlags};
 
