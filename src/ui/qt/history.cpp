@@ -126,10 +126,12 @@ void History::saveAs()
 
     dialog.setViewMode(QFileDialog::Detail);
 
-    const QDir dir(dpsoCfgGetStr(
-        cfgKeyHistoryExportDir, QDir::home().path().toUtf8().data()));
-    if (dir.exists())
-        dialog.setDirectory(dir);
+    QString dir = dpsoCfgGetStr(cfgKeyHistoryExportDir, "");
+    // Don't pass an empty path to QDir since in this case QDir points
+    // to the current working directory.
+    if (dir.isEmpty() || !QDir(dir).exists())
+        dir = QDir::homePath();
+    dialog.setDirectory(dir);
 
     if (!dialog.exec())
         return;
@@ -215,6 +217,12 @@ void History::loadState()
 void History::saveState() const
 {
     dpsoHistorySave(appFileName, historyFileName);
+
+    // Add a field to CFG in case the history has never been exported,
+    // just to make sure that the user will see all available options
+    // in the CFG file.
+    if (!dpsoCfgKeyExists(cfgKeyHistoryExportDir))
+        dpsoCfgSetStr(cfgKeyHistoryExportDir, "");
 
     dpsoCfgSetBool(
         cfgKeyHistoryWrapWords,
