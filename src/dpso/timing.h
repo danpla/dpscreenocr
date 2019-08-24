@@ -13,17 +13,18 @@
 namespace dpso {
 
 
-template<typename ClockT = std::chrono::steady_clock>
 struct CodeTimer {
-    typename ClockT::time_point start;
+    using Clock = std::chrono::steady_clock;
+
+    Clock::time_point start;
 
     CodeTimer()
-        : start {ClockT::now()}
+        : start {Clock::now()}
     {}
 
     void report(const char* fmt, ...) const
     {
-        const auto end = ClockT::now();
+        const auto end = Clock::now();
         const std::chrono::duration<float, std::milli> ms = (
             end - start);
 
@@ -43,7 +44,7 @@ struct CodeTimer {
 
 
 #define START_TIMING(name) \
-    const dpso::CodeTimer<> name ## CodeTimer
+    const dpso::CodeTimer name ## CodeTimer
 
 #define END_TIMING(name, ...) \
     name ## CodeTimer.report(__VA_ARGS__)
