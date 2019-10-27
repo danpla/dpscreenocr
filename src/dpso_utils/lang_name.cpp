@@ -27,7 +27,7 @@ struct LangName {
 //   https://github.com/tesseract-ocr/tesseract/wiki/Data-Files-in-different-versions
 //   https://iso639-3.sil.org/code_tables/download_tables
 //
-// Be aware that the that table at the first link is not complete.
+// Be aware that the table at the first link is not complete.
 //
 // The entries must be sorted by the language code.
 //
