@@ -28,7 +28,6 @@ struct Action {
 };
 
 
-
 class ActionExecutor {
 public:
     ActionExecutor() = default;

@@ -524,8 +524,8 @@ void MainWindow::updateStatus()
     else if (dpsoGetNumActiveLangs() == 0)
         setStatus(Status::warning, dynStr.selectLangs);
     else if (!copyToClipboardCheck->isChecked()
-                && !addToHistoryCheck->isChecked()
-                && !runExeCheck->isChecked())
+            && !addToHistoryCheck->isChecked()
+            && !runExeCheck->isChecked())
         setStatus(Status::warning, dynStr.selectActions);
     else
         setStatus(Status::ok, dynStr.ready);
