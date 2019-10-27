@@ -16,7 +16,7 @@ public:
 
     QSize minimumSizeHint() const override;
 protected:
-    void paintEvent(QPaintEvent * event) override;
+    void paintEvent(QPaintEvent* event) override;
 private:
     Status status;
 };

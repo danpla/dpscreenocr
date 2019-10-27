@@ -29,7 +29,7 @@ QSize StatusIndicator::minimumSizeHint() const
 }
 
 
-void StatusIndicator::paintEvent(QPaintEvent * event)
+void StatusIndicator::paintEvent(QPaintEvent* event)
 {
     (void)event;
 
