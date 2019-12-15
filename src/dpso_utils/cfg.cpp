@@ -190,7 +190,7 @@ void dpsoCfgLoadFp(FILE* fp)
         bool found;
         auto iter = keyValuesLowerBound(kv.key.c_str(), &found);
         if (found)
-            iter->key.swap(kv.key);
+            iter->value.swap(kv.value);
         else
             keyValues.insert(iter, std::move(kv));
     }

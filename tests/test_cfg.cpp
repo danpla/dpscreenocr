@@ -314,6 +314,23 @@ static void reload()
 }
 
 
+static void testValueOverridingOnLoad()
+{
+    auto* fp = std::tmpfile();
+    if (!fp)
+        return;
+
+    std::fputs("key value1\nkey value2\n", fp);
+    std::rewind(fp);
+
+    dpsoCfgLoadFp(fp);
+
+    TEST_GET("key", "", "value2");
+
+    std::fclose(fp);
+}
+
+
 static void testCfg()
 {
     dpsoCfgClear();
@@ -331,6 +348,8 @@ static void testCfg()
     getInt();
     getBool();
     getHotkey();
+
+    testValueOverridingOnLoad();
 }
 
 
