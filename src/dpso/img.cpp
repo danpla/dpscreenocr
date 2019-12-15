@@ -268,8 +268,8 @@ void unsharpMask(
     float amount,
     ProgressTracker* progressTracker)
 {
-    static const int blurIters = 2;
-    static const auto numJobs = getNumBlurJobs(blurIters) + 1;
+    static const int numBlurIters = 2;
+    static const auto numJobs = getNumBlurJobs(numBlurIters) + 1;
 
     if (progressTracker)
         progressTracker->advanceJob();
@@ -283,7 +283,7 @@ void unsharpMask(
         tmp, tmpPitch,
         w, h,
         radius,
-        2,
+        numBlurIters,
         localProgressTracker);
 
     unsharp(
