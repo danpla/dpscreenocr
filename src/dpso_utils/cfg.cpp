@@ -46,6 +46,26 @@ struct KeyValue {
 static std::vector<KeyValue> keyValues;
 
 
+static int cmpKeys(const char* a, const char* b)
+{
+    return dpso::str::cmpIc(a, b);
+}
+
+
+static bool cmpByKey(const KeyValue& kv, const char* key)
+{
+    return cmpKeys(kv.key.c_str(), key) < 0;
+}
+
+
+static decltype(keyValues)::iterator keyValuesLowerBound(
+    const char* key)
+{
+    return std::lower_bound(
+        keyValues.begin(), keyValues.end(), key, cmpByKey);
+}
+
+
 static void getKeyValueBounds(
     const char* str,
     const char*& keyBegin, const char*& keyEnd,
@@ -77,6 +97,8 @@ static void getKeyValueBounds(
 static void assignUnescaped(
     std::string& str, const char* valueBegin, const char* valueEnd)
 {
+    str.clear();
+
     const auto* s = valueBegin;
     while (s < valueEnd) {
         const auto c = *s;
@@ -116,7 +138,7 @@ static void assignUnescaped(
 }
 
 
-static KeyValue parseKeyValue(const char* str)
+static void parseKeyValue(const char* str, KeyValue& kv)
 {
     const char* keyBegin;
     const char* keyEnd;
@@ -131,11 +153,8 @@ static KeyValue parseKeyValue(const char* str)
         --valueEnd;
     }
 
-    KeyValue kv;
     kv.key.assign(keyBegin, keyEnd - keyBegin);
     assignUnescaped(kv.value, valueBegin, valueEnd);
-
-    return kv;
 }
 
 
@@ -157,42 +176,15 @@ static bool getLine(std::FILE* fp, std::string& line)
 }
 
 
-static bool cmpByKeyIc(const KeyValue& kv, const char* key)
-{
-    return dpso::str::cmpIc(kv.key.c_str(), key) < 0;
-}
-
-
-static decltype(keyValues)::iterator keyValuesLowerBound(
-    const char* key, bool* found = nullptr)
-{
-    auto iter = std::lower_bound(
-        keyValues.begin(), keyValues.end(), key, cmpByKeyIc);
-
-    if (found)
-        *found = (
-            iter != keyValues.end()
-            && dpso::str::cmpIc(iter->key.c_str(), key) == 0);
-
-    return iter;
-}
-
-
 void dpsoCfgLoadFp(FILE* fp)
 {
     keyValues.clear();
 
+    KeyValue kv;
     for (std::string line; getLine(fp, line);) {
-        auto kv = parseKeyValue(line.c_str());
-        if (kv.key.empty())
-            continue;
-
-        bool found;
-        auto iter = keyValuesLowerBound(kv.key.c_str(), &found);
-        if (found)
-            iter->value.swap(kv.value);
-        else
-            keyValues.insert(iter, std::move(kv));
+        parseKeyValue(line.c_str(), kv);
+        if (!kv.key.empty())
+            dpsoCfgSetStr(kv.key.c_str(), kv.value.c_str());
     }
 }
 
@@ -301,17 +293,15 @@ void dpsoCfgClear(void)
 
 int dpsoCfgKeyExists(const char* key)
 {
-    bool found;
-    keyValuesLowerBound(key, &found);
-    return found;
+    return dpsoCfgGetStr(key, nullptr) != nullptr;
 }
 
 
 const char* dpsoCfgGetStr(const char* key, const char* defaultVal)
 {
-    bool found;
-    const auto iter = keyValuesLowerBound(key, &found);
-    if (found)
+    const auto iter = keyValuesLowerBound(key);
+    if (iter != keyValues.end()
+            && cmpKeys(iter->key.c_str(), key) == 0)
         return iter->value.c_str();
 
     return defaultVal;
@@ -320,9 +310,9 @@ const char* dpsoCfgGetStr(const char* key, const char* defaultVal)
 
 void dpsoCfgSetStr(const char* key, const char* val)
 {
-    bool found;
-    auto iter = keyValuesLowerBound(key, &found);
-    if (found)
+    const auto iter = keyValuesLowerBound(key);
+    if (iter != keyValues.end() &&
+            cmpKeys(iter->key.c_str(), key) == 0)
         iter->value = val;
     else
         keyValues.insert(iter, {key, val});
