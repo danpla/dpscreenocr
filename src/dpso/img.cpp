@@ -133,14 +133,15 @@ static void vBoxBlur(
 }
 
 
-static int getNumBlurJobs(int numIters)
+static int getNumBoxBlurJobs(int numIters)
 {
-    return numIters * 2;
+    const auto numSubpassesPerIter = 2;  // vertical + horizontal
+    return numIters * numSubpassesPerIter;
 }
 
 
 // This version of boxBlur() advances the progressTracker
-// getNumBlurJobs() times. It's an implementation detail of both
+// getNumBoxBlurJobs() times. It's an implementation detail of both
 // public boxBlur() and unsharpMask().
 static void boxBlur(
     const std::uint8_t* src, int srcPitch,
@@ -151,7 +152,7 @@ static void boxBlur(
     ProgressTracker& progressTracker)
 {
     if (w < 1 || h < 1 || radius < 1 || numIters < 1) {
-        progressTracker.advanceJob(numIters * 2);
+        progressTracker.advanceJob(getNumBoxBlurJobs(numIters));
         return;
     }
 
@@ -184,7 +185,7 @@ void boxBlur(
         progressTracker->advanceJob();
 
     ProgressTracker localProgressTracker(
-        getNumBlurJobs(numIters), progressTracker);
+        getNumBoxBlurJobs(numIters), progressTracker);
     localProgressTracker.start();
 
     boxBlur(
@@ -269,7 +270,7 @@ void unsharpMask(
     ProgressTracker* progressTracker)
 {
     static const int numBlurIters = 2;
-    static const auto numJobs = getNumBlurJobs(numBlurIters) + 1;
+    static const auto numJobs = getNumBoxBlurJobs(numBlurIters) + 1;
 
     if (progressTracker)
         progressTracker->advanceJob();
