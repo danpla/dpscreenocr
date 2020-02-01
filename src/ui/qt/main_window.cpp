@@ -585,16 +585,17 @@ void MainWindow::checkHotkeyActions()
         dpsoUnbindAction(hotkeyActionCancelSelection);
 
         if (hotkeyAction == hotkeyActionToggleSelection) {
-            int x, y, w, h;
-            dpsoGetSelectionGeometry(&x, &y, &w, &h);
+            DpsoJobArgs jobArgs;
 
-            int jobFlags = 0;
+            dpsoGetSelectionGeometry(&jobArgs.screenRect);
+
+            jobArgs.flags = 0;
             if (splitTextBlocksCheck->isChecked())
-                jobFlags |= dpsoJobTextSegmentation;
+                jobArgs.flags |= dpsoJobTextSegmentation;
             if (dpsoCfgGetBool(cfgKeyOcrDumpDebugImage, false))
-                jobFlags |= dpsoJobDumpDebugImage;
+                jobArgs.flags |= dpsoJobDumpDebugImage;
 
-            dpsoQueueJob(x, y, w, h, jobFlags);
+            dpsoQueueJob(&jobArgs);
         }
     } else if (hotkeyAction == hotkeyActionToggleSelection
             && canStartSelection()) {

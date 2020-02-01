@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "geometry_c.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,7 +46,7 @@ void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled);
  * case it will return the geometry at the moment the selection was
  * disabled.
  */
-void dpsoGetSelectionGeometry(int* x, int* y, int* w, int* h);
+void dpsoGetSelectionGeometry(struct DpsoRect* rect);
 
 
 #ifdef __cplusplus

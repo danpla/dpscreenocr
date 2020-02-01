@@ -22,16 +22,8 @@ void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled)
 }
 
 
-void dpsoGetSelectionGeometry(int* x, int* y, int* w, int* h)
+void dpsoGetSelectionGeometry(struct DpsoRect* rect)
 {
-    const auto geom = getSelection().getGeometry();
-
-    if (x)
-        *x = geom.x;
-    if (y)
-        *y = geom.y;
-    if (w)
-        *w = geom.w;
-    if (h)
-        *h = geom.h;
+    if (rect)
+        *rect = getSelection().getGeometry().toCRect();
 }

@@ -96,13 +96,14 @@ static void checkHotkeyActions()
     const DpsoHotkeyAction hotkeyAction = dpsoGetLastHotkeyAction();
     if (hotkeyAction == hotkeyActionToggleSelection) {
         if (dpsoGetSelectionIsEnabled()) {
-            int jobFlags = dpsoJobTextSegmentation;
-            int x, y, w, h;
+            struct DpsoJobArgs jobArgs;
 
-            dpsoGetSelectionGeometry(&x, &y, &w, &h);
             dpsoSetSelectionIsEnabled(false);
 
-            dpsoQueueJob(x, y, w, h, jobFlags);
+            dpsoGetSelectionGeometry(&jobArgs.screenRect);
+            jobArgs.flags = dpsoJobTextSegmentation;
+
+            dpsoQueueJob(&jobArgs);
         } else
             dpsoSetSelectionIsEnabled(true);
     }

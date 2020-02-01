@@ -19,6 +19,8 @@
 
 #include <stddef.h>
 
+#include "geometry_c.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -94,13 +96,29 @@ typedef enum {
 
 
 /**
+ * OCR job arguments.
+ */
+struct DpsoJobArgs {
+    /**
+     * The rectangle to capture from screen for recognition.
+     */
+    struct DpsoRect screenRect;
+
+    /**
+     * Combination of DpsoJobFlag flags.
+     */
+    int flags;
+};
+
+
+/**
  * Queue OCR job.
  *
- * The function captures an image (x, y, w, h) from the screen and
- * queues it for OCR using the currently active languages. The result
- * is 1 if the job is queued, or 0 if not. The latter can happen if
- * there are no active languages, or if the smaller side of the image
- * rectangle clamped to the screen is less than 5 px.
+ * The function captures an image DpsoJobArgs::screenRect from the\
+ * screen and queues it for OCR using the currently active languages.
+ * The result is 1 if the job is queued, or 0 if not. The latter can
+ * happen if there are no active languages, or if the smaller side of
+ * the image rectangle clamped to the screen is less than 5 px.
  *
  * Unfortunately, Tesseract only works with "C" locale. This locale
  * is automatically set on dpsoQueueJob() calls, and restored after
@@ -108,7 +126,7 @@ typedef enum {
  * when all jobs are completed. Don't change the locale between these
  * two points.
  */
-int dpsoQueueJob(int x, int y, int w, int h, int jobFlags);
+int dpsoQueueJob(const struct DpsoJobArgs* jobArgs);
 
 
 struct DpsoProgress {

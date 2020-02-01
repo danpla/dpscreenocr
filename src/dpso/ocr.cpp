@@ -537,17 +537,19 @@ static void threadLoop()
 }
 
 
-int dpsoQueueJob(
-    int x, int y, int w, int h, int jobFlags)
+int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
 {
+    if (!jobArgs)
+        return false;
+
     updateTessLangsStr();
     if (tessLangsStr.empty())
         return false;
 
-    const dpso::Rect screenshotRect {x, y, w, h};
     START_TIMING(takeScreenshot);
     std::unique_ptr<dpso::backend::Screenshot> screenshot(
-        dpso::backend::getBackend().takeScreenshot(screenshotRect));
+        dpso::backend::getBackend().takeScreenshot(
+            dpso::Rect{jobArgs->screenRect}));
     END_TIMING(
         takeScreenshot,
         "Take screenshot (%ix%i px)",
@@ -562,7 +564,7 @@ int dpsoQueueJob(
             || screenshot->getHeight() < minScreenshotSize)
         return false;
 
-    Job job {std::move(screenshot), tessLangsStr, {}, jobFlags};
+    Job job {std::move(screenshot), tessLangsStr, {}, jobArgs->flags};
 
     const auto time = std::time(nullptr);
     if (const auto* tm = std::localtime(&time))
