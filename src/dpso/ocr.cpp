@@ -611,12 +611,13 @@ static std::vector<JobResult> fetchedResults;
 static std::vector<DpsoJobResult> returnResults;
 
 
-int dpsoFetchResults(int fetchChain)
+int dpsoFetchResults(DpsoResultFetchingMode fetchingMode)
 {
     std::lock_guard<std::mutex> guard(link.lock);
 
     if (link.results.empty()
-            || (fetchChain && link.jobsPending()))
+            || (fetchingMode == dpsoFetchFullChain
+                && link.jobsPending()))
         return false;
 
     fetchedResults.clear();

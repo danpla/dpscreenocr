@@ -164,29 +164,44 @@ void dpsoGetProgress(struct DpsoProgress* progress, int* isNew);
 int dpsoGetJobsPending(void);
 
 
+typedef enum {
+    /**
+     * Fetch currently available results.
+     *
+     * dpsoFetchResults() will fetch any currently available results,
+     * even if not all jobs are completed. Use this if you need to get
+     * results as soon as possible, but be aware that since jobs are
+     * processed in the background, new results may arrive even
+     * before the function returns.
+     */
+    dpsoFetchCurentlyAvailable,
+
+    /**
+     * Fetch full result chain.
+     *
+     * dpsoFetchResults() will only fetch results if all jobs are
+     * completed, that is, there are neither active nor queued jobs.
+     * In this case, you can be sure that there will be no new results
+     * unless dpsoQueueJob() is called after dpsoFetchResults().
+     */
+    dpsoFetchFullChain
+} DpsoResultFetchingMode;
+
+
 /**
  * Fetch job results.
  *
  * The function fetches the results of completed jobs to the internal
  * array you can access with dpsoGetFetchedResults().
  *
- * If fetchChain is 0, the function will fetch any currently
- * available results, even if not all jobs are completed. Use this if
- * you need to get results as soon as possible, but be aware that
- * since jobs are processed in the background, new results may arrive
- * even before this function returns. If fetchChain is not 0, the
- * function only fetches results if all jobs are completed, that is,
- * there are neither active nor queued jobs. In this case, you can be
- * sure that there will be no new results unless dpsoQueueJob() is
- * called after dpsoFetchResults().
- *
  * The function returns 1 if at least one result is fetched, or 0
  * otherwise, in which case the previously fetched results remain
  * valid.
  *
- * \sa dpsoGetResult()
+ * \sa DpsoResultFetchingMode
+ * \sa dpsoGetFetchedResults()
  */
-int dpsoFetchResults(int fetchChain);
+int dpsoFetchResults(DpsoResultFetchingMode fetchingMode);
 
 
 /**

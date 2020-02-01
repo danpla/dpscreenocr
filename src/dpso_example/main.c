@@ -77,7 +77,7 @@ static void checkResult()
     int numResults;
     int i;
 
-    if (!dpsoFetchResults(true))
+    if (!dpsoFetchResults(dpsoFetchFullChain))
         return;
 
     dpsoGetFetchedResults(&results, &numResults);

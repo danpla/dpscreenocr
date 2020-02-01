@@ -536,7 +536,7 @@ void MainWindow::updateStatus()
 
 void MainWindow::checkResult()
 {
-    if (!dpsoFetchResults(true))
+    if (!dpsoFetchResults(dpsoFetchFullChain))
         return;
 
     const DpsoJobResult* results;
