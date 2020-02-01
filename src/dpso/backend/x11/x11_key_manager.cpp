@@ -121,10 +121,9 @@ int X11KeyManager::getNumBindings() const
 }
 
 
-void X11KeyManager::getBinding(
-    int idx, HotkeyBinding& hotkeyBinding) const
+HotkeyBinding X11KeyManager::getBinding(int idx) const
 {
-    hotkeyBinding = x11bindings[idx].binding;
+    return x11bindings[idx].binding;
 }
 
 

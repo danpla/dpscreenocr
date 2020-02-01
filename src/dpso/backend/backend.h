@@ -77,8 +77,7 @@ public:
         const DpsoHotkey& hotkey, DpsoHotkeyAction action) = 0;
 
     virtual int getNumBindings() const = 0;
-    virtual void getBinding(
-        int idx, HotkeyBinding& hotkeyBinding) const = 0;
+    virtual HotkeyBinding getBinding(int idx) const = 0;
     virtual void removeBinding(int idx) = 0;
 };
 

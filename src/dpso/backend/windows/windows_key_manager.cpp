@@ -204,10 +204,9 @@ int WindowsKeyManager::getNumBindings() const
 }
 
 
-void WindowsKeyManager::getBinding(
-    int idx, HotkeyBinding& hotkeyBinding) const
+HotkeyBinding WindowsKeyManager::getBinding(int idx) const
 {
-    hotkeyBinding = bindings[idx];
+    return bindings[idx];
 }
 
 

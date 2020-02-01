@@ -64,15 +64,15 @@ int NullKeyManager::getNumBindings() const
 }
 
 
-void NullKeyManager::getBinding(
-    int idx, HotkeyBinding& hotkeyBinding) const
+HotkeyBinding NullKeyManager::getBinding(int idx) const
 {
-    hotkeyBinding = bindings[idx];
     MSG(
         "Get binding %i (%s; action %i)\n",
         idx,
         dpsoHotkeyToString(&bindings[idx].hotkey),
         bindings[idx].action);
+
+    return bindings[idx];
 }
 
 
