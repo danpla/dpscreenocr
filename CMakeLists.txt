@@ -17,7 +17,7 @@ set(APP_VERSION_PATCH "2")
 set(APP_VERSION "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_PATCH}")
 
 set(APP_AUTHOR "Daniel Plakhotich")
-set(APP_COPYRIGHT_YEAR "2019")
+set(APP_COPYRIGHT_YEAR "2019-2020")
 set(APP_URL "https://danpla.github.io/dpscreenocr/")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
