@@ -64,7 +64,7 @@ static void hBoxBlur(
     for (int y = 0; y < h; ++y) {
         const auto* srcRow = src + y * srcPitch;
 
-        int sum = *srcRow * (radius + 1);
+        auto sum = *srcRow * (radius + 1);
         for (int x = 1; x <= radius; ++x) {
             const auto* srcPx = srcRow + std::min(x, w - 1);
             sum += *srcPx;
@@ -108,7 +108,7 @@ static void vBoxBlur(
     for (int x = 0; x < w; ++x) {
         const auto* srcCol = src + x;
 
-        int sum = *srcCol * (radius + 1);
+        auto sum = *srcCol * (radius + 1);
         for (int y = 1; y <= radius; ++y) {
             const auto* srcPx = (
                 srcCol + std::min(y, h - 1) * srcPitch);
@@ -220,7 +220,7 @@ static void unsharp(
         auto* dstPx = dst + y * dstPitch;
 
         for (int x = 0; x < w; ++x) {
-            const int diff = *srcPx - *blurredPx;
+            const auto diff = *srcPx - *blurredPx;
             int value = *srcPx + diff * amount;
             if (value < 0)
                 value = 0;
@@ -269,7 +269,7 @@ void unsharpMask(
     float amount,
     ProgressTracker* progressTracker)
 {
-    static const int numBlurIters = 2;
+    static const auto numBlurIters = 2;
     static const auto numJobs = getNumBoxBlurJobs(numBlurIters) + 1;
 
     if (progressTracker)
