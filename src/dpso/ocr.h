@@ -114,7 +114,7 @@ struct DpsoJobArgs {
 /**
  * Queue OCR job.
  *
- * The function captures an image DpsoJobArgs::screenRect from the\
+ * The function captures an image DpsoJobArgs::screenRect from the
  * screen and queues it for OCR using the currently active languages.
  * The result is 1 if the job is queued, or 0 if not. The latter can
  * happen if there are no active languages, or if the smaller side of
