@@ -10,7 +10,6 @@
 #include <cstdio>
 #include <cstring>
 #include <ctime>
-#include <memory>
 #include <mutex>
 #include <queue>
 #include <string>
@@ -547,9 +546,8 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
         return false;
 
     START_TIMING(takeScreenshot);
-    std::unique_ptr<dpso::backend::Screenshot> screenshot(
-        dpso::backend::getBackend().takeScreenshot(
-            dpso::Rect{jobArgs->screenRect}));
+    auto screenshot = dpso::backend::getBackend().takeScreenshot(
+        dpso::Rect{jobArgs->screenRect});
     END_TIMING(
         takeScreenshot,
         "Take screenshot (%ix%i px)",

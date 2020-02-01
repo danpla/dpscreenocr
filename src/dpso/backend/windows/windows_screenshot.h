@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <memory>
-
 #include "backend/backend.h"
 
 
@@ -12,7 +10,7 @@ namespace backend {
 
 class WindowsScreenshot : public Screenshot {
 public:
-    static WindowsScreenshot* take(const Rect& rect);
+    static std::unique_ptr<WindowsScreenshot> take(const Rect& rect);
 
     int getWidth() const override;
     int getHeight() const override;

@@ -20,7 +20,7 @@ public:
 
     KeyManager& getKeyManager() override;
     Selection& getSelection() override;
-    Screenshot* takeScreenshot(const Rect& rect) override;
+    std::unique_ptr<Screenshot> takeScreenshot(const Rect& rect) override;
 
     void update() override;
 private:

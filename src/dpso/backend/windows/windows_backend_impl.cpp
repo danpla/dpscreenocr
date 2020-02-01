@@ -49,7 +49,7 @@ WindowsSelection& WindowsBackendImpl::getSelection()
 }
 
 
-WindowsScreenshot* WindowsBackendImpl::takeScreenshot(
+std::unique_ptr<WindowsScreenshot> WindowsBackendImpl::takeScreenshot(
     const Rect& rect)
 {
     return WindowsScreenshot::take(rect);

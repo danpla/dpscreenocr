@@ -12,7 +12,7 @@ namespace backend {
 
 class X11Screenshot : public Screenshot {
 public:
-    static X11Screenshot* take(Display* display, const Rect& rect);
+    static std::unique_ptr<X11Screenshot> take(Display* display, const Rect& rect);
 
     ~X11Screenshot();
 

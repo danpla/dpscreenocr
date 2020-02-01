@@ -21,7 +21,8 @@ public:
 
     WindowsKeyManager& getKeyManager() override;
     WindowsSelection& getSelection() override;
-    WindowsScreenshot* takeScreenshot(const Rect& rect) override;
+    std::unique_ptr<WindowsScreenshot> takeScreenshot(
+        const Rect& rect) override;
 
     void update() override;
 private:

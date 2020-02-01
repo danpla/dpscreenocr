@@ -31,7 +31,7 @@ namespace dpso {
 namespace backend {
 
 
-X11Screenshot* X11Screenshot::take(
+std::unique_ptr<X11Screenshot> X11Screenshot::take(
     Display* display, const Rect& rect)
 {
     auto* screen = XDefaultScreenOfDisplay(display);
@@ -53,7 +53,8 @@ X11Screenshot* X11Screenshot::take(
         ZPixmap);
 
     if (image)
-        return new X11Screenshot(image);
+        return std::unique_ptr<X11Screenshot>(
+            new X11Screenshot(image));
     else
         return nullptr;
 }

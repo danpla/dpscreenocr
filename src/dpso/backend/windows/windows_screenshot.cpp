@@ -14,7 +14,8 @@ namespace dpso {
 namespace backend {
 
 
-WindowsScreenshot* WindowsScreenshot::take(const Rect& rect)
+std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
+    const Rect& rect)
 {
     const Rect virtualScreenRect {
         GetSystemMetrics(SM_XVIRTUALSCREEN),
@@ -76,8 +77,8 @@ WindowsScreenshot* WindowsScreenshot::take(const Rect& rect)
         reinterpret_cast<BITMAPINFO*>(&bi),
         DIB_RGB_COLORS);
 
-    return new WindowsScreenshot(
-        std::move(buf), captureRect.w, captureRect.h, pitch);
+    return std::unique_ptr<WindowsScreenshot>(new WindowsScreenshot(
+        std::move(buf), captureRect.w, captureRect.h, pitch));
 }
 
 

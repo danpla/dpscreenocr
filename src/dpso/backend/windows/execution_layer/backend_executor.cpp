@@ -46,7 +46,7 @@ SelectionExecutor& WindowsBackendExecutor::getSelection()
 }
 
 
-WindowsScreenshot* WindowsBackendExecutor::takeScreenshot(
+std::unique_ptr<WindowsScreenshot> WindowsBackendExecutor::takeScreenshot(
     const Rect& rect)
 {
     // We can take screenshots form any thread.

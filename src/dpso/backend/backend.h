@@ -2,6 +2,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include <stdexcept>
 
 #include "geometry.h"
@@ -161,7 +162,8 @@ public:
      * Returns null on errors. It's left for you to decide whether
      * an empty rectangle (after clamping to screen) is an error.
      */
-    virtual Screenshot* takeScreenshot(const Rect& rect) = 0;
+    virtual std::unique_ptr<Screenshot> takeScreenshot(
+        const Rect& rect) = 0;
 
     virtual void update() = 0;
 };
