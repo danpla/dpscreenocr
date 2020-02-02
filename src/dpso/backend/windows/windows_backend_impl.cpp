@@ -5,6 +5,7 @@
 
 #include <windows.h>
 
+#include "backend/windows/windows_screenshot.h"
 #include "utils.h"
 
 
@@ -49,7 +50,7 @@ WindowsSelection& WindowsBackendImpl::getSelection()
 }
 
 
-std::unique_ptr<WindowsScreenshot> WindowsBackendImpl::takeScreenshot(
+std::unique_ptr<Screenshot> WindowsBackendImpl::takeScreenshot(
     const Rect& rect)
 {
     return WindowsScreenshot::take(rect);

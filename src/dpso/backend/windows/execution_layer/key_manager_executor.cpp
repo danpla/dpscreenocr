@@ -50,10 +50,9 @@ int KeyManagerExecutor::getNumBindings() const
 }
 
 
-void KeyManagerExecutor::getBinding(
-    int idx, HotkeyBinding& hotkeyBinding) const
+HotkeyBinding KeyManagerExecutor::getBinding(int idx) const
 {
-    EXEC_DELEGATE(getBinding(idx, hotkeyBinding));
+    return EXEC_DELEGATE(getBinding(idx));
 }
 
 

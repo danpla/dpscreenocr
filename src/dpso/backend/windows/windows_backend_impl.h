@@ -7,7 +7,6 @@
 
 #include "backend/backend.h"
 #include "backend/windows/windows_key_manager.h"
-#include "backend/windows/windows_screenshot.h"
 #include "backend/windows/windows_selection.h"
 
 
@@ -21,7 +20,7 @@ public:
 
     WindowsKeyManager& getKeyManager() override;
     WindowsSelection& getSelection() override;
-    std::unique_ptr<WindowsScreenshot> takeScreenshot(
+    std::unique_ptr<Screenshot> takeScreenshot(
         const Rect& rect) override;
 
     void update() override;

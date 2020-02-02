@@ -22,8 +22,7 @@ public:
         const DpsoHotkey& hotkey, DpsoHotkeyAction action) override;
 
     int getNumBindings() const override;
-    void getBinding(
-        int idx, HotkeyBinding& hotkeyBinding) const override;
+    HotkeyBinding getBinding(int idx) const override;
     void removeBinding(int idx) override;
 
     void clearLastHotkeyAction();
