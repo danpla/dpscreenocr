@@ -11,7 +11,7 @@ namespace backend {
 
 
 KeyManagerExecutor::KeyManagerExecutor(
-        WindowsKeyManager& keyManager, ActionExecutor& actionExecutor)
+        KeyManager& keyManager, ActionExecutor& actionExecutor)
     : keyManager {&keyManager}
     , actionExecutor {&actionExecutor}
 {
@@ -59,18 +59,6 @@ HotkeyBinding KeyManagerExecutor::getBinding(int idx) const
 void KeyManagerExecutor::removeBinding(int idx)
 {
     EXEC_DELEGATE(removeBinding(idx));
-}
-
-
-void KeyManagerExecutor::clearLastHotkeyAction()
-{
-    EXEC_DELEGATE(clearLastHotkeyAction());
-}
-
-
-void KeyManagerExecutor::handleWmHotkey(const MSG& msg)
-{
-    EXEC_DELEGATE(handleWmHotkey(msg));
 }
 
 

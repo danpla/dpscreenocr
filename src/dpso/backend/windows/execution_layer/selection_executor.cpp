@@ -11,7 +11,7 @@ namespace backend {
 
 
 SelectionExecutor::SelectionExecutor(
-        WindowsSelection& selection, ActionExecutor& actionExecutor)
+        Selection& selection, ActionExecutor& actionExecutor)
     : selection {&selection}
     , actionExecutor {&actionExecutor}
 {
@@ -34,12 +34,6 @@ void SelectionExecutor::setIsEnabled(bool newIsEnabled)
 Rect SelectionExecutor::getGeometry() const
 {
     return EXEC_DELEGATE(getGeometry());
-}
-
-
-void SelectionExecutor::update()
-{
-    EXEC_DELEGATE(update());
 }
 
 

@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <memory>
-
 #include <windows.h>
 
 #include "backend/backend.h"
@@ -18,8 +16,8 @@ class WindowsBackendImpl : public Backend {
 public:
     WindowsBackendImpl();
 
-    WindowsKeyManager& getKeyManager() override;
-    WindowsSelection& getSelection() override;
+    KeyManager& getKeyManager() override;
+    Selection& getSelection() override;
     std::unique_ptr<Screenshot> takeScreenshot(
         const Rect& rect) override;
 

@@ -34,13 +34,13 @@ WindowsBackendExecutor::~WindowsBackendExecutor()
 }
 
 
-KeyManagerExecutor& WindowsBackendExecutor::getKeyManager()
+KeyManager& WindowsBackendExecutor::getKeyManager()
 {
     return *keyManagerExecutor;
 }
 
 
-SelectionExecutor& WindowsBackendExecutor::getSelection()
+Selection& WindowsBackendExecutor::getSelection()
 {
     return *selectionExecutor;
 }

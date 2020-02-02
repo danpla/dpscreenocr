@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include <windows.h>
-
 #include "backend/windows/windows_screenshot.h"
 #include "utils.h"
 
@@ -38,13 +36,13 @@ WindowsBackendImpl::WindowsBackendImpl()
 }
 
 
-WindowsKeyManager& WindowsBackendImpl::getKeyManager()
+KeyManager& WindowsBackendImpl::getKeyManager()
 {
     return *keyManager;
 }
 
 
-WindowsSelection& WindowsBackendImpl::getSelection()
+Selection& WindowsBackendImpl::getSelection()
 {
     return *selection;
 }

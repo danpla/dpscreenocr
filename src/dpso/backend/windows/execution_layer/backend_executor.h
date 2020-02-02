@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <memory>
-
 #include "backend/windows/execution_layer/action_executor.h"
 #include "backend/windows/execution_layer/key_manager_executor.h"
 #include "backend/windows/execution_layer/selection_executor.h"
@@ -18,8 +16,8 @@ public:
     WindowsBackendExecutor();
     ~WindowsBackendExecutor();
 
-    KeyManagerExecutor& getKeyManager() override;
-    SelectionExecutor& getSelection() override;
+    KeyManager& getKeyManager() override;
+    Selection& getSelection() override;
     std::unique_ptr<Screenshot> takeScreenshot(
         const Rect& rect) override;
 
