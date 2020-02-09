@@ -2,4 +2,4 @@
 #include "paths.h"
 
 
-const char* localeDir = "@APP_LOCALE_DIR@";
+const char* const localeDir = "@APP_LOCALE_DIR@";

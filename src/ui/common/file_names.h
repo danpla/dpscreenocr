@@ -2,6 +2,6 @@
 #pragma once
 
 
-extern const char* appFileName;
-extern const char* cfgFileName;
-extern const char* historyFileName;
+extern const char* const appFileName;
+extern const char* const cfgFileName;
+extern const char* const historyFileName;

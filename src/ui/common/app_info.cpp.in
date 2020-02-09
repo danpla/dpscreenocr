@@ -2,13 +2,13 @@
 #include "app_info.h"
 
 
-const char* appName = "@APP_NAME@";
-const char* appVersion = "@APP_VERSION@";
-const char* appWebsite = "@APP_URL@";
+const char* const appName = "@APP_NAME@";
+const char* const appVersion = "@APP_VERSION@";
+const char* const appWebsite = "@APP_URL@";
 
 #define COPYRIGHT "Copyright \302\251 @APP_COPYRIGHT_YEAR@ @APP_AUTHOR@"
-const char* appCopyright = COPYRIGHT;
-const char* appLicense = (
+const char* const appCopyright = COPYRIGHT;
+const char* const appLicense = (
     COPYRIGHT "\n"
     "\n"
     "This software is provided 'as-is', without any express or implied\n"

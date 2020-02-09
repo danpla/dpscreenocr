@@ -8,4 +8,4 @@
  * path pointing to installation prefix + "share/locale". On platforms
  * that don't use it, it may be empty.
  */
-extern const char* localeDir;
+extern const char* const localeDir;

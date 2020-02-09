@@ -87,7 +87,7 @@ static void throwLastError(const char* description)
 }
 
 
-const auto* windowClassName = "DpsoSelectionWindow";
+const auto* const windowClassName = "DpsoSelectionWindow";
 
 
 static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)

@@ -2,6 +2,6 @@
 #include "file_names.h"
 
 
-const char* appFileName = "@APP_FILE_NAME@";
-const char* cfgFileName = "settings.cfg";
-const char* historyFileName = "history.txt";
+const char* const appFileName = "@APP_FILE_NAME@";
+const char* const cfgFileName = "settings.cfg";
+const char* const historyFileName = "history.txt";
