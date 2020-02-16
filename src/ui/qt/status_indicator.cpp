@@ -29,21 +29,26 @@ QSize StatusIndicator::minimumSizeHint() const
 }
 
 
+static const QColor& getStatusColor(Status status)
+{
+    static QColor green(0x60, 0xee, 0x60);
+    static QColor yellow(0xee, 0xee, 0x60);
+    static QColor red(0xee, 0x60, 0x60);
+
+    if (status == Status::ok)
+        return green;
+    else if (status == Status::busy)
+        return yellow;
+    else
+        return red;
+}
+
+
 void StatusIndicator::paintEvent(QPaintEvent* event)
 {
     (void)event;
 
-    static QColor green(0x60, 0xee, 0x60);
-    static QColor yellow(0xee, 0xee, 0x60);
-    static QColor red(0xee, 0x60, 0x64);
-
-    QColor* color;
-    if (status == Status::ok)
-        color = &green;
-    else if (status == Status::busy)
-        color = &yellow;
-    else
-        color = &red;
+    const auto& color = getStatusColor(status);
 
     const auto size = qMin(width(), height());
     const auto strokeWidth = size / 6.0f;
@@ -57,7 +62,7 @@ void StatusIndicator::paintEvent(QPaintEvent* event)
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(color->darker(200), strokeWidth));
-    painter.setBrush(*color);
+    painter.setPen(QPen(color.darker(200), strokeWidth));
+    painter.setBrush(color);
     painter.drawEllipse(rect);
 }
