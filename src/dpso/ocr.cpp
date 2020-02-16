@@ -2,6 +2,7 @@
 #include "ocr_private.h"
 
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <chrono>
 #include <clocale>
@@ -222,17 +223,17 @@ int dpsoGetNumActiveLangs()
 }
 
 
-// ISO 8601 needs 19 characters (YYYY-MM-DD HH:MM:SS) + null.
-const std::size_t timestampBufSize = 20;
-
-
 namespace {
+
+
+// 19 characters for ISO 8601 (YYYY-MM-DD HH:MM:SS) + null.
+using Timestamp = std::array<char, 20>;
 
 
 struct Job {
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     std::string tessLangsStr;
-    char timestamp[timestampBufSize];
+    Timestamp timestamp;
     int flags;
 };
 
@@ -240,10 +241,27 @@ struct Job {
 struct JobResult {
     std::unique_ptr<char[]> text;
     std::size_t textLen;
-    char timestamp[timestampBufSize];
+    Timestamp timestamp;
 };
 
 
+}
+
+
+static Timestamp createTimestamp()
+{
+    // We are still targeting old GCC versions, so double braces are
+    // needed to avoid -Wmissing-field-initializers.
+    Timestamp timestamp {{}};
+
+    const auto time = std::time(nullptr);
+    if (const auto* tm = std::localtime(&time))
+        if (std::strftime(
+                timestamp.data(), timestamp.size(),
+                "%Y-%m-%d %H:%M:%S", tm) == 0)
+            timestamp[0] = 0;
+
+    return timestamp;
 }
 
 
@@ -479,12 +497,11 @@ static void processJob(const Job& job)
         text.reset(new char[1]());
 
     // Initialize textLen with 0 rather than {} to avoid an error
-    // in old GCC versions (< 5.2):
+    // in old GCC versions (< 5.1):
     //    error: braces around scalar initializer for type
-    JobResult jobResult {std::move(text), 0, {}};
+    JobResult jobResult {std::move(text), 0, job.timestamp};
     dpso::str::prettifyOcrText(
         jobResult.text.get(), &jobResult.textLen);
-    std::strcpy(jobResult.timestamp, job.timestamp);
 
     link.results.push_back(std::move(jobResult));
 }
@@ -562,14 +579,12 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
             || screenshot->getHeight() < minScreenshotSize)
         return false;
 
-    Job job {std::move(screenshot), tessLangsStr, {}, jobArgs->flags};
-
-    const auto time = std::time(nullptr);
-    if (const auto* tm = std::localtime(&time))
-        if (std::strftime(
-                job.timestamp, timestampBufSize,
-                "%Y-%m-%d %H:%M:%S", tm) == 0)
-            job.timestamp[0] = 0;
+    Job job {
+        std::move(screenshot),
+        tessLangsStr,
+        createTimestamp(),
+        jobArgs->flags
+    };
 
     setCLocale();
 
@@ -627,7 +642,9 @@ int dpsoFetchResults(DpsoResultFetchingMode fetchingMode)
     returnResults.reserve(fetchedResults.size());
     for (const auto& result : fetchedResults)
         returnResults.push_back(
-            {result.text.get(), result.textLen, result.timestamp});
+            {result.text.get(),
+                result.textLen,
+                result.timestamp.data()});
 
     if (!link.jobsPending())
         restoreLocale();
