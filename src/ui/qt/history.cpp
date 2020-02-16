@@ -121,7 +121,6 @@ void History::saveAs()
     // selectNameFilter() is not guaranteed to work with native
     // dialogs, or maybe this is a bug with Qt 5.2.1 on my GTK
     // desktop.
-    static QString selectedNameFilter;
     if (!selectedNameFilter.isEmpty())
         dialog.selectNameFilter(selectedNameFilter);
 

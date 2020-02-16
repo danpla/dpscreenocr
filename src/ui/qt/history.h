@@ -44,6 +44,8 @@ private:
     QPushButton* clearButton;
     QPushButton* saveAsButton;
 
+    QString selectedNameFilter;
+
     void setButtonsEnabled(bool enabled);
     void appendToTextEdit(const char* text, const char* timestamp);
 };
