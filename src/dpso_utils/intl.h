@@ -40,29 +40,11 @@ extern "C" {
 #endif
 
 
-#if defined(__cplusplus)
-    #define DPSO_INLINE inline
-#elif defined(__GNUC__)
-    #define DPSO_INLINE __inline__
-/* Tests from SDL (begin_code.h) */
-#elif defined(_MSC_VER) || defined(__BORLANDC__) || \
-        defined(__DMC__) || defined(__SC__) || \
-        defined(__WATCOMC__) || defined(__LCC__) || \
-        defined(__DECC) || defined(__CC_ARM)
-    #define DPSO_INLINE __inline
-#endif
-
-
 #define pgettext(msgCtx, msgId) \
     pgettext_aux(msgCtx "\004" msgId, msgId)
 
 
-static DPSO_INLINE const char* pgettext_aux(
-    const char* msgCtxId, const char* msgId)
-{
-    const char* translated = gettext(msgCtxId);
-    return translated == msgCtxId ? msgId : translated;
-}
+const char* pgettext_aux(const char* msgCtxId, const char* msgId);
 
 
 const char* pgettext_expr(const char* msgCtx, const char* msgId);
@@ -72,16 +54,9 @@ const char* pgettext_expr(const char* msgCtx, const char* msgId);
     npgettext_aux(msgCtx "\004" msgId1, msgId1, msgId2, N)
 
 
-static DPSO_INLINE const char* npgettext_aux(
+const char* npgettext_aux(
     const char* msgCtxId, const char* msgId1, const char* msgId2,
-    unsigned long n)
-{
-    const char* translated = ngettext(msgCtxId, msgId2, n);
-    if (translated == msgCtxId || translated == msgId2)
-        return n == 1 ? msgId1 : msgId2;
-    else
-        return translated;
-}
+    unsigned long n);
 
 
 const char* npgettext_expr(
