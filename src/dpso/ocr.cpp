@@ -161,25 +161,15 @@ const char* dpsoGetLangCode(int langIdx)
 
 int dpsoGetLangIdx(const char* langCode, size_t langCodeLen)
 {
-    struct CmpByCode {
-        explicit CmpByCode(std::size_t langCodeLen)
-            : langCodeLen {langCodeLen}
-        {
-
-        }
-
-        bool operator()(
-            const Lang& lang, const char* langCode) const
-        {
-            return dpso::str::cmpSubStr(
-                lang.code.c_str(), langCode, langCodeLen) < 0;
-        }
-
-        std::size_t langCodeLen;
+    auto cmpByCode = [langCodeLen](
+        const Lang& lang, const char* langCode)
+    {
+        return dpso::str::cmpSubStr(
+            lang.code.c_str(), langCode, langCodeLen) < 0;
     };
 
     const auto iter = std::lower_bound(
-        langs.begin(), langs.end(), langCode, CmpByCode(langCodeLen));
+        langs.begin(), langs.end(), langCode, cmpByCode);
 
     if (iter != langs.end()
             && dpso::str::cmpSubStr(
