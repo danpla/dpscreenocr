@@ -108,11 +108,15 @@ void History::saveAs()
     dialog.setWindowTitle(dynStr.saveHistory);
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setNameFilter(
-        dynStr.plainText + " (*.txt);;"
-        + "HTML (*.html *.htm);;"
-        + "JSON (*.json);;"
-        + dynStr.allFiles + " (*)");
+
+    QStringList nameFilters{
+        dynStr.plainText + " (*.txt)",
+        "HTML (*.html *.htm)",
+        "JSON (*.json)",
+        dynStr.allFiles + " (*)"
+    };
+
+    dialog.setNameFilters(nameFilters);
 
     // selectNameFilter() is not guaranteed to work with native
     // dialogs, or maybe this is a bug with Qt 5.2.1 on my GTK
