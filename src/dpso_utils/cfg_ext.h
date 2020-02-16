@@ -10,7 +10,7 @@ extern "C" {
 /**
  * Load currently active languages.
  *
- * All languages not listed in the key value are disabled.
+ * All languages not listed in the key's value are disabled.
  *
  * If the key doesn't exist, the language with fallbackLangCode is
  * enabled, if available. Pass an empty string as fallbackLangCode if

@@ -712,7 +712,7 @@ void dpsoTerminateJobs(void)
     waitJobsToFinish();
 
     // Locking here is not actually necessary since the idling
-    // background thread don't access variables we use below.
+    // background thread doesn't access variables we use below.
     std::lock_guard<std::mutex> guard(link.lock);
 
     link.results.clear();
