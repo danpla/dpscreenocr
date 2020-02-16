@@ -20,6 +20,7 @@ Website: [https://danpla.github.io/dpscreenocr](https://danpla.github.io/dpscree
 
 There are several ways you can help the project:
 
-*   Translate the program into your language
+*   [Translate](https://hosted.weblate.org/projects/dpscreenocr/) the program
+    into your language
 *   Create a package for your system
 *   Help to port the program to macOS
