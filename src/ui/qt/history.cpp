@@ -2,7 +2,6 @@
 #include "history.h"
 
 #include <QDir>
-#include <QFile>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QVBoxLayout>

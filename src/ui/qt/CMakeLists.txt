@@ -29,6 +29,7 @@ set(
     SRCS
 
     about.cpp
+    action_chooser.cpp
     history.cpp
     hotkey_editor.cpp
     lang_browser.cpp

@@ -3,7 +3,6 @@
 
 #include <QCheckBox>
 #include <QLabel>
-#include <QLineEdit>
 #include <QString>
 #include <QTabWidget>
 #include <QTimerEvent>
@@ -12,6 +11,7 @@
 #include "status.h"
 
 
+class ActionChooser;
 class History;
 class HotkeyEditor;
 class LangBrowser;
@@ -28,7 +28,6 @@ protected:
     void timerEvent(QTimerEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
 private slots:
-    void chooseExe();
     void invalidateStatus();
 private:
     enum HotkeyAction {
@@ -38,7 +37,6 @@ private:
     };
 
     struct DynamicStrings {
-        QString chooseExeDialogTitle;
         QString progress;
         QString installLangs;
         QString selectLangs;
@@ -69,10 +67,7 @@ private:
     HotkeyEditor* hotkeyEditor;
 
     QWidget* actionsTab;
-    QCheckBox* copyToClipboardCheck;
-    QCheckBox* addToHistoryCheck;
-    QCheckBox* runExeCheck;
-    QLineEdit* exeLineEdit;
+    ActionChooser* actionChooser;
 
     QString copyToClipboardTextSeparator;
     bool runExeWaitToComplete;

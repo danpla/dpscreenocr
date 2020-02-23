@@ -6,13 +6,9 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QCloseEvent>
-#include <QDir>
-#include <QFileDialog>
-#include <QFileInfo>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QMessageBox>
-#include <QPushButton>
 #include <QVBoxLayout>
 
 #include "default_config.h"
@@ -36,6 +32,7 @@
 #include "common/common.h"
 
 #include "about.h"
+#include "action_chooser.h"
 #include "history.h"
 #include "hotkey_editor.h"
 #include "lang_browser.h"
@@ -89,8 +86,6 @@ MainWindow::~MainWindow()
 
 MainWindow::DynamicStrings::DynamicStrings()
 {
-    chooseExeDialogTitle = _("Choose an executable");
-
     progress = _(
         "Recognition {progress}% ({current_job}/{total_jobs})");
 
@@ -134,32 +129,6 @@ void MainWindow::closeEvent(QCloseEvent* event)
     dpsoSetHotheysEnabled(false);
 
     event->accept();
-}
-
-
-void MainWindow::chooseExe()
-{
-    auto exePath = QDir::fromNativeSeparators(
-        exeLineEdit->text().trimmed());
-
-    auto exeDir = QFileInfo(exePath).dir().path();
-    if (exeDir == "." || !QDir(exeDir).exists())
-        // exeDir is '.' when QDir is constructed with an empty
-        // string. This happens if the line edit is either empty or
-        // contains just an exe name.
-        exeDir = QDir::homePath();
-
-    QFileDialog::Options options = 0;
-    if (!dpsoCfgGetBool(cfgKeyUiNativeFileDialogs, true))
-        options |= QFileDialog::DontUseNativeDialog;
-
-    exePath = QFileDialog::getOpenFileName(
-        this,
-        dynStr.chooseExeDialogTitle, exeDir, "", nullptr, options);
-    if (exePath.isEmpty())
-        return;
-
-    exeLineEdit->setText(QDir::toNativeSeparators(exePath));
 }
 
 
@@ -220,62 +189,25 @@ QWidget* MainWindow::createMainTab()
 }
 
 
+// The purpose of dummy tab widgets in create*Tab() methods is their
+// layouts that will add margins around wrapped widgets.
+
+
 QWidget* MainWindow::createActionsTab()
 {
-    copyToClipboardCheck = new QCheckBox(_("Copy text to clipboard"));
-    addToHistoryCheck = new QCheckBox(_("Add text to history"));
-
-    runExeCheck = new QCheckBox(_("Run executable:"));
-    runExeCheck->setToolTip(
-        _("Run an executable with the recognized text as the "
-            "first argument"));
-    exeLineEdit = new QLineEdit();
-    exeLineEdit->setEnabled(false);
-
-    auto* selectExeButton = new QPushButton("\342\200\246");
-    selectExeButton->setEnabled(false);
+    actionChooser = new ActionChooser();
     connect(
-        selectExeButton, SIGNAL(clicked()),
-        this, SLOT(chooseExe()));
-
-    connect(
-        runExeCheck, SIGNAL(toggled(bool)),
-        exeLineEdit, SLOT(setEnabled(bool)));
-    connect(
-        runExeCheck, SIGNAL(toggled(bool)),
-        selectExeButton, SLOT(setEnabled(bool)));
-
-    connect(
-        copyToClipboardCheck, SIGNAL(toggled(bool)),
-        this, SLOT(invalidateStatus()));
-    connect(
-        addToHistoryCheck, SIGNAL(toggled(bool)),
-        this, SLOT(invalidateStatus()));
-    connect(
-        runExeCheck, SIGNAL(toggled(bool)),
+        actionChooser, SIGNAL(actionsChanged()),
         this, SLOT(invalidateStatus()));
 
     auto* tabLayout = new QVBoxLayout();
-    tabLayout->addWidget(copyToClipboardCheck);
-    tabLayout->addWidget(addToHistoryCheck);
-
-    auto* execLayout = new QHBoxLayout();
-    execLayout->addWidget(runExeCheck);
-    execLayout->addWidget(exeLineEdit, 1);
-    execLayout->addWidget(selectExeButton);
-    tabLayout->addLayout(execLayout);
-
+    tabLayout->addWidget(actionChooser);
     tabLayout->addStretch();
 
     actionsTab = new QWidget();
     actionsTab->setLayout(tabLayout);
     return actionsTab;
 }
-
-
-// The purpose of dummy widgets in createHistoryTab() and
-// createAboutTab() is their layouts that will add margins around
-// History and About widgets.
 
 
 QWidget* MainWindow::createHistoryTab()
@@ -323,15 +255,6 @@ void MainWindow::loadState()
 
     hotkeyEditor->assignHotkey();
 
-    copyToClipboardCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyActionCopyToClipboard, false));
-    addToHistoryCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyActionAddToHistory, true));
-    runExeCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyActionRunExecutable, false));
-    exeLineEdit->setText(
-        dpsoCfgGetStr(cfgKeyActionRunExecutablePath, ""));
-
     copyToClipboardTextSeparator = dpsoCfgGetStr(
         cfgKeyActionCopyToClipboardTextSeparator, "\n\n");
     runExeWaitToComplete = dpsoCfgGetBool(
@@ -353,6 +276,7 @@ void MainWindow::loadState()
         setWindowState(windowState() | Qt::WindowMaximized);
 
     langBrowser->loadState();
+    actionChooser->loadState();
     history->loadState();
 }
 
@@ -392,6 +316,7 @@ void MainWindow::initReadOnlyCfgKeys() const
 void MainWindow::saveState() const
 {
     history->saveState();
+    actionChooser->saveState();
     langBrowser->saveState();
 
     initReadOnlyCfgKeys();
@@ -399,19 +324,6 @@ void MainWindow::saveState() const
     dpsoCfgSetBool(
         cfgKeyOcrSplitTextBlocks,
         splitTextBlocksCheck->isChecked());
-
-    dpsoCfgSetBool(
-        cfgKeyActionCopyToClipboard,
-        copyToClipboardCheck->isChecked());
-    dpsoCfgSetBool(
-        cfgKeyActionAddToHistory,
-        addToHistoryCheck->isChecked());
-    dpsoCfgSetBool(
-        cfgKeyActionRunExecutable,
-        runExeCheck->isChecked());
-    dpsoCfgSetStr(
-        cfgKeyActionRunExecutablePath,
-        exeLineEdit->text().toUtf8().data());
 
     dpsoCfgSetInt(cfgKeyUiActiveTab, tabs->currentIndex());
 
@@ -436,9 +348,7 @@ bool MainWindow::canStartSelection() const
     return (
         dpsoGetNumActiveLangs() > 0
         && (ocrAllowQueuing || !dpsoGetJobsPending())
-        && (copyToClipboardCheck->isChecked()
-            || addToHistoryCheck->isChecked()
-            || runExeCheck->isChecked()));
+        && actionChooser->getSelectedActions());
 }
 
 
@@ -518,14 +428,11 @@ void MainWindow::updateStatus()
 
     if (statusValid)
         return;
-
     if (dpsoGetNumLangs() == 0)
         setStatus(Status::warning, dynStr.installLangs);
     else if (dpsoGetNumActiveLangs() == 0)
         setStatus(Status::warning, dynStr.selectLangs);
-    else if (!copyToClipboardCheck->isChecked()
-            && !addToHistoryCheck->isChecked()
-            && !runExeCheck->isChecked())
+    else if (!actionChooser->getSelectedActions())
         setStatus(Status::warning, dynStr.selectActions);
     else
         setStatus(Status::ok, dynStr.ready);
@@ -543,7 +450,9 @@ void MainWindow::checkResult()
     int numResults;
     dpsoGetFetchedResults(&results, &numResults);
 
-    if (copyToClipboardCheck->isChecked()) {
+    const auto actions = actionChooser->getSelectedActions();
+
+    if (actions & ActionChooser::Action::copyToClipboard) {
         static QString fullText;
         fullText.clear();
 
@@ -559,14 +468,14 @@ void MainWindow::checkResult()
         clipboard->setText(fullText, QClipboard::Selection);
     }
 
-    if (addToHistoryCheck->isChecked())
+    if (actions & ActionChooser::Action::addToHistory)
         for (int i = 0; i < numResults; ++i)
             history->append(results[i].text, results[i].timestamp);
 
-    if (runExeCheck->isChecked())
+    if (actions & ActionChooser::Action::runExe)
         for (int i = 0; i < numResults; ++i)
             dpsoExec(
-                exeLineEdit->text().toUtf8().data(),
+                actionChooser->getExePath().toUtf8().data(),
                 results[i].text,
                 runExeWaitToComplete);
 }
