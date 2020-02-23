@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-16 15:40+0200\n"
+"POT-Creation-Date: 2020-02-23 21:51+0200\n"
 "PO-Revision-Date: 2019-06-01 11:37+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -537,39 +537,59 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#: src/ui/qt/history.cpp:22
+#: src/ui/qt/action_chooser.cpp:21
+msgid "Copy text to clipboard"
+msgstr ""
+
+#: src/ui/qt/action_chooser.cpp:22
+msgid "Add text to history"
+msgstr ""
+
+#: src/ui/qt/action_chooser.cpp:24
+msgid "Run executable:"
+msgstr ""
+
+#: src/ui/qt/action_chooser.cpp:26
+msgid "Run an executable with the recognized text as the first argument"
+msgstr ""
+
+#: src/ui/qt/action_chooser.cpp:71
+msgid "Choose an executable"
+msgstr ""
+
+#: src/ui/qt/history.cpp:21
 msgid "Wrap words"
 msgstr ""
 
-#: src/ui/qt/history.cpp:37 src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:36 src/ui/qt/history.cpp:69
 msgid "Clear"
 msgstr ""
 
-#: src/ui/qt/history.cpp:42
+#: src/ui/qt/history.cpp:41
 msgid "Save as…"
 msgstr ""
 
-#: src/ui/qt/history.cpp:44
+#: src/ui/qt/history.cpp:43
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr ""
 
-#: src/ui/qt/history.cpp:68
+#: src/ui/qt/history.cpp:67
 msgid "Clear the history?"
 msgstr ""
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:107
+#: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:102
 msgid "Cancel"
 msgstr ""
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:71
 msgid "Save history"
 msgstr ""
 
-#: src/ui/qt/history.cpp:73
+#: src/ui/qt/history.cpp:72
 msgid "Plain text"
 msgstr ""
 
-#: src/ui/qt/history.cpp:74
+#: src/ui/qt/history.cpp:73
 msgid "All files"
 msgstr ""
 
@@ -588,93 +608,73 @@ msgctxt "language"
 msgid "Code"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:69
+#: src/ui/qt/main_window.cpp:66
 msgctxt "ui.tab"
 msgid "Main"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:70
+#: src/ui/qt/main_window.cpp:67
 msgid "Actions"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:71
+#: src/ui/qt/main_window.cpp:68
 msgid "History"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:72
+#: src/ui/qt/main_window.cpp:69
 msgid "About"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:92
-msgid "Choose an executable"
-msgstr ""
-
-#: src/ui/qt/main_window.cpp:95
+#: src/ui/qt/main_window.cpp:90
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:97
+#: src/ui/qt/main_window.cpp:92
 msgid "Please install languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:98
+#: src/ui/qt/main_window.cpp:93
 msgid "Please select languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:100
+#: src/ui/qt/main_window.cpp:95
 msgid "Please select actions in the “Actions” tab"
 msgstr ""
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:103
+#: src/ui/qt/main_window.cpp:98
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:106
+#: src/ui/qt/main_window.cpp:101
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:108
+#: src/ui/qt/main_window.cpp:103
 msgid "Quit"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:174
+#: src/ui/qt/main_window.cpp:143
 msgid "Status"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:185
+#: src/ui/qt/main_window.cpp:154
 msgid "Character recognition"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:190
+#: src/ui/qt/main_window.cpp:159
 msgid "Split text blocks"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:192
+#: src/ui/qt/main_window.cpp:161
 msgid "Split independent text blocks, e.g. columns"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:195
+#: src/ui/qt/main_window.cpp:164
 msgid "Languages:"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:199
+#: src/ui/qt/main_window.cpp:168
 msgid "Hotkey"
-msgstr ""
-
-#: src/ui/qt/main_window.cpp:225
-msgid "Copy text to clipboard"
-msgstr ""
-
-#: src/ui/qt/main_window.cpp:226
-msgid "Add text to history"
-msgstr ""
-
-#: src/ui/qt/main_window.cpp:228
-msgid "Run executable:"
-msgstr ""
-
-#: src/ui/qt/main_window.cpp:230
-msgid "Run an executable with the recognized text as the first argument"
 msgstr ""
