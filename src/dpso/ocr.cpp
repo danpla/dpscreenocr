@@ -305,6 +305,9 @@ static struct {
 } link;
 
 
+#define LINK_LOCK std::lock_guard<std::mutex> guard(link.lock)
+
+
 static struct {
     std::vector<std::uint8_t> buffers[3];
     int w;
@@ -404,7 +407,7 @@ static bool tessCancelFunc(void* cancelData, int words)
         tessCancelData->progressTracker->update(
             tessCancelData->textDesc.progress / 100.0f);
 
-        std::lock_guard<std::mutex> guard(link.lock);
+        LINK_LOCK;
         waitingForResults = link.waitingForResults;
     }
 
@@ -412,7 +415,7 @@ static bool tessCancelFunc(void* cancelData, int words)
         link.waitingProgressCallback(link.waitingUserData);
 
     {
-        std::lock_guard<std::mutex> guard(link.lock);
+        LINK_LOCK;
         return link.terminateJobs;
     }
 }
@@ -422,7 +425,7 @@ static void progressTrackerFn(float progress, void* userData)
 {
     (void)userData;
 
-    std::lock_guard<std::mutex> guard(link.lock);
+    LINK_LOCK;
     link.progress.curJobProgress = progress * 100;
     link.progressIsNew = true;
 }
@@ -473,7 +476,7 @@ static void processJob(const Job& job)
 
     progressTracker.finish();
 
-    std::lock_guard<std::mutex> guard(link.lock);
+    LINK_LOCK;
     if (link.terminateJobs)
         return;
 
@@ -503,7 +506,7 @@ static void threadLoop()
         Job job;
 
         {
-            std::lock_guard<std::mutex> guard(link.lock);
+            LINK_LOCK;
 
             if (link.terminateThread)
                 break;
@@ -579,7 +582,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
     setCLocale();
 
     {
-        std::lock_guard<std::mutex> guard(link.lock);
+        LINK_LOCK;
 
         link.jobQueue.push(std::move(job));
 
@@ -593,7 +596,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
 
 void dpsoGetProgress(struct DpsoProgress* progress, int* isNew)
 {
-    std::lock_guard<std::mutex> guard(link.lock);
+    LINK_LOCK;
 
     if (progress)
         *progress = link.progress;
@@ -607,7 +610,7 @@ void dpsoGetProgress(struct DpsoProgress* progress, int* isNew)
 
 int dpsoGetJobsPending(void)
 {
-    std::lock_guard<std::mutex> guard(link.lock);
+    LINK_LOCK;
     return link.jobsPending();
 }
 
@@ -618,7 +621,7 @@ static std::vector<DpsoJobResult> returnResults;
 
 int dpsoFetchResults(DpsoResultFetchingMode fetchingMode)
 {
-    std::lock_guard<std::mutex> guard(link.lock);
+    LINK_LOCK;
 
     if (link.results.empty()
             || (fetchingMode == dpsoFetchFullChain
@@ -664,7 +667,7 @@ static void waitJobsToFinish()
 {
     while (true) {
         {
-            std::lock_guard<std::mutex> guard(link.lock);
+            LINK_LOCK;
             if (!link.jobsPending())
                 break;
         }
@@ -680,7 +683,7 @@ void dpsoWaitForResults(
     void* userData)
 {
     {
-        std::lock_guard<std::mutex> guard(link.lock);
+        LINK_LOCK;
         link.waitingForResults = true;
         link.waitingProgressCallback = progressCallback;
         link.waitingUserData = userData;
@@ -688,7 +691,7 @@ void dpsoWaitForResults(
 
     waitJobsToFinish();
 
-    std::lock_guard<std::mutex> guard(link.lock);
+    LINK_LOCK;
     link.waitingForResults = false;
 
     if (link.terminateJobs) {
@@ -706,7 +709,7 @@ void dpsoWaitForResults(
 void dpsoTerminateJobs(void)
 {
     {
-        std::lock_guard<std::mutex> guard(link.lock);
+        LINK_LOCK;
 
         link.clearJobQueue();
         link.terminateJobs = true;
@@ -720,7 +723,7 @@ void dpsoTerminateJobs(void)
 
     // Locking here is not actually necessary since the idling
     // background thread doesn't access variables we use below.
-    std::lock_guard<std::mutex> guard(link.lock);
+    LINK_LOCK;
 
     link.results.clear();
 
@@ -767,7 +770,7 @@ void shutdown()
     dpsoTerminateJobs();
 
     {
-        std::lock_guard<std::mutex> guard(link.lock);
+        LINK_LOCK;
         link.terminateThread = true;
     }
     bgThread.join();
