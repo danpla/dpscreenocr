@@ -13,7 +13,7 @@ class ActionChooser : public QWidget {
 
 public:
     enum Action {
-        none = 0 << 0,
+        none = 0,
         copyToClipboard = 1 << 0,
         addToHistory = 1 << 1,
         runExe = 1 << 2
