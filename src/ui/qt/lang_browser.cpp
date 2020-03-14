@@ -83,11 +83,11 @@ void LangBrowser::loadState()
 
     const auto columnIdx = qBound(
         static_cast<int>(columnIdxName),
-        dpsoCfgGetInt(cfgKeyUiLanuagesSortColumn, columnIdxName),
+        dpsoCfgGetInt(cfgKeyUiLanguagesSortColumn, columnIdxName),
         static_cast<int>(columnIdxCode));
 
     Qt::SortOrder sortOrder;
-    if (dpsoCfgGetBool(cfgKeyUiLanuagesSortDescending, false))
+    if (dpsoCfgGetBool(cfgKeyUiLanguagesSortDescending, false))
         sortOrder = Qt::DescendingOrder;
     else
         sortOrder = Qt::AscendingOrder;
@@ -99,10 +99,10 @@ void LangBrowser::loadState()
 void LangBrowser::saveState() const
 {
     dpsoCfgSetInt(
-        cfgKeyUiLanuagesSortColumn,
+        cfgKeyUiLanguagesSortColumn,
         header()->sortIndicatorSection());
     dpsoCfgSetBool(
-        cfgKeyUiLanuagesSortDescending,
+        cfgKeyUiLanguagesSortDescending,
         header()->sortIndicatorOrder() == Qt::DescendingOrder);
 
     dpsoCfgSaveActiveLangs(cfgKeyOcrLanguages);
