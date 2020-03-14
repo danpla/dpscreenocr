@@ -82,7 +82,7 @@ Let's look at some of the options in more detail:
 
       On Unix-like systems, where icons are installed globally like
       all other data files, enabling this option only makes sense if
-      want to use dpScreenOCR without installation, in particular
+      you want to use dpScreenOCR without installation, in particular
       because globally installed icons has a preference over the
       embedded ones. Note that this differs from the behavior of the
       DPSO_QT_LOCAL_DATA option, where local data has a preference
