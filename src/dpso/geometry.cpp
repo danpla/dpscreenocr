@@ -7,45 +7,38 @@
 namespace dpso {
 
 
-static inline void getSide(int a, int b, int& origin, int& size)
+Side Side::betweenPoints(int a, int b)
 {
-    if (a < b) {
-        origin = a;
-        size = b - a;
-    } else {
-        origin = b;
-        size = a - b;
-    }
+    if (a < b)
+        return {a, b - a};
+    else
+        return {b, a - b};
 }
 
 
 Rect Rect::betweenPoints(const Point& a, const Point& b)
 {
-    Rect result;
-    getSide(a.x, b.x, result.x, result.w);
-    getSide(a.y, b.y, result.y, result.h);
-    return result;
+    return {
+        Side::betweenPoints(a.x, b.x), Side::betweenPoints(a.y, b.y)
+    };
 }
 
 
-static inline void intersectSide(
-    int aOrigin, int aSize, int bOrigin, int bSize,
-    int& rOrigin, int& rSize)
+Side Side::getIntersection(const Side& other) const
 {
-    const auto start = std::max(aOrigin, bOrigin);
-    const auto end = std::min(aOrigin + aSize, bOrigin + bSize);
+    const auto min = std::max(start, other.start);
+    const auto max = std::min(start + size, other.start + other.size);
 
-    rOrigin = start;
-    rSize = end > start ? end - start : 0;
+    return {min, max > min ? max - min : 0};
 }
 
 
-Rect Rect::getIntersection(const Rect& rect) const
+Rect Rect::getIntersection(const Rect& other) const
 {
-    Rect result;
-    intersectSide(x, w, rect.x, rect.w, result.x, result.w);
-    intersectSide(y, h, rect.y, rect.h, result.y, result.h);
-    return result;
+    return {
+        Side{x, w}.getIntersection({other.x, other.w}),
+        Side{y, h}.getIntersection({other.y, other.h}),
+    };
 }
 
 

@@ -29,6 +29,23 @@ static void testEqual(
 
 
 static void testEqual(
+    const Side& a, const Side& b,
+    int lineNum)
+{
+    if (a.start == b.start && a.size == b.size)
+        return;
+
+    std::fprintf(
+        stderr,
+        "line %i: Size(%i, %i) != Size(%i, %i)\n",
+        lineNum,
+        a.start, a.size,
+        b.start, b.size);
+    test::failure();
+}
+
+
+static void testEqual(
     const Rect& a, const Rect& b,
     int lineNum)
 {
@@ -75,6 +92,27 @@ static void testPoint()
 }
 
 
+static void testSide()
+{
+    TEST_EQUAL(Side(), Side(0, 0));
+
+    TEST_EQUAL(Side::betweenPoints(0, 1), Side(0, 1));
+    TEST_EQUAL(Side::betweenPoints(1, 0), Side(0, 1));
+    TEST_EQUAL(Side::betweenPoints(-1, 1), Side(-1, 2));
+    TEST_EQUAL(Side::betweenPoints(1, -1), Side(-1, 2));
+
+    const Side s(0, 4);
+    TEST_EQUAL(s.getIntersection(s), s);
+    TEST_EQUAL(s.getIntersection({}), Side(0, 0));
+    TEST_EQUAL(s.getIntersection({2, 4}), Side(2, 2));
+    TEST_EQUAL(s.getIntersection({4, 4}), Side(4, 0));
+    TEST_EQUAL(s.getIntersection({6, 4}), Side(6, 0));
+    TEST_EQUAL(s.getIntersection({-2, 4}), Side(0, 2));
+    TEST_EQUAL(s.getIntersection({-4, 4}), Side(0, 0));
+    TEST_EQUAL(s.getIntersection({-6, 4}), Side(0, 0));
+}
+
+
 static void testRect()
 {
     TEST_EQUAL(Rect(), Rect(0, 0, 0, 0));
@@ -102,6 +140,7 @@ static void testRect()
 
     const Rect r(0, 0, 4, 4);
     TEST_EQUAL(r.getIntersection(r), r);
+    TEST_EQUAL(r.getIntersection({}), Rect(0, 0, 0, 0));
     TEST_EQUAL(r.getIntersection({2, 2, 4, 4}), Rect(2, 2, 2, 2));
     TEST_EQUAL(r.getIntersection({4, 4, 4, 4}), Rect(4, 4, 0, 0));
     TEST_EQUAL(r.getIntersection({6, 6, 4, 4}), Rect(6, 6, 0, 0));
@@ -114,6 +153,7 @@ static void testRect()
 static void testGeometry()
 {
     testPoint();
+    testSide();
     testRect();
 }
 

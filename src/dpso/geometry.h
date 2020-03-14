@@ -26,6 +26,29 @@ struct Point {
 };
 
 
+struct Side {
+    int start;
+    int size;
+
+    Side()
+        : Side(0, 0)
+    {
+
+    }
+
+    Side(int start, int size)
+        : start {start}
+        , size {size}
+    {
+
+    }
+
+    static Side betweenPoints(int a, int b);
+
+    Side getIntersection(const Side& other) const;
+};
+
+
 struct Rect {
     int x;
     int y;
@@ -43,6 +66,12 @@ struct Rect {
         , y {y}
         , w {w}
         , h {h}
+    {
+
+    }
+
+    Rect(const Side& x, const Side& y)
+        : Rect(x.start, y.start, x.size, y.size)
     {
 
     }
@@ -65,7 +94,7 @@ struct Rect {
         return w <= 0 || h <= 0;
     }
 
-    Rect getIntersection(const Rect& rect) const;
+    Rect getIntersection(const Rect& other) const;
 };
 
 
