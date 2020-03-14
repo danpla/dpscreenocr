@@ -21,7 +21,14 @@ const Runner* Runner::getNext() const
 }
 
 
+int Runner::getNumRunners()
+{
+    return numRunners;
+}
+
+
 Runner* Runner::list;
+int Runner::numRunners;
 
 
 Runner::Runner(const char* name, void (&fn)())
@@ -36,6 +43,8 @@ Runner::Runner(const char* name, void (&fn)())
 
     next = *pos;
     *pos = this;
+
+    ++numRunners;
 }
 
 

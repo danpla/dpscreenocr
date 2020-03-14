@@ -10,12 +10,15 @@ public:
     static const Runner* getFirst();
     const Runner* getNext() const;
 
+    static int getNumRunners();
+
     Runner(const char* name, void (&fn)());
 
     const char* getName() const;
     void run() const;
 private:
     static Runner* list;
+    static int numRunners;
 
     const char* name;
     void (*fn)();
