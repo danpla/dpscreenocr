@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include "common/common.h"
+
 #include "default_config.h"
 
 
@@ -54,6 +56,8 @@ bool confirmation(
     const QString& okText)
 {
     QMessageBox confirmBox(parent);
+
+    confirmBox.setWindowTitle(appName);
     confirmBox.setText(text);
     confirmBox.setIcon(QMessageBox::Question);
 
