@@ -8,5 +8,5 @@ class About : public QWidget {
     Q_OBJECT
 
 public:
-    About();
+    explicit About(QWidget* parent = nullptr);
 };

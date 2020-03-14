@@ -16,7 +16,7 @@
 
 
 History::History(QWidget* parent)
-     : QWidget(parent)
+    : QWidget(parent)
 {
     wordWrapCheck = new QCheckBox(_("Wrap words"));
     wordWrapCheck->setChecked(true);

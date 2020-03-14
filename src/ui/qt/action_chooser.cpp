@@ -16,7 +16,7 @@
 
 
 ActionChooser::ActionChooser(QWidget* parent)
-     : QWidget(parent)
+    : QWidget(parent)
 {
     copyToClipboardCheck = new QCheckBox(_("Copy text to clipboard"));
     addToHistoryCheck = new QCheckBox(_("Add text to history"));
