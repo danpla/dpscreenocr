@@ -49,7 +49,6 @@ def _get_var_name(key_name):
         if c == '_':
             upcase = True
         elif upcase:
-            assert c != '_'
             name += c.upper()
             upcase = False
         else:
