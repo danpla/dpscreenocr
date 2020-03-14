@@ -10,7 +10,7 @@ QIcon getIcon(const QString &name);
 
 bool confirmation(
     QWidget* parent,
-    const QString& text,
+    const QString& question,
     const QString& cancelText,
     const QString& okText);
 

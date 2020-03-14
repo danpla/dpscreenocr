@@ -51,14 +51,14 @@ QIcon getIcon(const QString &name)
 
 bool confirmation(
     QWidget* parent,
-    const QString& text,
+    const QString& question,
     const QString& cancelText,
     const QString& okText)
 {
     QMessageBox confirmBox(parent);
 
     confirmBox.setWindowTitle(appName);
-    confirmBox.setText(text);
+    confirmBox.setText(question);
     confirmBox.setIcon(QMessageBox::Question);
 
     auto* cancelButton = confirmBox.addButton(
