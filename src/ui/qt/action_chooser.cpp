@@ -51,9 +51,8 @@ ActionChooser::ActionChooser(QWidget* parent)
         runExeCheck, SIGNAL(toggled(bool)),
         this, SIGNAL(actionsChanged()));
 
-    auto* layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
-    setLayout(layout);
+    auto* layout = new QVBoxLayout(this);
+    layout->setContentsMargins({});
 
     layout->addWidget(copyToClipboardCheck);
     layout->addWidget(addToHistoryCheck);

@@ -68,9 +68,8 @@ MainWindow::MainWindow()
     tabs->addTab(createHistoryTab(), _("History"));
     tabs->addTab(createAboutTab(), _("About"));
 
-    auto* mainLayout = new QVBoxLayout();
+    auto* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabs);
-    setLayout(mainLayout);
 
     loadState();
 

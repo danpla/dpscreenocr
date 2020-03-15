@@ -22,9 +22,8 @@ HotkeyEditor::HotkeyEditor(
     else
         layoutDir = QBoxLayout::TopToBottom;
 
-    auto* layout = new QBoxLayout(layoutDir);
-    layout->setContentsMargins(0, 0, 0, 0);
-    setLayout(layout);
+    auto* layout = new QBoxLayout(layoutDir, this);
+    layout->setContentsMargins({});
 
     keyCombo = new QComboBox();
     layout->addWidget(

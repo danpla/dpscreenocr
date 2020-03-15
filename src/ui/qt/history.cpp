@@ -47,9 +47,8 @@ History::History(QWidget* parent)
 
     setButtonsEnabled(false);
 
-    auto* layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
-    setLayout(layout);
+    auto* layout = new QVBoxLayout(this);
+    layout->setContentsMargins({});
 
     layout->addWidget(wordWrapCheck);
     layout->addWidget(textEdit);
