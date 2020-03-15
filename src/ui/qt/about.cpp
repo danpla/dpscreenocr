@@ -73,14 +73,10 @@ About::About(QWidget* parent)
         licenseButton, SIGNAL(toggled(bool)),
         licenseTextEdit, SLOT(setVisible(bool)));
 
-    auto* layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
-    // We must set the parent of the layout before querying
-    // contentsMargins(), or they will be 0.
-    setLayout(layout);
+    auto* layout = new QVBoxLayout(this);
 
-    auto margins = layout->contentsMargins();
-    margins.setTop(qMax(margins.top(), nameFontHeight));
+    QMargins margins;
+    margins.setTop(nameFontHeight);
     layout->setContentsMargins(margins);
 
     layout->addWidget(iconLabel);
