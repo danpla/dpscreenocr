@@ -62,7 +62,7 @@ void StatusIndicator::paintEvent(QPaintEvent* event)
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(color.darker(200), strokeWidth));
+    painter.setPen(QPen(color.darker(), strokeWidth));
     painter.setBrush(color);
     painter.drawEllipse(rect);
 }
