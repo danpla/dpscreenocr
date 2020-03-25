@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-23 23:35+0200\n"
-"PO-Revision-Date: 2020-02-23 15:33+0000\n"
+"PO-Revision-Date: 2020-03-26 15:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "dpscreenocr/dpscreenocr/nb_NO/>\n"
@@ -533,11 +533,11 @@ msgstr ""
 
 #: src/ui/qt/about.cpp:52 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
-msgstr ""
+msgstr "Program for gjenkjenning av tekst på skjermen"
 
 #: src/ui/qt/about.cpp:66
 msgid "License"
-msgstr ""
+msgstr "Lisens"
 
 #: src/ui/qt/action_chooser.cpp:21
 msgid "Copy text to clipboard"
@@ -561,27 +561,27 @@ msgstr "Velg en kjørbar fil"
 
 #: src/ui/qt/history.cpp:21
 msgid "Wrap words"
-msgstr ""
+msgstr "Linjebrytning"
 
 #: src/ui/qt/history.cpp:36 src/ui/qt/history.cpp:69
 msgid "Clear"
-msgstr ""
+msgstr "Tøm"
 
 #: src/ui/qt/history.cpp:41
 msgid "Save as…"
-msgstr ""
+msgstr "Lagre som…"
 
 #: src/ui/qt/history.cpp:43
 msgid "Save the history as plain text, HTML, or JSON"
-msgstr ""
+msgstr "Lagre historikk som klartekst, HTML, eller JSON"
 
 #: src/ui/qt/history.cpp:67
 msgid "Clear the history?"
-msgstr ""
+msgstr "Tøm historikken?"
 
 #: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:102
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: src/ui/qt/history.cpp:71
 msgid "Save history"
@@ -679,4 +679,4 @@ msgstr "Språk:"
 
 #: src/ui/qt/main_window.cpp:168
 msgid "Hotkey"
-msgstr ""
+msgstr "Hurtigtast"
