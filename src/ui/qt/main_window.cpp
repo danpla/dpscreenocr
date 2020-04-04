@@ -9,6 +9,7 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QTimerEvent>
 #include <QVBoxLayout>
 
 #include "default_config.h"

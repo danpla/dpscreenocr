@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QString>
 #include <QTabWidget>
-#include <QTimerEvent>
 #include <QWidget>
 
 #include "status.h"
