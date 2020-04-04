@@ -15,10 +15,4 @@ public:
     void saveState() const;
 private slots:
     void toggleLang(QTreeWidgetItem* item);
-private:
-    enum ColumnIdx {
-        columnIdxCheckbox,
-        columnIdxName,
-        columnIdxCode
-    };
 };

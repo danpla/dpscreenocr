@@ -10,6 +10,19 @@
 #include "common/common.h"
 
 
+namespace {
+
+
+enum ColumnIdx {
+    columnIdxCheckbox,
+    columnIdxName,
+    columnIdxCode
+};
+
+
+}
+
+
 LangBrowser::LangBrowser(QWidget* parent)
     : QTreeWidget(parent)
 {
