@@ -45,8 +45,7 @@ namespace {
 
 enum HotkeyAction {
     hotkeyActionToggleSelection,
-    hotkeyActionCancelSelection,
-    numHotkeyActions
+    hotkeyActionCancelSelection
 };
 
 
