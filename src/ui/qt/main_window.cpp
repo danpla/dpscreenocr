@@ -40,6 +40,19 @@
 #include "utils.h"
 
 
+namespace {
+
+
+enum HotkeyAction {
+    hotkeyActionToggleSelection,
+    hotkeyActionCancelSelection,
+    numHotkeyActions
+};
+
+
+}
+
+
 const DpsoHotkey cancelSelectionDefaultHotkey {
     dpsoKeyEscape, dpsoKeyModNone};
 

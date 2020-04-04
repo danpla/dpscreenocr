@@ -30,12 +30,6 @@ protected:
 private slots:
     void invalidateStatus();
 private:
-    enum HotkeyAction {
-        hotkeyActionToggleSelection,
-        hotkeyActionCancelSelection,
-        numHotkeyActions
-    };
-
     struct DynamicStrings {
         QString progress;
         QString installLangs;
