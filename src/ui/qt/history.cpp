@@ -62,14 +62,14 @@ History::History(QWidget* parent)
 
 
 History::DynamicStrings::DynamicStrings()
+    : clearQuestion {_("Clear the history?")}
+    , cancel {_("Cancel")}
+    , clear {_("Clear")}
+    , saveHistory {_("Save history")}
+    , plainText {_("Plain text")}
+    , allFiles {_("All files")}
 {
-    clearQuestion = _("Clear the history?");
-    cancel = _("Cancel");
-    clear = _("Clear");
 
-    saveHistory = _("Save history");
-    plainText = _("Plain text");
-    allFiles = _("All files");
 }
 
 
