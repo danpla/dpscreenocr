@@ -53,10 +53,6 @@ enum HotkeyAction {
 }
 
 
-const DpsoHotkey cancelSelectionDefaultHotkey {
-    dpsoKeyEscape, dpsoKeyModNone};
-
-
 MainWindow::MainWindow()
     : QWidget()
     , wasActiveLangs {}
@@ -249,27 +245,30 @@ QWidget* MainWindow::createAboutTab()
 
 void MainWindow::loadState()
 {
-    ocrAllowQueuing = dpsoCfgGetBool(cfgKeyOcrAllowQueuing, true);
+    ocrAllowQueuing = dpsoCfgGetBool(
+        cfgKeyOcrAllowQueuing, cfgDefaultValueOcrAllowQueuing);
 
     splitTextBlocksCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyOcrSplitTextBlocks, false));
+        dpsoCfgGetBool(
+            cfgKeyOcrSplitTextBlocks,
+            cfgDefaultValueOcrSplitTextBlocks));
 
-    const DpsoHotkey toggleSelectionDefaultHotkey {
-        dpsoKeyGrave, dpsoKeyModCtrl};
     DpsoHotkey toggleSelectionHotkey;
     dpsoCfgGetHotkey(
         cfgKeyHotkeyToggleSelection,
         &toggleSelectionHotkey,
-        &toggleSelectionDefaultHotkey);
+        &cfgDefaultValueHotkeyToggleSelection);
     dpsoBindHotkey(
         &toggleSelectionHotkey, hotkeyActionToggleSelection);
 
     hotkeyEditor->assignHotkey();
 
     copyToClipboardTextSeparator = dpsoCfgGetStr(
-        cfgKeyActionCopyToClipboardTextSeparator, "\n\n");
+        cfgKeyActionCopyToClipboardTextSeparator,
+        cfgDefaultValueActionCopyToClipboardTextSeparator);
     runExeWaitToComplete = dpsoCfgGetBool(
-        cfgKeyActionRunExecutableWaitToComplete, true);
+        cfgKeyActionRunExecutableWaitToComplete,
+        cfgDefaultValueActionRunExecutableWaitToComplete);
 
     tabs->setCurrentIndex(dpsoCfgGetInt(cfgKeyUiActiveTab, 0));
 
@@ -312,13 +311,15 @@ void MainWindow::initReadOnlyCfgKeys() const
 
     dpsoCfgSetBool(
         cfgKeyUiNativeFileDialogs,
-        dpsoCfgGetBool(cfgKeyUiNativeFileDialogs, true));
+        dpsoCfgGetBool(
+            cfgKeyUiNativeFileDialogs,
+            cfgDefaultValueUiNativeFileDialogs));
 
     DpsoHotkey cancelSelectionHotkey;
     dpsoCfgGetHotkey(
         cfgKeyHotkeyCancelSelection,
         &cancelSelectionHotkey,
-        &cancelSelectionDefaultHotkey);
+        &cfgDefaultValueHotkeyCancelSelection);
     dpsoCfgSetHotkey(
         cfgKeyHotkeyCancelSelection, &cancelSelectionHotkey);
 }
@@ -525,7 +526,7 @@ void MainWindow::checkHotkeyActions()
         dpsoCfgGetHotkey(
             cfgKeyHotkeyCancelSelection,
             &cancelSelectionHotkey,
-            &cancelSelectionDefaultHotkey);
+            &cfgDefaultValueHotkeyCancelSelection);
 
         dpsoBindHotkey(
             &cancelSelectionHotkey, hotkeyActionCancelSelection);

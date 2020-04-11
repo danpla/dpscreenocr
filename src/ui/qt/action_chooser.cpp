@@ -98,11 +98,17 @@ QString ActionChooser::getExePath() const
 void ActionChooser::loadState()
 {
     copyToClipboardCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyActionCopyToClipboard, false));
+        dpsoCfgGetBool(
+            cfgKeyActionCopyToClipboard,
+            cfgDefaultValueActionCopyToClipboard));
     addToHistoryCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyActionAddToHistory, true));
+        dpsoCfgGetBool(
+            cfgKeyActionAddToHistory,
+            cfgDefaultValueActionAddToHistory));
     runExeCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyActionRunExecutable, false));
+        dpsoCfgGetBool(
+            cfgKeyActionRunExecutable,
+            cfgDefaultValueActionRunExecutable));
     exeLineEdit->setText(
         dpsoCfgGetStr(cfgKeyActionRunExecutablePath, ""));
 }
@@ -138,7 +144,9 @@ void ActionChooser::chooseExe()
         exeDir = QDir::homePath();
 
     QFileDialog::Options options = 0;
-    if (!dpsoCfgGetBool(cfgKeyUiNativeFileDialogs, true))
+    if (!dpsoCfgGetBool(
+            cfgKeyUiNativeFileDialogs,
+            cfgDefaultValueUiNativeFileDialogs))
         options |= QFileDialog::DontUseNativeDialog;
 
     exePath = QFileDialog::getOpenFileName(

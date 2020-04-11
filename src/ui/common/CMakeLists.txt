@@ -29,6 +29,7 @@ endforeach()
 add_library(
     common
 
+    cfg_default_values.cpp
     cfg_keys.cpp
     ${CONFIGURED_SRCS}
 )
@@ -49,3 +50,6 @@ set_target_properties(
 
 target_include_directories(common PRIVATE .)
 target_include_directories(common PUBLIC ..)
+
+add_dependencies(common dpso)
+target_link_libraries(common dpso)

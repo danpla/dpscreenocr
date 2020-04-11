@@ -122,7 +122,9 @@ void History::saveAs()
     if (!selectedNameFilter.isEmpty())
         dialog.selectNameFilter(selectedNameFilter);
 
-    if (!dpsoCfgGetBool(cfgKeyUiNativeFileDialogs, true))
+    if (!dpsoCfgGetBool(
+            cfgKeyUiNativeFileDialogs,
+            cfgDefaultValueUiNativeFileDialogs))
         dialog.setOption(QFileDialog::DontUseNativeDialog);
 
     dialog.setViewMode(QFileDialog::Detail);
@@ -200,7 +202,9 @@ void History::appendToTextEdit(
 void History::loadState()
 {
     wordWrapCheck->setChecked(
-        dpsoCfgGetBool(cfgKeyHistoryWrapWords, true));
+        dpsoCfgGetBool(
+            cfgKeyHistoryWrapWords,
+            cfgDefaultValueHistoryWrapWords));
 
     dpsoHistoryLoad(appFileName, historyFileName);
 
