@@ -305,23 +305,18 @@ void MainWindow::initReadOnlyCfgKeys() const
         runExeWaitToComplete);
 
     dpsoCfgSetBool(cfgKeyOcrAllowQueuing, ocrAllowQueuing);
-    dpsoCfgSetBool(
-        cfgKeyOcrDumpDebugImage,
-        dpsoCfgGetBool(cfgKeyOcrDumpDebugImage, false));
+    if (!dpsoCfgKeyExists(cfgKeyOcrDumpDebugImage))
+        dpsoCfgSetBool(cfgKeyOcrDumpDebugImage, false);
 
-    dpsoCfgSetBool(
-        cfgKeyUiNativeFileDialogs,
-        dpsoCfgGetBool(
+    if (!dpsoCfgKeyExists(cfgKeyUiNativeFileDialogs))
+        dpsoCfgSetBool(
             cfgKeyUiNativeFileDialogs,
-            cfgDefaultValueUiNativeFileDialogs));
+            cfgDefaultValueUiNativeFileDialogs);
 
-    DpsoHotkey cancelSelectionHotkey;
-    dpsoCfgGetHotkey(
-        cfgKeyHotkeyCancelSelection,
-        &cancelSelectionHotkey,
-        &cfgDefaultValueHotkeyCancelSelection);
-    dpsoCfgSetHotkey(
-        cfgKeyHotkeyCancelSelection, &cancelSelectionHotkey);
+    if (!dpsoCfgKeyExists(cfgKeyHotkeyCancelSelection))
+        dpsoCfgSetHotkey(
+            cfgKeyHotkeyCancelSelection,
+            &cfgDefaultValueHotkeyCancelSelection);
 }
 
 
