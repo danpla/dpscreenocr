@@ -64,7 +64,7 @@ HotkeyEditor::HotkeyEditor(
     auto* modsLayout = new QHBoxLayout();
     layout->addLayout(modsLayout);
 
-    const auto keySelected = currentKey() != dpsoUnknownKey;
+    const auto keySelected = getCurrentKey() != dpsoUnknownKey;
 
     for (int i = 0; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
@@ -100,7 +100,7 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
     bool hotkeyChanged = false;
 
-    if (hotkey.key != currentKey())
+    if (hotkey.key != getCurrentKey())
         for (int i = 0; i < keyCombo->count(); ++i)
             if (keyCombo->itemData(i) == hotkey.key) {
                 keyCombo->setCurrentIndex(i);
@@ -108,7 +108,7 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
                 break;
             }
 
-    const auto keySelected = currentKey() != dpsoUnknownKey;
+    const auto keySelected = getCurrentKey() != dpsoUnknownKey;
 
     for (int i = 0; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
@@ -134,7 +134,7 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
 void HotkeyEditor::bind()
 {
-    DpsoHotkey hotkey {currentKey(), dpsoKeyModNone};
+    DpsoHotkey hotkey {getCurrentKey(), dpsoKeyModNone};
 
     for (int i = 0; i < dpsoNumKeyMods; ++i)
         if (modCheckBoxes[i]->isChecked())
@@ -147,7 +147,7 @@ void HotkeyEditor::bind()
 
 void HotkeyEditor::keyChanged()
 {
-    const auto keySelected = currentKey() != dpsoUnknownKey;
+    const auto keySelected = getCurrentKey() != dpsoUnknownKey;
 
     // When the key is switched to dpsoUnknownKey, we need to uncheck
     // every modifier checkbox without emitting changed().
@@ -165,7 +165,7 @@ void HotkeyEditor::keyChanged()
 }
 
 
-DpsoKey HotkeyEditor::currentKey() const
+DpsoKey HotkeyEditor::getCurrentKey() const
 {
     const auto curIdx = keyCombo->currentIndex();
     if (curIdx < 0)

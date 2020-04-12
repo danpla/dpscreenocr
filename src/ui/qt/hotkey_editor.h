@@ -67,5 +67,5 @@ private:
     QComboBox* keyCombo;
     QCheckBox* modCheckBoxes[dpsoNumKeyMods];
 
-    DpsoKey currentKey() const;
+    DpsoKey getCurrentKey() const;
 };
