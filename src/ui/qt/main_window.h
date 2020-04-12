@@ -1,9 +1,11 @@
 
 #pragma once
 
+#include <QAction>
 #include <QCheckBox>
 #include <QLabel>
 #include <QString>
+#include <QSystemTrayIcon>
 #include <QTabWidget>
 #include <QWidget>
 
@@ -28,6 +30,8 @@ protected:
     void closeEvent(QCloseEvent* event) override;
 private slots:
     void invalidateStatus();
+    void setVisibility(bool vilible);
+    void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 private:
     struct DynamicStrings {
         QString progress;
@@ -49,6 +53,9 @@ private:
     bool wasActiveLangs;
     bool statusValid;
 
+    QAction* visibilityAction;
+    QAction* quitAction;
+
     QTabWidget* tabs;
 
     StatusIndicator* statusIndicator;
@@ -67,10 +74,16 @@ private:
 
     History* history;
 
+    QSystemTrayIcon* trayIcon;
+
+    void createQActions();
+
     QWidget* createMainTab();
     QWidget* createActionsTab();
     QWidget* createHistoryTab();
     QWidget* createAboutTab();
+
+    void createTrayIcon();
 
     void loadState();
     void saveState() const;

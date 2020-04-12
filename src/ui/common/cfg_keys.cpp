@@ -40,6 +40,8 @@ const char* const cfgKeyUiLanguagesSortDescending =
     "ui_languages_sort_descending";
 const char* const cfgKeyUiNativeFileDialogs =
     "ui_native_file_dialogs";
+const char* const cfgKeyUiTrayIconVisible =
+    "ui_tray_icon_visible";
 const char* const cfgKeyUiWindowHeight =
     "ui_window_height";
 const char* const cfgKeyUiWindowMaximized =

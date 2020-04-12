@@ -28,3 +28,5 @@ int const cfgDefaultValueOcrSplitTextBlocks =
     false;
 int const cfgDefaultValueUiNativeFileDialogs =
     true;
+int const cfgDefaultValueUiTrayIconVisible =
+    true;

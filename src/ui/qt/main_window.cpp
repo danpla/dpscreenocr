@@ -8,6 +8,7 @@
 #include <QCloseEvent>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QMenu>
 #include <QMessageBox>
 #include <QTimerEvent>
 #include <QVBoxLayout>
@@ -70,6 +71,8 @@ MainWindow::MainWindow()
     dpsoSetHotheysEnabled(true);
     dpsoCfgLoad(appFileName, cfgFileName);
 
+    createQActions();
+
     tabs = new QTabWidget();
     tabs->addTab(
         createMainTab(), pgettext("ui.tab", "Main"));
@@ -79,6 +82,8 @@ MainWindow::MainWindow()
 
     auto* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabs);
+
+    createTrayIcon();
 
     loadState();
 
@@ -142,6 +147,46 @@ void MainWindow::closeEvent(QCloseEvent* event)
 void MainWindow::invalidateStatus()
 {
     statusValid = false;
+}
+
+void MainWindow::setVisibility(bool visible)
+{
+    if (!visible)
+    {
+        hide();
+        return;
+    }
+
+    setWindowState(windowState() & ~Qt::WindowMinimized);
+
+    show();
+    raise();
+    activateWindow();
+}
+
+
+void MainWindow::trayIconActivated(
+    QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger)
+        visibilityAction->toggle();
+}
+
+
+void MainWindow::createQActions()
+{
+    visibilityAction = new QAction(
+        dpsoStrNamedFormat(
+            _("Show {app_name}"), {{"app_name", appName}}),
+        this);
+    visibilityAction->setCheckable(true);
+    visibilityAction->setChecked(true);
+    connect(
+        visibilityAction, SIGNAL(toggled(bool)),
+        this, SLOT(setVisibility(bool)));
+
+    quitAction = new QAction(_("Quit"), this);
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
 }
 
 
@@ -243,6 +288,23 @@ QWidget* MainWindow::createAboutTab()
 }
 
 
+void MainWindow::createTrayIcon()
+{
+    auto* menu = new QMenu(this);
+    menu->addAction(visibilityAction);
+    menu->addAction(quitAction);
+
+    trayIcon = new QSystemTrayIcon(getIcon(appFileName), this);
+    trayIcon->setContextMenu(menu);
+
+    connect(
+        trayIcon,
+        SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+        this,
+        SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+}
+
+
 void MainWindow::loadState()
 {
     ocrAllowQueuing = dpsoCfgGetBool(
@@ -288,6 +350,11 @@ void MainWindow::loadState()
     langBrowser->loadState();
     actionChooser->loadState();
     history->loadState();
+
+    trayIcon->setVisible(
+        dpsoCfgGetBool(
+            cfgKeyUiTrayIconVisible,
+            cfgDefaultValueUiTrayIconVisible));
 }
 
 
@@ -338,6 +405,8 @@ void MainWindow::saveState() const
     langBrowser->saveState();
     actionChooser->saveState();
     history->saveState();
+
+    dpsoCfgSetBool(cfgKeyUiTrayIconVisible, trayIcon->isVisible());
 }
 
 
