@@ -72,7 +72,8 @@ void LangBrowser::toggleLang(QTreeWidgetItem* item)
 
 void LangBrowser::loadState()
 {
-    dpsoCfgLoadActiveLangs(cfgKeyOcrLanguages, "eng");
+    dpsoCfgLoadActiveLangs(
+        cfgKeyOcrLanguages, cfgDefaultValueOcrLanguages);
 
     clear();
     setSortingEnabled(false);

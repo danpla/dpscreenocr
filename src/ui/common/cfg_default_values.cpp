@@ -22,6 +22,8 @@ struct DpsoHotkey const cfgDefaultValueHotkeyToggleSelection =
     {dpsoKeyGrave, dpsoKeyModCtrl};
 int const cfgDefaultValueOcrAllowQueuing =
     true;
+const char* const cfgDefaultValueOcrLanguages =
+    "eng";
 int const cfgDefaultValueOcrSplitTextBlocks =
     false;
 int const cfgDefaultValueUiNativeFileDialogs =
