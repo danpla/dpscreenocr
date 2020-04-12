@@ -291,11 +291,26 @@ void MainWindow::loadState()
 }
 
 
-void MainWindow::initReadOnlyCfgKeys() const
+void MainWindow::saveState() const
 {
-    // The following options are only available in CFG and can't be
-    // changed via GUI. The purpose of cfgSet*() calls is to add the
-    // fields in CFG if they don't already exist.
+    dpsoCfgSetBool(cfgKeyOcrAllowQueuing, ocrAllowQueuing);
+    if (!dpsoCfgKeyExists(cfgKeyOcrDumpDebugImage))
+        dpsoCfgSetBool(cfgKeyOcrDumpDebugImage, false);
+
+    dpsoCfgSetBool(
+        cfgKeyOcrSplitTextBlocks,
+        splitTextBlocksCheck->isChecked());
+
+    DpsoHotkey toggleSelectionHotkey;
+    dpsoFindActionHotkey(
+        hotkeyActionToggleSelection, &toggleSelectionHotkey);
+    dpsoCfgSetHotkey(
+        cfgKeyHotkeyToggleSelection, &toggleSelectionHotkey);
+
+    if (!dpsoCfgKeyExists(cfgKeyHotkeyCancelSelection))
+        dpsoCfgSetHotkey(
+            cfgKeyHotkeyCancelSelection,
+            &cfgDefaultValueHotkeyCancelSelection);
 
     dpsoCfgSetStr(
         cfgKeyActionCopyToClipboardTextSeparator,
@@ -304,37 +319,13 @@ void MainWindow::initReadOnlyCfgKeys() const
         cfgKeyActionRunExecutableWaitToComplete,
         runExeWaitToComplete);
 
-    dpsoCfgSetBool(cfgKeyOcrAllowQueuing, ocrAllowQueuing);
-    if (!dpsoCfgKeyExists(cfgKeyOcrDumpDebugImage))
-        dpsoCfgSetBool(cfgKeyOcrDumpDebugImage, false);
-
     if (!dpsoCfgKeyExists(cfgKeyUiNativeFileDialogs))
         dpsoCfgSetBool(
             cfgKeyUiNativeFileDialogs,
             cfgDefaultValueUiNativeFileDialogs);
 
-    if (!dpsoCfgKeyExists(cfgKeyHotkeyCancelSelection))
-        dpsoCfgSetHotkey(
-            cfgKeyHotkeyCancelSelection,
-            &cfgDefaultValueHotkeyCancelSelection);
-}
-
-
-void MainWindow::saveState() const
-{
-    history->saveState();
-    actionChooser->saveState();
-    langBrowser->saveState();
-
-    initReadOnlyCfgKeys();
-
-    dpsoCfgSetBool(
-        cfgKeyOcrSplitTextBlocks,
-        splitTextBlocksCheck->isChecked());
-
     dpsoCfgSetInt(cfgKeyUiActiveTab, tabs->currentIndex());
 
-    dpsoCfgSetBool(cfgKeyUiWindowMaximized, isMaximized());
     if (!isMaximized()) {
         dpsoCfgSetInt(cfgKeyUiWindowX, x());
         dpsoCfgSetInt(cfgKeyUiWindowY, y());
@@ -342,11 +333,11 @@ void MainWindow::saveState() const
         dpsoCfgSetInt(cfgKeyUiWindowHeight, height());
     }
 
-    DpsoHotkey toggleSelectionHotkey;
-    dpsoFindActionHotkey(
-        hotkeyActionToggleSelection, &toggleSelectionHotkey);
-    dpsoCfgSetHotkey(
-        cfgKeyHotkeyToggleSelection, &toggleSelectionHotkey);
+    dpsoCfgSetBool(cfgKeyUiWindowMaximized, isMaximized());
+
+    langBrowser->saveState();
+    actionChooser->saveState();
+    history->saveState();
 }
 
 

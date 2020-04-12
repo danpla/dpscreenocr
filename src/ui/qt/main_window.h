@@ -73,7 +73,6 @@ private:
     QWidget* createAboutTab();
 
     void loadState();
-    void initReadOnlyCfgKeys() const;
     void saveState() const;
 
     bool canStartSelection() const;
