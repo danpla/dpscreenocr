@@ -137,6 +137,8 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
     saveState();
 
+    trayIcon->hide();
+
     dpsoCfgSave(appFileName, cfgFileName);
     dpsoSetHotheysEnabled(false);
 
