@@ -19,3 +19,4 @@ extern const char* const cfgDefaultValueOcrLanguages;
 extern int const cfgDefaultValueOcrSplitTextBlocks;
 extern int const cfgDefaultValueUiNativeFileDialogs;
 extern int const cfgDefaultValueUiTrayIconVisible;
+extern int const cfgDefaultValueUiWindowMinimizeToTray;

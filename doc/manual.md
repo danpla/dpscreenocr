@@ -402,6 +402,10 @@ the settings file:
  *  `ui_tray_icon_visible` (`true` by default) whether to show an icon
     in the notification area.
 
+ *  `ui_window_minimize_to_tray` (`false` by default) hide window to
+    the notification area on minimizing. This option only has effect
+    if `ui_tray_icon_visible` is enabled.
+
 
 # Troubleshooting
 

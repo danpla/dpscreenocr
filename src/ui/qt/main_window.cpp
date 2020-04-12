@@ -144,6 +144,22 @@ void MainWindow::closeEvent(QCloseEvent* event)
 }
 
 
+void MainWindow::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::WindowStateChange
+        && isMinimized()
+        && trayIcon->isVisible()
+        && dpsoCfgGetBool(
+            cfgKeyUiWindowMinimizeToTray,
+            cfgDefaultValueUiWindowMinimizeToTray))
+    {
+        visibilityAction->toggle();
+    }
+
+    QWidget::changeEvent(event);
+}
+
+
 void MainWindow::invalidateStatus()
 {
     statusValid = false;
@@ -407,6 +423,10 @@ void MainWindow::saveState() const
     history->saveState();
 
     dpsoCfgSetBool(cfgKeyUiTrayIconVisible, trayIcon->isVisible());
+    if (!dpsoCfgKeyExists(cfgKeyUiWindowMinimizeToTray))
+        dpsoCfgSetBool(
+            cfgKeyUiWindowMinimizeToTray,
+            cfgDefaultValueUiWindowMinimizeToTray);
 }
 
 

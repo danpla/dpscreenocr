@@ -25,6 +25,7 @@ extern const char* const cfgKeyUiNativeFileDialogs;
 extern const char* const cfgKeyUiTrayIconVisible;
 extern const char* const cfgKeyUiWindowHeight;
 extern const char* const cfgKeyUiWindowMaximized;
+extern const char* const cfgKeyUiWindowMinimizeToTray;
 extern const char* const cfgKeyUiWindowWidth;
 extern const char* const cfgKeyUiWindowX;
 extern const char* const cfgKeyUiWindowY;

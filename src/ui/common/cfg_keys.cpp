@@ -46,6 +46,8 @@ const char* const cfgKeyUiWindowHeight =
     "ui_window_height";
 const char* const cfgKeyUiWindowMaximized =
     "ui_window_maximized";
+const char* const cfgKeyUiWindowMinimizeToTray =
+    "ui_window_minimize_to_tray";
 const char* const cfgKeyUiWindowWidth =
     "ui_window_width";
 const char* const cfgKeyUiWindowX =
