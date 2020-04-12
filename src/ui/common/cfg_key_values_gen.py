@@ -122,7 +122,7 @@ def format_var(var, file_type):
     var_str += var.type + ' const ' + var.name
 
     if file_type == FileType.IMPLEMENTATION:
-        var_str += ' =\n    {}'.format(var.value)
+        var_str += ' =\n    ' + var.value
 
     return var_str + ';'
 
@@ -140,8 +140,7 @@ def write_source(
         f.write(
             gen_file_header(
                 filename_root, file_type,
-                header_includes=header_includes,
-                implementation_includes=implementation_includes))
+                header_includes, implementation_includes))
 
         for var in variables:
             f.write(format_var(var, file_type))
