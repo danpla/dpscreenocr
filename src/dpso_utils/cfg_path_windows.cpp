@@ -44,13 +44,3 @@ const char* dpsoGetCfgPath(const char* appName)
 
     return path.c_str();
 }
-
-
-FILE* dpsoCfgPathFopen(
-    const char* appName, const char* fileName, const char* mode)
-{
-    std::string path = dpsoGetCfgPath(appName);
-    path += '\\';
-    path += fileName;
-    return dpso::fopenUtf8(path.c_str(), mode);
-}

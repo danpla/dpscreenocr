@@ -40,6 +40,7 @@ add_library(
 
     cfg.cpp
     cfg_ext.cpp
+    cfg_path.cpp
     history.cpp
     history_export.cpp
     intl.cpp
