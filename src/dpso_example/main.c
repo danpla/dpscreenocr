@@ -73,20 +73,19 @@ static void reportProgress()
 
 static void checkResult()
 {
-    const struct DpsoJobResult* results;
-    int numResults;
+    struct DpsoJobResults results;
     int i;
 
     if (!dpsoFetchResults(dpsoFetchFullChain))
         return;
 
-    dpsoGetFetchedResults(&results, &numResults);
+    dpsoGetFetchedResults(&results);
 
-    for (i = 0; i < numResults; ++i) {
-        const struct DpsoJobResult* result = &results[i];
+    for (i = 0; i < results.numItems; ++i) {
+        const struct DpsoJobResult* result = &results.items[i];
         printf(
             "=== Result %i/%i (%s) ===\n%s\n",
-            i + 1, numResults, result->timestamp, result->text);
+            i + 1, results.numItems, result->timestamp, result->text);
     }
 }
 

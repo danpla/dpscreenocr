@@ -535,9 +535,8 @@ void MainWindow::checkResult()
     if (!dpsoFetchResults(dpsoFetchFullChain))
         return;
 
-    const DpsoJobResult* results;
-    int numResults;
-    dpsoGetFetchedResults(&results, &numResults);
+    DpsoJobResults results;
+    dpsoGetFetchedResults(&results);
 
     const auto actions = actionChooser->getSelectedActions();
 
@@ -545,11 +544,11 @@ void MainWindow::checkResult()
         static QString fullText;
         fullText.clear();
 
-        for (int i = 0; i < numResults; ++i) {
+        for (int i = 0; i < results.numItems; ++i) {
             if (!fullText.isEmpty())
                 fullText += copyToClipboardTextSeparator;
 
-            fullText += results[i].text;
+            fullText += results.items[i].text;
         }
 
         auto* clipboard = QApplication::clipboard();
@@ -558,14 +557,15 @@ void MainWindow::checkResult()
     }
 
     if (actions & ActionChooser::Action::addToHistory)
-        for (int i = 0; i < numResults; ++i)
-            history->append(results[i].text, results[i].timestamp);
+        for (int i = 0; i < results.numItems; ++i)
+            history->append(
+                results.items[i].text, results.items[i].timestamp);
 
     if (actions & ActionChooser::Action::runExe)
-        for (int i = 0; i < numResults; ++i)
+        for (int i = 0; i < results.numItems; ++i)
             dpsoExec(
                 actionChooser->getExePath().toUtf8().data(),
-                results[i].text,
+                results.items[i].text,
                 runExeWaitToComplete);
 }
 

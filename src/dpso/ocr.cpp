@@ -646,20 +646,18 @@ int dpsoFetchResults(DpsoResultFetchingMode fetchingMode)
 }
 
 
-void dpsoGetFetchedResults(
-    const struct DpsoJobResult** results, int* numResults)
+void dpsoGetFetchedResults(struct DpsoJobResults* results)
 {
-    if (results) {
-        // vector::data() is not guaranteed to return null for an
-        // empty vector
-        if (returnResults.empty())
-            *results = nullptr;
-        else
-            *results = &returnResults[0];
-    }
+    if (!results)
+        return;
 
-    if (numResults)
-        *numResults = returnResults.size();
+    // vector::data() is not guaranteed to be null for an empty vector
+    if (returnResults.empty())
+        results->items = nullptr;
+    else
+        results->items = &returnResults[0];
+
+    results->numItems = returnResults.size();
 }
 
 

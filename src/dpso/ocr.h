@@ -255,14 +255,19 @@ struct DpsoJobResult {
 };
 
 
+struct DpsoJobResults {
+    const struct DpsoJobResult* items;
+    int numItems;
+};
+
+
 /**
  * Get the results previously fetched with dpsoFetchResults().
  *
- * The results pointer is valid till the next call to
- * dpsoFetchResults() that returns 1. Initially, the array is empty.
+ * The items pointer is valid till the next call to dpsoFetchResults()
+ * that returns 1. Initially, the array is empty.
  */
-void dpsoGetFetchedResults(
-    const struct DpsoJobResult** results, int* numResults);
+void dpsoGetFetchedResults(struct DpsoJobResults* results);
 
 
 /**
