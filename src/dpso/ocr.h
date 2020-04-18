@@ -36,6 +36,8 @@ int dpsoGetNumLangs(void);
 /**
  * Get the language code.
  *
+ * Returns an empty string if langIdx is out of bounds.
+ *
  * \param idx Language index [0, dpsoGetNumLangs())
  */
 const char* dpsoGetLangCode(int langIdx);
@@ -57,6 +59,8 @@ int dpsoGetLangIdx(const char* langCode, size_t langCodeLen);
 /**
  * Get whether the language is active.
  *
+ * Returns 0 if langIdx is out of bounds.
+ *
  * \param idx Language index [0, dpsoGetNumLangs())
  */
 int dpsoGetLangIsActive(int langIdx);
@@ -64,6 +68,8 @@ int dpsoGetLangIsActive(int langIdx);
 
 /**
  * Set whether the language is active.
+ *
+ * Does nothing if langIdx is out of bounds.
  *
  * \param idx Language index [0, dpsoGetNumLangs())
  */
