@@ -25,7 +25,7 @@ static void enableLang(const char* langCode, std::size_t langCodeLen)
 }
 
 
-const char langsSeparator = ',';
+const char langSeparator = ',';
 
 
 void dpsoCfgLoadActiveLangs(
@@ -40,22 +40,17 @@ void dpsoCfgLoadActiveLangs(
         return;
     }
 
-    while (true) {
-        while (std::isspace(*s))
-            ++s;
-
-        if (*s == langsSeparator) {
+    while (*s) {
+        if (std::isspace(*s) || *s == langSeparator)
+        {
             ++s;
             continue;
         }
 
-        if (!*s)
-            break;
-
         const auto* langCodeStart = s;
         const auto* langCodeEnd = s;
 
-        while (*s && *s != langsSeparator) {
+        while (*s && *s != langSeparator) {
             if (!std::isspace(*s))
                 langCodeEnd = s + 1;
 
@@ -63,9 +58,6 @@ void dpsoCfgLoadActiveLangs(
         }
 
         enableLang(langCodeStart, langCodeEnd - langCodeStart);
-
-        if (*s == langsSeparator)
-            ++s;
     }
 }
 
@@ -79,7 +71,7 @@ void dpsoCfgSaveActiveLangs(const char* key)
             continue;
 
         if (!str.empty()) {
-            str += langsSeparator;
+            str += langSeparator;
             str += ' ';
         }
 
