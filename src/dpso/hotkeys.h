@@ -139,8 +139,8 @@ const char* dpsoHotkeyToString(const struct DpsoHotkey* hotkey);
  * (if any) should always be after the modifiers.
  *
  * Keep in mind that a space within a key name is not ignored. For
- * example "Page Up" is a valid key name, but "Page   Up" or
- * "Page\tUp" is not.
+ * example "Page Up" is a valid key name, but "PageUp" or "Page   Up"
+ * is not.
  */
 void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey);
 

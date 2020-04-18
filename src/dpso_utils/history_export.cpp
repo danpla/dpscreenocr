@@ -172,8 +172,7 @@ void dpsoHistoryExport(
 {
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
-    // format, but is useful for people that will open files in
-    // Notepad.
+    // format, but is convenient for Notepad users.
     auto* fp = dpso::fopenUtf8(fileName, "w");
     if (!fp)
         return;
