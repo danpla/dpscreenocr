@@ -16,11 +16,10 @@ static QIcon getIconFromRcc(const QString &name)
 {
     QIcon icon;
 
-    static const auto sizeList = (
-        QDir(":/icons").entryList(QDir::Dirs));
-    for (int i = 0; i < sizeList.size(); ++i) {
+    static const auto sizes = QDir(":/icons").entryList(QDir::Dirs);
+    for (const auto& size : sizes) {
         const QFileInfo fileInfo(
-            QString(":/icons/%1/%2.png").arg(sizeList.at(i), name));
+            QString(":/icons/%1/%2.png").arg(size, name));
         if (!fileInfo.exists())
             continue;
 
