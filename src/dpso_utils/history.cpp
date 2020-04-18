@@ -102,11 +102,11 @@ void dpsoHistoryLoadFp(FILE* fp)
 }
 
 
-void dpsoHistoryLoad(const char* appName, const char* historyName)
+void dpsoHistoryLoad(const char* appName, const char* historyBaseName)
 {
     dpsoHistoryClear();
 
-    auto* fp = dpsoCfgPathFopen(appName, historyName, "rb");
+    auto* fp = dpsoCfgPathFopen(appName, historyBaseName, "rb");
     if (!fp)
         return;
 
@@ -129,9 +129,9 @@ void dpsoHistorySaveFp(FILE* fp)
 }
 
 
-void dpsoHistorySave(const char* appName, const char* historyName)
+void dpsoHistorySave(const char* appName, const char* historyBaseName)
 {
-    auto* fp = dpsoCfgPathFopen(appName, historyName, "wb");
+    auto* fp = dpsoCfgPathFopen(appName, historyBaseName, "wb");
     if (!fp)
         return;
 

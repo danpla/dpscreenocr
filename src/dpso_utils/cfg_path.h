@@ -27,11 +27,11 @@ const char* dpsoGetCfgPath(const char* appName);
 /**
  * Open FILE* in config directory.
  *
- * The function opens fileName in the platform-specific config
- * directory. fileName thus should be a base name.
+ * The function opens file baseName in a platform-specific config
+ * directory.
  */
 FILE* dpsoCfgPathFopen(
-    const char* appName, const char* fileName, const char* mode);
+    const char* appName, const char* baseName, const char* mode);
 
 
 #ifdef __cplusplus

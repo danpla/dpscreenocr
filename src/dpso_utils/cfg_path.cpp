@@ -7,10 +7,10 @@
 
 
 FILE* dpsoCfgPathFopen(
-    const char* appName, const char* fileName, const char* mode)
+    const char* appName, const char* baseName, const char* mode)
 {
     std::string path = dpsoGetCfgPath(appName);
     path += dpso::dirSeparator;
-    path += fileName;
+    path += baseName;
     return dpso::fopenUtf8(path.c_str(), mode);
 }

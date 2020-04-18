@@ -26,18 +26,20 @@ struct DpsoHistoryEntry {
 /**
  * Load history.
  *
- * The function clears the history and then loads the historyName file
- * for application appName. appName is a subdirectory in a platform-
- * specific configuration dir. historyName should be a base name.
+ * The function clears the history and then loads the historyBaseName
+ * file for application appName. appName is a subdirectory in a
+ * platform-specific configuration dir.
  */
-void dpsoHistoryLoad(const char* appName, const char* historyName);
+void dpsoHistoryLoad(
+    const char* appName, const char* historyBaseName);
 
 /**
  * Save history.
  *
  * \sa dpsoHistoryLoad()
  */
-void dpsoHistorySave(const char* appName, const char* historyName);
+void dpsoHistorySave(
+    const char* appName, const char* historyBaseName);
 
 
 /**

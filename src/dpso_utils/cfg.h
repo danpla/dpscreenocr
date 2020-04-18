@@ -29,12 +29,11 @@ extern "C" {
 /**
  * Load config file.
  *
- * The function clears the current config, and then loads a file
- * cfgName for application appName. AppName will become a directory
- * of a platform-specific configuration dir. CfgName thus should be a
- * base name.
+ * The function clears the current config and then loads a file
+ * cfgBaseName for application appName. AppName will become a
+ * directory of a platform-specific configuration dir.
  */
-void dpsoCfgLoad(const char* appName, const char* cfgName);
+void dpsoCfgLoad(const char* appName, const char* cfgBaseName);
 
 
 /**
@@ -42,7 +41,7 @@ void dpsoCfgLoad(const char* appName, const char* cfgName);
  *
  * \sa dpsoLoadCfg()
  */
-void dpsoCfgSave(const char* appName, const char* cfgName);
+void dpsoCfgSave(const char* appName, const char* cfgBaseName);
 
 
 /**
