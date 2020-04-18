@@ -464,6 +464,8 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
 
     statusIndicator->setStatus(newStatus);
     statusLabel->setText(text);
+
+    trayIcon->setToolTip(text + " - " + appName);
 }
 
 
