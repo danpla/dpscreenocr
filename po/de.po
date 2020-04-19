@@ -8,677 +8,681 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-12 21:04+0300\n"
-"PO-Revision-Date: 2020-04-12 21:04+0300\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-04-20 07:11+0000\n"
+"Last-Translator: Martin Beer <mv87@dismail.de>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.0.2-dev\n"
 
 #: src/dpso_utils/lang_name.cpp:44
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: src/dpso_utils/lang_name.cpp:45
 msgid "Amharic"
-msgstr ""
+msgstr "Amharisch"
 
 #: src/dpso_utils/lang_name.cpp:46
 msgid "Arabic"
-msgstr ""
+msgstr "Arabisch"
 
 #: src/dpso_utils/lang_name.cpp:47
 msgid "Assamese"
-msgstr ""
+msgstr "Assamesisch"
 
 #: src/dpso_utils/lang_name.cpp:48
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Aserbaidschanisch"
 
 #: src/dpso_utils/lang_name.cpp:49
 msgid "Azerbaijani - Cyrilic"
-msgstr ""
+msgstr "Aserbaidschanisch (Kyrillisches Alphabet)"
 
 #: src/dpso_utils/lang_name.cpp:50
 msgid "Belarusian"
-msgstr ""
+msgstr "Weißrussisch"
 
 #: src/dpso_utils/lang_name.cpp:51
 msgid "Bengali"
-msgstr ""
+msgstr "Bengali"
 
 #: src/dpso_utils/lang_name.cpp:52
 msgid "Tibetan"
-msgstr ""
+msgstr "Tibetisch"
 
 #: src/dpso_utils/lang_name.cpp:53
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnisch"
 
 #: src/dpso_utils/lang_name.cpp:54
 msgid "Breton"
-msgstr ""
+msgstr "Bretonisch"
 
 #: src/dpso_utils/lang_name.cpp:55
 msgid "Bulgarian"
-msgstr ""
+msgstr "rulgari"
 
 #: src/dpso_utils/lang_name.cpp:56
 msgid "Catalan; Valencian"
-msgstr ""
+msgstr "Katalanisch; Valenzianisch"
 
 #: src/dpso_utils/lang_name.cpp:57
 msgid "Cebuano"
-msgstr ""
+msgstr "Cebuano"
 
 #: src/dpso_utils/lang_name.cpp:58
 msgid "Czech"
-msgstr ""
+msgstr "Tschechisch"
 
 #: src/dpso_utils/lang_name.cpp:59
 msgid "Chinese - Simplified"
-msgstr ""
+msgstr "Chinesisch - vereinfacht"
 
 #: src/dpso_utils/lang_name.cpp:60
 msgid "Chinese - Simplified (vertical)"
-msgstr ""
+msgstr "Chinesisch - vereinfacht (vertikal)"
 
 #: src/dpso_utils/lang_name.cpp:61
 msgid "Chinese - Traditional"
-msgstr ""
+msgstr "Chinesisch - traditionell"
 
 #: src/dpso_utils/lang_name.cpp:62
 msgid "Chinese - Traditional (vertical)"
-msgstr ""
+msgstr "Chinesisch - traditionell (vertikal)"
 
 #: src/dpso_utils/lang_name.cpp:63
 msgid "Cherokee"
-msgstr ""
+msgstr "Cherokee"
 
 #: src/dpso_utils/lang_name.cpp:64
 msgid "Corsican"
-msgstr ""
+msgstr "Korsisch"
 
 #: src/dpso_utils/lang_name.cpp:65
 msgid "Welsh"
-msgstr ""
+msgstr "Walisisch"
 
 #: src/dpso_utils/lang_name.cpp:66
 msgid "Danish"
-msgstr ""
+msgstr "Dänisch"
 
 #: src/dpso_utils/lang_name.cpp:67
 msgid "Danish - Fraktur"
-msgstr ""
+msgstr "Dänisch (Fraktur)"
 
 #: src/dpso_utils/lang_name.cpp:68
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
 
 #: src/dpso_utils/lang_name.cpp:69 src/dpso_utils/lang_name.cpp:84
 msgid "German - Fraktur"
-msgstr ""
+msgstr "Deutsch (Fraktur)"
 
 #: src/dpso_utils/lang_name.cpp:70
 msgid "Dhivehi; Divehi; Maldivian"
-msgstr ""
+msgstr "Dhivehi; Divehi; Maledivisch"
 
 #: src/dpso_utils/lang_name.cpp:71
 msgid "Dzongkha"
-msgstr ""
+msgstr "Dzongkha"
 
 #: src/dpso_utils/lang_name.cpp:72
 msgid "Greek, Modern (1453-)"
-msgstr ""
+msgstr "Griechisch, modern (1453-)"
 
 #: src/dpso_utils/lang_name.cpp:73
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: src/dpso_utils/lang_name.cpp:74
 msgid "English, Middle (1100-1500)"
-msgstr ""
+msgstr "Englisch, Mittel- (1100-1500)"
 
 #: src/dpso_utils/lang_name.cpp:75
 msgid "Esperanto"
-msgstr ""
+msgstr "Esperanto"
 
 #: src/dpso_utils/lang_name.cpp:76
 msgid "Math and equations"
-msgstr ""
+msgstr "Mathematische Symbole und Gleichungen"
 
 #: src/dpso_utils/lang_name.cpp:77
 msgid "Estonian"
-msgstr ""
+msgstr "Estnisch"
 
 #: src/dpso_utils/lang_name.cpp:78
 msgid "Basque"
-msgstr ""
+msgstr "Baskisch"
 
 #: src/dpso_utils/lang_name.cpp:79
 msgid "Faroese"
-msgstr ""
+msgstr "Färöisch"
 
 #: src/dpso_utils/lang_name.cpp:80
 msgid "Persian"
-msgstr ""
+msgstr "Persisch"
 
 #: src/dpso_utils/lang_name.cpp:81
 msgid "Filipino; Pilipino"
-msgstr ""
+msgstr "Filipino; Pilipino"
 
 #: src/dpso_utils/lang_name.cpp:82
 msgid "Finnish"
-msgstr ""
+msgstr "Finnisch"
 
 #: src/dpso_utils/lang_name.cpp:83
 msgid "French"
-msgstr ""
+msgstr "Französisch"
 
 #: src/dpso_utils/lang_name.cpp:85
 msgid "French, Middle (ca.1400-1600)"
-msgstr ""
+msgstr "Französisch, Mittel- (ca. 1400-1600)"
 
 #: src/dpso_utils/lang_name.cpp:86
 msgid "Western Frisian"
-msgstr ""
+msgstr "Westfriesisch"
 
 #: src/dpso_utils/lang_name.cpp:87
 msgid "Scottish Gaelic; Gaelic"
-msgstr ""
+msgstr "Schottisch-Gälisch; Gälisch"
 
 #: src/dpso_utils/lang_name.cpp:88
 msgid "Irish"
-msgstr ""
+msgstr "Irisch"
 
 #: src/dpso_utils/lang_name.cpp:89
 msgid "Galician"
-msgstr ""
+msgstr "Galicisch"
 
 #: src/dpso_utils/lang_name.cpp:90
 msgid "Greek, Ancient (to 1453)"
-msgstr ""
+msgstr "Griechisch, Alt- (bis 1453)"
 
 #: src/dpso_utils/lang_name.cpp:91
 msgid "Gujarati"
-msgstr ""
+msgstr "Gujarati"
 
 #: src/dpso_utils/lang_name.cpp:92
 msgid "Haitian; Haitian Creole"
-msgstr ""
+msgstr "Haitianisch; haitianisches Kreol"
 
 #: src/dpso_utils/lang_name.cpp:93
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebräisch"
 
 #: src/dpso_utils/lang_name.cpp:94
 msgid "Hindi"
-msgstr ""
+msgstr "Hindu"
 
 #: src/dpso_utils/lang_name.cpp:95
 msgid "Croatian"
-msgstr ""
+msgstr "Kroatisch"
 
 #: src/dpso_utils/lang_name.cpp:96
 msgid "Hungarian"
-msgstr ""
+msgstr "Ungarisch"
 
 #: src/dpso_utils/lang_name.cpp:97
 msgid "Armenian"
-msgstr ""
+msgstr "Armenisch"
 
 #: src/dpso_utils/lang_name.cpp:98
 msgid "Inuktitut"
-msgstr ""
+msgstr "Inuktitut"
 
 #: src/dpso_utils/lang_name.cpp:99
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonesisch"
 
 #: src/dpso_utils/lang_name.cpp:100
 msgid "Icelandic"
-msgstr ""
+msgstr "Isländisch"
 
 #: src/dpso_utils/lang_name.cpp:101
 msgid "Italian"
-msgstr ""
+msgstr "Italienisch"
 
 #: src/dpso_utils/lang_name.cpp:102
 msgid "Italian - Old"
-msgstr ""
+msgstr "Italienisch, Alt-"
 
 #: src/dpso_utils/lang_name.cpp:103
 msgid "Javanese"
-msgstr ""
+msgstr "Javanisch"
 
 #: src/dpso_utils/lang_name.cpp:104
 msgid "Japanese (vertical)"
-msgstr ""
+msgstr "Japanisch (vertikal)"
 
 #: src/dpso_utils/lang_name.cpp:105
 msgid "Japanese"
-msgstr ""
+msgstr "Japanisch"
 
 #: src/dpso_utils/lang_name.cpp:106
 msgid "Kannada"
-msgstr ""
+msgstr "Kannada; Kanaresisch"
 
 #: src/dpso_utils/lang_name.cpp:107
 msgid "Georgian"
-msgstr ""
+msgstr "Georgisch"
 
 #: src/dpso_utils/lang_name.cpp:108
 msgid "Georgian - Old"
-msgstr ""
+msgstr "Georgisch, Alt-"
 
 #: src/dpso_utils/lang_name.cpp:109
 msgid "Kazakh"
-msgstr ""
+msgstr "Kasachisch"
 
 #: src/dpso_utils/lang_name.cpp:110
 msgid "Central Khmer"
-msgstr ""
+msgstr "Khmer; Kambodschanisch"
 
 #: src/dpso_utils/lang_name.cpp:111
 msgid "Kirghiz; Kyrgyz"
-msgstr ""
+msgstr "Kirgisisch"
 
 #: src/dpso_utils/lang_name.cpp:112
 msgid "Kurmanji (Kurdish - Latin Script)"
-msgstr ""
+msgstr "Kurmandschi (Kurdisch - Lateinisches Alphabet)"
 
 #: src/dpso_utils/lang_name.cpp:113
 msgid "Korean"
-msgstr ""
+msgstr "Koreanisch"
 
 #: src/dpso_utils/lang_name.cpp:114
 msgid "Korean (vertical)"
-msgstr ""
+msgstr "Koreanisch (vertikal)"
 
 #: src/dpso_utils/lang_name.cpp:115 src/dpso_utils/lang_name.cpp:116
 msgid "Kurdish (Arabic Script)"
-msgstr ""
+msgstr "Kurdisch (Arabische Schriftzeichen)"
 
 #: src/dpso_utils/lang_name.cpp:117
 msgid "Lao"
-msgstr ""
+msgstr "Laotisch"
 
 #: src/dpso_utils/lang_name.cpp:118
 msgid "Latin"
-msgstr ""
+msgstr "Latein"
 
 #: src/dpso_utils/lang_name.cpp:119
 msgid "Latvian"
-msgstr ""
+msgstr "Lettisch"
 
 #: src/dpso_utils/lang_name.cpp:120
 msgid "Lithuanian"
-msgstr ""
+msgstr "Litauisch"
 
 #: src/dpso_utils/lang_name.cpp:121
 msgid "Luxembourgish"
-msgstr ""
+msgstr "Luxemburgisch"
 
 #: src/dpso_utils/lang_name.cpp:122
 msgid "Malayalam"
-msgstr ""
+msgstr "Malayalam"
 
 #: src/dpso_utils/lang_name.cpp:123
 msgid "Marathi"
-msgstr ""
+msgstr "Marathi"
 
 #: src/dpso_utils/lang_name.cpp:124
 msgid "Macedonian"
-msgstr ""
+msgstr "Mazedonisch"
 
 #: src/dpso_utils/lang_name.cpp:125
 msgid "Maltese"
-msgstr ""
+msgstr "Maltesisch"
 
 #: src/dpso_utils/lang_name.cpp:126
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongolisch"
 
 #: src/dpso_utils/lang_name.cpp:127
 msgid "Maori"
-msgstr ""
+msgstr "Maori"
 
 #: src/dpso_utils/lang_name.cpp:128
 msgid "Malay"
-msgstr ""
+msgstr "Malaiisch"
 
 #: src/dpso_utils/lang_name.cpp:129
 msgid "Burmese"
-msgstr ""
+msgstr "Burmesisch"
 
 #: src/dpso_utils/lang_name.cpp:130
 msgid "Nepali"
-msgstr ""
+msgstr "Nepalesisch"
 
 #: src/dpso_utils/lang_name.cpp:131
 msgid "Dutch; Flemish"
-msgstr ""
+msgstr "Niederländisch; Flämisch"
 
 #: src/dpso_utils/lang_name.cpp:132
 msgid "Norwegian"
-msgstr ""
+msgstr "Norwegisch"
 
 #: src/dpso_utils/lang_name.cpp:133
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "Okzitanisch (nach 1500)"
 
 #: src/dpso_utils/lang_name.cpp:134
 msgid "Oriya"
-msgstr ""
+msgstr "Oriya"
 
 #: src/dpso_utils/lang_name.cpp:135
 msgid "Panjabi; Punjabi"
-msgstr ""
+msgstr "Panjabi; Punjabi"
 
 #: src/dpso_utils/lang_name.cpp:136
 msgid "Polish"
-msgstr ""
+msgstr "Polnisch"
 
 #: src/dpso_utils/lang_name.cpp:137
 msgid "Portuguese"
-msgstr ""
+msgstr "Portugiesisch"
 
 #: src/dpso_utils/lang_name.cpp:138
 msgid "Pushto; Pashto"
-msgstr ""
+msgstr "Paschtunisch"
 
 #: src/dpso_utils/lang_name.cpp:139
 msgid "Quechua"
-msgstr ""
+msgstr "Quechua; Ketschua"
 
 #: src/dpso_utils/lang_name.cpp:140
 msgid "Romanian; Moldavian; Moldovan"
-msgstr ""
+msgstr "Rumänisch, Moldauisch"
 
 #: src/dpso_utils/lang_name.cpp:141
 msgid "Russian"
-msgstr ""
+msgstr "Russisch"
 
 #: src/dpso_utils/lang_name.cpp:142
 msgid "Sanskrit"
-msgstr ""
+msgstr "Sanskrit"
 
 #: src/dpso_utils/lang_name.cpp:143
 msgid "Sinhala; Sinhalese"
-msgstr ""
+msgstr "Singhalesisch"
 
 #: src/dpso_utils/lang_name.cpp:144
 msgid "Slovak"
-msgstr ""
+msgstr "Slowakisch"
 
 #: src/dpso_utils/lang_name.cpp:145
 msgid "Slovak - Fraktur"
-msgstr ""
+msgstr "Slowakisch (Fraktur)"
 
 #: src/dpso_utils/lang_name.cpp:146
 msgid "Slovenian"
-msgstr ""
+msgstr "Slowenisch"
 
 #: src/dpso_utils/lang_name.cpp:147
 msgid "Sindhi"
-msgstr ""
+msgstr "Sindhi"
 
 #: src/dpso_utils/lang_name.cpp:148
 msgid "Spanish; Castilian"
-msgstr ""
+msgstr "Spanish; Kastilisch"
 
 #: src/dpso_utils/lang_name.cpp:149
 msgid "Spanish; Castilian - Old"
-msgstr ""
+msgstr "Spanisch; Altkastilisch"
 
 #: src/dpso_utils/lang_name.cpp:150
 msgid "Albanian"
-msgstr ""
+msgstr "Albanisch"
 
 #: src/dpso_utils/lang_name.cpp:151
 msgid "Serbian"
-msgstr ""
+msgstr "Serbisch"
 
 #: src/dpso_utils/lang_name.cpp:152
 msgid "Serbian - Latin"
-msgstr ""
+msgstr "Serbisch - Lateinisches Alphabet"
 
 #: src/dpso_utils/lang_name.cpp:153
 msgid "Sundanese"
-msgstr ""
+msgstr "Sundanesisch"
 
 #: src/dpso_utils/lang_name.cpp:154
 msgid "Swahili"
-msgstr ""
+msgstr "Swahili"
 
 #: src/dpso_utils/lang_name.cpp:155
 msgid "Swedish"
-msgstr ""
+msgstr "Schwedisch"
 
 #: src/dpso_utils/lang_name.cpp:156
 msgid "Syriac"
-msgstr ""
+msgstr "Syrisch"
 
 #: src/dpso_utils/lang_name.cpp:157
 msgid "Tamil"
-msgstr ""
+msgstr "Tamil"
 
 #: src/dpso_utils/lang_name.cpp:158
 msgid "Tatar"
-msgstr ""
+msgstr "Tatarisch"
 
 #: src/dpso_utils/lang_name.cpp:159
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: src/dpso_utils/lang_name.cpp:160
 msgid "Tajik"
-msgstr ""
+msgstr "Tadschikisch"
 
 #: src/dpso_utils/lang_name.cpp:161
 msgid "Tagalog"
-msgstr ""
+msgstr "Tagalog"
 
 #: src/dpso_utils/lang_name.cpp:162
 msgid "Thai"
-msgstr ""
+msgstr "Thai"
 
 #: src/dpso_utils/lang_name.cpp:163
 msgid "Tigrinya"
-msgstr ""
+msgstr "Tigrinya"
 
 #: src/dpso_utils/lang_name.cpp:164
 msgid "Tonga"
-msgstr ""
+msgstr "Tongaisch"
 
 #: src/dpso_utils/lang_name.cpp:165
 msgid "Turkish"
-msgstr ""
+msgstr "Türkisch"
 
 #: src/dpso_utils/lang_name.cpp:166
 msgid "Uighur; Uyghur"
-msgstr ""
+msgstr "Uigurisch"
 
 #: src/dpso_utils/lang_name.cpp:167
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainisch"
 
 #: src/dpso_utils/lang_name.cpp:168
 msgid "Urdu"
-msgstr ""
+msgstr "Urdu"
 
 #: src/dpso_utils/lang_name.cpp:169
 msgid "Uzbek"
-msgstr ""
+msgstr "Usbekisch"
 
 #: src/dpso_utils/lang_name.cpp:170
 msgid "Uzbek - Cyrilic"
-msgstr ""
+msgstr "Usbekisch (Kyrillisches Alphabet)"
 
 #: src/dpso_utils/lang_name.cpp:171
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamesisch"
 
 #: src/dpso_utils/lang_name.cpp:172
 msgid "Yiddish"
-msgstr ""
+msgstr "Jiddisch"
 
 #: src/dpso_utils/lang_name.cpp:173
 msgid "Yoruba"
-msgstr ""
+msgstr "Yoruba"
 
 #: src/ui/qt/about.cpp:53 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
-msgstr ""
+msgstr "Programm zur Erkennung von Text auf dem Bildschirm"
 
 #: src/ui/qt/about.cpp:67
 msgid "License"
-msgstr ""
+msgstr "Lizenz"
 
 #: src/ui/qt/action_chooser.cpp:21
 msgid "Copy text to clipboard"
-msgstr ""
+msgstr "Text in die Zwischenablage kopieren"
 
 #: src/ui/qt/action_chooser.cpp:22
 msgid "Add text to history"
-msgstr ""
+msgstr "Text dem Verlauf hinzufügen"
 
 #: src/ui/qt/action_chooser.cpp:24
 msgid "Run executable:"
-msgstr ""
+msgstr "Programm ausführen:"
 
 #: src/ui/qt/action_chooser.cpp:26
 msgid "Run an executable with the recognized text as the first argument"
 msgstr ""
+"Führe ein Programm aus, wobei der erkannte Text als erstes Argument an das "
+"Programm übergeben wird"
 
 #: src/ui/qt/action_chooser.cpp:69
 msgid "Choose an executable"
-msgstr ""
+msgstr "Programm auswählen"
 
 #: src/ui/qt/history.cpp:21
 msgid "Wrap words"
-msgstr ""
+msgstr "Wörter umbrechen"
 
 #: src/ui/qt/history.cpp:36 src/ui/qt/history.cpp:67
 msgid "Clear"
-msgstr ""
+msgstr "Löschen"
 
 #: src/ui/qt/history.cpp:41
 msgid "Save as…"
-msgstr ""
+msgstr "Speichern unter…"
 
 #: src/ui/qt/history.cpp:43
 msgid "Save the history as plain text, HTML, or JSON"
-msgstr ""
+msgstr "Speichert den Verlauf als Rohtext, im HTML- oder im JSON-Format ab"
 
 #: src/ui/qt/history.cpp:65
 msgid "Clear the history?"
-msgstr ""
+msgstr "Verlauf löschen?"
 
 #: src/ui/qt/history.cpp:66 src/ui/qt/main_window.cpp:112
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: src/ui/qt/history.cpp:68
 msgid "Save history"
-msgstr ""
+msgstr "Verlauf speichern"
 
 #: src/ui/qt/history.cpp:69
 msgid "Plain text"
-msgstr ""
+msgstr "Rohtext"
 
 #: src/ui/qt/history.cpp:70
 msgid "All files"
-msgstr ""
+msgstr "Alle Dateien"
 
 #: src/ui/qt/hotkey_editor.cpp:50
 msgctxt "hotkey.key"
 msgid "None"
-msgstr ""
+msgstr "Keiner"
 
 #: src/ui/qt/lang_browser.cpp:33
 msgctxt "language"
 msgid "Name"
-msgstr ""
+msgstr "Sprache"
 
 #: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Code"
-msgstr ""
+msgstr "ISO-Code"
 
 #: src/ui/qt/main_window.cpp:78
 msgctxt "ui.tab"
 msgid "Main"
-msgstr ""
+msgstr "Allgemein"
 
 #: src/ui/qt/main_window.cpp:79
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: src/ui/qt/main_window.cpp:80
 msgid "History"
-msgstr ""
+msgstr "Verlauf"
 
 #: src/ui/qt/main_window.cpp:81
 msgid "About"
-msgstr ""
+msgstr "Über"
 
 #: src/ui/qt/main_window.cpp:102
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr ""
+msgstr "Texterkennung {progress}% ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp:103
 msgid "Please install languages"
-msgstr ""
+msgstr "Bitte Sprachpakete für Tesseract installieren"
 
 #: src/ui/qt/main_window.cpp:104
 msgid "Please select languages"
-msgstr ""
+msgstr "Bitte Sprachen auswählen"
 
 #: src/ui/qt/main_window.cpp:106
 msgid "Please select actions in the “Actions” tab"
-msgstr ""
+msgstr "Bitte Aktionen im Reiter „Aktionen” auswählen"
 
 #. Translators: Program is ready for OCR
 #: src/ui/qt/main_window.cpp:109
 msgctxt "ocr.status"
 msgid "Ready"
-msgstr ""
+msgstr "Bereit"
 
 #: src/ui/qt/main_window.cpp:111
 msgid "Recognition is not yet finished. Quit anyway?"
-msgstr ""
+msgstr "Texterkennung läuft noch. Trotzdem beenden?"
 
 #: src/ui/qt/main_window.cpp:113 src/ui/qt/main_window.cpp:204
 msgid "Quit"
-msgstr ""
+msgstr "Beenden"
 
 #: src/ui/qt/main_window.cpp:196
 msgid "Show {app_name}"
-msgstr ""
+msgstr "{app_name} anzeigen"
 
 #: src/ui/qt/main_window.cpp:211
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: src/ui/qt/main_window.cpp:222
 msgid "Character recognition"
-msgstr ""
+msgstr "Zeichenerkennung"
 
 #: src/ui/qt/main_window.cpp:227
 msgid "Split text blocks"
-msgstr ""
+msgstr "Textblöcke aufteilen"
 
 #: src/ui/qt/main_window.cpp:229
 msgid "Split independent text blocks, e.g. columns"
-msgstr ""
+msgstr "Teile voneinander unabhängige Textblöcke, z.B. Spalten, auf"
 
 #: src/ui/qt/main_window.cpp:232
 msgid "Languages:"
-msgstr ""
+msgstr "Sprachen:"
 
 #: src/ui/qt/main_window.cpp:236
 msgid "Hotkey"
-msgstr ""
+msgstr "Tastenkürzel"
