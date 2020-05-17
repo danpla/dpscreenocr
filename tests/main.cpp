@@ -11,8 +11,7 @@ int main()
 
     for (const auto* runner = test::Runner::getFirst();
             runner;
-            runner = runner->getNext())
-    {
+            runner = runner->getNext()) {
         std::printf(
             "%4i/%i: %s\n",
             curRunnerNum++, test::Runner::getNumRunners(),

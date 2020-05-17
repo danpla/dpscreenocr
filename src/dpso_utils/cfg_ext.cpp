@@ -41,8 +41,7 @@ void dpsoCfgLoadActiveLangs(
     }
 
     while (*s) {
-        if (std::isspace(*s) || *s == langSeparator)
-        {
+        if (std::isspace(*s) || *s == langSeparator) {
             ++s;
             continue;
         }

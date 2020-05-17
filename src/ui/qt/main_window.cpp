@@ -153,8 +153,7 @@ void MainWindow::changeEvent(QEvent* event)
         && trayIcon->isVisible()
         && dpsoCfgGetBool(
             cfgKeyUiWindowMinimizeToTray,
-            cfgDefaultValueUiWindowMinimizeToTray))
-    {
+            cfgDefaultValueUiWindowMinimizeToTray)) {
         visibilityAction->toggle();
     }
 
@@ -169,8 +168,7 @@ void MainWindow::invalidateStatus()
 
 void MainWindow::setVisibility(bool visible)
 {
-    if (!visible)
-    {
+    if (!visible) {
         hide();
         return;
     }
