@@ -33,7 +33,8 @@ function(gen_html_manual target_name dst_dir)
         GLOB
         SRC_DATA_FILES
         "${DOC_DIR}/manual-data/*.png"
-        "${DOC_DIR}/manual-data/*css"
+        "${DOC_DIR}/manual-data/*.svg"
+        "${DOC_DIR}/manual-data/*.css"
     )
 
     set(DST_DATA_FILES)

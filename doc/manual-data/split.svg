@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="210" width="520" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 137.58333 55.5625">
+ <g transform="translate(0 -241.4375)">
+  <g fill="#1e1e1e">
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="14.81667" y="256.2542" x="12.96458"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="7.408333" y="259.9583" x="12.96458"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="12.96458" y="263.6625" x="12.96458"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="11.1125" y="267.3667" x="12.96458"/>
+  </g>
+  <g fill="#d62008">
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="9.260416" y="256.2542" x="31.48542"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="12.96458" y="259.9583" x="31.48542"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="7.408333" y="263.6625" x="31.48542"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852066" width="11.1125" y="267.3667" x="31.48542"/>
+  </g>
+  <g fill="#1e1e1e">
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="14.81667" y="256.2542" x="98.16042"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="7.408333" y="259.9583" x="98.16042"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="12.96458" y="263.6625" x="98.16042"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="11.1125" y="267.3667" x="98.16042"/>
+  </g>
+  <g fill="#d62008">
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="9.260416" y="256.2542" x="114.8292"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="12.96458" y="259.9583" x="107.4208"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="7.408333" y="263.6625" x="112.9771"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852066" width="11.1125" y="267.3667" x="111.125"/>
+  </g>
+  <g fill="#1e1e1e">
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="14.81667" y="256.2542" x="64.82291"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="7.408333" y="259.9583" x="64.82291"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="12.96458" y="263.6625" x="64.82291"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="11.1125" y="267.3667" x="64.82291"/>
+  </g>
+  <g fill="#d62008">
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="9.260416" y="271.0708" x="64.82291"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="12.96458" y="274.775" x="64.82291"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852083" width="7.408333" y="278.4792" x="64.82291"/>
+   <rect style="color:#000000;paint-order:normal" height="1.852066" width="11.1125" y="282.1834" x="64.82291"/>
+  </g>
+ </g>
+</svg>

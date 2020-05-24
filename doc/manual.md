@@ -131,9 +131,10 @@ Options in this section control how dpScreenOCR will recognize text.
 
 If this option is enabled, dpScreenOCR will try to detect and split
 independent text blocks, e.g. columns. This behavior is best described
-by the following picture:
+by the following picture, which shows original text (left) recognized
+with (middle) and without (right) the "Split text blocks" option.
 
-![](manual-data/split.png)
+![](manual-data/split.svg){ width=100% }
 
 
 #### Languages
