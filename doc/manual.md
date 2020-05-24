@@ -221,7 +221,7 @@ is similar. Open `cmd.exe` as administrator and run:
   * If the association doesn't exist, create a new one:
 
         C:\>assoc .py=Python.File
-        C:\>ftype Python.File=Python.File="C:\Windows\py.exe" "%L" %*
+        C:\>ftype Python.File="C:\Windows\py.exe" "%L" %*
 
   * If the association exists (`assoc` prints something like
     `.py=Python.File`), run `ftype` to see what command is used:
@@ -231,7 +231,7 @@ is similar. Open `cmd.exe` as administrator and run:
 
     If the command doesn't end with `%*`, fix it:
 
-        C:\>ftype Python.File=Python.File="C:\Windows\py.exe" "%L" %*
+        C:\>ftype Python.File="C:\Windows\py.exe" "%L" %*
 
 If the script still receives only one argument (path to the script),
 this means that Windows actually use a different association for the
