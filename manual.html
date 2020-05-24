@@ -132,12 +132,12 @@
 <ul>
 <li><p>If the association doesn’t exist, create a new one:</p>
 <pre><code>C:\&gt;assoc .py=Python.File
-C:\&gt;ftype Python.File=Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre></li>
+C:\&gt;ftype Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre></li>
 <li><p>If the association exists (<code>assoc</code> prints something like <code>.py=Python.File</code>), run <code>ftype</code> to see what command is used:</p>
 <pre><code>C:\&gt;ftype Python.File
 Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre>
 <p>If the command doesn’t end with <code>%*</code>, fix it:</p>
-<pre><code>C:\&gt;ftype Python.File=Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre></li>
+<pre><code>C:\&gt;ftype Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre></li>
 </ul>
 <p>If the script still receives only one argument (path to the script), this means that Windows actually use a different association for the given extension and ignores the one set with <code>assoc/ftype</code>. To fix that, open <code>regedit</code> and make sure the values of the following keys end with <code>%*</code>:</p>
 <pre><code>HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command
