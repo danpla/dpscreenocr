@@ -287,7 +287,7 @@ typedef void (*DpsoProgressCallback)(void* userData);
  *
  * The progress callback (may be null) is called every time the
  * progress changes. Use dpsoGetProgress() to get the progress.
- * You can also call dpsoTerminateOcr() from the callback to
+ * You can also call dpsoTerminateJobs() from the callback to
  * terminate jobs prematurely.
  */
 void dpsoWaitForResults(
