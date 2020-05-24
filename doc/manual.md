@@ -430,11 +430,6 @@ here, please report the problem on the [issue tracker][].
     * (Unix) Are you using Wayland? It's not yet supported. If
       possible, switch to X11 session.
 
- *  **Texts are not added to the history**
-
-    Make sure that "[Add text to history]" is enabled in the
-    [Actions tab].
-
  *  **"Run executable" has no effect**
 
     * Make sure that the "Run executable" entry contains either an
