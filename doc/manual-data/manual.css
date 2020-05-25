@@ -23,7 +23,7 @@ pre code {
     display: block;
     white-space: pre;
     padding: 1em;
-    overflow-y: auto;
+    overflow-x: auto;
 }
 
 @media screen and (max-width: 38em) {
