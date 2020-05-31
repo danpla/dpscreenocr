@@ -3,7 +3,8 @@
  * \file Helpers for libintl.h
  *
  * This file mostly mimics to gettext.h, but contains only routines
- * we actually use.
+ * we actually need. Obviously, this file should only be included if
+ * you don't use gettext.h.
  *
  * The names of the functions and macros also match gettext.h. Still,
  * be aware that although variants with _expr postfix also come from
@@ -12,9 +13,6 @@
  * --keyword argument:
  *
  *     -kpgettext_expr:1c,2 -knpgettext_expr:1c,2,3
- *
- * Obviously, this file should only be included if you don't use
- * gettext.h. It's therefore is not a part of includes in dpso_utils.h.
  */
 
 #pragma once

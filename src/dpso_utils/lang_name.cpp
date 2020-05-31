@@ -5,8 +5,6 @@
 #include <cstring>
 #include <iterator>
 
-#include "intl.h"
-
 
 #define N_(S) S
 
@@ -187,7 +185,7 @@ const char* dpsoGetLangName(const char* langCode)
 
     if (iter != std::end(names)
             && std::strcmp(iter->code, langCode) == 0)
-        return gettext(iter->name);
+        return iter->name;
 
-    return langCode;
+    return nullptr;
 }

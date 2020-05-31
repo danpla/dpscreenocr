@@ -9,7 +9,3 @@
 #include "history_export.h"
 #include "lang_name.h"
 #include "str_format.h"
-/*
- * intl.h is also public, but you should only use it if you
- * don't have gettext.h.
- */

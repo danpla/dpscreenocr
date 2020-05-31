@@ -13,7 +13,7 @@
 #include <QTextCodec>
 #include <QTranslator>
 
-#include "dpso_utils/intl.h"
+#include "dpso_intl/dpso_intl.h"
 
 #include "common/common.h"
 

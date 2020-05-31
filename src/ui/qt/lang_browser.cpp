@@ -4,8 +4,8 @@
 #include <QHeaderView>
 
 #include "dpso/dpso.h"
+#include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
-#include "dpso_utils/intl.h"
 
 #include "common/common.h"
 
@@ -88,9 +88,10 @@ void LangBrowser::loadState()
         item->setCheckState(
             columnIdxCheckbox, state ? Qt::Checked : Qt::Unchecked);
 
+        const auto* langName = dpsoGetLangName(langCode);
         item->setText(
             columnIdxName,
-            dpsoGetLangName(langCode));
+            langName ? gettext(langName) : langCode);
         item->setText(columnIdxCode, langCode);
     }
     setSortingEnabled(true);

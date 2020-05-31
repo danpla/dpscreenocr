@@ -63,9 +63,13 @@ if (DPSO_QT_RCC_ICONS)
     set(SRCS ${SRCS} ${RCC_ICONS})
 endif()
 
-# Add the common lib early to avoid AUTOMOC
+# Add libraries early to avoid AUTOMOC
 if (NOT TARGET common)
     add_subdirectory(../common ${CMAKE_BINARY_DIR}/common)
+endif()
+
+if (NOT TARGET dpso_intl)
+    add_subdirectory(../../dpso_intl ${CMAKE_BINARY_DIR}/dpso_intl)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -112,6 +116,8 @@ target_link_libraries(dpscreenocr-qt dpso)
 
 add_dependencies(dpscreenocr-qt dpso_utils)
 target_link_libraries(dpscreenocr-qt dpso_utils)
+
+target_link_libraries(dpscreenocr-qt dpso_intl)
 
 if (DPSO_QT4)
     target_link_libraries(dpscreenocr-qt Qt4::QtCore Qt4::QtGui)

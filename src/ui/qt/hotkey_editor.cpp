@@ -3,7 +3,7 @@
 
 #include <QBoxLayout>
 
-#include "dpso_utils/intl.h"
+#include "dpso_intl/dpso_intl.h"
 
 
 HotkeyEditor::HotkeyEditor(

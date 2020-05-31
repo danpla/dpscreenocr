@@ -8,7 +8,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
-#include "dpso_utils/intl.h"
+#include "dpso_intl/dpso_intl.h"
 #define _(S) gettext(S)
 
 #include "common/common.h"

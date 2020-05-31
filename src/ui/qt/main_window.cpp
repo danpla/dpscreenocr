@@ -27,9 +27,8 @@
 #endif
 
 #include "dpso/dpso.h"
+#include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
-#include "dpso_utils/intl.h"
-#define _(S) gettext(S)
 
 #include "common/common.h"
 
@@ -40,6 +39,9 @@
 #include "lang_browser.h"
 #include "status_indicator.h"
 #include "utils.h"
+
+
+#define _(S) gettext(S)
 
 
 namespace {
