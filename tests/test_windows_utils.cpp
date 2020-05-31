@@ -14,7 +14,7 @@
 
 static void testUtfConverion(const char* utf8Str)
 {
-    using namespace dpso::win;
+    using namespace dpso::windows;
 
     std::wstring utf16Str;
 
@@ -72,7 +72,7 @@ static std::vector<std::string> cmdLineToArgv(
 {
     int argc;
     wchar_t** argv = CommandLineToArgvW(
-        dpso::win::utf8ToUtf16(cmdLine).c_str(), &argc);
+        dpso::windows::utf8ToUtf16(cmdLine).c_str(), &argc);
 
     if (!argv) {
         std::fprintf(
@@ -86,7 +86,7 @@ static std::vector<std::string> cmdLineToArgv(
     result.reserve(argc);
 
     for (int i = 0; i < argc; ++i)
-        result.push_back(dpso::win::utf16ToUtf8(argv[i]));
+        result.push_back(dpso::windows::utf16ToUtf8(argv[i]));
 
     LocalFree(argv);
     return result;
@@ -112,7 +112,7 @@ std::string rangeToString(T begin, T end)
 
 static void testArgv(std::initializer_list<const char*> argv)
 {
-    using namespace dpso::win;
+    using namespace dpso::windows;
 
     const auto cmdLine = createCmdLine(
         *argv.begin(), argv.begin() + 1, argv.size() - 1);

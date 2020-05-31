@@ -3,7 +3,7 @@
 
 
 namespace dpso {
-namespace backend {
+namespace windows {
 
 
 std::string getLastErrorMessage()

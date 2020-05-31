@@ -128,13 +128,13 @@ void dpsoExec(
         return;
 
     const char* const args[] = {arg};
-    const auto cmdLine = dpso::win::createCmdLine("", args);
+    const auto cmdLine = dpso::windows::createCmdLine("", args);
 
     std::wstring exePathUtf16;
     std::wstring cmdLineUtf16;
     try {
-        exePathUtf16 = dpso::win::utf8ToUtf16(exePath);
-        cmdLineUtf16 = dpso::win::utf8ToUtf16(cmdLine);
+        exePathUtf16 = dpso::windows::utf8ToUtf16(exePath);
+        cmdLineUtf16 = dpso::windows::utf8ToUtf16(cmdLine);
     } catch (std::runtime_error&) {
         return;
     }

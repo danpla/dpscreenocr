@@ -52,7 +52,7 @@ const int borderWidth96Dpi = 4;
 // and newer.
 static int getBorderWidth()
 {
-    auto dc = getDc(nullptr);
+    auto dc = windows::getDc(nullptr);
     if (!dc)
         return borderWidth96Dpi;
 
@@ -83,7 +83,8 @@ static Point getMousePosition()
 static void throwLastError(const char* description)
 {
     throw BackendError(
-        std::string(description) + ": " + getLastErrorMessage());
+        std::string(description) + ": "
+        + windows::getLastErrorMessage());
 }
 
 
@@ -292,10 +293,10 @@ void WindowsSelection::draw(HDC dc)
     const auto rectRight = rectLeft + geom.w + borderWidth + 1;
     const auto rectBottom = rectTop + geom.h + borderWidth + 1;
 
-    const ObjectSelector brushSelector(
+    const windows::ObjectSelector brushSelector(
         dc, GetStockObject(NULL_BRUSH));
     for (const auto& pen : pens) {
-        const ObjectSelector penSelector(dc, pen.get());
+        const windows::ObjectSelector penSelector(dc, pen.get());
         Rectangle(dc, rectLeft, rectTop, rectRight, rectBottom);
     }
 }
@@ -303,12 +304,12 @@ void WindowsSelection::draw(HDC dc)
 
 void WindowsSelection::updateWindowRegion()
 {
-    ObjectPtr<HRGN> region(CreateRectRgn(
+    windows::ObjectPtr<HRGN> region(CreateRectRgn(
         0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2));
     if (!region)
         return;
 
-    ObjectPtr<HRGN> holeRegion(CreateRectRgn(
+    windows::ObjectPtr<HRGN> holeRegion(CreateRectRgn(
         borderWidth, borderWidth,
         borderWidth + geom.w, borderWidth + geom.h));
     if (!holeRegion)

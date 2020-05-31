@@ -18,7 +18,8 @@ WindowsBackendImpl::WindowsBackendImpl()
 {
     if (!instance)
         throw BackendError(
-            "GetModuleHandle() failed: " + getLastErrorMessage());
+            "GetModuleHandle() failed: "
+            + windows::getLastErrorMessage());
 
     try {
         keyManager.reset(new WindowsKeyManager());

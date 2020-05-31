@@ -27,7 +27,7 @@ const char* dpsoGetCfgPath(const char* appName)
     std::wstring pathUtf16 = appDataPathUtf16;
     pathUtf16 += L'\\';
     try {
-        pathUtf16 += dpso::win::utf8ToUtf16(appName);
+        pathUtf16 += dpso::windows::utf8ToUtf16(appName);
     } catch (std::runtime_error&) {
         return path.c_str();
     }
@@ -37,7 +37,7 @@ const char* dpsoGetCfgPath(const char* appName)
         return path.c_str();
 
     try {
-        path = dpso::win::utf16ToUtf8(pathUtf16);
+        path = dpso::windows::utf16ToUtf8(pathUtf16);
     } catch (std::runtime_error&) {
         return path.c_str();
     }

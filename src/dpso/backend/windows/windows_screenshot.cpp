@@ -28,15 +28,15 @@ std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
     if (captureRect.empty())
         return nullptr;
 
-    auto screenDc = getDc(nullptr);
+    auto screenDc = windows::getDc(nullptr);
     if (!screenDc)
         return nullptr;
 
-    auto imageDc = createCompatibleDc(screenDc.get());
+    auto imageDc = windows::createCompatibleDc(screenDc.get());
     if (!imageDc)
         return nullptr;
 
-    ObjectPtr<HBITMAP> imageBitmap(CreateCompatibleBitmap(
+    windows::ObjectPtr<HBITMAP> imageBitmap(CreateCompatibleBitmap(
         screenDc.get(), captureRect.w, captureRect.h));
     if (!imageBitmap)
         return nullptr;
@@ -44,7 +44,7 @@ std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
     // The GetDIBits() docs say that the bitmap must not be selected
     // into a DC when calling the function.
     {
-        const ObjectSelector bitmapSelector(
+        const windows::ObjectSelector bitmapSelector(
             imageDc.get(), imageBitmap.get());
 
         BitBlt(
