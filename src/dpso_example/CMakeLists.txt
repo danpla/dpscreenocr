@@ -20,5 +20,4 @@ set_target_properties(
 
 target_include_directories(dpso-example PRIVATE .)
 
-add_dependencies(dpso-example dpso)
 target_link_libraries(dpso-example dpso)

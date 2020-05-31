@@ -64,5 +64,4 @@ set_target_properties(
 target_include_directories(dpso_utils PRIVATE .)
 target_include_directories(dpso_utils PUBLIC ..)
 
-add_dependencies(dpso_utils dpso)
 target_link_libraries(dpso_utils dpso)

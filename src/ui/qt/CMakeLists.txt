@@ -110,13 +110,8 @@ if (WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
 endif()
 
 target_link_libraries(dpscreenocr-qt common)
-
-add_dependencies(dpscreenocr-qt dpso)
 target_link_libraries(dpscreenocr-qt dpso)
-
-add_dependencies(dpscreenocr-qt dpso_utils)
 target_link_libraries(dpscreenocr-qt dpso_utils)
-
 target_link_libraries(dpscreenocr-qt dpso_intl)
 
 if (DPSO_QT4)
