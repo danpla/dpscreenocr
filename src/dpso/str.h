@@ -37,21 +37,5 @@ inline int cmpIc(const char* a, const char* b)
 }
 
 
-/**
- * Prettify text returned by Tesseract.
- *
- * This function:
- *
- *   * Strips leading whitespace.
- *   * Splits fi and fl ligatures.
- *   * Removes paragraphs consisting of a single space, which are
- *       sometimes created when page segmentation is enabled.
- *   * Removes the trailing newline (Tesseract adds two).
- *
- * newLen, if not null, is set to a new text len.
- */
-void prettifyOcrText(char* text, std::size_t* newLen = nullptr);
-
-
 }
 }

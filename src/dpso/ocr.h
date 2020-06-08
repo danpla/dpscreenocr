@@ -86,16 +86,15 @@ typedef enum {
     /**
      * Automatic text segmentation.
      *
-     * Tesseract will try to detect and split independent text
-     * blocks, like text columns.
+     * Try to detect and split independent text blocks, like columns.
      */
     dpsoJobTextSegmentation = 1 << 0,
 
     /**
      * Dump debug image.
      *
-     * Dump image that was passed to Tesseract to the current working
-     * directory as "dpso_debug" + format-specific extension.
+     * Dump image that was passed to the OCR engine to the current
+     * working directory as "dpso_debug" + format-specific extension.
      */
     dpsoJobDumpDebugImage = 1 << 1
 } DpsoJobFlag;

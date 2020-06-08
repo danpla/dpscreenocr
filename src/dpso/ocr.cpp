@@ -18,13 +18,9 @@
 #include <utility>
 #include <vector>
 
-#include "tesseract/baseapi.h"
-#include "tesseract/genericvector.h"
-#include "tesseract/ocrclass.h"
-#include "tesseract/strngs.h"
-
 #include "backend/backend.h"
 #include "img.h"
+#include "ocr_engine/ocr_engine.h"
 #include "progress_tracker.h"
 #include "str.h"
 #include "timing.h"
@@ -39,10 +35,6 @@
 // When the locale is changed and restored is documented in
 // dpsoQueueJob(). We don't restore the locale early on dpsoUpdate()
 // call since there's no way to tell this to the user trough the API.
-
-static tesseract::TessBaseAPI* tess;
-
-
 static std::string lastLocale;
 static bool localeChanged;
 
@@ -70,76 +62,45 @@ static void restoreLocale()
 }
 
 
+static std::unique_ptr<dpso::OcrEngine> ocrEngine;
+
+
 namespace {
 
 
 struct Lang {
-    std::string code;
-    bool active;
+    int langIdx;
+    bool isActive;
 };
 
 
 }
 
 
+// The public API gives a sorted list of language codes, while in
+// OcrEngine they ma be in arbitrary order. A Lang at the language
+// index from public API refers to the state of the engine's language
+// at Lang::langIdx.
 static std::vector<Lang> langs;
-static int numActiveLangs;
-
-
-static int cmpTessStrings(const void *a, const void *b)
-{
-    const auto* strA = static_cast<const STRING*>(a);
-    const auto* strB = static_cast<const STRING*>(b);
-    return std::strcmp(strA->c_str(), strB->c_str());
-}
+static std::vector<int> activeLangIndices;
 
 
 static void cacheLangs()
 {
     langs.clear();
+    langs.reserve(ocrEngine->getNumLangs());
 
-    setCLocale();
+    for (int i = 0; i < ocrEngine->getNumLangs(); ++i)
+        langs.push_back({i, false});
 
-    tess->Init(nullptr, nullptr);
-
-    GenericVector<STRING> langCodes;
-    tess->GetAvailableLanguagesAsVector(&langCodes);
-    langCodes.sort(cmpTessStrings);
-
-    restoreLocale();
-
-    for (int i = 0; i < langCodes.size(); ++i) {
-        const auto& langCode = langCodes[i];
-        if (langCode == "osd" || langCode == "equ")
-            continue;
-
-        langs.push_back({langCode.c_str(), false});
-    }
-}
-
-
-// String for TessBaseAPI::Init()
-static std::string tessLangsStr;
-static bool tessLangsStrValid;
-
-
-static void updateTessLangsStr()
-{
-    if (tessLangsStrValid)
-        return;
-
-    tessLangsStr.clear();
-
-    for (const auto& lang : langs) {
-        if (!lang.active)
-            continue;
-
-        if (!tessLangsStr.empty())
-            tessLangsStr += '+';
-        tessLangsStr += lang.code;
-    }
-
-    tessLangsStrValid = true;
+    std::sort(
+        langs.begin(), langs.end(),
+        [](const Lang& a, const Lang& b)
+        {
+            return std::strcmp(
+                ocrEngine->getLangCode(a.langIdx),
+                ocrEngine->getLangCode(b.langIdx)) < 0;
+        });
 }
 
 
@@ -155,25 +116,27 @@ const char* dpsoGetLangCode(int langIdx)
             || static_cast<std::size_t>(langIdx) >= langs.size())
         return "";
 
-    return langs[langIdx].code.c_str();
+    return ocrEngine->getLangCode(langs[langIdx].langIdx);
 }
 
 
 int dpsoGetLangIdx(const char* langCode, size_t langCodeLen)
 {
-    auto cmpByCode = [langCodeLen](
-        const Lang& lang, const char* langCode)
-    {
-        return dpso::str::cmpSubStr(
-            lang.code.c_str(), langCode, langCodeLen) < 0;
-    };
-
     const auto iter = std::lower_bound(
-        langs.begin(), langs.end(), langCode, cmpByCode);
+        langs.begin(), langs.end(), langCode,
+        [langCodeLen](const Lang& lang, const char* langCode)
+        {
+            return dpso::str::cmpSubStr(
+                ocrEngine->getLangCode(lang.langIdx),
+                langCode,
+                langCodeLen) < 0;
+        });
 
     if (iter != langs.end()
             && dpso::str::cmpSubStr(
-                iter->code.c_str(), langCode, langCodeLen) == 0)
+                ocrEngine->getLangCode(iter->langIdx),
+                langCode,
+                langCodeLen) == 0)
         return iter - langs.begin();
 
     return -1;
@@ -186,7 +149,7 @@ int dpsoGetLangIsActive(int langIdx)
             || static_cast<std::size_t>(langIdx) >= langs.size())
         return false;
 
-    return langs[langIdx].active;
+    return langs[langIdx].isActive;
 }
 
 
@@ -194,22 +157,34 @@ void dpsoSetLangIsActive(int langIdx, int newIsActive)
 {
     if (langIdx < 0
             || static_cast<std::size_t>(langIdx) >= langs.size()
-            || newIsActive == langs[langIdx].active)
+            || newIsActive == langs[langIdx].isActive)
         return;
 
-    if (newIsActive)
-        ++numActiveLangs;
-    else
-        --numActiveLangs;
+    langs[langIdx].isActive = newIsActive;
 
-    tessLangsStrValid = false;
-    langs[langIdx].active = newIsActive;
+    auto findActiveLang = [](int langIdx)
+    {
+        return std::find(
+            activeLangIndices.begin(),
+            activeLangIndices.end(),
+            langs[langIdx].langIdx);
+    };
+
+    if (newIsActive) {
+        assert(findActiveLang(langIdx) == activeLangIndices.end());
+        activeLangIndices.push_back(langs[langIdx].langIdx);
+    } else {
+        const auto activeLangIter = findActiveLang(langIdx);
+        assert(activeLangIter != activeLangIndices.end());
+
+        activeLangIndices.erase(activeLangIter);
+    }
 }
 
 
 int dpsoGetNumActiveLangs()
 {
-    return numActiveLangs;
+    return activeLangIndices.size();
 }
 
 
@@ -222,15 +197,14 @@ using Timestamp = std::array<char, 20>;
 
 struct Job {
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
-    std::string tessLangsStr;
+    std::vector<int> langIndices;
     Timestamp timestamp;
     int flags;
 };
 
 
 struct JobResult {
-    std::unique_ptr<char[]> text;
-    std::size_t textLen;
+    dpso::OcrResult ocrResult;
     Timestamp timestamp;
 };
 
@@ -382,31 +356,15 @@ static void prepareScreenshot(
 }
 
 
-namespace {
-
-
-struct TessCancelData {
-    ETEXT_DESC textDesc;
-    dpso::ProgressTracker* progressTracker;
-};
-
-
-}
-
-
-static bool tessCancelFunc(void* cancelData, int words)
+static bool ocrProgressCallback(int progress, void* userData)
 {
-    (void)words;
+    auto* progressTracker = (
+        static_cast<dpso::ProgressTracker*>(userData));
+    assert(progressTracker);
+    progressTracker->update(progress / 100.0f);
 
     bool waitingForResults;
-
     {
-        const auto* tessCancelData = (
-            static_cast<const TessCancelData*>(cancelData));
-
-        tessCancelData->progressTracker->update(
-            tessCancelData->textDesc.progress / 100.0f);
-
         LINK_LOCK;
         waitingForResults = link.waitingForResults;
     }
@@ -416,7 +374,7 @@ static bool tessCancelFunc(void* cancelData, int words)
 
     {
         LINK_LOCK;
-        return link.terminateJobs;
+        return !link.terminateJobs;
     }
 }
 
@@ -434,7 +392,7 @@ static void progressTrackerFn(float progress, void* userData)
 static void processJob(const Job& job)
 {
     assert(job.screenshot);
-    assert(!job.tessLangsStr.empty());
+    assert(!job.langIndices.empty());
 
     // There are 3 progress jobs: resizing and unsharp masking in
     // prepareScreenshot() and OCR.
@@ -451,28 +409,19 @@ static void processJob(const Job& job)
 
     progressTracker.advanceJob();
 
-    // The locale is changed to "C" at this point.
-    tess->Init(nullptr, job.tessLangsStr.c_str());
-
-    tesseract::PageSegMode pageSegMode;
-    if (job.flags & dpsoJobTextSegmentation)
-        pageSegMode = tesseract::PSM_AUTO;
-    else
-        pageSegMode = tesseract::PSM_SINGLE_BLOCK;
-    tess->SetPageSegMode(pageSegMode);
-
-    tess->SetImage(
+    const dpso::OcrImage ocrImage {
         &imageBuffers.buffers[0][0],
         imageBuffers.w, imageBuffers.h,
-        1,
-        imageBuffers.pitch);
+        imageBuffers.pitch
+    };
 
-    TessCancelData tessCancelData;
-    tessCancelData.textDesc.cancel = tessCancelFunc;
-    tessCancelData.textDesc.cancel_this = &tessCancelData;
-    tessCancelData.progressTracker = &progressTracker;
+    dpso::OcrFeatures ocrFeatures = 0;
+    if (job.flags & dpsoJobTextSegmentation)
+        ocrFeatures |= dpso::ocrFeatureTextSegmentation;
 
-    tess->Recognize(&tessCancelData.textDesc);
+    auto ocrResult = ocrEngine->recognize(
+        ocrImage, job.langIndices, ocrFeatures,
+        ocrProgressCallback, &progressTracker);
 
     progressTracker.finish();
 
@@ -480,23 +429,7 @@ static void processJob(const Job& job)
     if (link.terminateJobs)
         return;
 
-    std::unique_ptr<char[]> text(tess->GetUTF8Text());
-    if (!text)
-        // Return an empty string in case of a Tesseract error. A
-        // successful dpsoQueueJob() must always give a result, making
-        // the dpsoQueueJob()/dpsoFetchResults() pair reliable for
-        // starting and ending some action, like disabling a widget
-        // during OCR.
-        text.reset(new char[1]());
-
-    // Initialize textLen with 0 rather than {} to avoid an error
-    // in old GCC versions (< 5.1):
-    //    error: braces around scalar initializer for type
-    JobResult jobResult {std::move(text), 0, job.timestamp};
-    dpso::str::prettifyOcrText(
-        jobResult.text.get(), &jobResult.textLen);
-
-    link.results.push_back(std::move(jobResult));
+    link.results.push_back({std::move(ocrResult), job.timestamp});
 }
 
 
@@ -551,8 +484,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
     if (!jobArgs)
         return false;
 
-    updateTessLangsStr();
-    if (tessLangsStr.empty())
+    if (activeLangIndices.empty())
         return false;
 
     START_TIMING(takeScreenshot);
@@ -574,7 +506,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
 
     Job job {
         std::move(screenshot),
-        tessLangsStr,
+        activeLangIndices,
         createTimestamp(),
         jobArgs->flags
     };
@@ -635,8 +567,8 @@ int dpsoFetchResults(DpsoResultFetchingMode fetchingMode)
     returnResults.reserve(fetchedResults.size());
     for (const auto& result : fetchedResults)
         returnResults.push_back(
-            {result.text.get(),
-                result.textLen,
+            {result.ocrResult.getText(),
+                result.ocrResult.getTextLen(),
                 result.timestamp.data()});
 
     if (!link.jobsPending())
@@ -741,13 +673,12 @@ static std::thread bgThread;
 void init()
 {
     setCLocale();
-    tess = new tesseract::TessBaseAPI();
+    ocrEngine = OcrEngine::create();
     restoreLocale();
 
     assert(langs.empty());
-    assert(numActiveLangs == 0);
+    assert(activeLangIndices.empty());
     cacheLangs();
-    assert(!tessLangsStrValid);
 
     assert(!link.jobsPending());
     link.reset();
@@ -762,8 +693,7 @@ void init()
 void shutdown()
 {
     langs.clear();
-    numActiveLangs = 0;
-    tessLangsStrValid = false;
+    activeLangIndices.clear();
 
     dpsoTerminateJobs();
 
@@ -775,7 +705,7 @@ void shutdown()
     link.terminateThread = false;
 
     setCLocale();
-    delete tess;
+    ocrEngine.reset();
     restoreLocale();
 }
 
