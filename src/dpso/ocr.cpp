@@ -282,32 +282,30 @@ static struct {
 #define LINK_LOCK std::lock_guard<std::mutex> guard(link.lock)
 
 
-static struct {
-    std::vector<std::uint8_t> buffers[3];
-    int w;
-    int h;
-    int pitch;
-
-    void resize(int newW, int newH)
-    {
-        assert(newW >= 0);
-        assert(newH >= 0);
-
-        w = newW;
-        h = newH;
-        pitch = w;
-
-        for (auto& buf : buffers)
-            buf.resize(h * pitch);
-    }
-} imageBuffers;
-
-
-// The final image will be in imageBuffers.buffers[0].
-static void prepareScreenshot(
+static dpso::OcrImage prepareScreenshot(
     dpso::backend::Screenshot& screenshot,
     dpso::ProgressTracker& progressTracker)
 {
+    static struct {
+        std::vector<std::uint8_t> buffers[3];
+        int w;
+        int h;
+        int pitch;
+
+        void resize(int newW, int newH)
+        {
+            assert(newW >= 0);
+            assert(newH >= 0);
+
+            w = newW;
+            h = newH;
+            pitch = w;
+
+            for (auto& buf : buffers)
+                buf.resize(h * pitch);
+        }
+    } imageBuffers;
+
     const int imageScale = 4;
 
     imageBuffers.resize(
@@ -353,6 +351,12 @@ static void prepareScreenshot(
         "Unsharp masking (radius=%i, %ix%i px)",
         unsharpMaskRadius,
         imageBuffers.w, imageBuffers.h);
+
+    return {
+        &imageBuffers.buffers[0][0],
+        imageBuffers.w, imageBuffers.h,
+        imageBuffers.pitch
+    };
 }
 
 
@@ -399,21 +403,16 @@ static void processJob(const Job& job)
     dpso::ProgressTracker progressTracker(3, progressTrackerFn);
     progressTracker.start();
 
-    prepareScreenshot(*job.screenshot, progressTracker);
+    const auto ocrImage = prepareScreenshot(
+        *job.screenshot, progressTracker);
 
     if (job.flags & dpsoJobDumpDebugImage)
         dpso::img::savePgm(
             "dpso_debug.pgm",
-            &imageBuffers.buffers[0][0],
-            imageBuffers.w, imageBuffers.h, imageBuffers.pitch);
+            ocrImage.data,
+            ocrImage.width, ocrImage.height, ocrImage.pitch);
 
     progressTracker.advanceJob();
-
-    const dpso::OcrImage ocrImage {
-        &imageBuffers.buffers[0][0],
-        imageBuffers.w, imageBuffers.h,
-        imageBuffers.pitch
-    };
 
     dpso::OcrFeatures ocrFeatures = 0;
     if (job.flags & dpsoJobTextSegmentation)
