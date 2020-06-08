@@ -286,35 +286,18 @@ static dpso::OcrImage prepareScreenshot(
     dpso::backend::Screenshot& screenshot,
     dpso::ProgressTracker& progressTracker)
 {
-    static struct {
-        std::vector<std::uint8_t> buffers[3];
-        int w;
-        int h;
-        int pitch;
-
-        void resize(int newW, int newH)
-        {
-            assert(newW >= 0);
-            assert(newH >= 0);
-
-            w = newW;
-            h = newH;
-            pitch = w;
-
-            for (auto& buf : buffers)
-                buf.resize(h * pitch);
-        }
-    } imageBuffers;
+    static std::vector<std::uint8_t> buffers[3];
 
     const int imageScale = 4;
+    const auto bufferW = screenshot.getWidth() * imageScale;
+    const auto bufferH = screenshot.getHeight() * imageScale;
+    const auto bufferPitch = bufferW;
 
-    imageBuffers.resize(
-        screenshot.getWidth() * imageScale,
-        screenshot.getHeight() * imageScale);
+    for (auto& buffer : buffers)
+        buffer.resize(bufferH * bufferPitch);
 
     START_TIMING(screenshotGetData);
-    screenshot.getGrayscaleData(
-        &imageBuffers.buffers[0][0], imageBuffers.pitch);
+    screenshot.getGrayscaleData(&buffers[0][0], bufferPitch);
     END_TIMING(
         screenshotGetData,
         "screenshot.getGrayscaleData (%ix%i px)",
@@ -322,41 +305,35 @@ static dpso::OcrImage prepareScreenshot(
 
     START_TIMING(imageResizing);
     dpso::img::resize(
-        &imageBuffers.buffers[0][0],
-        screenshot.getWidth(), screenshot.getHeight(),
-        imageBuffers.pitch,
-        &imageBuffers.buffers[1][0], imageBuffers.w, imageBuffers.h,
-        imageBuffers.pitch,
+        &buffers[0][0],
+        screenshot.getWidth(), screenshot.getHeight(), bufferPitch,
+        &buffers[1][0],
+        bufferW, bufferH, bufferPitch,
         &progressTracker);
     END_TIMING(
         imageResizing,
         "Image resizing (%ix%i px -> %ix%i px, x%i)",
         screenshot.getWidth(), screenshot.getHeight(),
-        imageBuffers.w, imageBuffers.h,
+        bufferW, bufferH,
         imageScale);
 
     const int unsharpMaskRadius = 10;
 
     START_TIMING(unsharpMasking);
     dpso::img::unsharpMask(
-        &imageBuffers.buffers[1][0], imageBuffers.pitch,
-        &imageBuffers.buffers[0][0], imageBuffers.pitch,
-        &imageBuffers.buffers[2][0], imageBuffers.pitch,
-        imageBuffers.w, imageBuffers.h,
+        &buffers[1][0], bufferPitch,
+        &buffers[0][0], bufferPitch,
+        &buffers[2][0], bufferPitch,
+        bufferW, bufferH,
         unsharpMaskRadius,
         1.0f,
         &progressTracker);
     END_TIMING(
         unsharpMasking,
         "Unsharp masking (radius=%i, %ix%i px)",
-        unsharpMaskRadius,
-        imageBuffers.w, imageBuffers.h);
+        unsharpMaskRadius, bufferW, bufferH);
 
-    return {
-        &imageBuffers.buffers[0][0],
-        imageBuffers.w, imageBuffers.h,
-        imageBuffers.pitch
-    };
+    return {&buffers[0][0], bufferW, bufferH, bufferPitch};
 }
 
 
