@@ -82,7 +82,7 @@ struct Lang {
 // index from public API refers to the state of the engine's language
 // at Lang::langIdx.
 static std::vector<Lang> langs;
-static std::vector<int> activeLangIndices;
+static int numActiveLangs;
 
 
 static void cacheLangs()
@@ -162,29 +162,29 @@ void dpsoSetLangIsActive(int langIdx, int newIsActive)
 
     langs[langIdx].isActive = newIsActive;
 
-    auto findActiveLang = [](int langIdx)
-    {
-        return std::find(
-            activeLangIndices.begin(),
-            activeLangIndices.end(),
-            langs[langIdx].langIdx);
-    };
-
-    if (newIsActive) {
-        assert(findActiveLang(langIdx) == activeLangIndices.end());
-        activeLangIndices.push_back(langs[langIdx].langIdx);
-    } else {
-        const auto activeLangIter = findActiveLang(langIdx);
-        assert(activeLangIter != activeLangIndices.end());
-
-        activeLangIndices.erase(activeLangIter);
-    }
+    if (newIsActive)
+        ++numActiveLangs;
+    else
+        --numActiveLangs;
 }
 
 
 int dpsoGetNumActiveLangs()
 {
-    return activeLangIndices.size();
+    return numActiveLangs;
+}
+
+
+static std::vector<int> getActiveLangIndices()
+{
+    std::vector<int> result;
+    result.reserve(numActiveLangs);
+
+    for (const auto& lang : langs)
+        if (lang.isActive)
+            result.push_back(lang.langIdx);
+
+    return result;
 }
 
 
@@ -484,7 +484,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
     if (!jobArgs)
         return false;
 
-    if (activeLangIndices.empty())
+    if (numActiveLangs == 0)
         return false;
 
     START_TIMING(takeScreenshot);
@@ -506,7 +506,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
 
     Job job {
         std::move(screenshot),
-        activeLangIndices,
+        getActiveLangIndices(),
         createTimestamp(),
         jobArgs->flags
     };
@@ -677,7 +677,7 @@ void init()
     restoreLocale();
 
     assert(langs.empty());
-    assert(activeLangIndices.empty());
+    assert(numActiveLangs == 0);
     cacheLangs();
 
     assert(!link.jobsPending());
@@ -693,7 +693,7 @@ void init()
 void shutdown()
 {
     langs.clear();
-    activeLangIndices.clear();
+    numActiveLangs = 0;
 
     dpsoTerminateJobs();
 
