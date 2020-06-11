@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: daniel.plakhotich@gmail.com\n"
 "POT-Creation-Date: 2020-04-12 21:04+0300\n"
-"PO-Revision-Date: 2020-06-10 14:41+0000\n"
+"PO-Revision-Date: 2020-06-14 12:21+0000\n"
 "Last-Translator: WaldiS <sto@tutanota.de>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/pl/>\n"
@@ -94,11 +94,11 @@ msgstr "Chiński - Tradycyjny"
 
 #: src/dpso_utils/lang_name.cpp:62
 msgid "Chinese - Traditional (vertical)"
-msgstr ""
+msgstr "Chiński - tradycyjny (pionowy)"
 
 #: src/dpso_utils/lang_name.cpp:63
 msgid "Cherokee"
-msgstr ""
+msgstr "Cherokee"
 
 #: src/dpso_utils/lang_name.cpp:64
 msgid "Corsican"
@@ -114,7 +114,7 @@ msgstr "Duński"
 
 #: src/dpso_utils/lang_name.cpp:67
 msgid "Danish - Fraktur"
-msgstr ""
+msgstr "Duński - Fraktur"
 
 #: src/dpso_utils/lang_name.cpp:68
 msgid "German"
@@ -122,19 +122,19 @@ msgstr "Niemiecki"
 
 #: src/dpso_utils/lang_name.cpp:69 src/dpso_utils/lang_name.cpp:84
 msgid "German - Fraktur"
-msgstr ""
+msgstr "Niemiecki - Fraktur"
 
 #: src/dpso_utils/lang_name.cpp:70
 msgid "Dhivehi; Divehi; Maldivian"
-msgstr ""
+msgstr "Dhivehi; Malediwski"
 
 #: src/dpso_utils/lang_name.cpp:71
 msgid "Dzongkha"
-msgstr ""
+msgstr "Dzongkha"
 
 #: src/dpso_utils/lang_name.cpp:72
 msgid "Greek, Modern (1453-)"
-msgstr ""
+msgstr "Grecki, Współczesny (1453-)"
 
 #: src/dpso_utils/lang_name.cpp:73
 msgid "English"
@@ -142,7 +142,7 @@ msgstr "Angielski"
 
 #: src/dpso_utils/lang_name.cpp:74
 msgid "English, Middle (1100-1500)"
-msgstr ""
+msgstr "Angielski, Średniowieczny (1100-1500)"
 
 #: src/dpso_utils/lang_name.cpp:75
 msgid "Esperanto"
@@ -170,7 +170,7 @@ msgstr "Perski"
 
 #: src/dpso_utils/lang_name.cpp:81
 msgid "Filipino; Pilipino"
-msgstr ""
+msgstr "Filipiński; Pilipino"
 
 #: src/dpso_utils/lang_name.cpp:82
 msgid "Finnish"
@@ -182,15 +182,15 @@ msgstr "Francuski"
 
 #: src/dpso_utils/lang_name.cpp:85
 msgid "French, Middle (ca.1400-1600)"
-msgstr ""
+msgstr "Francuski średniowieczny (ok. 1400-1600)"
 
 #: src/dpso_utils/lang_name.cpp:86
 msgid "Western Frisian"
-msgstr ""
+msgstr "Zachodniofryzyjski"
 
 #: src/dpso_utils/lang_name.cpp:87
 msgid "Scottish Gaelic; Gaelic"
-msgstr ""
+msgstr "Szkocki Gaelicki"
 
 #: src/dpso_utils/lang_name.cpp:88
 msgid "Irish"
@@ -202,15 +202,15 @@ msgstr "Galicyjski"
 
 #: src/dpso_utils/lang_name.cpp:90
 msgid "Greek, Ancient (to 1453)"
-msgstr ""
+msgstr "Grecki, Starożytny (do 1453)"
 
 #: src/dpso_utils/lang_name.cpp:91
 msgid "Gujarati"
-msgstr ""
+msgstr "Gudźarati"
 
 #: src/dpso_utils/lang_name.cpp:92
 msgid "Haitian; Haitian Creole"
-msgstr ""
+msgstr "Haitański; Kreolski haitański"
 
 #: src/dpso_utils/lang_name.cpp:93
 msgid "Hebrew"
@@ -234,15 +234,15 @@ msgstr "Ormiański"
 
 #: src/dpso_utils/lang_name.cpp:98
 msgid "Inuktitut"
-msgstr ""
+msgstr "Inuktitut"
 
 #: src/dpso_utils/lang_name.cpp:99
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonezyjski"
 
 #: src/dpso_utils/lang_name.cpp:100
 msgid "Icelandic"
-msgstr ""
+msgstr "Islandzki"
 
 #: src/dpso_utils/lang_name.cpp:101
 msgid "Italian"
@@ -266,7 +266,7 @@ msgstr "Japoński"
 
 #: src/dpso_utils/lang_name.cpp:106
 msgid "Kannada"
-msgstr ""
+msgstr "Kannada"
 
 #: src/dpso_utils/lang_name.cpp:107
 msgid "Georgian"
@@ -282,7 +282,7 @@ msgstr "Kazachski"
 
 #: src/dpso_utils/lang_name.cpp:110
 msgid "Central Khmer"
-msgstr ""
+msgstr "Środkowokhmerski"
 
 #: src/dpso_utils/lang_name.cpp:111
 msgid "Kirghiz; Kyrgyz"
@@ -290,7 +290,7 @@ msgstr "Kirgiz; Kirgiski"
 
 #: src/dpso_utils/lang_name.cpp:112
 msgid "Kurmanji (Kurdish - Latin Script)"
-msgstr ""
+msgstr "Kurmanji (kurdyjski - skrypt łaciński)"
 
 #: src/dpso_utils/lang_name.cpp:113
 msgid "Korean"
@@ -306,7 +306,7 @@ msgstr "Kurdyjski (skrypt arabski)"
 
 #: src/dpso_utils/lang_name.cpp:117
 msgid "Lao"
-msgstr ""
+msgstr "Lao"
 
 #: src/dpso_utils/lang_name.cpp:118
 msgid "Latin"
@@ -326,11 +326,11 @@ msgstr "Luksemburski"
 
 #: src/dpso_utils/lang_name.cpp:122
 msgid "Malayalam"
-msgstr ""
+msgstr "Malajalam"
 
 #: src/dpso_utils/lang_name.cpp:123
 msgid "Marathi"
-msgstr ""
+msgstr "Marathi"
 
 #: src/dpso_utils/lang_name.cpp:124
 msgid "Macedonian"
@@ -346,15 +346,15 @@ msgstr "Mongolski"
 
 #: src/dpso_utils/lang_name.cpp:127
 msgid "Maori"
-msgstr ""
+msgstr "Maoryski"
 
 #: src/dpso_utils/lang_name.cpp:128
 msgid "Malay"
-msgstr ""
+msgstr "Malajski"
 
 #: src/dpso_utils/lang_name.cpp:129
 msgid "Burmese"
-msgstr ""
+msgstr "Birmański"
 
 #: src/dpso_utils/lang_name.cpp:130
 msgid "Nepali"
@@ -362,7 +362,7 @@ msgstr "Nepalski"
 
 #: src/dpso_utils/lang_name.cpp:131
 msgid "Dutch; Flemish"
-msgstr ""
+msgstr "Holenderski, Flamandzki"
 
 #: src/dpso_utils/lang_name.cpp:132
 msgid "Norwegian"
@@ -370,15 +370,15 @@ msgstr "Norweski"
 
 #: src/dpso_utils/lang_name.cpp:133
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "Okcytan (po 1500)"
 
 #: src/dpso_utils/lang_name.cpp:134
 msgid "Oriya"
-msgstr ""
+msgstr "Orija"
 
 #: src/dpso_utils/lang_name.cpp:135
 msgid "Panjabi; Punjabi"
-msgstr ""
+msgstr "Pendżabski"
 
 #: src/dpso_utils/lang_name.cpp:136
 msgid "Polish"
@@ -390,15 +390,15 @@ msgstr "Portugalski"
 
 #: src/dpso_utils/lang_name.cpp:138
 msgid "Pushto; Pashto"
-msgstr ""
+msgstr "Paszto; Pasztuński"
 
 #: src/dpso_utils/lang_name.cpp:139
 msgid "Quechua"
-msgstr ""
+msgstr "Keczua"
 
 #: src/dpso_utils/lang_name.cpp:140
 msgid "Romanian; Moldavian; Moldovan"
-msgstr ""
+msgstr "Rumuński; Mołdawski"
 
 #: src/dpso_utils/lang_name.cpp:141
 msgid "Russian"
@@ -406,11 +406,11 @@ msgstr "Rosyjski"
 
 #: src/dpso_utils/lang_name.cpp:142
 msgid "Sanskrit"
-msgstr ""
+msgstr "Sanskryt"
 
 #: src/dpso_utils/lang_name.cpp:143
 msgid "Sinhala; Sinhalese"
-msgstr ""
+msgstr "Syngaleski"
 
 #: src/dpso_utils/lang_name.cpp:144
 msgid "Slovak"
@@ -418,7 +418,7 @@ msgstr "Słowacki"
 
 #: src/dpso_utils/lang_name.cpp:145
 msgid "Slovak - Fraktur"
-msgstr ""
+msgstr "Słowacki - Fraktur"
 
 #: src/dpso_utils/lang_name.cpp:146
 msgid "Slovenian"
@@ -426,7 +426,7 @@ msgstr "Słoweński"
 
 #: src/dpso_utils/lang_name.cpp:147
 msgid "Sindhi"
-msgstr ""
+msgstr "Sindhi"
 
 #: src/dpso_utils/lang_name.cpp:148
 msgid "Spanish; Castilian"
@@ -434,7 +434,7 @@ msgstr "Hiszpański; Kastylijski"
 
 #: src/dpso_utils/lang_name.cpp:149
 msgid "Spanish; Castilian - Old"
-msgstr ""
+msgstr "Hiszpański; Kastylijski - Stary"
 
 #: src/dpso_utils/lang_name.cpp:150
 msgid "Albanian"
@@ -450,7 +450,7 @@ msgstr "Serbski - Łaciński"
 
 #: src/dpso_utils/lang_name.cpp:153
 msgid "Sundanese"
-msgstr ""
+msgstr "Sundajski"
 
 #: src/dpso_utils/lang_name.cpp:154
 msgid "Swahili"
@@ -474,7 +474,7 @@ msgstr "Tatarski"
 
 #: src/dpso_utils/lang_name.cpp:159
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: src/dpso_utils/lang_name.cpp:160
 msgid "Tajik"
@@ -482,7 +482,7 @@ msgstr "Tadżycki"
 
 #: src/dpso_utils/lang_name.cpp:161
 msgid "Tagalog"
-msgstr ""
+msgstr "Tagalski"
 
 #: src/dpso_utils/lang_name.cpp:162
 msgid "Thai"
@@ -490,11 +490,11 @@ msgstr "Tajski"
 
 #: src/dpso_utils/lang_name.cpp:163
 msgid "Tigrinya"
-msgstr ""
+msgstr "Tigrinia"
 
 #: src/dpso_utils/lang_name.cpp:164
 msgid "Tonga"
-msgstr ""
+msgstr "Tonga"
 
 #: src/dpso_utils/lang_name.cpp:165
 msgid "Turkish"
@@ -502,7 +502,7 @@ msgstr "Turecki"
 
 #: src/dpso_utils/lang_name.cpp:166
 msgid "Uighur; Uyghur"
-msgstr ""
+msgstr "Ujgurski; Ujgur"
 
 #: src/dpso_utils/lang_name.cpp:167
 msgid "Ukrainian"
@@ -518,7 +518,7 @@ msgstr "Uzbecki"
 
 #: src/dpso_utils/lang_name.cpp:170
 msgid "Uzbek - Cyrilic"
-msgstr ""
+msgstr "Uzbecki - Cyrylica"
 
 #: src/dpso_utils/lang_name.cpp:171
 msgid "Vietnamese"
@@ -673,11 +673,11 @@ msgstr "Rozpoznawanie znaków"
 
 #: src/ui/qt/main_window.cpp:227
 msgid "Split text blocks"
-msgstr ""
+msgstr "Podziel bloki tekstu"
 
 #: src/ui/qt/main_window.cpp:229
 msgid "Split independent text blocks, e.g. columns"
-msgstr ""
+msgstr "Podziel niezależne bloki tekstu, np. kolumny"
 
 #: src/ui/qt/main_window.cpp:232
 msgid "Languages:"
