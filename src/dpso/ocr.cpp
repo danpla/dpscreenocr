@@ -21,7 +21,6 @@
 #include "img.h"
 #include "ocr_engine/ocr_engine.h"
 #include "progress_tracker.h"
-#include "str.h"
 #include "timing.h"
 
 
