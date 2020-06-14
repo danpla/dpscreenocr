@@ -1,9 +1,7 @@
 
 #include "str.h"
 
-#include <cassert>
 #include <cctype>
-#include <cstring>
 
 
 namespace dpso {
