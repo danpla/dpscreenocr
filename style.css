@@ -6,11 +6,6 @@ body {
   line-height: 1.6;
 }
 
-a {
-  text-decoration: none;
-  border-bottom: 0.1em solid;
-}
-
 body article {
   margin-left: 12em;
   margin-right: 1em;
