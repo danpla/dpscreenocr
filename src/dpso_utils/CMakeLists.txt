@@ -41,7 +41,6 @@ add_library(
     cfg_path.cpp
     history.cpp
     history_export.cpp
-    lang_name.cpp
     str_format.cpp
 
     ${PLATFORM_SRCS}

@@ -9,6 +9,7 @@
 #include "tesseract/ocrclass.h"
 #include "tesseract/strngs.h"
 
+#include "ocr_engine/tesseract/lang_names.h"
 #include "ocr_engine/tesseract/tesseract_result_text.h"
 #include "ocr_engine/tesseract/utils.h"
 
@@ -25,6 +26,7 @@ public:
 
     int getNumLangs() const override;
     const char* getLangCode(int langIdx) const override;
+    const char* getLangName(const char* langCode) const override;
 
     OcrResult recognize(
         const OcrImage& image,
@@ -72,6 +74,12 @@ const char* TesseractOcr::getLangCode(int langIdx) const
         return "";
 
     return langCodes[langIdx].c_str();
+}
+
+
+const char* TesseractOcr::getLangName(const char* langCode) const
+{
+    return getTesseractLangName(langCode);
 }
 
 

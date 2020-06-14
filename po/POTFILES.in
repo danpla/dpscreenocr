@@ -1,4 +1,4 @@
-src/dpso_utils/lang_name.cpp
+src/dpso/ocr_engine/tesseract/lang_names.cpp
 src/ui/qt/about.cpp
 src/ui/qt/action_chooser.cpp
 src/ui/qt/history.cpp

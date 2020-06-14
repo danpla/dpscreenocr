@@ -119,6 +119,12 @@ const char* dpsoGetLangCode(int langIdx)
 }
 
 
+const char* dpsoGetLangName(const char* langCode)
+{
+    return ocrEngine->getLangName(langCode);
+}
+
+
 int dpsoGetLangIdx(const char* langCode, size_t langCodeLen)
 {
     const auto iter = std::lower_bound(

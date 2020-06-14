@@ -1,14 +1,12 @@
 
-#include "lang_name.h"
+#include "ocr_engine/tesseract/lang_names.h"
 
 #include <algorithm>
 #include <cstring>
 #include <iterator>
 
 
-#define N_(S) S
-
-
+namespace dpso {
 namespace {
 
 
@@ -21,11 +19,16 @@ struct LangName {
 }
 
 
+#define N_(S) S
+
+
 // The names are from:
 //   https://github.com/tesseract-ocr/tesseract/wiki/Data-Files-in-different-versions
 //   https://iso639-3.sil.org/code_tables/download_tables
 //
-// Be aware that the table at the first link is not complete.
+// Be aware that the table at the first link is not complete. We use
+// names from that table to match the names of Tesseract language
+// packs on most Linux distributions.
 //
 // The entries must be sorted by the language code.
 //
@@ -172,20 +175,22 @@ const LangName names[] = {
 };
 
 
-static bool cmpByCode(const LangName& name, const char* langCode)
-{
-    return std::strcmp(name.code, langCode) < 0;
-}
-
-
-const char* dpsoGetLangName(const char* langCode)
+const char* getTesseractLangName(const char* langCode)
 {
     const auto iter = std::lower_bound(
-        std::begin(names), std::end(names), langCode, cmpByCode);
+        std::begin(names), std::end(names), langCode,
+        [](const LangName& name, const char* langCode)
+        {
+            return std::strcmp(name.code, langCode) < 0;
+        });
 
     if (iter != std::end(names)
             && std::strcmp(iter->code, langCode) == 0)
         return iter->name;
 
     return nullptr;
+}
+
+
+
 }

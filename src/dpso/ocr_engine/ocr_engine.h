@@ -144,13 +144,18 @@ public:
     virtual const char* getLangCode(int langIdx) const = 0;
 
     /**
-     * Recognize text from image.
+     * Get language name.
      *
-     * \param image Grayscale image to recognize text from.
-     * \param langIndices List of language indices for OCR.
-     * \param features Combination of OcrFeature flags.
-     * \param progressCallback Progress callback; may be null.
+     * Returns the language name for the given code, or null if the
+     * code is not known. The method should not depend on whether the
+     * corresponding language pack is currently available. If
+     * possible, the name should be in English.
+     *
+     * The returned pointer should remain valid for the lifetime of
+     * the engine.
      */
+    virtual const char* getLangName(const char* langCode) const = 0;
+
     virtual OcrResult recognize(
         const OcrImage& image,
         const std::vector<int> langIndices,
