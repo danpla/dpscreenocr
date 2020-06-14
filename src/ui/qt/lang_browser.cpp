@@ -56,17 +56,18 @@ LangBrowser::LangBrowser(QWidget* parent)
 
     connect(
         this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
-        this, SLOT(toggleLang(QTreeWidgetItem*)));
+        this, SLOT(toggleLang(QTreeWidgetItem*, int)));
 }
 
 
-void LangBrowser::toggleLang(QTreeWidgetItem* item)
+void LangBrowser::toggleLang(QTreeWidgetItem* item, int column)
 {
-    const auto langIdx = item->data(
-        columnIdxCheckbox, Qt::UserRole).toInt();
-    const auto state = (
+    if (column != columnIdxCheckbox)
+        return;
+
+    dpsoSetLangIsActive(
+        item->data(columnIdxCheckbox, Qt::UserRole).toInt(),
         item->checkState(columnIdxCheckbox) == Qt::Checked);
-    dpsoSetLangIsActive(langIdx, state);
 }
 
 

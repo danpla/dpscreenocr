@@ -14,5 +14,5 @@ public:
     void loadState();
     void saveState() const;
 private slots:
-    void toggleLang(QTreeWidgetItem* item);
+    void toggleLang(QTreeWidgetItem* item, int column);
 };
