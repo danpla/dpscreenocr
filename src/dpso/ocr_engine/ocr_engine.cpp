@@ -40,7 +40,7 @@ OcrResult::Status OcrResult::getStatus() const
 
 const char* OcrResult::getText() const
 {
-    return text && text->getData() ? text->getData() : "";
+    return text ? text->getData() : "";
 }
 
 

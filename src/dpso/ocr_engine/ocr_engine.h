@@ -57,8 +57,8 @@ class OcrResultText;
  * OCR result.
  *
  * In both constructors, the text argument may be null regardless of
- * the status, and OcrResultText::getData() may also return null.
- * OcrResult::getText() will return an empty string in these cases.
+ * the status. OcrResult::getText() will return an empty string in
+ * this case.
  */
 class OcrResult {
 public:
