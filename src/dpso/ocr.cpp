@@ -198,7 +198,7 @@ struct Job {
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     std::vector<int> langIndices;
     Timestamp timestamp;
-    int flags;
+    unsigned flags;
 };
 
 

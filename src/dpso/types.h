@@ -147,7 +147,7 @@ struct DpsoHotkey {
      *
      * A combination of DpsoKeyMod flags.
      */
-    int mods;
+    unsigned mods;
 };
 
 

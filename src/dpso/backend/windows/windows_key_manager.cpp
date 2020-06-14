@@ -101,7 +101,7 @@ static DpsoHotkey atomNameToHotkey(const char* name)
 
 
 static UINT dpsoKeyToWinKey(DpsoKey key);
-static UINT dpsoModsToWinMods(int mods);
+static UINT dpsoModsToWinMods(unsigned mods);
 
 
 static void changeHotkeyState(
@@ -373,7 +373,7 @@ static UINT dpsoKeyToWinKey(DpsoKey key)
 }
 
 
-static UINT dpsoModsToWinMods(int mods)
+static UINT dpsoModsToWinMods(unsigned mods)
 {
     UINT winMods = 0;
 

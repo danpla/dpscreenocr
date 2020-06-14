@@ -112,7 +112,7 @@ struct DpsoJobArgs {
     /**
      * Combination of DpsoJobFlag flags.
      */
-    int flags;
+    unsigned flags;
 };
 
 
