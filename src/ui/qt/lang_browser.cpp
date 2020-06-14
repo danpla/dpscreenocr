@@ -83,17 +83,16 @@ void LangBrowser::loadState()
     clear();
     setSortingEnabled(false);
     blockSignals(true);
-    for (int i = 0, n = dpsoGetNumLangs(); i < n; ++i) {
-        const auto* langCode = dpsoGetLangCode(i);
-        const auto state = dpsoGetLangIsActive(i);
-
+    for (int i = 0; i < dpsoGetNumLangs(); ++i) {
         auto* item = new QTreeWidgetItem(this);
 
         item->setData(columnIdxCheckbox, Qt::UserRole, i);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         item->setCheckState(
-            columnIdxCheckbox, state ? Qt::Checked : Qt::Unchecked);
+            columnIdxCheckbox,
+            dpsoGetLangIsActive(i) ? Qt::Checked : Qt::Unchecked);
 
+        const auto* langCode = dpsoGetLangCode(i);
         const auto* langName = dpsoGetLangName(langCode);
         item->setText(
             columnIdxName,
