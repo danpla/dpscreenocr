@@ -8,7 +8,6 @@
 #include <clocale>
 #include <cstddef>
 #include <cstdint>
-#include <cstdio>
 #include <cstring>
 #include <ctime>
 #include <mutex>
