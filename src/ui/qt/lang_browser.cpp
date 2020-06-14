@@ -82,6 +82,7 @@ void LangBrowser::loadState()
 
     clear();
     setSortingEnabled(false);
+    blockSignals(true);
     for (int i = 0, n = dpsoGetNumLangs(); i < n; ++i) {
         const auto* langCode = dpsoGetLangCode(i);
         const auto state = dpsoGetLangIsActive(i);
@@ -99,6 +100,7 @@ void LangBrowser::loadState()
             langName ? gettext(langName) : langCode);
         item->setText(columnIdxCode, langCode);
     }
+    blockSignals(false);
     setSortingEnabled(true);
 
     const auto columnIdx = qBound(
