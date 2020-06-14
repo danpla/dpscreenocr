@@ -7,7 +7,7 @@
 #include "dpso/dpso.h"
 
 
-static void setupLanguages()
+static void setupLanguages(void)
 {
     int langIdx;
 
@@ -33,7 +33,7 @@ enum HotkeyActions {
 };
 
 
-static void setupHotkeys()
+static void setupHotkeys(void)
 {
     const struct DpsoHotkey toggleSelectionHotkey = {
         dpsoKeyGrave, dpsoKeyModCtrl
@@ -46,7 +46,7 @@ static void setupHotkeys()
 }
 
 
-static void reportProgress()
+static void reportProgress(void)
 {
     struct DpsoProgress progress;
     int progressIsNew;
@@ -70,7 +70,7 @@ static void reportProgress()
 }
 
 
-static void checkResult()
+static void checkResult(void)
 {
     struct DpsoJobResults results;
     int i;
@@ -89,7 +89,7 @@ static void checkResult()
 }
 
 
-static void checkHotkeyActions()
+static void checkHotkeyActions(void)
 {
     const DpsoHotkeyAction hotkeyAction = dpsoGetLastHotkeyAction();
     if (hotkeyAction == hotkeyActionToggleSelection) {
@@ -108,7 +108,7 @@ static void checkHotkeyActions()
 }
 
 
-int main()
+int main(void)
 {
     if (!dpsoInit()) {
         fprintf(
