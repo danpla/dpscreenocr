@@ -17,9 +17,9 @@ static void disableAllLangs()
 }
 
 
-static void enableLang(const char* langCode, std::size_t langCodeLen)
+static void enableLang(const char* langCode)
 {
-    const auto langIdx = dpsoGetLangIdx(langCode, langCodeLen);
+    const auto langIdx = dpsoGetLangIdx(langCode);
     if (langIdx != -1)
         dpsoSetLangIsActive(langIdx, true);
 }
@@ -36,10 +36,11 @@ void dpsoCfgLoadActiveLangs(
     const auto* s = dpsoCfgGetStr(key, nullptr);
 
     if (!s) {
-        enableLang(fallbackLangCode, -1);
+        enableLang(fallbackLangCode);
         return;
     }
 
+    std::string langCode;
     while (*s) {
         if (std::isspace(*s) || *s == langSeparator) {
             ++s;
@@ -56,7 +57,8 @@ void dpsoCfgLoadActiveLangs(
             ++s;
         }
 
-        enableLang(langCodeStart, langCodeEnd - langCodeStart);
+        langCode.assign(langCodeStart, langCodeEnd - langCodeStart);
+        enableLang(langCode.c_str());
     }
 }
 

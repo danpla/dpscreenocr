@@ -17,7 +17,7 @@ static void setupLanguages()
         exit(EXIT_FAILURE);
     }
 
-    engLangIdx = dpsoGetLangIdx("eng", -1);
+    engLangIdx = dpsoGetLangIdx("eng");
     if (engLangIdx != -1) {
         dpsoSetLangIsActive(engLangIdx, true);
         return;

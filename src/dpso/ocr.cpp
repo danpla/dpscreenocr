@@ -125,23 +125,19 @@ const char* dpsoGetLangName(const char* langCode)
 }
 
 
-int dpsoGetLangIdx(const char* langCode, size_t langCodeLen)
+int dpsoGetLangIdx(const char* langCode)
 {
     const auto iter = std::lower_bound(
         langs.begin(), langs.end(), langCode,
-        [langCodeLen](const Lang& lang, const char* langCode)
+        [](const Lang& lang, const char* langCode)
         {
-            return dpso::str::cmpSubStr(
-                ocrEngine->getLangCode(lang.langIdx),
-                langCode,
-                langCodeLen) < 0;
+            return std::strcmp(
+                ocrEngine->getLangCode(lang.langIdx), langCode) < 0;
         });
 
     if (iter != langs.end()
-            && dpso::str::cmpSubStr(
-                ocrEngine->getLangCode(iter->langIdx),
-                langCode,
-                langCodeLen) == 0)
+            && std::strcmp(
+                ocrEngine->getLangCode(iter->langIdx), langCode) == 0)
         return iter - langs.begin();
 
     return -1;
