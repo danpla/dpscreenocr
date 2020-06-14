@@ -72,8 +72,13 @@ void LangBrowser::toggleLang(QTreeWidgetItem* item)
 
 void LangBrowser::loadState()
 {
-    dpsoCfgLoadActiveLangs(
-        cfgKeyOcrLanguages, dpsoGetDefaultLangCode());
+    const char* fallbackLangCode;
+    if (dpsoGetNumLangs() == 1)
+        fallbackLangCode = dpsoGetLangCode(0);
+    else
+        fallbackLangCode = dpsoGetDefaultLangCode();
+
+    dpsoCfgLoadActiveLangs(cfgKeyOcrLanguages, fallbackLangCode);
 
     clear();
     setSortingEnabled(false);
