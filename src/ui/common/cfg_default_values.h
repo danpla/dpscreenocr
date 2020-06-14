@@ -15,7 +15,6 @@ extern int const cfgDefaultValueHistoryWrapWords;
 extern struct DpsoHotkey const cfgDefaultValueHotkeyCancelSelection;
 extern struct DpsoHotkey const cfgDefaultValueHotkeyToggleSelection;
 extern int const cfgDefaultValueOcrAllowQueuing;
-extern const char* const cfgDefaultValueOcrLanguages;
 extern int const cfgDefaultValueOcrSplitTextBlocks;
 extern int const cfgDefaultValueUiNativeFileDialogs;
 extern int const cfgDefaultValueUiTrayIconVisible;

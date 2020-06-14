@@ -119,6 +119,12 @@ const char* dpsoGetLangCode(int langIdx)
 }
 
 
+const char* dpsoGetDefaultLangCode(void)
+{
+    return ocrEngine->getDefaultLangCode();
+}
+
+
 const char* dpsoGetLangName(const char* langCode)
 {
     return ocrEngine->getLangName(langCode);

@@ -44,6 +44,18 @@ const char* dpsoGetLangCode(int langIdx);
 
 
 /**
+ * Get default language code.
+ *
+ * The main purpose of the default language code is to select
+ * a language when a program starts for the first time.
+ *
+ * Returns an empty string if the OCR engine has no meaningful default
+ * language.
+ */
+const char* dpsoGetDefaultLangCode(void);
+
+
+/**
  * Get language name.
  *
  * Returns null if the language name for the given code is not known.

@@ -10,7 +10,7 @@ hotkey_cancel_selection                 | struct DpsoHotkey | {dpsoKeyEscape, dp
 hotkey_toggle_selection                 | struct DpsoHotkey | {dpsoKeyGrave, dpsoKeyModCtrl}
 ocr_allow_queuing                       | int               | true
 ocr_dump_debug_image
-ocr_languages                           | const char*       | "eng"
+ocr_languages
 ocr_split_text_blocks                   | int               | false
 ui_active_tab
 ui_languages_sort_column

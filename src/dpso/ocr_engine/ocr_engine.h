@@ -144,6 +144,23 @@ public:
     virtual const char* getLangCode(int langIdx) const = 0;
 
     /**
+     * Get default language code.
+     *
+     * The main purpose of default language code is to be used in GUI
+     * to select a language when a program starts for the first time.
+     *
+     * The default language is normally English, but may be different
+     * in case the OCR engine is designed for a specific group of
+     * languages.
+     *
+     * The method should not depend on whether the corresponding
+     * language pack is currently available. The result should be an
+     * empty string if the OCR engine has no meaningful default
+     * language.
+     */
+    virtual const char* getDefaultLangCode() const = 0;
+
+    /**
      * Get language name.
      *
      * Returns the language name for the given code, or null if the

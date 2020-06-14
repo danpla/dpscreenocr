@@ -26,6 +26,7 @@ public:
 
     int getNumLangs() const override;
     const char* getLangCode(int langIdx) const override;
+    const char* getDefaultLangCode() const override;
     const char* getLangName(const char* langCode) const override;
 
     OcrResult recognize(
@@ -74,6 +75,12 @@ const char* TesseractOcr::getLangCode(int langIdx) const
         return "";
 
     return langCodes[langIdx].c_str();
+}
+
+
+const char* TesseractOcr::getDefaultLangCode() const
+{
+    return "eng";
 }
 
 

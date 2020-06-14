@@ -9,23 +9,22 @@
 
 static void setupLanguages()
 {
-    int engLangIdx;
+    int langIdx;
 
     if (dpsoGetNumLangs() == 0) {
-        fprintf(
-            stderr, "Please install languages for Tesseract\n");
+        fprintf(stderr, "Please install language packs\n");
         exit(EXIT_FAILURE);
     }
 
-    engLangIdx = dpsoGetLangIdx("eng");
-    if (engLangIdx != -1) {
-        dpsoSetLangIsActive(engLangIdx, true);
-        return;
+    langIdx = dpsoGetLangIdx(dpsoGetDefaultLangCode());
+    if (langIdx == -1) {
+        printf(
+            "Default language (%s) is not available; using %s\n",
+            dpsoGetDefaultLangCode(), dpsoGetLangCode(0));
+        langIdx = 0;
     }
 
-    printf(
-        "English is not available; using %s\n", dpsoGetLangCode(0));
-    dpsoSetLangIsActive(0, true);
+    dpsoSetLangIsActive(langIdx, true);
 }
 
 
