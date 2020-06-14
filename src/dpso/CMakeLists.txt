@@ -54,9 +54,10 @@ add_library(
     img.cpp
     key_names.cpp
     ocr.cpp
-    ocr_engine/ocr_result_text.cpp
     ocr_engine/ocr_engine.cpp
-    ocr_engine/tesseract_ocr_engine.cpp
+    ocr_engine/ocr_result_text.cpp
+    ocr_engine/tesseract/tesseract_ocr_engine.cpp
+    ocr_engine/tesseract/utils.cpp
     progress_tracker.cpp
     selection.cpp
     str.cpp

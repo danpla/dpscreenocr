@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "ocr_engine/ocr_result_text.h"
-#include "ocr_engine/tesseract_ocr_engine.h"
+#include "ocr_engine/tesseract/tesseract_ocr_engine.h"
 
 
 namespace dpso {

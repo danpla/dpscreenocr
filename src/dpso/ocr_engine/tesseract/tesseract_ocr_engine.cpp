@@ -1,47 +1,20 @@
 
-#include "ocr_engine/tesseract_ocr_engine.h"
+#include "ocr_engine/tesseract/tesseract_ocr_engine.h"
 
 #include <cassert>
-#include <cctype>
-#include <cstring>
 #include <string>
-#include <utility>
 
 #include "tesseract/baseapi.h"
 #include "tesseract/genericvector.h"
 #include "tesseract/ocrclass.h"
 #include "tesseract/strngs.h"
 
-#include "ocr_engine/ocr_result_text.h"
+#include "ocr_engine/tesseract/tesseract_result_text.h"
+#include "ocr_engine/tesseract/utils.h"
 
 
 namespace dpso {
 namespace {
-
-
-class TesseractOcrResultText : public OcrResultText {
-public:
-    TesseractOcrResultText(
-            std::unique_ptr<char[]> text, std::size_t textLen)
-        : text {std::move(text)}
-        , textLen {textLen}
-    {
-
-    }
-
-    const char* getData() const override
-    {
-        return text.get();
-    }
-
-    std::size_t getLen() const override
-    {
-        return textLen;
-    }
-private:
-    std::unique_ptr<char[]> text;
-    std::size_t textLen;
-};
 
 
 class TesseractOcr : public OcrEngine {
@@ -145,87 +118,6 @@ struct CancelData {
 }
 
 
-// Prettify text returned by Tesseract. The function:
-//
-//   * Strips leading whitespace.
-//   * Splits fi and fl ligatures.
-//   * Removes paragraphs consisting of a single space, which are
-//       sometimes created when page segmentation is enabled.
-//   * Removes the trailing newline (Tesseract adds two).
-//
-// Returns new length of the text (<= the original).
-static std::size_t prettifyText(char* text)
-{
-    struct Replacement {
-        const char* from;
-        std::size_t fromLen;
-        const char* to;
-        std::size_t toLen;
-
-        Replacement(const char* from, const char* to)
-            : from {from}
-            , fromLen {std::strlen(from)}
-            , to {to}
-            , toLen {std::strlen(to)}
-        {
-            assert(fromLen >= toLen);
-        }
-    };
-
-    // Note that ::from must be >= ::to.
-    static const Replacement replacements[] = {
-        // Tesseract doesn't seem to generate ligatures other than
-        // fi and fl.
-        {"\357\254\201", "fi"},
-        {"\357\254\202", "fl"},
-        // If page segmentation is enabled, Tesseract sometimes
-        // generates paragraphs consisting of a single space. If such
-        // a paragraph is not the first one, the text may look like
-        // "paragraph1\n\n \n\nparagraph3". Removing the "\n \n"
-        // sequence will result in a normal paragraph separator
-        // (empty line). Leading sequences are removed on trimming.
-        {"\n \n", ""},
-    };
-
-    const auto* src = text;
-    auto* dst = text;
-
-    while (std::isspace(*src))
-        ++src;
-
-    while (*src) {
-        const auto* oldSrc = src;
-
-        for (const auto& replacement : replacements) {
-            if (std::memcmp(
-                    src,
-                    replacement.from,
-                    replacement.fromLen) != 0)
-                continue;
-
-            std::memcpy(dst, replacement.to, replacement.toLen);
-            src += replacement.fromLen;
-            dst += replacement.toLen;
-
-            break;
-        }
-
-        if (src == oldSrc)
-            *dst++ = *src++;
-    }
-
-    // Tesseract ends text with two newlines, while we need only one
-    if (dst - text >= 2
-            && dst[-1] == '\n'
-            && dst[-2] == '\n')
-        --dst;
-
-    *dst = 0;
-
-    return dst - text;
-}
-
-
 OcrResult TesseractOcr::recognize(
     const OcrImage& image,
     const std::vector<int> langIndices,
@@ -261,7 +153,7 @@ OcrResult TesseractOcr::recognize(
             OcrResult::Status::error,
             "TessBaseAPI::GetUTF8Text() returned null"};
 
-    const auto textLen = prettifyText(text);
+    const auto textLen = prettifyTesseractText(text);
 
     return {
         OcrResult::Status::success,
