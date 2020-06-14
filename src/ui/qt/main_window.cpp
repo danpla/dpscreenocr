@@ -379,8 +379,6 @@ void MainWindow::loadState()
 void MainWindow::saveState() const
 {
     dpsoCfgSetBool(cfgKeyOcrAllowQueuing, ocrAllowQueuing);
-    if (!dpsoCfgKeyExists(cfgKeyOcrDumpDebugImage))
-        dpsoCfgSetBool(cfgKeyOcrDumpDebugImage, false);
 
     dpsoCfgSetBool(
         cfgKeyOcrSplitTextBlocks,
@@ -592,8 +590,6 @@ void MainWindow::checkHotkeyActions()
             jobArgs.flags = 0;
             if (splitTextBlocksCheck->isChecked())
                 jobArgs.flags |= dpsoJobTextSegmentation;
-            if (dpsoCfgGetBool(cfgKeyOcrDumpDebugImage, false))
-                jobArgs.flags |= dpsoJobDumpDebugImage;
 
             dpsoQueueJob(&jobArgs);
         }

@@ -103,15 +103,7 @@ typedef enum {
      *
      * Try to detect and split independent text blocks, like columns.
      */
-    dpsoJobTextSegmentation = 1 << 0,
-
-    /**
-     * Dump debug image.
-     *
-     * Dump image that was passed to the OCR engine to the current
-     * working directory as "dpso_debug" + format-specific extension.
-     */
-    dpsoJobDumpDebugImage = 1 << 1
+    dpsoJobTextSegmentation = 1 << 0
 } DpsoJobFlag;
 
 

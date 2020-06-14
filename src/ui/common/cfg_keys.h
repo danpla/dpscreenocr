@@ -15,7 +15,6 @@ extern const char* const cfgKeyHistoryWrapWords;
 extern const char* const cfgKeyHotkeyCancelSelection;
 extern const char* const cfgKeyHotkeyToggleSelection;
 extern const char* const cfgKeyOcrAllowQueuing;
-extern const char* const cfgKeyOcrDumpDebugImage;
 extern const char* const cfgKeyOcrLanguages;
 extern const char* const cfgKeyOcrSplitTextBlocks;
 extern const char* const cfgKeyUiActiveTab;

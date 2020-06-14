@@ -377,6 +377,9 @@ static void progressTrackerFn(float progress, void* userData)
 }
 
 
+bool dumpDebugImage;
+
+
 static void processJob(const Job& job)
 {
     assert(job.screenshot);
@@ -390,7 +393,7 @@ static void processJob(const Job& job)
     const auto ocrImage = prepareScreenshot(
         *job.screenshot, progressTracker);
 
-    if (job.flags & dpsoJobDumpDebugImage)
+    if (dumpDebugImage)
         dpso::img::savePgm(
             "dpso_debug.pgm",
             ocrImage.data,
@@ -665,6 +668,11 @@ void init()
 
     assert(!link.jobsPending());
     link.reset();
+
+    const char* dumpDebugImageEnvVar = std::getenv(
+        "DPSO_DUMP_DEBUG_IMAGE");
+    dumpDebugImage = (dumpDebugImageEnvVar
+        && std::strcmp(dumpDebugImageEnvVar, "0") != 0);
 
     bgThread = std::thread(threadLoop);
 

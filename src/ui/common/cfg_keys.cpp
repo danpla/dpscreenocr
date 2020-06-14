@@ -26,8 +26,6 @@ const char* const cfgKeyHotkeyToggleSelection =
     "hotkey_toggle_selection";
 const char* const cfgKeyOcrAllowQueuing =
     "ocr_allow_queuing";
-const char* const cfgKeyOcrDumpDebugImage =
-    "ocr_dump_debug_image";
 const char* const cfgKeyOcrLanguages =
     "ocr_languages";
 const char* const cfgKeyOcrSplitTextBlocks =

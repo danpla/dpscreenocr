@@ -317,6 +317,9 @@ This section is intended for advanced users and developers. It
 describes how to change some settings that are not available in the
 dpScreenOCR's interface.
 
+
+## settings.cfg
+
 dpScreenOCR saves settings in the `settings.cfg` file. Depending on
 the platform, you can find it in the following directories:
 
@@ -393,9 +396,6 @@ the settings file:
     effect until the recognition is done. This guarantees that the
     clipboard will receive exactly one text.
 
- *  `ocr_dump_debug_image` (`false` by default) dump the image passed
-    to Tesseract as `dpso_debug.pgm` to the current working directory.
-
  *  `ui_native_file_dialogs` (`true` by default) use file dialogs
     native to your platform instead of the ones specific to the GUI
     framework.
@@ -406,6 +406,13 @@ the settings file:
  *  `ui_window_minimize_to_tray` (`false` by default) hide window to
     the notification area on minimizing. This option only has effect
     if `ui_tray_icon_visible` is enabled.
+
+
+## Environment variables
+
+ *  `DPSO_DUMP_DEBUG_IMAGE` dump the image passed to Tesseract as
+    `dpso_debug.pgm` to the current working directory. "1" to enable,
+    "0" to disable.
 
 
 # Troubleshooting
