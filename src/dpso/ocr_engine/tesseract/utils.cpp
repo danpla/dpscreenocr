@@ -52,7 +52,7 @@ std::size_t prettifyTesseractText(char* text)
         const auto* oldSrc = src;
 
         for (const auto& replacement : replacements) {
-            if (std::memcmp(
+            if (std::strncmp(
                     src,
                     replacement.from,
                     replacement.fromLen) != 0)
@@ -69,7 +69,7 @@ std::size_t prettifyTesseractText(char* text)
             *dst++ = *src++;
     }
 
-    // Tesseract ends text with two newlines, while we need only one
+    // Tesseract ends text with two newlines, while we need only one.
     if (dst - text >= 2
             && dst[-1] == '\n'
             && dst[-2] == '\n')

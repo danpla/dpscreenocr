@@ -86,7 +86,7 @@ static const char* hotkeyToAtomName(const DpsoHotkey& hotkey)
 
 static DpsoHotkey atomNameToHotkey(const char* name)
 {
-    if (std::memcmp(name, atomNamePrefix, atomNamePrefixLen) != 0)
+    if (std::strncmp(name, atomNamePrefix, atomNamePrefixLen) != 0)
         return {dpsoUnknownKey, dpsoKeyModNone};
 
     const auto atom = std::atoi(name + atomNamePrefixLen);
@@ -104,8 +104,7 @@ static UINT dpsoKeyToWinKey(DpsoKey key);
 static UINT dpsoModsToWinMods(unsigned mods);
 
 
-static void changeHotkeyState(
-    const DpsoHotkey& hotkey, bool enabled)
+static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 {
     const auto* atomName = hotkeyToAtomName(hotkey);
     auto atom = GlobalFindAtomA(atomName);
