@@ -4,17 +4,18 @@
 #include "backend/windows/execution_layer/action_executor.h"
 #include "backend/windows/execution_layer/key_manager_executor.h"
 #include "backend/windows/execution_layer/selection_executor.h"
-#include "backend/windows/windows_backend_impl.h"
 
 
 namespace dpso {
 namespace backend {
 
 
-class WindowsBackendExecutor : public Backend {
+class BackendExecutor : public Backend {
 public:
-    WindowsBackendExecutor();
-    ~WindowsBackendExecutor();
+    using CreatorFn = std::unique_ptr<Backend> (&)();
+
+    explicit BackendExecutor(CreatorFn creatorFn);
+    ~BackendExecutor();
 
     KeyManager& getKeyManager() override;
     Selection& getSelection() override;
@@ -25,7 +26,7 @@ public:
 private:
     BgThreadActionExecutor actionExecutor;
 
-    std::unique_ptr<WindowsBackendImpl> backend;
+    std::unique_ptr<Backend> backend;
 
     std::unique_ptr<KeyManagerExecutor> keyManagerExecutor;
     std::unique_ptr<SelectionExecutor> selectionExecutor;

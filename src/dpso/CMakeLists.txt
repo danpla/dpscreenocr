@@ -10,7 +10,6 @@ option(
 
 set(BACKEND_SRCS)
 if (UNIX AND NOT APPLE)
-    set(BACKEND_DEFINITION "DPSO_BACKEND_UNIX_NONAPPLE")
     list(
         APPEND BACKEND_SRCS
         backend/x11/x11_backend.cpp
@@ -19,7 +18,6 @@ if (UNIX AND NOT APPLE)
         backend/x11/x11_selection.cpp
     )
 elseif(WIN32)
-    set(BACKEND_DEFINITION "DPSO_BACKEND_WINDOWS")
     list(
         APPEND BACKEND_SRCS
         backend/windows/execution_layer/action_executor.cpp
@@ -28,7 +26,6 @@ elseif(WIN32)
         backend/windows/execution_layer/selection_executor.cpp
         backend/windows/utils.cpp
         backend/windows/windows_backend.cpp
-        backend/windows/windows_backend_impl.cpp
         backend/windows/windows_key_manager.cpp
         backend/windows/windows_screenshot.cpp
         backend/windows/windows_selection.cpp
@@ -69,7 +66,6 @@ add_library(
 target_compile_definitions(
     dpso
     PRIVATE
-    ${BACKEND_DEFINITION}
     DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
 )
 

@@ -1,7 +1,106 @@
 
-#include "backend/windows/windows_backend.h"
+#include <string>
 
+#include <windows.h>
+
+#include "backend/backend.h"
 #include "backend/windows/execution_layer/backend_executor.h"
+#include "backend/windows/windows_key_manager.h"
+#include "backend/windows/windows_screenshot.h"
+#include "backend/windows/windows_selection.h"
+#include "utils.h"
+
+
+namespace dpso {
+namespace backend {
+
+
+namespace {
+
+
+class WindowsBackend : public Backend {
+public:
+    WindowsBackend();
+
+    KeyManager& getKeyManager() override;
+    Selection& getSelection() override;
+    std::unique_ptr<Screenshot> takeScreenshot(
+        const Rect& rect) override;
+
+    void update() override;
+private:
+    HINSTANCE instance;
+
+    std::unique_ptr<WindowsKeyManager> keyManager;
+    std::unique_ptr<WindowsSelection> selection;
+};
+
+
+}
+
+
+WindowsBackend::WindowsBackend()
+    : instance {GetModuleHandleA(nullptr)}
+    , keyManager {}
+    , selection {}
+{
+    if (!instance)
+        throw BackendError(
+            "GetModuleHandle() failed: "
+            + windows::getLastErrorMessage());
+
+    try {
+        keyManager.reset(new WindowsKeyManager());
+    } catch (BackendError& e) {
+        throw BackendError(
+            std::string("Can't create key manager: ") + e.what());
+    }
+
+    try {
+        selection.reset(new WindowsSelection(instance));
+    } catch (BackendError& e) {
+        throw BackendError(
+            std::string("Can't create selection: ") + e.what());
+    }
+}
+
+
+KeyManager& WindowsBackend::getKeyManager()
+{
+    return *keyManager;
+}
+
+
+Selection& WindowsBackend::getSelection()
+{
+    return *selection;
+}
+
+
+std::unique_ptr<Screenshot> WindowsBackend::takeScreenshot(
+    const Rect& rect)
+{
+    return WindowsScreenshot::take(rect);
+}
+
+
+void WindowsBackend::update()
+{
+    keyManager->clearLastHotkeyAction();
+    // Update the selection before handling events so that we
+    // resize and repaint it on this update() rather than on the next.
+    selection->update();
+
+    MSG msg;
+    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+        if (msg.message == WM_HOTKEY)
+            keyManager->handleWmHotkey(msg);
+        else {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
+}
 
 
 // We can't do anything in the main thread because its messages will
@@ -10,31 +109,22 @@
 // but some frameworks may not provide such filters, and I'd like to
 // keep the API as high-level as possible.
 //
-// WindowsBackendExecutor and its proxy components do the job of
-// handling the backend implementation in the background thread.
-// Please note that although absolutely everything is called trough an
-// executor, the only routines that must be called in the background
-// are the ones that use Windows API; others don't technically need
+// BackendExecutor and its proxy components do the job of handling the
+// backend implementation in the background thread. Please note that
+// although absolutely everything is called trough an executor, the
+// only routines that must be called in the background are the ones
+// that rely on Windows message queue; others don't technically need
 // this.
-//
-// The solution is simple enough to provide the mentioned low-level
-// routine to handle messages from GUI framework, since it's possible
-// to choose between the background and the main thread in runtime.
-// For the latter, WindowsBackend::create() can simply instantiate
-// WindowsBackendImpl instead of WindowsBackendExecutor, or we can
-// tell WindowsBackendExecutor to use ActionExecutor that performs
-// actions in the main thread.
 
-
-namespace dpso {
-namespace backend {
-
-
-Backend* WindowsBackend::create()
+std::unique_ptr<Backend> Backend::create()
 {
-    return new WindowsBackendExecutor();
+    return std::unique_ptr<Backend>(
+        new BackendExecutor(
+            *[]()
+            {
+                return std::unique_ptr<Backend>(new WindowsBackend());
+            }));
 }
-
 
 }
 }

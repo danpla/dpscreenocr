@@ -6,14 +6,14 @@ namespace dpso {
 namespace backend {
 
 
-WindowsBackendExecutor::WindowsBackendExecutor()
+BackendExecutor::BackendExecutor(CreatorFn creatorFn)
     : actionExecutor {}
     , backend {}
     , keyManagerExecutor {}
     , selectionExecutor {}
 {
-    execute(actionExecutor, [this](){
-        backend.reset(new WindowsBackendImpl());
+    backend = execute(actionExecutor, [&creatorFn](){
+        return creatorFn();
     });
 
     keyManagerExecutor.reset(
@@ -26,7 +26,7 @@ WindowsBackendExecutor::WindowsBackendExecutor()
 }
 
 
-WindowsBackendExecutor::~WindowsBackendExecutor()
+BackendExecutor::~BackendExecutor()
 {
     execute(actionExecutor, [this](){
         backend.reset();
@@ -34,19 +34,19 @@ WindowsBackendExecutor::~WindowsBackendExecutor()
 }
 
 
-KeyManager& WindowsBackendExecutor::getKeyManager()
+KeyManager& BackendExecutor::getKeyManager()
 {
     return *keyManagerExecutor;
 }
 
 
-Selection& WindowsBackendExecutor::getSelection()
+Selection& BackendExecutor::getSelection()
 {
     return *selectionExecutor;
 }
 
 
-std::unique_ptr<Screenshot> WindowsBackendExecutor::takeScreenshot(
+std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
     const Rect& rect)
 {
     // We can take screenshots form any thread.
@@ -54,7 +54,7 @@ std::unique_ptr<Screenshot> WindowsBackendExecutor::takeScreenshot(
 }
 
 
-void WindowsBackendExecutor::update()
+void BackendExecutor::update()
 {
     execute(actionExecutor, [this](){ backend->update(); });
 }

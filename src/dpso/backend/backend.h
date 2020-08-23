@@ -142,6 +142,13 @@ public:
 
 class Backend {
 public:
+    /**
+     * Create a backend.
+     *
+     * A concrete backend should provide definition of this method.
+     */
+    static std::unique_ptr<Backend> create();
+
     Backend() = default;
     virtual ~Backend() = default;
 
