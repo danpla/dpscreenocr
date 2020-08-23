@@ -376,7 +376,7 @@ static void progressTrackerFn(float progress, void* userData)
 }
 
 
-bool dumpDebugImage;
+static bool dumpDebugImage;
 
 
 static void processJob(const Job& job)
