@@ -36,6 +36,8 @@ struct CodeTimer {
         va_end(args);
 
         std::printf(": %f ms\n", ms.count());
+
+        std::fflush(stdout);
     }
 };
 
