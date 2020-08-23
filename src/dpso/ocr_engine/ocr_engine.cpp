@@ -28,8 +28,8 @@ OcrResult::OcrResult(
 
 
 OcrResult::~OcrResult() = default;
-OcrResult::OcrResult(OcrResult&&) = default;
-OcrResult& OcrResult::operator=(OcrResult&&) = default;
+OcrResult::OcrResult(OcrResult&&) noexcept = default;
+OcrResult& OcrResult::operator=(OcrResult&&) noexcept = default;
 
 
 OcrResult::Status OcrResult::getStatus() const

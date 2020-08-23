@@ -89,8 +89,8 @@ public:
     OcrResult(Status status, std::unique_ptr<OcrResultText> text);
     ~OcrResult();
 
-    OcrResult(OcrResult&& other);
-    OcrResult& operator=(OcrResult&& other);
+    OcrResult(OcrResult&& other) noexcept;
+    OcrResult& operator=(OcrResult&& other) noexcept;
 
     Status getStatus() const;
 
