@@ -40,7 +40,7 @@ struct HotkeyBinding {
 class KeyManager {
 public:
     KeyManager() = default;
-    virtual ~KeyManager() {};
+    virtual ~KeyManager() = default;
 
     KeyManager(const KeyManager& other) = delete;
     KeyManager& operator=(const KeyManager& other) = delete;
@@ -91,7 +91,7 @@ public:
 class Selection {
 public:
     Selection() = default;
-    virtual ~Selection() {};
+    virtual ~Selection() = default;
 
     Selection(const Selection& other) = delete;
     Selection& operator=(const Selection& other) = delete;
@@ -125,7 +125,7 @@ public:
 class Screenshot {
 public:
     Screenshot() = default;
-    virtual ~Screenshot() {};
+    virtual ~Screenshot() = default;
 
     Screenshot(const Screenshot& other) = delete;
     Screenshot& operator=(const Screenshot& other) = delete;
@@ -143,7 +143,7 @@ public:
 class Backend {
 public:
     Backend() = default;
-    virtual ~Backend() {};
+    virtual ~Backend() = default;
 
     Backend(const Backend& other) = delete;
     Backend& operator=(const Backend& other) = delete;

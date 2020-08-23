@@ -112,7 +112,7 @@ public:
     static std::unique_ptr<OcrEngine> create();
 
     OcrEngine() = default;
-    virtual ~OcrEngine() {};
+    virtual ~OcrEngine() = default;
 
     OcrEngine(const OcrEngine& other) = delete;
     OcrEngine& operator=(const OcrEngine& other) = delete;

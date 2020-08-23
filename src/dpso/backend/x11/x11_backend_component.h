@@ -11,7 +11,7 @@ namespace backend {
 class X11BackendComponent {
 public:
     X11BackendComponent() = default;
-    virtual ~X11BackendComponent() {}
+    virtual ~X11BackendComponent() = default;
 
     virtual void updateStart() {}
     virtual void handleEvent(const XEvent& event) { (void)event; }
