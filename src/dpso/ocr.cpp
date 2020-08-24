@@ -18,6 +18,8 @@
 #include <vector>
 
 #include "backend/backend.h"
+#include "backend/screenshot.h"
+#include "geometry.h"
 #include "img.h"
 #include "ocr_engine/ocr_engine.h"
 #include "progress_tracker.h"

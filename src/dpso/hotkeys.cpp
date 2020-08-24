@@ -5,6 +5,7 @@
 #include <string>
 
 #include "backend/backend.h"
+#include "backend/key_manager.h"
 #include "key_names.h"
 #include "str.h"
 

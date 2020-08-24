@@ -1,7 +1,10 @@
 
 #pragma once
 
-#include "backend/backend.h"
+#include <memory>
+
+#include "backend/screenshot.h"
+#include "geometry.h"
 
 
 namespace dpso {

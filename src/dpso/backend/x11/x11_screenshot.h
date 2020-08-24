@@ -1,9 +1,12 @@
 
 #pragma once
 
+#include <memory>
+
 #include <X11/Xlib.h>
 
-#include "backend/backend.h"
+#include "backend/screenshot.h"
+#include "geometry.h"
 
 
 namespace dpso {

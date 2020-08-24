@@ -2,6 +2,7 @@
 #include "selection.h"
 
 #include "backend/backend.h"
+#include "backend/selection.h"
 
 
 static inline dpso::backend::Selection& getSelection()
