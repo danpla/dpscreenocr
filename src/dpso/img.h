@@ -29,7 +29,8 @@ inline unsigned getMaskRightShift(unsigned mask)
 
 inline std::uint8_t expandTo8Bit(std::uint8_t c, unsigned numBits)
 {
-    return c << (8 - numBits) | c >> (2 * numBits - 8);
+    const auto maxC = (1u << numBits) - 1;
+    return (c * 255 + maxC / 2) / maxC;
 }
 
 
