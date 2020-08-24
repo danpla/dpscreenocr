@@ -52,17 +52,15 @@ static int cmpKeys(const char* a, const char* b)
 }
 
 
-static bool cmpByKey(const KeyValue& kv, const char* key)
-{
-    return cmpKeys(kv.key.c_str(), key) < 0;
-}
-
-
 static decltype(keyValues)::iterator keyValuesLowerBound(
     const char* key)
 {
     return std::lower_bound(
-        keyValues.begin(), keyValues.end(), key, cmpByKey);
+        keyValues.begin(), keyValues.end(), key,
+        [](const KeyValue& kv, const char* key)
+        {
+            return cmpKeys(kv.key.c_str(), key) < 0;
+        });
 }
 
 
