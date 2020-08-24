@@ -10,7 +10,7 @@
 #include "str.h"
 
 
-static inline dpso::backend::KeyManager& getKeyManager()
+static dpso::backend::KeyManager& getKeyManager()
 {
     return dpso::backend::getBackend().getKeyManager();
 }

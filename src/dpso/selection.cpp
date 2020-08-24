@@ -5,7 +5,7 @@
 #include "backend/selection.h"
 
 
-static inline dpso::backend::Selection& getSelection()
+static dpso::backend::Selection& getSelection()
 {
     return dpso::backend::getBackend().getSelection();
 }
