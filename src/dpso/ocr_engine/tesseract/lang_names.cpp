@@ -192,5 +192,4 @@ const char* getTesseractLangName(const char* langCode)
 }
 
 
-
 }
