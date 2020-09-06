@@ -9,7 +9,7 @@
 namespace dpso {
 
 
-class Rect;
+struct Rect;
 
 
 namespace backend {
