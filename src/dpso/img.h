@@ -47,15 +47,6 @@ void resize(
     ProgressTracker* progressTracker = nullptr);
 
 
-void boxBlur(
-    const std::uint8_t* src, int srcPitch,
-    std::uint8_t* dst, int dstPitch,
-    std::uint8_t* tmp, int tmpPitch,
-    int w, int h, int radius,
-    int numIters,
-    ProgressTracker* progressTracker = nullptr);
-
-
 void unsharpMask(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
