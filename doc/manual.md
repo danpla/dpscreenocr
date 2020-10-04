@@ -49,7 +49,7 @@ page, download `.traineddata` files you want, and place them in the
 executable.
 
 You can also download languages from other places, but make sure they
-are intended for Tesseract 4.0. An attempt to use data designed for
+are intended for Tesseract 4. An attempt to use data designed for
 another Tesseract version will cause dpScreenOCR to crash.
 
 
@@ -305,7 +305,7 @@ format.
 
 ## Notification area icon
 
-dpScreenOcr has an icon in the notification area. You can toggle
+dpScreenOCR has an icon in the notification area. You can toggle
 visibility of the window either from the icon's context menu or by
 activating the icon (left or middle mouse click, depending on the
 platform).
