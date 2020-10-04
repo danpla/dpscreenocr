@@ -31,7 +31,7 @@ public:
 
     OcrResult recognize(
         const OcrImage& image,
-        const std::vector<int> langIndices,
+        const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
         OcrProgressCallback progressCallback,
         void* progressCallbackUserData) override;
@@ -41,7 +41,7 @@ private:
     std::string tessLangsStr;
 
     void cacheLangs();
-    void fillTessLangsStr(const std::vector<int> langIndices);
+    void fillTessLangsStr(const std::vector<int>& langIndices);
 };
 
 
@@ -135,7 +135,7 @@ struct CancelData {
 
 OcrResult TesseractOcr::recognize(
     const OcrImage& image,
-    const std::vector<int> langIndices,
+    const std::vector<int>& langIndices,
     OcrFeatures ocrFeatures,
     OcrProgressCallback progressCallback,
     void* progressCallbackUserData)
@@ -197,7 +197,7 @@ void TesseractOcr::cacheLangs()
 
 
 void TesseractOcr::fillTessLangsStr(
-    const std::vector<int> langIndices)
+    const std::vector<int>& langIndices)
 {
     tessLangsStr.clear();
 

@@ -64,7 +64,7 @@ static void checkHotkeyFromString(
     std::fprintf(
         stderr,
         "line %i: dpsoHotkeyFromString(\"%s\"): "
-        "expected (%i %i), got (%i %i)\n",
+        "expected (%i %u), got (%i %u)\n",
         lineNum,
         str,
         expected.key, expected.mods,

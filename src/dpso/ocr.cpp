@@ -291,7 +291,7 @@ static struct {
 
 
 static dpso::OcrImage prepareScreenshot(
-    dpso::backend::Screenshot& screenshot,
+    const dpso::backend::Screenshot& screenshot,
     dpso::ProgressTracker& progressTracker)
 {
     static std::vector<std::uint8_t> buffers[3];

@@ -175,7 +175,7 @@ public:
 
     virtual OcrResult recognize(
         const OcrImage& image,
-        const std::vector<int> langIndices,
+        const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
         OcrProgressCallback progressCallback,
         void* progressCallbackUserData) = 0;
