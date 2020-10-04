@@ -13,8 +13,6 @@
 
 namespace dpso {
 namespace backend {
-
-
 namespace {
 
 
@@ -40,9 +38,9 @@ private:
 
 
 WindowsBackend::WindowsBackend()
-    : instance {GetModuleHandleA(nullptr)}
-    , keyManager {}
-    , selection {}
+    : instance{GetModuleHandleA(nullptr)}
+    , keyManager{}
+    , selection{}
 {
     if (!instance)
         throw BackendError(

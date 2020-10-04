@@ -12,8 +12,8 @@ namespace backend {
 
 
 NullScreenshot::NullScreenshot(const Rect& rect)
-    : w {rect.w}
-    , h {rect.h}
+    : w{rect.w}
+    , h{rect.h}
 {
     MSG("Screenshot %ix%i\n", w, h);
 }

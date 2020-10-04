@@ -91,7 +91,7 @@ void dpsoCfgGetHotkey(
     if (!hotkey)
         return;
 
-    const DpsoHotkey noneHotkey {dpsoUnknownKey, dpsoKeyModNone};
+    const DpsoHotkey noneHotkey{dpsoUnknownKey, dpsoKeyModNone};
     const auto* fallbackHotkey = (
         defaultHotkey ? defaultHotkey : &noneHotkey);
 

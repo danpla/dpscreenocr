@@ -12,9 +12,9 @@ HotkeyEditor::HotkeyEditor(
         Qt::Orientation orientation,
         QWidget* parent)
     : QWidget(parent)
-    , action {action}
-    , keyCombo {}
-    , modCheckBoxes {}
+    , action{action}
+    , keyCombo{}
+    , modCheckBoxes{}
 {
     QBoxLayout::Direction layoutDir;
     if (orientation == Qt::Horizontal)
@@ -37,7 +37,7 @@ HotkeyEditor::HotkeyEditor(
 
     int keyComboIdx = 0;
     for (int i = dpsoUnknownKey; i < dpsoNumKeys; ++i) {
-        const DpsoHotkey keyHotkey {
+        const DpsoHotkey keyHotkey{
             static_cast<DpsoKey>(i), dpsoKeyModNone};
 
         // We use QVector and linear search assuming the hiddenKeys
@@ -69,7 +69,7 @@ HotkeyEditor::HotkeyEditor(
     for (int i = 0; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
 
-        const DpsoHotkey modHotkey {dpsoUnknownKey, mod};
+        const DpsoHotkey modHotkey{dpsoUnknownKey, mod};
         auto* modCheckBox = new QCheckBox(
             dpsoHotkeyToString(&modHotkey));
         modCheckBoxes[i] = modCheckBox;
@@ -134,7 +134,7 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
 void HotkeyEditor::bind()
 {
-    DpsoHotkey hotkey {getCurrentKey(), dpsoKeyModNone};
+    DpsoHotkey hotkey{getCurrentKey(), dpsoKeyModNone};
 
     for (int i = 0; i < dpsoNumKeyMods; ++i)
         if (modCheckBoxes[i]->isChecked())

@@ -31,7 +31,7 @@ struct DcReleaser {
     using pointer = HDC;
 
     explicit DcReleaser(HWND window)
-        : window {window}
+        : window{window}
     {
 
     }
@@ -89,8 +89,8 @@ using ObjectPtr = std::unique_ptr<ObjectT, ObjectDeleter<ObjectT>>;
 // RAII for SelectObject()
 struct ObjectSelector {
     ObjectSelector(HDC dc, HGDIOBJ newObject)
-        : dc {dc}
-        , oldObject {SelectObject(dc, newObject)}
+        : dc{dc}
+        , oldObject{SelectObject(dc, newObject)}
     {
 
     }

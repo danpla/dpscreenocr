@@ -59,12 +59,12 @@ const int borderWidth = 4;
 
 
 X11Selection::X11Selection(Display* display)
-    : display {display}
-    , window {}
-    , gc {}
-    , isEnabled {}
-    , origin {}
-    , geom {}
+    : display{display}
+    , window{}
+    , gc{}
+    , isEnabled{}
+    , origin{}
+    , geom{}
 {
     XSetWindowAttributes windowAttrs;
     windowAttrs.override_redirect = True;

@@ -7,12 +7,12 @@ namespace backend {
 
 
 BgThreadActionExecutor::BgThreadActionExecutor()
-    : thread {}
-    , condVar {}
-    , mutex {}
-    , terminate {}
-    , currentAction {}
-    , actionException {}
+    : thread{}
+    , condVar{}
+    , mutex{}
+    , terminate{}
+    , currentAction{}
+    , actionException{}
 {
     thread = std::thread(&BgThreadActionExecutor::threadLoop, this);
 }

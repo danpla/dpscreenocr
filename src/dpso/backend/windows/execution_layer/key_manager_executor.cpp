@@ -12,8 +12,8 @@ namespace backend {
 
 KeyManagerExecutor::KeyManagerExecutor(
         KeyManager& keyManager, ActionExecutor& actionExecutor)
-    : keyManager {&keyManager}
-    , actionExecutor {&actionExecutor}
+    : keyManager{&keyManager}
+    , actionExecutor{&actionExecutor}
 {
 
 }

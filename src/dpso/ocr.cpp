@@ -224,7 +224,7 @@ static Timestamp createTimestamp()
 {
     // We are still targeting old GCC versions, so double braces are
     // needed to avoid -Wmissing-field-initializers.
-    Timestamp timestamp {{}};
+    Timestamp timestamp{{}};
 
     const auto time = std::time(nullptr);
     if (const auto* tm = std::localtime(&time))
@@ -491,7 +491,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
             || screenshot->getHeight() < minScreenshotSize)
         return false;
 
-    Job job {
+    Job job{
         std::move(screenshot),
         getActiveLangIndices(),
         createTimestamp(),

@@ -149,7 +149,7 @@ void dpsoExec(
     //
     // For a high-level info about ShellExecute(), see:
     //   https://docs.microsoft.com/en-us/windows/desktop/shell/launch
-    SHELLEXECUTEINFOW si {};
+    SHELLEXECUTEINFOW si{};
     si.cbSize = sizeof(si);
     si.fMask = SEE_MASK_NOCLOSEPROCESS;
     si.lpFile = exePathUtf16.c_str();

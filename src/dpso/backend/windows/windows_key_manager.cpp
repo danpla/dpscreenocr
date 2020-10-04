@@ -134,9 +134,9 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 
 
 WindowsKeyManager::WindowsKeyManager()
-    : bindings {}
-    , hotkeysEnabled {}
-    , hotkeyAction {-1}
+    : bindings{}
+    , hotkeysEnabled{}
+    , hotkeyAction{-1}
 {
 
 }

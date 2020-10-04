@@ -12,8 +12,8 @@ namespace backend {
 
 SelectionExecutor::SelectionExecutor(
         Selection& selection, ActionExecutor& actionExecutor)
-    : selection {&selection}
-    , actionExecutor {&actionExecutor}
+    : selection{&selection}
+    , actionExecutor{&actionExecutor}
 {
 
 }

@@ -49,9 +49,9 @@ private:
 
 
 TesseractOcr::TesseractOcr()
-    : tess {}
-    , langCodes {}
-    , tessLangsStr {}
+    : tess{}
+    , langCodes{}
+    , tessLangsStr{}
 {
     cacheLangs();
 }
@@ -102,10 +102,10 @@ struct CancelData {
     CancelData(
             OcrProgressCallback progressCallback,
             void* progressCallbackUserData)
-        : textDesc {}
-        , progressCallback {progressCallback}
-        , progressCallbackUserData {progressCallbackUserData}
-        , cancelled {}
+        : textDesc{}
+        , progressCallback{progressCallback}
+        , progressCallbackUserData{progressCallbackUserData}
+        , cancelled{}
     {
         textDesc.cancel = cancelFunc;
         textDesc.cancel_this = this;

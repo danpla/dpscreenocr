@@ -18,10 +18,10 @@ std::size_t prettifyTesseractText(char* text)
         std::size_t toLen;
 
         Replacement(const char* from, const char* to)
-            : from {from}
-            , fromLen {std::strlen(from)}
-            , to {to}
-            , toLen {std::strlen(to)}
+            : from{from}
+            , fromLen{std::strlen(from)}
+            , to{to}
+            , toLen{std::strlen(to)}
         {
             assert(fromLen >= toLen);
         }

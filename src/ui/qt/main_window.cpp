@@ -58,8 +58,8 @@ enum HotkeyAction {
 
 MainWindow::MainWindow()
     : QWidget()
-    , wasActiveLangs {}
-    , statusValid {}
+    , wasActiveLangs{}
+    , statusValid{}
 {
     setWindowTitle(appName);
     QApplication::setWindowIcon(getIcon(appFileName));
@@ -100,19 +100,19 @@ MainWindow::~MainWindow()
 
 
 MainWindow::DynamicStrings::DynamicStrings()
-    : progress {_(
+    : progress{_(
         "Recognition {progress}% ({current_job}/{total_jobs})")}
-    , installLangs {_("Please install languages")}
-    , selectLangs {_("Please select languages")}
-    , selectActions {_(
+    , installLangs{_("Please install languages")}
+    , selectLangs{_("Please select languages")}
+    , selectActions{_(
         "Please select actions in the "
         "\342\200\234Actions\342\200\235 tab")}
     // Translators: Program is ready for OCR
-    , ready {pgettext("ocr.status", "Ready")}
-    , confirmQuitText {_(
+    , ready{pgettext("ocr.status", "Ready")}
+    , confirmQuitText{_(
         "Recognition is not yet finished. Quit anyway?")}
-    , cancel {_("Cancel")}
-    , quit {_("Quit")}
+    , cancel{_("Cancel")}
+    , quit{_("Quit")}
 {
 
 }

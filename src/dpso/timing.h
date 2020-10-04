@@ -19,7 +19,7 @@ struct CodeTimer {
     Clock::time_point start;
 
     CodeTimer()
-        : start {Clock::now()}
+        : start{Clock::now()}
     {}
 
     void report(const char* fmt, ...) const

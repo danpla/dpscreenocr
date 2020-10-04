@@ -12,7 +12,7 @@ namespace backend {
 
 
 NullSelection::NullSelection()
-    : isEnabled {}
+    : isEnabled{}
 {
 
 }

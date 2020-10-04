@@ -14,8 +14,8 @@ class TesseractOcrResultText : public OcrResultText {
 public:
     TesseractOcrResultText(
             std::unique_ptr<char[]> text, std::size_t textLen)
-        : text {std::move(text)}
-        , textLen {textLen}
+        : text{std::move(text)}
+        , textLen{textLen}
     {
 
     }

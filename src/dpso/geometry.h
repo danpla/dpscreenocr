@@ -18,8 +18,8 @@ struct Point {
     }
 
     Point(int x, int y)
-        : x {x}
-        , y {y}
+        : x{x}
+        , y{y}
     {
 
     }
@@ -37,8 +37,8 @@ struct Side {
     }
 
     Side(int start, int size)
-        : start {start}
-        , size {size}
+        : start{start}
+        , size{size}
     {
 
     }
@@ -62,10 +62,10 @@ struct Rect {
     }
 
     Rect(int x, int y, int w, int h)
-        : x {x}
-        , y {y}
-        , w {w}
-        , h {h}
+        : x{x}
+        , y{y}
+        , w{w}
+        , h{h}
     {
 
     }

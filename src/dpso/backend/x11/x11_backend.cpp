@@ -37,7 +37,7 @@ private:
 
 
 X11Backend::X11Backend()
-    : display {XOpenDisplay(nullptr), XCloseDisplay}
+    : display{XOpenDisplay(nullptr), XCloseDisplay}
 {
     if (!display)
         throw BackendError(

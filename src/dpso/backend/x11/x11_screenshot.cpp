@@ -35,7 +35,7 @@ std::unique_ptr<X11Screenshot> X11Screenshot::take(
     Display* display, const Rect& rect)
 {
     auto* screen = XDefaultScreenOfDisplay(display);
-    const Rect screenRect {
+    const Rect screenRect{
         0, 0, XWidthOfScreen(screen), XHeightOfScreen(screen)
     };
     const auto captureRect = rect.getIntersection(screenRect);
@@ -61,7 +61,7 @@ std::unique_ptr<X11Screenshot> X11Screenshot::take(
 
 
 X11Screenshot::X11Screenshot(XImage* image)
-    : image {image}
+    : image{image}
 {
     assert(image);
     assert(image->width > 0);

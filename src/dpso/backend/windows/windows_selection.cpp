@@ -117,13 +117,13 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 
 
 WindowsSelection::WindowsSelection(HINSTANCE instance)
-    : borderWidth {getBorderWidth()}
-    , isEnabled {}
-    , origin {}
-    , geom {}
-    , window {}
-    , dashPenPattern {}
-    , pens {}
+    : borderWidth{getBorderWidth()}
+    , isEnabled{}
+    , origin{}
+    , geom{}
+    , window{}
+    , dashPenPattern{}
+    , pens{}
 {
     registerWindowClass(instance, WindowsSelection::wndProc);
     window.reset(CreateWindowExA(
@@ -158,7 +158,7 @@ void WindowsSelection::createPens()
         PS_GEOMETRIC | PS_ENDCAP_FLAT | PS_JOIN_MITER);
 
     // White background.
-    LOGBRUSH lb {BS_SOLID, RGB(255, 255, 255), 0};
+    LOGBRUSH lb{BS_SOLID, RGB(255, 255, 255), 0};
 
     pens[0].reset(ExtCreatePen(
         commonStyle | PS_SOLID, borderWidth, &lb, 0, nullptr));

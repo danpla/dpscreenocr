@@ -11,8 +11,8 @@ namespace dpso {
 
 
 OcrResult::OcrResult(Status status, const char* text)
-    : status {status}
-    , text {OcrResultText::create(text)}
+    : status{status}
+    , text{OcrResultText::create(text)}
 {
 
 }
@@ -20,8 +20,8 @@ OcrResult::OcrResult(Status status, const char* text)
 
 OcrResult::OcrResult(
         Status status, std::unique_ptr<OcrResultText> text)
-    : status {status}
-    , text {std::move(text)}
+    : status{status}
+    , text{std::move(text)}
 {
 
 }

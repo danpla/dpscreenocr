@@ -50,10 +50,10 @@ static void changeBindingGrab(
 
 
 X11KeyManager::X11KeyManager(Display* display)
-    : display {display}
-    , x11bindings {}
-    , hotkeysEnabled {}
-    , hotkeyAction {-1}
+    : display{display}
+    , x11bindings{}
+    , hotkeysEnabled{}
+    , hotkeyAction{-1}
 {
 
 }

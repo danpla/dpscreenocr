@@ -14,8 +14,8 @@ namespace backend {
 
 
 NullKeyManager::NullKeyManager()
-    : hotkeysEnabled {}
-    , bindings {}
+    : hotkeysEnabled{}
+    , bindings{}
 {
 
 }

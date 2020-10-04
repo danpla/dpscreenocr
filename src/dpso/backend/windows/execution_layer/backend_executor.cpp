@@ -7,10 +7,10 @@ namespace backend {
 
 
 BackendExecutor::BackendExecutor(CreatorFn creatorFn)
-    : actionExecutor {}
-    , backend {}
-    , keyManagerExecutor {}
-    , selectionExecutor {}
+    : actionExecutor{}
+    , backend{}
+    , keyManagerExecutor{}
+    , selectionExecutor{}
 {
     backend = execute(actionExecutor, [&creatorFn](){
         return creatorFn();

@@ -17,7 +17,7 @@ namespace backend {
 std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
     const Rect& rect)
 {
-    const Rect virtualScreenRect {
+    const Rect virtualScreenRect{
         GetSystemMetrics(SM_XVIRTUALSCREEN),
         GetSystemMetrics(SM_YVIRTUALSCREEN),
         GetSystemMetrics(SM_CXVIRTUALSCREEN),
@@ -84,10 +84,10 @@ std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
 
 WindowsScreenshot::WindowsScreenshot(
         BufPtr buf, int w, int h, int pitch)
-    : buf {std::move(buf)}
-    , w {w}
-    , h {h}
-    , pitch {pitch}
+    : buf{std::move(buf)}
+    , w{w}
+    , h{h}
+    , pitch{pitch}
 {
     assert(this->buf);
     assert(w > 0);

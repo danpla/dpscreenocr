@@ -37,15 +37,15 @@ ProgressTracker::ProgressTracker(
 
 
 ProgressTracker::ProgressTracker(int numJobs)
-    : numJobs {numJobs > 0 ? numJobs : 1}
-    , progressFn {nullProgressFn}
-    , userData {}
-    , parent {}
-    , sensitivity {}
-    , jobProgressScale {1.0f / this->numJobs}
-    , baseProgress {}
-    , curJobNum {}
-    , curProgress {}
+    : numJobs{numJobs > 0 ? numJobs : 1}
+    , progressFn{nullProgressFn}
+    , userData{}
+    , parent{}
+    , sensitivity{}
+    , jobProgressScale{1.0f / this->numJobs}
+    , baseProgress{}
+    , curJobNum{}
+    , curProgress{}
 {
 
 }

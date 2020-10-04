@@ -68,7 +68,7 @@ ActionChooser::ActionChooser(QWidget* parent)
 
 
 ActionChooser::DynamicStrings::DynamicStrings()
-    : chooseExeDialogTitle {_("Choose an executable")}
+    : chooseExeDialogTitle{_("Choose an executable")}
 {
 
 }
