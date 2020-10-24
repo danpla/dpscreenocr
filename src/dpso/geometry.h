@@ -44,9 +44,10 @@ struct Side {
     }
 
     static Side betweenPoints(int a, int b);
-
-    Side getIntersection(const Side& other) const;
 };
+
+
+Side getIntersection(const Side& a, const Side& b);
 
 
 struct Rect {
@@ -82,20 +83,13 @@ struct Rect {
 
     }
 
-    DpsoRect toCRect() const
-    {
-        return {x, y, w, h};
-    }
-
     static Rect betweenPoints(const Point& a, const Point& b);
-
-    bool empty() const
-    {
-        return w <= 0 || h <= 0;
-    }
-
-    Rect getIntersection(const Rect& other) const;
 };
+
+
+DpsoRect toCRect(const Rect& rect);
+bool isEmpty(const Rect& rect);
+Rect getIntersection(const Rect& a, const Rect& b);
 
 
 }

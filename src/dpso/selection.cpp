@@ -26,5 +26,5 @@ void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled)
 void dpsoGetSelectionGeometry(struct DpsoRect* rect)
 {
     if (rect)
-        *rect = getSelection().getGeometry().toCRect();
+        *rect = toCRect(getSelection().getGeometry());
 }

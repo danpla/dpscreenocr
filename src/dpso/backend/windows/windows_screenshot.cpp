@@ -24,8 +24,8 @@ std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
         GetSystemMetrics(SM_CYVIRTUALSCREEN)
     };
 
-    const auto captureRect = rect.getIntersection(virtualScreenRect);
-    if (captureRect.empty())
+    const auto captureRect = getIntersection(rect, virtualScreenRect);
+    if (isEmpty(captureRect))
         return nullptr;
 
     auto screenDc = windows::getDc(nullptr);

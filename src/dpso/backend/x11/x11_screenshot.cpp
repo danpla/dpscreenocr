@@ -38,8 +38,8 @@ std::unique_ptr<X11Screenshot> X11Screenshot::take(
     const Rect screenRect{
         0, 0, XWidthOfScreen(screen), XHeightOfScreen(screen)
     };
-    const auto captureRect = rect.getIntersection(screenRect);
-    if (captureRect.empty())
+    const auto captureRect = getIntersection(rect, screenRect);
+    if (isEmpty(captureRect))
         return nullptr;
 
     auto* image = XGetImage(

@@ -69,7 +69,7 @@ static void testEqual(
 
 static void testEmpty(const Rect& r, bool expectEmpty, int lineNum)
 {
-    if (r.empty() == expectEmpty)
+    if (isEmpty(r) == expectEmpty)
         return;
 
     std::fprintf(
@@ -102,14 +102,14 @@ static void testSide()
     TEST_EQUAL(Side::betweenPoints(1, -1), Side(-1, 2));
 
     const Side s(0, 4);
-    TEST_EQUAL(s.getIntersection(s), s);
-    TEST_EQUAL(s.getIntersection({}), Side(0, 0));
-    TEST_EQUAL(s.getIntersection({2, 4}), Side(2, 2));
-    TEST_EQUAL(s.getIntersection({4, 4}), Side(4, 0));
-    TEST_EQUAL(s.getIntersection({6, 4}), Side(6, 0));
-    TEST_EQUAL(s.getIntersection({-2, 4}), Side(0, 2));
-    TEST_EQUAL(s.getIntersection({-4, 4}), Side(0, 0));
-    TEST_EQUAL(s.getIntersection({-6, 4}), Side(0, 0));
+    TEST_EQUAL(getIntersection(s, s), s);
+    TEST_EQUAL(getIntersection(s, {}), Side(0, 0));
+    TEST_EQUAL(getIntersection(s, {2, 4}), Side(2, 2));
+    TEST_EQUAL(getIntersection(s, {4, 4}), Side(4, 0));
+    TEST_EQUAL(getIntersection(s, {6, 4}), Side(6, 0));
+    TEST_EQUAL(getIntersection(s, {-2, 4}), Side(0, 2));
+    TEST_EQUAL(getIntersection(s, {-4, 4}), Side(0, 0));
+    TEST_EQUAL(getIntersection(s, {-6, 4}), Side(0, 0));
 }
 
 
@@ -139,14 +139,14 @@ static void testRect()
     TEST_EMPTY(Rect(0, 0, 1, 1), false);
 
     const Rect r(0, 0, 4, 4);
-    TEST_EQUAL(r.getIntersection(r), r);
-    TEST_EQUAL(r.getIntersection({}), Rect(0, 0, 0, 0));
-    TEST_EQUAL(r.getIntersection({2, 2, 4, 4}), Rect(2, 2, 2, 2));
-    TEST_EQUAL(r.getIntersection({4, 4, 4, 4}), Rect(4, 4, 0, 0));
-    TEST_EQUAL(r.getIntersection({6, 6, 4, 4}), Rect(6, 6, 0, 0));
-    TEST_EQUAL(r.getIntersection({-2, -2, 4, 4}), Rect(0, 0, 2, 2));
-    TEST_EQUAL(r.getIntersection({-4, -4, 4, 4}), Rect(0, 0, 0, 0));
-    TEST_EQUAL(r.getIntersection({-6, -6, 4, 4}), Rect(0, 0, 0, 0));
+    TEST_EQUAL(getIntersection(r, r), r);
+    TEST_EQUAL(getIntersection(r, {}), Rect(0, 0, 0, 0));
+    TEST_EQUAL(getIntersection(r, {2, 2, 4, 4}), Rect(2, 2, 2, 2));
+    TEST_EQUAL(getIntersection(r, {4, 4, 4, 4}), Rect(4, 4, 0, 0));
+    TEST_EQUAL(getIntersection(r, {6, 6, 4, 4}), Rect(6, 6, 0, 0));
+    TEST_EQUAL(getIntersection(r, {-2, -2, 4, 4}), Rect(0, 0, 2, 2));
+    TEST_EQUAL(getIntersection(r, {-4, -4, 4, 4}), Rect(0, 0, 0, 0));
+    TEST_EQUAL(getIntersection(r, {-6, -6, 4, 4}), Rect(0, 0, 0, 0));
 }
 
 

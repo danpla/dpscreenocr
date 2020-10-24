@@ -16,6 +16,15 @@ Side Side::betweenPoints(int a, int b)
 }
 
 
+Side getIntersection(const Side& a, const Side& b)
+{
+    const auto min = std::max(a.start, b.start);
+    const auto max = std::min(a.start + a.size, b.start + b.size);
+
+    return {min, max > min ? max - min : 0};
+}
+
+
 Rect Rect::betweenPoints(const Point& a, const Point& b)
 {
     return {
@@ -24,20 +33,23 @@ Rect Rect::betweenPoints(const Point& a, const Point& b)
 }
 
 
-Side Side::getIntersection(const Side& other) const
+DpsoRect toCRect(const Rect& rect)
 {
-    const auto min = std::max(start, other.start);
-    const auto max = std::min(start + size, other.start + other.size);
-
-    return {min, max > min ? max - min : 0};
+    return {rect.x, rect.y, rect.w, rect.h};
 }
 
 
-Rect Rect::getIntersection(const Rect& other) const
+bool isEmpty(const Rect& rect)
+{
+    return rect.w <= 0 || rect.h <= 0;
+}
+
+
+Rect getIntersection(const Rect& a, const Rect& b)
 {
     return {
-        Side{x, w}.getIntersection({other.x, other.w}),
-        Side{y, h}.getIntersection({other.y, other.h}),
+        getIntersection({a.x, a.w}, {b.x, b.w}),
+        getIntersection({a.y, a.h}, {b.y, b.h})
     };
 }
 
