@@ -113,7 +113,7 @@ int main(void)
     if (!dpsoInit()) {
         fprintf(
             stderr, "dpsoInit() error: %s\n", dpsoGetError());
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     setupLanguages();
