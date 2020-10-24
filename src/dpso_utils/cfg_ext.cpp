@@ -19,9 +19,7 @@ static void disableAllLangs()
 
 static void enableLang(const char* langCode)
 {
-    const auto langIdx = dpsoGetLangIdx(langCode);
-    if (langIdx != -1)
-        dpsoSetLangIsActive(langIdx, true);
+    dpsoSetLangIsActive(dpsoGetLangIdx(langCode), true);
 }
 
 
