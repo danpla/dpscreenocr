@@ -545,7 +545,7 @@ void MainWindow::checkResult()
         fullText.clear();
 
         for (int i = 0; i < results.numItems; ++i) {
-            if (!fullText.isEmpty())
+            if (i > 0)
                 fullText += copyToClipboardTextSeparator;
 
             fullText += results.items[i].text;
