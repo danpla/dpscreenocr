@@ -195,7 +195,7 @@ void dpsoHistoryExport(
 }
 
 
-static DpsoHistoryExportFormat exportFormatFromFileName(
+static DpsoHistoryExportFormat getExportFormatForFileName(
     const char* fileName)
 {
     struct Extension {
@@ -229,5 +229,5 @@ static DpsoHistoryExportFormat exportFormatFromFileName(
 
 void dpsoHistoryExportAuto(const char* fileName)
 {
-    dpsoHistoryExport(fileName, exportFormatFromFileName(fileName));
+    dpsoHistoryExport(fileName, getExportFormatForFileName(fileName));
 }
