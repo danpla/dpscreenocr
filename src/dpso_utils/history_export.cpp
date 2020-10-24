@@ -177,12 +177,19 @@ void dpsoHistoryExport(
     if (!fp)
         return;
 
-    if (exportFormat == dpsoHistoryExportFormatPlainText)
-        exportPlainText(fp);
-    else if (exportFormat == dpsoHistoryExportFormatHtml)
-        exportHtml(fp);
-    else if (exportFormat == dpsoHistoryExportFormatJson)
-        exportJson(fp);
+    switch (exportFormat) {
+        case dpsoHistoryExportFormatPlainText:
+            exportPlainText(fp);
+            break;
+        case dpsoHistoryExportFormatHtml:
+            exportHtml(fp);
+            break;
+        case dpsoHistoryExportFormatJson:
+            exportJson(fp);
+            break;
+        case dpsoNumHistoryExportFormats:
+            break;
+    }
 
     std::fclose(fp);
 }
