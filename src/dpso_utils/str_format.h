@@ -27,8 +27,8 @@ struct DpsoFormatArg {
  * The function formats string similar to Python's str.format(),
  * except it only supports named arguments. A partition in the str
  * enclosed in braces defines a name to be replaced with the
- * corresponding entry in the args array. For example, "name {value}".
- * To insert a brace as is, mention it twice.
+ * corresponding entry in the args array. To insert a brace as is,
+ * mention it twice.
  *
  * This function is mainly intended to be used for translatable
  * strings to provide reorderable and human-readable arguments instead

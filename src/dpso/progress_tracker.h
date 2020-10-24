@@ -45,7 +45,7 @@ public:
     /**
      * Create top-level tracker.
      *
-     * \param numJobs Total numbers of progress jobs.
+     * \param numJobs Total number of progress jobs.
      * \param progresFn Progress callback.
      * \param userData User data for the progress callback.
      * \param sensitivity How often to invoke the progress callback.
@@ -62,7 +62,7 @@ public:
     /**
      * Create child tracker.
      *
-     * \param numJobs Total numbers of progress jobs.
+     * \param numJobs Total number of progress jobs.
      * \param parent Pointer to the parent tracker, or null to create
      *     a null tracker.
      */
@@ -71,7 +71,7 @@ public:
     /**
      * Create null tracker.
      *
-     * \param numJobs Total numbers of progress jobs.
+     * \param numJobs Total number of progress jobs.
      */
     explicit ProgressTracker(int numJobs);
 
