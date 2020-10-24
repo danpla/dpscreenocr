@@ -9,7 +9,7 @@
 namespace dpso {
 
 
-const char dirSeparator = '\\';
+const char* const dirSeparators = "\\/";
 
 
 std::FILE* fopenUtf8(const char* fileName, const char* mode)

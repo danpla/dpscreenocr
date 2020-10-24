@@ -211,7 +211,9 @@ static DpsoHistoryExportFormat exportFormatFromFileName(
     };
 
     const auto* ext = std::strrchr(fileName, '.');
-    if (ext && (ext == fileName || ext[-1] == '/'))
+    if (ext
+            && (ext == fileName
+                || std::strchr(dpso::dirSeparators, ext[-1])))
         // A leading period denotes a "hidden" file on Unix-like
         // systems. We follow this convention on all platforms.
         ext = nullptr;
