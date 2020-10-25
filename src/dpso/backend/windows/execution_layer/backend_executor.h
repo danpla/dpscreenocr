@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "backend/backend.h"
 #include "backend/windows/execution_layer/action_executor.h"
 #include "backend/windows/execution_layer/key_manager_executor.h"
 #include "backend/windows/execution_layer/selection_executor.h"
