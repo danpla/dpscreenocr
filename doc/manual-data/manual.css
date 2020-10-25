@@ -1,10 +1,9 @@
 body {
-    max-width: 38em;
+    max-width: 36em;
     margin: 0 auto;
     padding: 1em;
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 13pt;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 #TOC ul {
@@ -14,7 +13,7 @@ body {
 code {
     font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
     font-size: 0.8em;
-    background: #dfdfdf;
+    background: #eaeaea;
     padding: 0.1em 0.4em;
     white-space: pre;
 }
@@ -24,10 +23,4 @@ pre code {
     white-space: pre;
     padding: 1em;
     overflow-x: auto;
-}
-
-@media screen and (max-width: 38em) {
-  body {
-    font-size: initial;
-  }
 }
