@@ -1,13 +1,12 @@
 body {
   margin: 3em auto 0em auto;
-  max-width: 46em;
-  font-size: 13pt;
-  font-family: Helvetica, Arial, Liberation Sans, Noto Sans, sans-serif;
+  max-width: 44.5em;
+  font-family: Helvetica, Arial, sans-serif;
   line-height: 1.6;
 }
 
 body article {
-  margin-left: 12em;
+  margin-left: 10.5em;
   margin-right: 1em;
 }
 
@@ -17,7 +16,7 @@ header {
 }
 
 header img {
-  width: 9em;
+  width: 7.5em;
 }
 
 footer {
@@ -42,7 +41,6 @@ pre {
 
 @media screen and (max-width: 40em) {
   body {
-    font-size: 12pt;
     margin-top: 1em;
   }
 
