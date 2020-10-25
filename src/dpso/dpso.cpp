@@ -13,6 +13,7 @@ namespace {
 
 
 struct Module {
+    const char* name;
     void (*init)();
     void (*shutdown)();
 };
@@ -21,7 +22,7 @@ struct Module {
 }
 
 
-#define MODULE(name) {dpso::name::init, dpso::name::shutdown}
+#define MODULE(name) {#name, dpso::name::init, dpso::name::shutdown}
 
 const Module modules[] = {
     MODULE(backend),
@@ -45,7 +46,9 @@ int dpsoInit(void)
         try {
             modules[i].init();
         } catch (std::runtime_error& e) {
-            lastError = e.what();
+            lastError = (
+                std::string("Can't init ") + modules[i].name + ": "
+                + e.what());
 
             for (auto j = i; j--;)
                 modules[j].shutdown();
