@@ -44,10 +44,11 @@ public:
     /**
      * Take screenshot.
      *
-     * The rect should be clamped to screen.
+     * The method will clamp the rect to screen. If the clamped rect
+     * is empty, returns either null or a screenshot with empty size,
+     * depending on the implementation.
      *
-     * Returns null on errors. It's left for you to decide whether
-     * an empty rectangle (after clamping to screen) is an error.
+     * Returns null on errors.
      */
     virtual std::unique_ptr<Screenshot> takeScreenshot(
         const Rect& rect) = 0;
