@@ -36,7 +36,7 @@ pre {
   font-size: 0.8em;
   padding: 1em;
   white-space: pre;
-  background: #dfdfdf;
+  background: #eaeaea;
 }
 
 @media screen and (max-width: 40em) {
