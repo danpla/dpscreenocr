@@ -25,8 +25,8 @@ public:
     HotkeyBinding getBinding(int idx) const override;
     void removeBinding(int idx) override;
 private:
-    KeyManager* keyManager;
-    ActionExecutor* actionExecutor;
+    KeyManager& keyManager;
+    ActionExecutor& actionExecutor;
 };
 
 

@@ -29,8 +29,8 @@ private:
 
     std::unique_ptr<Backend> backend;
 
-    std::unique_ptr<KeyManagerExecutor> keyManagerExecutor;
-    std::unique_ptr<SelectionExecutor> selectionExecutor;
+    KeyManagerExecutor keyManagerExecutor;
+    SelectionExecutor selectionExecutor;
 };
 
 

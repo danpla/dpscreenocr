@@ -19,8 +19,8 @@ public:
 
     Rect getGeometry() const override;
 private:
-    Selection* selection;
-    ActionExecutor* actionExecutor;
+    Selection& selection;
+    ActionExecutor& actionExecutor;
 };
 
 

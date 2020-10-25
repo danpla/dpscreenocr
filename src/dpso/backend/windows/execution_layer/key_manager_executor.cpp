@@ -7,13 +7,13 @@ namespace backend {
 
 
 #define EXEC_DELEGATE(CALL) \
-    execute(*actionExecutor, [&](){ return keyManager->CALL; })
+    execute(actionExecutor, [&](){ return keyManager.CALL; })
 
 
 KeyManagerExecutor::KeyManagerExecutor(
         KeyManager& keyManager, ActionExecutor& actionExecutor)
-    : keyManager{&keyManager}
-    , actionExecutor{&actionExecutor}
+    : keyManager{keyManager}
+    , actionExecutor{actionExecutor}
 {
 
 }

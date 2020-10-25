@@ -7,13 +7,13 @@ namespace backend {
 
 
 #define EXEC_DELEGATE(CALL) \
-    execute(*actionExecutor, [&](){ return selection->CALL; })
+    execute(actionExecutor, [&](){ return selection.CALL; })
 
 
 SelectionExecutor::SelectionExecutor(
         Selection& selection, ActionExecutor& actionExecutor)
-    : selection{&selection}
-    , actionExecutor{&actionExecutor}
+    : selection{selection}
+    , actionExecutor{actionExecutor}
 {
 
 }

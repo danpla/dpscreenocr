@@ -10,21 +10,15 @@ namespace backend {
 
 BackendExecutor::BackendExecutor(CreatorFn creatorFn)
     : actionExecutor{}
-    , backend{}
-    , keyManagerExecutor{}
-    , selectionExecutor{}
+    , backend{
+        execute(actionExecutor, [&creatorFn](){
+            return creatorFn();
+        })
+    }
+    , keyManagerExecutor{backend->getKeyManager(), actionExecutor}
+    , selectionExecutor{backend->getSelection(), actionExecutor}
 {
-    backend = execute(actionExecutor, [&creatorFn](){
-        return creatorFn();
-    });
 
-    keyManagerExecutor.reset(
-        new KeyManagerExecutor(
-            backend->getKeyManager(), actionExecutor));
-
-    selectionExecutor.reset(
-        new SelectionExecutor(
-            backend->getSelection(), actionExecutor));
 }
 
 
@@ -38,13 +32,13 @@ BackendExecutor::~BackendExecutor()
 
 KeyManager& BackendExecutor::getKeyManager()
 {
-    return *keyManagerExecutor;
+    return keyManagerExecutor;
 }
 
 
 Selection& BackendExecutor::getSelection()
 {
-    return *selectionExecutor;
+    return selectionExecutor;
 }
 
 
