@@ -570,12 +570,7 @@ void dpsoGetFetchedResults(struct DpsoJobResults* results)
     if (!results)
         return;
 
-    // vector::data() is not guaranteed to be null for an empty vector
-    if (returnResults.empty())
-        results->items = nullptr;
-    else
-        results->items = &returnResults[0];
-
+    results->items = returnResults.data();
     results->numItems = returnResults.size();
 }
 
