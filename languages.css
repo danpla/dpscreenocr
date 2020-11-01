@@ -1,16 +1,11 @@
 body {
   font-family: Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 1em;
 }
 
 body p {
   max-width: 38em;
-}
-
-a {
-  text-decoration: none;
-  border-bottom: 0.1em solid;
 }
 
 table {
