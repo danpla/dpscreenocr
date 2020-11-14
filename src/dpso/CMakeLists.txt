@@ -41,9 +41,6 @@ add_library(
     dpso
 
     backend/backend.cpp
-    backend/null/null_key_manager.cpp
-    backend/null/null_screenshot.cpp
-    backend/null/null_selection.cpp
     delay.cpp
     dpso.cpp
     geometry.cpp
