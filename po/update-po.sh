@@ -10,6 +10,7 @@ intltool-extract --quiet --type=gettext/ini $APPNAME.desktop.in
 
 
 xgettext --files-from=POTFILES.in --from-code=UTF-8 --add-comments \
+    --msgid-bugs-address=daniel.plakhotich@gmail.com \
     -D.. -D. --output=$APPNAME.pot \
     -k_ -kN_ -kpgettext_expr:1c,2 -knpgettext_expr:1c,2,3 \
     $APPNAME.desktop.in.h
