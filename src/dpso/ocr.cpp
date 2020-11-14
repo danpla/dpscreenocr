@@ -26,11 +26,11 @@
 #include "timing.h"
 
 
-// Tesseract only works with "C" locale. Since version 4.0 it's even
-// constrained in the TessBaseAPI constructor. It's a really big pain
-// in the ass, since we run Tesseract in a separate thread. It's
-// possible neither to call setlocale() from the background thread
-// nor let the user to change the locale while OCR is active.
+// Tesseract versions before 4.1.0 only work with "C" locale. It's
+// a really big pain in the ass since we run Tesseract in a separate
+// thread. It's possible neither to call setlocale() from the
+// background thread nor let the user to change the locale while OCR
+// is active.
 //
 // When the locale is changed and restored is documented in
 // dpsoQueueJob(). We don't restore the locale early on dpsoUpdate()

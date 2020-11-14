@@ -14,11 +14,11 @@
     For Qt 4, which uses fromAscii(), we have setCodecForCStrings() in
     main.cpp.
 
-* Unfortunately, Tesseract requires "C" locale during OCR (see
-    src/dpso/ocr.* for details), forcing gettext to return English. As
-    a workaround, we need to cache translatable strings that are set
-    while OCR is active. By convention, such strings are grouped in
-    structs named DynamicStrings.
+* Unfortunately, Tesseract versions befoe 4.1.0 require "C" locale
+    during OCR (see src/dpso/ocr.* for details), forcing gettext to
+    return English. As a workaround, we need to cache translatable
+    strings that are set while OCR is active. By convention, such
+    strings are grouped in structs named DynamicStrings.
 
 * By convention, all global configuration macros and CMake options
     have DPSO_ prefix. A CMakeLists file should explicitly set the

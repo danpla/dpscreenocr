@@ -132,11 +132,11 @@ struct DpsoJobArgs {
  * happen if there are no active languages, or if the smaller side of
  * the image rectangle clamped to the screen is less than 5 px.
  *
- * Unfortunately, Tesseract only works with "C" locale. This locale
- * is automatically set on dpsoQueueJob() calls, and restored after
- * dpsoWaitForResults(), dpsoTerminateJobs(), and dpsoFetchResults()
- * when all jobs are completed. Don't change the locale between these
- * two points.
+ * Unfortunately, Tesseract versions before 4.1.0 only work with "C"
+ * locale. This locale is automatically set on dpsoQueueJob() calls,
+ * and restored after dpsoWaitForResults(), dpsoTerminateJobs(), and
+ * dpsoFetchResults() when all jobs are completed. Don't change the
+ * locale between these two points.
  */
 int dpsoQueueJob(const struct DpsoJobArgs* jobArgs);
 
