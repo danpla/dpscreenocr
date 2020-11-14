@@ -167,10 +167,6 @@ struct DpsoProgress {
 /**
  * Get jobs progress.
  *
- * Be aware that since jobs are processed in the background, the
- * progress is not reliable. It can change even before this function
- * returns.
- *
  * isNew is 1 if the progress was changed from the last time
  * dpsoGetProgress() was called, or 0 otherwise. Keep in mind that 1
  * doesn't imply that the returned struct will actually differ from
