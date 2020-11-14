@@ -103,8 +103,7 @@ The status shows the state of dpScreenOCR:
  *  Green: The program is ready to use. You can press the [hotkey] to
     start a new selection.
 
- *  Yellow: The program recognizes text. This status text will show
-    you the progress.
+ *  Yellow: The program recognizes text.
 
  *  Red: The program needs some setup. There may be three reasons:
 
@@ -313,9 +312,8 @@ platform).
 
 # Tweaking
 
-This section is intended for advanced users and developers. It
-describes how to change some settings that are not available in the
-dpScreenOCR's interface.
+This section describes how to change some settings that are not
+available in the dpScreenOCR's interface.
 
 
 ## settings.cfg
@@ -342,7 +340,7 @@ changes.
 
 An option value can be one of the following types:
 
- *  String - an arbitrary sequence of characters, like a file path.
+ *  String - an arbitrary sequence of characters.
 
     If the string should have leading or trailing whitespace, enclose
     it in double quotes. Obviously, quoting is also necessary if the
@@ -357,7 +355,7 @@ An option value can be one of the following types:
       * `\t` - tabulation
       * `\\` - backslash
 
-    Escaping tabulation is optional. Escaping the backslash is
+    Escaping a tabulation is optional. Escaping a backslash is
     optional too, unless the backslash and the next character create
     one of the escape sequences.
 
