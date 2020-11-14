@@ -1,6 +1,7 @@
 #!/bin/sh
 
 APPNAME='dpscreenocr'
+BUGS_ADDRESS='https://github.com/danpla/dpscreenocr/issues'
 
 cp ../data/$APPNAME.desktop $APPNAME.desktop.in
 sed -e '/Comment\[/ d' \
@@ -10,7 +11,7 @@ intltool-extract --quiet --type=gettext/ini $APPNAME.desktop.in
 
 
 xgettext --files-from=POTFILES.in --from-code=UTF-8 --add-comments \
-    --msgid-bugs-address=daniel.plakhotich@gmail.com \
+    --msgid-bugs-address=$BUGS_ADDRESS \
     -D.. -D. --output=$APPNAME.pot \
     -k_ -kN_ -kpgettext_expr:1c,2 -knpgettext_expr:1c,2,3 \
     $APPNAME.desktop.in.h
