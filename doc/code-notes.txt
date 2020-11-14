@@ -14,7 +14,7 @@
     For Qt 4, which uses fromAscii(), we have setCodecForCStrings() in
     main.cpp.
 
-* Unfortunately, Tesseract versions befoe 4.1.0 require "C" locale
+* Unfortunately, Tesseract versions before 4.1.0 require "C" locale
     during OCR (see src/dpso/ocr.* for details), forcing gettext to
     return English. As a workaround, we need to cache translatable
     strings that are set while OCR is active. By convention, such
