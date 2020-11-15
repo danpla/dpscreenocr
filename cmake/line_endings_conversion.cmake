@@ -1,4 +1,8 @@
 
+# We don't use CMake's configure_file() since NEWLINE_STYLE option
+# cannot be used together with COPYONLY that disables variable
+# substitution.
+
 find_program(UNIX2DOS_EXE unix2dos)
 if (NOT UNIX2DOS_EXE)
     message(SEND_ERROR "unix2dos not found")
