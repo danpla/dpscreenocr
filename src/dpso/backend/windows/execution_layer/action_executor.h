@@ -69,7 +69,7 @@ auto execute(ActionExecutor& executor, CallableT callable)
 {
     struct CallableAction : Action {
         explicit CallableAction(CallableT callable)
-            : callable {callable}
+            : callable{callable}
         {
 
         }
@@ -93,7 +93,7 @@ auto execute(ActionExecutor& executor, CallableT callable)
 {
     struct CallableAction : Action {
         explicit CallableAction(CallableT callable)
-            : callable {callable}
+            : callable{callable}
         {
 
         }
