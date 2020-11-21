@@ -107,7 +107,7 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
     wcx.cbWndExtra = 0;
     wcx.hInstance = instance;
     wcx.hIcon = nullptr;
-    wcx.hCursor = LoadCursor(nullptr, IDC_ARROW);;
+    wcx.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcx.hbrBackground = nullptr;
     wcx.lpszMenuName = nullptr;
     wcx.lpszClassName = windowClassName;
