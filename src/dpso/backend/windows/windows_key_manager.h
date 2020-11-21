@@ -35,7 +35,7 @@ private:
     bool hotkeysEnabled;
     DpsoHotkeyAction hotkeyAction;
 
-    HotkeyBinding* findBindingByHotkey(const DpsoHotkey& hotkey);
+    HotkeyBinding* findBinding(const DpsoHotkey& hotkey);
 };
 
 

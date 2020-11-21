@@ -179,7 +179,7 @@ DpsoHotkeyAction WindowsKeyManager::getLastHotkeyAction() const
 bool WindowsKeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
-    if (auto* existingBinding = findBindingByHotkey(hotkey)) {
+    if (auto* existingBinding = findBinding(hotkey)) {
         existingBinding->action = action;
         return true;
     }
@@ -245,12 +245,12 @@ void WindowsKeyManager::handleWmHotkey(const MSG& msg)
         return;
 
     const auto hotkey = atomNameToHotkey(atomName);
-    if (auto* binding = findBindingByHotkey(hotkey))
+    if (auto* binding = findBinding(hotkey))
         hotkeyAction = binding->action;
 }
 
 
-HotkeyBinding* WindowsKeyManager::findBindingByHotkey(
+HotkeyBinding* WindowsKeyManager::findBinding(
     const DpsoHotkey& hotkey)
 {
     for (auto& binding : bindings)
