@@ -1,8 +1,6 @@
 
 #include "backend/x11/x11_selection.h"
 
-#include <algorithm>
-
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
 
