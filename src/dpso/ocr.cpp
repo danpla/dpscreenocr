@@ -78,7 +78,7 @@ struct Lang {
 
 
 // The public API gives a sorted list of language codes, while in
-// OcrEngine they ma be in arbitrary order. A Lang at the language
+// OcrEngine they may be in arbitrary order. A Lang at the language
 // index from public API refers to the state of the engine's language
 // at Lang::langIdx.
 static std::vector<Lang> langs;
