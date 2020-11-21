@@ -4,6 +4,8 @@
 #include <cerrno>
 #include <string>
 
+#include <sys/stat.h>
+
 
 namespace dpso {
 namespace unix {
