@@ -18,7 +18,7 @@ function(gen_html_manual target_name dst_dir)
     separate_arguments(
         PANDOC_ARGS
         UNIX_COMMAND
-        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --output=\"${DST_HTML}\" --template=\"${DOC_DIR}/manual-data/template.html\" --toc --number-sections -V \"title:dpScreenOCR Manual\" -V \"toctitle:Table of contents\" -V \"pagetitle:dpScreenOCR Manual\" \"${DOC_DIR}/manual.md\""
+        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --output=\"${DST_HTML}\" --template=\"${DOC_DIR}/manual-data/template.html\" --toc --number-sections -V title:\"${APP_NAME} Manual\" -V subtitle:\"Version ${APP_VERSION}\" -V toc-title:\"Table of contents\" -V pagetitle:\"${APP_NAME} Manual\" \"${DOC_DIR}/manual.md\""
     )
 
     add_custom_command(
