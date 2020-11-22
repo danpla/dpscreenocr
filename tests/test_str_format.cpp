@@ -10,7 +10,7 @@
 
 
 static const char* argsToStr(
-    const std::initializer_list<const DpsoFormatArg>& args)
+    std::initializer_list<DpsoFormatArg>& args)
 {
     static std::string result;
     result.clear();
@@ -27,7 +27,7 @@ static const char* argsToStr(
 
 static void checkStrNamedFormat(
     const char* str,
-    std::initializer_list<const DpsoFormatArg> args,
+    std::initializer_list<DpsoFormatArg> args,
     const char* expected,
     int lineNum)
 {
@@ -52,7 +52,7 @@ static void testStrNamedFormat()
 {
     #define CHECK(str, args, expected) \
         checkStrNamedFormat(str, args, expected, __LINE__)
-    using Args = std::initializer_list<const DpsoFormatArg>;
+    using Args = std::initializer_list<DpsoFormatArg>;
 
     // Normal
     CHECK(

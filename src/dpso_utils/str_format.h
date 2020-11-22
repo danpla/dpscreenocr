@@ -50,11 +50,9 @@ const char* dpsoStrNamedFormat(
 #include <initializer_list>
 
 
-// A helper for C++ that allows to pass arguments in place instead of
-// constructing a separate array.
 inline const char* dpsoStrNamedFormat(
     const char* str,
-    std::initializer_list<const DpsoFormatArg> args)
+    std::initializer_list<DpsoFormatArg> args)
 {
     return dpsoStrNamedFormat(str, args.begin(), args.size());
 }
