@@ -3,17 +3,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
+"Report-Msgid-Bugs-To: daniel.plakhotich@gmail.com\n"
 "POT-Creation-Date: 2020-11-14 21:49+0200\n"
-"PO-Revision-Date: 2020-11-14 21:49+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-11-24 16:29+0000\n"
+"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:45
 msgid "Afrikaans"
@@ -531,154 +533,154 @@ msgstr ""
 
 #: src/ui/qt/about.cpp:53 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
-msgstr ""
+msgstr "Програма для розпізнавання тексту не екрані"
 
 #: src/ui/qt/about.cpp:67
 msgid "License"
-msgstr ""
+msgstr "Ліцензія"
 
 #: src/ui/qt/action_chooser.cpp:23
 msgid "Copy text to clipboard"
-msgstr ""
+msgstr "Копіювати текст в буфер обміну"
 
 #: src/ui/qt/action_chooser.cpp:24
 msgid "Add text to history"
-msgstr ""
+msgstr "Додати текст в історію"
 
 #: src/ui/qt/action_chooser.cpp:26
 msgid "Run executable:"
-msgstr ""
+msgstr "Запустити виконуваний файл:"
 
 #: src/ui/qt/action_chooser.cpp:28
 msgid "Run an executable with the recognized text as the first argument"
-msgstr ""
+msgstr "Запустити виконуваний файл із розпізнаним текстом як першим аргументом"
 
 #: src/ui/qt/action_chooser.cpp:71
 msgid "Choose an executable"
-msgstr ""
+msgstr "Виберіть виконуваний файл"
 
 #: src/ui/qt/history.cpp:23
 msgid "Wrap words"
-msgstr ""
+msgstr "Переносити слова"
 
 #: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:69
 msgid "Clear"
-msgstr ""
+msgstr "Очистити"
 
 #: src/ui/qt/history.cpp:43
 msgid "Save as…"
-msgstr ""
+msgstr "Зберегти як…"
 
 #: src/ui/qt/history.cpp:45
 msgid "Save the history as plain text, HTML, or JSON"
-msgstr ""
+msgstr "Зберегти історію як звичайний текст, HTML або JSON"
 
 #: src/ui/qt/history.cpp:67
 msgid "Clear the history?"
-msgstr ""
+msgstr "Очистити історію?"
 
 #: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:114
 msgid "Cancel"
-msgstr ""
+msgstr "Скасувати"
 
 #: src/ui/qt/history.cpp:70
 msgid "Save history"
-msgstr ""
+msgstr "Зберегти історію"
 
 #: src/ui/qt/history.cpp:71
 msgid "Plain text"
-msgstr ""
+msgstr "Звичайний текст"
 
 #: src/ui/qt/history.cpp:72
 msgid "All files"
-msgstr ""
+msgstr "Усі файли"
 
 #: src/ui/qt/hotkey_editor.cpp:50
 msgctxt "hotkey.key"
 msgid "None"
-msgstr ""
+msgstr "Нічого"
 
 #: src/ui/qt/lang_browser.cpp:33
 msgctxt "language"
 msgid "Name"
-msgstr ""
+msgstr "Назва"
 
 #: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Code"
-msgstr ""
+msgstr "Код"
 
 #: src/ui/qt/main_window.cpp:80
 msgctxt "ui.tab"
 msgid "Main"
-msgstr ""
+msgstr "Головне"
 
 #: src/ui/qt/main_window.cpp:81
 msgid "Actions"
-msgstr ""
+msgstr "Дії"
 
 #: src/ui/qt/main_window.cpp:82
 msgid "History"
-msgstr ""
+msgstr "Історія"
 
 #: src/ui/qt/main_window.cpp:83
 msgid "About"
-msgstr ""
+msgstr "Про програму"
 
 #: src/ui/qt/main_window.cpp:104
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr ""
+msgstr "Розпізнавання {progress}% ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp:105
 msgid "Please install languages"
-msgstr ""
+msgstr "Будь ласка, встановіть мови"
 
 #: src/ui/qt/main_window.cpp:106
 msgid "Please select languages"
-msgstr ""
+msgstr "Будь ласка, виберіть мови"
 
 #: src/ui/qt/main_window.cpp:108
 msgid "Please select actions in the “Actions” tab"
-msgstr ""
+msgstr "Будь ласка, виберіть дії у вкладці «Дії»"
 
 #. Translators: Program is ready for OCR
 #: src/ui/qt/main_window.cpp:111
 msgctxt "ocr.status"
 msgid "Ready"
-msgstr ""
+msgstr "Готово"
 
 #: src/ui/qt/main_window.cpp:113
 msgid "Recognition is not yet finished. Quit anyway?"
-msgstr ""
+msgstr "Розпізнавання ще не закінчено. Все одно вийти?"
 
 #: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:206
 msgid "Quit"
-msgstr ""
+msgstr "Вийти"
 
 #: src/ui/qt/main_window.cpp:198
 msgid "Show {app_name}"
-msgstr ""
+msgstr "Показати {app_name}"
 
 #: src/ui/qt/main_window.cpp:213
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 #: src/ui/qt/main_window.cpp:224
 msgid "Character recognition"
-msgstr ""
+msgstr "Розпізнавання символів"
 
 #: src/ui/qt/main_window.cpp:229
 msgid "Split text blocks"
-msgstr ""
+msgstr "Розділити блоки тексту"
 
 #: src/ui/qt/main_window.cpp:231
 msgid "Split independent text blocks, e.g. columns"
-msgstr ""
+msgstr "Розділити незалежні блоки тексту, такі як колонки"
 
 #: src/ui/qt/main_window.cpp:234
 msgid "Languages:"
-msgstr ""
+msgstr "Мови:"
 
 #: src/ui/qt/main_window.cpp:238
 msgid "Hotkey"
-msgstr ""
+msgstr "Гаряча клавіша"
