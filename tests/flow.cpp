@@ -31,7 +31,7 @@ int Runner::numRunners;
 
 Runner::Runner(const char* name, void (&fn)())
     : name{name}
-    , fn{&fn}
+    , fn{fn}
     , next{}
 {
     // Link alphabetically.
