@@ -139,6 +139,9 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
     saveState();
 
+    // On some platforms and desktop environments (like KDE), the app
+    // keeps working in the background if the tray icon is not hidden
+    // before quitting.
     trayIcon->hide();
 
     dpsoCfgSave(appFileName, cfgFileName);
