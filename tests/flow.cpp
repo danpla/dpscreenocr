@@ -1,8 +1,6 @@
 
 #include "flow.h"
 
-#include <cstdio>
-#include <cstdlib>
 #include <cstring>
 
 
@@ -60,22 +58,12 @@ void Runner::run() const
 }
 
 
-static bool failureIsFatal;
 static int numFailures;
-
-
-void setFailureIsFatal(bool newIsFatal)
-{
-    failureIsFatal = newIsFatal;
-}
 
 
 void failure()
 {
-    if (failureIsFatal)
-        std::exit(EXIT_FAILURE);
-    else
-        ++numFailures;
+    ++numFailures;
 }
 
 

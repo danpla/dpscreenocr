@@ -30,10 +30,6 @@ private:
 static test::Runner FN ## TestRunner(NAME, FN)
 
 
-// Failures are not fatal by default.
-void setFailureIsFatal(bool newIsFatal);
-
-
 void failure();
 
 
