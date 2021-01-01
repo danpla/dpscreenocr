@@ -57,9 +57,9 @@ About::About(QWidget* parent)
     auto* licenseTextEdit = new QTextEdit();
     licenseTextEdit->setReadOnly(true);
 
-    auto font = licenseTextEdit->currentFont();
-    setMonospace(font);
-    licenseTextEdit->setCurrentFont(font);
+    auto licenseFont = licenseTextEdit->currentFont();
+    setMonospace(licenseFont);
+    licenseTextEdit->setCurrentFont(licenseFont);
 
     licenseTextEdit->setText(appLicense);
     licenseTextEdit->setVisible(false);
