@@ -361,10 +361,8 @@ static bool ocrProgressCallback(int progress, void* userData)
     if (waitingForResults && link.waitingProgressCallback)
         link.waitingProgressCallback(link.waitingUserData);
 
-    {
-        LINK_LOCK;
-        return !link.terminateJobs;
-    }
+    LINK_LOCK;
+    return !link.terminateJobs;
 }
 
 
@@ -500,14 +498,12 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
 
     setCLocale();
 
-    {
-        LINK_LOCK;
+    LINK_LOCK;
 
-        link.jobQueue.push(std::move(job));
+    link.jobQueue.push(std::move(job));
 
-        ++link.progress.totalJobs;
-        link.progressIsNew = true;
-    }
+    ++link.progress.totalJobs;
+    link.progressIsNew = true;
 
     return true;
 }
