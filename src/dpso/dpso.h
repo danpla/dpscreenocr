@@ -38,7 +38,7 @@ const char* dpsoGetError(void);
 
 
 /**
- * Shutdown dpso library.
+ * Shut down dpso library.
  */
 void dpsoShutdown(void);
 
@@ -47,10 +47,9 @@ void dpsoShutdown(void);
  * Update the library.
  *
  * dpsoUpdate() process system events, like mouse motion, key press,
- * etc., which is necessary for hotkeys handling (hotkeys.h) and
- * interactive selection (selection.h). Call this function at a
- * frequency close to the monitor refresh rate, which is usually 60
- * times per second.
+ * etc., for hotkeys handling (hotkeys.h) and interactive selection
+ * (selection.h). Call this function at a frequency close to the
+ * monitor refresh rate, which is usually 60 times per second.
  */
 void dpsoUpdate(void);
 

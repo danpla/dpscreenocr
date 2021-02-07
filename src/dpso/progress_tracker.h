@@ -95,8 +95,7 @@ public:
      * specified in the constructor. At the same time, this method has
      * an assert() call to help you detect errors.
      *
-     * \param count Number of jobs to advance. May be > 1 if you
-     *     need to skip some. Values < 1 are ignored.
+     * \param count Number of jobs to advance. Values < 1 are ignored.
      */
     void advanceJob(int count = 1);
 

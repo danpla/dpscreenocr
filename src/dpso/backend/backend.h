@@ -25,7 +25,9 @@ public:
     /**
      * Create a backend.
      *
-     * A concrete backend should provide definition of this method.
+     * The concrete backend should provide definition of this method.
+     *
+     * \throws BackendError
      */
     static std::unique_ptr<Backend> create();
 
@@ -45,8 +47,8 @@ public:
      * Take screenshot.
      *
      * The method will clamp the rect to screen. If the clamped rect
-     * is empty, returns either null or a screenshot with empty size,
-     * depending on the implementation.
+     * is empty, the implementation may return either a screenshot
+     * with zero size or null.
      *
      * Returns null on errors.
      */
