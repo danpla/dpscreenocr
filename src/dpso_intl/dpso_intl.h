@@ -2,12 +2,11 @@
 /**
  * \file Helpers for libintl.h
  *
- * This file mostly mimics to gettext.h, but contains only routines
- * we actually need. Obviously, this file should only be included if
- * you don't use gettext.h.
+ * The file mostly mimics to gettext.h, but contains only routines
+ * we actually need. Obviously, it should only be included if you
+ * don't use gettext.h.
  *
- * The names of the functions and macros also match gettext.h. Still,
- * be aware that although variants with _expr postfix also come from
+ * Be aware that although variants with _expr postfix also come from
  * gettext.h, they are not in the list of standard keywords xgettext
  * uses for C/C++, and thus should be added explicitly with -k or
  * --keyword argument:
@@ -26,9 +25,10 @@
 
 #define gettext(msgId) msgId
 #define ngettext(msgId1, msgId2, N) N == 1 ? msgId1 : msgId2
-#define textdomain(domainName) (void)domainName
-#define bindtextdomain(domainName, dirName) (void)dirName
-#define bind_textdomain_codeset(domainName, codeset) (void)codeset
+#define textdomain(domainName) ((const char*)domainName)
+#define bindtextdomain(domainName, dirName) ((const char*)dirName)
+#define bind_textdomain_codeset(domainName, codeset) \
+    ((const char*)codeset)
 
 #endif
 
