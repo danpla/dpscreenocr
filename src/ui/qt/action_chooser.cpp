@@ -145,7 +145,7 @@ void ActionChooser::chooseExe()
         // contains just an exe name.
         exeDir = QDir::homePath();
 
-    QFileDialog::Options options = 0;
+    QFileDialog::Options options;
     if (!dpsoCfgGetBool(
             cfgKeyUiNativeFileDialogs,
             cfgDefaultValueUiNativeFileDialogs))
