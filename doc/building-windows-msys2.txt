@@ -87,14 +87,6 @@ Several notes:
 
     Alternatively, you can simply prefix each package name manually.
 
-  * MSYS2 does not allow installing Qt components separately. The qt5
-    package will pull absolutely everything related to Qt: all
-    modules, debugging symbols, documentation, examples, etc. This
-    will require about 1.5 GiB to download and 6.5 GiB of free disk
-    space to install.
-
-  * MSYS2 does not provide Qt 4.
-
   * Tesseact data files don't depend on the architecture, so there is
     no need to install "tesseract-data-eng" and other languages for
     both i686 and x86_64; when building for x86_64, you can use data
