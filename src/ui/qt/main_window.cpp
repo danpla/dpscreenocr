@@ -454,10 +454,10 @@ void MainWindow::updateDpso()
 
 void MainWindow::setStatus(Status newStatus, const QString& text)
 {
-    if (newStatus == Status::ok)
-        setWindowTitle(appName);
-    else
-        setWindowTitle(text + " - " + appName);
+    const auto textWithAppName = text + " - " + appName;
+
+    setWindowTitle(
+        newStatus == Status::ok ? appName : textWithAppName);
 
     #if DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
     XFlush(QX11Info::display());
@@ -466,7 +466,7 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     statusIndicator->setStatus(newStatus);
     statusLabel->setText(text);
 
-    trayIcon->setToolTip(text + " - " + appName);
+    trayIcon->setToolTip(textWithAppName);
 }
 
 
