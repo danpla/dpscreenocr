@@ -249,9 +249,7 @@ struct DpsoJobResult {
     size_t textLen;
 
     /**
-     * Timestamp in ISO 8601 format.
-     *
-     * For example, "2018-12-03 19:21:24".
+     * Timestamp in "YYYY-MM-DD hh:mm:ss" format.
      */
     const char* timestamp;
 };
