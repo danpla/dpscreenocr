@@ -67,25 +67,20 @@ Let's look at some of the options in more detail:
   * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like
       localization files for gettext) from the executable's directory.
 
-      On Unix-like systems, where data is installed globally, the
-      local data has preference over the global. It therefore makes
+      Local data has higher priority than the global, so it makes
       sense to disable this option unless you want to use dpScreenOCR
       without installation.
 
-      Currently, this option does not affect icons, which are either
-      embedded in the executable (DPSO_QT_RCC_ICON) or, like all other
-      files, are installed globally on Unix-like systems.
+      This option does not affect icons, which are either embedded in
+      the executable (DPSO_QT_RCC_ICONS) or installed globally like
+      all other files.
 
   * DPSO_QT_RCC_ICONS (ON by default) specifies whether to embed icons
-      in the Qt executable.
+      in the executable.
 
-      On Unix-like systems, where icons are installed globally like
-      all other data files, enabling this option only makes sense if
-      you want to use dpScreenOCR without installation, in particular
-      because globally installed icons has a preference over the
-      embedded ones. Note that this differs from the behavior of the
-      DPSO_QT_LOCAL_DATA option, where local data has a preference
-      over the global.
+      Enabling this option only makes sense if you want to use
+      dpScreenOCR without installation, in particular because globally
+      installed icons have higher priority over the embedded ones.
 
   * DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND (ON by default) enables
       a workaround for a bug in Qt 5 < 5.3.2. This option requires
@@ -99,14 +94,9 @@ Let's look at some of the options in more detail:
       If your Qt 5 version is >= 5.3.2, this option is ignored, even
       if enabled.
 
-In summary:
-
-  * If you don't need the translated interface (that is, you only need
-      English), disable DPSO_ENABLE_NLS.
-
-  * Unless you want to use dpScreenOCR without installation, disable
-      both DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS. Otherwise, see
-      "Using uninstalled" section below for more information.
+In summary: unless you want to use dpScreenOCR without installation,
+disable both DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS. Otherwise, see
+"Using uninstalled" section below for more information.
 
 
 Installing
@@ -128,8 +118,8 @@ enabled, dpScreenOCR doesn't need installation: you can use the
 program by simply running the executable. However, if you want to move
 it from the "build" directory to a different location, don't forget to
 move the "locale" folder as well, or the interface will only be
-available in English. The "locale" directory is only created if the
-program was built with DPSO_ENABLE_NLS option enabled.
+available in English (the "locale" directory is only created if the
+program was built with DPSO_ENABLE_NLS option enabled).
 
 
 DEB package
