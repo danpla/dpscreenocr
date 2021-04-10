@@ -1,6 +1,8 @@
 
 #include "utils.h"
 
+#include <cctype>
+
 
 namespace test {
 namespace utils {
@@ -34,7 +36,7 @@ std::string escapeStr(const char* str)
                 result += "\\\\";
                 break;
             default: {
-                if (c < ' ' || c > '~') {
+                if (std::isprint(c)) {
                     static char buf[5];
                     std::snprintf(
                         buf, sizeof(buf),
