@@ -497,7 +497,7 @@ void MainWindow::updateStatus()
         setStatus(
             Status::busy,
             dpsoStrNamedFormat(
-                dynStr.progress.toUtf8().data(),
+                dynStr.progress.c_str(),
                 {{"progress",
                         std::to_string(totalProgress).c_str()},
                     {"current_job",
@@ -565,11 +565,15 @@ void MainWindow::checkResult()
                 results.items[i].text, results.items[i].timestamp);
 
     if (actions & ActionChooser::Action::runExe)
+    {
+        const auto exePath = actionChooser->getExePath().toUtf8();
+
         for (int i = 0; i < results.numItems; ++i)
             dpsoExec(
-                actionChooser->getExePath().toUtf8().data(),
+                exePath.data(),
                 results.items[i].text,
                 runExeWaitToComplete);
+    }
 }
 
 

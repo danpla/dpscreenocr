@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <QAction>
 #include <QCheckBox>
 #include <QLabel>
@@ -35,7 +37,7 @@ private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 private:
     struct DynamicStrings {
-        QString progress;
+        std::string progress;
         QString installLangs;
         QString selectLangs;
         QString selectActions;
