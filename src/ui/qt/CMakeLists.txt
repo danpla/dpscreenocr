@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dpScreenOCR-QT)
 
-option(DPSO_QT4 "Use Qt 4 instead of Qt 5" NO)
+set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4 or 5")
+set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5)
 option(
     DPSO_QT_LOCAL_DATA
     "Allow to load data (e.g. locales) from the Qt executable's dir"
@@ -45,16 +46,18 @@ if (WIN32)
 endif()
 
 # qtX_ macros come from QtCore
-if (DPSO_QT4)
+if (DPSO_QT_VERSION EQUAL 4)
     find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
-else()
+elseif(DPSO_QT_VERSION EQUAL 5)
     find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+else()
+    message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
 endif()
 
 if (DPSO_QT_RCC_ICONS)
     # CMake 2.8.12 doesn't have CMAKE_AUTORCC
     set(QRC_ICONS "${CMAKE_SOURCE_DIR}/data/icons/icons.qrc")
-    if (DPSO_QT4)
+    if (DPSO_QT_VERSION EQUAL 4)
         qt4_add_resources(RCC_ICONS "${QRC_ICONS}")
     else()
         qt5_add_resources(RCC_ICONS "${QRC_ICONS}")
@@ -114,7 +117,7 @@ target_link_libraries(dpscreenocr-qt dpso)
 target_link_libraries(dpscreenocr-qt dpso_utils)
 target_link_libraries(dpscreenocr-qt dpso_intl)
 
-if (DPSO_QT4)
+if (DPSO_QT_VERSION EQUAL 4)
     target_link_libraries(dpscreenocr-qt Qt4::QtCore Qt4::QtGui)
 else()
     target_link_libraries(
@@ -122,7 +125,7 @@ else()
     )
 endif()
 
-if (NOT DPSO_QT4
+if (NOT DPSO_QT_VERSION EQUAL 4
         AND DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
     find_package(Qt5X11Extras REQUIRED)
