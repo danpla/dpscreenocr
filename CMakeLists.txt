@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8.12)
 project(dpScreenOCR)
 
 set(DPSO_UI "qt" CACHE STRING "UI to use: qt or none")
+set_property(CACHE DPSO_UI PROPERTY STRINGS qt none)
 option(DPSO_ENABLE_NLS "Enable native language support" YES)
 option(DPSO_GEN_HTML_MANUAL "Generate HTML manual. Requires Pandoc." YES)
 option(DPSO_BUILD_EXAMPLE "Build example" NO)
