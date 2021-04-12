@@ -5,14 +5,16 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2021-04-09 08:34+0300\n"
-"PO-Revision-Date: 2020-11-29 07:17+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2021-04-13 10:26+0000\n"
+"Last-Translator: Ali <karakafaali2000@hotmail.com>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.6-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:45
 msgid "Afrikaans"
@@ -530,23 +532,23 @@ msgstr ""
 
 #: src/ui/qt/about.cpp:53 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
-msgstr ""
+msgstr "Ekrandaki metni tanıma programı"
 
 #: src/ui/qt/about.cpp:67
 msgid "License"
-msgstr ""
+msgstr "Lisans"
 
 #: src/ui/qt/action_chooser.cpp:23
 msgid "Copy text to clipboard"
-msgstr ""
+msgstr "Metni Panoya Kopyala"
 
 #: src/ui/qt/action_chooser.cpp:24
 msgid "Add text to history"
-msgstr ""
+msgstr "Metni Geçmiş'e ekle"
 
 #: src/ui/qt/action_chooser.cpp:26
 msgid "Run executable:"
-msgstr ""
+msgstr "Yürütülebilir dosyayı çalıştır:"
 
 #: src/ui/qt/action_chooser.cpp:28
 msgid "Run an executable with the recognized text as the first argument"
