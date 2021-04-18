@@ -36,7 +36,7 @@ std::string escapeStr(const char* str)
                 result += "\\\\";
                 break;
             default: {
-                if (std::isprint(c)) {
+                if (!std::isprint(c)) {
                     static char buf[5];
                     std::snprintf(
                         buf, sizeof(buf),
