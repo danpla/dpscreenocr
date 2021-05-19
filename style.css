@@ -1,58 +1,18 @@
 body {
-  margin: 3em auto 0em auto;
-  max-width: 44.5em;
-  font-family: Helvetica, Arial, sans-serif;
+  margin: 0em auto 0em;
+  padding: 1em 1em 0em;
+  max-width: 36em;
+  font-family: Helvetica, sans-serif;
   line-height: 1.6;
 }
 
-body article {
-  margin-left: 10.5em;
-  margin-right: 1em;
-}
-
-header {
-  float: left;
-  margin-left: 1em;
-}
-
-header img {
-  width: 7.5em;
+#logo {
+  width: 5em;
 }
 
 footer {
-  padding: 1em 0;
+  padding: 1em 0em;
   margin-top: 2em;
   border-top: 0.12em solid #bbbbbb;
   font-size: 0.8em;
-}
-
-#dllist p {
-  margin: 0.5em 0;
-  font-size: 0.8em;
-}
-
-pre {
-  font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
-  font-size: 0.8em;
-  padding: 1em;
-  white-space: pre;
-  background: #eaeaea;
-}
-
-@media screen and (max-width: 40em) {
-  body {
-    margin-top: 1em;
-  }
-
-  body article {
-    margin-left: 1em;
-  }
-
-  header {
-    float: none;
-  }
-
-  header img {
-    width: 6em;
-  }
 }
