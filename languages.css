@@ -1,11 +1,7 @@
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: sans-serif;
   line-height: 1.6;
   margin: 1em;
-}
-
-body p {
-  max-width: 38em;
 }
 
 table {
@@ -23,5 +19,5 @@ th {
 }
 
 .iso-code {
-  font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
+  font-family: "DejaVu Sans Mono", Consolas, monospace;
 }
