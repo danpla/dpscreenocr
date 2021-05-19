@@ -2,7 +2,7 @@ body {
     max-width: 36em;
     margin: 0 auto;
     padding: 1em;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Helvetica, sans-serif;
     line-height: 1.6;
 }
 
@@ -11,11 +11,11 @@ body {
 }
 
 code {
-    font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
+    font-family: "DejaVu Sans Mono", Consolas, monospace;
     font-size: 0.8em;
     background: #eaeaea;
     padding: 0.1em 0.4em;
-    white-space: pre;
+    white-space: pre-wrap;
 }
 
 pre code {
