@@ -1,26 +1,26 @@
 body {
-    max-width: 36em;
-    margin: 0 auto;
-    padding: 1em;
-    font-family: Helvetica, Arial, sans-serif;
-    line-height: 1.6;
+  max-width: 36em;
+  margin: 0 auto;
+  padding: 1em;
+  font-family: Helvetica, sans-serif;
+  line-height: 1.6;
 }
 
 #TOC ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 code {
-    font-family: "Liberation Mono", "DejaVu Sans Mono", Consolas, monospace;
-    font-size: 0.8em;
-    background: #eaeaea;
-    padding: 0.1em 0.4em;
-    white-space: pre;
+  font-family: "DejaVu Sans Mono", Consolas, monospace;
+  font-size: 0.8em;
+  background: #eaeaea;
+  padding: 0.1em 0.4em;
+  white-space: pre-wrap;
 }
 
 pre code {
-    display: block;
-    white-space: pre;
-    padding: 1em;
-    overflow-x: auto;
+  display: block;
+  padding: 1em;
+  white-space: pre;
+  overflow-x: auto;
 }
