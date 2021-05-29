@@ -15,7 +15,7 @@ install(
     DESTINATION "${CMAKE_INSTALL_DATADIR}/icons"
 )
 
-if (DPSO_UI STREQUAL "qt" AND DPSO_QT_LOCAL_DATA)
+if (DPSO_QT_LOCAL_DATA AND DPSO_UI STREQUAL "qt")
     include(build_icons)
     build_icons(
         "${CMAKE_BINARY_DIR}/icons"
