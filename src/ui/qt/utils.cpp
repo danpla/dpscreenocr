@@ -1,6 +1,7 @@
 
 #include "utils.h"
 
+#include <QApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -11,19 +12,20 @@
 #include "default_config.h"
 
 
-#if DPSO_QT_RCC_ICONS
-static QIcon getIconFromRcc(const QString &name)
+#if DPSO_QT_LOCAL_DATA
+static QIcon loadIcon(const QString &name)
 {
     QIcon icon;
 
-    static const auto sizes = QDir(":/icons").entryList(QDir::Dirs);
+    static const auto iconsDir = (
+        QCoreApplication::applicationDirPath() + "/icons");
+
+    static const auto sizes = QDir(iconsDir).entryList(QDir::Dirs);
     for (const auto& size : sizes) {
         const QFileInfo fileInfo(
-            QString(":/icons/%1/%2.png").arg(size, name));
-        if (!fileInfo.exists())
-            continue;
-
-        icon.addFile(fileInfo.filePath());
+            QString(iconsDir + "/%1/%2.png").arg(size, name));
+        if (fileInfo.exists())
+            icon.addFile(fileInfo.filePath());
     }
 
     return icon;
@@ -33,12 +35,12 @@ static QIcon getIconFromRcc(const QString &name)
 
 QIcon getIcon(const QString &name)
 {
-    #if DPSO_QT_RCC_ICONS
+    #if DPSO_QT_LOCAL_DATA
 
     if (QIcon::hasThemeIcon(name))
         return QIcon::fromTheme(name);
 
-    return getIconFromRcc(name);
+    return loadIcon(name);
 
     #else
 

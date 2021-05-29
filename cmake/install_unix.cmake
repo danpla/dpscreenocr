@@ -15,6 +15,14 @@ install(
     DESTINATION "${CMAKE_INSTALL_DATADIR}/icons"
 )
 
+if (DPSO_UI STREQUAL "qt" AND DPSO_QT_LOCAL_DATA)
+    include(build_icons)
+    build_icons(
+        "${CMAKE_BINARY_DIR}/icons"
+        RASTER_SIZES all
+    )
+endif()
+
 if (DPSO_ENABLE_NLS)
     include(compile_po)
     compile_po(

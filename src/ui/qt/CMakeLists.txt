@@ -9,7 +9,6 @@ option(
     "Allow to load data (e.g. locales) from the Qt executable's dir"
     YES
 )
-option(DPSO_QT_RCC_ICONS "Embed icons in Qt executable" YES)
 
 # See https://bugreports.qt.io/browse/QTBUG-33775. This bug doesn't
 # affect Qt 4.
@@ -52,18 +51,6 @@ elseif(DPSO_QT_VERSION EQUAL 5)
     find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 else()
     message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
-endif()
-
-if (DPSO_QT_RCC_ICONS)
-    # CMake 2.8.12 doesn't have CMAKE_AUTORCC
-    set(QRC_ICONS "${CMAKE_SOURCE_DIR}/data/icons/icons.qrc")
-    if (DPSO_QT_VERSION EQUAL 4)
-        qt4_add_resources(RCC_ICONS "${QRC_ICONS}")
-    else()
-        qt5_add_resources(RCC_ICONS "${QRC_ICONS}")
-    endif()
-    # target_sources() is added in CMake 3.1
-    set(SRCS ${SRCS} ${RCC_ICONS})
 endif()
 
 # Add libraries early to avoid AUTOMOC

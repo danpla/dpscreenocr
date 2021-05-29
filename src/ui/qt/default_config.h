@@ -23,11 +23,6 @@
 #undef NEED_SET_WINDOW_TITLE_WORKAROUND
 
 
-#ifndef DPSO_QT_RCC_ICONS
-    #define DPSO_QT_RCC_ICONS 1
-#endif
-
-
 #ifndef DPSO_QT_LOCAL_DATA
     #define DPSO_QT_LOCAL_DATA 1
 #endif
