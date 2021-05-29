@@ -15,7 +15,7 @@ install(
     DESTINATION "${CMAKE_INSTALL_DATADIR}/icons"
 )
 
-if (DPSO_QT_LOCAL_DATA AND DPSO_UI STREQUAL "qt")
+if(DPSO_QT_LOCAL_DATA AND DPSO_UI STREQUAL "qt")
     include(build_icons)
     build_icons(
         "${CMAKE_BINARY_DIR}/icons"
@@ -23,7 +23,7 @@ if (DPSO_QT_LOCAL_DATA AND DPSO_UI STREQUAL "qt")
     )
 endif()
 
-if (DPSO_ENABLE_NLS)
+if(DPSO_ENABLE_NLS)
     include(compile_po)
     compile_po(
         mo_files "${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}"
@@ -42,7 +42,7 @@ string(
     "${PROJECT_NAME}" "${APP_FILE_NAME}"
     CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DOCDIR}
 )
-if (DPSO_GEN_HTML_MANUAL)
+if(DPSO_GEN_HTML_MANUAL)
     include(gen_manual)
     gen_html_manual(html_manual "${CMAKE_BINARY_DIR}/manual")
 

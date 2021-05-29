@@ -15,7 +15,7 @@ function(copy_qt_translations src_dir dst_dir)
     foreach(LANG ${ARG_LANGUAGES})
         foreach(COMPONENT ${ARG_COMPONENTS})
             set(QM "${src_dir}/${COMPONENT}_${LANG}.qm")
-            if (NOT EXISTS "${QM}")
+            if(NOT EXISTS "${QM}")
                 continue()
             endif()
 

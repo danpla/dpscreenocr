@@ -27,7 +27,7 @@ add_executable(
     ${PLATFORM_SRCS}
 )
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         tests
@@ -44,7 +44,7 @@ target_link_libraries(tests dpso_utils)
 
 add_executable(test-c-compilation test_c_compilation.c)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         test-c-compilation
@@ -58,7 +58,7 @@ target_link_libraries(test-c-compilation dpso)
 add_dependencies(test-c-compilation dpso_utils)
 target_link_libraries(test-c-compilation dpso_utils)
 
-if (NOT TARGET common)
+if(NOT TARGET common)
     add_subdirectory(../src/ui/common ${CMAKE_BINARY_DIR}/common)
 endif()
 add_dependencies(test-c-compilation common)

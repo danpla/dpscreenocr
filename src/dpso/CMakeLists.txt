@@ -9,7 +9,7 @@ option(
 )
 
 set(BACKEND_SRCS)
-if (UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
     list(
         APPEND BACKEND_SRCS
         backend/x11/x11_backend.cpp
@@ -66,7 +66,7 @@ target_compile_definitions(
     DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
 )
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         dpso
@@ -96,7 +96,7 @@ if(CMAKE_USE_PTHREADS_INIT)
 endif()
 target_link_libraries(dpso ${CMAKE_THREAD_LIBS_INIT})
 
-if (UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)
     target_include_directories(
         dpso
@@ -108,7 +108,7 @@ if (UNIX AND NOT APPLE)
         ${X11_LIBRARIES}
     )
 
-    if (NOT X11_Xshape_FOUND)
+    if(NOT X11_Xshape_FOUND)
         message(SEND_ERROR "X11 Shape Extension is not found")
     endif()
     target_include_directories(dpso PRIVATE ${X11_Xshape_INCLUDE_PATH})
@@ -116,13 +116,13 @@ if (UNIX AND NOT APPLE)
 endif()
 
 find_package(PkgConfig)
-if (PKG_CONFIG_FOUND)
+if(PKG_CONFIG_FOUND)
     pkg_search_module(TESSERACT tesseract)
 endif()
 
 if(NOT TESSERACT_FOUND)
     # An old OS distributive
-    if (NOT EXISTS "/usr/include/tesseract")
+    if(NOT EXISTS "/usr/include/tesseract")
         message(SEND_ERROR "Tesseract is not found")
     endif()
     set(TESSERACT_INCLUDE_DIRS /usr/include)

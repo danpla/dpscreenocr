@@ -4,7 +4,7 @@
 # substitution.
 
 find_program(UNIX2DOS_EXE unix2dos)
-if (NOT UNIX2DOS_EXE)
+if(NOT UNIX2DOS_EXE)
     message(SEND_ERROR "unix2dos not found")
 endif()
 

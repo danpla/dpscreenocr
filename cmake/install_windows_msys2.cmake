@@ -37,13 +37,13 @@ function(copy_qt5_plugins dst_dir)
 endfunction()
 
 
-if (DPSO_UI STREQUAL "qt")
+if(DPSO_UI STREQUAL "qt")
     copy_qt5_plugins("${CMAKE_BINARY_DIR}")
 
     include(qt_utils)
     include(get_linguas)
 
-    if (DPSO_ENABLE_NLS)
+    if(DPSO_ENABLE_NLS)
         get_linguas(LANGS)
         copy_qt_translations(
             # MSYS2 only provides Qt version 5.

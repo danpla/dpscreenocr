@@ -4,7 +4,7 @@ project(dpso_utils)
 
 set(PLATFORM_SRCS)
 
-if (UNIX)
+if(UNIX)
     list(
         APPEND PLATFORM_SRCS
         exec_posix.cpp
@@ -13,7 +13,7 @@ if (UNIX)
     )
 endif()
 
-if (UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
     list(
         APPEND PLATFORM_SRCS
         cfg_path_unix_xdg.cpp
@@ -46,7 +46,7 @@ add_library(
     ${PLATFORM_SRCS}
 )
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         dpso_utils

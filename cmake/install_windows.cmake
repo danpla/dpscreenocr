@@ -1,5 +1,5 @@
 
-if (MINGW)
+if(MINGW)
     include(install_windows_msys2)
 endif()
 
@@ -20,7 +20,7 @@ install(
     COMPONENT Required
 )
 
-if (DPSO_ENABLE_NLS)
+if(DPSO_ENABLE_NLS)
     include(compile_po)
     compile_po(
         mo_files "${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}"
@@ -35,7 +35,7 @@ endif()
 
 include(line_endings_conversion)
 
-if (DPSO_GEN_HTML_MANUAL)
+if(DPSO_GEN_HTML_MANUAL)
     include(gen_manual)
     gen_html_manual(html_manual "${CMAKE_BINARY_DIR}/doc")
 else()

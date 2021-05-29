@@ -1,7 +1,7 @@
 
 # Per-generator overrides.
 
-if (CPACK_GENERATOR MATCHES "NSIS")
+if(CPACK_GENERATOR MATCHES "NSIS")
     # We set MUI_STARTMENUPAGE_DEFAULTFOLDER with CPACK_NSIS_DEFINES,
     # because otherwise the Start menu page defaults to
     # CPACK_NSIS_PACKAGE_NAME that contains the program version.

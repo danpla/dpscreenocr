@@ -13,7 +13,7 @@ target_compile_definitions(
 target_include_directories(dpso_intl PRIVATE .)
 target_include_directories(dpso_intl PUBLIC ..)
 
-if (DPSO_ENABLE_NLS)
+if(DPSO_ENABLE_NLS)
     find_package(Intl REQUIRED)
     target_include_directories(dpso_intl PUBLIC ${Intl_INCLUDE_DIRS})
     target_link_libraries(dpso_intl ${Intl_LIBRARIES})

@@ -39,13 +39,13 @@ set(
     utils.cpp
 )
 
-if (WIN32)
+if(WIN32)
     add_subdirectory(../windows_rc ${CMAKE_BINARY_DIR}/windows_rc)
     list(APPEND SRCS $<TARGET_OBJECTS:windows_rc>)
 endif()
 
 # qtX_ macros come from QtCore
-if (DPSO_QT_VERSION EQUAL 4)
+if(DPSO_QT_VERSION EQUAL 4)
     find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 elseif(DPSO_QT_VERSION EQUAL 5)
     find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
@@ -54,11 +54,11 @@ else()
 endif()
 
 # Add libraries early to avoid AUTOMOC
-if (NOT TARGET common)
+if(NOT TARGET common)
     add_subdirectory(../common ${CMAKE_BINARY_DIR}/common)
 endif()
 
-if (NOT TARGET dpso_intl)
+if(NOT TARGET dpso_intl)
     add_subdirectory(../../dpso_intl ${CMAKE_BINARY_DIR}/dpso_intl)
 endif()
 
@@ -73,7 +73,7 @@ target_compile_definitions(
     DPSO_QT_LOCAL_DATA=$<BOOL:${DPSO_QT_LOCAL_DATA}>
 )
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         dpscreenocr-qt
@@ -89,7 +89,7 @@ set_target_properties(
 )
 
 
-if (WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
+if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     # Hide console window.
     set_target_properties(
         dpscreenocr-qt
@@ -103,7 +103,7 @@ target_link_libraries(dpscreenocr-qt dpso)
 target_link_libraries(dpscreenocr-qt dpso_utils)
 target_link_libraries(dpscreenocr-qt dpso_intl)
 
-if (DPSO_QT_VERSION EQUAL 4)
+if(DPSO_QT_VERSION EQUAL 4)
     target_link_libraries(dpscreenocr-qt Qt4::QtCore Qt4::QtGui)
 else()
     target_link_libraries(
@@ -111,7 +111,7 @@ else()
     )
 endif()
 
-if (NOT DPSO_QT_VERSION EQUAL 4
+if(NOT DPSO_QT_VERSION EQUAL 4
         AND DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
     find_package(Qt5X11Extras REQUIRED)

@@ -6,7 +6,7 @@ find_program(
     # inherit system PATH by default.
     PATHS "${CMAKE_BINARY_DIR}"
 )
-if (NOT PANDOC_EXE)
+if(NOT PANDOC_EXE)
     message(SEND_ERROR "pandoc not found")
 endif()
 
