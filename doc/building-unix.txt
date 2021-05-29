@@ -1,8 +1,7 @@
 Dependencies
 ============
 
-To build dpScreenOCR, you need the following tools and development
-libraries:
+Required:
 
   * C++ compiler with C++11 support
   * CMake 2.8.12 or newer
@@ -11,18 +10,20 @@ libraries:
   * libtesseract
   * libx11
   * libxext - for XShape (X11 Nonrectangular Window Shape Extension)
-  * Optionally:
-    * pkg-config - to find libtesseract. If not installed, or if you
-        have an old OS distributive where libtesseract comes without a
-        .pc file for pkg-config, the include directory is assumed to
-        be "/usr/include" and the library name is "libtesseract".
-    * Qt 5 X11 extras - to fix a bug in Qt 5 < 5.3.2 (see below)
-    * libintl - for translated user interface. On some systems libintl
-        is a part of GNU C library and doesn't need to be installed
-        separately.
-    * gettext utilities - msgfmt is needed to compile gettext message
-        catalogs.
-    * pandoc - to generate HTML manual.
+
+Optional:
+
+  * pkg-config - to find libtesseract. If not installed, or if you
+      have an old OS distributive where libtesseract comes without a
+      .pc file for pkg-config, the include directory is assumed to
+      be "/usr/include" and the library name is "libtesseract".
+  * Qt 5 X11 extras - to fix a bug in Qt 5 < 5.3.2 (see below)
+  * libintl - for translated user interface. On some systems libintl
+      is a part of GNU C library and doesn't need to be installed
+      separately.
+  * gettext utilities - msgfmt is needed to compile gettext message
+      catalogs.
+  * pandoc - to generate HTML manual.
 
 To install dependencies on Debian, Ubuntu, and derivatives, run:
 
@@ -65,22 +66,16 @@ Let's look at some of the options in more detail:
       expected by libintl.
 
   * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like
-      localization files for gettext) from the executable's directory.
+      icons and localization files) from the executable's directory.
 
-      Local data has higher priority than the global, so it makes
-      sense to disable this option unless you want to use dpScreenOCR
-      without installation.
+      In general, local data has higher priority than the global. The
+      exceptions are icons: globally installed icons have higher
+      priority to allow the desktop icon theme to override local
+      icons.
 
-      This option does not affect icons, which are either embedded in
-      the executable (DPSO_QT_RCC_ICONS) or installed globally like
-      all other files.
-
-  * DPSO_QT_RCC_ICONS (ON by default) specifies whether to embed icons
-      in the executable.
-
-      Enabling this option only makes sense if you want to use
-      dpScreenOCR without installation, in particular because globally
-      installed icons have higher priority over the embedded ones.
+      It makes sense to disable this option unless you want to use
+      dpScreenOCR without installation. See the "Using uninstalled"
+      section below for more information.
 
   * DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND (ON by default) enables
       a workaround for a bug in Qt 5 < 5.3.2. This option requires
@@ -93,10 +88,6 @@ Let's look at some of the options in more detail:
 
       If your Qt 5 version is >= 5.3.2, this option is ignored, even
       if enabled.
-
-In summary: unless you want to use dpScreenOCR without installation,
-disable both DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS. Otherwise, see
-"Using uninstalled" section below for more information.
 
 
 Installing
@@ -113,13 +104,12 @@ It's also possible to use dpScreenOCR without installation.
 Using uninstalled
 -----------------
 
-When built with DPSO_QT_LOCAL_DATA and DPSO_QT_RCC_ICONS options
-enabled, dpScreenOCR doesn't need installation: you can use the
-program by simply running the executable. However, if you want to move
-it from the "build" directory to a different location, don't forget to
-move the "locale" folder as well, or the interface will only be
-available in English (the "locale" directory is only created if the
-program was built with DPSO_ENABLE_NLS option enabled).
+When built with the DPSO_QT_LOCAL_DATA option enabled, dpScreenOCR
+doesn't need installation: you can use the program by simply running
+the executable. However, if you want to move it from the "build"
+directory to a different location, don't forget to move "locale" and
+"icons" directories as well (the former is only created if the
+DPSO_ENABLE_NLS option was enabled).
 
 
 DEB package

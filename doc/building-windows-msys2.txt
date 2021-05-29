@@ -230,9 +230,8 @@ Several notes:
   * If you don't need the translated interface (that is, you only need
     English), disable DPSO_ENABLE_NLS.
 
-  * Some options specific to Qt (like DPSO_QT_LOCAL_DATA and
-    DPSO_QT_RCC_ICONS) are intended for non-Windows platforms, so you
-    don't have to touch them.
+  * Some options specific to Qt (like DPSO_QT_LOCAL_DATA) are intended
+    for non-Windows platforms, so you don't have to touch them.
 
 
 3 Packaging
