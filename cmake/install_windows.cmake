@@ -12,7 +12,9 @@ install(
 file(GLOB DLLS "${CMAKE_BINARY_DIR}/*.dll")
 install(FILES ${DLLS} DESTINATION .)
 
-install(DIRECTORY "${CMAKE_BINARY_DIR}/platforms" DESTINATION .)
+if(DPSO_UI STREQUAL "qt")
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/platforms" DESTINATION .)
+endif()
 
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/tessdata"
