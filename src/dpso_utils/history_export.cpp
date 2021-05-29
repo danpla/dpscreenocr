@@ -38,9 +38,9 @@ static void exportHtml(std::FILE* fp)
         "    <title>History</title>\n"
         "    <style>\n"
         "      .text {\n"
-        "         margin: 1em 1em 2em;\n"
-        "         line-height: 1.6;\n"
-        "       }\n"
+        "        margin: 1em 1em 2em;\n"
+        "        line-height: 1.6;\n"
+        "      }\n"
         "    </style>\n"
         "  </head>\n"
         "  <body>\n",
