@@ -71,7 +71,6 @@ target_compile_definitions(
     dpscreenocr-qt
     PRIVATE
     DPSO_QT_LOCAL_DATA=$<BOOL:${DPSO_QT_LOCAL_DATA}>
-    DPSO_QT_RCC_ICONS=$<BOOL:${DPSO_QT_RCC_ICONS}>
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
