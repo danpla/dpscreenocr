@@ -20,6 +20,7 @@ if(DPSO_QT_LOCAL_DATA AND DPSO_UI STREQUAL "qt")
     build_icons(
         "${CMAKE_BINARY_DIR}/icons"
         RASTER_SIZES all
+        INCLUDE_SCALABLE
     )
 endif()
 
