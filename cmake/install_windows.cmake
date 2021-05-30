@@ -13,6 +13,13 @@ file(GLOB DLLS "${CMAKE_BINARY_DIR}/*.dll")
 install(FILES ${DLLS} DESTINATION .)
 
 if(DPSO_UI STREQUAL "qt")
+    include(build_icons)
+    build_icons(
+        "${CMAKE_BINARY_DIR}/icons"
+        RASTER_SIZES all
+    )
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/icons" DESTINATION .)
+
     install(DIRECTORY "${CMAKE_BINARY_DIR}/platforms" DESTINATION .)
 endif()
 
