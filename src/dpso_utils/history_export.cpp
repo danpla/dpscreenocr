@@ -78,12 +78,6 @@ static void exportHtml(std::FILE* fp)
                     case '>':
                         std::fputs("&gt;", fp);
                         break;
-                    case '"':
-                        std::fputs("&quot;", fp);
-                        break;
-                    case '\'':
-                        std::fputs("&apos;", fp);
-                        break;
                     case '&':
                         std::fputs("&amp;", fp);
                         break;
