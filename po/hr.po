@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2020-11-14 21:49+0200\n"
+"POT-Creation-Date: 2021-06-05 18:02+0300\n"
 "PO-Revision-Date: 2020-07-16 18:41+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -653,34 +653,34 @@ msgstr "Spremno"
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Prepoznavanje još nije gotovo. Svejedno prekinuti?"
 
-#: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:206
+#: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:209
 msgid "Quit"
 msgstr "Prekini"
 
-#: src/ui/qt/main_window.cpp:198
+#: src/ui/qt/main_window.cpp:201
 msgid "Show {app_name}"
 msgstr "Prikaži {app_name}"
 
-#: src/ui/qt/main_window.cpp:213
+#: src/ui/qt/main_window.cpp:216
 msgid "Status"
 msgstr "Stanje"
 
-#: src/ui/qt/main_window.cpp:224
+#: src/ui/qt/main_window.cpp:227
 msgid "Character recognition"
 msgstr "Prepoznavanje znakova"
 
-#: src/ui/qt/main_window.cpp:229
+#: src/ui/qt/main_window.cpp:232
 msgid "Split text blocks"
 msgstr "Razdvoji tekstualne blokove"
 
-#: src/ui/qt/main_window.cpp:231
+#: src/ui/qt/main_window.cpp:234
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Razdvoji samostalne tekstualne blokove, npr. stupce"
 
-#: src/ui/qt/main_window.cpp:234
+#: src/ui/qt/main_window.cpp:237
 msgid "Languages:"
 msgstr "Jezici:"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:241
 msgid "Hotkey"
 msgstr "Tipkovnički prečac"

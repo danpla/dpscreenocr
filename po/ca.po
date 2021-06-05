@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2020-11-14 21:49+0200\n"
+"POT-Creation-Date: 2021-06-05 18:02+0300\n"
 "PO-Revision-Date: 2020-05-23 00:21+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -652,34 +652,34 @@ msgstr "Preparat"
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "El reconeixement no ha finalitzat. Voleu sortir igualment?"
 
-#: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:206
+#: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:209
 msgid "Quit"
 msgstr "Surt"
 
-#: src/ui/qt/main_window.cpp:198
+#: src/ui/qt/main_window.cpp:201
 msgid "Show {app_name}"
 msgstr "Mostra «{app_name}»"
 
-#: src/ui/qt/main_window.cpp:213
+#: src/ui/qt/main_window.cpp:216
 msgid "Status"
 msgstr "Estat"
 
-#: src/ui/qt/main_window.cpp:224
+#: src/ui/qt/main_window.cpp:227
 msgid "Character recognition"
 msgstr "Reconeixement de caràcters"
 
-#: src/ui/qt/main_window.cpp:229
+#: src/ui/qt/main_window.cpp:232
 msgid "Split text blocks"
 msgstr "Divideix els blocs de text"
 
-#: src/ui/qt/main_window.cpp:231
+#: src/ui/qt/main_window.cpp:234
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Divideix els blocs de text independents, p. ex., les columnes"
 
-#: src/ui/qt/main_window.cpp:234
+#: src/ui/qt/main_window.cpp:237
 msgid "Languages:"
 msgstr "Llengües:"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:241
 msgid "Hotkey"
 msgstr "Drecera de teclat"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2020-11-14 21:49+0200\n"
+"POT-Creation-Date: 2021-06-05 18:02+0300\n"
 "PO-Revision-Date: 2020-04-20 07:11+0000\n"
 "Last-Translator: Martin Beer <mv87@dismail.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -654,34 +654,34 @@ msgstr "Bereit"
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Texterkennung läuft noch. Trotzdem beenden?"
 
-#: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:206
+#: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:209
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/ui/qt/main_window.cpp:198
+#: src/ui/qt/main_window.cpp:201
 msgid "Show {app_name}"
 msgstr "{app_name} anzeigen"
 
-#: src/ui/qt/main_window.cpp:213
+#: src/ui/qt/main_window.cpp:216
 msgid "Status"
 msgstr "Status"
 
-#: src/ui/qt/main_window.cpp:224
+#: src/ui/qt/main_window.cpp:227
 msgid "Character recognition"
 msgstr "Zeichenerkennung"
 
-#: src/ui/qt/main_window.cpp:229
+#: src/ui/qt/main_window.cpp:232
 msgid "Split text blocks"
 msgstr "Textblöcke aufteilen"
 
-#: src/ui/qt/main_window.cpp:231
+#: src/ui/qt/main_window.cpp:234
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Teile voneinander unabhängige Textblöcke, z.B. Spalten, auf"
 
-#: src/ui/qt/main_window.cpp:234
+#: src/ui/qt/main_window.cpp:237
 msgid "Languages:"
 msgstr "Sprachen:"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:241
 msgid "Hotkey"
 msgstr "Tastenkürzel"
