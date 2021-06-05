@@ -24,7 +24,7 @@ function(build_icons dst_dir)
             set(INCLUDE_ALL_SIZES TRUE)
             break()
         elseif(NOT IS_DIRECTORY "${SRC_DIR}/${SIZE}x${SIZE}")
-            message(FATAL_ERROR "No ${SIZE} icon size in \"${SRC_DIR}/hicolor\"")
+            message(FATAL_ERROR "No ${SIZE} icon size in \"${SRC_DIR}\"")
         endif()
     endforeach()
 
