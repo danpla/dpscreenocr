@@ -18,10 +18,7 @@ static void exportPlainText(std::FILE* fp)
         DpsoHistoryEntry e;
         dpsoHistoryGet(i, &e);
 
-        std::fputs("=== ", fp);
-        std::fputs(e.timestamp, fp);
-        std::fputs(" ===\n\n", fp);
-
+        std::fprintf(fp, "=== %s ===\n\n", e.timestamp);
         std::fputs(e.text, fp);
     }
 }
@@ -111,12 +108,11 @@ static void exportJson(std::FILE* fp)
         DpsoHistoryEntry e;
         dpsoHistoryGet(i, &e);
 
-        std::fputs(
+        std::fprintf(
+            fp,
             "  {\n"
-            "    \"timestamp\": \"",
-            fp);
-        std::fputs(e.timestamp, fp);
-        std::fputs("\",\n", fp);
+            "    \"timestamp\": \"%s\",\n",
+            e.timestamp);
 
         std::fputs("    \"text\": \"", fp);
         const auto* s = e.text;
