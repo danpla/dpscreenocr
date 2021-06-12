@@ -44,6 +44,7 @@ private:
     QPushButton* clearButton;
     QPushButton* saveAsButton;
 
+    QString lastFileName;
     QString selectedNameFilter;
 
     void setButtonsEnabled(bool enabled);

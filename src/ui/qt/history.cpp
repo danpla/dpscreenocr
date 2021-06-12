@@ -60,6 +60,8 @@ History::History(QWidget* parent)
     buttonsLayout->addWidget(saveAsButton);
     buttonsLayout->addStretch();
     layout->addLayout(buttonsLayout);
+
+    lastFileName = _("History");
 }
 
 
@@ -105,31 +107,29 @@ void History::clear()
 void History::saveAs()
 {
     QFileDialog dialog(this);
-    dialog.setWindowTitle(dynStr.saveHistory);
-    dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-
-    QStringList nameFilters{
-        dynStr.plainText + " (*.txt)",
-        "HTML (*.html *.htm)",
-        "JSON (*.json)",
-        dynStr.allFiles + " (*)"
-    };
-
-    dialog.setNameFilters(nameFilters);
-
-    // selectNameFilter() is not guaranteed to work with native
-    // dialogs, or maybe this is a bug with Qt 5.2.1 on my GTK
-    // desktop.
-    if (!selectedNameFilter.isEmpty())
-        dialog.selectNameFilter(selectedNameFilter);
 
     if (!dpsoCfgGetBool(
             cfgKeyUiNativeFileDialogs,
             cfgDefaultValueUiNativeFileDialogs))
         dialog.setOption(QFileDialog::DontUseNativeDialog);
 
+    dialog.setWindowTitle(dynStr.saveHistory);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setViewMode(QFileDialog::Detail);
+
+    dialog.setNameFilters({
+        dynStr.plainText + " (*.txt)",
+        "HTML (*.html *.htm)",
+        "JSON (*.json)",
+        dynStr.allFiles + " (*)"
+    });
+
+    // selectNameFilter() is not guaranteed to work with native
+    // dialogs, or maybe this is a bug with Qt 5.2.1 on my GTK
+    // desktop.
+    if (!selectedNameFilter.isEmpty())
+        dialog.selectNameFilter(selectedNameFilter);
 
     QString dir = dpsoCfgGetStr(cfgKeyHistoryExportDir, "");
     // Don't pass an empty path to QDir since in this case QDir points
@@ -138,6 +138,8 @@ void History::saveAs()
         dir = QDir::homePath();
     dialog.setDirectory(dir);
 
+    dialog.selectFile(lastFileName);
+
     if (!dialog.exec())
         return;
 
@@ -145,14 +147,17 @@ void History::saveAs()
     if (selectedFiles.isEmpty())
         return;
 
+    const auto filePath = QDir::toNativeSeparators(selectedFiles[0]);
+    dpsoHistoryExportAuto(filePath.toUtf8().data());
+
+    const QFileInfo fileInfo(filePath);
+
+    lastFileName = fileInfo.fileName();
+
+    dir = QDir::toNativeSeparators(fileInfo.dir().absolutePath());
+    dpsoCfgSetStr(cfgKeyHistoryExportDir, dir.toUtf8().data());
+
     selectedNameFilter = dialog.selectedNameFilter();
-
-    const auto lastDir = QDir::toNativeSeparators(
-        dialog.directory().absolutePath());
-    dpsoCfgSetStr(cfgKeyHistoryExportDir, lastDir.toUtf8().data());
-
-    const auto fileName = QDir::toNativeSeparators(selectedFiles[0]);
-    dpsoHistoryExportAuto(fileName.toUtf8().data());
 }
 
 
