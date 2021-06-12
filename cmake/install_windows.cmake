@@ -21,6 +21,7 @@ if(DPSO_UI STREQUAL "qt")
     install(DIRECTORY "${CMAKE_BINARY_DIR}/icons" DESTINATION .)
 
     install(DIRECTORY "${CMAKE_BINARY_DIR}/platforms" DESTINATION .)
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/styles" DESTINATION .)
 endif()
 
 install(

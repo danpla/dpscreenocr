@@ -21,19 +21,20 @@ endfunction()
 
 copy_tessdata("${CMAKE_BINARY_DIR}")
 
-
 function(copy_qt5_plugins dst_dir)
     set(SRC_DIR "$ENV{MINGW_PREFIX}/share/qt5/plugins")
 
     add_custom_command(
-        OUTPUT "${dst_dir}/platforms"
+        OUTPUT "${dst_dir}/platforms" "${dst_dir}/styles"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}/platforms"
         COMMAND ${CMAKE_COMMAND} -E copy "${SRC_DIR}/platforms/qwindows.dll" "${dst_dir}/platforms"
-        DEPENDS "${SRC_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}/styles"
+        COMMAND ${CMAKE_COMMAND} -E copy "${SRC_DIR}/styles/qwindowsvistastyle.dll" "${dst_dir}/styles"
+        DEPENDS "${SRC_DIR}/platforms/qwindows.dll" "${SRC_DIR}/styles/qwindowsvistastyle.dll"
         VERBATIM
     )
 
-    add_custom_target("qt5_plugins" ALL DEPENDS "${dst_dir}/platforms")
+    add_custom_target("qt5_plugins" ALL DEPENDS "${dst_dir}/platforms" "${dst_dir}/styles")
 endfunction()
 
 
