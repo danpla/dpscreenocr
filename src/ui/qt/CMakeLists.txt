@@ -88,7 +88,6 @@ set_target_properties(
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-
 if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     # Hide console window.
     set_target_properties(
@@ -98,10 +97,7 @@ if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     )
 endif()
 
-target_link_libraries(dpscreenocr-qt common)
-target_link_libraries(dpscreenocr-qt dpso)
-target_link_libraries(dpscreenocr-qt dpso_utils)
-target_link_libraries(dpscreenocr-qt dpso_intl)
+target_link_libraries(dpscreenocr-qt common dpso dpso_utils dpso_intl)
 
 if(DPSO_QT_VERSION EQUAL 4)
     target_link_libraries(dpscreenocr-qt Qt4::QtCore Qt4::QtGui)
@@ -114,6 +110,12 @@ endif()
 if(NOT DPSO_QT_VERSION EQUAL 4
         AND DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
+    target_compile_definitions(
+        dpscreenocr-qt
+        PRIVATE
+        DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1
+    )
+
     find_package(Qt5X11Extras REQUIRED)
     target_link_libraries(dpscreenocr-qt Qt5::X11Extras)
 
@@ -124,12 +126,6 @@ if(NOT DPSO_QT_VERSION EQUAL 4
         ${X11_INCLUDE_DIR}
     )
     target_link_libraries(dpscreenocr-qt ${X11_LIBRARIES})
-
-    target_compile_definitions(
-        dpscreenocr-qt
-        PRIVATE
-        DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1
-    )
 else()
     target_compile_definitions(
         dpscreenocr-qt

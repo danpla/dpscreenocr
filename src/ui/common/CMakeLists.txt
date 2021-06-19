@@ -9,7 +9,6 @@ else()
     set(APP_LOCALE_DIR "")
 endif()
 
-
 set(IN_SRCS app_info.cpp file_names.cpp paths.cpp)
 set(CONFIGURED_SRCS "")
 foreach(IN_SRC ${IN_SRCS})
@@ -24,7 +23,6 @@ foreach(IN_SRC ${IN_SRCS})
         CONFIGURED_SRCS "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}"
     )
 endforeach()
-
 
 add_library(
     common
@@ -48,7 +46,5 @@ set_target_properties(
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-target_include_directories(common PRIVATE .)
-target_include_directories(common PUBLIC ..)
-
+target_include_directories(common PRIVATE . PUBLIC ..)
 target_link_libraries(common dpso)

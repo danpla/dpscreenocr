@@ -27,10 +27,7 @@ elseif(WIN32)
         windows_utils.cpp
     )
 else()
-    message(
-        FATAL_ERROR
-        "The current system (${CMAKE_SYSTEM_NAME}) is not supported"
-    )
+    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
 
 add_library(
@@ -60,7 +57,5 @@ set_target_properties(
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-target_include_directories(dpso_utils PRIVATE .)
-target_include_directories(dpso_utils PUBLIC ..)
-
+target_include_directories(dpso_utils PRIVATE . PUBLIC ..)
 target_link_libraries(dpso_utils dpso)

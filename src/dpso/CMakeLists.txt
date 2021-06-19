@@ -31,10 +31,7 @@ elseif(WIN32)
         backend/windows/windows_selection.cpp
     )
 else()
-    message(
-        FATAL_ERROR
-        "The current system (${CMAKE_SYSTEM_NAME}) is not supported"
-    )
+    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
 
 add_library(
@@ -80,8 +77,7 @@ set_target_properties(
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
-target_include_directories(dpso PRIVATE .)
-target_include_directories(dpso PUBLIC ..)
+target_include_directories(dpso PRIVATE . PUBLIC ..)
 
 add_subdirectory(
     ../thirdparty/stb_image_resize
@@ -98,21 +94,17 @@ target_link_libraries(dpso ${CMAKE_THREAD_LIBS_INIT})
 
 if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)
+    if(NOT X11_Xshape_FOUND)
+        message(SEND_ERROR "X11 Shape Extension is not found")
+    endif()
+
     target_include_directories(
         dpso
         PRIVATE
         ${X11_INCLUDE_DIR}
+        ${X11_Xshape_INCLUDE_PATH}
     )
-    target_link_libraries(
-        dpso
-        ${X11_LIBRARIES}
-    )
-
-    if(NOT X11_Xshape_FOUND)
-        message(SEND_ERROR "X11 Shape Extension is not found")
-    endif()
-    target_include_directories(dpso PRIVATE ${X11_Xshape_INCLUDE_PATH})
-    target_link_libraries(dpso ${X11_Xext_LIB})
+    target_link_libraries(dpso ${X11_LIBRARIES} ${X11_Xext_LIB})
 endif()
 
 find_package(PkgConfig)
@@ -129,12 +121,5 @@ if(NOT TESSERACT_FOUND)
     set(TESSERACT_LIBRARIES tesseract)
 endif()
 
-target_include_directories(
-    dpso
-    PRIVATE
-    ${TESSERACT_INCLUDE_DIRS}
-)
-target_link_libraries(
-    dpso
-    ${TESSERACT_LIBRARIES}
-)
+target_include_directories(dpso PRIVATE ${TESSERACT_INCLUDE_DIRS})
+target_link_libraries(dpso ${TESSERACT_LIBRARIES})

@@ -2,12 +2,9 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dpScreenOCR-Tests)
 
-set(PLATFORM_SRCS)
+set(PLATFORM_SPECIFIC_SRCS)
 if(WIN32)
-    list(
-        APPEND PLATFORM_SRCS
-        test_windows_utils.cpp
-    )
+    list(APPEND PLATFORM_SPECIFIC_SRCS test_windows_utils.cpp)
 endif()
 
 add_executable(
@@ -24,7 +21,7 @@ add_executable(
     test_tesseract_utils.cpp
     utils.cpp
 
-    ${PLATFORM_SRCS}
+    ${PLATFORM_SPECIFIC_SRCS}
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
@@ -35,12 +32,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     )
 endif()
 
-add_dependencies(tests dpso)
-target_link_libraries(tests dpso)
-
-add_dependencies(tests dpso_utils)
-target_link_libraries(tests dpso_utils)
-
+target_link_libraries(tests dpso dpso_utils)
 
 add_executable(test-c-compilation test_c_compilation.c)
 
@@ -52,14 +44,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     )
 endif()
 
-add_dependencies(test-c-compilation dpso)
-target_link_libraries(test-c-compilation dpso)
-
-add_dependencies(test-c-compilation dpso_utils)
-target_link_libraries(test-c-compilation dpso_utils)
-
 if(NOT TARGET common)
     add_subdirectory(../src/ui/common ${CMAKE_BINARY_DIR}/common)
 endif()
-add_dependencies(test-c-compilation common)
-target_link_libraries(test-c-compilation common)
+
+target_link_libraries(test-c-compilation dpso dpso_utils common)
