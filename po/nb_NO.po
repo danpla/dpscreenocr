@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-06-05 18:02+0300\n"
+"POT-Creation-Date: 2021-06-20 05:35+0300\n"
 "PO-Revision-Date: 2020-03-26 15:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -562,7 +562,7 @@ msgstr "Velg en kjørbar fil"
 msgid "Wrap words"
 msgstr "Linjebrytning"
 
-#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:69
+#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:71
 msgid "Clear"
 msgstr "Tøm"
 
@@ -574,23 +574,27 @@ msgstr "Lagre som…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Lagre historikk som klartekst, HTML, eller JSON"
 
-#: src/ui/qt/history.cpp:67
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:82
+msgid "History"
+msgstr "Historikk"
+
+#: src/ui/qt/history.cpp:69
 msgid "Clear the history?"
 msgstr "Tøm historikken?"
 
-#: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:114
+#: src/ui/qt/history.cpp:70 src/ui/qt/main_window.cpp:114
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:72
 msgid "Save history"
 msgstr "Lagre historikk"
 
-#: src/ui/qt/history.cpp:71
+#: src/ui/qt/history.cpp:74
 msgid "Plain text"
 msgstr "Klartekst"
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:77
 msgid "All files"
 msgstr "Alle filer"
 
@@ -617,10 +621,6 @@ msgstr "Grunnleggende"
 #: src/ui/qt/main_window.cpp:81
 msgid "Actions"
 msgstr "Handlinger"
-
-#: src/ui/qt/main_window.cpp:82
-msgid "History"
-msgstr "Historikk"
 
 #: src/ui/qt/main_window.cpp:83
 msgid "About"

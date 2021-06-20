@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-04-09 08:34+0300\n"
+"POT-Creation-Date: 2021-06-20 05:35+0300\n"
 "PO-Revision-Date: 2021-05-03 20:32+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -564,7 +564,7 @@ msgstr "Bir yürütülebilir dosya seçin"
 msgid "Wrap words"
 msgstr "Kelimeleri sarmak"
 
-#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:69
+#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:71
 msgid "Clear"
 msgstr "Temizle"
 
@@ -576,23 +576,27 @@ msgstr "Farklı kaydet…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Geçmişi düz metin, HTML veya JSON olarak kaydedin"
 
-#: src/ui/qt/history.cpp:67
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:82
+msgid "History"
+msgstr "Geçmiş"
+
+#: src/ui/qt/history.cpp:69
 msgid "Clear the history?"
 msgstr "Geçmişi temizleyelim mi?"
 
-#: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:114
+#: src/ui/qt/history.cpp:70 src/ui/qt/main_window.cpp:114
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:72
 msgid "Save history"
 msgstr "Geçmişi kaydet"
 
-#: src/ui/qt/history.cpp:71
+#: src/ui/qt/history.cpp:74
 msgid "Plain text"
 msgstr "Düz metin"
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:77
 msgid "All files"
 msgstr "Tüm dosyalar"
 
@@ -619,10 +623,6 @@ msgstr "Temel"
 #: src/ui/qt/main_window.cpp:81
 msgid "Actions"
 msgstr "Eylemler"
-
-#: src/ui/qt/main_window.cpp:82
-msgid "History"
-msgstr "Geçmiş"
 
 #: src/ui/qt/main_window.cpp:83
 msgid "About"

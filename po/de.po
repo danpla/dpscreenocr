@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-06-05 18:02+0300\n"
+"POT-Creation-Date: 2021-06-20 05:35+0300\n"
 "PO-Revision-Date: 2020-04-20 07:11+0000\n"
 "Last-Translator: Martin Beer <mv87@dismail.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -564,7 +564,7 @@ msgstr "Programm auswählen"
 msgid "Wrap words"
 msgstr "Wörter umbrechen"
 
-#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:69
+#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:71
 msgid "Clear"
 msgstr "Löschen"
 
@@ -576,23 +576,27 @@ msgstr "Speichern unter…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Speichert den Verlauf als Rohtext, im HTML- oder im JSON-Format ab"
 
-#: src/ui/qt/history.cpp:67
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:82
+msgid "History"
+msgstr "Verlauf"
+
+#: src/ui/qt/history.cpp:69
 msgid "Clear the history?"
 msgstr "Verlauf löschen?"
 
-#: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:114
+#: src/ui/qt/history.cpp:70 src/ui/qt/main_window.cpp:114
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:72
 msgid "Save history"
 msgstr "Verlauf speichern"
 
-#: src/ui/qt/history.cpp:71
+#: src/ui/qt/history.cpp:74
 msgid "Plain text"
 msgstr "Rohtext"
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:77
 msgid "All files"
 msgstr "Alle Dateien"
 
@@ -619,10 +623,6 @@ msgstr "Allgemein"
 #: src/ui/qt/main_window.cpp:81
 msgid "Actions"
 msgstr "Aktionen"
-
-#: src/ui/qt/main_window.cpp:82
-msgid "History"
-msgstr "Verlauf"
 
 #: src/ui/qt/main_window.cpp:83
 msgid "About"

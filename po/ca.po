@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-06-05 18:02+0300\n"
+"POT-Creation-Date: 2021-06-20 05:35+0300\n"
 "PO-Revision-Date: 2020-05-23 00:21+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -562,7 +562,7 @@ msgstr "Trieu un executable"
 msgid "Wrap words"
 msgstr "Ajusta els mots"
 
-#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:69
+#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:71
 msgid "Clear"
 msgstr "Neteja"
 
@@ -574,23 +574,27 @@ msgstr "Anomena i desa…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Desa l’historial com a text pla, HTML o JSON"
 
-#: src/ui/qt/history.cpp:67
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:82
+msgid "History"
+msgstr "Historial"
+
+#: src/ui/qt/history.cpp:69
 msgid "Clear the history?"
 msgstr "Voleu netejar l’historial?"
 
-#: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:114
+#: src/ui/qt/history.cpp:70 src/ui/qt/main_window.cpp:114
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:72
 msgid "Save history"
 msgstr "Desa l’historial"
 
-#: src/ui/qt/history.cpp:71
+#: src/ui/qt/history.cpp:74
 msgid "Plain text"
 msgstr "Text pla"
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:77
 msgid "All files"
 msgstr "Tots els fitxers"
 
@@ -617,10 +621,6 @@ msgstr "Principal"
 #: src/ui/qt/main_window.cpp:81
 msgid "Actions"
 msgstr "Accions"
-
-#: src/ui/qt/main_window.cpp:82
-msgid "History"
-msgstr "Historial"
 
 #: src/ui/qt/main_window.cpp:83
 msgid "About"

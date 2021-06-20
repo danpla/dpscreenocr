@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-06-05 18:02+0300\n"
+"POT-Creation-Date: 2021-06-20 05:35+0300\n"
 "PO-Revision-Date: 2020-11-29 05:15+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -563,7 +563,7 @@ msgstr "Виберіть виконуваний файл"
 msgid "Wrap words"
 msgstr "Переносити слова"
 
-#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:69
+#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:71
 msgid "Clear"
 msgstr "Очистити"
 
@@ -575,23 +575,27 @@ msgstr "Зберегти як…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Зберегти історію як звичайний текст, HTML або JSON"
 
-#: src/ui/qt/history.cpp:67
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:82
+msgid "History"
+msgstr "Історія"
+
+#: src/ui/qt/history.cpp:69
 msgid "Clear the history?"
 msgstr "Очистити історію?"
 
-#: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:114
+#: src/ui/qt/history.cpp:70 src/ui/qt/main_window.cpp:114
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:72
 msgid "Save history"
 msgstr "Зберегти історію"
 
-#: src/ui/qt/history.cpp:71
+#: src/ui/qt/history.cpp:74
 msgid "Plain text"
 msgstr "Звичайний текст"
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:77
 msgid "All files"
 msgstr "Усі файли"
 
@@ -618,10 +622,6 @@ msgstr "Головне"
 #: src/ui/qt/main_window.cpp:81
 msgid "Actions"
 msgstr "Дії"
-
-#: src/ui/qt/main_window.cpp:82
-msgid "History"
-msgstr "Історія"
 
 #: src/ui/qt/main_window.cpp:83
 msgid "About"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-06-05 18:02+0300\n"
+"POT-Creation-Date: 2021-06-20 05:35+0300\n"
 "PO-Revision-Date: 2020-04-12 21:05+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -565,7 +565,7 @@ msgstr "Выберите исполняемый файл"
 msgid "Wrap words"
 msgstr "Переносить слова"
 
-#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:69
+#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:71
 msgid "Clear"
 msgstr "Очистить"
 
@@ -577,23 +577,27 @@ msgstr "Сохранить как…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Сохранить историю как простой текст, HTML или JSON"
 
-#: src/ui/qt/history.cpp:67
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:82
+msgid "History"
+msgstr "История"
+
+#: src/ui/qt/history.cpp:69
 msgid "Clear the history?"
 msgstr "Очистить историю?"
 
-#: src/ui/qt/history.cpp:68 src/ui/qt/main_window.cpp:114
+#: src/ui/qt/history.cpp:70 src/ui/qt/main_window.cpp:114
 msgid "Cancel"
 msgstr "Отменить"
 
-#: src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:72
 msgid "Save history"
 msgstr "Сохранить историю"
 
-#: src/ui/qt/history.cpp:71
+#: src/ui/qt/history.cpp:74
 msgid "Plain text"
 msgstr "Простой текст"
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:77
 msgid "All files"
 msgstr "Все файлы"
 
@@ -620,10 +624,6 @@ msgstr "Главное"
 #: src/ui/qt/main_window.cpp:81
 msgid "Actions"
 msgstr "Действия"
-
-#: src/ui/qt/main_window.cpp:82
-msgid "History"
-msgstr "История"
 
 #: src/ui/qt/main_window.cpp:83
 msgid "About"
