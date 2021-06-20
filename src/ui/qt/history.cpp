@@ -70,8 +70,11 @@ History::DynamicStrings::DynamicStrings()
     , cancel{_("Cancel")}
     , clear{_("Clear")}
     , saveHistory{_("Save history")}
-    , plainText{_("Plain text")}
-    , allFiles{_("All files")}
+    , nameFilters{
+        QString{_("Plain text")} + " (*.txt);;"
+        + "HTML (*.html *.htm);;"
+        + "JSON (*.json);;"
+        + _("All files") + " (*)"}
 {
 
 }
@@ -106,58 +109,37 @@ void History::clear()
 
 void History::saveAs()
 {
-    QFileDialog dialog(this);
-
+    QFileDialog::Options options;
     if (!dpsoCfgGetBool(
             cfgKeyUiNativeFileDialogs,
             cfgDefaultValueUiNativeFileDialogs))
-        dialog.setOption(QFileDialog::DontUseNativeDialog);
+        options |= QFileDialog::DontUseNativeDialog;
 
-    dialog.setWindowTitle(dynStr.saveHistory);
-    dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setViewMode(QFileDialog::Detail);
-
-    dialog.setNameFilters({
-        dynStr.plainText + " (*.txt)",
-        "HTML (*.html *.htm)",
-        "JSON (*.json)",
-        dynStr.allFiles + " (*)"
-    });
-
-    // selectNameFilter() is not guaranteed to work with native
-    // dialogs, or maybe this is a bug with Qt 5.2.1 on my GTK
-    // desktop.
-    if (!selectedNameFilter.isEmpty())
-        dialog.selectNameFilter(selectedNameFilter);
-
-    QString dir = dpsoCfgGetStr(cfgKeyHistoryExportDir, "");
+    QString dirPath = dpsoCfgGetStr(cfgKeyHistoryExportDir, "");
     // Don't pass an empty path to QDir since in this case QDir points
     // to the current working directory.
-    if (dir.isEmpty() || !QDir(dir).exists())
-        dir = QDir::homePath();
-    dialog.setDirectory(dir);
+    if (dirPath.isEmpty() || !QDir(dirPath).exists())
+        dirPath = QDir::homePath();
 
-    dialog.selectFile(lastFileName);
-
-    if (!dialog.exec())
+    const auto filePath = QDir::toNativeSeparators(
+        QFileDialog::getSaveFileName(
+            this,
+            dynStr.saveHistory,
+            QDir{dirPath}.filePath(lastFileName),
+            dynStr.nameFilters,
+            &selectedNameFilter,
+            options));
+    if (filePath.isEmpty())
         return;
 
-    const auto selectedFiles = dialog.selectedFiles();
-    if (selectedFiles.isEmpty())
-        return;
-
-    const auto filePath = QDir::toNativeSeparators(selectedFiles[0]);
     dpsoHistoryExportAuto(filePath.toUtf8().data());
 
     const QFileInfo fileInfo(filePath);
 
     lastFileName = fileInfo.fileName();
 
-    dir = QDir::toNativeSeparators(fileInfo.dir().absolutePath());
-    dpsoCfgSetStr(cfgKeyHistoryExportDir, dir.toUtf8().data());
-
-    selectedNameFilter = dialog.selectedNameFilter();
+    dirPath = QDir::toNativeSeparators(fileInfo.dir().absolutePath());
+    dpsoCfgSetStr(cfgKeyHistoryExportDir, dirPath.toUtf8().data());
 }
 
 

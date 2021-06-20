@@ -28,8 +28,7 @@ private:
         QString clear;
 
         QString saveHistory;
-        QString plainText;
-        QString allFiles;
+        QString nameFilters;
 
         DynamicStrings();
     } dynStr;
