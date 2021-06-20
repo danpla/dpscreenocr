@@ -30,12 +30,12 @@ static const char* orderToStr(Order order)
 static void checkCmpSubStr(
     const char* str,
     const char* subStr, std::size_t subStrLen,
-    bool ignoreCase,
+    unsigned options,
     Order expected,
     int lineNum)
 {
     const auto ret = dpso::str::cmpSubStr(
-        str, subStr, subStrLen, ignoreCase);
+        str, subStr, subStrLen, options);
 
     Order got;
     if (ret < 0)
@@ -52,11 +52,11 @@ static void checkCmpSubStr(
         stderr,
         "line %i: equalSubStr("
         "\"%s\", \"%.*s\", "
-        "%i, %i): "
+        "%i, %u): "
         "got %s, expected %s\n",
         lineNum,
         str, static_cast<int>(subStrLen), subStr,
-        static_cast<int>(subStrLen), ignoreCase,
+        static_cast<int>(subStrLen), options,
         orderToStr(got), orderToStr(expected));
     test::failure();
 }
@@ -64,25 +64,27 @@ static void checkCmpSubStr(
 
 static void testCmpSubStr()
 {
-    #define CHECK(str, subStr, subStrLen, ignoreCase, expected) \
+    using namespace dpso::str;
+
+    #define CHECK(str, subStr, subStrLen, options, expected) \
         checkCmpSubStr( \
-            str, subStr, subStrLen, ignoreCase, expected, __LINE__) \
+            str, subStr, subStrLen, options, expected, __LINE__) \
 
     for (int i = 0; i < 3; ++i) {
-        CHECK("", "", i, false, Order::equal);
-        CHECK("Foo", "Foo", i, false, Order::greater);
+        CHECK("", "", i, cmpNormal, Order::equal);
+        CHECK("Foo", "Foo", i, cmpNormal, Order::greater);
     }
 
-    CHECK("Foo", "Foo", 3, false, Order::equal);
-    CHECK("Foo", "Foo", 4, false, Order::equal);
-    CHECK("Foo", "FooBar", 3, false, Order::equal);
-    CHECK("Foo", "FooBar", 4, false, Order::less);
+    CHECK("Foo", "Foo", 3, cmpNormal, Order::equal);
+    CHECK("Foo", "Foo", 4, cmpNormal, Order::equal);
+    CHECK("Foo", "FooBar", 3, cmpNormal, Order::equal);
+    CHECK("Foo", "FooBar", 4, cmpNormal, Order::less);
 
     for (int i = 0; i < 10; ++i)
-        CHECK("FooBar", "Foo", i, false, Order::greater);
+        CHECK("FooBar", "Foo", i, cmpNormal, Order::greater);
 
-    CHECK("Foo", "foo", 3, false, Order::less);
-    CHECK("Foo", "foo", 3, true, Order::equal);
+    CHECK("Foo", "foo", 3, cmpNormal, Order::less);
+    CHECK("Foo", "foo", 3, cmpIgnoreCase, Order::equal);
 
     #undef CHECK
 }

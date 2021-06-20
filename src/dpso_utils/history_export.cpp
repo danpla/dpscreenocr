@@ -209,7 +209,8 @@ static DpsoHistoryExportFormat getExportFormatForFileName(
 
     if (ext)
         for (const auto& e : extensions)
-            if (dpso::str::cmpIc(ext, e.str) == 0)
+            if (dpso::str::cmp(
+                    ext, e.str, dpso::str::cmpIgnoreCase) == 0)
                 return e.format;
 
     return dpsoHistoryExportFormatPlainText;

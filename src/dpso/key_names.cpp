@@ -121,7 +121,8 @@ const char* keyToString(DpsoKey key)
 DpsoKey keyFromString(const char* str, std::size_t strLen)
 {
     for (int i = 0; i < dpsoNumKeys; ++i)
-        if (str::cmpSubStr(keyNames[i], str, strLen, true) == 0)
+        if (str::cmpSubStr(
+                keyNames[i], str, strLen, str::cmpIgnoreCase) == 0)
             return static_cast<DpsoKey>(i);
 
     return dpsoUnknownKey;
@@ -215,7 +216,8 @@ DpsoKeyMod modFromString(const char* str, std::size_t strLen)
 {
     for (const auto& modName : modNames)
         for (const auto* const* names = modName.names; *names; ++names)
-            if (str::cmpSubStr(*names, str, strLen, true) == 0)
+            if (str::cmpSubStr(
+                    *names, str, strLen, str::cmpIgnoreCase) == 0)
                 return modName.mod;
 
     return dpsoKeyModNone;

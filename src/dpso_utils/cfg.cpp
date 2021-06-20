@@ -48,7 +48,7 @@ static std::vector<KeyValue> keyValues;
 
 static int cmpKeys(const char* a, const char* b)
 {
-    return dpso::str::cmpIc(a, b);
+    return dpso::str::cmp(a, b, dpso::str::cmpIgnoreCase);
 }
 
 
@@ -347,7 +347,10 @@ int dpsoCfgGetInt(const char* key, int defaultVal)
     }
 
     for (int boolInt = 0; boolInt < 2; ++boolInt)
-        if (dpso::str::cmpIc(str, boolToStr(boolInt)) == 0)
+        if (dpso::str::cmp(
+                str,
+                boolToStr(boolInt),
+                dpso::str::cmpIgnoreCase) == 0)
             return boolInt;
 
     return defaultVal;

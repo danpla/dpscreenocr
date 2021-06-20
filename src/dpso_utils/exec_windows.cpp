@@ -113,7 +113,10 @@ static bool allowExecute(const char* exePath)
         static const char* const batchExts[] = {".bat", ".cmd"};
         for (const auto* batchExt : batchExts)
             if (dpso::str::cmpSubStr(
-                    batchExt, ext, extLen, true) == 0)
+                    batchExt,
+                    ext,
+                    extLen,
+                    dpso::str::cmpIgnoreCase) == 0)
                 return false;
     }
 
