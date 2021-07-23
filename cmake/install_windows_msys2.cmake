@@ -47,7 +47,6 @@ if(DPSO_UI STREQUAL "qt")
     if(DPSO_ENABLE_NLS)
         get_linguas(LANGS)
         copy_qt_translations(
-            # MSYS2 only provides Qt version 5.
             "$ENV{MINGW_PREFIX}/share/qt5/translations"
             "${CMAKE_BINARY_DIR}/translations"
             LANGUAGES ${LANGS}
