@@ -143,7 +143,7 @@ necessary data files:
     Depending on the DPSO_GEN_HTML_MANUAL option, the manual
     will be either in HTML or in plain text.
 
-  * "icons" - app icons
+  * "icons" dir - app icons
 
   * "locale" dir - compiled gettext catalogs. Only created if the
     DPSO_ENABLE_NLS is enabled.
@@ -165,11 +165,8 @@ have "DPSO_" prefix.
 3 Packaging
 ===========
 
-To create packages, run:
-
-    cpack -G <generators>
-
-Where <generators> is a semicolon-separated list of generator names:
+To create a package, run "cpack -G <generators>", where <generators>
+is a semicolon-separated list of generator names:
 
   * ZIP - ZIP archive.
 
@@ -203,8 +200,3 @@ Where <generators> is a semicolon-separated list of generator names:
     paths. For the third option you should always use a Unix-style
     path to avoid the colon after the drive letter to be interpreted
     as PATH separator.
-
-For example, the following command will create a 7z archive and an
-EXE installer:
-
-    cpack -G "7Z;NSIS"
