@@ -1,6 +1,26 @@
 
 # Instructions specific to MSYS2/MinGW.
 
+if(NOT CMAKE_VERSION VERSION_LESS 3.16)
+    configure_file(
+        "${CMAKE_CURRENT_LIST_DIR}/install_windows_msys2_copy_dlls.cmake.in"
+        "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
+        @ONLY
+    )
+
+    add_custom_target(
+        "copy_dlls"
+        ALL
+        COMMENT "Copying DLLs"
+        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
+        DEPENDS "${APP_FILE_NAME}.exe"
+    )
+
+    add_dependencies("copy_dlls" "${APP_FILE_NAME}-qt")
+else()
+    message(WARNING "DLLs are not copied automatically because CMake version is < 3.16")
+endif()
+
 
 # Copy tessdata directory from share/ to dst_dir.
 function(copy_tessdata dst_dir)
