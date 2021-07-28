@@ -16,7 +16,7 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.16)
         DEPENDS "${APP_FILE_NAME}.exe"
     )
 
-    add_dependencies("copy_dlls" "${APP_FILE_NAME}-qt")
+    add_dependencies("copy_dlls" "${APP_FILE_NAME}-${DPSO_UI}")
 else()
     message(WARNING "DLLs are not copied automatically because CMake version is < 3.16")
 endif()
