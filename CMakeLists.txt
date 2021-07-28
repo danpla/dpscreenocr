@@ -24,11 +24,10 @@ set(APP_URL "https://danpla.github.io/dpscreenocr/")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 add_subdirectory(src/dpso)
+
 if(DPSO_BUILD_EXAMPLE)
     add_subdirectory(src/dpso_example)
 endif()
-
-add_subdirectory(src/dpso_utils)
 
 if(DPSO_UI STREQUAL "qt")
     add_subdirectory(src/ui/qt)

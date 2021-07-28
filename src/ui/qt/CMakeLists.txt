@@ -62,6 +62,10 @@ if(NOT TARGET dpso_intl)
     add_subdirectory(../../dpso_intl ${CMAKE_BINARY_DIR}/dpso_intl)
 endif()
 
+if(NOT TARGET dpso_utils)
+    add_subdirectory(../../dpso_utils ${CMAKE_BINARY_DIR}/dpso_utils)
+endif()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
