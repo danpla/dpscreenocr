@@ -26,8 +26,7 @@ add_subdirectory(src/dpso_example EXCLUDE_FROM_ALL)
 
 if(DPSO_UI STREQUAL "qt")
     add_subdirectory(src/ui/qt)
-elseif(DPSO_UI STREQUAL "none")
-else()
+elseif(NOT DPSO_UI STREQUAL "none")
     message(FATAL_ERROR "Unknown UI \"${DPSO_UI}\"")
 endif()
 
