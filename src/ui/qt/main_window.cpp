@@ -57,7 +57,7 @@ enum HotkeyAction {
 
 
 MainWindow::MainWindow()
-    : QWidget()
+    : QWidget{}
     , wasActiveLangs{}
     , statusValid{}
 {

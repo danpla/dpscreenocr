@@ -17,7 +17,7 @@
 
 
 About::About(QWidget* parent)
-    : QWidget(parent)
+    : QWidget{parent}
 {
     // The icon size and layout margins depend on the font size of
     // the app name label. If the SVG module is not installed, Qt

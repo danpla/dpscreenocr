@@ -11,7 +11,7 @@ HotkeyEditor::HotkeyEditor(
         const QVector<DpsoKey>& hiddenKeys,
         Qt::Orientation orientation,
         QWidget* parent)
-    : QWidget(parent)
+    : QWidget{parent}
     , action{action}
     , keyCombo{}
     , modCheckBoxes{}

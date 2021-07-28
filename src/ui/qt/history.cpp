@@ -18,7 +18,7 @@
 
 
 History::History(QWidget* parent)
-    : QWidget(parent)
+    : QWidget{parent}
 {
     wordWrapCheck = new QCheckBox(_("Wrap words"));
     wordWrapCheck->setChecked(true);
@@ -125,7 +125,7 @@ void History::saveAs()
         QFileDialog::getSaveFileName(
             this,
             dynStr.saveHistory,
-            QDir{dirPath}.filePath(lastFileName),
+            QDir(dirPath).filePath(lastFileName),
             dynStr.nameFilters,
             &selectedNameFilter,
             options));

@@ -24,7 +24,7 @@ enum ColumnIdx {
 
 
 LangBrowser::LangBrowser(QWidget* parent)
-    : QTreeWidget(parent)
+    : QTreeWidget{parent}
 {
     setHeaderLabels(
         QStringList()
