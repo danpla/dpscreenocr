@@ -9,10 +9,13 @@ install(
     COMPONENT Required
 )
 
-file(GLOB DLLS "${CMAKE_BINARY_DIR}/*.dll")
+configure_file(
+    "${CMAKE_CURRENT_LIST_DIR}/install_windows_dlls.cmake.in"
+    "${CMAKE_BINARY_DIR}/install_windows_dlls.cmake"
+    @ONLY
+)
 install(
-    FILES ${DLLS}
-    DESTINATION .
+    SCRIPT "${CMAKE_BINARY_DIR}/install_windows_dlls.cmake"
     COMPONENT Required
 )
 
