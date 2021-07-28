@@ -24,10 +24,7 @@ set(APP_URL "https://danpla.github.io/dpscreenocr/")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 add_subdirectory(src/dpso)
-
-if(DPSO_BUILD_EXAMPLE)
-    add_subdirectory(src/dpso_example)
-endif()
+add_subdirectory(src/dpso_example EXCLUDE_FROM_ALL)
 
 if(DPSO_UI STREQUAL "qt")
     add_subdirectory(src/ui/qt)
@@ -36,9 +33,7 @@ else()
     message(FATAL_ERROR "Unknown UI \"${DPSO_UI}\"")
 endif()
 
-if(DPSO_BUILD_TESTS)
-    add_subdirectory(tests)
-endif()
+add_subdirectory(tests EXCLUDE_FROM_ALL)
 
 include(install)
 include(uninstall)
