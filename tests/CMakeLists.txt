@@ -44,6 +44,14 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     )
 endif()
 
+if(NOT TARGET dpso)
+    add_subdirectory(../src/dpso ${CMAKE_BINARY_DIR}/dpso)
+endif()
+
+if(NOT TARGET dpso_utils)
+    add_subdirectory(../src/dpso_utils ${CMAKE_BINARY_DIR}/dpso_utils)
+endif()
+
 if(NOT TARGET common)
     add_subdirectory(../src/ui/common ${CMAKE_BINARY_DIR}/common)
 endif()
