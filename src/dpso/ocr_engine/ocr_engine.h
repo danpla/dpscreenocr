@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include "ocr_engine/ocr_result.h"
+
 
 namespace dpso {
 
@@ -48,58 +50,6 @@ using OcrFeatures = unsigned;
  * \return true to continue OCR, false to terminate.
  */
 using OcrProgressCallback = bool (*)(int progress, void* userData);
-
-
-class OcrResultText;
-
-
-/**
- * OCR result.
- *
- * In both constructors, the text argument may be null regardless of
- * the status. OcrResult::getText() will return an empty string in
- * this case.
- */
-class OcrResult {
-public:
-    enum class Status {
-        /**
-         * OCR was successful.
-         *
-         * getText() returns the recognized text.
-         */
-        success,
-
-        /**
-         * OCR was terminated from progress callback.
-         *
-         * getText() returns an empty string.
-         */
-        terminated,
-
-        /**
-         * OCR error.
-         *
-         * getText() returns an error message.
-         */
-        error
-    };
-
-    OcrResult(Status status, const char* text);
-    OcrResult(Status status, std::unique_ptr<OcrResultText> text);
-    ~OcrResult();
-
-    OcrResult(OcrResult&& other) noexcept;
-    OcrResult& operator=(OcrResult&& other) noexcept;
-
-    Status getStatus() const;
-
-    const char* getText() const;
-    std::size_t getTextLen() const;
-private:
-    Status status;
-    std::unique_ptr<OcrResultText> text;
-};
 
 
 class OcrEngine {
