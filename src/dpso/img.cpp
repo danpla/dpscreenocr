@@ -15,6 +15,20 @@ namespace dpso {
 namespace img {
 
 
+unsigned getMaskRightShift(unsigned mask)
+{
+    if (mask == 0)
+        return 0;
+
+    unsigned shift = 0;
+    while (!(mask & 1)) {
+        mask >>= 1;
+        ++shift;
+    }
+    return shift;
+}
+
+
 static void resizeProgress(float progress, void* userData)
 {
     auto* progressTracker = static_cast<ProgressTracker*>(userData);
@@ -65,22 +79,18 @@ static void hBoxBlur(
         const auto* srcRow = src + y * srcPitch;
 
         auto sum = *srcRow * (radius + 1);
-        for (int x = 1; x <= radius; ++x) {
-            const auto* srcPx = srcRow + std::min(x, w - 1);
-            sum += *srcPx;
-        }
+        for (int x = 1; x <= radius; ++x)
+            sum += srcRow[std::min(x, w - 1)];
 
         auto* dstRow = dst + y * dstPitch;
         for (int x = 0; x < w; ++x) {
-            auto* dstPx = dstRow + x;
-            *dstPx = sum / kernelSize;
+            dstRow[x] = sum / kernelSize;
 
-            const auto* addPx = (
-                srcRow + std::min(x + radius + 1, w - 1));
-            const auto* removePx = (
-                srcRow + std::max(x - radius, 0));
+            const auto addPx = (
+                srcRow[std::min(x + radius + 1, w - 1)]);
+            const auto removePx = srcRow[std::max(x - radius, 0)];
 
-            sum += *addPx - *removePx;
+            sum += addPx - removePx;
         }
 
         progressTracker.update(static_cast<float>(y) / h);
@@ -109,23 +119,19 @@ static void vBoxBlur(
         const auto* srcCol = src + x;
 
         auto sum = *srcCol * (radius + 1);
-        for (int y = 1; y <= radius; ++y) {
-            const auto* srcPx = (
-                srcCol + std::min(y, h - 1) * srcPitch);
-            sum += *srcPx;
-        }
+        for (int y = 1; y <= radius; ++y)
+            sum += srcCol[std::min(y, h - 1) * srcPitch];
 
         auto* dstCol = dst + x;
         for (int y = 0; y < h; ++y) {
-            auto* dstPx = dstCol + y * dstPitch;
-            *dstPx = sum / kernelSize;
+            dstCol[y * dstPitch] = sum / kernelSize;
 
-            const auto* addPx = (
-                srcCol + std::min(y + radius + 1, h - 1) * srcPitch);
-            const auto* removePx = (
-                srcCol + std::max(y - radius, 0) * srcPitch);
+            const auto addPx = (
+                srcCol[std::min(y + radius + 1, h - 1) * srcPitch]);
+            const auto removePx = (
+                srcCol[std::max(y - radius, 0) * srcPitch]);
 
-            sum += *addPx - *removePx;
+            sum += addPx - removePx;
         }
 
         progressTracker.update(static_cast<float>(x) / w);
@@ -187,23 +193,19 @@ static void unsharp(
     progressTracker.advanceJob();
 
     for (int y = 0; y < h; ++y) {
-        const auto* srcPx = src + y * srcPitch;
-        const auto* blurredPx = blurred + y * blurredPitch;
-        auto* dstPx = dst + y * dstPitch;
+        const auto* srcRow = src + y * srcPitch;
+        const auto* blurredRow = blurred + y * blurredPitch;
+        auto* dstRow = dst + y * dstPitch;
 
         for (int x = 0; x < w; ++x) {
-            const auto diff = *srcPx - *blurredPx;
-            int value = *srcPx + diff * amount;
+            const auto diff = srcRow[x] - blurredRow[x];
+            auto value = srcRow[x] + static_cast<int>(diff * amount);
             if (value < 0)
                 value = 0;
             else if (value > 255)
                 value = 255;
 
-            *dstPx = value;
-
-            ++srcPx;
-            ++blurredPx;
-            ++dstPx;
+            dstRow[x] = value;
         }
 
         progressTracker.update(static_cast<float>(y) / h);

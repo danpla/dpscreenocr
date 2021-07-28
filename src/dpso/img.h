@@ -13,18 +13,7 @@ class ProgressTracker;
 namespace img {
 
 
-inline unsigned getMaskRightShift(unsigned mask)
-{
-    if (mask == 0)
-        return 0;
-
-    unsigned shift = 0;
-    while (!(mask & 1)) {
-        mask >>= 1;
-        ++shift;
-    }
-    return shift;
-}
+unsigned getMaskRightShift(unsigned mask);
 
 
 inline std::uint8_t expandTo8Bit(std::uint8_t c, unsigned numBits)
