@@ -41,10 +41,6 @@ const char* dpsoStrNamedFormat(
 
 #ifdef __cplusplus
 }
-#endif
-
-
-#ifdef __cplusplus
 
 
 #include <initializer_list>
