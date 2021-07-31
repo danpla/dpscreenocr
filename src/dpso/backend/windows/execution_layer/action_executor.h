@@ -65,7 +65,7 @@ private:
 // Overload for callables that return nothing.
 template<typename CallableT>
 auto execute(ActionExecutor& executor, CallableT callable)
-    -> typename std::enable_if<std::is_same<decltype(callable()), void>::value>::type
+    -> typename std::enable_if<std::is_void<decltype(callable())>::value>::type
 {
     struct CallableAction : Action {
         explicit CallableAction(CallableT callable)
@@ -89,7 +89,7 @@ auto execute(ActionExecutor& executor, CallableT callable)
 // Overload for callables that return a value.
 template<typename CallableT>
 auto execute(ActionExecutor& executor, CallableT callable)
-    -> typename std::enable_if<!std::is_same<decltype(callable()), void>::value, decltype(callable())>::type
+    -> typename std::enable_if<!std::is_void<decltype(callable())>::value, decltype(callable())>::type
 {
     struct CallableAction : Action {
         explicit CallableAction(CallableT callable)
@@ -103,8 +103,8 @@ auto execute(ActionExecutor& executor, CallableT callable)
             result = callable();
         }
 
-        decltype(callable()) result;
         CallableT callable;
+        decltype(callable()) result;
     } action (callable);
 
     executor.execute(action);
