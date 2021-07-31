@@ -3,13 +3,17 @@
 
 #include <cstdio>
 
+#include <QAction>
 #include <QApplication>
+#include <QCheckBox>
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
+#include <QTabWidget>
 #include <QTimerEvent>
 #include <QVBoxLayout>
 

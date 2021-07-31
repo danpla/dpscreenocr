@@ -3,16 +3,17 @@
 
 #include <string>
 
-#include <QAction>
-#include <QCheckBox>
-#include <QLabel>
-#include <QString>
 #include <QSystemTrayIcon>
-#include <QTabWidget>
 #include <QWidget>
 
 #include "status.h"
 
+
+class QAction;
+class QCheckBox;
+class QLabel;
+class QSystemTrayIcon;
+class QTabWidget;
 
 class ActionChooser;
 class History;

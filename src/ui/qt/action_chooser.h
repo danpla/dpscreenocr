@@ -1,11 +1,12 @@
 
 #pragma once
 
-#include <QCheckBox>
 #include <QFlags>
-#include <QLineEdit>
-#include <QString>
 #include <QWidget>
+
+
+class QCheckBox;
+class QLineEdit;
 
 
 class ActionChooser : public QWidget {

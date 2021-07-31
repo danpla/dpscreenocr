@@ -1,12 +1,14 @@
 
 #pragma once
 
-#include <QCheckBox>
-#include <QComboBox>
 #include <QVector>
 #include <QWidget>
 
 #include "dpso/dpso.h"
+
+
+class QCheckBox;
+class QComboBox;
 
 
 /**

@@ -1,8 +1,10 @@
+
 #pragma once
 
-#include <QFont>
 #include <QIcon>
-#include <QWidget>
+
+
+class QWidget;
 
 
 QIcon getIcon(const QString &name);

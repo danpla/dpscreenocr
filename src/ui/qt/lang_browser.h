@@ -2,7 +2,9 @@
 #pragma once
 
 #include <QTreeWidget>
-#include <QTreeWidgetItem>
+
+
+class QTreeWidgetItem;
 
 
 class LangBrowser : public QTreeWidget {

@@ -1,9 +1,10 @@
 
 #include "utils.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QFont>
 #include <QMessageBox>
 #include <QPushButton>
 

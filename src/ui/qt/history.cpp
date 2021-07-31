@@ -1,9 +1,12 @@
 
 #include "history.h"
 
+#include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
 #include <QHBoxLayout>
+#include <QPushButton>
+#include <QTextEdit>
 #include <QVBoxLayout>
 
 #include "dpso_intl/dpso_intl.h"

@@ -1,10 +1,12 @@
 
 #include "action_chooser.h"
 
+#include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QHBoxLayout>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
 

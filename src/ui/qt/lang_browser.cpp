@@ -2,6 +2,7 @@
 #include "lang_browser.h"
 
 #include <QHeaderView>
+#include <QTreeWidgetItem>
 
 #include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"

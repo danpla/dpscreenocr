@@ -2,6 +2,8 @@
 #include "hotkey_editor.h"
 
 #include <QBoxLayout>
+#include <QCheckBox>
+#include <QComboBox>
 
 #include "dpso_intl/dpso_intl.h"
 

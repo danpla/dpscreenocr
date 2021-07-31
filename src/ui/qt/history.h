@@ -1,10 +1,14 @@
 
 #pragma once
 
-#include <QCheckBox>
-#include <QPushButton>
-#include <QTextEdit>
+#include <QTextBlockFormat>
+#include <QTextCharFormat>
 #include <QWidget>
+
+
+class QCheckBox;
+class QPushButton;
+class QTextEdit;
 
 
 class History : public QWidget {
