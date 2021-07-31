@@ -25,7 +25,7 @@ public:
 
     void update() override;
 private:
-    BgThreadActionExecutor actionExecutor;
+    std::unique_ptr<ActionExecutor> actionExecutor;
 
     std::unique_ptr<Backend> backend;
 

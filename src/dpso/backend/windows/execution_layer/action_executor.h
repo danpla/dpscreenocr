@@ -1,11 +1,7 @@
 
 #pragma once
 
-#include <condition_variable>
-#include <exception>
 #include <memory>
-#include <mutex>
-#include <thread>
 #include <type_traits>
 #include <utility>
 
@@ -43,23 +39,7 @@ public:
 };
 
 
-class BgThreadActionExecutor : public ActionExecutor {
-public:
-    BgThreadActionExecutor();
-    ~BgThreadActionExecutor();
-
-    void execute(Action& action) override;
-private:
-    std::thread thread;
-    std::condition_variable condVar;
-    std::mutex mutex;
-
-    bool terminate;
-    Action* currentAction;
-    std::exception_ptr actionException;
-
-    void threadLoop();
-};
+std::unique_ptr<ActionExecutor> createBgThreadActionExecutor();
 
 
 // Overload for callables that return nothing.

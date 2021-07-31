@@ -9,14 +9,14 @@ namespace backend {
 
 
 BackendExecutor::BackendExecutor(CreatorFn creatorFn)
-    : actionExecutor{}
+    : actionExecutor{createBgThreadActionExecutor()}
     , backend{
-        execute(actionExecutor, [&creatorFn](){
+        execute(*actionExecutor, [&creatorFn](){
             return creatorFn();
         })
     }
-    , keyManagerExecutor{backend->getKeyManager(), actionExecutor}
-    , selectionExecutor{backend->getSelection(), actionExecutor}
+    , keyManagerExecutor{backend->getKeyManager(), *actionExecutor}
+    , selectionExecutor{backend->getSelection(), *actionExecutor}
 {
 
 }
@@ -24,7 +24,7 @@ BackendExecutor::BackendExecutor(CreatorFn creatorFn)
 
 BackendExecutor::~BackendExecutor()
 {
-    execute(actionExecutor, [this](){
+    execute(*actionExecutor, [this](){
         backend.reset();
     });
 }
@@ -52,7 +52,7 @@ std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
 
 void BackendExecutor::update()
 {
-    execute(actionExecutor, [this](){ backend->update(); });
+    execute(*actionExecutor, [this](){ backend->update(); });
 }
 
 

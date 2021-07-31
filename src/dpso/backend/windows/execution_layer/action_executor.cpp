@@ -1,10 +1,37 @@
 
 #include "backend/windows/execution_layer/action_executor.h"
 
+#include <condition_variable>
+#include <exception>
+#include <mutex>
+#include <thread>
+
 
 namespace dpso {
 namespace backend {
+namespace {
 
+
+class BgThreadActionExecutor : public ActionExecutor {
+public:
+    BgThreadActionExecutor();
+    ~BgThreadActionExecutor();
+
+    void execute(Action& action) override;
+private:
+    std::thread thread;
+    std::condition_variable condVar;
+    std::mutex mutex;
+
+    bool terminate;
+    Action* currentAction;
+    std::exception_ptr actionException;
+
+    void threadLoop();
+};
+
+
+}
 
 BgThreadActionExecutor::BgThreadActionExecutor()
     : thread{}
@@ -66,6 +93,13 @@ void BgThreadActionExecutor::threadLoop()
         lock.unlock();
         condVar.notify_one();
     }
+}
+
+
+std::unique_ptr<ActionExecutor> createBgThreadActionExecutor()
+{
+    return std::unique_ptr<ActionExecutor>(
+        new BgThreadActionExecutor());
 }
 
 
