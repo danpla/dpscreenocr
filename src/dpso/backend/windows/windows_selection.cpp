@@ -1,7 +1,7 @@
 
 #include "backend/windows/windows_selection.h"
 
-#include "backend/error.h"
+#include "backend/backend_error.h"
 
 
 // We use window regions (SetWindowRgn()) for selection.

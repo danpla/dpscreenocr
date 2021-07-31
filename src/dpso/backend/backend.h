@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "backend/error.h"
+#include "backend/backend_error.h"
 
 
 namespace dpso {
