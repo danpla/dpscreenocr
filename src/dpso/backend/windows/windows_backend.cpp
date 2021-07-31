@@ -116,12 +116,11 @@ void WindowsBackend::update()
 
 std::unique_ptr<Backend> Backend::create()
 {
-    return std::unique_ptr<Backend>(
-        new BackendExecutor(
-            *[]()
-            {
-                return std::unique_ptr<Backend>(new WindowsBackend());
-            }));
+    return createBackendExecutor(
+        *[]()
+        {
+            return std::unique_ptr<Backend>(new WindowsBackend());
+        });
 }
 
 }
