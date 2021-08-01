@@ -19,7 +19,7 @@ ProgressTracker::ProgressTracker(
         ProgressFn progressFn,
         void* userData,
         float sensitivity)
-    : ProgressTracker(numJobs)
+    : ProgressTracker{numJobs}
 {
     this->progressFn = progressFn ? progressFn : nullProgressFn;
     this->userData = userData;
@@ -30,7 +30,7 @@ ProgressTracker::ProgressTracker(
 ProgressTracker::ProgressTracker(
         int numJobs,
         ProgressTracker* parent)
-    : ProgressTracker(numJobs)
+    : ProgressTracker{numJobs}
 {
     this->parent = parent;
 }

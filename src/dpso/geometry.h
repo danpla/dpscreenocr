@@ -12,7 +12,7 @@ struct Point {
     int y;
 
     Point()
-        : Point(0, 0)
+        : Point{0, 0}
     {
 
     }
@@ -31,7 +31,7 @@ struct Side {
     int size;
 
     Side()
-        : Side(0, 0)
+        : Side{0, 0}
     {
 
     }
@@ -57,7 +57,7 @@ struct Rect {
     int h;
 
     Rect()
-        : Rect(0, 0, 0, 0)
+        : Rect{0, 0, 0, 0}
     {
 
     }
@@ -72,13 +72,13 @@ struct Rect {
     }
 
     Rect(const Side& x, const Side& y)
-        : Rect(x.start, y.start, x.size, y.size)
+        : Rect{x.start, y.start, x.size, y.size}
     {
 
     }
 
     explicit Rect(const DpsoRect& cRect)
-        : Rect(cRect.x, cRect.y, cRect.w, cRect.h)
+        : Rect{cRect.x, cRect.y, cRect.w, cRect.h}
     {
 
     }
