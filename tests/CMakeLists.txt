@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dpScreenOCR-Tests)
 
-set(PLATFORM_SPECIFIC_SRCS)
+set(PLATFORM_SRCS)
 if(WIN32)
-    list(APPEND PLATFORM_SPECIFIC_SRCS test_windows_utils.cpp)
+    list(APPEND PLATFORM_SRCS test_windows_utils.cpp)
 endif()
 
 add_executable(
@@ -21,7 +21,7 @@ add_executable(
     test_tesseract_utils.cpp
     utils.cpp
 
-    ${PLATFORM_SPECIFIC_SRCS}
+    ${PLATFORM_SRCS}
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
@@ -29,6 +29,16 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     target_compile_options(
         tests
         PRIVATE -std=c++11 -Wall -Wextra -pedantic
+    )
+endif()
+
+if(NOT TARGET dpso)
+    add_subdirectory(../src/dpso ${CMAKE_BINARY_DIR}/src/dpso)
+endif()
+
+if(NOT TARGET dpso_utils)
+    add_subdirectory(
+        ../src/dpso_utils ${CMAKE_BINARY_DIR}/src/dpso_utils
     )
 endif()
 
@@ -41,16 +51,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     target_compile_options(
         test_c_compilation
         PRIVATE -std=c89 -Wall -Wextra -pedantic -Wstrict-prototypes
-    )
-endif()
-
-if(NOT TARGET dpso)
-    add_subdirectory(../src/dpso ${CMAKE_BINARY_DIR}/src/dpso)
-endif()
-
-if(NOT TARGET dpso_utils)
-    add_subdirectory(
-        ../src/dpso_utils ${CMAKE_BINARY_DIR}/src/dpso_utils
     )
 endif()
 
