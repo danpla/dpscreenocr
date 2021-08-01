@@ -40,11 +40,5 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     )
 endif()
 
-set_target_properties(
-    common
-    PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-)
-
 target_include_directories(common PRIVATE . PUBLIC ..)
 target_link_libraries(common dpso)

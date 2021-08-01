@@ -72,12 +72,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     )
 endif()
 
-set_target_properties(
-    dpso
-    PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-)
-
 target_include_directories(dpso PRIVATE . PUBLIC ..)
 
 add_subdirectory(
