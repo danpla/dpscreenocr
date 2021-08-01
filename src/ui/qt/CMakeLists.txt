@@ -40,7 +40,9 @@ set(
 )
 
 if(WIN32)
-    add_subdirectory(../windows_rc ${CMAKE_BINARY_DIR}/windows_rc)
+    add_subdirectory(
+        ../windows_rc ${CMAKE_BINARY_DIR}/src/ui/windows_rc
+    )
     list(APPEND SRCS $<TARGET_OBJECTS:windows_rc>)
 endif()
 
@@ -55,15 +57,19 @@ endif()
 
 # Add libraries early to avoid AUTOMOC
 if(NOT TARGET common)
-    add_subdirectory(../common ${CMAKE_BINARY_DIR}/common)
+    add_subdirectory(../common ${CMAKE_BINARY_DIR}/src/ui/common)
 endif()
 
 if(NOT TARGET dpso_intl)
-    add_subdirectory(../../dpso_intl ${CMAKE_BINARY_DIR}/dpso_intl)
+    add_subdirectory(
+        ../../dpso_intl ${CMAKE_BINARY_DIR}/src/dpso_intl
+    )
 endif()
 
 if(NOT TARGET dpso_utils)
-    add_subdirectory(../../dpso_utils ${CMAKE_BINARY_DIR}/dpso_utils)
+    add_subdirectory(
+        ../../dpso_utils ${CMAKE_BINARY_DIR}/src/dpso_utils
+    )
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

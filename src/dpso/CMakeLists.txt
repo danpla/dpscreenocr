@@ -82,7 +82,7 @@ target_include_directories(dpso PRIVATE . PUBLIC ..)
 
 add_subdirectory(
     ../thirdparty/stb_image_resize
-    ${CMAKE_CURRENT_BINARY_DIR}/stb_image_resize
+    ${CMAKE_CURRENT_BINARY_DIR}/src/thirdparty/stb_image_resize
 )
 target_link_libraries(dpso stb_image_resize)
 

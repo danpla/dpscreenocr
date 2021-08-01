@@ -21,6 +21,6 @@ set_target_properties(
 target_include_directories(dpso-example PRIVATE .)
 
 if(NOT TARGET dpso)
-    add_subdirectory(../dpso ${CMAKE_BINARY_DIR}/dpso)
+    add_subdirectory(../dpso ${CMAKE_BINARY_DIR}/src/dpso)
 endif()
 target_link_libraries(dpso-example dpso)
