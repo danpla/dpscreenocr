@@ -3,8 +3,6 @@
 
 #include <memory>
 
-#include "backend/backend_error.h"
-
 
 namespace dpso {
 

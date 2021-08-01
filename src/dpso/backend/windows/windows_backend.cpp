@@ -4,11 +4,12 @@
 #include <windows.h>
 
 #include "backend/backend.h"
+#include "backend/backend_error.h"
 #include "backend/windows/execution_layer/backend_executor.h"
+#include "backend/windows/utils.h"
 #include "backend/windows/windows_key_manager.h"
 #include "backend/windows/windows_screenshot.h"
 #include "backend/windows/windows_selection.h"
-#include "backend/windows/utils.h"
 
 
 namespace dpso {
