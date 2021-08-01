@@ -2,6 +2,7 @@
 #include <X11/Xlib.h>
 
 #include "backend/backend.h"
+#include "backend/backend_error.h"
 #include "backend/x11/x11_key_manager.h"
 #include "backend/x11/x11_screenshot.h"
 #include "backend/x11/x11_selection.h"
