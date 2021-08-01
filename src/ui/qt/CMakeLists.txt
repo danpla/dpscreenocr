@@ -75,10 +75,10 @@ endif()
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-add_executable(dpscreenocr-qt ${SRCS})
+add_executable(dpscreenocr_qt ${SRCS})
 
 target_compile_definitions(
-    dpscreenocr-qt
+    dpscreenocr_qt
     PRIVATE
     DPSO_QT_LOCAL_DATA=$<BOOL:${DPSO_QT_LOCAL_DATA}>
 )
@@ -86,13 +86,13 @@ target_compile_definitions(
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpscreenocr-qt
+        dpscreenocr_qt
         PRIVATE -std=c++11 -Wall -Wextra -pedantic
     )
 endif()
 
 set_target_properties(
-    dpscreenocr-qt
+    dpscreenocr_qt
     PROPERTIES
     OUTPUT_NAME "dpscreenocr"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
@@ -101,19 +101,19 @@ set_target_properties(
 if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     # Hide console window.
     set_target_properties(
-        dpscreenocr-qt
+        dpscreenocr_qt
         PROPERTIES
         WIN32_EXECUTABLE TRUE
     )
 endif()
 
-target_link_libraries(dpscreenocr-qt common dpso dpso_utils dpso_intl)
+target_link_libraries(dpscreenocr_qt common dpso dpso_utils dpso_intl)
 
 if(DPSO_QT_VERSION EQUAL 4)
-    target_link_libraries(dpscreenocr-qt Qt4::QtCore Qt4::QtGui)
+    target_link_libraries(dpscreenocr_qt Qt4::QtCore Qt4::QtGui)
 else()
     target_link_libraries(
-        dpscreenocr-qt Qt5::Core Qt5::Gui Qt5::Widgets
+        dpscreenocr_qt Qt5::Core Qt5::Gui Qt5::Widgets
     )
 endif()
 
@@ -121,24 +121,24 @@ if(NOT DPSO_QT_VERSION EQUAL 4
         AND DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
     target_compile_definitions(
-        dpscreenocr-qt
+        dpscreenocr_qt
         PRIVATE
         DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1
     )
 
     find_package(Qt5X11Extras REQUIRED)
-    target_link_libraries(dpscreenocr-qt Qt5::X11Extras)
+    target_link_libraries(dpscreenocr_qt Qt5::X11Extras)
 
     find_package(X11 REQUIRED)
     target_include_directories(
-        dpscreenocr-qt
+        dpscreenocr_qt
         PRIVATE
         ${X11_INCLUDE_DIR}
     )
-    target_link_libraries(dpscreenocr-qt ${X11_LIBRARIES})
+    target_link_libraries(dpscreenocr_qt ${X11_LIBRARIES})
 else()
     target_compile_definitions(
-        dpscreenocr-qt
+        dpscreenocr_qt
         PRIVATE
         DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=0
     )

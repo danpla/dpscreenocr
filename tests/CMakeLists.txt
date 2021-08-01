@@ -34,12 +34,12 @@ endif()
 
 target_link_libraries(tests dpso dpso_utils)
 
-add_executable(test-c-compilation test_c_compilation.c)
+add_executable(test_c_compilation test_c_compilation.c)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        test-c-compilation
+        test_c_compilation
         PRIVATE -std=c89 -Wall -Wextra -pedantic -Wstrict-prototypes
     )
 endif()
@@ -61,4 +61,4 @@ if(NOT TARGET common)
     )
 endif()
 
-target_link_libraries(test-c-compilation dpso dpso_utils common)
+target_link_libraries(test_c_compilation dpso dpso_utils common)
