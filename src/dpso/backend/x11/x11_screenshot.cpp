@@ -93,13 +93,9 @@ void X11Screenshot::getGrayscaleData(std::uint8_t* buf, int pitch) const
     auto gShift = img::getMaskRightShift(image->green_mask);
     auto bShift = img::getMaskRightShift(image->blue_mask);
 
-    if (image->depth == 30) {
-        rShift >>= 2;
-        gShift >>= 2;
-        bShift >>= 2;
-    }
-
     if (image->bits_per_pixel == 32) {
+        const auto cDiv = image->depth == 30 ? 4 : 1;
+
         for (int y = 0; y < image->height; ++y) {
             const auto* srcRow = (
                 reinterpret_cast<std::uint8_t*>(image->data)
@@ -122,9 +118,12 @@ void X11Screenshot::getGrayscaleData(std::uint8_t* buf, int pitch) const
                         | srcRow[3]);
                 srcRow += 4;
 
-                const auto r = (px & image->red_mask) >> rShift;
-                const auto g = (px & image->green_mask) >> gShift;
-                const auto b = (px & image->blue_mask) >> bShift;
+                const auto r = (
+                    ((px & image->red_mask) >> rShift) / cDiv);
+                const auto g = (
+                    ((px & image->green_mask) >> gShift) / cDiv);
+                const auto b = (
+                    ((px & image->blue_mask) >> bShift) / cDiv);
 
                 dstRow[x] = img::rgbToGray(r, g, b);
             }
