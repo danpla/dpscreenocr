@@ -17,9 +17,6 @@ struct Rect;
 namespace backend {
 
 
-class Screenshot;
-
-
 std::unique_ptr<Screenshot> takeX11Screenshot(
     Display* display, const Rect& rect);
 
