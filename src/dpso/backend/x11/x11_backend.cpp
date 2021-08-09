@@ -67,7 +67,7 @@ Selection& X11Backend::getSelection()
 
 std::unique_ptr<Screenshot> X11Backend::takeScreenshot(const Rect& rect)
 {
-    return X11Screenshot::take(display.get(), rect);
+    return takeX11Screenshot(display.get(), rect);
 }
 
 

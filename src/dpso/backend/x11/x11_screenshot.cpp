@@ -5,6 +5,7 @@
 
 #include <X11/Xutil.h>
 
+#include "geometry.h"
 #include "img.h"
 
 
@@ -29,34 +30,23 @@
 
 namespace dpso {
 namespace backend {
+namespace {
 
 
-std::unique_ptr<X11Screenshot> X11Screenshot::take(
-    Display* display, const Rect& rect)
-{
-    auto* screen = XDefaultScreenOfDisplay(display);
-    const Rect screenRect{
-        0, 0, XWidthOfScreen(screen), XHeightOfScreen(screen)
-    };
-    const auto captureRect = getIntersection(rect, screenRect);
-    if (isEmpty(captureRect))
-        return nullptr;
+class X11Screenshot : public Screenshot {
+public:
+    explicit X11Screenshot(XImage* image);
+    ~X11Screenshot();
 
-    auto* image = XGetImage(
-        display,
-        XDefaultRootWindow(display),
-        captureRect.x,
-        captureRect.y,
-        captureRect.w,
-        captureRect.h,
-        AllPlanes,
-        ZPixmap);
+    int getWidth() const override;
+    int getHeight() const override;
 
-    if (image)
-        return std::unique_ptr<X11Screenshot>(
-            new X11Screenshot(image));
-    else
-        return nullptr;
+    void getGrayscaleData(std::uint8_t* buf, int pitch) const override;
+private:
+    XImage* image;
+};
+
+
 }
 
 
@@ -87,81 +77,127 @@ int X11Screenshot::getHeight() const
 }
 
 
-void X11Screenshot::getGrayscaleData(std::uint8_t* buf, int pitch) const
+static void getGrayscaleData32bpp(
+    const XImage& image, std::uint8_t* buf, int pitch)
 {
-    auto rShift = img::getMaskRightShift(image->red_mask);
-    auto gShift = img::getMaskRightShift(image->green_mask);
-    auto bShift = img::getMaskRightShift(image->blue_mask);
+    assert(image.bits_per_pixel == 32);
 
-    if (image->bits_per_pixel == 32) {
-        const auto cDiv = image->depth == 30 ? 4 : 1;
+    const auto rShift = img::getMaskRightShift(image.red_mask);
+    const auto gShift = img::getMaskRightShift(image.green_mask);
+    const auto bShift = img::getMaskRightShift(image.blue_mask);
 
-        for (int y = 0; y < image->height; ++y) {
-            const auto* srcRow = (
-                reinterpret_cast<std::uint8_t*>(image->data)
-                + image->bytes_per_line * y);
-            auto* dstRow = buf + pitch * y;
+    const auto cDiv = image.depth == 30 ? 4 : 1;
 
-            for (int x = 0; x < image->width; ++x) {
-                std::uint32_t px;
-                if (image->byte_order == LSBFirst)
-                    px = (
-                        static_cast<std::uint32_t>(srcRow[3]) << 24
-                        | static_cast<std::uint32_t>(srcRow[2]) << 16
-                        | static_cast<std::uint32_t>(srcRow[1]) << 8
-                        | srcRow[0]);
-                else
-                    px = (
-                        static_cast<std::uint32_t>(srcRow[0]) << 24
-                        | static_cast<std::uint32_t>(srcRow[1]) << 16
-                        | static_cast<std::uint32_t>(srcRow[2]) << 8
-                        | srcRow[3]);
-                srcRow += 4;
+    for (int y = 0; y < image.height; ++y) {
+        const auto* srcRow = (
+            reinterpret_cast<std::uint8_t*>(image.data)
+            + image.bytes_per_line * y);
+        auto* dstRow = buf + pitch * y;
 
-                const auto r = (
-                    ((px & image->red_mask) >> rShift) / cDiv);
-                const auto g = (
-                    ((px & image->green_mask) >> gShift) / cDiv);
-                const auto b = (
-                    ((px & image->blue_mask) >> bShift) / cDiv);
+        for (int x = 0; x < image.width; ++x) {
+            std::uint32_t px;
+            if (image.byte_order == LSBFirst)
+                px = (
+                    static_cast<std::uint32_t>(srcRow[3]) << 24
+                    | static_cast<std::uint32_t>(srcRow[2]) << 16
+                    | static_cast<std::uint32_t>(srcRow[1]) << 8
+                    | srcRow[0]);
+            else
+                px = (
+                    static_cast<std::uint32_t>(srcRow[0]) << 24
+                    | static_cast<std::uint32_t>(srcRow[1]) << 16
+                    | static_cast<std::uint32_t>(srcRow[2]) << 8
+                    | srcRow[3]);
+            srcRow += 4;
 
-                dstRow[x] = img::rgbToGray(r, g, b);
-            }
-        }
-    } else if (image->bits_per_pixel == 16) {
-        static const auto rBits = 5;
-        const auto gBits = image->depth == 16 ? 6 : 5;
-        static const auto bBits = 5;
+            const auto r = ((px & image.red_mask) >> rShift) / cDiv;
+            const auto g = ((px & image.green_mask) >> gShift) / cDiv;
+            const auto b = ((px & image.blue_mask) >> bShift) / cDiv;
 
-        for (int y = 0; y < image->height; ++y) {
-            const auto* srcRow = (
-                reinterpret_cast<std::uint8_t*>(image->data)
-                + image->bytes_per_line * y);
-            auto* dstRow = buf + pitch * y;
-
-            for (int x = 0; x < image->width; ++x) {
-                std::uint32_t px;
-                if (image->byte_order == LSBFirst)
-                    px = (
-                        static_cast<std::uint32_t>(srcRow[1]) << 8
-                        | srcRow[0]);
-                else
-                    px = (
-                        static_cast<std::uint32_t>(srcRow[0]) << 8
-                        | srcRow[1]);
-                srcRow += 2;
-
-                const auto r = img::expandTo8Bit(
-                    (px & image->red_mask) >> rShift, rBits);
-                const auto g = img::expandTo8Bit(
-                    (px & image->green_mask) >> gShift, gBits);
-                const auto b = img::expandTo8Bit(
-                    (px & image->blue_mask) >> bShift, bBits);
-
-                dstRow[x] = img::rgbToGray(r, g, b);
-            }
+            dstRow[x] = img::rgbToGray(r, g, b);
         }
     }
+}
+
+
+static void getGrayscaleData16bpp(
+    const XImage& image, std::uint8_t* buf, int pitch)
+{
+    assert(image.bits_per_pixel == 16);
+
+    const auto rShift = img::getMaskRightShift(image.red_mask);
+    const auto gShift = img::getMaskRightShift(image.green_mask);
+    const auto bShift = img::getMaskRightShift(image.blue_mask);
+
+    static const auto rBits = 5;
+    const auto gBits = image.depth == 16 ? 6 : 5;
+    static const auto bBits = 5;
+
+    for (int y = 0; y < image.height; ++y) {
+        const auto* srcRow = (
+            reinterpret_cast<std::uint8_t*>(image.data)
+            + image.bytes_per_line * y);
+        auto* dstRow = buf + pitch * y;
+
+        for (int x = 0; x < image.width; ++x) {
+            std::uint32_t px;
+            if (image.byte_order == LSBFirst)
+                px = (
+                    static_cast<std::uint32_t>(srcRow[1]) << 8
+                    | srcRow[0]);
+            else
+                px = (
+                    static_cast<std::uint32_t>(srcRow[0]) << 8
+                    | srcRow[1]);
+            srcRow += 2;
+
+            const auto r = img::expandTo8Bit(
+                (px & image.red_mask) >> rShift, rBits);
+            const auto g = img::expandTo8Bit(
+                (px & image.green_mask) >> gShift, gBits);
+            const auto b = img::expandTo8Bit(
+                (px & image.blue_mask) >> bShift, bBits);
+
+            dstRow[x] = img::rgbToGray(r, g, b);
+        }
+    }
+}
+
+
+void X11Screenshot::getGrayscaleData(std::uint8_t* buf, int pitch) const
+{
+    if (image->bits_per_pixel == 32)
+        getGrayscaleData32bpp(*image, buf, pitch);
+    else if (image->bits_per_pixel == 16)
+        getGrayscaleData16bpp(*image, buf, pitch);
+}
+
+
+std::unique_ptr<Screenshot> takeX11Screenshot(
+    Display* display, const Rect& rect)
+{
+    auto* screen = XDefaultScreenOfDisplay(display);
+    const Rect screenRect{
+        0, 0, XWidthOfScreen(screen), XHeightOfScreen(screen)
+    };
+    const auto captureRect = getIntersection(rect, screenRect);
+    if (isEmpty(captureRect))
+        return nullptr;
+
+    auto* image = XGetImage(
+        display,
+        XDefaultRootWindow(display),
+        captureRect.x,
+        captureRect.y,
+        captureRect.w,
+        captureRect.h,
+        AllPlanes,
+        ZPixmap);
+
+    if (!image)
+        return nullptr;
+
+    return std::unique_ptr<Screenshot>(new X11Screenshot(image));
 }
 
 

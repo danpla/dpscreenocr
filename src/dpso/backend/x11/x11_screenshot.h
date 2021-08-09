@@ -6,28 +6,22 @@
 #include <X11/Xlib.h>
 
 #include "backend/screenshot.h"
-#include "geometry.h"
 
 
 namespace dpso {
+
+
+class Rect;
+
+
 namespace backend {
 
 
-class X11Screenshot : public Screenshot {
-public:
-    static std::unique_ptr<X11Screenshot> take(Display* display, const Rect& rect);
+class Screenshot;
 
-    ~X11Screenshot();
 
-    int getWidth() const override;
-    int getHeight() const override;
-
-    void getGrayscaleData(std::uint8_t* buf, int pitch) const override;
-private:
-    XImage* image;
-
-    explicit X11Screenshot(XImage* image);
-};
+std::unique_ptr<Screenshot> takeX11Screenshot(
+    Display* display, const Rect& rect);
 
 
 }
