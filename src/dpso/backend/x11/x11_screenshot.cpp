@@ -11,7 +11,7 @@
 
 // We support the following XImage depths:
 //   * 32 (ARGB 8-8-8-8)
-//   * 30 (RGB 2-10-10-10)
+//   * 30 (XRGB 2-10-10-10)
 //   * 24 (XRGB 8-8-8-8)
 //   * 16 (RGB 5-6-5)
 //   * 15 (RGB 5-5-5)
@@ -77,16 +77,18 @@ int X11Screenshot::getHeight() const
 }
 
 
+template <typename CCTransformerT>
 static void getGrayscaleData32bpp(
-    const XImage& image, std::uint8_t* buf, int pitch)
+    const XImage& image,
+    std::uint8_t* buf,
+    int pitch,
+    CCTransformerT ccTransformer)
 {
     assert(image.bits_per_pixel == 32);
 
     const auto rShift = img::getMaskRightShift(image.red_mask);
     const auto gShift = img::getMaskRightShift(image.green_mask);
     const auto bShift = img::getMaskRightShift(image.blue_mask);
-
-    const auto cDiv = image.depth == 30 ? 4 : 1;
 
     for (int y = 0; y < image.height; ++y) {
         const auto* srcRow = (
@@ -110,9 +112,12 @@ static void getGrayscaleData32bpp(
                     | srcRow[3]);
             srcRow += 4;
 
-            const auto r = ((px & image.red_mask) >> rShift) / cDiv;
-            const auto g = ((px & image.green_mask) >> gShift) / cDiv;
-            const auto b = ((px & image.blue_mask) >> bShift) / cDiv;
+            const auto r = ccTransformer(
+                (px & image.red_mask) >> rShift);
+            const auto g = ccTransformer(
+                (px & image.green_mask) >> gShift);
+            const auto b = ccTransformer(
+                (px & image.blue_mask) >> bShift);
 
             dstRow[x] = img::rgbToGray(r, g, b);
         }
@@ -164,11 +169,25 @@ static void getGrayscaleData16bpp(
 }
 
 
-void X11Screenshot::getGrayscaleData(std::uint8_t* buf, int pitch) const
+void X11Screenshot::getGrayscaleData(
+    std::uint8_t* buf, int pitch) const
 {
-    if (image->bits_per_pixel == 32)
-        getGrayscaleData32bpp(*image, buf, pitch);
-    else if (image->bits_per_pixel == 16)
+    if (image->bits_per_pixel == 32) {
+        if (image->depth == 30)
+            getGrayscaleData32bpp(
+                *image, buf, pitch,
+                [](std::uint32_t c)
+                {
+                    return c / 4;
+                });
+        else
+            getGrayscaleData32bpp(
+                *image, buf, pitch,
+                [](std::uint32_t c)
+                {
+                    return c;
+                });
+    } else if (image->bits_per_pixel == 16)
         getGrayscaleData16bpp(*image, buf, pitch);
 }
 
