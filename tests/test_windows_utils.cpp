@@ -12,7 +12,7 @@
 #include "utils.h"
 
 
-static void testUtfConverion(const char* utf8Str)
+static void testUtfConversion(const char* utf8Str)
 {
     using namespace dpso::windows;
 
@@ -62,7 +62,7 @@ static void testUtfConversions()
     };
 
     for (const auto* utf8Str : utf8Strings)
-        testUtfConverion(utf8Str);
+        testUtfConversion(utf8Str);
 }
 
 
