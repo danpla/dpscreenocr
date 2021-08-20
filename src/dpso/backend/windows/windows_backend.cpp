@@ -79,7 +79,7 @@ Selection& WindowsBackend::getSelection()
 std::unique_ptr<Screenshot> WindowsBackend::takeScreenshot(
     const Rect& rect)
 {
-    return WindowsScreenshot::take(rect);
+    return takeWindowsScreenshot(rect);
 }
 
 

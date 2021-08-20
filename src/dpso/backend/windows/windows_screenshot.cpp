@@ -7,15 +7,81 @@
 #include <windows.h>
 
 #include "backend/windows/utils.h"
+#include "geometry.h"
 #include "img.h"
 
 
 namespace dpso {
 namespace backend {
+namespace {
 
 
-std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
-    const Rect& rect)
+using BufPtr = std::unique_ptr<std::uint8_t[]>;
+
+
+class WindowsScreenshot : public Screenshot {
+public:
+    WindowsScreenshot(BufPtr data, int w, int h, int pitch);
+
+    int getWidth() const override;
+    int getHeight() const override;
+
+    void getGrayscaleData(
+        std::uint8_t* buf, int pitch) const override;
+private:
+    BufPtr buf;
+    int w;
+    int h;
+    int pitch;
+};
+
+
+}
+
+
+WindowsScreenshot::WindowsScreenshot(
+        BufPtr buf, int w, int h, int pitch)
+    : buf{std::move(buf)}
+    , w{w}
+    , h{h}
+    , pitch{pitch}
+{
+    assert(this->buf);
+    assert(w > 0);
+    assert(h > 0);
+    assert(pitch >= w);
+}
+
+
+int WindowsScreenshot::getWidth() const
+{
+    return w;
+}
+
+
+int WindowsScreenshot::getHeight() const
+{
+    return h;
+}
+
+
+void WindowsScreenshot::getGrayscaleData(
+    std::uint8_t* buf, int pitch) const
+{
+    for (int y = 0; y < h; ++y) {
+        const auto* srcRow = this->buf.get() + this->pitch * y;
+        auto* dstRow = buf + pitch * y;
+
+        for (int x = 0; x < w; ++x) {
+            dstRow[x] = img::rgbToGray(
+                srcRow[2], srcRow[1], srcRow[0]);
+            srcRow += 4;
+        }
+    }
+}
+
+
+std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
 {
     const Rect virtualScreenRect{
         GetSystemMetrics(SM_XVIRTUALSCREEN),
@@ -77,53 +143,8 @@ std::unique_ptr<WindowsScreenshot> WindowsScreenshot::take(
         reinterpret_cast<BITMAPINFO*>(&bi),
         DIB_RGB_COLORS);
 
-    return std::unique_ptr<WindowsScreenshot>(new WindowsScreenshot(
+    return std::unique_ptr<Screenshot>(new WindowsScreenshot(
         std::move(buf), captureRect.w, captureRect.h, pitch));
-}
-
-
-WindowsScreenshot::WindowsScreenshot(
-        BufPtr buf, int w, int h, int pitch)
-    : buf{std::move(buf)}
-    , w{w}
-    , h{h}
-    , pitch{pitch}
-{
-    assert(this->buf);
-    assert(w > 0);
-    assert(h > 0);
-    assert(pitch >= w);
-}
-
-
-int WindowsScreenshot::getWidth() const
-{
-    return w;
-}
-
-
-int WindowsScreenshot::getHeight() const
-{
-    return h;
-}
-
-
-void WindowsScreenshot::getGrayscaleData(
-    std::uint8_t* buf, int pitch) const
-{
-    for (int y = 0; y < h; ++y) {
-        const auto* srcRow = this->buf.get() + this->pitch * y;
-        auto* dstRow = buf + pitch * y;
-
-        for (int x = 0; x < w; ++x) {
-            const auto b = srcRow[0];
-            const auto g = srcRow[1];
-            const auto r = srcRow[2];
-
-            dstRow[x] = img::rgbToGray(r, g, b);
-            srcRow += 4;
-        }
-    }
 }
 
 
