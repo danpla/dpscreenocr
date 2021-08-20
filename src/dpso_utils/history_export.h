@@ -32,8 +32,8 @@ void dpsoHistoryExport(
  *
  * This function is the same as dpsoHistoryExport(), but the export
  * format is automatically detected by the file name extension,
- * ignoring case. If the extension is not known or doesn't exist,
- * plain text is used.
+ * ignoring case. If fileName has no extension or if the extension
+ * is not known, plain text is used.
  */
 void dpsoHistoryExportAuto(const char* fileName);
 
