@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include "dpso/dpso.h"
-
 
 extern int const cfgDefaultValueActionAddToHistory;
 extern int const cfgDefaultValueActionCopyToClipboard;

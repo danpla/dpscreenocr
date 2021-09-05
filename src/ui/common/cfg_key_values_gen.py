@@ -93,7 +93,7 @@ def gen_file_header(
     s = ''
 
     if file_type == FileType.HEADER:
-        s += '\n#pragma once\n'
+        s += '#pragma once\n\n'
 
     includes = None
     if file_type == FileType.HEADER:
@@ -105,12 +105,12 @@ def gen_file_header(
             includes.extend(implementation_includes)
 
     if includes:
-        s += '\n'
-
         for include in includes:
             s += '#include "{}"\n'.format(include)
 
-    return s + '\n\n'
+        s += '\n'
+
+    return s + '\n'
 
 
 def format_var(var, file_type):
@@ -135,7 +135,7 @@ def write_source(
             encoding='utf-8', newline='\n') as f:
         f.write(
             '\n/* This file was automatically generated. '
-            'Do not edit. */\n')
+            'Do not edit. */\n\n')
 
         f.write(
             gen_file_header(
@@ -162,7 +162,7 @@ def main():
     write_sources('cfg_keys', gen_cfg_key_vars(key_values.keys()))
     write_sources(
         'cfg_default_values', gen_cfg_default_value_vars(key_values),
-        header_includes=['dpso/dpso.h'])
+        implementation_includes=['dpso/dpso.h'])
 
 
 if __name__ == '__main__':

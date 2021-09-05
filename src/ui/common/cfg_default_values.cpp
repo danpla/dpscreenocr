@@ -2,6 +2,7 @@
 /* This file was automatically generated. Do not edit. */
 
 #include "cfg_default_values.h"
+#include "dpso/dpso.h"
 
 
 int const cfgDefaultValueActionAddToHistory =
