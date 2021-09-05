@@ -53,8 +53,7 @@ def gen_cfg_key_vars(keys):
 
     for key in keys:
         result.append(
-            Var(
-                'const char*',
+            Var('const char*',
                 gen_var_name(key, 'cfgKey'),
                 '"' + key + '"'))
 
@@ -69,8 +68,7 @@ def gen_cfg_default_value_vars(key_values):
             continue
 
         result.append(
-            Var(
-                value.type,
+            Var(value.type,
                 gen_var_name(key, 'cfgDefaultValue'),
                 value.initializer))
 
