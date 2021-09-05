@@ -30,36 +30,36 @@ static void exportHtml(std::FILE* fp)
     std::fputs(
         "<!DOCTYPE html>\n"
         "<html>\n"
-        "  <head>\n"
-        "    <meta charset=\"utf-8\">\n"
-        "    <title>History</title>\n"
-        "    <style>\n"
-        "      .text {\n"
-        "        margin: 1em 1em 2em;\n"
-        "        line-height: 1.6;\n"
-        "      }\n"
-        "    </style>\n"
-        "  </head>\n"
-        "  <body>\n",
+        "<head>\n"
+        "  <meta charset=\"utf-8\">\n"
+        "  <title>History</title>\n"
+        "  <style>\n"
+        "    .text {\n"
+        "      margin: 1em 1em 2em;\n"
+        "      line-height: 1.6;\n"
+        "    }\n"
+        "  </style>\n"
+        "</head>\n"
+        "<body>\n",
         fp);
 
     for (int i = 0; i < dpsoHistoryCount(); ++i) {
         if (i > 0)
-            std::fputs("    <hr>\n", fp);
+            std::fputs("  <hr>\n", fp);
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(i, &e);
 
         std::fprintf(
             fp,
-            "    <p class=\"timestamp\"><b>%s</b></p>\n",
+            "  <p class=\"timestamp\"><b>%s</b></p>\n",
             e.timestamp);
 
-        std::fputs("    <p class=\"text\">\n", fp);
+        std::fputs("  <p class=\"text\">\n", fp);
 
         const auto* s = e.text;
         while (*s) {
-            std::fputs("      ", fp);
+            std::fputs("    ", fp);
 
             while (*s) {
                 const auto c = *s;
@@ -88,11 +88,11 @@ static void exportHtml(std::FILE* fp)
             }
         }
 
-        std::fputs("    </p>\n", fp);
+        std::fputs("  </p>\n", fp);
     }
 
     std::fputs(
-        "  </body>\n"
+        "</body>\n"
         "</html>\n",
         fp);
 }
