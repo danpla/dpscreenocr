@@ -1,7 +1,7 @@
 body {
   font-family: sans-serif;
   line-height: 1.6;
-  margin: 1em;
+  margin: 0 1em;
 }
 
 table {
@@ -9,7 +9,7 @@ table {
 }
 
 td, th {
-  padding: 0.25em 0.5em;
+  padding-right: 1em;
   border-bottom: 0.1em solid #dddddd;
 }
 
