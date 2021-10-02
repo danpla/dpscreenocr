@@ -6,7 +6,6 @@
 #include "backend/screenshot.h"
 
 
-
 namespace dpso {
 
 

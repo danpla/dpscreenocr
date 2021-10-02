@@ -568,8 +568,7 @@ void MainWindow::checkResult()
             history->append(
                 results.items[i].text, results.items[i].timestamp);
 
-    if (actions & ActionChooser::Action::runExe)
-    {
+    if (actions & ActionChooser::Action::runExe) {
         const auto exePath = actionChooser->getExePath().toUtf8();
 
         for (int i = 0; i < results.numItems; ++i)
