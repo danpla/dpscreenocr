@@ -89,20 +89,11 @@ void dpsoCfgGetHotkey(
     if (!hotkey)
         return;
 
-    const DpsoHotkey noneHotkey{dpsoUnknownKey, dpsoKeyModNone};
-    const auto* fallbackHotkey = (
-        defaultHotkey ? defaultHotkey : &noneHotkey);
-
-    const auto* hotkeyStr = dpsoCfgGetStr(key, nullptr);
-
-    if (!hotkeyStr)
-        *hotkey = *fallbackHotkey;
-    else if (!*hotkeyStr)
-        *hotkey = noneHotkey;
-    else {
+    if (const auto* hotkeyStr = dpsoCfgGetStr(key, nullptr))
         dpsoHotkeyFromString(hotkeyStr, hotkey);
-        if (hotkey->key == dpsoUnknownKey)
-            *hotkey = *fallbackHotkey;
+    else {
+        const DpsoHotkey noneHotkey{dpsoUnknownKey, dpsoKeyModNone};
+        *hotkey = defaultHotkey ? *defaultHotkey : noneHotkey;
     }
 }
 
@@ -114,11 +105,5 @@ void dpsoCfgSetHotkey(
     if (!hotkey)
         return;
 
-    const char* hotkeyStr;
-    if (hotkey->key == dpsoUnknownKey)
-        hotkeyStr = "";
-    else
-        hotkeyStr = dpsoHotkeyToString(hotkey);
-
-    dpsoCfgSetStr(key, hotkeyStr);
+    dpsoCfgSetStr(key, dpsoHotkeyToString(hotkey));
 }

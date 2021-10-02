@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 #include "dpso/dpso.h"
 #include "dpso_utils/cfg_ext.h"
@@ -57,12 +58,6 @@ static void testGet(
 }
 
 
-static const char* boolToStr(bool b)
-{
-    return b ? "true" : "false";
-}
-
-
 static void testGet(
     const char* key,
     bool defaultVal,
@@ -79,10 +74,16 @@ static void testGet(
         "expected %s, got %s\n",
         lineNum,
         key,
-        boolToStr(defaultVal),
-        boolToStr(expectedVal),
-        boolToStr(gotVal));
+        test::utils::boolToStr(defaultVal).c_str(),
+        test::utils::boolToStr(expectedVal).c_str(),
+        test::utils::boolToStr(gotVal).c_str());
     test::failure();
+}
+
+
+static std::string hotkeyToStr(const DpsoHotkey& hotkey)
+{
+    return dpsoHotkeyToString(&hotkey);
 }
 
 
@@ -104,9 +105,9 @@ static void testGet(
         "expected {%s}, got {%s}\n",
         lineNum,
         key,
-        dpsoHotkeyToString(&defaultVal),
-        dpsoHotkeyToString(&expectedVal),
-        dpsoHotkeyToString(&gotVal));
+        hotkeyToStr(defaultVal).c_str(),
+        hotkeyToStr(expectedVal).c_str(),
+        hotkeyToStr(gotVal).c_str());
     test::failure();
 }
 
@@ -248,8 +249,7 @@ namespace {
 
 struct HotkeyTest {
     const char* key;
-    DpsoHotkey set;
-    DpsoHotkey get;
+    DpsoHotkey hotkey;
 };
 
 
@@ -257,33 +257,20 @@ struct HotkeyTest {
 
 
 const HotkeyTest hotkeyTests[] = {
-    {
-        "hotkey_none",
-        {dpsoUnknownKey, dpsoKeyModNone},
-        {dpsoUnknownKey, dpsoKeyModNone}
-    },
+    {"hotkey_none", {dpsoUnknownKey, dpsoKeyModNone}},
     {
         "hotkey_mods_only",
-        {dpsoUnknownKey, dpsoKeyModShift | dpsoKeyModCtrl},
-        {dpsoUnknownKey, dpsoKeyModNone}
+        {dpsoUnknownKey, dpsoKeyModShift | dpsoKeyModCtrl}
     },
-    {
-        "hotkey_key_only",
-        {dpsoKeyA, dpsoKeyModNone},
-        {dpsoKeyA, dpsoKeyModNone}
-    },
-    {
-        "hotkey",
-        {dpsoKeyA, dpsoKeyModShift | dpsoKeyModCtrl},
-        {dpsoKeyA, dpsoKeyModShift | dpsoKeyModCtrl}
-    },
+    {"hotkey_key_only", {dpsoKeyA, dpsoKeyModNone}},
+    {"hotkey", {dpsoKeyA, dpsoKeyModShift | dpsoKeyModCtrl}},
 };
 
 
 static void setHotkey()
 {
     for (const auto& test : hotkeyTests)
-        dpsoCfgSetHotkey(test.key, &test.set);
+        dpsoCfgSetHotkey(test.key, &test.hotkey);
 }
 
 
@@ -294,7 +281,7 @@ static void getHotkey()
     TEST_GET("hotkey_default", defaultHotkey, defaultHotkey);
 
     for (const auto& test : hotkeyTests)
-        TEST_GET(test.key, defaultHotkey, test.get);
+        TEST_GET(test.key, defaultHotkey, test.hotkey);
 }
 
 

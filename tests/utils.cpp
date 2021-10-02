@@ -8,6 +8,12 @@ namespace test {
 namespace utils {
 
 
+std::string boolToStr(bool b)
+{
+    return b ? "true" : "false";
+}
+
+
 std::string escapeStr(const char* str)
 {
     std::string result;
