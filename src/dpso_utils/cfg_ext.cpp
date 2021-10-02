@@ -45,17 +45,14 @@ void dpsoCfgLoadActiveLangs(
             continue;
         }
 
-        const auto* langCodeStart = s;
+        const auto* langCodeBegin = s;
         const auto* langCodeEnd = s;
 
-        while (*s && *s != langSeparator) {
+        for (; *s && *s != langSeparator; ++s)
             if (!std::isspace(*s))
                 langCodeEnd = s + 1;
 
-            ++s;
-        }
-
-        langCode.assign(langCodeStart, langCodeEnd - langCodeStart);
+        langCode.assign(langCodeBegin, langCodeEnd - langCodeBegin);
         enableLang(langCode.c_str());
     }
 }

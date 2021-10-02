@@ -175,20 +175,16 @@ void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey)
         if (!*s)
             break;
 
+        const auto* nameBegin = s;
         const auto* nameEnd = s;
-        const auto* end = s;
-        while (*end && *end != '+') {
-            if (!std::isspace(*end))
-                nameEnd = end + 1;
+        for (; *s && *s != '+'; ++s)
+            if (!std::isspace(*s))
+                nameEnd = s + 1;
 
-            ++end;
-        }
-
-        const auto mod = dpso::modFromString(s, nameEnd - s);
+        const auto mod = dpso::modFromString(
+            nameBegin, nameEnd - nameBegin);
         if (mod != dpsoKeyModNone) {
             hotkey->mods |= mod;
-
-            s = end;
 
             if (*s == '+')
                 ++s;
@@ -198,14 +194,12 @@ void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey)
 
         // The current substring is not a valid modifier, so
         // consume the rest of the string and assume it's a key.
-        while (*end) {
-            if (!std::isspace(*end))
-                nameEnd = end + 1;
+        for (; *s; ++s)
+            if (!std::isspace(*s))
+                nameEnd = s + 1;
 
-            ++end;
-        }
-
-        hotkey->key = dpso::keyFromString(s, nameEnd - s);
+        hotkey->key = dpso::keyFromString(
+            nameBegin, nameEnd - nameBegin);
         break;
     }
 }

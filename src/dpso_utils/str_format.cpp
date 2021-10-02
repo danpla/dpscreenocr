@@ -32,12 +32,11 @@ const char* dpsoStrNamedFormat(
             ++s;
 
             if (*s == '{') {
-                result += *s;
-                ++s;
+                result += *s++;
                 continue;
             }
 
-            const auto* nameStart = s;
+            const auto* nameBegin = s;
             while (*s && *s != '{' && *s != '}')
                 ++s;
             const auto* nameEnd = s;
@@ -46,20 +45,20 @@ const char* dpsoStrNamedFormat(
                 ++s;
 
                 const auto* argStr = lookupArg(
-                    nameStart, nameEnd - nameStart,
+                    nameBegin, nameEnd - nameBegin,
                     args, numArgs);
                 if (argStr)
                     result += argStr;
                 else {
                     // If no arg with such name found, leave it as is.
                     result += '{';
-                    result.append(nameStart, nameEnd - nameStart);
+                    result.append(nameBegin, nameEnd - nameBegin);
                     result += '}';
                 }
             } else {
                 // No closing } or unexpected {
                 result += '{';
-                result += nameStart;
+                result += nameBegin;
                 break;
             }
         } else if (*s == '}') {
@@ -72,10 +71,8 @@ const char* dpsoStrNamedFormat(
                 result += s;
                 break;
             }
-        } else {
-            result += *s;
-            ++s;
-        }
+        } else
+            result += *s++;
     }
 
     return result.c_str();

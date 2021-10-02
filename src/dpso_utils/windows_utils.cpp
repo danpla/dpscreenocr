@@ -90,8 +90,7 @@ static void appendArgEscaped(std::string& s, const char* arg)
             ++arg;
         }
 
-        const auto c = *arg;
-        ++arg;
+        const auto c = *arg++;
 
         // Escape quotes and double their preceding backslashes.
         if (!c) {

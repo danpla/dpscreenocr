@@ -62,8 +62,7 @@ static void exportHtml(std::FILE* fp)
             std::fputs("    ", fp);
 
             while (*s) {
-                const auto c = *s;
-                ++s;
+                const auto c = *s++;
 
                 switch (c) {
                     case '\n':
@@ -117,8 +116,7 @@ static void exportJson(std::FILE* fp)
         std::fputs("    \"text\": \"", fp);
         const auto* s = e.text;
         while (*s) {
-            const auto c = *s;
-            ++s;
+            const auto c = *s++;
 
             switch (c) {
                 case '\b':

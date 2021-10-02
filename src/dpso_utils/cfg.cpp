@@ -83,12 +83,9 @@ static void getKeyValueBounds(
 
     valueEnd = valueBegin;
     const auto* end = valueBegin;
-    while (*end) {
+    for (; *end; ++end)
         if (!std::isspace(*end))
             valueEnd = end + 1;
-
-        ++end;
-    }
 }
 
 
@@ -99,12 +96,10 @@ static void assignUnescaped(
 
     const auto* s = valueBegin;
     while (s < valueEnd) {
-        const auto c = *s;
-        ++s;
+        const auto c = *s++;
 
         if (c == '\\' && *s) {
-            const auto e = *s;
-            ++s;
+            const auto e = *s++;
 
             switch (e) {
                 case 'b':
@@ -224,8 +219,7 @@ static void writeKeyValue(
 
     const auto* s = kv.value.c_str();
     while (*s) {
-        const auto c = *s;
-        ++s;
+        const auto c = *s++;
 
         switch (c) {
             case '\b':
