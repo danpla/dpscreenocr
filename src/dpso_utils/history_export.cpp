@@ -9,6 +9,37 @@
 #include "os.h"
 
 
+DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
+    const char* fileName,
+    DpsoHistoryExportFormat defaultExportFormat)
+{
+    struct Extension {
+        const char* str;
+        DpsoHistoryExportFormat format;
+    };
+
+    static const Extension extensions[] = {
+        {".txt", dpsoHistoryExportFormatPlainText},
+        {".html", dpsoHistoryExportFormatHtml},
+        {".htm", dpsoHistoryExportFormatHtml},
+        {".json", dpsoHistoryExportFormatJson},
+    };
+
+    const auto* ext = std::strrchr(fileName, '.');
+    if (ext
+            // A leading period denotes a "hidden" file on Unix-like
+            // systems. We follow this convention on all platforms.
+            && ext != fileName
+            && !std::strchr(dpso::dirSeparators, ext[-1]))
+        for (const auto& e : extensions)
+            if (dpso::str::cmp(
+                    ext, e.str, dpso::str::cmpIgnoreCase) == 0)
+                return e.format;
+
+    return defaultExportFormat;
+}
+
+
 static void exportPlainText(std::FILE* fp)
 {
     for (int i = 0; i < dpsoHistoryCount(); ++i) {
@@ -151,37 +182,6 @@ static void exportJson(std::FILE* fp)
     }
 
     std::fputs("]\n", fp);
-}
-
-
-DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
-    const char* fileName,
-    DpsoHistoryExportFormat defaultExportFormat)
-{
-    struct Extension {
-        const char* str;
-        DpsoHistoryExportFormat format;
-    };
-
-    static const Extension extensions[] = {
-        {".txt", dpsoHistoryExportFormatPlainText},
-        {".html", dpsoHistoryExportFormatHtml},
-        {".htm", dpsoHistoryExportFormatHtml},
-        {".json", dpsoHistoryExportFormatJson},
-    };
-
-    const auto* ext = std::strrchr(fileName, '.');
-    if (ext
-            // A leading period denotes a "hidden" file on Unix-like
-            // systems. We follow this convention on all platforms.
-            && ext != fileName
-            && !std::strchr(dpso::dirSeparators, ext[-1]))
-        for (const auto& e : extensions)
-            if (dpso::str::cmp(
-                    ext, e.str, dpso::str::cmpIgnoreCase) == 0)
-                return e.format;
-
-    return defaultExportFormat;
 }
 
 
