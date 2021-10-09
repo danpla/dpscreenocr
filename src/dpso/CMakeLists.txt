@@ -108,7 +108,8 @@ if(PKG_CONFIG_FOUND)
 endif()
 
 if(NOT TESSERACT_FOUND)
-    # An old OS distributive
+    # No pkg-config or an old Tesseract version that doesn't provide
+    # a .pc file.
     if(NOT EXISTS "/usr/include/tesseract")
         message(SEND_ERROR "Tesseract is not found")
     endif()

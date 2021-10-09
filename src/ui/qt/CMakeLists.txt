@@ -6,7 +6,7 @@ set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4 or 5")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5)
 option(
     DPSO_QT_LOCAL_DATA
-    "Allow to load data (e.g. locales) from the Qt executable's dir"
+    "Allow to load data (e.g. locales) from the executable's dir"
     YES
 )
 
