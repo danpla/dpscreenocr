@@ -154,6 +154,37 @@ static void exportJson(std::FILE* fp)
 }
 
 
+DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
+    const char* fileName,
+    DpsoHistoryExportFormat defaultExportFormat)
+{
+    struct Extension {
+        const char* str;
+        DpsoHistoryExportFormat format;
+    };
+
+    static const Extension extensions[] = {
+        {".txt", dpsoHistoryExportFormatPlainText},
+        {".html", dpsoHistoryExportFormatHtml},
+        {".htm", dpsoHistoryExportFormatHtml},
+        {".json", dpsoHistoryExportFormatJson},
+    };
+
+    const auto* ext = std::strrchr(fileName, '.');
+    if (ext
+            // A leading period denotes a "hidden" file on Unix-like
+            // systems. We follow this convention on all platforms.
+            && ext != fileName
+            && !std::strchr(dpso::dirSeparators, ext[-1]))
+        for (const auto& e : extensions)
+            if (dpso::str::cmp(
+                    ext, e.str, dpso::str::cmpIgnoreCase) == 0)
+                return e.format;
+
+    return defaultExportFormat;
+}
+
+
 void dpsoHistoryExport(
     const char* fileName, DpsoHistoryExportFormat exportFormat)
 {
@@ -179,43 +210,4 @@ void dpsoHistoryExport(
     }
 
     std::fclose(fp);
-}
-
-
-static DpsoHistoryExportFormat getExportFormatForFileName(
-    const char* fileName)
-{
-    struct Extension {
-        const char* str;
-        DpsoHistoryExportFormat format;
-    };
-
-    // Plain text is not listed here as it's a fallback format
-    static const Extension extensions[] = {
-        {".html", dpsoHistoryExportFormatHtml},
-        {".htm", dpsoHistoryExportFormatHtml},
-        {".json", dpsoHistoryExportFormatJson},
-    };
-
-    const auto* ext = std::strrchr(fileName, '.');
-    if (ext
-            && (ext == fileName
-                || std::strchr(dpso::dirSeparators, ext[-1])))
-        // A leading period denotes a "hidden" file on Unix-like
-        // systems. We follow this convention on all platforms.
-        ext = nullptr;
-
-    if (ext)
-        for (const auto& e : extensions)
-            if (dpso::str::cmp(
-                    ext, e.str, dpso::str::cmpIgnoreCase) == 0)
-                return e.format;
-
-    return dpsoHistoryExportFormatPlainText;
-}
-
-
-void dpsoHistoryExportAuto(const char* fileName)
-{
-    dpsoHistoryExport(fileName, getExportFormatForFileName(fileName));
 }

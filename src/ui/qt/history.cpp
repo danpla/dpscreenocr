@@ -135,7 +135,11 @@ void History::saveAs()
     if (filePath.isEmpty())
         return;
 
-    dpsoHistoryExportAuto(filePath.toUtf8().data());
+    const auto filePathUtf8 = filePath.toUtf8();
+    dpsoHistoryExport(
+        filePathUtf8.data(),
+        dpsoHistoryDetectExportFormat(
+            filePathUtf8.data(), dpsoHistoryExportFormatPlainText));
 
     const QFileInfo fileInfo(filePath);
 
