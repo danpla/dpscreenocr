@@ -33,7 +33,6 @@ History::History(QWidget* parent)
     textEdit->setReadOnly(true);
     textEdit->setWordWrapMode(QTextOption::WordWrap);
 
-    charFormat.setFontPointSize(11);
     blockFormat.setLineHeight(
         140, QTextBlockFormat::ProportionalHeight);
     blockMargin = QFontMetrics(charFormat.font()).height();
