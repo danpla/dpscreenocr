@@ -176,8 +176,10 @@ void History::appendToTextEdit(
         // so it doesn't result in an empty line.
         cursor.setBlockFormat(blockFormat);
         cursor.setBlockCharFormat(charFormat);
-    } else
+    } else {
+        cursor.insertHtml("<hr>");
         cursor.insertBlock(blockFormat, charFormat);
+    }
 
     cursor.insertText(timestamp);
 
@@ -192,7 +194,6 @@ void History::appendToTextEdit(
     cursor.insertBlock(blockFormat, charFormat);
 
     cursor.insertText(QString(text).trimmed());
-    cursor.insertHtml("<hr>");
 
     // We must scroll to the bottom before scrolling to textBegin,
     // so that textBegin becomes the first line in the viewport
