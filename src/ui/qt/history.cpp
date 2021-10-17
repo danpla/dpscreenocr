@@ -31,6 +31,7 @@ History::History(QWidget* parent)
 
     textEdit = new QTextEdit();
     textEdit->setReadOnly(true);
+    textEdit->setUndoRedoEnabled(false);
     textEdit->setWordWrapMode(QTextOption::WordWrap);
 
     blockFormat.setLineHeight(
