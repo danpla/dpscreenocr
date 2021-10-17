@@ -143,7 +143,7 @@ static void testWhitespaceStr(bool set)
         static char key[32];
         std::snprintf(
             key, sizeof(key),
-            "str_whitespace_%i", static_cast<int>(i + 1));
+            "str_whitespace_%i", static_cast<int>(i));
 
         const auto* str = whitespaceStrings[i];
         if (set)
@@ -154,7 +154,7 @@ static void testWhitespaceStr(bool set)
 }
 
 
-static const char* testBackslash = "\\b\\f\\n\\r\\t \\z";
+const char* const backslashTestString = R"(\b\f\n\r\t\\ \z)";
 
 
 static void setString()
@@ -171,7 +171,7 @@ static void setString()
     dpsoCfgSetStr("str_bool_1", "fAlSe");
     dpsoCfgSetStr("str_bool_2", "TrUe");
 
-    dpsoCfgSetStr("str_backslast_test", testBackslash);
+    dpsoCfgSetStr("str_backslash_test", backslashTestString);
 }
 
 
@@ -202,7 +202,7 @@ static void getString()
     TEST_GET("str_bool_1", true, false);
     TEST_GET("str_bool_2", false, true);
 
-    TEST_GET("str_backslast_test", "", testBackslash);
+    TEST_GET("str_backslash_test", "", backslashTestString);
 }
 
 
@@ -292,29 +292,38 @@ static void reload()
         return;
 
     dpsoCfgSaveFp(fp);
-    dpsoCfgClear();
-
     std::rewind(fp);
-    dpsoCfgLoadFp(fp);
 
+    dpsoCfgLoadFp(fp);
+    std::fclose(fp);
+}
+
+
+static void loadCfgData(const char* cfgData)
+{
+    auto* fp = std::tmpfile();
+    if (!fp)
+        return;
+
+    std::fputs(cfgData, fp);
+    std::rewind(fp);
+
+    dpsoCfgLoadFp(fp);
     std::fclose(fp);
 }
 
 
 static void testValueOverridingOnLoad()
 {
-    auto* fp = std::tmpfile();
-    if (!fp)
-        return;
-
-    std::fputs("key value1\nkey value2\n", fp);
-    std::rewind(fp);
-
-    dpsoCfgLoadFp(fp);
-
+    loadCfgData("key value1\nkey value2\n");
     TEST_GET("key", "", "value2");
+}
 
-    std::fclose(fp);
+
+static void testUnescapedBackslashAtEndOfQuotedString()
+{
+    loadCfgData("key \"\\\"");
+    TEST_GET("key", "", "\\");
 }
 
 
@@ -337,6 +346,7 @@ static void testCfg()
     getHotkey();
 
     testValueOverridingOnLoad();
+    testUnescapedBackslashAtEndOfQuotedString();
 }
 
 

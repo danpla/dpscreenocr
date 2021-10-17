@@ -98,7 +98,7 @@ static void assignUnescaped(
     while (s < valueEnd) {
         const auto c = *s++;
 
-        if (c == '\\' && *s) {
+        if (c == '\\' && s < valueEnd) {
             const auto e = *s++;
 
             switch (e) {
