@@ -170,7 +170,15 @@ void History::appendToTextEdit(
     charFormat.setFontWeight(QFont::Bold);
     blockFormat.setLeftMargin(0);
     blockFormat.setRightMargin(0);
-    cursor.insertBlock(blockFormat, charFormat);
+
+    if (textEdit->document()->isEmpty()) {
+        // An empty document still has a block. We want to reuse it
+        // so it doesn't result in an empty line.
+        cursor.setBlockFormat(blockFormat);
+        cursor.setBlockCharFormat(charFormat);
+    } else
+        cursor.insertBlock(blockFormat, charFormat);
+
     cursor.insertText(timestamp);
 
     // Remember the position so we can scroll up later.
