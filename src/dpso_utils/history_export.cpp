@@ -97,7 +97,11 @@ static void exportHtml(std::FILE* fp)
 
                 switch (c) {
                     case '\n':
-                        std::fputs("<br>\n", fp);
+                        // Trailing <br> has no effect; it doesn't add
+                        // an empty line when rendering in browsers.
+                        if (*s)
+                            std::fputs("<br>", fp);
+                        std::putc('\n', fp);
                         break;
                     case '<':
                         std::fputs("&lt;", fp);
