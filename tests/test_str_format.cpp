@@ -10,7 +10,7 @@
 
 
 static const char* argsToStr(
-    std::initializer_list<DpsoFormatArg>& args)
+    std::initializer_list<DpsoFormatArg> args)
 {
     static std::string result;
     result.clear();
