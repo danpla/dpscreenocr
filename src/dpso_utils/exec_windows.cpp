@@ -101,24 +101,26 @@ static bool allowExecute(const char* exePath)
     if (!*exePath)
         return false;
 
+    const auto* ext = std::strrchr(exePath, '.');
+    if (!ext)
+        return true;
+
     // Don't execute batch scripts, taking into account the fact that
     // the string can contain trailing whitespace that will be
     // stripped by ShellExecute().
-    if (const auto* ext = std::strrchr(exePath, '.')) {
-        std::size_t extLen = 0;
-        for (const auto* s = ext; *s; ++s)
-            if (!std::isspace(*s))
-                extLen = s - ext + 1;
+    const auto* extEnd = ext;
+    for (const auto* s = ext; *s; ++s)
+        if (!std::isspace(*s))
+            extEnd = s + 1;
 
-        static const char* const batchExts[] = {".bat", ".cmd"};
-        for (const auto* batchExt : batchExts)
-            if (dpso::str::cmpSubStr(
-                    batchExt,
-                    ext,
-                    extLen,
-                    dpso::str::cmpIgnoreCase) == 0)
-                return false;
-    }
+    static const char* const batchExts[] = {".bat", ".cmd"};
+    for (const auto* batchExt : batchExts)
+        if (dpso::str::cmpSubStr(
+                batchExt,
+                ext,
+                extEnd - ext,
+                dpso::str::cmpIgnoreCase) == 0)
+            return false;
 
     return true;
 }
