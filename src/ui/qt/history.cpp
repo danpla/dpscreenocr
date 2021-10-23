@@ -172,8 +172,8 @@ void History::appendToTextEdit(
     blockFormat.setRightMargin(0);
 
     if (textEdit->document()->isEmpty()) {
-        // An empty document still has a block. We want to reuse it
-        // so it doesn't result in an empty line.
+        // An empty document still has a block. Reuse it so it doesn't
+        // result in an empty line.
         cursor.setBlockFormat(blockFormat);
         cursor.setBlockCharFormat(charFormat);
     } else {
