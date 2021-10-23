@@ -85,10 +85,8 @@ static void appendArgEscaped(std::string& s, const char* arg)
     while (true) {
         std::size_t numBackslashes = 0;
 
-        while (*arg == '\\') {
+        for (; *arg == '\\'; ++arg)
             ++numBackslashes;
-            ++arg;
-        }
 
         const auto c = *arg++;
 
