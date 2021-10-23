@@ -48,16 +48,16 @@ static void loadData(std::FILE* fp)
 
 static void createEntries()
 {
-    const auto* sBegin = &data[0];
-    const auto* validDataEnd = sBegin;
     auto* s = &data[0];
+    const auto* sBegin = s;
+    const auto* validDataEnd = sBegin;
 
     while (*s) {
         Entry entry;
 
         entry.timestampPos = s - sBegin;
 
-        while (*s && *s != '\n' && *s != '\f')
+        while (*s && *s != '\n')
             ++s;
 
         if (*s != '\n' || s[1] != '\n')
