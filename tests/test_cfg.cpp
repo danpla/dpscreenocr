@@ -196,7 +196,7 @@ static void getString()
     TEST_GET("str_int_0", true, false);
 
     // There are currently no routines to get/set floats, so don't
-    // tread them as integers, like strto*() routines do.
+    // tread them as integers, like strto*() do.
     TEST_GET("str_float", 0, 0);
 
     TEST_GET("str_bool_1", true, false);
@@ -322,8 +322,8 @@ static void testValueOverridingOnLoad()
 
 static void testUnescapedBackslashAtEndOfQuotedString()
 {
-    loadCfgData("key \"\\\"");
-    TEST_GET("key", "", "\\");
+    loadCfgData("key \"a\\\"");
+    TEST_GET("key", "", "a");
 }
 
 

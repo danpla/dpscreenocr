@@ -25,10 +25,9 @@
 // (including a value consisting of a single double quote) quoting
 // is optional.
 //
-// The characters \b, \f, \n, \r, \t, and \ are escaped with a
-// backslash. Escaping \t is optional. Escaping \ is optional too,
-// unless the \ and the next character create one of the mentioned
-// escape sequences.
+// The characters \b, \f, \n, \r, and \t are escaped with a backslash.
+// Any other character preceded by \ is inserted as is. Escaping \t is
+// optional.
 
 
 namespace {
@@ -97,36 +96,35 @@ static void assignUnescaped(
     const auto* s = valueBegin;
     while (s < valueEnd) {
         const auto c = *s++;
-
-        if (c == '\\' && s < valueEnd) {
-            const auto e = *s++;
-
-            switch (e) {
-                case 'b':
-                    str += '\b';
-                    break;
-                case 'f':
-                    str += '\f';
-                    break;
-                case 'n':
-                    str += '\n';
-                    break;
-                case 'r':
-                    str += '\r';
-                    break;
-                case 't':
-                    str += '\t';
-                    break;
-                case '\\':
-                    str += '\\';
-                    break;
-                default:
-                    str += c;
-                    str += e;
-                    break;
-            }
-        } else
+        if (c != '\\') {
             str += c;
+            continue;
+        }
+
+        if (s == valueEnd)
+            break;
+
+        const auto e = *s++;
+        switch (e) {
+            case 'b':
+                str += '\b';
+                break;
+            case 'f':
+                str += '\f';
+                break;
+            case 'n':
+                str += '\n';
+                break;
+            case 'r':
+                str += '\r';
+                break;
+            case 't':
+                str += '\t';
+                break;
+            default:
+                str += e;
+                break;
+        }
     }
 }
 
