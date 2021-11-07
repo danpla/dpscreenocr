@@ -207,7 +207,7 @@ static bool needQuote(const std::string& str)
 
 
 static void writeKeyValue(
-    std::FILE* fp, int maxKeyLen, const KeyValue& kv)
+    std::FILE* fp, const KeyValue& kv, int maxKeyLen)
 {
     std::fprintf(fp, "%-*s ", maxKeyLen, kv.key.c_str());
 
@@ -253,14 +253,14 @@ static void writeKeyValue(
 
 void dpsoCfgSaveFp(FILE* fp)
 {
-    int maxKeyLen = 0;
+    std::size_t maxKeyLen = 0;
 
     for (const auto& kv : keyValues)
-        if (static_cast<int>(kv.key.size()) > maxKeyLen)
+        if (kv.key.size() > maxKeyLen)
             maxKeyLen = kv.key.size();
 
     for (const auto& kv : keyValues)
-        writeKeyValue(fp, maxKeyLen, kv);
+        writeKeyValue(fp, kv, maxKeyLen);
 }
 
 
