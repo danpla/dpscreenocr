@@ -9,9 +9,9 @@
 #include "cfg_path.h"
 
 
-// The history is a text file containing entries. Each entry consists
-// of a timestamp, two newlines, and the actual text. Entries are
-// separated by a form feed and a newline (\f\n).
+// Each entry in a history file consists of a timestamp, two line
+// feeds (\n\n), and the actual text. Entries are separated by a form
+// feed and a line feed (\f\n).
 
 
 namespace {
@@ -86,6 +86,9 @@ static void createEntries()
 
     // Trim unused data in case of errors
     data.resize(validDataEnd - sBegin);
+
+    if (!data.empty())
+        data += '\0';
 }
 
 
@@ -95,10 +98,6 @@ void dpsoHistoryLoadFp(FILE* fp)
 
     loadData(fp);
     createEntries();
-
-    // An explicit null for dpsoHistoryAppend(). It's not necessary
-    // if the data is empty.
-    data += '\0';
 }
 
 
