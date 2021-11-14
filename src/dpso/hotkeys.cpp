@@ -50,29 +50,23 @@ void dpsoUnbindHotkey(const struct DpsoHotkey* hotkey)
     if (!hotkey)
         return;
 
-    for (int i = 0; i < getKeyManager().getNumBindings(); ++i) {
-        const auto binding = getKeyManager().getBinding(i);
-        if (binding.hotkey == *hotkey) {
-            getKeyManager().removeBinding(i);
+    auto& keyManager = getKeyManager();
+    for (int i = 0; i < keyManager.getNumBindings(); ++i)
+        if (keyManager.getBinding(i).hotkey == *hotkey) {
+            keyManager.removeBinding(i);
             break;
         }
-    }
 }
 
 
 void dpsoUnbindAction(DpsoHotkeyAction action)
 {
-    int i = 0;
-    int numBindings = getKeyManager().getNumBindings();
-    while (i < numBindings) {
-        const auto binding = getKeyManager().getBinding(i);
-
-        if (binding.action == action) {
-            getKeyManager().removeBinding(i);
-            --numBindings;
-        } else
+    auto& keyManager = getKeyManager();
+    for (int i = 0; i < keyManager.getNumBindings();)
+        if (keyManager.getBinding(i).action == action)
+            keyManager.removeBinding(i);
+        else
             ++i;
-    }
 }
 
 
@@ -82,8 +76,9 @@ void dpsoFindActionHotkey(
     if (!hotkey)
         return;
 
-    for (int i = 0; i < getKeyManager().getNumBindings(); ++i) {
-        const auto binding = getKeyManager().getBinding(i);
+    const auto& keyManager = getKeyManager();
+    for (int i = 0; i < keyManager.getNumBindings(); ++i) {
+        const auto& binding = keyManager.getBinding(i);
         if (binding.action == action) {
             *hotkey = binding.hotkey;
             return;
@@ -99,8 +94,9 @@ DpsoHotkeyAction dpsoFindHotkeyAction(const struct DpsoHotkey* hotkey)
     if (!hotkey)
         return -1;
 
-    for (int i = 0; i < getKeyManager().getNumBindings(); ++i) {
-        const auto binding = getKeyManager().getBinding(i);
+    const auto& keyManager = getKeyManager();
+    for (int i = 0; i < keyManager.getNumBindings(); ++i) {
+        const auto& binding = keyManager.getBinding(i);
         if (binding.hotkey == *hotkey)
             return binding.action;
     }
