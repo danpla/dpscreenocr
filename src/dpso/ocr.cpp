@@ -481,12 +481,9 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
         screenshot ? screenshot->getWidth() : -1,
         screenshot ? screenshot->getHeight() : -1);
 
-    if (!screenshot)
-        return false;
-
-    static const int minScreenshotSize = 5;
-    if (screenshot->getWidth() < minScreenshotSize
-            || screenshot->getHeight() < minScreenshotSize)
+    if (!screenshot
+            || screenshot->getWidth() < 1
+            || screenshot->getHeight() < 1)
         return false;
 
     Job job{

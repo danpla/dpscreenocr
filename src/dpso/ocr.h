@@ -128,9 +128,9 @@ struct DpsoJobArgs {
  *
  * The function captures an image DpsoJobArgs::screenRect from the
  * screen and queues it for OCR using the currently active languages.
- * The result is 1 if the job is queued, or 0 if not. The latter can
- * happen if there are no active languages, or if the smaller side of
- * the image rectangle clamped to the screen is less than 5 px.
+ * The result is 1 if the job is queued, or 0 if not. The latter
+ * happens either if there are no active languages, or if screenRect
+ * is empty after clamping to the screen.
  *
  * Unfortunately, Tesseract versions before 4.1.0 only work with "C"
  * locale. This locale is automatically set on dpsoQueueJob() calls,
