@@ -6,6 +6,8 @@ set(DPSO_UI "qt" CACHE STRING "UI to use: qt or none")
 set_property(CACHE DPSO_UI PROPERTY STRINGS qt none)
 option(DPSO_ENABLE_NLS "Enable native language support" YES)
 option(DPSO_GEN_HTML_MANUAL "Generate HTML manual using Pandoc." YES)
+option(DPSO_BUILD_EXAMPLE "Build example" NO)
+option(DPSO_BUILD_TESTS "Build tests" NO)
 
 set(APP_NAME "dpScreenOCR")
 set(APP_FILE_NAME "dpscreenocr")
@@ -22,7 +24,10 @@ set(APP_URL "https://danpla.github.io/dpscreenocr/")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 add_subdirectory(src/dpso)
-add_subdirectory(src/dpso_example EXCLUDE_FROM_ALL)
+
+if(DPSO_BUILD_EXAMPLE)
+    add_subdirectory(src/dpso_example)
+endif()
 
 if(DPSO_UI STREQUAL "qt")
     add_subdirectory(src/ui/qt)
@@ -30,7 +35,9 @@ elseif(NOT DPSO_UI STREQUAL "none")
     message(FATAL_ERROR "Unknown UI \"${DPSO_UI}\"")
 endif()
 
-add_subdirectory(tests EXCLUDE_FROM_ALL)
+if(DPSO_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
 
 include(install)
 include(uninstall)
