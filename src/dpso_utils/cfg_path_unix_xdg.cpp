@@ -14,10 +14,10 @@ const char* dpsoGetCfgPath(const char* appName)
     static std::string path;
     path.clear();
 
-    auto* xdgConfigHome = std::getenv("XDG_CONFIG_HOME");
+    const auto* xdgConfigHome = std::getenv("XDG_CONFIG_HOME");
     if (xdgConfigHome && *xdgConfigHome)
         path += xdgConfigHome;
-    else if (auto* home = std::getenv("HOME")) {
+    else if (const auto* home = std::getenv("HOME")) {
         path += home;
         path += "/.config";
     }
