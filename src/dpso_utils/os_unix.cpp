@@ -2,16 +2,10 @@
 #include "os.h"
 
 
-namespace dpso {
+const char* const dpsoDirSeparators = "/";
 
 
-const char* const dirSeparators = "/";
-
-
-std::FILE* fopenUtf8(const char* fileName, const char* mode)
+FILE* dpsoFopenUtf8(const char* fileName, const char* mode)
 {
-    return std::fopen(fileName, mode);
-}
-
-
+    return fopen(fileName, mode);
 }

@@ -30,7 +30,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
             // A leading period denotes a "hidden" file on Unix-like
             // systems. We follow this convention on all platforms.
             && ext != fileName
-            && !std::strchr(dpso::dirSeparators, ext[-1]))
+            && !std::strchr(dpsoDirSeparators, ext[-1]))
         for (const auto& e : extensions)
             if (dpso::str::cmp(
                     ext, e.str, dpso::str::cmpIgnoreCase) == 0)
@@ -195,7 +195,7 @@ void dpsoHistoryExport(
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
-    auto* fp = dpso::fopenUtf8(fileName, "w");
+    auto* fp = dpsoFopenUtf8(fileName, "w");
     if (!fp)
         return;
 

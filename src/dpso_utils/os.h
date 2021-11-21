@@ -1,21 +1,33 @@
 
+/**
+ * \file
+ * OS routines
+ */
+
 #pragma once
 
-#include <cstdio>
+#include <stdio.h>
 
 
-namespace dpso {
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 /**
  * Directory separators for the current platform.
  *
- * The preferred separator is first in the list.
+ * The primary separator is first in the list.
  */
-extern const char* const dirSeparators;
+extern const char* const dpsoDirSeparators;
 
 
-std::FILE* fopenUtf8(const char* fileName, const char* mode);
+/**
+ * fopen() wrapper that accepts fileName in UTF-8.
+ */
+FILE* dpsoFopenUtf8(const char* fileName, const char* mode);
 
 
+#ifdef __cplusplus
 }
+#endif

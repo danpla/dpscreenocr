@@ -7,4 +7,5 @@
 #include "exec.h"
 #include "history.h"
 #include "history_export.h"
+#include "os.h"
 #include "str_format.h"
