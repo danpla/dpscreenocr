@@ -42,7 +42,7 @@ int dpsoInit(void)
             modules[i].init();
         } catch (std::runtime_error& e) {
             dpsoSetError((
-                std::string("Can't init ") + modules[i].name + ": "
+                std::string{"Can't init "} + modules[i].name + ": "
                 + e.what()).c_str());
 
             for (auto j = i; j--;)

@@ -50,6 +50,9 @@ private:
         DynamicStrings();
     } dynStr;
 
+    std::string cfgDirPath;
+    std::string cfgFilePath;
+
     int updateTimerId;
 
     bool ocrAllowQueuing;

@@ -1,16 +1,19 @@
 
-#include "cfg_private.h"
+#include "cfg.h"
 
 #include <algorithm>
 #include <cctype>
+#include <cerrno>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "cfg_path.h"
+#include "dpso/error.h"
 #include "dpso/str.h"
+#include "os.h"
 
 
 // A config is a collection of key-value pairs in a text file. The
@@ -167,7 +170,7 @@ static bool getLine(std::FILE* fp, std::string& line)
 }
 
 
-void dpsoCfgLoadFp(FILE* fp)
+static void dpsoCfgLoad(std::FILE* fp)
 {
     keyValues.clear();
 
@@ -180,16 +183,22 @@ void dpsoCfgLoadFp(FILE* fp)
 }
 
 
-void dpsoCfgLoad(const char* appName, const char* cfgBaseName)
+int dpsoCfgLoad(const char* filePath)
 {
     keyValues.clear();
 
-    auto* fp = dpsoCfgPathFopen(appName, cfgBaseName, "r");
-    if (!fp)
-        return;
+    auto* fp = dpsoFopenUtf8(filePath, "r");
+    if (!fp) {
+        dpsoSetError((
+            std::string{"dpsoFopenUtf8(..., \"r\") failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
 
-    dpsoCfgLoadFp(fp);
+    dpsoCfgLoad(fp);
     std::fclose(fp);
+
+    return true;
 }
 
 
@@ -251,7 +260,7 @@ static void writeKeyValue(
 }
 
 
-void dpsoCfgSaveFp(FILE* fp)
+static void dpsoCfgSave(std::FILE* fp)
 {
     std::size_t maxKeyLen = 0;
 
@@ -264,14 +273,20 @@ void dpsoCfgSaveFp(FILE* fp)
 }
 
 
-void dpsoCfgSave(const char* appName, const char* cfgBaseName)
+int dpsoCfgSave(const char* filePath)
 {
-    auto* fp = dpsoCfgPathFopen(appName, cfgBaseName, "w");
-    if (!fp)
-        return;
+    auto* fp = dpsoFopenUtf8(filePath, "w");
+    if (!fp) {
+        dpsoSetError((
+            std::string{"dpsoFopenUtf8(..., \"w\") failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
 
-    dpsoCfgSaveFp(fp);
+    dpsoCfgSave(fp);
     std::fclose(fp);
+
+    return true;
 }
 
 

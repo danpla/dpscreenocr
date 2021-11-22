@@ -3,9 +3,6 @@
  * \file
  * Configuration management
  *
- * The file provides routines to load, change, and save a
- * configuration file in a platform-specific config directory.
- *
  * Things to keep in mind:
  *
  *   * Keys must only consist of alphanumeric characters and an
@@ -29,19 +26,21 @@ extern "C" {
 /**
  * Load config file.
  *
- * The function clears the current config and then loads a file
- * cfgBaseName for application appName. AppName will become a
- * directory of a platform-specific configuration dir.
+ * The function clears the current config and loads the filePath file.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
  */
-void dpsoCfgLoad(const char* appName, const char* cfgBaseName);
+int dpsoCfgLoad(const char* filePath);
 
 
 /**
  * Save config file.
  *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
+ *
  * \sa dpsoLoadCfg()
  */
-void dpsoCfgSave(const char* appName, const char* cfgBaseName);
+int dpsoCfgSave(const char* filePath);
 
 
 /**

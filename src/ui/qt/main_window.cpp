@@ -74,8 +74,32 @@ MainWindow::MainWindow()
         std::exit(EXIT_FAILURE);
     }
 
+    const auto* cfgPath = dpsoGetCfgPath(appFileName);
+    if (!cfgPath) {
+        QMessageBox::critical(
+            nullptr,
+            QString(appName) + " error",
+            QString("Can't get configuration path: ")
+                + dpsoGetError());
+
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
+
+    cfgDirPath = cfgPath;
+    cfgFilePath = cfgDirPath + *dpsoDirSeparators + cfgFileName;
+
+    if (!dpsoCfgLoad(cfgFilePath.c_str())) {
+        QMessageBox::critical(
+            nullptr,
+            QString(appName) + " error",
+            QString("Can't load \"%1\": %2").arg(
+                cfgFilePath.c_str(), dpsoGetError()));
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
+
     dpsoSetHotheysEnabled(true);
-    dpsoCfgLoad(appFileName, cfgFileName);
 
     createQActions();
 
@@ -148,7 +172,14 @@ void MainWindow::closeEvent(QCloseEvent* event)
     // before quitting.
     trayIcon->hide();
 
-    dpsoCfgSave(appFileName, cfgFileName);
+    if (!dpsoCfgSave(cfgFilePath.c_str())) {
+        QMessageBox::critical(
+            this,
+            QString(appName) + " error",
+            QString("Can't save \"%1\": %2").arg(
+                cfgFilePath.c_str(), dpsoGetError()));
+    }
+
     dpsoSetHotheysEnabled(false);
 
     event->accept();

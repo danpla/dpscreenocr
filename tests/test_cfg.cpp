@@ -1,12 +1,13 @@
 
+#include <cerrno>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <string>
 
 #include "dpso/dpso.h"
+#include "dpso_utils/cfg.h"
 #include "dpso_utils/cfg_ext.h"
-#include "dpso_utils/cfg_private.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -285,31 +286,60 @@ static void getHotkey()
 }
 
 
+const char* const cfgFileName = "test_cfg_file.cfg";
+
+
 static void reload()
 {
-    auto* fp = std::tmpfile();
-    if (!fp)
+    if (!dpsoCfgSave(cfgFileName)) {
+        std::fprintf(
+            stderr,
+            "reload(): dpsoCfgSave(\"%s\") failed: %s\n",
+            cfgFileName,
+            dpsoGetError());
+        test::failure();
         return;
+    }
 
-    dpsoCfgSaveFp(fp);
-    std::rewind(fp);
+    if (!dpsoCfgLoad(cfgFileName)) {
+        std::fprintf(
+            stderr,
+            "reload(): dpsoCfgLoad(\"%s\") failed: %s\n",
+            cfgFileName,
+            dpsoGetError());
+        test::failure();
+    }
 
-    dpsoCfgLoadFp(fp);
-    std::fclose(fp);
+    std::remove(cfgFileName);
 }
 
 
 static void loadCfgData(const char* cfgData)
 {
-    auto* fp = std::tmpfile();
-    if (!fp)
+    auto* fp = std::fopen(cfgFileName, "wb");
+    if (!fp) {
+        std::fprintf(
+            stderr,
+            "loadCfgData(): fopen(\"%s\", \"wb\") failed: %s\n",
+            cfgFileName,
+            std::strerror(errno));
+        test::failure();
         return;
+    }
 
     std::fputs(cfgData, fp);
-    std::rewind(fp);
-
-    dpsoCfgLoadFp(fp);
     std::fclose(fp);
+
+    if (!dpsoCfgLoad(cfgFileName)) {
+        std::fprintf(
+            stderr,
+            "loadCfgData(): dpsoCfgLoad(\"%s\") failed: %s\n",
+            cfgFileName,
+            dpsoGetError());
+        test::failure();
+    }
+
+    std::remove(cfgFileName);
 }
 
 
