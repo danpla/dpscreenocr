@@ -35,20 +35,15 @@ const Module modules[] = {
 const auto numModules = sizeof(modules) / sizeof(*modules);
 
 
-static std::string lastError;
-
-
 int dpsoInit(void)
 {
-    lastError.clear();
-
     for (std::size_t i = 0; i < numModules; ++i)
         try {
             modules[i].init();
         } catch (std::runtime_error& e) {
-            lastError = (
+            dpsoSetError((
                 std::string("Can't init ") + modules[i].name + ": "
-                + e.what());
+                + e.what()).c_str());
 
             for (auto j = i; j--;)
                 modules[j].shutdown();
@@ -57,12 +52,6 @@ int dpsoInit(void)
         }
 
     return true;
-}
-
-
-const char* dpsoGetError(void)
-{
-    return lastError.c_str();
 }
 
 

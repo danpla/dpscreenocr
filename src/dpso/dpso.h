@@ -10,6 +10,7 @@
 #pragma once
 
 #include "delay.h"
+#include "error.h"
 #include "hotkeys.h"
 #include "ocr.h"
 #include "selection.h"
@@ -23,18 +24,9 @@ extern "C" {
 /**
  * Initialize dpso library.
  *
- * Returns 1 on success, or 0 on failure. In the latter case, you can
- * get the error message with dpsoGetError().
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
  */
 int dpsoInit(void);
-
-
-/**
- * Get the error message after dpsoInit() failure.
- *
- * After successful dpsoInit(), the function returns an empty string.
- */
-const char* dpsoGetError(void);
 
 
 /**

@@ -40,6 +40,7 @@ add_library(
     backend/backend.cpp
     delay.cpp
     dpso.cpp
+    error.cpp
     geometry.cpp
     hotkeys.cpp
     img.cpp
