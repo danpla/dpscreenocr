@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-06-20 05:35+0300\n"
+"POT-Creation-Date: 2021-11-28 01:42+0200\n"
 "PO-Revision-Date: 2021-05-25 04:33+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -538,148 +538,148 @@ msgstr "Programa para reconocer el texto en pantalla"
 msgid "License"
 msgstr "Licencia"
 
-#: src/ui/qt/action_chooser.cpp:23
+#: src/ui/qt/action_chooser.cpp:25
 msgid "Copy text to clipboard"
 msgstr "Copiar texto en el portapapeles"
 
-#: src/ui/qt/action_chooser.cpp:24
+#: src/ui/qt/action_chooser.cpp:26
 msgid "Add text to history"
 msgstr "Añadir texto al historial"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp:28
 msgid "Run executable:"
 msgstr "Ejecutar programa:"
 
-#: src/ui/qt/action_chooser.cpp:28
+#: src/ui/qt/action_chooser.cpp:30
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "Ejecute un programa con el texto reconocido como primer argumento"
 
-#: src/ui/qt/action_chooser.cpp:71
+#: src/ui/qt/action_chooser.cpp:73
 msgid "Choose an executable"
 msgstr "Elija un ejecutable"
 
-#: src/ui/qt/history.cpp:23
+#: src/ui/qt/history.cpp:26
 msgid "Wrap words"
 msgstr "Ajustar palabras"
 
-#: src/ui/qt/history.cpp:38 src/ui/qt/history.cpp:71
+#: src/ui/qt/history.cpp:41 src/ui/qt/history.cpp:74
 msgid "Clear"
 msgstr "Vaciar"
 
-#: src/ui/qt/history.cpp:43
+#: src/ui/qt/history.cpp:46
 msgid "Save as…"
 msgstr "Guardar como…"
 
-#: src/ui/qt/history.cpp:45
+#: src/ui/qt/history.cpp:48
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Guardar el historial como texto sin formato, HTML o JSON"
 
-#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:82
+#: src/ui/qt/history.cpp:67 src/ui/qt/main_window.cpp:110
 msgid "History"
 msgstr "Historial"
 
-#: src/ui/qt/history.cpp:69
+#: src/ui/qt/history.cpp:72
 msgid "Clear the history?"
 msgstr "¿Quiere vaciar el historial?"
 
-#: src/ui/qt/history.cpp:70 src/ui/qt/main_window.cpp:114
+#: src/ui/qt/history.cpp:73 src/ui/qt/main_window.cpp:142
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/ui/qt/history.cpp:72
+#: src/ui/qt/history.cpp:75
 msgid "Save history"
 msgstr "Guardar historial"
 
-#: src/ui/qt/history.cpp:74
+#: src/ui/qt/history.cpp:77
 msgid "Plain text"
 msgstr "Texto sin formato"
 
-#: src/ui/qt/history.cpp:77
+#: src/ui/qt/history.cpp:80
 msgid "All files"
 msgstr "Todos los archivos"
 
-#: src/ui/qt/hotkey_editor.cpp:50
+#: src/ui/qt/hotkey_editor.cpp:52
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Ninguno"
 
-#: src/ui/qt/lang_browser.cpp:33
+#: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Name"
 msgstr "Nombre"
 
-#: src/ui/qt/lang_browser.cpp:34
+#: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Code"
 msgstr "Código"
 
-#: src/ui/qt/main_window.cpp:80
+#: src/ui/qt/main_window.cpp:108
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Principal"
 
-#: src/ui/qt/main_window.cpp:81
+#: src/ui/qt/main_window.cpp:109
 msgid "Actions"
 msgstr "Acciones"
 
-#: src/ui/qt/main_window.cpp:83
+#: src/ui/qt/main_window.cpp:111
 msgid "About"
 msgstr "Acerca de"
 
-#: src/ui/qt/main_window.cpp:104
+#: src/ui/qt/main_window.cpp:132
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Reconocimiento al {progress} % ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:105
+#: src/ui/qt/main_window.cpp:133
 msgid "Please install languages"
 msgstr "Instale idiomas"
 
-#: src/ui/qt/main_window.cpp:106
+#: src/ui/qt/main_window.cpp:134
 msgid "Please select languages"
 msgstr "Seleccione idiomas"
 
-#: src/ui/qt/main_window.cpp:108
+#: src/ui/qt/main_window.cpp:136
 msgid "Please select actions in the “Actions” tab"
 msgstr "Seleccione acciones en la pestaña «Acciones»"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:111
+#: src/ui/qt/main_window.cpp:139
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Preparado"
 
-#: src/ui/qt/main_window.cpp:113
+#: src/ui/qt/main_window.cpp:141
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "No ha finalizado el reconocimiento. ¿Quiere salir de todos modos?"
 
-#: src/ui/qt/main_window.cpp:115 src/ui/qt/main_window.cpp:209
+#: src/ui/qt/main_window.cpp:143 src/ui/qt/main_window.cpp:244
 msgid "Quit"
 msgstr "Salir"
 
-#: src/ui/qt/main_window.cpp:201
+#: src/ui/qt/main_window.cpp:236
 msgid "Show {app_name}"
 msgstr "Mostrar {app_name}"
 
-#: src/ui/qt/main_window.cpp:216
+#: src/ui/qt/main_window.cpp:251
 msgid "Status"
 msgstr "Estado"
 
-#: src/ui/qt/main_window.cpp:227
+#: src/ui/qt/main_window.cpp:262
 msgid "Character recognition"
 msgstr "Reconocimiento de caracteres"
 
-#: src/ui/qt/main_window.cpp:232
+#: src/ui/qt/main_window.cpp:267
 msgid "Split text blocks"
 msgstr "Dividir bloques de texto"
 
-#: src/ui/qt/main_window.cpp:234
+#: src/ui/qt/main_window.cpp:269
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Dividir bloques de texto independientes; p. ej., las columnas"
 
-#: src/ui/qt/main_window.cpp:237
+#: src/ui/qt/main_window.cpp:272
 msgid "Languages:"
 msgstr "Idiomas:"
 
-#: src/ui/qt/main_window.cpp:241
+#: src/ui/qt/main_window.cpp:276
 msgid "Hotkey"
 msgstr "Atajo de teclado"
