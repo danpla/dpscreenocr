@@ -189,6 +189,9 @@ int dpsoCfgLoad(const char* filePath)
 
     auto* fp = dpsoFopenUtf8(filePath, "r");
     if (!fp) {
+        if (errno == ENOENT)
+            return true;
+
         dpsoSetError((
             std::string{"dpsoFopenUtf8(..., \"r\") failed: "}
             + std::strerror(errno)).c_str());

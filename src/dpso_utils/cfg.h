@@ -29,6 +29,7 @@ extern "C" {
  * The function clears the current config and loads the filePath file.
  *
  * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * Nonexistent filePath is not considered an error.
  */
 int dpsoCfgLoad(const char* filePath);
 
