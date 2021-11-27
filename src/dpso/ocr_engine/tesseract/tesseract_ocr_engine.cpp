@@ -71,9 +71,6 @@ int TesseractOcr::getNumLangs() const
 
 const char* TesseractOcr::getLangCode(int langIdx) const
 {
-    if (langIdx < 0 || langIdx >= langCodes.size())
-        return "";
-
     return langCodes[langIdx].c_str();
 }
 
