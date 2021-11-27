@@ -172,13 +172,12 @@ void MainWindow::closeEvent(QCloseEvent* event)
     // before quitting.
     trayIcon->hide();
 
-    if (!dpsoCfgSave(cfgFilePath.c_str())) {
+    if (!dpsoCfgSave(cfgFilePath.c_str()))
         QMessageBox::critical(
             this,
             QString(appName) + " error",
             QString("Can't save \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
-    }
 
     dpsoSetHotheysEnabled(false);
 
