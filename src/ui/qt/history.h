@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+
 #include <QTextBlockFormat>
 #include <QTextCharFormat>
 #include <QWidget>
@@ -15,11 +17,11 @@ class History : public QWidget {
     Q_OBJECT
 
 public:
-    explicit History(QWidget* parent = nullptr);
+    History(const std::string& cfgDirPath, QWidget* parent = nullptr);
 
     void append(const char* text, const char* timestamp);
 
-    void loadState();
+    bool loadState();
     void saveState() const;
 private slots:
     void setWordWrap(bool wordWrap);
@@ -36,6 +38,8 @@ private:
 
         DynamicStrings();
     } dynStr;
+
+    std::string historyFilePath;
 
     QCheckBox* wordWrapCheck;
 

@@ -92,7 +92,7 @@ private:
 
     void createTrayIcon();
 
-    void loadState();
+    bool loadState();
     void saveState() const;
 
     bool canStartSelection() const;

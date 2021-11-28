@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <stdio.h>
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,16 +23,6 @@ extern "C" {
  * null.
  */
 const char* dpsoGetCfgPath(const char* appName);
-
-
-/**
- * Open FILE* in config directory.
- *
- * The function opens file baseName in a platform-specific config
- * directory.
- */
-FILE* dpsoCfgPathFopen(
-    const char* appName, const char* baseName, const char* mode);
 
 
 #ifdef __cplusplus

@@ -26,20 +26,21 @@ struct DpsoHistoryEntry {
 /**
  * Load history.
  *
- * The function clears the history and then loads the historyBaseName
- * file for application appName. appName is a subdirectory in a
- * platform-specific configuration dir.
+ * The function clears the history and then loads the filePath file.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * Nonexistent filePath is not considered an error.
  */
-void dpsoHistoryLoad(
-    const char* appName, const char* historyBaseName);
+int dpsoHistoryLoad(const char* filePath);
 
 /**
  * Save history.
  *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
+ *
  * \sa dpsoHistoryLoad()
  */
-void dpsoHistorySave(
-    const char* appName, const char* historyBaseName);
+int dpsoHistorySave(const char* filePath);
 
 
 /**

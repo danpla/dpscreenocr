@@ -5,10 +5,12 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QHBoxLayout>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QTextEdit>
 #include <QVBoxLayout>
 
+#include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
 
@@ -20,9 +22,12 @@
 #define _(S) gettext(S)
 
 
-History::History(QWidget* parent)
+History::History(const std::string& cfgDirPath, QWidget* parent)
     : QWidget{parent}
 {
+    historyFilePath = (
+        cfgDirPath + *dpsoDirSeparators + historyFileName);
+
     wordWrapCheck = new QCheckBox(_("Wrap words"));
     wordWrapCheck->setChecked(true);
     connect(
@@ -204,14 +209,16 @@ void History::appendToTextEdit(
 }
 
 
-void History::loadState()
+bool History::loadState()
 {
-    wordWrapCheck->setChecked(
-        dpsoCfgGetBool(
-            cfgKeyHistoryWrapWords,
-            cfgDefaultValueHistoryWrapWords));
-
-    dpsoHistoryLoad(appFileName, historyFileName);
+    if (!dpsoHistoryLoad(historyFilePath.c_str())) {
+        QMessageBox::critical(
+            nullptr,
+            QString(appName) + " error",
+            QString("Can't load \"%1\": %2").arg(
+                historyFilePath.c_str(), dpsoGetError()));
+        return false;
+    }
 
     textEdit->clear();
     for (int i = 0; i < dpsoHistoryCount(); ++i) {
@@ -220,13 +227,25 @@ void History::loadState()
         appendToTextEdit(entry.text, entry.timestamp);
     }
 
+    wordWrapCheck->setChecked(
+        dpsoCfgGetBool(
+            cfgKeyHistoryWrapWords,
+            cfgDefaultValueHistoryWrapWords));
+
     setButtonsEnabled(dpsoHistoryCount() > 0);
+
+    return true;
 }
 
 
 void History::saveState() const
 {
-    dpsoHistorySave(appFileName, historyFileName);
+    if (!dpsoHistorySave(historyFilePath.c_str()))
+        QMessageBox::critical(
+            const_cast<History*>(this),
+            QString(appName) + " error",
+            QString("Can't save \"%1\": %2").arg(
+                historyFilePath.c_str(), dpsoGetError()));
 
     // Add a field to CFG in case the history has never been exported,
     // just to make sure that the user will see all available options

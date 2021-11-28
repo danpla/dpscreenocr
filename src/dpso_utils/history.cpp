@@ -1,12 +1,15 @@
 
-#include "history_private.h"
+#include "history.h"
 
 #include <cassert>
+#include <cerrno>
 #include <cstdio>
+#include <cstring>
 #include <string>
 #include <vector>
 
-#include "cfg_path.h"
+#include "dpso/error.h"
+#include "os.h"
 
 
 // Each entry in a history file consists of a timestamp, two line
@@ -92,7 +95,7 @@ static void createEntries()
 }
 
 
-void dpsoHistoryLoadFp(FILE* fp)
+static void dpsoHistoryLoad(FILE* fp)
 {
     dpsoHistoryClear();
 
@@ -101,20 +104,29 @@ void dpsoHistoryLoadFp(FILE* fp)
 }
 
 
-void dpsoHistoryLoad(const char* appName, const char* historyBaseName)
+int dpsoHistoryLoad(const char* filePath)
 {
     dpsoHistoryClear();
 
-    auto* fp = dpsoCfgPathFopen(appName, historyBaseName, "rb");
-    if (!fp)
-        return;
+    auto* fp = dpsoFopenUtf8(filePath, "rb");
+    if (!fp) {
+        if (errno == ENOENT)
+            return true;
 
-    dpsoHistoryLoadFp(fp);
+        dpsoSetError((
+            std::string{"dpsoFopenUtf8(..., \"rb\") failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
+
+    dpsoHistoryLoad(fp);
     std::fclose(fp);
+
+    return true;
 }
 
 
-void dpsoHistorySaveFp(FILE* fp)
+static void dpsoHistorySave(FILE* fp)
 {
     for (std::size_t i = 0; i < entries.size(); ++i) {
         if (i > 0)
@@ -128,14 +140,20 @@ void dpsoHistorySaveFp(FILE* fp)
 }
 
 
-void dpsoHistorySave(const char* appName, const char* historyBaseName)
+int dpsoHistorySave(const char* filePath)
 {
-    auto* fp = dpsoCfgPathFopen(appName, historyBaseName, "wb");
-    if (!fp)
-        return;
+    auto* fp = dpsoFopenUtf8(filePath, "wb");
+    if (!fp) {
+        dpsoSetError((
+            std::string{"dpsoFopenUtf8(..., \"wb\") failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
 
-    dpsoHistorySaveFp(fp);
+    dpsoHistorySave(fp);
     std::fclose(fp);
+
+    return true;
 }
 
 

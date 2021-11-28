@@ -3,7 +3,8 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "dpso_utils/history_private.h"
+#include "dpso/error.h"
+#include "dpso_utils/history.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -60,6 +61,9 @@ static void testCount(int expected, int line)
 #define TEST_COUNT(expected) testCount(expected, __LINE__)
 
 
+const char* const historyFileName = "test_history.txt";
+
+
 static void testHistory()
 {
     static const DpsoHistoryEntry entries[] = {
@@ -97,18 +101,29 @@ static void testHistory()
         CMP_ENTRIES(inEntry, outEntry);
     }
 
-    auto* fp = std::tmpfile();
-    if (!fp)
-        return;
-
-    dpsoHistorySaveFp(fp);
-    std::rewind(fp);
+    if (!dpsoHistorySave(historyFileName)) {
+        std::fprintf(
+            stderr,
+            "testHistory(): dpsoHistorySave(\"%s\") failed: %s\n",
+            historyFileName,
+            dpsoGetError());
+        std::exit(EXIT_FAILURE);
+    }
 
     dpsoHistoryClear();
     TEST_COUNT(0);
 
-    dpsoHistoryLoadFp(fp);
-    std::fclose(fp);
+    const auto loaded = dpsoHistoryLoad(historyFileName);
+    std::remove(historyFileName);
+
+    if (!loaded) {
+        std::fprintf(
+            stderr,
+            "testHistory(): dpsoHistoryLoad(\"%s\") failed: %s\n",
+            historyFileName,
+            dpsoGetError());
+        std::exit(EXIT_FAILURE);
+    }
 
     TEST_COUNT(numEntries);
 

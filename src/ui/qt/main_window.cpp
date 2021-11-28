@@ -115,7 +115,10 @@ MainWindow::MainWindow()
 
     createTrayIcon();
 
-    loadState();
+    if (!loadState()) {
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
 
     updateTimerId = startTimer(1000 / 60);
 }
@@ -319,7 +322,7 @@ QWidget* MainWindow::createActionsTab()
 
 QWidget* MainWindow::createHistoryTab()
 {
-    history = new History();
+    history = new History(cfgDirPath);
 
     auto* tabLayout = new QVBoxLayout();
     tabLayout->addWidget(history);
@@ -360,7 +363,7 @@ void MainWindow::createTrayIcon()
 }
 
 
-void MainWindow::loadState()
+bool MainWindow::loadState()
 {
     ocrAllowQueuing = dpsoCfgGetBool(
         cfgKeyOcrAllowQueuing, cfgDefaultValueOcrAllowQueuing);
@@ -404,12 +407,15 @@ void MainWindow::loadState()
 
     langBrowser->loadState();
     actionChooser->loadState();
-    history->loadState();
+    if (!history->loadState())
+        return false;
 
     trayIcon->setVisible(
         dpsoCfgGetBool(
             cfgKeyUiTrayIconVisible,
             cfgDefaultValueUiTrayIconVisible));
+
+    return true;
 }
 
 
