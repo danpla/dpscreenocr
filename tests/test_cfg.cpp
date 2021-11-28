@@ -297,20 +297,20 @@ static void reload()
             "reload(): dpsoCfgSave(\"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
-        test::failure();
-        return;
+        std::exit(EXIT_FAILURE);
     }
 
-    if (!dpsoCfgLoad(cfgFileName)) {
+    const auto loaded = dpsoCfgLoad(cfgFileName);
+    std::remove(cfgFileName);
+
+    if (!loaded) {
         std::fprintf(
             stderr,
             "reload(): dpsoCfgLoad(\"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
-        test::failure();
+        std::exit(EXIT_FAILURE);
     }
-
-    std::remove(cfgFileName);
 }
 
 
@@ -323,23 +323,23 @@ static void loadCfgData(const char* cfgData)
             "loadCfgData(): fopen(\"%s\", \"wb\") failed: %s\n",
             cfgFileName,
             std::strerror(errno));
-        test::failure();
-        return;
+        std::exit(EXIT_FAILURE);
     }
 
     std::fputs(cfgData, fp);
     std::fclose(fp);
 
-    if (!dpsoCfgLoad(cfgFileName)) {
+    const auto loaded = dpsoCfgLoad(cfgFileName);
+    std::remove(cfgFileName);
+
+    if (!loaded) {
         std::fprintf(
             stderr,
             "loadCfgData(): dpsoCfgLoad(\"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
-        test::failure();
+        std::exit(EXIT_FAILURE);
     }
-
-    std::remove(cfgFileName);
 }
 
 
