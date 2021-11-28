@@ -17,7 +17,8 @@ class History : public QWidget {
     Q_OBJECT
 
 public:
-    History(const std::string& cfgDirPath, QWidget* parent = nullptr);
+    explicit History(
+        const std::string& cfgDirPath, QWidget* parent = nullptr);
 
     void append(const char* text, const char* timestamp);
 
