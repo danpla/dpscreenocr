@@ -11,18 +11,15 @@ namespace dpso {
 /**
  * Text of OcrResult.
  *
- * The purpose of the class is to abstract the way a backed returns
- * text to avoid copying data as std::string in case of C string
- * or a custom string-like class. This optimization is not mandatory,
- * so if there's no sense to bother, simply use the OcrResult
- * constructor taking a C string.
+ * The purpose of the class is to avoid copying data to std::string in
+ * case a backend returns text as a C string or a custom string class.
+ * This optimization is not mandatory, so if there's no sense to
+ * bother, simply use the OcrResult constructor taking a C string.
  */
 class OcrResultText {
 public:
     /**
      * Create an OcrResultText holding a copy of text.
-     *
-     * Text may be null.
      */
     static std::unique_ptr<OcrResultText> create(const char* text);
 

@@ -11,7 +11,7 @@ namespace dpso {
 
 OcrResult::OcrResult(Status status, const char* text)
     : status{status}
-    , text{OcrResultText::create(text)}
+    , text{text ? OcrResultText::create(text) : nullptr}
 {
 
 }

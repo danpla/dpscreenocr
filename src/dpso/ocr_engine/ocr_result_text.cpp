@@ -11,7 +11,7 @@ namespace {
 class SimpleOcrResultText : public OcrResultText {
 public:
     explicit SimpleOcrResultText(const char* text)
-        : text{text ? text : ""}
+        : text{text}
     {
 
     }
