@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <string>
+#include <utility>
 
 #include "tesseract/baseapi.h"
 #include "tesseract/genericvector.h"
@@ -159,19 +160,18 @@ OcrResult TesseractOcr::recognize(
     if (cancelData.cancelled)
         return {OcrResult::Status::terminated, nullptr};
 
-    auto* text = tess.GetUTF8Text();
+    std::unique_ptr<char[]> text{tess.GetUTF8Text()};
     if (!text)
         return {
             OcrResult::Status::error,
             "TessBaseAPI::GetUTF8Text() returned null"};
 
-    const auto textLen = prettifyTesseractText(text);
+    const auto textLen = prettifyTesseractText(text.get());
 
     return {
         OcrResult::Status::success,
         std::unique_ptr<OcrResultText>(
-            new TesseractOcrResultText(
-                std::unique_ptr<char[]>(text), textLen))};
+            new TesseractOcrResultText(std::move(text), textLen))};
 }
 
 
