@@ -25,8 +25,7 @@ const char* dpsoGetCfgPath(const char* appName)
     else if (const auto* home = std::getenv("HOME")) {
         path += home;
         path += "/.config";
-    }
-    else {
+    } else {
         dpsoSetError(
             "Neither XDG_CONFIG_HOME nor HOME environment variable "
             "is set");
