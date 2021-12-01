@@ -595,9 +595,7 @@ void MainWindow::checkResult()
                 result.text, result.textLen);
         }
 
-        auto* clipboard = QApplication::clipboard();
-        clipboard->setText(clipboardText, QClipboard::Clipboard);
-        clipboard->setText(clipboardText, QClipboard::Selection);
+        QApplication::clipboard()->setText(clipboardText);
     }
 
     if (actions & ActionChooser::Action::addToHistory)
