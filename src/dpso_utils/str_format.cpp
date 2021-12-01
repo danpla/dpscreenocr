@@ -7,11 +7,11 @@
 #include "dpso/str.h"
 
 
-static const char* lookupArg(
+static const char* findArg(
     const char* name, std::size_t nameLen,
-    const struct DpsoFormatArg* args, int numArgs)
+    const struct DpsoFormatArg* args, std::size_t numArgs)
 {
-    for (int i = 0; i < numArgs; ++i)
+    for (std::size_t i = 0; i < numArgs; ++i)
         if (dpso::str::cmpSubStr(args[i].name, name, nameLen) == 0)
             return args[i].str;
 
@@ -21,7 +21,7 @@ static const char* lookupArg(
 
 const char* dpsoStrNamedFormat(
     const char* str,
-    const struct DpsoFormatArg* args, int numArgs)
+    const struct DpsoFormatArg* args, size_t numArgs)
 {
     static std::string result;
     result.clear();
@@ -44,7 +44,7 @@ const char* dpsoStrNamedFormat(
             if (*nameEnd == '}') {
                 ++s;
 
-                const auto* argStr = lookupArg(
+                const auto* argStr = findArg(
                     nameBegin, nameEnd - nameBegin,
                     args, numArgs);
                 if (argStr)

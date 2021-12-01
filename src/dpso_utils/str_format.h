@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <stddef.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,7 +38,7 @@ struct DpsoFormatArg {
  */
 const char* dpsoStrNamedFormat(
     const char* str,
-    const struct DpsoFormatArg* args, int numArgs);
+    const struct DpsoFormatArg* args, size_t numArgs);
 
 
 #ifdef __cplusplus
