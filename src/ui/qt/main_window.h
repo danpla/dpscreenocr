@@ -76,6 +76,7 @@ private:
     QWidget* actionsTab;
     ActionChooser* actionChooser;
 
+    QString clipboardText;
     QString copyToClipboardTextSeparator;
     bool runExeWaitToComplete;
 

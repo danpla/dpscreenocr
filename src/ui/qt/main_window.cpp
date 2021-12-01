@@ -584,19 +584,20 @@ void MainWindow::checkResult()
     const auto actions = actionChooser->getSelectedActions();
 
     if (actions & ActionChooser::Action::copyToClipboard) {
-        static QString fullText;
-        fullText.clear();
+        clipboardText.clear();
 
         for (int i = 0; i < results.numItems; ++i) {
             if (i > 0)
-                fullText += copyToClipboardTextSeparator;
+                clipboardText += copyToClipboardTextSeparator;
 
-            fullText += results.items[i].text;
+            const auto& result = results.items[i];
+            clipboardText += QString::fromUtf8(
+                result.text, result.textLen);
         }
 
         auto* clipboard = QApplication::clipboard();
-        clipboard->setText(fullText, QClipboard::Clipboard);
-        clipboard->setText(fullText, QClipboard::Selection);
+        clipboard->setText(clipboardText, QClipboard::Clipboard);
+        clipboard->setText(clipboardText, QClipboard::Selection);
     }
 
     if (actions & ActionChooser::Action::addToHistory)
