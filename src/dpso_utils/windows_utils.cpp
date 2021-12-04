@@ -14,9 +14,6 @@ namespace windows {
 
 std::wstring utf8ToUtf16(const char* utf8Str)
 {
-    if (!*utf8Str)
-        return {};
-
     const auto sizeRequired = MultiByteToWideChar(
         CP_UTF8, 0, utf8Str,
         // Tell that the string is null-terminated; the returned size
@@ -43,9 +40,6 @@ std::wstring utf8ToUtf16(const char* utf8Str)
 
 std::string utf16ToUtf8(const wchar_t* utf16Str)
 {
-    if (!*utf16Str)
-        return {};
-
     const auto sizeRequired = WideCharToMultiByte(
         CP_UTF8, 0,
         utf16Str,
@@ -135,14 +129,12 @@ std::string createCmdLine(
 {
     std::string result;
 
-    if (*programName) {
-        if (std::strchr(programName, ' ')) {
-            result += '"';
-            result += programName;
-            result += '"';
-        } else
-            result += programName;
-    }
+    if (std::strchr(programName, ' ')) {
+        result += '"';
+        result += programName;
+        result += '"';
+    } else
+        result += programName;
 
     for (std::size_t i = 0; i < numArgs; ++i) {
         if (!result.empty())

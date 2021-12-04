@@ -28,9 +28,9 @@ static void testUtfConversion(const char* utf8Str)
         test::failure();
     }
 
-    std::string utf8ToUtf16Result;
+    std::string utf16ToUtf8Result;
     try {
-        utf8ToUtf16Result = utf16ToUtf8(utf16Str);
+        utf16ToUtf8Result = utf16ToUtf8(utf16Str);
     } catch (std::runtime_error& e) {
         std::fprintf(
             stderr,
@@ -40,7 +40,7 @@ static void testUtfConversion(const char* utf8Str)
         test::failure();
     }
 
-    if (utf8ToUtf16Result != utf8Str) {
+    if (utf16ToUtf8Result != utf8Str) {
         std::fprintf(
             stderr,
             "utf8ToUtf16() <=> utf16ToUtf8() conversion failed.\n"
@@ -48,7 +48,7 @@ static void testUtfConversion(const char* utf8Str)
             "  Converted: %s\n",
             test::utils::escapeStr(utf8Str).c_str(),
             test::utils::escapeStr(
-                utf8ToUtf16Result.c_str()).c_str());
+                utf16ToUtf8Result.c_str()).c_str());
         test::failure();
     }
 }
@@ -57,6 +57,7 @@ static void testUtfConversion(const char* utf8Str)
 static void testUtfConversions()
 {
     const char* const utf8Strings[] = {
+        "",
         // Юникод
         "\320\256\320\275\320\270\320\272\320\276\320\264"
     };
