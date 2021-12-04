@@ -15,8 +15,8 @@ FILE* dpsoFopenUtf8(const char* fileName, const char* mode)
     std::wstring modeUtf16;
 
     try {
-        fileNameUtf16 = windows::utf8ToUtf16(fileName);
-        modeUtf16 = windows::utf8ToUtf16(mode);
+        fileNameUtf16 = dpso::windows::utf8ToUtf16(fileName);
+        modeUtf16 = dpso::windows::utf8ToUtf16(mode);
     } catch (std::runtime_error&) {
         errno = EINVAL;
         return nullptr;
