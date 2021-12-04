@@ -17,4 +17,7 @@ bool confirmation(
     const QString& okText);
 
 
+class QFont;
+
+
 void setMonospace(QFont& font);
