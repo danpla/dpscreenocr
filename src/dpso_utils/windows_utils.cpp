@@ -21,7 +21,7 @@ std::wstring utf8ToUtf16(const char* utf8Str)
         -1,
         nullptr, 0);
     if (sizeRequired <= 0)
-        throw std::runtime_error(getLastErrorMessage());
+        throw std::runtime_error(getErrorMessage(GetLastError()));
 
     std::wstring result;
     result.resize(sizeRequired - 1);
@@ -32,7 +32,7 @@ std::wstring utf8ToUtf16(const char* utf8Str)
             // Note that we overwrite result[size()] with CharT(),
             // which is allowed by the C++ standard.
             &result[0], sizeRequired))
-        throw std::runtime_error(getLastErrorMessage());
+        throw std::runtime_error(getErrorMessage(GetLastError()));
 
     return result;
 }
@@ -48,7 +48,7 @@ std::string utf16ToUtf8(const wchar_t* utf16Str)
         -1,
         nullptr, 0, nullptr, nullptr);
     if (sizeRequired <= 0)
-        throw std::runtime_error(getLastErrorMessage());
+        throw std::runtime_error(getErrorMessage(GetLastError()));
 
     std::string result;
     result.resize(sizeRequired - 1);
@@ -60,7 +60,7 @@ std::string utf16ToUtf8(const wchar_t* utf16Str)
             // which is allowed by the C++ standard.
             &result[0], sizeRequired,
             nullptr, nullptr))
-        throw std::runtime_error(getLastErrorMessage());
+        throw std::runtime_error(getErrorMessage(GetLastError()));
 
     return result;
 }

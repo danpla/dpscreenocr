@@ -86,7 +86,7 @@ static void throwLastError(const char* description)
 {
     throw BackendError(
         std::string(description) + ": "
-        + windows::getLastErrorMessage());
+        + windows::getErrorMessage(GetLastError()));
 }
 
 

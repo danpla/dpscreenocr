@@ -11,7 +11,8 @@ namespace dpso {
 namespace windows {
 
 
-std::string getLastErrorMessage();
+std::string getErrorMessage(DWORD error);
+std::string getHresultMessage(HRESULT hresult);
 
 
 struct WindowDestroyer {
