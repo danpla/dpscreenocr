@@ -19,7 +19,10 @@
 
 #include "backend/backend.h"
 #include "backend/screenshot.h"
+#include "backend/screenshot_error.h"
+#include "error.h"
 #include "geometry.h"
+#include "geometry_c.h"
 #include "img.h"
 #include "ocr_engine/ocr_engine.h"
 #include "progress_tracker.h"
@@ -466,25 +469,41 @@ static void threadLoop()
 
 int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
 {
-    if (!jobArgs)
+    if (!jobArgs) {
+        dpsoSetError("jobArgs is null");
         return false;
+    }
 
-    if (numActiveLangs == 0)
+    if (dpsoRectIsEmpty(&jobArgs->screenRect)) {
+        dpsoSetError("jobArgs->screenRect is empty");
         return false;
+    }
+
+    if (numActiveLangs == 0) {
+        dpsoSetError("No active languages");
+        return false;
+    }
 
     START_TIMING(takeScreenshot);
-    auto screenshot = dpso::backend::getBackend().takeScreenshot(
-        dpso::Rect{jobArgs->screenRect});
+
+    std::unique_ptr<dpso::backend::Screenshot> screenshot;
+    try {
+        screenshot = dpso::backend::getBackend().takeScreenshot(
+            dpso::Rect{jobArgs->screenRect});
+    } catch (dpso::backend::ScreenshotError& e) {
+        dpsoSetError((
+            std::string{"Can't take screenshot: "} + e.what()
+            ).c_str());
+        return false;
+    }
+
+    assert(screenshot);
+
     END_TIMING(
         takeScreenshot,
         "Take screenshot (%ix%i px)",
-        screenshot ? screenshot->getWidth() : -1,
-        screenshot ? screenshot->getHeight() : -1);
-
-    if (!screenshot
-            || screenshot->getWidth() < 1
-            || screenshot->getHeight() < 1)
-        return false;
+        screenshot->getWidth(),
+        screenshot->getHeight());
 
     Job job{
         std::move(screenshot),

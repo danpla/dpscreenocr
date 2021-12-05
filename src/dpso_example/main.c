@@ -99,9 +99,15 @@ static void checkHotkeyActions(void)
             dpsoSetSelectionIsEnabled(false);
 
             dpsoGetSelectionGeometry(&jobArgs.screenRect);
+            if (dpsoRectIsEmpty(&jobArgs.screenRect))
+                return;
+
             jobArgs.flags = dpsoJobTextSegmentation;
 
-            dpsoQueueJob(&jobArgs);
+            if (!dpsoQueueJob(&jobArgs))
+                fprintf(
+                    stderr,
+                    "dpsoQueueJob() error: %s\n", dpsoGetError());
         } else
             dpsoSetSelectionIsEnabled(true);
     }

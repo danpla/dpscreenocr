@@ -628,15 +628,21 @@ void MainWindow::checkHotkeyActions()
         dpsoUnbindAction(hotkeyActionCancelSelection);
 
         if (hotkeyAction == hotkeyActionToggleSelection) {
-            DpsoJobArgs jobArgs;
+            DpsoJobArgs jobArgs{};
 
             dpsoGetSelectionGeometry(&jobArgs.screenRect);
+            if (dpsoRectIsEmpty(&jobArgs.screenRect))
+                return;
 
             jobArgs.flags = 0;
             if (splitTextBlocksCheck->isChecked())
                 jobArgs.flags |= dpsoJobTextSegmentation;
 
-            dpsoQueueJob(&jobArgs);
+            if (!dpsoQueueJob(&jobArgs))
+                QMessageBox::warning(
+                    this,
+                    appName,
+                    QString("Can't queue job: ") + dpsoGetError());
         }
     } else if (hotkeyAction == hotkeyActionToggleSelection
             && canStartSelection()) {

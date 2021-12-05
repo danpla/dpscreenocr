@@ -1,7 +1,10 @@
 
-/* This header is a part of the C interface. */
-
 #pragma once
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 struct DpsoRect {
@@ -10,3 +13,14 @@ struct DpsoRect {
     int w;
     int h;
 };
+
+
+/**
+ * Rect is empty if w or h is <= 0.
+ */
+int dpsoRectIsEmpty(const struct DpsoRect* rect);
+
+
+#ifdef __cplusplus
+}
+#endif

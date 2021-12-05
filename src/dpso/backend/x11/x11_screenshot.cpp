@@ -5,6 +5,7 @@
 
 #include <X11/Xutil.h>
 
+#include "backend/screenshot_error.h"
 #include "geometry.h"
 #include "img.h"
 
@@ -201,7 +202,8 @@ std::unique_ptr<Screenshot> takeX11Screenshot(
     };
     const auto captureRect = getIntersection(rect, screenRect);
     if (isEmpty(captureRect))
-        return nullptr;
+        throw ScreenshotError(
+            "Rect is empty after clamping to screen bounds");
 
     auto* image = XGetImage(
         display,
@@ -214,7 +216,7 @@ std::unique_ptr<Screenshot> takeX11Screenshot(
         ZPixmap);
 
     if (!image)
-        return nullptr;
+        throw ScreenshotError("XGetImage() failed");
 
     return std::unique_ptr<Screenshot>(new X11Screenshot(image));
 }

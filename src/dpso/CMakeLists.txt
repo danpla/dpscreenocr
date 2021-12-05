@@ -42,6 +42,7 @@ add_library(
     dpso.cpp
     error.cpp
     geometry.cpp
+    geometry_c.cpp
     hotkeys.cpp
     img.cpp
     key_names.cpp

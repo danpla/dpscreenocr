@@ -74,8 +74,9 @@ Selection& BackendExecutor::getSelection()
 std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
     const Rect& rect)
 {
-    // We can take screenshots form any thread.
-    return backend->takeScreenshot(rect);
+    return execute(*actionExecutor, [&](){
+        return backend->takeScreenshot(rect);
+    });
 }
 
 

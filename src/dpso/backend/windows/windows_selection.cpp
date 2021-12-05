@@ -113,7 +113,9 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
     wcx.lpszClassName = windowClassName;
     wcx.hIconSm = nullptr;
 
-    RegisterClassExA(&wcx);
+    if (RegisterClassExA(&wcx) == 0)
+        throwLastError("Can't register selection window class");
+
     registered = true;
 }
 

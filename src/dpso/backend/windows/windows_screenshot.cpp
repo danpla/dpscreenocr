@@ -6,6 +6,7 @@
 
 #include <windows.h>
 
+#include "backend/screenshot_error.h"
 #include "backend/windows/utils.h"
 #include "geometry.h"
 #include "img.h"
@@ -92,20 +93,23 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
 
     const auto captureRect = getIntersection(rect, virtualScreenRect);
     if (isEmpty(captureRect))
-        return nullptr;
+        throw ScreenshotError(
+            "Rect is empty after clamping to screen bounds");
 
     auto screenDc = windows::getDc(nullptr);
     if (!screenDc)
-        return nullptr;
+        throw ScreenshotError("GetDC(nullptr) failed");
 
     auto imageDc = windows::createCompatibleDc(screenDc.get());
     if (!imageDc)
-        return nullptr;
+        throw ScreenshotError(
+            "CreateCompatibleDC() for screen DC failed");
 
     windows::ObjectPtr<HBITMAP> imageBitmap(CreateCompatibleBitmap(
         screenDc.get(), captureRect.w, captureRect.h));
     if (!imageBitmap)
-        return nullptr;
+        throw ScreenshotError(
+            "CreateCompatibleBitmap() for screen DC failed");
 
     // The GetDIBits() docs say that the bitmap must not be selected
     // into a DC when calling the function.
@@ -113,13 +117,16 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
         const windows::ObjectSelector bitmapSelector(
             imageDc.get(), imageBitmap.get());
 
-        BitBlt(
-            imageDc.get(), 0, 0, captureRect.w, captureRect.h,
-            screenDc.get(), captureRect.x, captureRect.y,
-            SRCCOPY);
+        if (!BitBlt(
+                imageDc.get(), 0, 0, captureRect.w, captureRect.h,
+                screenDc.get(), captureRect.x, captureRect.y,
+                SRCCOPY))
+            throw ScreenshotError(
+                "BitBlt() failed: "
+                + windows::getErrorMessage(GetLastError()));
     }
 
-    BITMAPINFOHEADER bi;
+    BITMAPINFOHEADER bi{};
     bi.biSize = sizeof(BITMAPINFOHEADER);
     bi.biWidth = captureRect.w;
     bi.biHeight = -captureRect.h;  // Invert for top-down rows order.
@@ -136,12 +143,15 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
     const auto pitch = (captureRect.w * bi.biBitCount + 31) / 32 * 4;
     BufPtr buf(new std::uint8_t[pitch * captureRect.h]);
 
-    GetDIBits(
-        imageDc.get(), imageBitmap.get(),
-        0, captureRect.h,
-        buf.get(),
-        reinterpret_cast<BITMAPINFO*>(&bi),
-        DIB_RGB_COLORS);
+    if (!GetDIBits(
+            imageDc.get(), imageBitmap.get(),
+            0, captureRect.h,
+            buf.get(),
+            reinterpret_cast<BITMAPINFO*>(&bi),
+            DIB_RGB_COLORS))
+        throw ScreenshotError(
+            "GetDIBits() failed: "
+            + windows::getErrorMessage(GetLastError()));
 
     return std::unique_ptr<Screenshot>(new WindowsScreenshot(
         std::move(buf), captureRect.w, captureRect.h, pitch));

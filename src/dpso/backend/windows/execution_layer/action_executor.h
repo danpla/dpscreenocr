@@ -60,7 +60,7 @@ auto execute(ActionExecutor& executor, CallableT callable)
         }
 
         CallableT callable;
-    } action (callable);
+    } action(callable);
 
     executor.execute(action);
 }
@@ -85,7 +85,7 @@ auto execute(ActionExecutor& executor, CallableT callable)
 
         CallableT callable;
         decltype(callable()) result;
-    } action (callable);
+    } action(callable);
 
     executor.execute(action);
     return std::move(action.result);
