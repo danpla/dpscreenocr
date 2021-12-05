@@ -146,7 +146,7 @@ void History::saveAs()
         dpsoHistoryDetectExportFormat(
             filePathUtf8.data(), dpsoHistoryExportFormatPlainText)))
         QMessageBox::critical(
-            nullptr,
+            this,
             QString(appName) + " error",
             QString("Can't save \"%1\": %2").arg(
                 filePath, dpsoGetError()));
