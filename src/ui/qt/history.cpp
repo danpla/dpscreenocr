@@ -141,10 +141,15 @@ void History::saveAs()
         return;
 
     const auto filePathUtf8 = filePath.toUtf8();
-    dpsoHistoryExport(
+    if (!dpsoHistoryExport(
         filePathUtf8.data(),
         dpsoHistoryDetectExportFormat(
-            filePathUtf8.data(), dpsoHistoryExportFormatPlainText));
+            filePathUtf8.data(), dpsoHistoryExportFormatPlainText)))
+        QMessageBox::critical(
+            nullptr,
+            QString(appName) + " error",
+            QString("Can't save \"%1\": %2").arg(
+                filePath, dpsoGetError()));
 
     const QFileInfo fileInfo(filePath);
 

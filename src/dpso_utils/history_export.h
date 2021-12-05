@@ -33,8 +33,10 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
 
 /**
  * Export history to a file.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
  */
-void dpsoHistoryExport(
+int dpsoHistoryExport(
     const char* fileName, DpsoHistoryExportFormat exportFormat);
 
 

@@ -1,9 +1,12 @@
 
 #include "history_export.h"
 
+#include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <string>
 
+#include "dpso/error.h"
 #include "dpso/str.h"
 #include "history.h"
 #include "os.h"
@@ -189,15 +192,19 @@ static void exportJson(std::FILE* fp)
 }
 
 
-void dpsoHistoryExport(
+int dpsoHistoryExport(
     const char* fileName, DpsoHistoryExportFormat exportFormat)
 {
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
     auto* fp = dpsoFopenUtf8(fileName, "w");
-    if (!fp)
-        return;
+    if (!fp) {
+        dpsoSetError((
+            std::string{"dpsoFopenUtf8(..., \"w\") failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
 
     switch (exportFormat) {
         case dpsoHistoryExportFormatPlainText:
@@ -214,4 +221,6 @@ void dpsoHistoryExport(
     }
 
     std::fclose(fp);
+
+    return true;
 }
