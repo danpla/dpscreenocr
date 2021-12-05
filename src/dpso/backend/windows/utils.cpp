@@ -10,23 +10,28 @@ namespace windows {
 
 std::string getErrorMessage(DWORD error)
 {
-    char* messageBuffer = nullptr;
-    const auto size = FormatMessageA(
+    char* messageBuf = nullptr;
+    auto size = FormatMessageA(
         FORMAT_MESSAGE_ALLOCATE_BUFFER
             | FORMAT_MESSAGE_FROM_SYSTEM
             | FORMAT_MESSAGE_IGNORE_INSERTS,
         nullptr,
         error,
         MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
-        reinterpret_cast<char*>(&messageBuffer),
+        reinterpret_cast<char*>(&messageBuf),
         0, nullptr);
 
     if (size == 0)
         return "Windows error " + std::to_string(error);
 
-    std::string message{messageBuffer, size};
+    if (size > 1
+            && messageBuf[size - 2] == '\r'
+            && messageBuf[size - 1] == '\n')
+        size -= 2;
 
-    LocalFree(messageBuffer);
+    std::string message{messageBuf, size};
+
+    LocalFree(messageBuf);
 
     return message;
 }
