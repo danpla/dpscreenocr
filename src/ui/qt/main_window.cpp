@@ -628,7 +628,7 @@ void MainWindow::checkHotkeyActions()
         dpsoUnbindAction(hotkeyActionCancelSelection);
 
         if (hotkeyAction == hotkeyActionToggleSelection) {
-            DpsoJobArgs jobArgs{};
+            DpsoJobArgs jobArgs;
 
             dpsoGetSelectionGeometry(&jobArgs.screenRect);
             if (dpsoRectIsEmpty(&jobArgs.screenRect))
