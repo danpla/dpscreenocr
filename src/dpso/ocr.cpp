@@ -209,8 +209,8 @@ using Timestamp = std::array<char, 20>;
 struct Job {
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     std::vector<int> langIndices;
+    dpso::OcrFeatures ocrFeatures;
     Timestamp timestamp;
-    unsigned flags;
 };
 
 
@@ -403,12 +403,8 @@ static void processJob(const Job& job)
 
     progressTracker.advanceJob();
 
-    dpso::OcrFeatures ocrFeatures = 0;
-    if (job.flags & dpsoJobTextSegmentation)
-        ocrFeatures |= dpso::ocrFeatureTextSegmentation;
-
     auto ocrResult = ocrEngine->recognize(
-        ocrImage, job.langIndices, ocrFeatures,
+        ocrImage, job.langIndices, job.ocrFeatures,
         ocrProgressCallback, &progressTracker);
 
     progressTracker.finish();
@@ -505,11 +501,15 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
         screenshot->getWidth(),
         screenshot->getHeight());
 
+    dpso::OcrFeatures ocrFeatures{};
+    if (jobArgs->flags & dpsoJobTextSegmentation)
+        ocrFeatures |= dpso::ocrFeatureTextSegmentation;
+
     Job job{
         std::move(screenshot),
         getActiveLangIndices(),
-        createTimestamp(),
-        jobArgs->flags
+        ocrFeatures,
+        createTimestamp()
     };
 
     setCLocale();
