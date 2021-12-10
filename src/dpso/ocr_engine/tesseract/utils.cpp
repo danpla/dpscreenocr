@@ -58,7 +58,7 @@ std::size_t prettifyTesseractText(char* text)
                     replacement.fromLen) != 0)
                 continue;
 
-            std::memmove(dst, replacement.to, replacement.toLen);
+            std::memcpy(dst, replacement.to, replacement.toLen);
             src += replacement.fromLen;
             dst += replacement.toLen;
 
