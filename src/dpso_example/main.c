@@ -46,16 +46,18 @@ static void setupHotkeys(void)
 }
 
 
-static void reportProgress(void)
+static void reportProgress(struct DpsoProgress* lastProgress)
 {
     struct DpsoProgress progress;
-    int progressIsNew;
     int totalProgress;
 
-    dpsoGetProgress(&progress, &progressIsNew);
+    dpsoGetProgress(&progress);
 
-    if (!progressIsNew || progress.totalJobs == 0)
+    if (progress.totalJobs == 0
+            || dpsoProgressEqual(&progress, lastProgress))
         return;
+
+    *lastProgress = progress;
 
     if (progress.curJob == 0)
         totalProgress = 0;
@@ -116,6 +118,8 @@ static void checkHotkeyActions(void)
 
 int main(void)
 {
+    struct DpsoProgress lastProgress = {0};
+
     if (!dpsoInit()) {
         fprintf(
             stderr, "dpsoInit() error: %s\n", dpsoGetError());
@@ -128,7 +132,7 @@ int main(void)
     while (true) {
         dpsoUpdate();
 
-        reportProgress();
+        reportProgress(&lastProgress);
         checkResult();
         checkHotkeyActions();
 

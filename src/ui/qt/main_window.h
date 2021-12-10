@@ -6,6 +6,8 @@
 #include <QSystemTrayIcon>
 #include <QWidget>
 
+#include "dpso/dpso.h"
+
 #include "status.h"
 
 
@@ -57,6 +59,7 @@ private:
 
     bool ocrAllowQueuing;
 
+    DpsoProgress lastProgress;
     bool wasActiveLangs;
     bool statusValid;
 

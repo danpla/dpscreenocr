@@ -168,18 +168,19 @@ struct DpsoProgress {
 
 
 /**
+ * Return 1 if two DpsoProgress are equal, 0 otherwise.
+ */
+int dpsoProgressEqual(
+    const struct DpsoProgress* a, const struct DpsoProgress* b);
+
+
+/**
  * Get jobs progress.
- *
- * isNew is 1 if the progress was changed from the last time
- * dpsoGetProgress() was called, or 0 otherwise. Keep in mind that 1
- * doesn't imply that the returned struct will actually differ from
- * the previous; they may be the same in case the progress refers to
- * a new job chain.
  *
  * If you just need to test if there are pending jobs, consider using
  * dpsoGetJobsPending().
  */
-void dpsoGetProgress(struct DpsoProgress* progress, int* isNew);
+void dpsoGetProgress(struct DpsoProgress* progress);
 
 
 /**
@@ -187,8 +188,7 @@ void dpsoGetProgress(struct DpsoProgress* progress, int* isNew);
  *
  * The function returns 1 if there are pending jobs (that is, there
  * is an active or at least one queued job), 0 otherwise. This is
- * basically the same as testing DpsoProgress::totalJobs, except it
- * doesn't affect the isNew value of dpsoGetProgress().
+ * basically the same as testing DpsoProgress::totalJobs.
  */
 int dpsoGetJobsPending(void);
 

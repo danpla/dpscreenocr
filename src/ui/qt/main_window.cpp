@@ -30,7 +30,6 @@
 #undef Status
 #endif
 
-#include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
 
@@ -62,6 +61,7 @@ enum HotkeyAction {
 
 MainWindow::MainWindow()
     : QWidget{}
+    , lastProgress{}
     , wasActiveLangs{}
     , statusValid{}
 {
@@ -513,8 +513,7 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
 void MainWindow::updateStatus()
 {
     DpsoProgress progress;
-    int progressIsNew;
-    dpsoGetProgress(&progress, &progressIsNew);
+    dpsoGetProgress(&progress);
 
     actionsTab->setEnabled(progress.totalJobs == 0);
 
@@ -522,8 +521,10 @@ void MainWindow::updateStatus()
         // Update status when the progress ends.
         statusValid = false;
 
-        if (!progressIsNew)
+        if (dpsoProgressEqual(&progress, &lastProgress))
             return;
+
+        lastProgress = progress;
 
         int totalProgress;
         if (progress.curJob == 0)

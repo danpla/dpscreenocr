@@ -252,7 +252,6 @@ static struct {
     void* waitingUserData;
 
     DpsoProgress progress;
-    bool progressIsNew;
 
     std::vector<JobResult> results;
 
@@ -267,7 +266,6 @@ static struct {
         waitingForResults = false;
 
         progress = {};
-        progressIsNew = false;
 
         results.clear();
 
@@ -375,7 +373,6 @@ static void progressTrackerFn(float progress, void* userData)
 
     LINK_LOCK;
     link.progress.curJobProgress = progress * 100;
-    link.progressIsNew = true;
 }
 
 
@@ -443,12 +440,9 @@ static void threadLoop()
                 link.progress.curJobProgress = 0;
 
                 ++link.progress.curJob;
-                link.progressIsNew = true;
             } else if (link.jobActive) {
                 link.jobActive = false;
-
                 link.progress = {};
-                link.progressIsNew = true;
             }
         }
 
@@ -519,23 +513,28 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
     link.jobQueue.push(std::move(job));
 
     ++link.progress.totalJobs;
-    link.progressIsNew = true;
 
     return true;
 }
 
 
-void dpsoGetProgress(struct DpsoProgress* progress, int* isNew)
+int dpsoProgressEqual(
+    const struct DpsoProgress* a, const struct DpsoProgress* b)
+{
+    return (
+        a && b
+        && a->curJobProgress == b->curJobProgress
+        && a->curJob == b->curJob
+        && a->totalJobs == b->totalJobs);
+}
+
+
+void dpsoGetProgress(struct DpsoProgress* progress)
 {
     LINK_LOCK;
 
     if (progress)
         *progress = link.progress;
-
-    if (isNew)
-        *isNew = link.progressIsNew;
-
-    link.progressIsNew = false;
 }
 
 
