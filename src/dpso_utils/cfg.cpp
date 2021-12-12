@@ -169,7 +169,7 @@ static bool getLine(std::FILE* fp, std::string& line)
 }
 
 
-static void dpsoCfgLoad(std::FILE* fp)
+static void loadCfg(std::FILE* fp)
 {
     keyValues.clear();
 
@@ -197,7 +197,7 @@ int dpsoCfgLoad(const char* filePath)
         return false;
     }
 
-    dpsoCfgLoad(fp);
+    loadCfg(fp);
     std::fclose(fp);
 
     return true;
@@ -262,7 +262,7 @@ static void writeKeyValue(
 }
 
 
-static void dpsoCfgSave(std::FILE* fp)
+static void saveCfg(std::FILE* fp)
 {
     std::size_t maxKeyLen = 0;
 
@@ -285,7 +285,7 @@ int dpsoCfgSave(const char* filePath)
         return false;
     }
 
-    dpsoCfgSave(fp);
+    saveCfg(fp);
     std::fclose(fp);
 
     return true;
