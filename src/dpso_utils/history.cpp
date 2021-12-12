@@ -33,19 +33,39 @@ static std::string data;
 static std::vector<Entry> entries;
 
 
-static void loadData(std::FILE* fp)
+static bool loadData(std::FILE* fp)
 {
-    std::fseek(fp, 0, SEEK_END);
-    const auto size = std::ftell(fp);
-    std::fseek(fp, 0, SEEK_SET);
+    if (std::fseek(fp, 0, SEEK_END) != 0) {
+        dpsoSetError((
+            std::string{"fseek(..., SEEK_END) failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
 
-    if (size < 0)
-        return;
+    const auto size = std::ftell(fp);
+    if (size < 0) {
+        dpsoSetError((
+            std::string{"ftell() failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
+
+    if (std::fseek(fp, 0, SEEK_SET) != 0) {
+        dpsoSetError((
+            std::string{"fseek(..., 0, SEEK_SET) failed: "}
+            + std::strerror(errno)).c_str());
+        return false;
+    }
 
     data.resize(size);
     if (std::fread(&data[0], 1, size, fp)
-            != static_cast<std::size_t>(size))
+            != static_cast<std::size_t>(size)) {
         data.clear();
+        dpsoSetError("fread() failed");
+        return false;
+    }
+
+    return true;
 }
 
 
@@ -95,12 +115,20 @@ static void createEntries()
 }
 
 
-static void dpsoHistoryLoad(FILE* fp)
+static bool loadHistory(FILE* fp)
 {
     dpsoHistoryClear();
 
-    loadData(fp);
+    if (!loadData(fp)) {
+        dpsoSetError((
+            std::string{"Can't load data: "}
+            + dpsoGetError()).c_str());
+        return false;
+    }
+
     createEntries();
+
+    return true;
 }
 
 
@@ -119,14 +147,14 @@ int dpsoHistoryLoad(const char* filePath)
         return false;
     }
 
-    dpsoHistoryLoad(fp);
+    const auto result = loadHistory(fp);
     std::fclose(fp);
 
-    return true;
+    return result;
 }
 
 
-static void dpsoHistorySave(FILE* fp)
+static void saveHistory(FILE* fp)
 {
     for (std::size_t i = 0; i < entries.size(); ++i) {
         if (i > 0)
@@ -150,7 +178,7 @@ int dpsoHistorySave(const char* filePath)
         return false;
     }
 
-    dpsoHistorySave(fp);
+    saveHistory(fp);
     std::fclose(fp);
 
     return true;
