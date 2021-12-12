@@ -481,9 +481,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
         screenshot = dpso::backend::getBackend().takeScreenshot(
             dpso::Rect{jobArgs->screenRect});
     } catch (dpso::backend::ScreenshotError& e) {
-        dpsoSetError((
-            std::string{"Can't take screenshot: "} + e.what()
-            ).c_str());
+        dpsoSetError("Can't take screenshot: %s", e.what());
         return false;
     }
 

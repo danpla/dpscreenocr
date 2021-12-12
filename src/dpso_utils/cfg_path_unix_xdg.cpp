@@ -36,9 +36,9 @@ const char* dpsoGetCfgPath(const char* appName)
     path += appName;
 
     if (!dpso::unix::makeDirs(&path[0])) {
-        dpsoSetError((
-            "makeDirs(\"" + path + "\") failed: "
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "makeDirs(\"%s\") failed: %s",
+            path.c_str(), std::strerror(errno));
         return nullptr;
     }
 

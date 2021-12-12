@@ -3,7 +3,6 @@
 
 #include <cstddef>
 #include <stdexcept>
-#include <string>
 
 #include "backend/backend.h"
 #include "ocr_private.h"
@@ -41,9 +40,8 @@ int dpsoInit(void)
         try {
             modules[i].init();
         } catch (std::runtime_error& e) {
-            dpsoSetError((
-                std::string{"Can't init "} + modules[i].name + ": "
-                + e.what()).c_str());
+            dpsoSetError(
+                "Can't init %s: %s", modules[i].name, e.what());
 
             for (auto j = i; j--;)
                 modules[j].shutdown();

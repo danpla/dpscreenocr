@@ -36,24 +36,21 @@ static std::vector<Entry> entries;
 static bool loadData(std::FILE* fp)
 {
     if (std::fseek(fp, 0, SEEK_END) != 0) {
-        dpsoSetError((
-            std::string{"fseek(..., SEEK_END) failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "fseek(..., SEEK_END) failed: %s", std::strerror(errno));
         return false;
     }
 
     const auto size = std::ftell(fp);
     if (size < 0) {
-        dpsoSetError((
-            std::string{"ftell() failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError("ftell() failed: %s", std::strerror(errno));
         return false;
     }
 
     if (std::fseek(fp, 0, SEEK_SET) != 0) {
-        dpsoSetError((
-            std::string{"fseek(..., 0, SEEK_SET) failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "fseek(..., 0, SEEK_SET) failed: %s",
+            std::strerror(errno));
         return false;
     }
 
@@ -120,9 +117,7 @@ static bool loadHistory(FILE* fp)
     dpsoHistoryClear();
 
     if (!loadData(fp)) {
-        dpsoSetError((
-            std::string{"Can't load data: "}
-            + dpsoGetError()).c_str());
+        dpsoSetError("Can't load data: %s", dpsoGetError());
         return false;
     }
 
@@ -141,9 +136,9 @@ int dpsoHistoryLoad(const char* filePath)
         if (errno == ENOENT)
             return true;
 
-        dpsoSetError((
-            std::string{"dpsoFopenUtf8(..., \"rb\") failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "dpsoFopenUtf8(..., \"rb\") failed: %s",
+            std::strerror(errno));
         return false;
     }
 
@@ -172,9 +167,9 @@ int dpsoHistorySave(const char* filePath)
 {
     auto* fp = dpsoFopenUtf8(filePath, "wb");
     if (!fp) {
-        dpsoSetError((
-            std::string{"dpsoFopenUtf8(..., \"wb\") failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "dpsoFopenUtf8(..., \"wb\") failed: %s",
+            std::strerror(errno));
         return false;
     }
 

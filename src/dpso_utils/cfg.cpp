@@ -191,9 +191,9 @@ int dpsoCfgLoad(const char* filePath)
         if (errno == ENOENT)
             return true;
 
-        dpsoSetError((
-            std::string{"dpsoFopenUtf8(..., \"r\") failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "dpsoFopenUtf8(..., \"r\") failed: %s",
+             std::strerror(errno));
         return false;
     }
 
@@ -279,9 +279,9 @@ int dpsoCfgSave(const char* filePath)
 {
     auto* fp = dpsoFopenUtf8(filePath, "w");
     if (!fp) {
-        dpsoSetError((
-            std::string{"dpsoFopenUtf8(..., \"w\") failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "dpsoFopenUtf8(..., \"w\") failed: %s",
+            std::strerror(errno));
         return false;
     }
 

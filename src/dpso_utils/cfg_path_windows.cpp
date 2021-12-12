@@ -21,9 +21,9 @@ const char* dpsoGetCfgPath(const char* appName)
             nullptr, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE,
             nullptr, SHGFP_TYPE_CURRENT, appDataPathUtf16);
     if (FAILED(hresult)) {
-        dpsoSetError((
-            "SHGetFolderPathW() with CSIDL_LOCAL_APPDATA failed: "
-            + dpso::windows::getHresultMessage(hresult)).c_str());
+        dpsoSetError(
+            "SHGetFolderPathW() with CSIDL_LOCAL_APPDATA failed: %s",
+            dpso::windows::getHresultMessage(hresult).c_str());
         return nullptr;
     }
 
@@ -32,9 +32,7 @@ const char* dpsoGetCfgPath(const char* appName)
     try {
         pathUtf16 += dpso::windows::utf8ToUtf16(appName);
     } catch (std::runtime_error& e) {
-        dpsoSetError((
-            std::string{"Can't convert appName to UTF-16: "}
-            + e.what()).c_str());
+        dpsoSetError("Can't convert appName to UTF-16: %s", e.what());
         return nullptr;
     }
 
@@ -42,18 +40,16 @@ const char* dpsoGetCfgPath(const char* appName)
     try {
         path = dpso::windows::utf16ToUtf8(pathUtf16);
     } catch (std::runtime_error& e) {
-        dpsoSetError((
-            std::string{"Can't convert path to UTF-8: "}
-            + e.what()).c_str());
+        dpsoSetError("Can't convert path to UTF-8: %s", e.what());
         return nullptr;
     }
 
     if (!CreateDirectoryW(pathUtf16.c_str(), nullptr)
             && GetLastError() != ERROR_ALREADY_EXISTS) {
-        dpsoSetError((
-            "CreateDirectoryW(\"" + path + "\") failed: "
-            + dpso::windows::getErrorMessage(GetLastError())
-            ).c_str());
+        dpsoSetError(
+            "CreateDirectoryW(\"%s\") failed: %s",
+            path.c_str(),
+            dpso::windows::getErrorMessage(GetLastError()).c_str());
         return nullptr;
     }
 

@@ -26,7 +26,11 @@ const char* dpsoGetError(void);
 /**
  * Set error message.
  */
-void dpsoSetError(const char* error);
+void dpsoSetError(const char* fmt, ...)
+    #ifdef __GNUC__
+    __attribute__((format(printf, 1, 2)))
+    #endif
+;
 
 
 #ifdef __cplusplus

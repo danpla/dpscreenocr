@@ -4,7 +4,6 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
-#include <string>
 
 #include "dpso/error.h"
 #include "dpso/str.h"
@@ -200,9 +199,9 @@ int dpsoHistoryExport(
     // format, but is convenient for Notepad users.
     auto* fp = dpsoFopenUtf8(fileName, "w");
     if (!fp) {
-        dpsoSetError((
-            std::string{"dpsoFopenUtf8(..., \"w\") failed: "}
-            + std::strerror(errno)).c_str());
+        dpsoSetError(
+            "dpsoFopenUtf8(..., \"w\") failed: %s",
+            std::strerror(errno));
         return false;
     }
 
