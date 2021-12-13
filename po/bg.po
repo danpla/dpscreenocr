@@ -5,14 +5,16 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2021-11-28 06:10+0200\n"
-"PO-Revision-Date: 2021-11-28 06:10+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2021-12-14 22:53+0000\n"
+"Last-Translator: Simeon Nikolov <simeon.nikolov09@gmail.com>\n"
+"Language-Team: Bulgarian <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr/bg/>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.10-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:45
 msgid "Afrikaans"
@@ -530,141 +532,141 @@ msgstr ""
 
 #: src/ui/qt/about.cpp:53 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
-msgstr ""
+msgstr "Програма за разпознаване на текст на екрана"
 
 #: src/ui/qt/about.cpp:67
 msgid "License"
-msgstr ""
+msgstr "Лиценз"
 
 #: src/ui/qt/action_chooser.cpp:25
 msgid "Copy text to clipboard"
-msgstr ""
+msgstr "Копирайте текста в буферната памет"
 
 #: src/ui/qt/action_chooser.cpp:26
 msgid "Add text to history"
-msgstr ""
+msgstr "Добавете текста в историята"
 
 #: src/ui/qt/action_chooser.cpp:28
 msgid "Run executable:"
-msgstr ""
+msgstr "Стартирайте изпълним файл:"
 
 #: src/ui/qt/action_chooser.cpp:30
 msgid "Run an executable with the recognized text as the first argument"
-msgstr ""
+msgstr "Стартирайте изпълнимия файл с разпознатия текст като първи аргумент"
 
 #: src/ui/qt/action_chooser.cpp:73
 msgid "Choose an executable"
-msgstr ""
+msgstr "Изберете изпълнимия файл"
 
 #: src/ui/qt/history.cpp:31
 msgid "Wrap words"
-msgstr ""
+msgstr "Оградете думите"
 
 #: src/ui/qt/history.cpp:46 src/ui/qt/history.cpp:79
 msgid "Clear"
-msgstr ""
+msgstr "Изчисти"
 
 #: src/ui/qt/history.cpp:51
 msgid "Save as…"
-msgstr ""
+msgstr "Запази като…"
 
 #: src/ui/qt/history.cpp:53
 msgid "Save the history as plain text, HTML, or JSON"
-msgstr ""
+msgstr "Запазете историята като обикновен текст, HTML или JSON"
 
 #: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:110
 msgid "History"
-msgstr ""
+msgstr "История"
 
 #: src/ui/qt/history.cpp:77
 msgid "Clear the history?"
-msgstr ""
+msgstr "Изчистване на историята?"
 
 #: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:145
 msgid "Cancel"
-msgstr ""
+msgstr "Отмяна"
 
 #: src/ui/qt/history.cpp:80
 msgid "Save history"
-msgstr ""
+msgstr "Запазване на историята"
 
 #: src/ui/qt/history.cpp:82
 msgid "Plain text"
-msgstr ""
+msgstr "Обикновен текст"
 
 #: src/ui/qt/history.cpp:85
 msgid "All files"
-msgstr ""
+msgstr "Всички файлове"
 
 #: src/ui/qt/hotkey_editor.cpp:52
 msgctxt "hotkey.key"
 msgid "None"
-msgstr ""
+msgstr "Никой"
 
 #: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Name"
-msgstr ""
+msgstr "Име"
 
 #: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Code"
-msgstr ""
+msgstr "Код"
 
 #: src/ui/qt/main_window.cpp:108
 msgctxt "ui.tab"
 msgid "Main"
-msgstr ""
+msgstr "Главен"
 
 #: src/ui/qt/main_window.cpp:109
 msgid "Actions"
-msgstr ""
+msgstr "Действия"
 
 #: src/ui/qt/main_window.cpp:111
 msgid "About"
-msgstr ""
+msgstr "За програмата"
 
 #: src/ui/qt/main_window.cpp:135
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr ""
+msgstr "Разпознаване на {progress}% ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp:136
 msgid "Please install languages"
-msgstr ""
+msgstr "Моля, инсталирайте езици"
 
 #: src/ui/qt/main_window.cpp:137
 msgid "Please select languages"
-msgstr ""
+msgstr "Моля, изберете езици"
 
 #: src/ui/qt/main_window.cpp:139
 msgid "Please select actions in the “Actions” tab"
-msgstr ""
+msgstr "Моля, изберете действия в раздела \"Действия\"."
 
 #. Translators: Program is ready for OCR
 #: src/ui/qt/main_window.cpp:142
 msgctxt "ocr.status"
 msgid "Ready"
-msgstr ""
+msgstr "Готова"
 
 #: src/ui/qt/main_window.cpp:144
 msgid "Recognition is not yet finished. Quit anyway?"
-msgstr ""
+msgstr "Разпознаването все още не е приключило. Все пак да прекратя?"
 
 #: src/ui/qt/main_window.cpp:146 src/ui/qt/main_window.cpp:246
 msgid "Quit"
-msgstr ""
+msgstr "Излез"
 
 #: src/ui/qt/main_window.cpp:238
 msgid "Show {app_name}"
-msgstr ""
+msgstr "Покажи {app_name}"
 
 #: src/ui/qt/main_window.cpp:253
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 #: src/ui/qt/main_window.cpp:264
 msgid "Character recognition"
-msgstr ""
+msgstr "Разпознаване на символи"
 
 #: src/ui/qt/main_window.cpp:269
 msgid "Split text blocks"
