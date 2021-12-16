@@ -547,14 +547,12 @@ static std::vector<JobResult> fetchedResults;
 static std::vector<DpsoJobResult> returnResults;
 
 
-int dpsoFetchResults(DpsoResultFetchingMode fetchingMode)
+void dpsoFetchResults(struct DpsoJobResults* results)
 {
-    LINK_LOCK;
+    if (!results)
+        return;
 
-    if (link.results.empty()
-            || (fetchingMode == dpsoFetchFullChain
-                && link.jobsPending()))
-        return false;
+    LINK_LOCK;
 
     fetchedResults.clear();
     fetchedResults.swap(link.results);
@@ -567,20 +565,11 @@ int dpsoFetchResults(DpsoResultFetchingMode fetchingMode)
                 result.ocrResult.getTextLen(),
                 result.timestamp.data()});
 
-    if (!link.jobsPending())
-        restoreLocale();
-
-    return true;
-}
-
-
-void dpsoGetFetchedResults(struct DpsoJobResults* results)
-{
-    if (!results)
-        return;
-
     results->items = returnResults.data();
     results->numItems = returnResults.size();
+
+    if (!link.jobsPending())
+        restoreLocale();
 }
 
 
@@ -674,15 +663,15 @@ void init()
     assert(!link.jobsPending());
     link.reset();
 
+    assert(fetchedResults.empty());
+    assert(returnResults.empty());
+
     const char* dumpDebugImageEnvVar = std::getenv(
         "DPSO_DUMP_DEBUG_IMAGE");
     dumpDebugImage = (dumpDebugImageEnvVar
         && std::strcmp(dumpDebugImageEnvVar, "0") != 0);
 
     bgThread = std::thread(threadLoop);
-
-    fetchedResults.clear();
-    returnResults.clear();
 }
 
 
@@ -692,6 +681,9 @@ void shutdown()
     numActiveLangs = 0;
 
     dpsoTerminateJobs();
+
+    fetchedResults.clear();
+    returnResults.clear();
 
     {
         LINK_LOCK;

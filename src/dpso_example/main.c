@@ -72,21 +72,18 @@ static void reportProgress(struct DpsoProgress* lastProgress)
 }
 
 
-static void checkResult(void)
+static void checkResults(void)
 {
     struct DpsoJobResults results;
     int i;
 
-    if (!dpsoFetchResults(dpsoFetchFullChain))
-        return;
-
-    dpsoGetFetchedResults(&results);
+    dpsoFetchResults(&results);
 
     for (i = 0; i < results.numItems; ++i) {
         const struct DpsoJobResult* result = &results.items[i];
         printf(
-            "=== Result %i/%i (%s) ===\n%s\n",
-            i + 1, results.numItems, result->timestamp, result->text);
+            "=== %s ===\n%s\n",
+            result->timestamp, result->text);
     }
 }
 
@@ -133,7 +130,7 @@ int main(void)
         dpsoUpdate();
 
         reportProgress(&lastProgress);
-        checkResult();
+        checkResults();
         checkHotkeyActions();
 
         dpsoDelay(1000 / 60);

@@ -80,6 +80,7 @@ private:
     ActionChooser* actionChooser;
 
     QString clipboardText;
+    bool clipboardTextPending;
     QString copyToClipboardTextSeparator;
     bool runExeWaitToComplete;
 

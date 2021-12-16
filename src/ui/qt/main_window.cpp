@@ -64,6 +64,7 @@ MainWindow::MainWindow()
     , lastProgress{}
     , wasActiveLangs{}
     , statusValid{}
+    , clipboardTextPending{}
 {
     setWindowTitle(appName);
     QApplication::setWindowIcon(getIcon(appFileName));
@@ -576,42 +577,47 @@ void MainWindow::updateStatus()
 
 void MainWindow::checkResult()
 {
-    if (!dpsoFetchResults(dpsoFetchFullChain))
-        return;
+    // Check if jobs are completed before fetching results, since new
+    // jobs may finish right after dpsoFetchResults() and before
+    // dpsoGetJobsPending() call.
+    const auto jobsCompleted = !dpsoGetJobsPending();
 
     DpsoJobResults results;
-    dpsoGetFetchedResults(&results);
+    dpsoFetchResults(&results);
 
     const auto actions = actionChooser->getSelectedActions();
 
-    if (actions & ActionChooser::Action::copyToClipboard) {
-        clipboardText.clear();
+    QByteArray exePath;
+    if (actions & ActionChooser::Action::runExe)
+        exePath = actionChooser->getExePath().toUtf8();
 
-        for (int i = 0; i < results.numItems; ++i) {
-            if (i > 0)
+    for (int i = 0; i < results.numItems; ++i) {
+        const auto& result = results.items[i];
+
+        if (actions & ActionChooser::Action::copyToClipboard) {
+            // We need the clipboardTextPending flag since the result
+            // text may be empty, yet it should still be copied to the
+            // clipboard and separated from other texts.
+            if (clipboardTextPending)
                 clipboardText += copyToClipboardTextSeparator;
 
-            const auto& result = results.items[i];
             clipboardText += QString::fromUtf8(
                 result.text, result.textLen);
+            clipboardTextPending = true;
         }
 
-        QApplication::clipboard()->setText(clipboardText);
+        if (actions & ActionChooser::Action::addToHistory)
+            history->append(result.text, result.timestamp);
+
+        if (actions & ActionChooser::Action::runExe)
+            dpsoExec(
+                exePath.data(), result.text, runExeWaitToComplete);
     }
 
-    if (actions & ActionChooser::Action::addToHistory)
-        for (int i = 0; i < results.numItems; ++i)
-            history->append(
-                results.items[i].text, results.items[i].timestamp);
-
-    if (actions & ActionChooser::Action::runExe) {
-        const auto exePath = actionChooser->getExePath().toUtf8();
-
-        for (int i = 0; i < results.numItems; ++i)
-            dpsoExec(
-                exePath.data(),
-                results.items[i].text,
-                runExeWaitToComplete);
+    if (jobsCompleted && clipboardTextPending) {
+        QApplication::clipboard()->setText(clipboardText);
+        clipboardText.clear();
+        clipboardTextPending = false;
     }
 }
 

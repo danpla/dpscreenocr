@@ -12,7 +12,6 @@
  *         dpsoFetchResults()
  *     * Asynchronously, by calling dpsoFetchResults() repeatedly
  *         till all results are fetched
- *   4. Access the fetched results with dpsoGetFetchedResults()
  */
 
 #pragma once
@@ -193,46 +192,6 @@ void dpsoGetProgress(struct DpsoProgress* progress);
 int dpsoGetJobsPending(void);
 
 
-typedef enum {
-    /**
-     * Fetch currently available results.
-     *
-     * dpsoFetchResults() will fetch any currently available results,
-     * even if not all jobs are completed. Use this if you need to get
-     * results as soon as possible, but be aware that since jobs are
-     * processed in the background, new results may arrive even
-     * before the function returns.
-     */
-    dpsoFetchCurentlyAvailable,
-
-    /**
-     * Fetch full result chain.
-     *
-     * dpsoFetchResults() will only fetch results if all jobs are
-     * completed, that is, there are neither active nor queued jobs.
-     * In this case, you can be sure that there will be no new results
-     * unless dpsoQueueJob() is called after dpsoFetchResults().
-     */
-    dpsoFetchFullChain
-} DpsoResultFetchingMode;
-
-
-/**
- * Fetch job results.
- *
- * The function fetches the results of completed jobs to the internal
- * array you can access with dpsoGetFetchedResults().
- *
- * The function returns 1 if at least one result is fetched, or 0
- * otherwise, in which case the previously fetched results remain
- * valid.
- *
- * \sa DpsoResultFetchingMode
- * \sa dpsoGetFetchedResults()
- */
-int dpsoFetchResults(DpsoResultFetchingMode fetchingMode);
-
-
 /**
  * Result of a single OCR job.
  */
@@ -258,6 +217,14 @@ struct DpsoJobResult {
 };
 
 
+/**
+ * Reference to internal array containing OCR job results.
+ *
+ * The results remain valid till the next dpsoFetchResults() or
+ * dpsoShutdown() call.
+ *
+ * \sa dpsoFetchResults
+ */
 struct DpsoJobResults {
     const struct DpsoJobResult* items;
     int numItems;
@@ -265,12 +232,14 @@ struct DpsoJobResults {
 
 
 /**
- * Get the results previously fetched with dpsoFetchResults().
+ * Fetch job results.
  *
- * The items pointer is valid till the next call to dpsoFetchResults()
- * that returns 1. Initially, the array is empty.
+ * The function returns a reference to an internal array filled with
+ * results of completed OCR jobs; if there are no new completed jobs,
+ * the array will be empty. The previously returned DpsoJobResults
+ * gets invalidated.
  */
-void dpsoGetFetchedResults(struct DpsoJobResults* results);
+void dpsoFetchResults(struct DpsoJobResults* results);
 
 
 /**
