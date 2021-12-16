@@ -588,9 +588,8 @@ static void waitJobsToFinish()
 }
 
 
-void dpsoWaitForResults(
-    DpsoProgressCallback progressCallback,
-    void* userData)
+void dpsoWaitJobsToComplete(
+    DpsoProgressCallback progressCallback, void* userData)
 {
     {
         LINK_LOCK;
@@ -625,7 +624,8 @@ void dpsoTerminateJobs(void)
         link.terminateJobs = true;
 
         if (link.waitingForResults)
-            // dpsoWaitForResults() will set terminateJobs to false.
+            // dpsoWaitJobsToComplete() will set terminateJobs to
+            // false.
             return;
     }
 

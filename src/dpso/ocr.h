@@ -8,7 +8,7 @@
  *   1. Activate at least one language with dpsoSetLangIsActive()
  *   2. Queue one or more jobs with dpsoQueueJob()
  *   3. Fetch job results:
- *     * Synchronously, with dpsoWaitForResults() followed by
+ *     * Synchronously, with dpsoWaitJobsToComplete() followed by
  *         dpsoFetchResults()
  *     * Asynchronously, by calling dpsoFetchResults() repeatedly
  *         till all results are fetched
@@ -136,8 +136,8 @@ struct DpsoJobArgs {
  *
  * Tesseract versions before 4.1.0 only work with "C" locale. This
  * locale is automatically set on a successful dpsoQueueJob() call,
- * and restored after dpsoWaitForResults(), dpsoTerminateJobs(), or
- * dpsoFetchResults() when all jobs are completed. Don't change the
+ * and restored after dpsoWaitJobsToComplete(), dpsoTerminateJobs(),
+ * or dpsoFetchResults() when all jobs are completed. Don't change the
  * locale between these two points.
  */
 int dpsoQueueJob(const struct DpsoJobArgs* jobArgs);
@@ -243,26 +243,21 @@ void dpsoFetchResults(struct DpsoJobResults* results);
 
 
 /**
- * Progress callback for dpsoWaitForResults().
+ * Progress callback for dpsoWaitJobsToComplete().
  *
- * To get the progress, use dpsoGetProgress(). You can also call
- * dpsoTerminateJobs() from the callback to terminate jobs.
+ * You can use dpsoGetProgress() inside the callback to get the actual
+ * progress, and dpsoTerminateJobs() to terminate jobs prematurely.
  */
 typedef void (*DpsoProgressCallback)(void* userData);
 
 
 /**
- * Wait for results.
- *
- * The function blocks the caller's thread of execution till all jobs
- * are completed.
+ * Block the current thread till all jobs are completed.
  *
  * The progress callback (may be null) is called every time the
- * progress changes. Use dpsoGetProgress() to get the progress.
- * You can also call dpsoTerminateJobs() from the callback to
- * terminate jobs prematurely.
+ * progress changes.
  */
-void dpsoWaitForResults(
+void dpsoWaitJobsToComplete(
     DpsoProgressCallback progressCallback, void* userData);
 
 
