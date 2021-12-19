@@ -71,4 +71,4 @@ static void testTesseractUtils()
 }
 
 
-REGISTER_TEST("tesseract_utils", testTesseractUtils);
+REGISTER_TEST(testTesseractUtils);

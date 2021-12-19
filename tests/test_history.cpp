@@ -189,4 +189,4 @@ static void testHistory()
 }
 
 
-REGISTER_TEST("history", testHistory);
+REGISTER_TEST(testHistory);

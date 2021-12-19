@@ -114,4 +114,4 @@ static void testHotkeys()
 }
 
 
-REGISTER_TEST("hotkeys", testHotkeys);
+REGISTER_TEST(testHotkeys);

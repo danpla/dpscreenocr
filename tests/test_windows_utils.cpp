@@ -173,4 +173,4 @@ static void testWindowsUtils()
 }
 
 
-REGISTER_TEST("windows_utils", testWindowsUtils);
+REGISTER_TEST(testWindowsUtils);

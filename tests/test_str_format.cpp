@@ -111,4 +111,4 @@ static void testStrFormat()
 }
 
 
-REGISTER_TEST("str_format", testStrFormat);
+REGISTER_TEST(testStrFormat);

@@ -158,4 +158,4 @@ static void testGeometry()
 }
 
 
-REGISTER_TEST("geometry", testGeometry);
+REGISTER_TEST(testGeometry);

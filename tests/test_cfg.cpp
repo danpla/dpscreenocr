@@ -380,4 +380,4 @@ static void testCfg()
 }
 
 
-REGISTER_TEST("cfg", testCfg);
+REGISTER_TEST(testCfg);

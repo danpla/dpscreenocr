@@ -96,4 +96,4 @@ static void testStr()
 }
 
 
-REGISTER_TEST("str", testStr);
+REGISTER_TEST(testStr);

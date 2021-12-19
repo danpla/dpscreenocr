@@ -26,8 +26,8 @@ private:
 };
 
 
-#define REGISTER_TEST(NAME, FN) \
-static test::Runner FN ## TestRunner(NAME, FN)
+#define REGISTER_TEST(FN) \
+static test::Runner FN ## TestRunner(#FN, FN)
 
 
 void failure();
