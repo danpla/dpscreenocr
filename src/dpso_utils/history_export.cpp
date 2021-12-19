@@ -9,6 +9,7 @@
 #include "dpso/str.h"
 #include "history.h"
 #include "os.h"
+#include "os_cpp.h"
 
 
 DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
@@ -197,29 +198,26 @@ int dpsoHistoryExport(
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
-    auto* fp = dpsoFopenUtf8(fileName, "w");
+    auto fp = dpso::fopenUtf8(fileName, "w");
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"w\") failed: %s",
-            std::strerror(errno));
+            "fopenUtf8(..., \"w\") failed: %s", std::strerror(errno));
         return false;
     }
 
     switch (exportFormat) {
         case dpsoHistoryExportFormatPlainText:
-            exportPlainText(fp);
+            exportPlainText(fp.get());
             break;
         case dpsoHistoryExportFormatHtml:
-            exportHtml(fp);
+            exportHtml(fp.get());
             break;
         case dpsoHistoryExportFormatJson:
-            exportJson(fp);
+            exportJson(fp.get());
             break;
         case dpsoNumHistoryExportFormats:
             break;
     }
-
-    std::fclose(fp);
 
     return true;
 }

@@ -10,6 +10,7 @@
 
 #include "dpso/error.h"
 #include "os.h"
+#include "os_cpp.h"
 
 
 // Each entry in a history file consists of a timestamp, two line
@@ -116,10 +117,8 @@ static bool loadHistory(FILE* fp)
 {
     dpsoHistoryClear();
 
-    if (!loadData(fp)) {
-        dpsoSetError("Can't load data: %s", dpsoGetError());
+    if (!loadData(fp))
         return false;
-    }
 
     createEntries();
 
@@ -131,21 +130,18 @@ int dpsoHistoryLoad(const char* filePath)
 {
     dpsoHistoryClear();
 
-    auto* fp = dpsoFopenUtf8(filePath, "rb");
+    auto fp = dpso::fopenUtf8(filePath, "rb");
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"rb\") failed: %s",
+            "fopenUtf8(..., \"rb\") failed: %s",
             std::strerror(errno));
         return false;
     }
 
-    const auto result = loadHistory(fp);
-    std::fclose(fp);
-
-    return result;
+    return loadHistory(fp.get());
 }
 
 
@@ -165,17 +161,15 @@ static void saveHistory(FILE* fp)
 
 int dpsoHistorySave(const char* filePath)
 {
-    auto* fp = dpsoFopenUtf8(filePath, "wb");
+    auto fp = dpso::fopenUtf8(filePath, "wb");
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"wb\") failed: %s",
+            "fopenUtf8(..., \"wb\") failed: %s",
             std::strerror(errno));
         return false;
     }
 
-    saveHistory(fp);
-    std::fclose(fp);
-
+    saveHistory(fp.get());
     return true;
 }
 

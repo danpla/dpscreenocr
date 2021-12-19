@@ -13,6 +13,7 @@
 #include "dpso/error.h"
 #include "dpso/str.h"
 #include "os.h"
+#include "os_cpp.h"
 
 
 // A config is a collection of key-value pairs in a text file. The
@@ -186,20 +187,17 @@ int dpsoCfgLoad(const char* filePath)
 {
     keyValues.clear();
 
-    auto* fp = dpsoFopenUtf8(filePath, "r");
+    auto fp = dpso::fopenUtf8(filePath, "r");
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"r\") failed: %s",
-             std::strerror(errno));
+            "fopenUtf8(..., \"r\") failed: %s", std::strerror(errno));
         return false;
     }
 
-    loadCfg(fp);
-    std::fclose(fp);
-
+    loadCfg(fp.get());
     return true;
 }
 
@@ -277,17 +275,14 @@ static void saveCfg(std::FILE* fp)
 
 int dpsoCfgSave(const char* filePath)
 {
-    auto* fp = dpsoFopenUtf8(filePath, "w");
+    auto fp = dpso::fopenUtf8(filePath, "w");
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"w\") failed: %s",
-            std::strerror(errno));
+            "fopenUtf8(..., \"w\") failed: %s", std::strerror(errno));
         return false;
     }
 
-    saveCfg(fp);
-    std::fclose(fp);
-
+    saveCfg(fp.get());
     return true;
 }
 
