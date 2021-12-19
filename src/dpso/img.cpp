@@ -21,10 +21,9 @@ unsigned getMaskRightShift(unsigned mask)
         return 0;
 
     unsigned shift = 0;
-    while (!(mask & 1)) {
-        mask >>= 1;
+    for (; !(mask & 1); mask >>= 1)
         ++shift;
-    }
+
     return shift;
 }
 
