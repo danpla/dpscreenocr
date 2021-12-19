@@ -6,6 +6,19 @@
 
 #pragma once
 
+#ifdef __GNUC__
+    #ifdef __MINGW32__
+        #include <stdio.h>
+        #define PRINTF_FORMAT __MINGW_PRINTF_FORMAT
+    #else
+        #define PRINTF_FORMAT printf
+    #endif
+
+    #define PRINTF_FN __attribute__((format(PRINTF_FORMAT, 1, 2)))
+#else
+    #define PRINTF_FN
+#endif
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,11 +39,7 @@ const char* dpsoGetError(void);
 /**
  * Set error message.
  */
-void dpsoSetError(const char* fmt, ...)
-    #ifdef __GNUC__
-    __attribute__((format(printf, 1, 2)))
-    #endif
-;
+void dpsoSetError(const char* fmt, ...) PRINTF_FN;
 
 
 #ifdef __cplusplus
