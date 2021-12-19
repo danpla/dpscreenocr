@@ -116,14 +116,6 @@ static bool createEntries()
 }
 
 
-static bool loadHistory(FILE* fp)
-{
-    dpsoHistoryClear();
-
-    return loadData(fp) && createEntries();
-}
-
-
 int dpsoHistoryLoad(const char* filePath)
 {
     dpsoHistoryClear();
@@ -139,7 +131,7 @@ int dpsoHistoryLoad(const char* filePath)
         return false;
     }
 
-    return loadHistory(fp.get());
+    return loadData(fp.get()) && createEntries();
 }
 
 
