@@ -488,7 +488,7 @@ void MainWindow::updateDpso()
     dpsoUpdate();
 
     updateStatus();
-    checkResult();
+    checkResults();
     checkHotkeyActions();
 }
 
@@ -575,7 +575,7 @@ void MainWindow::updateStatus()
 }
 
 
-void MainWindow::checkResult()
+void MainWindow::checkResults()
 {
     // Check if jobs are completed before fetching results, since new
     // jobs may finish right after dpsoFetchResults() and before

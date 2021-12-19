@@ -105,6 +105,6 @@ private:
     void updateDpso();
     void setStatus(Status newStatus, const QString& text);
     void updateStatus();
-    void checkResult();
+    void checkResults();
     void checkHotkeyActions();
 };
