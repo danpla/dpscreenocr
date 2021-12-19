@@ -67,11 +67,10 @@ static bool loadData(std::FILE* fp)
 }
 
 
-static void createEntries()
+static bool createEntries()
 {
     auto* s = &data[0];
     const auto* sBegin = s;
-    const auto* validDataEnd = sBegin;
 
     while (*s) {
         Entry entry;
@@ -81,8 +80,12 @@ static void createEntries()
         while (*s && *s != '\n')
             ++s;
 
-        if (*s != '\n' || s[1] != '\n')
-            break;
+        if (*s != '\n' || s[1] != '\n') {
+            dpsoSetError(
+                "No \\n\\n terminator for timestamp at %zu\n",
+                entry.timestampPos);
+            return false;
+        }
 
         *s = 0;
         s += 2;
@@ -93,23 +96,23 @@ static void createEntries()
 
         entries.push_back(entry);
 
-        validDataEnd = s;
-
         if (*s == '\f') {
+            if (s[1] != '\n') {
+                dpsoSetError(
+                    "Unexpected 0x%x after \\f at %zu\n",
+                    s[1], s - sBegin);
+                return false;
+            }
+
             *s = 0;
-
-            if (s[1] != '\n')
-                break;
-
             s += 2;
         }
     }
 
-    // Trim unused data in case of errors
-    data.resize(validDataEnd - sBegin);
-
     if (!data.empty())
         data += '\0';
+
+    return true;
 }
 
 
@@ -117,12 +120,7 @@ static bool loadHistory(FILE* fp)
 {
     dpsoHistoryClear();
 
-    if (!loadData(fp))
-        return false;
-
-    createEntries();
-
-    return true;
+    return loadData(fp) && createEntries();
 }
 
 

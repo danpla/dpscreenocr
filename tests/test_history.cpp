@@ -64,7 +64,7 @@ static void testCount(int expected, int line)
 const char* const historyFileName = "test_history.txt";
 
 
-static void testHistory()
+static void testNormalIO()
 {
     static const DpsoHistoryEntry entries[] = {
         {
@@ -134,6 +134,58 @@ static void testHistory()
         dpsoHistoryGet(i, &outEntry);
         CMP_ENTRIES(inEntry, outEntry);
     }
+}
+
+
+void testInvalidData()
+{
+    struct Test {
+        const char* description;
+        const char* data;
+    };
+
+    const Test tests[] = {
+        {"No timestamp terminator", "a\f\n"},
+        {"Invalid timestamp terminator", "a\nb\f\n"},
+        {"Truncated text terminator", "a\n\nb\f"},
+        {"Invalid text terminator", "a\n\nb\fa"},
+    };
+
+    for (const auto& test : tests) {
+        auto* fp = std::fopen(historyFileName, "wb");
+        if (!fp) {
+            std::fprintf(
+                stderr,
+                "loadInvalidData(): "
+                "fopen(\"%s\", \"wb\") failed: %s\n",
+                historyFileName,
+                std::strerror(errno));
+            std::exit(EXIT_FAILURE);
+        }
+
+        std::fputs(test.data, fp);
+        std::fclose(fp);
+
+        const auto loaded = dpsoHistoryLoad(historyFileName);
+        std::remove(historyFileName);
+
+        if (!loaded)
+            continue;
+
+        std::fprintf(
+            stderr,
+            "loadInvalidData(): dpsoHistoryLoad() doesn't fail in "
+            "\"%s\" case\n",
+            test.description);
+        test::failure();
+    }
+}
+
+
+static void testHistory()
+{
+    testNormalIO();
+    testInvalidData();
 }
 
 
