@@ -39,7 +39,7 @@ void dpsoSetError(const char* fmt, ...)
     std::string error;
     error.resize(size);
     // C++ standard allows to overwrite string[size()] with CharT().
-    std::vsnprintf(&error[0], size, fmt, args2);
+    std::vsnprintf(&error[0], size + 1, fmt, args2);
     va_end(args2);
 
     lastError.swap(error);
