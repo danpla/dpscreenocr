@@ -22,14 +22,13 @@ static void testGetFileExt()
         {"a.", ""},
     };
 
-    for (const char* sep = dpsoDirSeparators; *sep; ++sep) {
+    for (const char* sep = dpsoDirSeparators; *sep; ++sep)
         tests.insert(tests.end(), {
             {std::string{"a.b"} + *sep, ""},
             {std::string{"a.b"} + *sep + ".a", ""},
             {std::string{"a.b"} + *sep + "a.ext", ".ext"},
             {std::string{"a.b"} + *sep + "a.", ""},
         });
-    }
 
     for (const auto& test : tests) {
         const auto* ext = dpsoGetFileExt(test.path.c_str());
