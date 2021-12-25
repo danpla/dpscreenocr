@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include <windows.h>
 #include <shlobj.h>
+#include <windows.h>
 
 #include "dpso/backend/windows/utils.h"
 #include "dpso/error.h"
@@ -14,20 +14,24 @@
 
 const char* dpsoGetCfgPath(const char* appName)
 {
-    // We use SHGetFolderPath() for XP support; Vista and later has
-    // SHGetKnownFolderPath() for this.
-    wchar_t appDataPathUtf16[MAX_PATH];
-    const auto hresult = SHGetFolderPathW(
-            nullptr, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE,
-            nullptr, SHGFP_TYPE_CURRENT, appDataPathUtf16);
+    wchar_t* appDataPathUtf16{};
+    const auto hresult = SHGetKnownFolderPath(
+            FOLDERID_LocalAppData,
+            KF_FLAG_CREATE,
+            nullptr,
+            &appDataPathUtf16);
     if (FAILED(hresult)) {
         dpsoSetError(
-            "SHGetFolderPathW() with CSIDL_LOCAL_APPDATA failed: %s",
+            "SHGetKnownFolderPath() with FOLDERID_LocalAppData "
+            "failed: %s",
             dpso::windows::getHresultMessage(hresult).c_str());
+        CoTaskMemFree(appDataPathUtf16);
         return nullptr;
     }
 
     std::wstring pathUtf16 = appDataPathUtf16;
+    CoTaskMemFree(appDataPathUtf16);
+
     pathUtf16 += L'\\';
     try {
         pathUtf16 += dpso::windows::utf8ToUtf16(appName);
