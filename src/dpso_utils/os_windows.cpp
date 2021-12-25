@@ -9,18 +9,18 @@
 const char* const dpsoDirSeparators = "\\/";
 
 
-FILE* dpsoFopenUtf8(const char* fileName, const char* mode)
+FILE* dpsoFopenUtf8(const char* filePath, const char* mode)
 {
-    std::wstring fileNameUtf16;
+    std::wstring filePathUtf16;
     std::wstring modeUtf16;
 
     try {
-        fileNameUtf16 = dpso::windows::utf8ToUtf16(fileName);
+        filePathUtf16 = dpso::windows::utf8ToUtf16(filePath);
         modeUtf16 = dpso::windows::utf8ToUtf16(mode);
     } catch (std::runtime_error&) {
         errno = EINVAL;
         return nullptr;
     }
 
-    return _wfopen(fileNameUtf16.c_str(), modeUtf16.c_str());
+    return _wfopen(filePathUtf16.c_str(), modeUtf16.c_str());
 }

@@ -23,11 +23,11 @@ typedef enum {
 /**
  * Detect history export format by file name extension.
  *
- * Returns defaultExportFormat if fileName has no extension or if the
+ * Returns defaultExportFormat if filePath has no extension or if the
  * extension is not known. The function is case-insensitive.
  */
 DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
-    const char* fileName,
+    const char* filePath,
     DpsoHistoryExportFormat defaultExportFormat);
 
 
@@ -37,7 +37,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
  * On failure, sets an error message (dpsoGetError()) and returns 0.
  */
 int dpsoHistoryExport(
-    const char* fileName, DpsoHistoryExportFormat exportFormat);
+    const char* filePath, DpsoHistoryExportFormat exportFormat);
 
 
 #ifdef __cplusplus

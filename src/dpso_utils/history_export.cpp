@@ -13,7 +13,7 @@
 
 
 DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
-    const char* fileName,
+    const char* filePath,
     DpsoHistoryExportFormat defaultExportFormat)
 {
     struct Extension {
@@ -28,7 +28,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
         {".json", dpsoHistoryExportFormatJson},
     };
 
-    if (const auto* ext = dpsoGetFileExt(fileName))
+    if (const auto* ext = dpsoGetFileExt(filePath))
         for (const auto& e : extensions)
             if (dpso::str::cmp(
                     ext, e.str, dpso::str::cmpIgnoreCase) == 0)
@@ -188,12 +188,12 @@ static void exportJson(std::FILE* fp)
 
 
 int dpsoHistoryExport(
-    const char* fileName, DpsoHistoryExportFormat exportFormat)
+    const char* filePath, DpsoHistoryExportFormat exportFormat)
 {
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(fileName, "w")};
+    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "w")};
     if (!fp) {
         dpsoSetError(
             "dpsoFopenUtf8(..., \"w\") failed: %s",

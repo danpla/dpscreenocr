@@ -5,7 +5,7 @@
 const char* const dpsoDirSeparators = "/";
 
 
-FILE* dpsoFopenUtf8(const char* fileName, const char* mode)
+FILE* dpsoFopenUtf8(const char* filePath, const char* mode)
 {
-    return fopen(fileName, mode);
+    return fopen(filePath, mode);
 }

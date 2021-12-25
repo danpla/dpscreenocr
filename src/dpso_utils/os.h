@@ -32,9 +32,9 @@ const char* dpsoGetFileExt(const char* filePath);
 
 
 /**
- * fopen() wrapper that accepts fileName in UTF-8.
+ * fopen() wrapper that accepts filePath in UTF-8.
  */
-FILE* dpsoFopenUtf8(const char* fileName, const char* mode);
+FILE* dpsoFopenUtf8(const char* filePath, const char* mode);
 
 
 #ifdef __cplusplus

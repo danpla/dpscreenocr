@@ -273,7 +273,7 @@ void unsharpMask(
 
 
 static void savePnm(
-    const char* fileName,
+    const char* filePath,
     const std::uint8_t* data, int w, int h, int pitch,
     int bytesPerPixel)
 {
@@ -282,7 +282,7 @@ static void savePnm(
     assert(h > 0);
     assert(bytesPerPixel == 1 || bytesPerPixel == 3);
 
-    auto* fp = std::fopen(fileName, "wb");
+    auto* fp = std::fopen(filePath, "wb");
     if (!fp)
         return;
 
@@ -298,10 +298,10 @@ static void savePnm(
 
 
 void savePgm(
-    const char* fileName,
+    const char* filePath,
     const std::uint8_t* data, int w, int h, int pitch)
 {
-    savePnm(fileName, data, w, h, pitch, 1);
+    savePnm(filePath, data, w, h, pitch, 1);
 }
 
 

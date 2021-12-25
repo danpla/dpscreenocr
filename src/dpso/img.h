@@ -47,7 +47,7 @@ void unsharpMask(
 
 
 void savePgm(
-    const char* fileName,
+    const char* filePath,
     const std::uint8_t* data, int w, int h, int pitch);
 
 
