@@ -9,14 +9,12 @@
 #ifdef __GNUC__
     #ifdef __MINGW32__
         #include <stdio.h>
-        #define PRINTF_FORMAT __MINGW_PRINTF_FORMAT
+        #define DPSO_PRINTF_FN __attribute__((format(__MINGW_PRINTF_FORMAT, 1, 2)))
     #else
-        #define PRINTF_FORMAT printf
+        #define DPSO_PRINTF_FN __attribute__((format(printf, 1, 2)))
     #endif
-
-    #define PRINTF_FN __attribute__((format(PRINTF_FORMAT, 1, 2)))
 #else
-    #define PRINTF_FN
+    #define DPSO_PRINTF_FN
 #endif
 
 
@@ -39,7 +37,10 @@ const char* dpsoGetError(void);
 /**
  * Set error message.
  */
-void dpsoSetError(const char* fmt, ...) PRINTF_FN;
+void dpsoSetError(const char* fmt, ...) DPSO_PRINTF_FN;
+
+
+#undef DPSO_PRINTF_FN
 
 
 #ifdef __cplusplus
