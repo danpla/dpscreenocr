@@ -120,13 +120,13 @@ int dpsoHistoryLoad(const char* filePath)
 {
     dpsoHistoryClear();
 
-    auto fp = dpso::fopenUtf8(filePath, "rb");
+    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
         dpsoSetError(
-            "fopenUtf8(..., \"rb\") failed: %s",
+            "dpsoFopenUtf8(..., \"rb\") failed: %s",
             std::strerror(errno));
         return false;
     }
@@ -151,10 +151,10 @@ static void saveHistory(FILE* fp)
 
 int dpsoHistorySave(const char* filePath)
 {
-    auto fp = dpso::fopenUtf8(filePath, "wb");
+    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "wb")};
     if (!fp) {
         dpsoSetError(
-            "fopenUtf8(..., \"wb\") failed: %s",
+            "dpsoFopenUtf8(..., \"wb\") failed: %s",
             std::strerror(errno));
         return false;
     }
