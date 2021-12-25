@@ -28,12 +28,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
         {".json", dpsoHistoryExportFormatJson},
     };
 
-    const auto* ext = std::strrchr(fileName, '.');
-    if (ext
-            // A leading period denotes a "hidden" file on Unix-like
-            // systems. We follow this convention on all platforms.
-            && ext != fileName
-            && !std::strchr(dpsoDirSeparators, ext[-1]))
+    if (const auto* ext = dpsoGetFileExt(fileName))
         for (const auto& e : extensions)
             if (dpso::str::cmp(
                     ext, e.str, dpso::str::cmpIgnoreCase) == 0)

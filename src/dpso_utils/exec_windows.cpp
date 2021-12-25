@@ -1,12 +1,12 @@
 #include "exec.h"
 
 #include <cctype>
-#include <cstring>
 #include <string>
 
 #include <windows.h>
 
 #include "dpso/str.h"
+#include "os.h"
 #include "windows_utils.h"
 
 
@@ -101,7 +101,7 @@ static bool allowExecute(const char* exePath)
     if (!*exePath)
         return false;
 
-    const auto* ext = std::strrchr(exePath, '.');
+    const auto* ext = dpsoGetFileExt(exePath);
     if (!ext)
         return true;
 

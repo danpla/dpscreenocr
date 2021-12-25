@@ -16,6 +16,7 @@ add_executable(
     test_geometry.cpp
     test_history.cpp
     test_hotkeys.cpp
+    test_os.cpp
     test_str.cpp
     test_str_format.cpp
     test_tesseract_utils.cpp

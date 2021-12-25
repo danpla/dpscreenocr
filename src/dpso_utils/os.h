@@ -23,6 +23,15 @@ extern const char* const dpsoDirSeparators;
 
 
 /**
+ * Get file extension.
+ *
+ * The function returns a pointer to the period of the extension, or
+ * null if filePath has no extension.
+ */
+const char* dpsoGetFileExt(const char* filePath);
+
+
+/**
  * fopen() wrapper that accepts fileName in UTF-8.
  */
 FILE* dpsoFopenUtf8(const char* fileName, const char* mode);
