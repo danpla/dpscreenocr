@@ -32,8 +32,8 @@ static void cmpEntries(
 {
     #define CMP(name) cmpFields(#name, a.name, b.name, line)
 
-    CMP(text);
     CMP(timestamp);
+    CMP(text);
 
     #undef CMP
 }
@@ -42,9 +42,10 @@ static void cmpEntries(
 #define CMP_ENTRIES(a, b) cmpEntries(a, b, __LINE__)
 
 
-static void testCount(int expected, int line)
+static void testCount(
+    const DpsoHistory* history, int expected, int line)
 {
-    const auto got = dpsoHistoryCount();
+    const auto got = dpsoHistoryCount(history);
     if (got == expected)
         return;
 
@@ -58,81 +59,77 @@ static void testCount(int expected, int line)
 }
 
 
-#define TEST_COUNT(expected) testCount(expected, __LINE__)
+#define TEST_COUNT(history, expected) \
+    testCount(history, expected, __LINE__)
 
 
 const char* const historyFileName = "test_history.txt";
 
 
-static void testNormalIO()
+static void testIO(bool append)
 {
-    static const DpsoHistoryEntry entries[] = {
+    struct Test {
+        DpsoHistoryEntry inEntry;
+        DpsoHistoryEntry outEntry;
+    };
+
+    const Test tests[] = {
+        {{"ts1", "text1 \n\t\r line \n\t\r line \n\t\r "}, {}},
+        {{"", ""}, {}},
+        {{"", "text2"}, {}},
+        {{"ts3", ""}, {}},
+        {{"ts4", "text4"}, {}},
         {
-            " text1 \n\t\r line1\n\t\r line2 \n\t\r ",
-            "timestamp1"
-        },
-        {
-            " text2 \n\t\r line1\n\t\r line2 \n\t\r ",
-            "timestamp2"
-        },
-        {
-            "",
-            ""
-        },
-        {
-            " text4 \n\t\r line1\n\t\r line2 \n\t\r ",
-            "timestamp4"
+            {"ts5 \n\n\f\n a \f\n", "text5 \n\n\f\n line \f\n"},
+            {"ts5   \f  a \f ", "text5 \n\n \n line  \n"},
         },
     };
 
-    static const auto numEntries = sizeof(entries) / sizeof(*entries);
+    static const auto numTests = sizeof(tests) / sizeof(*tests);
 
-    dpsoHistoryClear();
-    TEST_COUNT(0);
-
-    for (int i = 0; i < static_cast<int>(numEntries); ++i) {
-        const auto& inEntry = entries[i];
-
-        dpsoHistoryAppend(&inEntry);
-        TEST_COUNT(i + 1);
-
-        DpsoHistoryEntry outEntry;
-        dpsoHistoryGet(i, &outEntry);
-        CMP_ENTRIES(inEntry, outEntry);
-    }
-
-    if (!dpsoHistorySave(historyFileName)) {
+    dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
+    if (!history) {
         std::fprintf(
             stderr,
-            "testHistory(): dpsoHistorySave(\"%s\") failed: %s\n",
+            "testlIO(%sappend): "
+            "dpsoHistoryOpen(\"%s\") failed: %s\n",
+            append ? "" : "!",
             historyFileName,
             dpsoGetError());
+        std::remove(historyFileName);
         std::exit(EXIT_FAILURE);
     }
 
-    dpsoHistoryClear();
-    TEST_COUNT(0);
+    TEST_COUNT(history.get(), append ? 0 : numTests);
 
-    const auto loaded = dpsoHistoryLoad(historyFileName);
-    std::remove(historyFileName);
+    for (int i = 0; i < static_cast<int>(numTests); ++i) {
+        const auto& test = tests[i];
 
-    if (!loaded) {
-        std::fprintf(
-            stderr,
-            "testHistory(): dpsoHistoryLoad(\"%s\") failed: %s\n",
-            historyFileName,
-            dpsoGetError());
-        std::exit(EXIT_FAILURE);
-    }
+        if (append) {
+            if (!dpsoHistoryAppend(history.get(), &test.inEntry)) {
+                std::fprintf(
+                    stderr,
+                    "testIO(%sappend): "
+                    "dpsoHistoryAppend() failed: %s\n",
+                    append ? "" : "!",
+                    dpsoGetError());
+                history.reset();
+                std::remove(historyFileName);
+                std::exit(EXIT_FAILURE);
+            }
 
-    TEST_COUNT(numEntries);
+            TEST_COUNT(history.get(), i + 1);
+        }
 
-    for (int i = 0; i < static_cast<int>(numEntries); ++i) {
-        const auto& inEntry = entries[i];
+        auto expectedOutEntry = test.outEntry;
+        if (!expectedOutEntry.text)
+            expectedOutEntry.text = test.inEntry.text;
+        if (!expectedOutEntry.timestamp)
+            expectedOutEntry.timestamp = test.inEntry.timestamp;
 
         DpsoHistoryEntry outEntry;
-        dpsoHistoryGet(i, &outEntry);
-        CMP_ENTRIES(inEntry, outEntry);
+        dpsoHistoryGet(history.get(), i, &outEntry);
+        CMP_ENTRIES(outEntry, expectedOutEntry);
     }
 }
 
@@ -145,10 +142,11 @@ void testInvalidData()
     };
 
     const Test tests[] = {
-        {"No timestamp terminator", "a\f\n"},
-        {"Invalid timestamp terminator", "a\nb\f\n"},
-        {"Truncated text terminator", "a\n\nb\f"},
-        {"Invalid text terminator", "a\n\nb\fa"},
+        {"No timestamp terminator", "a"},
+        {"Invalid timestamp terminator", "a\nb"},
+        {"Truncated entry separator", "a\n\nb\f"},
+        {"Invalid entry separator", "a\n\nb\f*a\n\nb\f\n"},
+        {"Trailing entry separator", "a\n\nb\f\n"},
     };
 
     for (const auto& test : tests) {
@@ -166,15 +164,17 @@ void testInvalidData()
         std::fputs(test.data, fp);
         std::fclose(fp);
 
-        const auto loaded = dpsoHistoryLoad(historyFileName);
+        dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
+        const auto opened = history != nullptr;
+        history.reset();
         std::remove(historyFileName);
 
-        if (!loaded)
+        if (!opened)
             continue;
 
         std::fprintf(
             stderr,
-            "loadInvalidData(): dpsoHistoryLoad() doesn't fail in "
+            "loadInvalidData(): dpsoHistoryOpen() doesn't fail in "
             "\"%s\" case\n",
             test.description);
         test::failure();
@@ -184,7 +184,8 @@ void testInvalidData()
 
 static void testHistory()
 {
-    testNormalIO();
+    testIO(true);
+    testIO(false);
     testInvalidData();
 }
 

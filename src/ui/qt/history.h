@@ -7,6 +7,8 @@
 #include <QTextCharFormat>
 #include <QWidget>
 
+#include "dpso_utils/dpso_utils.h"
+
 
 class QCheckBox;
 class QPushButton;
@@ -20,7 +22,7 @@ public:
     explicit History(
         const std::string& cfgDirPath, QWidget* parent = nullptr);
 
-    void append(const char* text, const char* timestamp);
+    void append(const char* timestamp, const char* text);
 
     bool loadState();
     void saveState() const;
@@ -41,6 +43,7 @@ private:
     } dynStr;
 
     std::string historyFilePath;
+    dpso::HistoryUPtr history;
 
     QCheckBox* wordWrapCheck;
 

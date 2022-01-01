@@ -12,7 +12,6 @@
 
 #include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
-#include "dpso_utils/dpso_utils.h"
 
 #include "common/common.h"
 
@@ -104,12 +103,22 @@ void History::setWordWrap(bool wordWrap)
 
 void History::clear()
 {
+    if (!history)
+        return;
+
     if (!confirmation(
             this,
             dynStr.clearQuestion, dynStr.cancel, dynStr.clear))
         return;
 
-    dpsoHistoryClear();
+    if (!dpsoHistoryClear(history.get())) {
+        QMessageBox::critical(
+            this,
+            QString(appName) + " error",
+            QString("Can't clear history: ") + dpsoGetError());
+        return;
+    }
+
     textEdit->clear();
     setButtonsEnabled(false);
 }
@@ -117,6 +126,9 @@ void History::clear()
 
 void History::saveAs()
 {
+    if (!history)
+        return;
+
     QFileDialog::Options options;
     if (!dpsoCfgGetBool(
             cfgKeyUiNativeFileDialogs,
@@ -142,6 +154,7 @@ void History::saveAs()
 
     const auto filePathUtf8 = filePath.toUtf8();
     if (!dpsoHistoryExport(
+        history.get(),
         filePathUtf8.data(),
         dpsoHistoryDetectExportFormat(
             filePathUtf8.data(), dpsoHistoryExportFormatPlainText)))
@@ -160,19 +173,28 @@ void History::saveAs()
 }
 
 
-void History::append(const char* text, const char* timestamp)
+void History::append(const char* timestamp, const char* text)
 {
-    const DpsoHistoryEntry entry{text, timestamp};
-    dpsoHistoryAppend(&entry);
+    if (!history)
+        return;
 
-    appendToTextEdit(text, timestamp);
+    const DpsoHistoryEntry entry{timestamp, text};
+    if (!dpsoHistoryAppend(history.get(), &entry)) {
+        QMessageBox::critical(
+            this,
+            QString(appName) + " error",
+            QString("Can't append to history: ") + dpsoGetError());
+        return;
+    }
+
+    appendToTextEdit(timestamp, text);
 
     setButtonsEnabled(true);
 }
 
 
 void History::appendToTextEdit(
-    const char* text, const char* timestamp)
+    const char* timestamp, const char* text)
 {
     auto cursor = textEdit->textCursor();
     cursor.movePosition(QTextCursor::End);
@@ -216,28 +238,28 @@ void History::appendToTextEdit(
 
 bool History::loadState()
 {
-    if (!dpsoHistoryLoad(historyFilePath.c_str())) {
+    history.reset(dpsoHistoryOpen(historyFilePath.c_str()));
+    if (!history) {
         QMessageBox::critical(
             nullptr,
             QString(appName) + " error",
-            QString("Can't load \"%1\": %2").arg(
+            QString("Can't open \"%1\": %2").arg(
                 historyFilePath.c_str(), dpsoGetError()));
         return false;
     }
 
     textEdit->clear();
-    for (int i = 0; i < dpsoHistoryCount(); ++i) {
+    for (int i = 0; i < dpsoHistoryCount(history.get()); ++i) {
         DpsoHistoryEntry entry;
-        dpsoHistoryGet(i, &entry);
-        appendToTextEdit(entry.text, entry.timestamp);
+        dpsoHistoryGet(history.get(), i, &entry);
+        appendToTextEdit(entry.timestamp, entry.text);
     }
 
     wordWrapCheck->setChecked(
         dpsoCfgGetBool(
-            cfgKeyHistoryWrapWords,
-            cfgDefaultValueHistoryWrapWords));
+            cfgKeyHistoryWrapWords, cfgDefaultValueHistoryWrapWords));
 
-    setButtonsEnabled(dpsoHistoryCount() > 0);
+    setButtonsEnabled(dpsoHistoryCount(history.get()) > 0);
 
     return true;
 }
@@ -245,20 +267,9 @@ bool History::loadState()
 
 void History::saveState() const
 {
-    if (!dpsoHistorySave(historyFilePath.c_str()))
-        QMessageBox::critical(
-            const_cast<History*>(this),
-            QString(appName) + " error",
-            QString("Can't save \"%1\": %2").arg(
-                historyFilePath.c_str(), dpsoGetError()));
-
-    // Add a field to CFG in case the history has never been exported,
-    // just to make sure that the user will see all available options
-    // in the CFG file.
     if (!dpsoCfgKeyExists(cfgKeyHistoryExportDir))
         dpsoCfgSetStr(cfgKeyHistoryExportDir, "");
 
     dpsoCfgSetBool(
-        cfgKeyHistoryWrapWords,
-        wordWrapCheck->isChecked());
+        cfgKeyHistoryWrapWords, wordWrapCheck->isChecked());
 }

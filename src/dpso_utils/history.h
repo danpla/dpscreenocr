@@ -12,47 +12,57 @@ extern "C" {
 #endif
 
 
-/**
- * History entry.
- *
- * For more info about the fields, see DpsoJobResult.
- */
 struct DpsoHistoryEntry {
-    const char* text;
     const char* timestamp;
+    const char* text;
 };
 
 
 /**
- * Load history.
+ * History.
  *
- * The function clears the history and then loads the filePath file.
- *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
- * Nonexistent filePath is not considered an error.
+ * Editing the history will result in immediate modification of the
+ * underlying file. In case of IO error, the history is set to the
+ * failure state: it becomes read-only, and all further modification
+ * attempts will be rejected.
  */
-int dpsoHistoryLoad(const char* filePath);
+struct DpsoHistory;
+
 
 /**
- * Save history.
+ * Open history.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
- *
- * \sa dpsoHistoryLoad()
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * null. Nonexistent filePath is not considered an error; the file
+ * will be created in this case.
  */
-int dpsoHistorySave(const char* filePath);
+struct DpsoHistory* dpsoHistoryOpen(const char* filePath);
+
+
+void dpsoHistoryClose(struct DpsoHistory* history);
 
 
 /**
  * Get the number of history entries.
  */
-int dpsoHistoryCount(void);
+int dpsoHistoryCount(const struct DpsoHistory* history);
 
 
 /**
  * Append history entry.
+ *
+ * Line feeds (\n) in the timestamp and form feeds (\f) in the text
+ * will be replaced by spaces.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * Reasons include:
+ *   * history or entry is null
+ *   * IO error
+ *   * History is in failure state
  */
-void dpsoHistoryAppend(const struct DpsoHistoryEntry* entry);
+int dpsoHistoryAppend(
+    struct DpsoHistory* history,
+    const struct DpsoHistoryEntry* entry);
 
 
 /**
@@ -60,18 +70,48 @@ void dpsoHistoryAppend(const struct DpsoHistoryEntry* entry);
  *
  * The function fills the entry with pointers to strings that remain
  * valid till the next call to a routine that modifies the history,
- * like dpsoHistoryLoad(), dpsoHistoryAppend(), or
- * dpsoHistoryClear().
+ * like dpsoHistoryAppend() or dpsoHistoryClear().
  */
-void dpsoHistoryGet(int idx, struct DpsoHistoryEntry* entry);
+void dpsoHistoryGet(
+    const struct DpsoHistory* history,
+    int idx,
+    struct DpsoHistoryEntry* entry);
 
 
 /**
  * Clear the history.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * Reasons include:
+ *   * history is null
+ *   * IO error
+ *   * History is in failure state
  */
-void dpsoHistoryClear(void);
+int dpsoHistoryClear(struct DpsoHistory* history);
 
 
 #ifdef __cplusplus
 }
+
+
+#include <memory>
+
+
+namespace dpso {
+
+
+struct HistoryCloser {
+    void operator()(DpsoHistory* history) const
+    {
+        dpsoHistoryClose(history);
+    }
+};
+
+
+using HistoryUPtr = std::unique_ptr<DpsoHistory, HistoryCloser>;
+
+
+}
+
+
 #endif

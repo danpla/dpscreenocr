@@ -31,13 +31,18 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
     DpsoHistoryExportFormat defaultExportFormat);
 
 
+struct DpsoHistory;
+
+
 /**
  * Export history to a file.
  *
  * On failure, sets an error message (dpsoGetError()) and returns 0.
  */
 int dpsoHistoryExport(
-    const char* filePath, DpsoHistoryExportFormat exportFormat);
+    const struct DpsoHistory* history,
+    const char* filePath,
+    DpsoHistoryExportFormat exportFormat);
 
 
 #ifdef __cplusplus

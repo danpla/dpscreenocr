@@ -38,14 +38,15 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
 }
 
 
-static void exportPlainText(std::FILE* fp)
+static void exportPlainText(
+    const struct DpsoHistory* history, std::FILE* fp)
 {
-    for (int i = 0; i < dpsoHistoryCount(); ++i) {
+    for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
             std::fputs("\n\n", fp);
 
         DpsoHistoryEntry e;
-        dpsoHistoryGet(i, &e);
+        dpsoHistoryGet(history, i, &e);
 
         std::fprintf(fp, "=== %s ===\n\n", e.timestamp);
         std::fputs(e.text, fp);
@@ -54,7 +55,8 @@ static void exportPlainText(std::FILE* fp)
 
 
 // W3C Markup Validator: https://validator.w3.org/
-static void exportHtml(std::FILE* fp)
+static void exportHtml(
+    const struct DpsoHistory* history, std::FILE* fp)
 {
     std::fputs(
         "<!DOCTYPE html>\n"
@@ -72,12 +74,12 @@ static void exportHtml(std::FILE* fp)
         "<body>\n",
         fp);
 
-    for (int i = 0; i < dpsoHistoryCount(); ++i) {
+    for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
             std::fputs("  <hr>\n", fp);
 
         DpsoHistoryEntry e;
-        dpsoHistoryGet(i, &e);
+        dpsoHistoryGet(history, i, &e);
 
         std::fprintf(
             fp,
@@ -132,13 +134,14 @@ static void exportHtml(std::FILE* fp)
 
 // To validate JSON:
 //   python3 -m json.tool *.json > /dev/null
-static void exportJson(std::FILE* fp)
+static void exportJson(
+    const struct DpsoHistory* history, std::FILE* fp)
 {
     std::fputs("[\n", fp);
 
-    for (int i = 0; i < dpsoHistoryCount(); ++i) {
+    for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         DpsoHistoryEntry e;
-        dpsoHistoryGet(i, &e);
+        dpsoHistoryGet(history, i, &e);
 
         std::fprintf(
             fp,
@@ -178,7 +181,7 @@ static void exportJson(std::FILE* fp)
             "\"\n"
             "  }",
             fp);
-        if (i + 1 < dpsoHistoryCount())
+        if (i + 1 < dpsoHistoryCount(history))
             std::fputc(',', fp);
         std::fputc('\n', fp);
     }
@@ -188,8 +191,15 @@ static void exportJson(std::FILE* fp)
 
 
 int dpsoHistoryExport(
-    const char* filePath, DpsoHistoryExportFormat exportFormat)
+    const struct DpsoHistory* history,
+    const char* filePath,
+    DpsoHistoryExportFormat exportFormat)
 {
+    if (!history) {
+        dpsoSetError("history is null");
+        return false;
+    }
+
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
@@ -203,13 +213,13 @@ int dpsoHistoryExport(
 
     switch (exportFormat) {
         case dpsoHistoryExportFormatPlainText:
-            exportPlainText(fp.get());
+            exportPlainText(history, fp.get());
             break;
         case dpsoHistoryExportFormatHtml:
-            exportHtml(fp.get());
+            exportHtml(history, fp.get());
             break;
         case dpsoHistoryExportFormatJson:
-            exportJson(fp.get());
+            exportJson(history, fp.get());
             break;
         case dpsoNumHistoryExportFormats:
             break;

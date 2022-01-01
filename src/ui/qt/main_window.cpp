@@ -607,7 +607,7 @@ void MainWindow::checkResults()
         }
 
         if (actions & ActionChooser::Action::addToHistory)
-            history->append(result.text, result.timestamp);
+            history->append(result.timestamp, result.text);
 
         if (actions & ActionChooser::Action::runExe)
             dpsoExec(
