@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2021-11-28 06:10+0200\n"
+"POT-Creation-Date: 2022-01-01 23:23+0200\n"
 "PO-Revision-Date: 2021-12-26 16:18+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Bulgarian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -558,43 +558,43 @@ msgstr "Стартирайте изпълнимия файл с разпозна
 msgid "Choose an executable"
 msgstr "Изберете изпълнимия файл"
 
-#: src/ui/qt/history.cpp:31
+#: src/ui/qt/history.cpp:30
 msgid "Wrap words"
 msgstr "Оградете думите"
 
-#: src/ui/qt/history.cpp:46 src/ui/qt/history.cpp:79
+#: src/ui/qt/history.cpp:45 src/ui/qt/history.cpp:78
 msgid "Clear"
 msgstr "Изчисти"
 
-#: src/ui/qt/history.cpp:51
+#: src/ui/qt/history.cpp:50
 msgid "Save as…"
 msgstr "Запази като…"
 
-#: src/ui/qt/history.cpp:53
+#: src/ui/qt/history.cpp:52
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Запазете историята като обикновен текст, HTML или JSON"
 
-#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:110
+#: src/ui/qt/history.cpp:71 src/ui/qt/main_window.cpp:110
 msgid "History"
 msgstr "История"
 
-#: src/ui/qt/history.cpp:77
+#: src/ui/qt/history.cpp:76
 msgid "Clear the history?"
 msgstr "Изчистване на историята?"
 
-#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:145
+#: src/ui/qt/history.cpp:77 src/ui/qt/main_window.cpp:145
 msgid "Cancel"
 msgstr "Отмяна"
 
-#: src/ui/qt/history.cpp:80
+#: src/ui/qt/history.cpp:79
 msgid "Save history"
 msgstr "Запазване на историята"
 
-#: src/ui/qt/history.cpp:82
+#: src/ui/qt/history.cpp:81
 msgid "Plain text"
 msgstr "Обикновен текст"
 
-#: src/ui/qt/history.cpp:85
+#: src/ui/qt/history.cpp:84
 msgid "All files"
 msgstr "Всички файлове"
 
