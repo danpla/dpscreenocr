@@ -114,7 +114,7 @@ void History::clear()
     if (!dpsoHistoryClear(history.get())) {
         QMessageBox::critical(
             this,
-            QString(appName) + " error",
+            appName,
             QString("Can't clear history: ") + dpsoGetError());
         return;
     }
@@ -160,7 +160,7 @@ void History::saveAs()
             filePathUtf8.data(), dpsoHistoryExportFormatPlainText)))
         QMessageBox::critical(
             this,
-            QString(appName) + " error",
+            appName,
             QString("Can't save \"%1\": %2").arg(
                 filePath, dpsoGetError()));
 
@@ -182,7 +182,7 @@ void History::append(const char* timestamp, const char* text)
     if (!dpsoHistoryAppend(history.get(), &entry)) {
         QMessageBox::critical(
             this,
-            QString(appName) + " error",
+            appName,
             QString("Can't append to history: ") + dpsoGetError());
         return;
     }
@@ -242,7 +242,7 @@ bool History::loadState()
     if (!history) {
         QMessageBox::critical(
             nullptr,
-            QString(appName) + " error",
+            appName,
             QString("Can't open \"%1\": %2").arg(
                 historyFilePath.c_str(), dpsoGetError()));
         return false;

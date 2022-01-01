@@ -70,8 +70,7 @@ MainWindow::MainWindow()
     QApplication::setWindowIcon(getIcon(appFileName));
 
     if (!dpsoInit()) {
-        QMessageBox::critical(
-            nullptr, QString(appName) + " error", dpsoGetError());
+        QMessageBox::critical(nullptr, appName, dpsoGetError());
         std::exit(EXIT_FAILURE);
     }
 
@@ -79,7 +78,7 @@ MainWindow::MainWindow()
     if (!cfgPath) {
         QMessageBox::critical(
             nullptr,
-            QString(appName) + " error",
+            appName,
             QString("Can't get configuration path: ")
                 + dpsoGetError());
 
@@ -93,7 +92,7 @@ MainWindow::MainWindow()
     if (!dpsoCfgLoad(cfgFilePath.c_str())) {
         QMessageBox::critical(
             nullptr,
-            QString(appName) + " error",
+            appName,
             QString("Can't load \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
         dpsoShutdown();
@@ -179,7 +178,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
     if (!dpsoCfgSave(cfgFilePath.c_str()))
         QMessageBox::critical(
             this,
-            QString(appName) + " error",
+            appName,
             QString("Can't save \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
 
