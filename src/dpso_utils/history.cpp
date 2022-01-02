@@ -99,7 +99,7 @@ static bool createEntries(
 
         s += 2;
 
-        const auto textBegin = s;
+        const auto* textBegin = s;
         while (*s && *s != '\f')
             ++s;
 
@@ -170,16 +170,17 @@ int dpsoHistoryCount(const struct DpsoHistory* history)
 }
 
 
-static void assign(
-    std::string& str, const char* text, char reservedChar)
+static std::string replaceReservedChar(
+    const char* text, char reservedChar)
 {
-    const auto textLen = std::strlen(text);
-    str.resize(textLen);
+    std::string result(std::strlen(text), 0);
 
-    for (std::size_t i = 0; i < textLen; ++i) {
+    for (std::size_t i = 0; i < result.size(); ++i) {
         const auto c = text[i];
-        str[i] = c == reservedChar ? ' ' : c;
+        result[i] = c == reservedChar ? ' ' : c;
     }
+
+    return result;
 }
 
 
@@ -205,9 +206,10 @@ int dpsoHistoryAppend(
         return false;
     }
 
-    DpsoHistory::Entry e;
-    assign(e.timestamp, entry->timestamp, '\n');
-    assign(e.text, entry->text, '\f');
+    DpsoHistory::Entry e{
+        replaceReservedChar(entry->timestamp, '\n'),
+        replaceReservedChar(entry->text, '\f')
+    };
 
     auto* fp = history->fp.get();
     if ((!history->entries.empty() && std::fputs("\f\n", fp) == EOF)
