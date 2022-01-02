@@ -54,6 +54,45 @@ static void exportPlainText(
 }
 
 
+static void writeEscapedHtml(
+    std::FILE* fp, const char* indent, const char* text)
+{
+    const auto* s = text;
+    while (*s) {
+        std::fputs(indent, fp);
+
+        while (*s) {
+            const auto c = *s++;
+
+            switch (c) {
+                case '\n':
+                    // Trailing <br> has no effect; it doesn't add
+                    // an empty line when rendering in browsers.
+                    if (*s)
+                        std::fputs("<br>", fp);
+                    std::putc('\n', fp);
+                    break;
+                case '<':
+                    std::fputs("&lt;", fp);
+                    break;
+                case '>':
+                    std::fputs("&gt;", fp);
+                    break;
+                case '&':
+                    std::fputs("&amp;", fp);
+                    break;
+                default:
+                    std::fputc(c, fp);
+                    break;
+            }
+
+            if (c == '\n')
+                break;
+        }
+    }
+}
+
+
 // W3C Markup Validator: https://validator.w3.org/
 static void exportHtml(
     const struct DpsoHistory* history, std::FILE* fp)
@@ -81,47 +120,12 @@ static void exportHtml(
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        std::fprintf(
-            fp,
-            "  <p class=\"timestamp\"><b>%s</b></p>\n",
-            e.timestamp);
+        std::fputs("  <p class=\"timestamp\"><b>", fp);
+        writeEscapedHtml(fp, "", e.timestamp);
+        std::fputs("</b></p>\n", fp);
 
         std::fputs("  <p class=\"text\">\n", fp);
-
-        const auto* s = e.text;
-        while (*s) {
-            std::fputs("    ", fp);
-
-            while (*s) {
-                const auto c = *s++;
-
-                switch (c) {
-                    case '\n':
-                        // Trailing <br> has no effect; it doesn't add
-                        // an empty line when rendering in browsers.
-                        if (*s)
-                            std::fputs("<br>", fp);
-                        std::putc('\n', fp);
-                        break;
-                    case '<':
-                        std::fputs("&lt;", fp);
-                        break;
-                    case '>':
-                        std::fputs("&gt;", fp);
-                        break;
-                    case '&':
-                        std::fputs("&amp;", fp);
-                        break;
-                    default:
-                        std::fputc(c, fp);
-                        break;
-                }
-
-                if (c == '\n')
-                    break;
-            }
-        }
-
+        writeEscapedHtml(fp, "    ", e.text);
         std::fputs("  </p>\n", fp);
     }
 
@@ -129,6 +133,38 @@ static void exportHtml(
         "</body>\n"
         "</html>\n",
         fp);
+}
+
+
+static void writeEscapedJson(std::FILE* fp, const char* text)
+{
+    const auto* s = text;
+    while (*s) {
+        const auto c = *s++;
+
+        switch (c) {
+            case '\b':
+                std::fputs("\\b", fp);
+                break;
+            case '\f':
+                std::fputs("\\f", fp);
+                break;
+            case '\n':
+                std::fputs("\\n", fp);
+                break;
+            case '\r':
+                std::fputs("\\r", fp);
+                break;
+            case '\t':
+                std::fputs("\\t", fp);
+                break;
+            default:
+                if (c == '\\' || c == '/' || c == '"')
+                    std::fputc('\\', fp);
+                std::fputc(c, fp);
+                break;
+        }
+    }
 }
 
 
@@ -143,44 +179,20 @@ static void exportJson(
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        std::fprintf(
-            fp,
+        std::fputs(
             "  {\n"
-            "    \"timestamp\": \"%s\",\n",
-            e.timestamp);
+            "    \"timestamp\": \"",
+            fp);
+        writeEscapedJson(fp, e.timestamp);
+        std::fputs("\",\n", fp);
 
         std::fputs("    \"text\": \"", fp);
-        const auto* s = e.text;
-        while (*s) {
-            const auto c = *s++;
-
-            switch (c) {
-                case '\b':
-                    std::fputs("\\b", fp);
-                    break;
-                case '\f':
-                    std::fputs("\\f", fp);
-                    break;
-                case '\n':
-                    std::fputs("\\n", fp);
-                    break;
-                case '\r':
-                    std::fputs("\\r", fp);
-                    break;
-                case '\t':
-                    std::fputs("\\t", fp);
-                    break;
-                default:
-                    if (c == '\\' || c == '/' || c == '"')
-                        std::fputc('\\', fp);
-                    std::fputc(c, fp);
-                    break;
-            }
-        }
+        writeEscapedJson(fp, e.text);
         std::fputs(
             "\"\n"
             "  }",
             fp);
+
         if (i + 1 < dpsoHistoryCount(history))
             std::fputc(',', fp);
         std::fputc('\n', fp);
