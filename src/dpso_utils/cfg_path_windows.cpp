@@ -25,6 +25,8 @@ const char* dpsoGetCfgPath(const char* appName)
             "SHGetKnownFolderPath() with FOLDERID_LocalAppData "
             "failed: %s",
             dpso::windows::getHresultMessage(hresult).c_str());
+        // Docs say that we should call CoTaskMemFree() even if
+        // SHGetKnownFolderPath() fails.
         CoTaskMemFree(appDataPathUtf16);
         return nullptr;
     }
