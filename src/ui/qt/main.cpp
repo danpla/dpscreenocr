@@ -68,6 +68,14 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    // Our main window may be hidden to tray. As of Qt 5.15, ignoring
+    // QCloseEvent has no effect if the window is hidden when
+    // closeEvent() returns, even if WA_QuitOnClose is disabled. A
+    // workaround is to either disable quitOnLastWindowClosed and
+    // quit explicitly when needed (our approach), or to make sure
+    // that the window is visible before returning from closeEvent().
+    app.setQuitOnLastWindowClosed(false);
+
     setlocale(LC_ALL, "");
 
     #if DPSO_QT_LOCAL_DATA

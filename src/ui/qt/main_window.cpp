@@ -197,6 +197,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
     dpsoSetHotheysEnabled(false);
 
     event->accept();
+    qApp->quit();
 }
 
 
