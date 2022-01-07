@@ -6,16 +6,7 @@
 
 #pragma once
 
-#ifdef __GNUC__
-    #ifdef __MINGW32__
-        #include <stdio.h>
-        #define DPSO_PRINTF_FN __attribute__((format(__MINGW_PRINTF_FORMAT, 1, 2)))
-    #else
-        #define DPSO_PRINTF_FN __attribute__((format(printf, 1, 2)))
-    #endif
-#else
-    #define DPSO_PRINTF_FN
-#endif
+#include "printf_fn.h"
 
 
 #ifdef __cplusplus
@@ -37,10 +28,7 @@ const char* dpsoGetError(void);
 /**
  * Set error message.
  */
-void dpsoSetError(const char* fmt, ...) DPSO_PRINTF_FN;
-
-
-#undef DPSO_PRINTF_FN
+void dpsoSetError(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
 
 #ifdef __cplusplus

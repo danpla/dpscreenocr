@@ -9,6 +9,8 @@
 #include <cstdio>
 #include <ratio>
 
+#include "printf_fn.h"
+
 
 namespace dpso {
 
@@ -22,7 +24,7 @@ struct CodeTimer {
         : start{Clock::now()}
     {}
 
-    void report(const char* fmt, ...) const
+    void report(const char* fmt, ...) const DPSO_PRINTF_FN(2)
     {
         const auto end = Clock::now();
         const std::chrono::duration<float, std::milli> ms = (
