@@ -14,24 +14,22 @@ namespace windows {
 
 std::wstring utf8ToUtf16(const char* utf8Str)
 {
-    const auto sizeRequired = MultiByteToWideChar(
+    const auto sizeWithNull = MultiByteToWideChar(
         CP_UTF8, 0, utf8Str,
         // Tell that the string is null-terminated; the returned size
         // will also include the null.
         -1,
         nullptr, 0);
-    if (sizeRequired <= 0)
+    if (sizeWithNull <= 0)
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
-    std::wstring result;
-    result.resize(sizeRequired - 1);
+    // The C++ standard allows to overwrite string[size()] with 0.
+    std::wstring result(sizeWithNull - 1, 0);
 
     if (!MultiByteToWideChar(
             CP_UTF8, 0,
             utf8Str, -1,
-            // Note that we overwrite result[size()] with CharT(),
-            // which is allowed by the C++ standard.
-            &result[0], sizeRequired))
+            &result[0], sizeWithNull))
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
     return result;
@@ -40,25 +38,23 @@ std::wstring utf8ToUtf16(const char* utf8Str)
 
 std::string utf16ToUtf8(const wchar_t* utf16Str)
 {
-    const auto sizeRequired = WideCharToMultiByte(
+    const auto sizeWithNull = WideCharToMultiByte(
         CP_UTF8, 0,
         utf16Str,
         // Tell that the string is null-terminated; the returned size
         // will also include the null.
         -1,
         nullptr, 0, nullptr, nullptr);
-    if (sizeRequired <= 0)
+    if (sizeWithNull <= 0)
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
-    std::string result;
-    result.resize(sizeRequired - 1);
+    // The C++ standard allows to overwrite string[size()] with 0.
+    std::string result(sizeWithNull - 1, 0);
 
     if (!WideCharToMultiByte(
             CP_UTF8, 0,
             utf16Str, -1,
-            // Note that we overwrite result[size()] with CharT(),
-            // which is allowed by the C++ standard.
-            &result[0], sizeRequired,
+            &result[0], sizeWithNull,
             nullptr, nullptr))
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
