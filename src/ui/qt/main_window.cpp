@@ -392,13 +392,13 @@ bool MainWindow::loadState(const DpsoCfg* cfg)
     dpsoBindHotkey(
         &toggleSelectionHotkey, hotkeyActionToggleSelection);
 
+    hotkeyEditor->assignHotkey();
+
     dpsoCfgGetHotkey(
         cfg,
         cfgKeyHotkeyCancelSelection,
         &cancelSelectionHotkey,
         &cfgDefaultValueHotkeyCancelSelection);
-
-    hotkeyEditor->assignHotkey();
 
     copyToClipboardTextSeparator = dpsoCfgGetStr(
         cfg,
@@ -460,11 +460,8 @@ void MainWindow::saveState(DpsoCfg* cfg) const
     dpsoCfgSetHotkey(
         cfg, cfgKeyHotkeyToggleSelection, &toggleSelectionHotkey);
 
-    if (!dpsoCfgKeyExists(cfg, cfgKeyHotkeyCancelSelection))
-        dpsoCfgSetHotkey(
-            cfg,
-            cfgKeyHotkeyCancelSelection,
-            &cfgDefaultValueHotkeyCancelSelection);
+    dpsoCfgSetHotkey(
+        cfg, cfgKeyHotkeyCancelSelection, &cancelSelectionHotkey);
 
     dpsoCfgSetStr(
         cfg,
@@ -616,7 +613,8 @@ void MainWindow::checkResults()
     const auto actions = actionChooser->getSelectedActions();
 
     QByteArray exePath;
-    if (actions & ActionChooser::Action::runExe)
+    if ((actions & ActionChooser::Action::runExe)
+            && results.numItems > 0)
         exePath = actionChooser->getExePath().toUtf8();
 
     for (int i = 0; i < results.numItems; ++i) {

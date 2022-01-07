@@ -153,10 +153,11 @@ void History::saveAs()
 
     const auto filePathUtf8 = filePath.toUtf8();
     if (!dpsoHistoryExport(
-        history.get(),
-        filePathUtf8.data(),
-        dpsoHistoryDetectExportFormat(
-            filePathUtf8.data(), dpsoHistoryExportFormatPlainText)))
+            history.get(),
+            filePathUtf8.data(),
+            dpsoHistoryDetectExportFormat(
+                filePathUtf8.data(),
+                dpsoHistoryExportFormatPlainText)))
         QMessageBox::critical(
             this,
             appName,
