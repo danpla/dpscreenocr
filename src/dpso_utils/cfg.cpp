@@ -33,19 +33,26 @@
 // optional.
 
 
-namespace {
+struct DpsoCfg {
+    struct KeyValue {
+        std::string key;
+        std::string value;
+    };
 
-
-struct KeyValue {
-    std::string key;
-    std::string value;
+    std::vector<KeyValue> keyValues;
 };
 
 
+struct DpsoCfg* dpsoCfgCreate(void)
+{
+    return new DpsoCfg{};
 }
 
 
-static std::vector<KeyValue> keyValues;
+void dpsoCfgDelete(struct DpsoCfg* cfg)
+{
+    delete cfg;
+}
 
 
 static int cmpKeys(const char* a, const char* b)
@@ -54,12 +61,13 @@ static int cmpKeys(const char* a, const char* b)
 }
 
 
-static decltype(keyValues)::iterator keyValuesLowerBound(
-    const char* key)
+template <typename T>
+static auto keyValuesLowerBound(
+    T& keyValues, const char* key) -> decltype(keyValues.begin())
 {
     return std::lower_bound(
         keyValues.begin(), keyValues.end(), key,
-        [](const KeyValue& kv, const char* key)
+        [](const DpsoCfg::KeyValue& kv, const char* key)
         {
             return cmpKeys(kv.key.c_str(), key) < 0;
         });
@@ -132,7 +140,7 @@ static void assignUnescaped(
 }
 
 
-static void parseKeyValue(const char* str, KeyValue& kv)
+static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 {
     const char* keyBegin;
     const char* keyEnd;
@@ -170,22 +178,14 @@ static bool getLine(std::FILE* fp, std::string& line)
 }
 
 
-static void loadCfg(std::FILE* fp)
+int dpsoCfgLoad(struct DpsoCfg* cfg, const char* filePath)
 {
-    keyValues.clear();
-
-    KeyValue kv;
-    for (std::string line; getLine(fp, line);) {
-        parseKeyValue(line.c_str(), kv);
-        if (!kv.key.empty())
-            dpsoCfgSetStr(kv.key.c_str(), kv.value.c_str());
+    if (!cfg) {
+        dpsoSetError("cfg is null");
+        return false;
     }
-}
 
-
-int dpsoCfgLoad(const char* filePath)
-{
-    keyValues.clear();
+    cfg->keyValues.clear();
 
     dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "r")};
     if (!fp) {
@@ -198,7 +198,13 @@ int dpsoCfgLoad(const char* filePath)
         return false;
     }
 
-    loadCfg(fp.get());
+    DpsoCfg::KeyValue kv;
+    for (std::string line; getLine(fp.get(), line);) {
+        parseKeyValue(line.c_str(), kv);
+        if (!kv.key.empty())
+            dpsoCfgSetStr(cfg, kv.key.c_str(), kv.value.c_str());
+    }
+
     return true;
 }
 
@@ -217,7 +223,7 @@ static bool needQuote(const std::string& str)
 
 
 static void writeKeyValue(
-    std::FILE* fp, const KeyValue& kv, int maxKeyLen)
+    std::FILE* fp, const DpsoCfg::KeyValue& kv, int maxKeyLen)
 {
     std::fprintf(fp, "%-*s ", maxKeyLen, kv.key.c_str());
 
@@ -261,21 +267,13 @@ static void writeKeyValue(
 }
 
 
-static void saveCfg(std::FILE* fp)
+int dpsoCfgSave(const struct DpsoCfg* cfg, const char* filePath)
 {
-    std::size_t maxKeyLen = 0;
+    if (!cfg) {
+        dpsoSetError("cfg is null");
+        return false;
+    }
 
-    for (const auto& kv : keyValues)
-        if (kv.key.size() > maxKeyLen)
-            maxKeyLen = kv.key.size();
-
-    for (const auto& kv : keyValues)
-        writeKeyValue(fp, kv, maxKeyLen);
-}
-
-
-int dpsoCfgSave(const char* filePath)
-{
     dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "w")};
     if (!fp) {
         dpsoSetError(
@@ -284,27 +282,42 @@ int dpsoCfgSave(const char* filePath)
         return false;
     }
 
-    saveCfg(fp.get());
+    std::size_t maxKeyLen = 0;
+
+    for (const auto& kv : cfg->keyValues)
+        if (kv.key.size() > maxKeyLen)
+            maxKeyLen = kv.key.size();
+
+    for (const auto& kv : cfg->keyValues)
+        writeKeyValue(fp.get(), kv, maxKeyLen);
+
     return true;
 }
 
 
-void dpsoCfgClear(void)
+void dpsoCfgClear(struct DpsoCfg* cfg)
 {
-    keyValues.clear();
+    if (cfg)
+        cfg->keyValues.clear();
 }
 
 
-int dpsoCfgKeyExists(const char* key)
+int dpsoCfgKeyExists(const struct DpsoCfg* cfg, const char* key)
 {
-    return dpsoCfgGetStr(key, nullptr) != nullptr;
+    return dpsoCfgGetStr(cfg, key, nullptr) != nullptr;
 }
 
 
-const char* dpsoCfgGetStr(const char* key, const char* defaultVal)
+const char* dpsoCfgGetStr(
+    const struct DpsoCfg* cfg,
+    const char* key,
+    const char* defaultVal)
 {
-    const auto iter = keyValuesLowerBound(key);
-    if (iter != keyValues.end()
+    if (!cfg)
+        return defaultVal;
+
+    const auto iter = keyValuesLowerBound(cfg->keyValues, key);
+    if (iter != cfg->keyValues.end()
             && cmpKeys(iter->key.c_str(), key) == 0)
         return iter->value.c_str();
 
@@ -312,14 +325,18 @@ const char* dpsoCfgGetStr(const char* key, const char* defaultVal)
 }
 
 
-void dpsoCfgSetStr(const char* key, const char* val)
+void dpsoCfgSetStr(
+    struct DpsoCfg* cfg, const char* key, const char* val)
 {
-    const auto iter = keyValuesLowerBound(key);
-    if (iter != keyValues.end() &&
+    if (!cfg)
+        return;
+
+    const auto iter = keyValuesLowerBound(cfg->keyValues, key);
+    if (iter != cfg->keyValues.end() &&
             cmpKeys(iter->key.c_str(), key) == 0)
         iter->value = val;
     else
-        keyValues.insert(iter, {key, val});
+        cfg->keyValues.insert(iter, {key, val});
 }
 
 
@@ -329,9 +346,10 @@ static const char* boolToStr(bool b)
 }
 
 
-int dpsoCfgGetInt(const char* key, int defaultVal)
+int dpsoCfgGetInt(
+    const struct DpsoCfg* cfg, const char* key, int defaultVal)
 {
-    const auto* str = dpsoCfgGetStr(key, "");
+    const auto* str = dpsoCfgGetStr(cfg, key, "");
     if (!*str)
         return defaultVal;
 
@@ -363,19 +381,20 @@ int dpsoCfgGetInt(const char* key, int defaultVal)
 }
 
 
-void dpsoCfgSetInt(const char* key, int val)
+void dpsoCfgSetInt(struct DpsoCfg* cfg, const char* key, int val)
 {
-    dpsoCfgSetStr(key, std::to_string(val).c_str());
+    dpsoCfgSetStr(cfg, key, std::to_string(val).c_str());
 }
 
 
-int dpsoCfgGetBool(const char* key, int defaultVal)
+int dpsoCfgGetBool(
+    const struct DpsoCfg* cfg, const char* key, int defaultVal)
 {
-    return dpsoCfgGetInt(key, defaultVal) != 0;
+    return dpsoCfgGetInt(cfg, key, defaultVal) != 0;
 }
 
 
-void dpsoCfgSetBool(const char* key, int val)
+void dpsoCfgSetBool(struct DpsoCfg* cfg, const char* key, int val)
 {
-    dpsoCfgSetStr(key, boolToStr(val));
+    dpsoCfgSetStr(cfg, key, boolToStr(val));
 }

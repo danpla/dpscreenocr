@@ -24,8 +24,8 @@ public:
 
     void append(const char* timestamp, const char* text);
 
-    bool loadState();
-    void saveState() const;
+    bool loadState(const DpsoCfg* cfg);
+    void saveState(DpsoCfg* cfg) const;
 private slots:
     void setWordWrap(bool wordWrap);
     void clear();
@@ -55,6 +55,8 @@ private:
     QPushButton* clearButton;
     QPushButton* saveAsButton;
 
+    bool nativeFileDialogs;
+    QString lastDirPath;
     QString lastFileName;
     QString selectedNameFilter;
 

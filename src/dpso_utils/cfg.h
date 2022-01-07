@@ -2,17 +2,6 @@
 /**
  * \file
  * Configuration management
- *
- * Things to keep in mind:
- *
- *   * Keys must only consist of alphanumeric characters and an
- *     underscore.
- *
- *   * Values are stored as strings, and can act like variant types.
- *     For example, you can set a value as int, and then retrieve it
- *     as string. The opposite is also possible, as long as the string
- *     represents an integer (if not, a user-provided default is
- *     returned).
  */
 
 #pragma once
@@ -24,14 +13,43 @@ extern "C" {
 
 
 /**
+ * DpsoCfg is a collection of key-value pairs.
+ *
+ * Things to keep in mind:
+ *
+ *   * Keys must only consist of alphanumeric characters and an
+ *     underscore.
+ *
+ *   * Values are stored as strings, and can act like variant types.
+ *     For example, you can set a value as int, and then retrieve it
+ *     as string. The opposite is also possible, as long as the string
+ *     represents an integer; if not, a user-provided default is
+ *     returned.
+ */
+struct DpsoCfg;
+
+
+/**
+ * Create an empty Cfg.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * null.
+ */
+struct DpsoCfg* dpsoCfgCreate(void);
+
+
+void dpsoCfgDelete(struct DpsoCfg* cfg);
+
+
+/**
  * Load config file.
  *
- * The function clears the current config and loads the filePath file.
+ * The function clears the config and loads the filePath file.
  *
  * On failure, sets an error message (dpsoGetError()) and returns 0.
  * Nonexistent filePath is not considered an error.
  */
-int dpsoCfgLoad(const char* filePath);
+int dpsoCfgLoad(struct DpsoCfg* cfg, const char* filePath);
 
 
 /**
@@ -41,7 +59,7 @@ int dpsoCfgLoad(const char* filePath);
  *
  * \sa dpsoLoadCfg()
  */
-int dpsoCfgSave(const char* filePath);
+int dpsoCfgSave(const struct DpsoCfg* cfg, const char* filePath);
 
 
 /**
@@ -49,7 +67,7 @@ int dpsoCfgSave(const char* filePath);
  *
  * The function clears all key-value pairs.
  */
-void dpsoCfgClear(void);
+void dpsoCfgClear(struct DpsoCfg* cfg);
 
 
 /**
@@ -57,7 +75,7 @@ void dpsoCfgClear(void);
  *
  * Returns 1 if the key exists, 0 otherwise.
  */
-int dpsoCfgKeyExists(const char* key);
+int dpsoCfgKeyExists(const struct DpsoCfg* cfg, const char* key);
 
 
 /**
@@ -72,8 +90,12 @@ int dpsoCfgKeyExists(const char* key);
  * changes the config, like dpsoCfgLoad(), dpsoCfgClear(), and
  * dpsoCfgSet*().
  */
-const char* dpsoCfgGetStr(const char* key, const char* defaultVal);
-void dpsoCfgSetStr(const char* key, const char* val);
+const char* dpsoCfgGetStr(
+    const struct DpsoCfg* cfg,
+    const char* key,
+    const char* defaultVal);
+void dpsoCfgSetStr(
+    struct DpsoCfg* cfg, const char* key, const char* val);
 
 
 /**
@@ -84,8 +106,9 @@ void dpsoCfgSetStr(const char* key, const char* val);
  * string is "true" or "false" (ignoring case), 1 or 0 is returned
  * respectively. Otherwise, defaultVal is returned.
  */
-int dpsoCfgGetInt(const char* key, int defaultVal);
-void dpsoCfgSetInt(const char* key, int val);
+int dpsoCfgGetInt(
+    const struct DpsoCfg* cfg, const char* key, int defaultVal);
+void dpsoCfgSetInt(struct DpsoCfg* cfg, const char* key, int val);
 
 
 /**
@@ -96,10 +119,33 @@ void dpsoCfgSetInt(const char* key, int val);
  *
  * \sa dpsoCfgGetInt()
  */
-int dpsoCfgGetBool(const char* key, int defaultVal);
-void dpsoCfgSetBool(const char* key, int val);
+int dpsoCfgGetBool(
+    const struct DpsoCfg* cfg, const char* key, int defaultVal);
+void dpsoCfgSetBool(struct DpsoCfg* cfg, const char* key, int val);
 
 
 #ifdef __cplusplus
 }
+
+
+#include <memory>
+
+
+namespace dpso {
+
+
+struct CfgDeleter {
+    void operator()(DpsoCfg* cfg) const
+    {
+        dpsoCfgDelete(cfg);
+    }
+};
+
+
+using CfgUPtr = std::unique_ptr<DpsoCfg, CfgDeleter>;
+
+
+}
+
+
 #endif

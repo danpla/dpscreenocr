@@ -64,7 +64,9 @@ MainWindow::MainWindow()
     , lastProgress{}
     , wasActiveLangs{}
     , statusValid{}
+    , cancelSelectionHotkey{}
     , clipboardTextPending{}
+    , minimizeToTray{}
 {
     setWindowTitle(appName);
     QApplication::setWindowIcon(getIcon(appFileName));
@@ -89,7 +91,17 @@ MainWindow::MainWindow()
     cfgDirPath = cfgPath;
     cfgFilePath = cfgDirPath + *dpsoDirSeparators + cfgFileName;
 
-    if (!dpsoCfgLoad(cfgFilePath.c_str())) {
+    cfg.reset(dpsoCfgCreate());
+    if (!cfg) {
+        QMessageBox::critical(
+            nullptr,
+            appName,
+            QString("Can't create Cfg: ") + dpsoGetError());
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
+
+    if (!dpsoCfgLoad(cfg.get(), cfgFilePath.c_str())) {
         QMessageBox::critical(
             nullptr,
             appName,
@@ -115,7 +127,7 @@ MainWindow::MainWindow()
 
     createTrayIcon();
 
-    if (!loadState()) {
+    if (!loadState(cfg.get())) {
         dpsoShutdown();
         std::exit(EXIT_FAILURE);
     }
@@ -168,14 +180,14 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
     killTimer(updateTimerId);
 
-    saveState();
+    saveState(cfg.get());
 
     // On some platforms and desktop environments (like KDE), the app
     // keeps working in the background if the tray icon is not hidden
     // before quitting.
     trayIcon->hide();
 
-    if (!dpsoCfgSave(cfgFilePath.c_str()))
+    if (!dpsoCfgSave(cfg.get(), cfgFilePath.c_str()))
         QMessageBox::critical(
             this,
             appName,
@@ -191,13 +203,10 @@ void MainWindow::closeEvent(QCloseEvent* event)
 void MainWindow::changeEvent(QEvent* event)
 {
     if (event->type() == QEvent::WindowStateChange
-        && isMinimized()
-        && trayIcon->isVisible()
-        && dpsoCfgGetBool(
-            cfgKeyUiWindowMinimizeToTray,
-            cfgDefaultValueUiWindowMinimizeToTray)) {
+            && isMinimized()
+            && trayIcon->isVisible()
+            && minimizeToTray)
         visibilityAction->toggle();
-    }
 
     QWidget::changeEvent(event);
 }
@@ -363,67 +372,85 @@ void MainWindow::createTrayIcon()
 }
 
 
-bool MainWindow::loadState()
+bool MainWindow::loadState(const DpsoCfg* cfg)
 {
     ocrAllowQueuing = dpsoCfgGetBool(
-        cfgKeyOcrAllowQueuing, cfgDefaultValueOcrAllowQueuing);
+        cfg, cfgKeyOcrAllowQueuing, cfgDefaultValueOcrAllowQueuing);
 
     splitTextBlocksCheck->setChecked(
         dpsoCfgGetBool(
+            cfg,
             cfgKeyOcrSplitTextBlocks,
             cfgDefaultValueOcrSplitTextBlocks));
 
     DpsoHotkey toggleSelectionHotkey;
     dpsoCfgGetHotkey(
+        cfg,
         cfgKeyHotkeyToggleSelection,
         &toggleSelectionHotkey,
         &cfgDefaultValueHotkeyToggleSelection);
     dpsoBindHotkey(
         &toggleSelectionHotkey, hotkeyActionToggleSelection);
 
+    dpsoCfgGetHotkey(
+        cfg,
+        cfgKeyHotkeyCancelSelection,
+        &cancelSelectionHotkey,
+        &cfgDefaultValueHotkeyCancelSelection);
+
     hotkeyEditor->assignHotkey();
 
     copyToClipboardTextSeparator = dpsoCfgGetStr(
+        cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
         cfgDefaultValueActionCopyToClipboardTextSeparator);
     runExeWaitToComplete = dpsoCfgGetBool(
+        cfg,
         cfgKeyActionRunExecutableWaitToComplete,
         cfgDefaultValueActionRunExecutableWaitToComplete);
 
-    tabs->setCurrentIndex(dpsoCfgGetInt(cfgKeyUiActiveTab, 0));
+    tabs->setCurrentIndex(dpsoCfgGetInt(cfg, cfgKeyUiActiveTab, 0));
 
-    const auto windowWidth = dpsoCfgGetInt(cfgKeyUiWindowWidth, 0);
-    const auto windowHeight = dpsoCfgGetInt(cfgKeyUiWindowHeight, 0);
+    const auto windowWidth = dpsoCfgGetInt(
+        cfg, cfgKeyUiWindowWidth, 0);
+    const auto windowHeight = dpsoCfgGetInt(
+        cfg, cfgKeyUiWindowHeight, 0);
 
     if (windowWidth > 0 && windowHeight > 0) {
         move(
-            dpsoCfgGetInt(cfgKeyUiWindowX, x()),
-            dpsoCfgGetInt(cfgKeyUiWindowY, y()));
+            dpsoCfgGetInt(cfg, cfgKeyUiWindowX, x()),
+            dpsoCfgGetInt(cfg, cfgKeyUiWindowY, y()));
         resize(windowWidth, windowHeight);
     }
 
-    if (dpsoCfgGetBool(cfgKeyUiWindowMaximized, false))
+    if (dpsoCfgGetBool(cfg, cfgKeyUiWindowMaximized, false))
         setWindowState(windowState() | Qt::WindowMaximized);
 
-    langBrowser->loadState();
-    actionChooser->loadState();
-    if (!history->loadState())
+    langBrowser->loadState(cfg);
+    actionChooser->loadState(cfg);
+    if (!history->loadState(cfg))
         return false;
 
     trayIcon->setVisible(
         dpsoCfgGetBool(
+            cfg,
             cfgKeyUiTrayIconVisible,
             cfgDefaultValueUiTrayIconVisible));
+    minimizeToTray = dpsoCfgGetBool(
+        cfg,
+        cfgKeyUiWindowMinimizeToTray,
+        cfgDefaultValueUiWindowMinimizeToTray);
 
     return true;
 }
 
 
-void MainWindow::saveState() const
+void MainWindow::saveState(DpsoCfg* cfg) const
 {
-    dpsoCfgSetBool(cfgKeyOcrAllowQueuing, ocrAllowQueuing);
+    dpsoCfgSetBool(cfg, cfgKeyOcrAllowQueuing, ocrAllowQueuing);
 
     dpsoCfgSetBool(
+        cfg,
         cfgKeyOcrSplitTextBlocks,
         splitTextBlocksCheck->isChecked());
 
@@ -431,45 +458,47 @@ void MainWindow::saveState() const
     dpsoFindActionHotkey(
         hotkeyActionToggleSelection, &toggleSelectionHotkey);
     dpsoCfgSetHotkey(
-        cfgKeyHotkeyToggleSelection, &toggleSelectionHotkey);
+        cfg, cfgKeyHotkeyToggleSelection, &toggleSelectionHotkey);
 
-    if (!dpsoCfgKeyExists(cfgKeyHotkeyCancelSelection))
+    if (!dpsoCfgKeyExists(cfg, cfgKeyHotkeyCancelSelection))
         dpsoCfgSetHotkey(
+            cfg,
             cfgKeyHotkeyCancelSelection,
             &cfgDefaultValueHotkeyCancelSelection);
 
     dpsoCfgSetStr(
+        cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
         copyToClipboardTextSeparator.toUtf8().data());
     dpsoCfgSetBool(
+        cfg,
         cfgKeyActionRunExecutableWaitToComplete,
         runExeWaitToComplete);
 
-    if (!dpsoCfgKeyExists(cfgKeyUiNativeFileDialogs))
+    if (!dpsoCfgKeyExists(cfg, cfgKeyUiNativeFileDialogs))
         dpsoCfgSetBool(
+            cfg,
             cfgKeyUiNativeFileDialogs,
             cfgDefaultValueUiNativeFileDialogs);
 
-    dpsoCfgSetInt(cfgKeyUiActiveTab, tabs->currentIndex());
+    dpsoCfgSetInt(cfg, cfgKeyUiActiveTab, tabs->currentIndex());
 
     if (!isMaximized()) {
-        dpsoCfgSetInt(cfgKeyUiWindowX, x());
-        dpsoCfgSetInt(cfgKeyUiWindowY, y());
-        dpsoCfgSetInt(cfgKeyUiWindowWidth, width());
-        dpsoCfgSetInt(cfgKeyUiWindowHeight, height());
+        dpsoCfgSetInt(cfg, cfgKeyUiWindowX, x());
+        dpsoCfgSetInt(cfg, cfgKeyUiWindowY, y());
+        dpsoCfgSetInt(cfg, cfgKeyUiWindowWidth, width());
+        dpsoCfgSetInt(cfg, cfgKeyUiWindowHeight, height());
     }
 
-    dpsoCfgSetBool(cfgKeyUiWindowMaximized, isMaximized());
+    dpsoCfgSetBool(cfg, cfgKeyUiWindowMaximized, isMaximized());
 
-    langBrowser->saveState();
-    actionChooser->saveState();
-    history->saveState();
+    langBrowser->saveState(cfg);
+    actionChooser->saveState(cfg);
+    history->saveState(cfg);
 
-    dpsoCfgSetBool(cfgKeyUiTrayIconVisible, trayIcon->isVisible());
-    if (!dpsoCfgKeyExists(cfgKeyUiWindowMinimizeToTray))
-        dpsoCfgSetBool(
-            cfgKeyUiWindowMinimizeToTray,
-            cfgDefaultValueUiWindowMinimizeToTray);
+    dpsoCfgSetBool(
+        cfg, cfgKeyUiTrayIconVisible, trayIcon->isVisible());
+    dpsoCfgSetBool(cfg, cfgKeyUiWindowMinimizeToTray, minimizeToTray);
 }
 
 
@@ -653,13 +682,6 @@ void MainWindow::checkHotkeyActions()
     } else if (hotkeyAction == hotkeyActionToggleSelection
             && canStartSelection()) {
         dpsoSetSelectionIsEnabled(true);
-
-        DpsoHotkey cancelSelectionHotkey;
-        dpsoCfgGetHotkey(
-            cfgKeyHotkeyCancelSelection,
-            &cancelSelectionHotkey,
-            &cfgDefaultValueHotkeyCancelSelection);
-
         dpsoBindHotkey(
             &cancelSelectionHotkey, hotkeyActionCancelSelection);
     }

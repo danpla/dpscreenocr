@@ -23,6 +23,7 @@
 
 History::History(const std::string& cfgDirPath, QWidget* parent)
     : QWidget{parent}
+    , nativeFileDialogs{}
 {
     historyFilePath = (
         cfgDirPath + *dpsoDirSeparators + historyFileName);
@@ -130,12 +131,10 @@ void History::saveAs()
         return;
 
     QFileDialog::Options options;
-    if (!dpsoCfgGetBool(
-            cfgKeyUiNativeFileDialogs,
-            cfgDefaultValueUiNativeFileDialogs))
+    if (!nativeFileDialogs)
         options |= QFileDialog::DontUseNativeDialog;
 
-    QString dirPath = dpsoCfgGetStr(cfgKeyHistoryExportDir, "");
+    auto dirPath = lastDirPath;
     // Don't pass an empty path to QDir since in this case QDir points
     // to the current working directory.
     if (dirPath.isEmpty() || !QDir(dirPath).exists())
@@ -168,8 +167,8 @@ void History::saveAs()
 
     lastFileName = fileInfo.fileName();
 
-    dirPath = QDir::toNativeSeparators(fileInfo.dir().absolutePath());
-    dpsoCfgSetStr(cfgKeyHistoryExportDir, dirPath.toUtf8().data());
+    lastDirPath = QDir::toNativeSeparators(
+        fileInfo.dir().absolutePath());
 }
 
 
@@ -236,7 +235,7 @@ void History::appendToTextEdit(
 }
 
 
-bool History::loadState()
+bool History::loadState(const DpsoCfg* cfg)
 {
     history.reset(dpsoHistoryOpen(historyFilePath.c_str()));
     if (!history) {
@@ -257,19 +256,26 @@ bool History::loadState()
 
     wordWrapCheck->setChecked(
         dpsoCfgGetBool(
-            cfgKeyHistoryWrapWords, cfgDefaultValueHistoryWrapWords));
+            cfg,
+            cfgKeyHistoryWrapWords,
+            cfgDefaultValueHistoryWrapWords));
 
     setButtonsEnabled(dpsoHistoryCount(history.get()) > 0);
+
+    nativeFileDialogs = dpsoCfgGetBool(
+        cfg,
+        cfgKeyUiNativeFileDialogs,
+        cfgDefaultValueUiNativeFileDialogs);
+    lastDirPath = dpsoCfgGetStr(cfg, cfgKeyHistoryExportDir, "");
 
     return true;
 }
 
 
-void History::saveState() const
+void History::saveState(DpsoCfg* cfg) const
 {
-    if (!dpsoCfgKeyExists(cfgKeyHistoryExportDir))
-        dpsoCfgSetStr(cfgKeyHistoryExportDir, "");
-
     dpsoCfgSetBool(
-        cfgKeyHistoryWrapWords, wordWrapCheck->isChecked());
+        cfg, cfgKeyHistoryWrapWords, wordWrapCheck->isChecked());
+    dpsoCfgSetStr(
+        cfg, cfgKeyHistoryExportDir, lastDirPath.toUtf8().data());
 }

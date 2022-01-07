@@ -14,12 +14,13 @@
 
 
 static void testGet(
+    const DpsoCfg* cfg,
     const char* key,
     const char* defaultVal,
     const char* expectedVal,
     int lineNum)
 {
-    const auto* gotVal = dpsoCfgGetStr(key, defaultVal);
+    const auto* gotVal = dpsoCfgGetStr(cfg, key, defaultVal);
     if (std::strcmp(gotVal, expectedVal) == 0)
         return;
 
@@ -37,12 +38,13 @@ static void testGet(
 
 
 static void testGet(
+    const DpsoCfg* cfg,
     const char* key,
     int defaultVal,
     int expectedVal,
     int lineNum)
 {
-    const auto gotVal = dpsoCfgGetInt(key, defaultVal);
+    const auto gotVal = dpsoCfgGetInt(cfg, key, defaultVal);
     if (gotVal == expectedVal)
         return;
 
@@ -60,12 +62,13 @@ static void testGet(
 
 
 static void testGet(
+    const DpsoCfg* cfg,
     const char* key,
     bool defaultVal,
     bool expectedVal,
     int lineNum)
 {
-    const bool gotVal = dpsoCfgGetBool(key, defaultVal);
+    const bool gotVal = dpsoCfgGetBool(cfg, key, defaultVal);
     if (gotVal == expectedVal)
         return;
 
@@ -89,13 +92,14 @@ static std::string hotkeyToStr(const DpsoHotkey& hotkey)
 
 
 static void testGet(
+    const DpsoCfg* cfg,
     const char* key,
     const DpsoHotkey& defaultVal,
     const DpsoHotkey& expectedVal,
     int lineNum)
 {
     DpsoHotkey gotVal;
-    dpsoCfgGetHotkey(key, &gotVal, &defaultVal);
+    dpsoCfgGetHotkey(cfg, key, &gotVal, &defaultVal);
 
     if (gotVal == expectedVal)
         return;
@@ -113,22 +117,22 @@ static void testGet(
 }
 
 
-#define TEST_GET(key, defaultVal, expectedVal) \
-    testGet(key, defaultVal, expectedVal, __LINE__)
+#define TEST_GET(cfg, key, defaultVal, expectedVal) \
+    testGet(cfg, key, defaultVal, expectedVal, __LINE__)
 
 
-static void getDefault()
+static void getDefault(const DpsoCfg* cfg)
 {
-    TEST_GET("default", "", "");
-    TEST_GET("default", "default_value", "default_value");
-    TEST_GET("default", 0, 0);
-    TEST_GET("default", 9, 9);
-    TEST_GET("default", false, false);
-    TEST_GET("default", true, true);
+    TEST_GET(cfg, "default", "", "");
+    TEST_GET(cfg, "default", "default_value", "default_value");
+    TEST_GET(cfg, "default", 0, 0);
+    TEST_GET(cfg, "default", 9, 9);
+    TEST_GET(cfg, "default", false, false);
+    TEST_GET(cfg, "default", true, true);
 }
 
 
-static void testWhitespaceStr(bool set)
+static void testWhitespaceStr(DpsoCfg* cfg, bool set)
 {
     static const char* const whitespaceStrings[] = {
         " ",
@@ -148,9 +152,9 @@ static void testWhitespaceStr(bool set)
 
         const auto* str = whitespaceStrings[i];
         if (set)
-            dpsoCfgSetStr(key, str);
+            dpsoCfgSetStr(cfg, key, str);
         else
-            TEST_GET(key, "", str);
+            TEST_GET(cfg, key, "", str);
     }
 }
 
@@ -158,90 +162,90 @@ static void testWhitespaceStr(bool set)
 const char* const backslashTestString = R"(\b\f\n\r\t\\ \z)";
 
 
-static void setString()
+static void setString(DpsoCfg* cfg)
 {
-    testWhitespaceStr(true);
+    testWhitespaceStr(cfg, true);
 
-    dpsoCfgSetStr("str_empty", "");
-    dpsoCfgSetStr("str", "foo");
+    dpsoCfgSetStr(cfg, "str_empty", "");
+    dpsoCfgSetStr(cfg, "str", "foo");
 
-    dpsoCfgSetStr("str_int_123", "123");
-    dpsoCfgSetStr("str_int_0", "0");
-    dpsoCfgSetStr("str_float", "123.5");
+    dpsoCfgSetStr(cfg, "str_int_123", "123");
+    dpsoCfgSetStr(cfg, "str_int_0", "0");
+    dpsoCfgSetStr(cfg, "str_float", "123.5");
 
-    dpsoCfgSetStr("str_bool_1", "fAlSe");
-    dpsoCfgSetStr("str_bool_2", "TrUe");
+    dpsoCfgSetStr(cfg, "str_bool_1", "fAlSe");
+    dpsoCfgSetStr(cfg, "str_bool_2", "TrUe");
 
-    dpsoCfgSetStr("str_backslash_test", backslashTestString);
+    dpsoCfgSetStr(cfg, "str_backslash_test", backslashTestString);
 }
 
 
-static void getString()
+static void getString(DpsoCfg* cfg)
 {
-    testWhitespaceStr(false);
+    testWhitespaceStr(cfg, false);
 
-    TEST_GET("str_default", "default", "default");
+    TEST_GET(cfg, "str_default", "default", "default");
 
-    TEST_GET("str_empty", "default", "");
+    TEST_GET(cfg, "str_empty", "default", "");
 
-    TEST_GET("str", "", "foo");
-    TEST_GET("str", 0, 0);
-    TEST_GET("str", true, true);
+    TEST_GET(cfg, "str", "", "foo");
+    TEST_GET(cfg, "str", 0, 0);
+    TEST_GET(cfg, "str", true, true);
 
-    TEST_GET("str_int_123", "", "123");
-    TEST_GET("str_int_123", 0, 123);
-    TEST_GET("str_int_123", false, true);
+    TEST_GET(cfg, "str_int_123", "", "123");
+    TEST_GET(cfg, "str_int_123", 0, 123);
+    TEST_GET(cfg, "str_int_123", false, true);
 
-    TEST_GET("str_int_0", "", "0");
-    TEST_GET("str_int_0", 1, 0);
-    TEST_GET("str_int_0", true, false);
+    TEST_GET(cfg, "str_int_0", "", "0");
+    TEST_GET(cfg, "str_int_0", 1, 0);
+    TEST_GET(cfg, "str_int_0", true, false);
 
     // There are currently no routines to get/set floats, so don't
     // treat them as integers, like strto*() do.
-    TEST_GET("str_float", 0, 0);
+    TEST_GET(cfg, "str_float", 0, 0);
 
-    TEST_GET("str_bool_1", true, false);
-    TEST_GET("str_bool_2", false, true);
+    TEST_GET(cfg, "str_bool_1", true, false);
+    TEST_GET(cfg, "str_bool_2", false, true);
 
-    TEST_GET("str_backslash_test", "", backslashTestString);
+    TEST_GET(cfg, "str_backslash_test", "", backslashTestString);
 }
 
 
-static void setInt()
+static void setInt(DpsoCfg* cfg)
 {
-    dpsoCfgSetInt("int_123", 123);
-    dpsoCfgSetInt("int_0", 0);
+    dpsoCfgSetInt(cfg, "int_123", 123);
+    dpsoCfgSetInt(cfg, "int_0", 0);
 }
 
 
-static void getInt()
+static void getInt(const DpsoCfg* cfg)
 {
-    TEST_GET("int_123", "", "123");
-    TEST_GET("int_123", 0, 123);
-    TEST_GET("int_123", false, true);
+    TEST_GET(cfg, "int_123", "", "123");
+    TEST_GET(cfg, "int_123", 0, 123);
+    TEST_GET(cfg, "int_123", false, true);
 
-    TEST_GET("int_0", "", "0");
-    TEST_GET("int_0", 1, 0);
-    TEST_GET("int_0", true, false);
+    TEST_GET(cfg, "int_0", "", "0");
+    TEST_GET(cfg, "int_0", 1, 0);
+    TEST_GET(cfg, "int_0", true, false);
 }
 
 
-static void setBool()
+static void setBool(DpsoCfg* cfg)
 {
-    dpsoCfgSetBool("bool_true", true);
-    dpsoCfgSetBool("bool_false", false);
+    dpsoCfgSetBool(cfg, "bool_true", true);
+    dpsoCfgSetBool(cfg, "bool_false", false);
 }
 
 
-static void getBool()
+static void getBool(const DpsoCfg* cfg)
 {
-    TEST_GET("bool_true", "", "true");
-    TEST_GET("bool_true", 0, 1);
-    TEST_GET("bool_true", false, true);
+    TEST_GET(cfg, "bool_true", "", "true");
+    TEST_GET(cfg, "bool_true", 0, 1);
+    TEST_GET(cfg, "bool_true", false, true);
 
-    TEST_GET("bool_false", "", "false");
-    TEST_GET("bool_false", 1, 0);
-    TEST_GET("bool_false", true, false);
+    TEST_GET(cfg, "bool_false", "", "false");
+    TEST_GET(cfg, "bool_false", 1, 0);
+    TEST_GET(cfg, "bool_false", true, false);
 }
 
 
@@ -268,45 +272,45 @@ const HotkeyTest hotkeyTests[] = {
 };
 
 
-static void setHotkey()
+static void setHotkey(DpsoCfg* cfg)
 {
     for (const auto& test : hotkeyTests)
-        dpsoCfgSetHotkey(test.key, &test.hotkey);
+        dpsoCfgSetHotkey(cfg, test.key, &test.hotkey);
 }
 
 
-static void getHotkey()
+static void getHotkey(const DpsoCfg* cfg)
 {
     const DpsoHotkey defaultHotkey {dpsoKeyF1, dpsoKeyModWin};
 
-    TEST_GET("hotkey_default", defaultHotkey, defaultHotkey);
+    TEST_GET(cfg, "hotkey_default", defaultHotkey, defaultHotkey);
 
     for (const auto& test : hotkeyTests)
-        TEST_GET(test.key, defaultHotkey, test.hotkey);
+        TEST_GET(cfg, test.key, defaultHotkey, test.hotkey);
 }
 
 
 const char* const cfgFileName = "test_cfg_file.cfg";
 
 
-static void reload()
+static void reload(DpsoCfg* cfg)
 {
-    if (!dpsoCfgSave(cfgFileName)) {
+    if (!dpsoCfgSave(cfg, cfgFileName)) {
         std::fprintf(
             stderr,
-            "reload(): dpsoCfgSave(\"%s\") failed: %s\n",
+            "reload(): dpsoCfgSave(cfg, \"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
         std::exit(EXIT_FAILURE);
     }
 
-    const auto loaded = dpsoCfgLoad(cfgFileName);
+    const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     std::remove(cfgFileName);
 
     if (!loaded) {
         std::fprintf(
             stderr,
-            "reload(): dpsoCfgLoad(\"%s\") failed: %s\n",
+            "reload(): dpsoCfgLoad(cfg, \"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
         std::exit(EXIT_FAILURE);
@@ -314,7 +318,7 @@ static void reload()
 }
 
 
-static void loadCfgData(const char* cfgData)
+static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 {
     auto* fp = std::fopen(cfgFileName, "wb");
     if (!fp) {
@@ -329,13 +333,13 @@ static void loadCfgData(const char* cfgData)
     std::fputs(cfgData, fp);
     std::fclose(fp);
 
-    const auto loaded = dpsoCfgLoad(cfgFileName);
+    const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     std::remove(cfgFileName);
 
     if (!loaded) {
         std::fprintf(
             stderr,
-            "loadCfgData(): dpsoCfgLoad(\"%s\") failed: %s\n",
+            "loadCfgData(): dpsoCfgLoad(cfg, \"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
         std::exit(EXIT_FAILURE);
@@ -343,40 +347,47 @@ static void loadCfgData(const char* cfgData)
 }
 
 
-static void testValueOverridingOnLoad()
+static void testValueOverridingOnLoad(DpsoCfg* cfg)
 {
-    loadCfgData("key value1\nkey value2\n");
-    TEST_GET("key", "", "value2");
+    loadCfgData(cfg, "key value1\nkey value2\n");
+    TEST_GET(cfg, "key", "", "value2");
 }
 
 
-static void testUnescapedBackslashAtEndOfQuotedString()
+static void testUnescapedBackslashAtEndOfQuotedString(DpsoCfg* cfg)
 {
-    loadCfgData("key \"a\\\"");
-    TEST_GET("key", "", "a");
+    loadCfgData(cfg, "key \"a\\\"");
+    TEST_GET(cfg, "key", "", "a");
 }
 
 
 static void testCfg()
 {
-    dpsoCfgClear();
+    dpso::CfgUPtr cfg{dpsoCfgCreate()};
+    if (!cfg) {
+        std::fprintf(
+            stderr,
+            "dpsoCfgCreate() failed: %s\n",
+            dpsoGetError());
+        std::exit(EXIT_FAILURE);
+    }
 
-    setString();
-    setInt();
-    setBool();
-    setHotkey();
+    setString(cfg.get());
+    setInt(cfg.get());
+    setBool(cfg.get());
+    setHotkey(cfg.get());
 
-    reload();
+    reload(cfg.get());
 
-    getDefault();
+    getDefault(cfg.get());
 
-    getString();
-    getInt();
-    getBool();
-    getHotkey();
+    getString(cfg.get());
+    getInt(cfg.get());
+    getBool(cfg.get());
+    getHotkey(cfg.get());
 
-    testValueOverridingOnLoad();
-    testUnescapedBackslashAtEndOfQuotedString();
+    testValueOverridingOnLoad(cfg.get());
+    testUnescapedBackslashAtEndOfQuotedString(cfg.get());
 }
 
 

@@ -7,6 +7,9 @@ extern "C" {
 #endif
 
 
+struct DpsoCfg;
+
+
 /**
  * Load currently active languages.
  *
@@ -17,9 +20,11 @@ extern "C" {
  * you don't want to use a fallback.
  */
 void dpsoCfgLoadActiveLangs(
-    const char* key, const char* fallbackLangCode);
+    const struct DpsoCfg* cfg,
+    const char* key,
+    const char* fallbackLangCode);
 
-void dpsoCfgSaveActiveLangs(const char* key);
+void dpsoCfgSaveActiveLangs(struct DpsoCfg* cfg, const char* key);
 
 
 struct DpsoHotkey;
@@ -34,6 +39,7 @@ struct DpsoHotkey;
  * defaultHotkey is null, {dpsoUnknownKey, dpsoKeyModNone} is used.
  */
 void dpsoCfgGetHotkey(
+    const struct DpsoCfg* cfg,
     const char* key,
     struct DpsoHotkey* hotkey,
     const struct DpsoHotkey* defaultHotkey);
@@ -44,6 +50,7 @@ void dpsoCfgGetHotkey(
  * The value is set to the result of dpsoHotkeyToString().
  */
 void dpsoCfgSetHotkey(
+    struct DpsoCfg* cfg,
     const char* key,
     const struct DpsoHotkey* hotkey);
 

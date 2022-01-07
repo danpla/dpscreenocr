@@ -72,7 +72,7 @@ void LangBrowser::toggleLang(QTreeWidgetItem* item, int column)
 }
 
 
-void LangBrowser::loadState()
+void LangBrowser::loadState(const DpsoCfg* cfg)
 {
     const char* fallbackLangCode;
     if (dpsoGetNumLangs() == 1)
@@ -80,7 +80,7 @@ void LangBrowser::loadState()
     else
         fallbackLangCode = dpsoGetDefaultLangCode();
 
-    dpsoCfgLoadActiveLangs(cfgKeyOcrLanguages, fallbackLangCode);
+    dpsoCfgLoadActiveLangs(cfg, cfgKeyOcrLanguages, fallbackLangCode);
 
     clear();
     setSortingEnabled(false);
@@ -106,11 +106,12 @@ void LangBrowser::loadState()
 
     const auto columnIdx = qBound(
         static_cast<int>(columnIdxName),
-        dpsoCfgGetInt(cfgKeyUiLanguagesSortColumn, columnIdxName),
+        dpsoCfgGetInt(
+            cfg, cfgKeyUiLanguagesSortColumn, columnIdxName),
         static_cast<int>(columnIdxCode));
 
     Qt::SortOrder sortOrder;
-    if (dpsoCfgGetBool(cfgKeyUiLanguagesSortDescending, false))
+    if (dpsoCfgGetBool(cfg, cfgKeyUiLanguagesSortDescending, false))
         sortOrder = Qt::DescendingOrder;
     else
         sortOrder = Qt::AscendingOrder;
@@ -119,14 +120,16 @@ void LangBrowser::loadState()
 }
 
 
-void LangBrowser::saveState() const
+void LangBrowser::saveState(DpsoCfg* cfg) const
 {
     dpsoCfgSetInt(
+        cfg,
         cfgKeyUiLanguagesSortColumn,
         header()->sortIndicatorSection());
     dpsoCfgSetBool(
+        cfg,
         cfgKeyUiLanguagesSortDescending,
         header()->sortIndicatorOrder() == Qt::DescendingOrder);
 
-    dpsoCfgSaveActiveLangs(cfgKeyOcrLanguages);
+    dpsoCfgSaveActiveLangs(cfg, cfgKeyOcrLanguages);
 }

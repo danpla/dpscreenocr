@@ -7,6 +7,7 @@
 #include <QWidget>
 
 #include "dpso/dpso.h"
+#include "dpso_utils/dpso_utils.h"
 
 #include "status.h"
 
@@ -55,6 +56,8 @@ private:
     std::string cfgDirPath;
     std::string cfgFilePath;
 
+    dpso::CfgUPtr cfg;
+
     int updateTimerId;
 
     bool ocrAllowQueuing;
@@ -75,6 +78,7 @@ private:
 
     LangBrowser* langBrowser;
     HotkeyEditor* hotkeyEditor;
+    DpsoHotkey cancelSelectionHotkey;
 
     QWidget* actionsTab;
     ActionChooser* actionChooser;
@@ -87,6 +91,7 @@ private:
     History* history;
 
     QSystemTrayIcon* trayIcon;
+    bool minimizeToTray;
 
     void createQActions();
 
@@ -97,8 +102,8 @@ private:
 
     void createTrayIcon();
 
-    bool loadState();
-    void saveState() const;
+    bool loadState(const DpsoCfg* cfg);
+    void saveState(DpsoCfg* cfg) const;
 
     bool canStartSelection() const;
 

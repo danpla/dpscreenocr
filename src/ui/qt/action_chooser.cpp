@@ -21,6 +21,7 @@
 
 ActionChooser::ActionChooser(QWidget* parent)
     : QWidget{parent}
+    , nativeFileDialogs{}
 {
     copyToClipboardCheck = new QCheckBox(_("Copy text to clipboard"));
     addToHistoryCheck = new QCheckBox(_("Add text to history"));
@@ -99,37 +100,49 @@ QString ActionChooser::getExePath() const
 }
 
 
-void ActionChooser::loadState()
+void ActionChooser::loadState(const DpsoCfg* cfg)
 {
     copyToClipboardCheck->setChecked(
         dpsoCfgGetBool(
+            cfg,
             cfgKeyActionCopyToClipboard,
             cfgDefaultValueActionCopyToClipboard));
     addToHistoryCheck->setChecked(
         dpsoCfgGetBool(
+            cfg,
             cfgKeyActionAddToHistory,
             cfgDefaultValueActionAddToHistory));
     runExeCheck->setChecked(
         dpsoCfgGetBool(
+            cfg,
             cfgKeyActionRunExecutable,
             cfgDefaultValueActionRunExecutable));
     exeLineEdit->setText(
-        dpsoCfgGetStr(cfgKeyActionRunExecutablePath, ""));
+        dpsoCfgGetStr(cfg, cfgKeyActionRunExecutablePath, ""));
+
+    nativeFileDialogs = dpsoCfgGetBool(
+        cfg,
+        cfgKeyUiNativeFileDialogs,
+        cfgDefaultValueUiNativeFileDialogs);
 }
 
 
-void ActionChooser::saveState() const
+void ActionChooser::saveState(DpsoCfg* cfg) const
 {
     dpsoCfgSetBool(
+        cfg,
         cfgKeyActionCopyToClipboard,
         copyToClipboardCheck->isChecked());
     dpsoCfgSetBool(
+        cfg,
         cfgKeyActionAddToHistory,
         addToHistoryCheck->isChecked());
     dpsoCfgSetBool(
+        cfg,
         cfgKeyActionRunExecutable,
         runExeCheck->isChecked());
     dpsoCfgSetStr(
+        cfg,
         cfgKeyActionRunExecutablePath,
         exeLineEdit->text().toUtf8().data());
 }
@@ -148,9 +161,7 @@ void ActionChooser::chooseExe()
         exeDir = QDir::homePath();
 
     QFileDialog::Options options;
-    if (!dpsoCfgGetBool(
-            cfgKeyUiNativeFileDialogs,
-            cfgDefaultValueUiNativeFileDialogs))
+    if (!nativeFileDialogs)
         options |= QFileDialog::DontUseNativeDialog;
 
     exePath = QFileDialog::getOpenFileName(

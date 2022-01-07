@@ -6,6 +6,8 @@
 
 class QTreeWidgetItem;
 
+struct DpsoCfg;
+
 
 class LangBrowser : public QTreeWidget {
     Q_OBJECT
@@ -13,8 +15,8 @@ class LangBrowser : public QTreeWidget {
 public:
     explicit LangBrowser(QWidget* parent = nullptr);
 
-    void loadState();
-    void saveState() const;
+    void loadState(const DpsoCfg* cfg);
+    void saveState(DpsoCfg* cfg) const;
 private slots:
     void toggleLang(QTreeWidgetItem* item, int column);
 };

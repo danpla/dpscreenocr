@@ -8,6 +8,8 @@
 class QCheckBox;
 class QLineEdit;
 
+struct DpsoCfg;
+
 
 class ActionChooser : public QWidget {
     Q_OBJECT
@@ -27,8 +29,8 @@ public:
     Actions getSelectedActions() const;
     QString getExePath() const;
 
-    void loadState();
-    void saveState() const;
+    void loadState(const DpsoCfg* cfg);
+    void saveState(DpsoCfg* cfg) const;
 signals:
     void actionsChanged();
 private slots:
@@ -44,6 +46,8 @@ private:
     QCheckBox* addToHistoryCheck;
     QCheckBox* runExeCheck;
     QLineEdit* exeLineEdit;
+
+    bool nativeFileDialogs;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ActionChooser::Actions)

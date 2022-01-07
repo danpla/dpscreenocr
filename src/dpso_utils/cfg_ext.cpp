@@ -27,11 +27,13 @@ const char langSeparator = ',';
 
 
 void dpsoCfgLoadActiveLangs(
-    const char* key, const char* fallbackLangCode)
+    const struct DpsoCfg* cfg,
+    const char* key,
+    const char* fallbackLangCode)
 {
     disableAllLangs();
 
-    const auto* s = dpsoCfgGetStr(key, nullptr);
+    const auto* s = dpsoCfgGetStr(cfg, key, nullptr);
 
     if (!s) {
         enableLang(fallbackLangCode);
@@ -58,7 +60,7 @@ void dpsoCfgLoadActiveLangs(
 }
 
 
-void dpsoCfgSaveActiveLangs(const char* key)
+void dpsoCfgSaveActiveLangs(struct DpsoCfg* cfg, const char* key)
 {
     std::string str;
 
@@ -74,11 +76,12 @@ void dpsoCfgSaveActiveLangs(const char* key)
         str += dpsoGetLangCode(i);
     }
 
-    dpsoCfgSetStr(key, str.c_str());
+    dpsoCfgSetStr(cfg, key, str.c_str());
 }
 
 
 void dpsoCfgGetHotkey(
+    const struct DpsoCfg* cfg,
     const char* key,
     struct DpsoHotkey* hotkey,
     const struct DpsoHotkey* defaultHotkey)
@@ -86,7 +89,7 @@ void dpsoCfgGetHotkey(
     if (!hotkey)
         return;
 
-    if (const auto* hotkeyStr = dpsoCfgGetStr(key, nullptr))
+    if (const auto* hotkeyStr = dpsoCfgGetStr(cfg, key, nullptr))
         dpsoHotkeyFromString(hotkeyStr, hotkey);
     else {
         const DpsoHotkey noneHotkey{dpsoUnknownKey, dpsoKeyModNone};
@@ -96,11 +99,12 @@ void dpsoCfgGetHotkey(
 
 
 void dpsoCfgSetHotkey(
+    struct DpsoCfg* cfg,
     const char* key,
     const struct DpsoHotkey* hotkey)
 {
     if (!hotkey)
         return;
 
-    dpsoCfgSetStr(key, dpsoHotkeyToString(hotkey));
+    dpsoCfgSetStr(cfg, key, dpsoHotkeyToString(hotkey));
 }
