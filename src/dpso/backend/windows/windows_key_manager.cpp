@@ -2,9 +2,9 @@
 #include "backend/windows/windows_key_manager.h"
 
 #include <cassert>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 
 namespace dpso {
@@ -70,17 +70,12 @@ const char atomNamePrefix[] =
 const auto atomNamePrefixLen = sizeof(atomNamePrefix) - 1;
 
 
-static const char* hotkeyToAtomName(const DpsoHotkey& hotkey)
+static std::string hotkeyToAtomName(const DpsoHotkey& hotkey)
 {
     const ATOM atom = (
         sentinelBit | (hotkey.key << modsBits) | hotkey.mods);
 
-    // Prefix + 5 characters for 65535 (we use only 15 bits, so our
-    // maximum is actually 32767) + null.
-    static char buf[atomNamePrefixLen + 5 + 1];
-    std::snprintf(buf, sizeof(buf), "%s%i", atomNamePrefix, atom);
-
-    return buf;
+    return atomNamePrefix + std::to_string(atom);
 }
 
 
@@ -106,8 +101,8 @@ static UINT dpsoModsToWinMods(unsigned mods);
 
 static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 {
-    const auto* atomName = hotkeyToAtomName(hotkey);
-    auto atom = GlobalFindAtomA(atomName);
+    const auto atomName = hotkeyToAtomName(hotkey);
+    auto atom = GlobalFindAtomA(atomName.c_str());
 
     if (!enabled) {
         if (atom == 0)
@@ -125,7 +120,7 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
     const auto winMods = dpsoModsToWinMods(hotkey.mods);
 
     if (atom == 0)
-        atom = GlobalAddAtomA(atomName);
+        atom = GlobalAddAtomA(atomName.c_str());
     if (atom == 0)
         return;
 
