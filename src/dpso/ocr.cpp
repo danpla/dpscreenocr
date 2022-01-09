@@ -221,6 +221,7 @@ struct DpsoOcr* dpsoOcrCreate()
         ocr->engine = dpso::OcrEngine::create();
     } catch (dpso::OcrEngineError& e) {
         dpsoSetError("Can't create OCR engine: %s", e.what());
+        restoreLocale(ocr.get());
         return nullptr;
     }
     restoreLocale(ocr.get());
