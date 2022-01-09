@@ -10,16 +10,17 @@
 #include "cfg.h"
 
 
-static void disableAllLangs()
+static void disableAllLangs(DpsoOcr* ocr)
 {
-    for (int i = 0; i < dpsoGetNumLangs(); ++i)
-        dpsoSetLangIsActive(i, false);
+    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i)
+        dpsoOcrSetLangIsActive(ocr, i, false);
 }
 
 
-static void enableLang(const char* langCode)
+static void enableLang(DpsoOcr* ocr, const char* langCode)
 {
-    dpsoSetLangIsActive(dpsoGetLangIdx(langCode), true);
+    dpsoOcrSetLangIsActive(
+        ocr, dpsoOcrGetLangIdx(ocr, langCode), true);
 }
 
 
@@ -29,14 +30,15 @@ const char langSeparator = ',';
 void dpsoCfgLoadActiveLangs(
     const struct DpsoCfg* cfg,
     const char* key,
+    struct DpsoOcr* ocr,
     const char* fallbackLangCode)
 {
-    disableAllLangs();
+    disableAllLangs(ocr);
 
     const auto* s = dpsoCfgGetStr(cfg, key, nullptr);
 
     if (!s) {
-        enableLang(fallbackLangCode);
+        enableLang(ocr, fallbackLangCode);
         return;
     }
 
@@ -55,17 +57,18 @@ void dpsoCfgLoadActiveLangs(
                 langCodeEnd = s + 1;
 
         langCode.assign(langCodeBegin, langCodeEnd - langCodeBegin);
-        enableLang(langCode.c_str());
+        enableLang(ocr, langCode.c_str());
     }
 }
 
 
-void dpsoCfgSaveActiveLangs(struct DpsoCfg* cfg, const char* key)
+void dpsoCfgSaveActiveLangs(
+    struct DpsoCfg* cfg, const char* key, const struct DpsoOcr* ocr)
 {
     std::string str;
 
-    for (int i = 0; i < dpsoGetNumLangs(); ++i) {
-        if (!dpsoGetLangIsActive(i))
+    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i) {
+        if (!dpsoOcrGetLangIsActive(ocr, i))
             continue;
 
         if (!str.empty()) {
@@ -73,7 +76,7 @@ void dpsoCfgSaveActiveLangs(struct DpsoCfg* cfg, const char* key)
             str += ' ';
         }
 
-        str += dpsoGetLangCode(i);
+        str += dpsoOcrGetLangCode(ocr, i);
     }
 
     dpsoCfgSetStr(cfg, key, str.c_str());

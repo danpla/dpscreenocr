@@ -7,24 +7,25 @@
 #include "dpso/dpso.h"
 
 
-static void setupLanguages(void)
+static void setupLanguages(struct DpsoOcr* ocr)
 {
     int langIdx;
 
-    if (dpsoGetNumLangs() == 0) {
+    if (dpsoOcrGetNumLangs(ocr) == 0) {
         fprintf(stderr, "Please install language packs\n");
         exit(EXIT_FAILURE);
     }
 
-    langIdx = dpsoGetLangIdx(dpsoGetDefaultLangCode());
+    langIdx = dpsoOcrGetLangIdx(ocr, dpsoOcrGetDefaultLangCode(ocr));
     if (langIdx == -1) {
         printf(
             "Default language (%s) is not available; using %s\n",
-            dpsoGetDefaultLangCode(), dpsoGetLangCode(0));
+            dpsoOcrGetDefaultLangCode(ocr),
+            dpsoOcrGetLangCode(ocr, 0));
         langIdx = 0;
     }
 
-    dpsoSetLangIsActive(langIdx, true);
+    dpsoOcrSetLangIsActive(ocr, langIdx, true);
 }
 
 
@@ -46,15 +47,16 @@ static void setupHotkeys(void)
 }
 
 
-static void reportProgress(struct DpsoProgress* lastProgress)
+static void reportProgress(
+    const struct DpsoOcr* ocr, struct DpsoOcrProgress* lastProgress)
 {
-    struct DpsoProgress progress;
+    struct DpsoOcrProgress progress;
     int totalProgress;
 
-    dpsoGetProgress(&progress);
+    dpsoOcrGetProgress(ocr, &progress);
 
     if (progress.totalJobs == 0
-            || dpsoProgressEqual(&progress, lastProgress))
+            || dpsoOcrProgressEqual(&progress, lastProgress))
         return;
 
     *lastProgress = progress;
@@ -72,15 +74,15 @@ static void reportProgress(struct DpsoProgress* lastProgress)
 }
 
 
-static void checkResults(void)
+static void checkResults(struct DpsoOcr* ocr)
 {
-    struct DpsoJobResults results;
+    struct DpsoOcrJobResults results;
     int i;
 
-    dpsoFetchResults(&results);
+    dpsoOcrFetchResults(ocr, &results);
 
     for (i = 0; i < results.numItems; ++i) {
-        const struct DpsoJobResult* result = &results.items[i];
+        const struct DpsoOcrJobResult* result = &results.items[i];
         printf(
             "=== %s ===\n%s\n",
             result->timestamp, result->text);
@@ -88,12 +90,12 @@ static void checkResults(void)
 }
 
 
-static void checkHotkeyActions(void)
+static void checkHotkeyActions(struct DpsoOcr* ocr)
 {
     const DpsoHotkeyAction hotkeyAction = dpsoGetLastHotkeyAction();
     if (hotkeyAction == hotkeyActionToggleSelection) {
         if (dpsoGetSelectionIsEnabled()) {
-            struct DpsoJobArgs jobArgs;
+            struct DpsoOcrJobArgs jobArgs;
 
             dpsoSetSelectionIsEnabled(false);
 
@@ -101,9 +103,9 @@ static void checkHotkeyActions(void)
             if (dpsoRectIsEmpty(&jobArgs.screenRect))
                 return;
 
-            jobArgs.flags = dpsoJobTextSegmentation;
+            jobArgs.flags = dpsoOcrJobTextSegmentation;
 
-            if (!dpsoQueueJob(&jobArgs))
+            if (!dpsoOcrQueueJob(ocr, &jobArgs))
                 fprintf(
                     stderr,
                     "dpsoQueueJob() error: %s\n", dpsoGetError());
@@ -115,7 +117,8 @@ static void checkHotkeyActions(void)
 
 int main(void)
 {
-    struct DpsoProgress lastProgress = {0};
+    struct DpsoOcr* ocr;
+    struct DpsoOcrProgress lastProgress = {0};
 
     if (!dpsoInit()) {
         fprintf(
@@ -123,19 +126,28 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    setupLanguages();
+    ocr = dpsoOcrCreate();
+    if (!ocr) {
+        dpsoShutdown();
+        fprintf(
+            stderr, "dpsoOcrCreate() failed: %s\n", dpsoGetError());
+        return EXIT_FAILURE;
+    }
+
+    setupLanguages(ocr);
     setupHotkeys();
 
     while (true) {
         dpsoUpdate();
 
-        reportProgress(&lastProgress);
-        checkResults();
-        checkHotkeyActions();
+        reportProgress(ocr, &lastProgress);
+        checkResults(ocr);
+        checkHotkeyActions(ocr);
 
         dpsoDelay(1000 / 60);
     }
 
+    dpsoOcrDelete(ocr);
     dpsoShutdown();
 
     return EXIT_SUCCESS;

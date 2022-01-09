@@ -55,10 +55,5 @@ public:
 };
 
 
-void init();
-void shutdown();
-Backend& getBackend();
-
-
 }
 }

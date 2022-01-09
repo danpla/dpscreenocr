@@ -10,50 +10,50 @@
 #include "str.h"
 
 
-static dpso::backend::KeyManager& getKeyManager()
-{
-    return dpso::backend::getBackend().getKeyManager();
-}
+static dpso::backend::KeyManager* keyManager;
 
 
 int dpsoGetHotkeysEnabled(void)
 {
-    return getKeyManager().getHotkeysEnabled();
+    return keyManager ? keyManager->getHotkeysEnabled() : false;
 }
 
 
 void dpsoSetHotheysEnabled(int newHotkeysEnabled)
 {
-    getKeyManager().setHotkeysEnabled(newHotkeysEnabled);
+    if (keyManager)
+        keyManager->setHotkeysEnabled(newHotkeysEnabled);
 }
 
 
 DpsoHotkeyAction dpsoGetLastHotkeyAction(void)
 {
-    return getKeyManager().getLastHotkeyAction();
+    return keyManager ? keyManager->getLastHotkeyAction() : -1;
 }
 
 
 int dpsoBindHotkey(
     const struct DpsoHotkey* hotkey, DpsoHotkeyAction action)
 {
-    if (!hotkey || hotkey->key < 0 || hotkey->key >= dpsoNumKeys
+    if (!keyManager
+            || !hotkey
+            || hotkey->key < 0
+            || hotkey->key >= dpsoNumKeys
             || action < 0)
         return false;
 
-    return getKeyManager().bindHotkey(*hotkey, action);
+    return keyManager->bindHotkey(*hotkey, action);
 }
 
 
 void dpsoUnbindHotkey(const struct DpsoHotkey* hotkey)
 {
-    if (!hotkey)
+    if (!keyManager || !hotkey)
         return;
 
-    auto& keyManager = getKeyManager();
-    for (int i = 0; i < keyManager.getNumBindings(); ++i)
-        if (keyManager.getBinding(i).hotkey == *hotkey) {
-            keyManager.removeBinding(i);
+    for (int i = 0; i < keyManager->getNumBindings(); ++i)
+        if (keyManager->getBinding(i).hotkey == *hotkey) {
+            keyManager->removeBinding(i);
             break;
         }
 }
@@ -61,10 +61,12 @@ void dpsoUnbindHotkey(const struct DpsoHotkey* hotkey)
 
 void dpsoUnbindAction(DpsoHotkeyAction action)
 {
-    auto& keyManager = getKeyManager();
-    for (int i = 0; i < keyManager.getNumBindings();)
-        if (keyManager.getBinding(i).action == action)
-            keyManager.removeBinding(i);
+    if (!keyManager)
+        return;
+
+    for (int i = 0; i < keyManager->getNumBindings();)
+        if (keyManager->getBinding(i).action == action)
+            keyManager->removeBinding(i);
         else
             ++i;
 }
@@ -76,27 +78,28 @@ void dpsoFindActionHotkey(
     if (!hotkey)
         return;
 
-    const auto& keyManager = getKeyManager();
-    for (int i = 0; i < keyManager.getNumBindings(); ++i) {
-        const auto& binding = keyManager.getBinding(i);
+    *hotkey = {dpsoUnknownKey, dpsoKeyModNone};
+
+    if (!keyManager)
+        return;
+
+    for (int i = 0; i < keyManager->getNumBindings(); ++i) {
+        const auto& binding = keyManager->getBinding(i);
         if (binding.action == action) {
             *hotkey = binding.hotkey;
             return;
         }
     }
-
-    *hotkey = {dpsoUnknownKey, dpsoKeyModNone};
 }
 
 
 DpsoHotkeyAction dpsoFindHotkeyAction(const struct DpsoHotkey* hotkey)
 {
-    if (!hotkey)
+    if (!keyManager || !hotkey)
         return -1;
 
-    const auto& keyManager = getKeyManager();
-    for (int i = 0; i < keyManager.getNumBindings(); ++i) {
-        const auto& binding = keyManager.getBinding(i);
+    for (int i = 0; i < keyManager->getNumBindings(); ++i) {
+        const auto& binding = keyManager->getBinding(i);
         if (binding.hotkey == *hotkey)
             return binding.action;
     }
@@ -198,4 +201,24 @@ void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey)
             nameBegin, nameEnd - nameBegin);
         break;
     }
+}
+
+
+namespace dpso {
+namespace hotkeys {
+
+
+void init(dpso::backend::Backend& backend)
+{
+    keyManager = &backend.getKeyManager();
+}
+
+
+void shutdown()
+{
+    keyManager = nullptr;
+}
+
+
+}
 }

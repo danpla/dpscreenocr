@@ -1,5 +1,5 @@
 
-#include "ocr_private.h"
+#include "ocr.h"
 
 #include <algorithm>
 #include <array>
@@ -29,22 +29,39 @@
 #include "timing.h"
 
 
-// Tesseract versions before 4.1.0 only work with "C" locale. It's
-// a really big pain in the ass since we run Tesseract in a separate
-// thread. It's possible neither to call setlocale() from the
-// background thread nor let the user to change the locale while OCR
-// is active.
+static dpso::backend::Backend* backend;
+
+
+// Tesseract versions before 4.1.0 only work with "C" locale. Since we
+// run Tesseract in a separate thread, it's possible neither to call
+// setlocale() from the background thread nor let the user to change
+// the locale while OCR is active.
 //
 // When the locale is changed and restored is documented in
-// dpsoQueueJob(). We don't restore the locale early on dpsoUpdate()
-// call since there's no way to tell this to the user trough the API.
+// dpsoOcrQueueJob().
+
+static std::vector<const void*> localeRefHolders;
 static std::string lastLocale;
 static bool localeChanged;
 
 
-static void setCLocale()
+static auto localeRefHoldersLowerBound(const void* refHolder)
+    -> std::vector<const void*>::const_iterator
 {
-    if (localeChanged)
+    return std::lower_bound(
+        localeRefHolders.begin(), localeRefHolders.end(), refHolder);
+}
+
+
+static void setCLocale(const void* refHolder)
+{
+    const auto iter = localeRefHoldersLowerBound(refHolder);
+    if (iter != localeRefHolders.end() && *iter == refHolder)
+        return;
+
+    localeRefHolders.insert(iter, refHolder);
+
+    if (localeRefHolders.size() > 1 || localeChanged)
         return;
 
     if (auto* locale = std::setlocale(LC_ALL, nullptr)) {
@@ -55,9 +72,15 @@ static void setCLocale()
 }
 
 
-static void restoreLocale()
+static void restoreLocale(const void* refHolder)
 {
-    if (!localeChanged)
+    const auto iter = localeRefHoldersLowerBound(refHolder);
+    if (iter == localeRefHolders.end() || *iter != refHolder)
+        return;
+
+    localeRefHolders.erase(iter);
+
+    if (!localeRefHolders.empty() || !localeChanged)
         return;
 
     std::setlocale(LC_ALL, lastLocale.c_str());
@@ -65,141 +88,17 @@ static void restoreLocale()
 }
 
 
-static std::unique_ptr<dpso::OcrEngine> ocrEngine;
-
-
 namespace {
-
-
-struct Lang {
-    int langIdx;
-    bool isActive;
-};
-
-
-}
 
 
 // The public API gives a sorted list of language codes, while in
 // OcrEngine they may be in arbitrary order. A Lang at the language
 // index from public API refers to the state of the engine's language
 // at Lang::langIdx.
-static std::vector<Lang> langs;
-static int numActiveLangs;
-
-
-static void cacheLangs()
-{
-    langs.clear();
-    langs.reserve(ocrEngine->getNumLangs());
-
-    for (int i = 0; i < ocrEngine->getNumLangs(); ++i)
-        langs.push_back({i, false});
-
-    std::sort(
-        langs.begin(), langs.end(),
-        [](const Lang& a, const Lang& b)
-        {
-            return std::strcmp(
-                ocrEngine->getLangCode(a.langIdx),
-                ocrEngine->getLangCode(b.langIdx)) < 0;
-        });
-}
-
-
-int dpsoGetNumLangs(void)
-{
-    return langs.size();
-}
-
-
-const char* dpsoGetLangCode(int langIdx)
-{
-    if (langIdx < 0
-            || static_cast<std::size_t>(langIdx) >= langs.size())
-        return "";
-
-    return ocrEngine->getLangCode(langs[langIdx].langIdx);
-}
-
-
-const char* dpsoGetDefaultLangCode(void)
-{
-    return ocrEngine->getDefaultLangCode();
-}
-
-
-const char* dpsoGetLangName(const char* langCode)
-{
-    return ocrEngine->getLangName(langCode);
-}
-
-
-int dpsoGetLangIdx(const char* langCode)
-{
-    const auto iter = std::lower_bound(
-        langs.begin(), langs.end(), langCode,
-        [](const Lang& lang, const char* langCode)
-        {
-            return std::strcmp(
-                ocrEngine->getLangCode(lang.langIdx), langCode) < 0;
-        });
-
-    if (iter != langs.end()
-            && std::strcmp(
-                ocrEngine->getLangCode(iter->langIdx), langCode) == 0)
-        return iter - langs.begin();
-
-    return -1;
-}
-
-
-int dpsoGetLangIsActive(int langIdx)
-{
-    if (langIdx < 0
-            || static_cast<std::size_t>(langIdx) >= langs.size())
-        return false;
-
-    return langs[langIdx].isActive;
-}
-
-
-void dpsoSetLangIsActive(int langIdx, int newIsActive)
-{
-    if (langIdx < 0
-            || static_cast<std::size_t>(langIdx) >= langs.size()
-            || newIsActive == langs[langIdx].isActive)
-        return;
-
-    langs[langIdx].isActive = newIsActive;
-
-    if (newIsActive)
-        ++numActiveLangs;
-    else
-        --numActiveLangs;
-}
-
-
-int dpsoGetNumActiveLangs()
-{
-    return numActiveLangs;
-}
-
-
-static std::vector<int> getActiveLangIndices()
-{
-    std::vector<int> result;
-    result.reserve(numActiveLangs);
-
-    for (const auto& lang : langs)
-        if (lang.isActive)
-            result.push_back(lang.langIdx);
-
-    return result;
-}
-
-
-namespace {
+struct Lang {
+    int langIdx;
+    bool isActive;
+};
 
 
 // 19 characters for ISO 8601 (YYYY-MM-DD HH:MM:SS) + null.
@@ -220,38 +119,18 @@ struct JobResult {
 };
 
 
-}
-
-
-static Timestamp createTimestamp()
-{
-    // We are still targeting old GCC versions, so double braces are
-    // needed to avoid -Wmissing-field-initializers.
-    Timestamp timestamp{{}};
-
-    const auto time = std::time(nullptr);
-    if (const auto* tm = std::localtime(&time))
-        if (std::strftime(
-                timestamp.data(), timestamp.size(),
-                "%Y-%m-%d %H:%M:%S", tm) == 0)
-            timestamp[0] = 0;
-
-    return timestamp;
-}
-
-
 // Link between main and background threads.
-static struct {
-    std::mutex lock;
+struct Link {
+    mutable std::mutex lock;
 
     std::queue<Job> jobQueue;
     bool jobActive;
 
     bool waitingForResults;
-    DpsoProgressCallback waitingProgressCallback;
+    DpsoOcrProgressCallback waitingProgressCallback;
     void* waitingUserData;
 
-    DpsoProgress progress;
+    DpsoOcrProgress progress;
 
     std::vector<JobResult> results;
 
@@ -285,28 +164,235 @@ static struct {
     {
         return !jobQueue.empty() || jobActive;
     }
-} link;
+};
 
 
-#define LINK_LOCK std::lock_guard<std::mutex> guard(link.lock)
+#define LINK_LOCK(L) std::lock_guard<std::mutex> guard(L.lock)
+
+
+}
+
+
+struct DpsoOcr {
+    std::unique_ptr<dpso::OcrEngine> engine;
+
+    std::vector<Lang> langs;
+    int numActiveLangs;
+
+    Link link;
+    std::thread thread;
+
+    std::vector<std::uint8_t> imgBuffers[3];
+    bool dumpDebugImage;
+
+    std::vector<JobResult> fetchedResults;
+    std::vector<DpsoOcrJobResult> returnResults;
+};
+
+
+static void cacheLangs(DpsoOcr& ocr)
+{
+    ocr.langs.clear();
+    ocr.langs.reserve(ocr.engine->getNumLangs());
+
+    for (int i = 0; i < ocr.engine->getNumLangs(); ++i)
+        ocr.langs.push_back({i, false});
+
+    std::sort(
+        ocr.langs.begin(), ocr.langs.end(),
+        [&](const Lang& a, const Lang& b)
+        {
+            return std::strcmp(
+                ocr.engine->getLangCode(a.langIdx),
+                ocr.engine->getLangCode(b.langIdx)) < 0;
+        });
+}
+
+
+static void threadLoop(DpsoOcr* ocr);
+
+
+struct DpsoOcr* dpsoOcrCreate()
+{
+    dpso::OcrUPtr ocr{new DpsoOcr{}};
+
+    setCLocale(ocr.get());
+    try {
+        ocr->engine = dpso::OcrEngine::create();
+    } catch (dpso::OcrEngineError& e) {
+        dpsoSetError("Can't create OCR engine: %s", e.what());
+        return nullptr;
+    }
+    restoreLocale(ocr.get());
+
+    cacheLangs(*ocr);
+
+    ocr->thread = std::thread(threadLoop, ocr.get());
+
+    const char* dumpDebugImageEnvVar = std::getenv(
+        "DPSO_DUMP_DEBUG_IMAGE");
+    ocr->dumpDebugImage = (
+        dumpDebugImageEnvVar
+        && std::strcmp(dumpDebugImageEnvVar, "0") != 0);
+
+    return ocr.release();
+}
+
+
+void dpsoOcrDelete(struct DpsoOcr* ocr)
+{
+    if (!ocr)
+        return;
+
+    dpsoOcrTerminateJobs(ocr);
+
+    {
+        LINK_LOCK(ocr->link);
+        ocr->link.terminateThread = true;
+    }
+    ocr->thread.join();
+
+    setCLocale(ocr);
+    ocr->engine.reset();
+    restoreLocale(ocr);
+
+    delete ocr;
+}
+
+
+int dpsoOcrGetNumLangs(const struct DpsoOcr* ocr)
+{
+    return ocr ? ocr->langs.size() : 0;
+}
+
+
+const char* dpsoOcrGetLangCode(const struct DpsoOcr* ocr, int langIdx)
+{
+    if (!ocr
+            || langIdx < 0
+            || static_cast<std::size_t>(langIdx) >= ocr->langs.size())
+        return "";
+
+    return ocr->engine->getLangCode(ocr->langs[langIdx].langIdx);
+}
+
+
+const char* dpsoOcrGetDefaultLangCode(const struct DpsoOcr* ocr)
+{
+    return ocr ? ocr->engine->getDefaultLangCode() : "";
+}
+
+
+const char* dpsoOcrGetLangName(
+    const struct DpsoOcr* ocr, const char* langCode)
+{
+    return ocr ? ocr->engine->getLangName(langCode) : nullptr;
+}
+
+
+int dpsoOcrGetLangIdx(const struct DpsoOcr* ocr, const char* langCode)
+{
+    if (!ocr)
+        return -1;
+
+    const auto iter = std::lower_bound(
+        ocr->langs.begin(), ocr->langs.end(), langCode,
+        [&](const Lang& lang, const char* langCode)
+        {
+            return std::strcmp(
+                ocr->engine->getLangCode(lang.langIdx), langCode) < 0;
+        });
+
+    if (iter != ocr->langs.end()
+            && std::strcmp(
+                ocr->engine->getLangCode(iter->langIdx),
+                langCode) == 0)
+        return iter - ocr->langs.begin();
+
+    return -1;
+}
+
+
+int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx)
+{
+    if (!ocr
+            || langIdx < 0
+            || static_cast<std::size_t>(langIdx) >= ocr->langs.size())
+        return false;
+
+    return ocr->langs[langIdx].isActive;
+}
+
+
+void dpsoOcrSetLangIsActive(
+    struct DpsoOcr* ocr, int langIdx, int newIsActive)
+{
+    if (!ocr
+            || langIdx < 0
+            || static_cast<std::size_t>(langIdx) >= ocr->langs.size()
+            || newIsActive == ocr->langs[langIdx].isActive)
+        return;
+
+    ocr->langs[langIdx].isActive = newIsActive;
+
+    if (newIsActive)
+        ++ocr->numActiveLangs;
+    else
+        --ocr->numActiveLangs;
+}
+
+
+int dpsoOcrGetNumActiveLangs(const struct DpsoOcr* ocr)
+{
+    return ocr ? ocr->numActiveLangs : 0;
+}
+
+
+static std::vector<int> getActiveLangIndices(const DpsoOcr& ocr)
+{
+    std::vector<int> result;
+    result.reserve(ocr.numActiveLangs);
+
+    for (const auto& lang : ocr.langs)
+        if (lang.isActive)
+            result.push_back(lang.langIdx);
+
+    return result;
+}
+
+
+static Timestamp createTimestamp()
+{
+    // We are still targeting old GCC versions, so double braces are
+    // needed to avoid -Wmissing-field-initializers.
+    Timestamp timestamp{{}};
+
+    const auto time = std::time(nullptr);
+    if (const auto* tm = std::localtime(&time))
+        if (std::strftime(
+                timestamp.data(), timestamp.size(),
+                "%Y-%m-%d %H:%M:%S", tm) == 0)
+            timestamp[0] = 0;
+
+    return timestamp;
+}
 
 
 static dpso::OcrImage prepareScreenshot(
+    DpsoOcr& ocr,
     const dpso::backend::Screenshot& screenshot,
     dpso::ProgressTracker& progressTracker)
 {
-    static std::vector<std::uint8_t> buffers[3];
-
     const int imageScale = 4;
     const auto bufferW = screenshot.getWidth() * imageScale;
     const auto bufferH = screenshot.getHeight() * imageScale;
     const auto bufferPitch = bufferW;
 
-    for (auto& buffer : buffers)
+    for (auto& buffer : ocr.imgBuffers)
         buffer.resize(bufferH * bufferPitch);
 
     START_TIMING(screenshotGetData);
-    screenshot.getGrayscaleData(&buffers[0][0], bufferPitch);
+    screenshot.getGrayscaleData(&ocr.imgBuffers[0][0], bufferPitch);
     END_TIMING(
         screenshotGetData,
         "screenshot.getGrayscaleData (%ix%i px)",
@@ -314,9 +400,9 @@ static dpso::OcrImage prepareScreenshot(
 
     START_TIMING(imageResizing);
     dpso::img::resize(
-        &buffers[0][0],
+        &ocr.imgBuffers[0][0],
         screenshot.getWidth(), screenshot.getHeight(), bufferPitch,
-        &buffers[1][0],
+        &ocr.imgBuffers[1][0],
         bufferW, bufferH, bufferPitch,
         &progressTracker);
     END_TIMING(
@@ -330,9 +416,9 @@ static dpso::OcrImage prepareScreenshot(
 
     START_TIMING(unsharpMasking);
     dpso::img::unsharpMask(
-        &buffers[1][0], bufferPitch,
-        &buffers[0][0], bufferPitch,
-        &buffers[2][0], bufferPitch,
+        &ocr.imgBuffers[1][0], bufferPitch,
+        &ocr.imgBuffers[0][0], bufferPitch,
+        &ocr.imgBuffers[2][0], bufferPitch,
         bufferW, bufferH,
         unsharpMaskRadius,
         1.0f,
@@ -342,57 +428,68 @@ static dpso::OcrImage prepareScreenshot(
         "Unsharp masking (radius=%i, %ix%i px)",
         unsharpMaskRadius, bufferW, bufferH);
 
-    return {&buffers[0][0], bufferW, bufferH, bufferPitch};
+    return {&ocr.imgBuffers[0][0], bufferW, bufferH, bufferPitch};
+}
+
+
+namespace {
+
+
+struct ProgressCallbackData {
+    DpsoOcr& ocr;
+    dpso::ProgressTracker& progressTracker;
+};
+
+
 }
 
 
 static bool ocrProgressCallback(int progress, void* userData)
 {
-    auto* progressTracker = (
-        static_cast<dpso::ProgressTracker*>(userData));
-    assert(progressTracker);
-    progressTracker->update(progress / 100.0f);
+    auto* data = static_cast<ProgressCallbackData*>(userData);
+    assert(data);
+    data->progressTracker.update(progress / 100.0f);
+
+    auto& link = data->ocr.link;
 
     bool waitingForResults;
     {
-        LINK_LOCK;
+        LINK_LOCK(link);
         waitingForResults = link.waitingForResults;
     }
 
     if (waitingForResults && link.waitingProgressCallback)
         link.waitingProgressCallback(link.waitingUserData);
 
-    LINK_LOCK;
+    LINK_LOCK(link);
     return !link.terminateJobs;
 }
 
 
 static void progressTrackerFn(float progress, void* userData)
 {
-    (void)userData;
+    auto* ocr = static_cast<DpsoOcr*>(userData);
+    assert(ocr);
 
-    LINK_LOCK;
-    link.progress.curJobProgress = progress * 100;
+    LINK_LOCK(ocr->link);
+    ocr->link.progress.curJobProgress = progress * 100;
 }
 
 
-static bool dumpDebugImage;
-
-
-static void processJob(const Job& job)
+static void processJob(DpsoOcr& ocr, const Job& job)
 {
     assert(job.screenshot);
     assert(!job.langIndices.empty());
 
     // There are 3 progress jobs: resizing and unsharp masking in
     // prepareScreenshot() and OCR.
-    dpso::ProgressTracker progressTracker(3, progressTrackerFn);
+    dpso::ProgressTracker progressTracker(3, progressTrackerFn, &ocr);
     progressTracker.start();
 
     const auto ocrImage = prepareScreenshot(
-        *job.screenshot, progressTracker);
+        ocr, *job.screenshot, progressTracker);
 
-    if (dumpDebugImage)
+    if (ocr.dumpDebugImage)
         dpso::img::savePgm(
             "dpso_debug.pgm",
             ocrImage.data,
@@ -400,49 +497,50 @@ static void processJob(const Job& job)
 
     progressTracker.advanceJob();
 
-    auto ocrResult = ocrEngine->recognize(
+    ProgressCallbackData progressCallbackData{ocr, progressTracker};
+    auto ocrResult = ocr.engine->recognize(
         ocrImage, job.langIndices, job.ocrFeatures,
-        ocrProgressCallback, &progressTracker);
+        ocrProgressCallback, &progressCallbackData);
 
     progressTracker.finish();
 
-    LINK_LOCK;
-    if (link.terminateJobs)
+    LINK_LOCK(ocr.link);
+    if (ocr.link.terminateJobs)
         return;
 
-    link.results.push_back({std::move(ocrResult), job.timestamp});
+    ocr.link.results.push_back({std::move(ocrResult), job.timestamp});
 }
 
 
-static void threadLoop()
+static void threadLoop(DpsoOcr* ocr)
 {
     while (true) {
         Job job;
 
         {
-            LINK_LOCK;
+            LINK_LOCK(ocr->link);
 
-            if (link.terminateThread)
+            if (ocr->link.terminateThread)
                 break;
 
-            if (!link.jobQueue.empty()) {
-                job = std::move(link.jobQueue.front());
+            if (!ocr->link.jobQueue.empty()) {
+                job = std::move(ocr->link.jobQueue.front());
                 assert(job.screenshot);
-                link.jobQueue.pop();
+                ocr->link.jobQueue.pop();
 
-                link.jobActive = true;
+                ocr->link.jobActive = true;
 
                 // Although processJob() will reset result to zero,
                 // this should also be done before incrementing
                 // curJob so we don't return the progress of the
                 // previous job from dpsoGetProgress() before
                 // the new one starts.
-                link.progress.curJobProgress = 0;
+                ocr->link.progress.curJobProgress = 0;
 
-                ++link.progress.curJob;
-            } else if (link.jobActive) {
-                link.jobActive = false;
-                link.progress = {};
+                ++ocr->link.progress.curJob;
+            } else if (ocr->link.jobActive) {
+                ocr->link.jobActive = false;
+                ocr->link.progress = {};
             }
         }
 
@@ -452,13 +550,24 @@ static void threadLoop()
             continue;
         }
 
-        processJob(job);
+        processJob(*ocr, job);
     }
 }
 
 
-int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
+int dpsoOcrQueueJob(
+    struct DpsoOcr* ocr, const struct DpsoOcrJobArgs* jobArgs)
 {
+    if (!backend) {
+        dpsoSetError("Library is not initialized");
+        return false;
+    }
+
+    if (!ocr) {
+        dpsoSetError("ocr is null");
+        return false;
+    }
+
     if (!jobArgs) {
         dpsoSetError("jobArgs is null");
         return false;
@@ -469,7 +578,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
         return false;
     }
 
-    if (numActiveLangs == 0) {
+    if (ocr->numActiveLangs == 0) {
         dpsoSetError("No active languages");
         return false;
     }
@@ -478,7 +587,7 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
 
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     try {
-        screenshot = dpso::backend::getBackend().takeScreenshot(
+        screenshot = backend->takeScreenshot(
             dpso::Rect{jobArgs->screenRect});
     } catch (dpso::backend::ScreenshotError& e) {
         dpsoSetError("Can't take screenshot: %s", e.what());
@@ -494,30 +603,30 @@ int dpsoQueueJob(const struct DpsoJobArgs* jobArgs)
         screenshot->getHeight());
 
     dpso::OcrFeatures ocrFeatures{};
-    if (jobArgs->flags & dpsoJobTextSegmentation)
+    if (jobArgs->flags & dpsoOcrJobTextSegmentation)
         ocrFeatures |= dpso::ocrFeatureTextSegmentation;
 
     Job job{
         std::move(screenshot),
-        getActiveLangIndices(),
+        getActiveLangIndices(*ocr),
         ocrFeatures,
         createTimestamp()
     };
 
-    setCLocale();
+    setCLocale(ocr);
 
-    LINK_LOCK;
+    LINK_LOCK(ocr->link);
 
-    link.jobQueue.push(std::move(job));
+    ocr->link.jobQueue.push(std::move(job));
 
-    ++link.progress.totalJobs;
+    ++ocr->link.progress.totalJobs;
 
     return true;
 }
 
 
-int dpsoProgressEqual(
-    const struct DpsoProgress* a, const struct DpsoProgress* b)
+int dpsoOcrProgressEqual(
+    const struct DpsoOcrProgress* a, const struct DpsoOcrProgress* b)
 {
     return (
         a && b
@@ -527,58 +636,60 @@ int dpsoProgressEqual(
 }
 
 
-void dpsoGetProgress(struct DpsoProgress* progress)
+void dpsoOcrGetProgress(
+    const struct DpsoOcr* ocr, struct DpsoOcrProgress* progress)
 {
-    LINK_LOCK;
-
-    if (progress)
-        *progress = link.progress;
-}
-
-
-int dpsoGetJobsPending(void)
-{
-    LINK_LOCK;
-    return link.jobsPending();
-}
-
-
-static std::vector<JobResult> fetchedResults;
-static std::vector<DpsoJobResult> returnResults;
-
-
-void dpsoFetchResults(struct DpsoJobResults* results)
-{
-    if (!results)
+    if (!ocr || !progress)
         return;
 
-    LINK_LOCK;
+    LINK_LOCK(ocr->link);
+    *progress = ocr->link.progress;
+}
 
-    fetchedResults.clear();
-    fetchedResults.swap(link.results);
 
-    returnResults.clear();
-    returnResults.reserve(fetchedResults.size());
-    for (const auto& result : fetchedResults)
-        returnResults.push_back(
+int dpsoOcrGetJobsPending(const struct DpsoOcr* ocr)
+{
+    if (!ocr)
+        return false;
+
+    LINK_LOCK(ocr->link);
+    return ocr->link.jobsPending();
+}
+
+
+void dpsoOcrFetchResults(
+    struct DpsoOcr* ocr, struct DpsoOcrJobResults* results)
+{
+    if (!ocr || !results)
+        return;
+
+    LINK_LOCK(ocr->link);
+
+    ocr->fetchedResults.clear();
+    ocr->fetchedResults.swap(ocr->link.results);
+
+    ocr->returnResults.clear();
+    ocr->returnResults.reserve(ocr->fetchedResults.size());
+    for (const auto& result : ocr->fetchedResults)
+        ocr->returnResults.push_back(
             {result.ocrResult.getText(),
                 result.ocrResult.getTextLen(),
                 result.timestamp.data()});
 
-    results->items = returnResults.data();
-    results->numItems = returnResults.size();
+    results->items = ocr->returnResults.data();
+    results->numItems = ocr->returnResults.size();
 
-    if (!link.jobsPending())
-        restoreLocale();
+    if (!ocr->link.jobsPending())
+        restoreLocale(ocr);
 }
 
 
-static void waitJobsToFinish()
+static void waitJobsToFinish(const DpsoOcr& ocr)
 {
     while (true) {
         {
-            LINK_LOCK;
-            if (!link.jobsPending())
+            LINK_LOCK(ocr.link);
+            if (!ocr.link.jobsPending())
                 break;
         }
 
@@ -588,58 +699,66 @@ static void waitJobsToFinish()
 }
 
 
-void dpsoWaitJobsToComplete(
-    DpsoProgressCallback progressCallback, void* userData)
+void dpsoOcrWaitJobsToComplete(
+    struct DpsoOcr* ocr,
+    DpsoOcrProgressCallback progressCallback,
+    void* userData)
 {
+    if (!ocr)
+        return;
+
     {
-        LINK_LOCK;
-        link.waitingForResults = true;
-        link.waitingProgressCallback = progressCallback;
-        link.waitingUserData = userData;
+        LINK_LOCK(ocr->link);
+        ocr->link.waitingForResults = true;
+        ocr->link.waitingProgressCallback = progressCallback;
+        ocr->link.waitingUserData = userData;
     }
 
-    waitJobsToFinish();
+    waitJobsToFinish(*ocr);
 
-    LINK_LOCK;
-    link.waitingForResults = false;
+    LINK_LOCK(ocr->link);
+    ocr->link.waitingForResults = false;
 
-    if (link.terminateJobs) {
+    if (ocr->link.terminateJobs) {
         // dpsoTerminateJobs() was called from the status callback
         // during waiting.
-        link.results.clear();
+        ocr->link.results.clear();
 
-        link.terminateJobs = false;
+        ocr->link.terminateJobs = false;
     }
 
-    restoreLocale();
+    restoreLocale(ocr);
 }
 
 
-void dpsoTerminateJobs(void)
+void dpsoOcrTerminateJobs(struct DpsoOcr* ocr)
 {
+    if (!ocr)
+        return;
+
     {
-        LINK_LOCK;
+        LINK_LOCK(ocr->link);
 
-        link.clearJobQueue();
-        link.terminateJobs = true;
+        ocr->link.clearJobQueue();
+        ocr->link.terminateJobs = true;
 
-        if (link.waitingForResults)
+        if (ocr->link.waitingForResults)
             // dpsoWaitJobsToComplete() will set terminateJobs to
             // false.
             return;
     }
 
-    waitJobsToFinish();
+    waitJobsToFinish(*ocr);
 
     // Locking here is not actually necessary since the idling
     // background thread doesn't access variables we use below.
-    LINK_LOCK;
+    LINK_LOCK(ocr->link);
 
-    link.results.clear();
+    ocr->link.results.clear();
 
-    link.terminateJobs = false;
+    ocr->link.terminateJobs = false;
 
-    restoreLocale();
+    restoreLocale(ocr);
 }
 
 
@@ -647,54 +766,15 @@ namespace dpso {
 namespace ocr {
 
 
-static std::thread bgThread;
-
-
-void init()
+void init(dpso::backend::Backend& backend)
 {
-    setCLocale();
-    ocrEngine = OcrEngine::create();
-    restoreLocale();
-
-    assert(langs.empty());
-    assert(numActiveLangs == 0);
-    cacheLangs();
-
-    assert(!link.jobsPending());
-    link.reset();
-
-    assert(fetchedResults.empty());
-    assert(returnResults.empty());
-
-    const char* dumpDebugImageEnvVar = std::getenv(
-        "DPSO_DUMP_DEBUG_IMAGE");
-    dumpDebugImage = (dumpDebugImageEnvVar
-        && std::strcmp(dumpDebugImageEnvVar, "0") != 0);
-
-    bgThread = std::thread(threadLoop);
+    ::backend = &backend;
 }
 
 
 void shutdown()
 {
-    langs.clear();
-    numActiveLangs = 0;
-
-    dpsoTerminateJobs();
-
-    fetchedResults.clear();
-    returnResults.clear();
-
-    {
-        LINK_LOCK;
-        link.terminateThread = true;
-    }
-    bgThread.join();
-    link.terminateThread = false;
-
-    setCLocale();
-    ocrEngine.reset();
-    restoreLocale();
+    ::backend = nullptr;
 }
 
 

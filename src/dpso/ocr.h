@@ -5,12 +5,12 @@
  *
  * Usage:
  *
- *   1. Activate at least one language with dpsoSetLangIsActive()
- *   2. Queue one or more jobs with dpsoQueueJob()
+ *   1. Activate at least one language with dpsoOcrSetLangIsActive()
+ *   2. Queue one or more jobs with dpsoOcrQueueJob()
  *   3. Fetch job results:
- *     * Synchronously, with dpsoWaitJobsToComplete() followed by
- *         dpsoFetchResults()
- *     * Asynchronously, by calling dpsoFetchResults() repeatedly
+ *     * Synchronously, with dpsoOcrWaitJobsToComplete() followed by
+ *         dpsoOcrFetchResults()
+ *     * Asynchronously, by calling dpsoOcrFetchResults() repeatedly
  *         till all results are fetched
  */
 
@@ -26,10 +26,25 @@ extern "C" {
 #endif
 
 
+struct DpsoOcr;
+
+
+/**
+ * Create OCR.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * null.
+ */
+struct DpsoOcr* dpsoOcrCreate(void);
+
+
+void dpsoOcrDelete(struct DpsoOcr* ocr);
+
+
 /**
  * Get the number of available languages.
  */
-int dpsoGetNumLangs(void);
+int dpsoOcrGetNumLangs(const struct DpsoOcr* ocr);
 
 
 /**
@@ -37,9 +52,10 @@ int dpsoGetNumLangs(void);
  *
  * Returns an empty string if langIdx is out of bounds.
  *
- * \param idx Language index [0, dpsoGetNumLangs())
+ * \param idx Language index [0, dpsoOcrGetNumLangs())
  */
-const char* dpsoGetLangCode(int langIdx);
+const char* dpsoOcrGetLangCode(
+    const struct DpsoOcr* ocr, int langIdx);
 
 
 /**
@@ -51,7 +67,7 @@ const char* dpsoGetLangCode(int langIdx);
  * Returns an empty string if the OCR engine has no meaningful default
  * language.
  */
-const char* dpsoGetDefaultLangCode(void);
+const char* dpsoOcrGetDefaultLangCode(const struct DpsoOcr* ocr);
 
 
 /**
@@ -59,7 +75,8 @@ const char* dpsoGetDefaultLangCode(void);
  *
  * Returns null if the language name for the given code is not known.
  */
-const char* dpsoGetLangName(const char* langCode);
+const char* dpsoOcrGetLangName(
+    const struct DpsoOcr* ocr, const char* langCode);
 
 
 /**
@@ -67,7 +84,8 @@ const char* dpsoGetLangName(const char* langCode);
  *
  * Returns -1 if the language with the given code is not available.
  */
-int dpsoGetLangIdx(const char* langCode);
+int dpsoOcrGetLangIdx(
+    const struct DpsoOcr* ocr, const char* langCode);
 
 
 /**
@@ -75,9 +93,9 @@ int dpsoGetLangIdx(const char* langCode);
  *
  * Returns 0 if langIdx is out of bounds.
  *
- * \param idx Language index [0, dpsoGetNumLangs())
+ * \param idx Language index [0, dpsoOcrGetNumLangs())
  */
-int dpsoGetLangIsActive(int langIdx);
+int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx);
 
 
 /**
@@ -85,15 +103,16 @@ int dpsoGetLangIsActive(int langIdx);
  *
  * Does nothing if langIdx is out of bounds.
  *
- * \param idx Language index [0, dpsoGetNumLangs())
+ * \param idx Language index [0, dpsoOcrGetNumLangs())
  */
-void dpsoSetLangIsActive(int langIdx, int newIsActive);
+void dpsoOcrSetLangIsActive(
+    struct DpsoOcr* ocr, int langIdx, int newIsActive);
 
 
 /**
  * Get the number of active languages.
  */
-int dpsoGetNumActiveLangs(void);
+int dpsoOcrGetNumActiveLangs(const struct DpsoOcr* ocr);
 
 
 typedef enum {
@@ -102,21 +121,21 @@ typedef enum {
      *
      * Try to detect and split independent text blocks, like columns.
      */
-    dpsoJobTextSegmentation = 1 << 0
-} DpsoJobFlag;
+    dpsoOcrJobTextSegmentation = 1 << 0
+} DpsoOcrJobFlag;
 
 
 /**
  * OCR job arguments.
  */
-struct DpsoJobArgs {
+struct DpsoOcrJobArgs {
     /**
      * The rectangle to capture from screen for recognition.
      */
     struct DpsoRect screenRect;
 
     /**
-     * Combination of DpsoJobFlag flags.
+     * Combination of DpsoOcrJobFlag flags.
      */
     unsigned flags;
 };
@@ -125,7 +144,7 @@ struct DpsoJobArgs {
 /**
  * Queue OCR job.
  *
- * The function captures an image DpsoJobArgs::screenRect from the
+ * The function captures an image DpsoOcrJobArgs::screenRect from the
  * screen and queues it for OCR with the currently active languages.
  * On failure, sets an error message (dpsoGetError()) and returns 0.
  * Reasons include:
@@ -135,15 +154,16 @@ struct DpsoJobArgs {
  *   * Error when taking a screenshot
  *
  * Tesseract versions before 4.1.0 only work with "C" locale. This
- * locale is automatically set on a successful dpsoQueueJob() call,
- * and restored after dpsoWaitJobsToComplete(), dpsoTerminateJobs(),
- * or dpsoFetchResults() when all jobs are completed. Don't change the
- * locale between these two points.
+ * locale is automatically set on a successful dpsoOcrQueueJob() call,
+ * and restored after dpsoOcrWaitJobsToComplete(),
+ * dpsoOcrTerminateJobs(), or dpsoOcrFetchResults() when all jobs are
+ * completed. Don't change the locale between these two points.
  */
-int dpsoQueueJob(const struct DpsoJobArgs* jobArgs);
+int dpsoOcrQueueJob(
+    struct DpsoOcr* ocr, const struct DpsoOcrJobArgs* jobArgs);
 
 
-struct DpsoProgress {
+struct DpsoOcrProgress {
     /**
      * Progress of the current job in percents (0-100).
      */
@@ -160,26 +180,28 @@ struct DpsoProgress {
      * Total number of jobs.
      *
      * Can be zero if there are no pending jobs, meaning that all
-     * jobs are completed, or no jobs was queued after dpsoInit().
+     * jobs are completed, or no jobs was queued after
+     * dpsoOcrCreate().
      */
     int totalJobs;
 };
 
 
 /**
- * Return 1 if two DpsoProgress are equal, 0 otherwise.
+ * Return 1 if two DpsoOcrProgress are equal, 0 otherwise.
  */
-int dpsoProgressEqual(
-    const struct DpsoProgress* a, const struct DpsoProgress* b);
+int dpsoOcrProgressEqual(
+    const struct DpsoOcrProgress* a, const struct DpsoOcrProgress* b);
 
 
 /**
  * Get jobs progress.
  *
  * If you just need to test if there are pending jobs, consider using
- * dpsoGetJobsPending().
+ * dpsoOcrGetJobsPending().
  */
-void dpsoGetProgress(struct DpsoProgress* progress);
+void dpsoOcrGetProgress(
+    const struct DpsoOcr* ocr, struct DpsoOcrProgress* progress);
 
 
 /**
@@ -187,15 +209,15 @@ void dpsoGetProgress(struct DpsoProgress* progress);
  *
  * The function returns 1 if there are pending jobs (that is, there
  * is an active or at least one queued job), 0 otherwise. This is
- * basically the same as testing DpsoProgress::totalJobs.
+ * basically the same as testing DpsoOcrProgress::totalJobs.
  */
-int dpsoGetJobsPending(void);
+int dpsoOcrGetJobsPending(const struct DpsoOcr* ocr);
 
 
 /**
  * Result of a single OCR job.
  */
-struct DpsoJobResult {
+struct DpsoOcrJobResult {
     /**
      * Null-terminated text in UTF-8 encoding.
      *
@@ -220,13 +242,13 @@ struct DpsoJobResult {
 /**
  * Reference to internal array containing OCR job results.
  *
- * The results remain valid till the next dpsoFetchResults() or
- * dpsoShutdown() call.
+ * The results remain valid till the next dpsoOcrFetchResults() or
+ * dpsoOcrDelete() call.
  *
- * \sa dpsoFetchResults
+ * \sa dpsoOcrFetchResults
  */
-struct DpsoJobResults {
-    const struct DpsoJobResult* items;
+struct DpsoOcrJobResults {
+    const struct DpsoOcrJobResult* items;
     int numItems;
 };
 
@@ -236,19 +258,21 @@ struct DpsoJobResults {
  *
  * The function returns a reference to an internal array filled with
  * results of completed OCR jobs; if there are no new completed jobs,
- * the array will be empty. The previously returned DpsoJobResults
- * gets invalidated.
+ * the array will be empty. The previously returned results are
+ * invalidated.
  */
-void dpsoFetchResults(struct DpsoJobResults* results);
+void dpsoOcrFetchResults(
+    struct DpsoOcr* ocr, struct DpsoOcrJobResults* results);
 
 
 /**
- * Progress callback for dpsoWaitJobsToComplete().
+ * Progress callback for dpsoOcrWaitJobsToComplete().
  *
- * You can use dpsoGetProgress() inside the callback to get the actual
- * progress, and dpsoTerminateJobs() to terminate jobs prematurely.
+ * You can use dpsoOcrGetProgress() inside the callback to get the
+ * actual progress, and dpsoOcrTerminateJobs() to terminate jobs
+ * prematurely.
  */
-typedef void (*DpsoProgressCallback)(void* userData);
+typedef void (*DpsoOcrProgressCallback)(void* userData);
 
 
 /**
@@ -257,20 +281,44 @@ typedef void (*DpsoProgressCallback)(void* userData);
  * The progress callback (may be null) is called every time the
  * progress changes.
  */
-void dpsoWaitJobsToComplete(
-    DpsoProgressCallback progressCallback, void* userData);
+void dpsoOcrWaitJobsToComplete(
+    struct DpsoOcr* ocr,
+    DpsoOcrProgressCallback progressCallback,
+    void* userData);
 
 
 /**
  * Terminate jobs.
  *
  * This function terminates the active job, clears the job queue, and
- * drops all unfetched job results. dpsoTerminateJobs() is implicitly
- * called on dpsoShutdown().
+ * drops all unfetched job results. dpsoOcrTerminateJobs() is
+ * implicitly called on dpsoOcrDelete().
  */
-void dpsoTerminateJobs(void);
+void dpsoOcrTerminateJobs(struct DpsoOcr* ocr);
 
 
 #ifdef __cplusplus
 }
+
+
+#include <memory>
+
+
+namespace dpso {
+
+
+struct OcrDeleter {
+    void operator()(DpsoOcr* ocr) const
+    {
+        dpsoOcrDelete(ocr);
+    }
+};
+
+
+using OcrUPtr = std::unique_ptr<DpsoOcr, OcrDeleter>;
+
+
+}
+
+
 #endif

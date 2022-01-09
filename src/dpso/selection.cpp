@@ -5,26 +5,47 @@
 #include "backend/selection.h"
 
 
-static dpso::backend::Selection& getSelection()
-{
-    return dpso::backend::getBackend().getSelection();
-}
+static dpso::backend::Selection* selection;
 
 
 int dpsoGetSelectionIsEnabled(void)
 {
-    return getSelection().getIsEnabled();
+    return selection ? selection->getIsEnabled() : false;
 }
 
 
 void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled)
 {
-    getSelection().setIsEnabled(newSelectionIsEnabled);
+    if (selection)
+        selection->setIsEnabled(newSelectionIsEnabled);
 }
 
 
 void dpsoGetSelectionGeometry(struct DpsoRect* rect)
 {
-    if (rect)
-        *rect = toCRect(getSelection().getGeometry());
+    if (!rect)
+        return;
+
+    *rect = (
+        selection ? toCRect(selection->getGeometry()) : DpsoRect{});
+}
+
+
+namespace dpso {
+namespace selection {
+
+
+void init(dpso::backend::Backend& backend)
+{
+    ::selection = &backend.getSelection();
+}
+
+
+void shutdown()
+{
+    ::selection = nullptr;
+}
+
+
+}
 }

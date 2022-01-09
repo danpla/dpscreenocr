@@ -24,8 +24,9 @@ enum ColumnIdx {
 }
 
 
-LangBrowser::LangBrowser(QWidget* parent)
+LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     : QTreeWidget{parent}
+    , ocr{ocr}
 {
     setHeaderLabels(
         QStringList()
@@ -66,7 +67,8 @@ void LangBrowser::toggleLang(QTreeWidgetItem* item, int column)
     if (column != columnIdxCheckbox)
         return;
 
-    dpsoSetLangIsActive(
+    dpsoOcrSetLangIsActive(
+        ocr,
         item->data(columnIdxCheckbox, Qt::UserRole).toInt(),
         item->checkState(columnIdxCheckbox) == Qt::Checked);
 }
@@ -75,27 +77,29 @@ void LangBrowser::toggleLang(QTreeWidgetItem* item, int column)
 void LangBrowser::loadState(const DpsoCfg* cfg)
 {
     const char* fallbackLangCode;
-    if (dpsoGetNumLangs() == 1)
-        fallbackLangCode = dpsoGetLangCode(0);
+    if (dpsoOcrGetNumLangs(ocr) == 1)
+        fallbackLangCode = dpsoOcrGetLangCode(ocr, 0);
     else
-        fallbackLangCode = dpsoGetDefaultLangCode();
+        fallbackLangCode = dpsoOcrGetDefaultLangCode(ocr);
 
-    dpsoCfgLoadActiveLangs(cfg, cfgKeyOcrLanguages, fallbackLangCode);
+    dpsoCfgLoadActiveLangs(
+        cfg, cfgKeyOcrLanguages, ocr, fallbackLangCode);
 
     clear();
     setSortingEnabled(false);
     blockSignals(true);
-    for (int i = 0; i < dpsoGetNumLangs(); ++i) {
+    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i) {
         auto* item = new QTreeWidgetItem(this);
 
         item->setData(columnIdxCheckbox, Qt::UserRole, i);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         item->setCheckState(
             columnIdxCheckbox,
-            dpsoGetLangIsActive(i) ? Qt::Checked : Qt::Unchecked);
+            dpsoOcrGetLangIsActive(ocr, i)
+                ? Qt::Checked : Qt::Unchecked);
 
-        const auto* langCode = dpsoGetLangCode(i);
-        const auto* langName = dpsoGetLangName(langCode);
+        const auto* langCode = dpsoOcrGetLangCode(ocr, i);
+        const auto* langName = dpsoOcrGetLangName(ocr, langCode);
         item->setText(
             columnIdxName,
             langName ? gettext(langName) : langCode);
@@ -131,5 +135,5 @@ void LangBrowser::saveState(DpsoCfg* cfg) const
         cfgKeyUiLanguagesSortDescending,
         header()->sortIndicatorOrder() == Qt::DescendingOrder);
 
-    dpsoCfgSaveActiveLangs(cfg, cfgKeyOcrLanguages);
+    dpsoCfgSaveActiveLangs(cfg, cfgKeyOcrLanguages, ocr);
 }

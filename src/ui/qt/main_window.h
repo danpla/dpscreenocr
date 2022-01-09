@@ -53,6 +53,8 @@ private:
         DynamicStrings();
     } dynStr;
 
+    dpso::OcrUPtr ocr;
+
     std::string cfgDirPath;
     std::string cfgFilePath;
 
@@ -62,7 +64,7 @@ private:
 
     bool ocrAllowQueuing;
 
-    DpsoProgress lastProgress;
+    DpsoOcrProgress lastProgress;
     bool wasActiveLangs;
     bool statusValid;
 

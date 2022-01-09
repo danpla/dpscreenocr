@@ -8,6 +8,7 @@ extern "C" {
 
 
 struct DpsoCfg;
+struct DpsoOcr;
 
 
 /**
@@ -22,9 +23,11 @@ struct DpsoCfg;
 void dpsoCfgLoadActiveLangs(
     const struct DpsoCfg* cfg,
     const char* key,
+    struct DpsoOcr* ocr,
     const char* fallbackLangCode);
 
-void dpsoCfgSaveActiveLangs(struct DpsoCfg* cfg, const char* key);
+void dpsoCfgSaveActiveLangs(
+    struct DpsoCfg* cfg, const char* key, const struct DpsoOcr* ocr);
 
 
 struct DpsoHotkey;

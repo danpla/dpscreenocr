@@ -76,6 +76,16 @@ MainWindow::MainWindow()
         std::exit(EXIT_FAILURE);
     }
 
+    ocr.reset(dpsoOcrCreate());
+    if (!ocr) {
+        QMessageBox::critical(
+            nullptr,
+            appName,
+            QString("Can't create OCR: ") + dpsoGetError());
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
+
     const auto* cfgPath = dpsoGetCfgPath(appFileName);
     if (!cfgPath) {
         QMessageBox::critical(
@@ -170,7 +180,7 @@ void MainWindow::timerEvent(QTimerEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-    if (dpsoGetJobsPending()
+    if (dpsoOcrGetJobsPending(ocr.get())
             && !confirmation(
                 this,
                 dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
@@ -282,7 +292,7 @@ QWidget* MainWindow::createMainTab()
     ocrGroupLayout->addWidget(splitTextBlocksCheck);
 
     ocrGroupLayout->addWidget(new QLabel(_("Languages:")));
-    langBrowser = new LangBrowser();
+    langBrowser = new LangBrowser(ocr.get());
     ocrGroupLayout->addWidget(langBrowser);
 
     auto* hotkeyGroup = new QGroupBox(_("Hotkey"));
@@ -503,8 +513,8 @@ void MainWindow::saveState(DpsoCfg* cfg) const
 bool MainWindow::canStartSelection() const
 {
     return (
-        dpsoGetNumActiveLangs() > 0
-        && (ocrAllowQueuing || !dpsoGetJobsPending())
+        dpsoOcrGetNumActiveLangs(ocr.get()) > 0
+        && (ocrAllowQueuing || !dpsoOcrGetJobsPending(ocr.get()))
         && actionChooser->getSelectedActions());
 }
 
@@ -539,8 +549,8 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
 
 void MainWindow::updateStatus()
 {
-    DpsoProgress progress;
-    dpsoGetProgress(&progress);
+    DpsoOcrProgress progress;
+    dpsoOcrGetProgress(ocr.get(), &progress);
 
     actionsTab->setEnabled(progress.totalJobs == 0);
 
@@ -548,7 +558,7 @@ void MainWindow::updateStatus()
         // Update status when the progress ends.
         statusValid = false;
 
-        if (dpsoProgressEqual(&progress, &lastProgress))
+        if (dpsoOcrProgressEqual(&progress, &lastProgress))
             return;
 
         lastProgress = progress;
@@ -580,7 +590,8 @@ void MainWindow::updateStatus()
 
     // Invalidate status when the number of active languages
     // changes from or to 0.
-    const auto hasActiveLangs = dpsoGetNumActiveLangs() > 0;
+    const auto hasActiveLangs = (
+        dpsoOcrGetNumActiveLangs(ocr.get()) > 0);
     if (hasActiveLangs != wasActiveLangs) {
         wasActiveLangs = hasActiveLangs;
         statusValid = false;
@@ -588,9 +599,9 @@ void MainWindow::updateStatus()
 
     if (statusValid)
         return;
-    if (dpsoGetNumLangs() == 0)
+    if (dpsoOcrGetNumLangs(ocr.get()) == 0)
         setStatus(Status::warning, dynStr.installLangs);
-    else if (dpsoGetNumActiveLangs() == 0)
+    else if (dpsoOcrGetNumActiveLangs(ocr.get()) == 0)
         setStatus(Status::warning, dynStr.selectLangs);
     else if (!actionChooser->getSelectedActions())
         setStatus(Status::warning, dynStr.selectActions);
@@ -606,10 +617,10 @@ void MainWindow::checkResults()
     // Check if jobs are completed before fetching results, since new
     // jobs may finish right after dpsoFetchResults() and before
     // dpsoGetJobsPending() call.
-    const auto jobsCompleted = !dpsoGetJobsPending();
+    const auto jobsCompleted = !dpsoOcrGetJobsPending(ocr.get());
 
-    DpsoJobResults results;
-    dpsoFetchResults(&results);
+    DpsoOcrJobResults results;
+    dpsoOcrFetchResults(ocr.get(), &results);
 
     const auto actions = actionChooser->getSelectedActions();
 
@@ -662,7 +673,7 @@ void MainWindow::checkHotkeyActions()
         dpsoUnbindAction(hotkeyActionCancelSelection);
 
         if (hotkeyAction == hotkeyActionToggleSelection) {
-            DpsoJobArgs jobArgs;
+            DpsoOcrJobArgs jobArgs;
 
             dpsoGetSelectionGeometry(&jobArgs.screenRect);
             if (dpsoRectIsEmpty(&jobArgs.screenRect))
@@ -670,13 +681,14 @@ void MainWindow::checkHotkeyActions()
 
             jobArgs.flags = 0;
             if (splitTextBlocksCheck->isChecked())
-                jobArgs.flags |= dpsoJobTextSegmentation;
+                jobArgs.flags |= dpsoOcrJobTextSegmentation;
 
-            if (!dpsoQueueJob(&jobArgs))
+            if (!dpsoOcrQueueJob(ocr.get(), &jobArgs))
                 QMessageBox::warning(
                     this,
                     appName,
-                    QString("Can't queue job: ") + dpsoGetError());
+                    QString("Can't queue OCR job: ")
+                        + dpsoGetError());
         }
     } else if (hotkeyAction == hotkeyActionToggleSelection
             && canStartSelection()) {

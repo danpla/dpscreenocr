@@ -37,7 +37,6 @@ endif()
 add_library(
     dpso
 
-    backend/backend.cpp
     delay.cpp
     dpso.cpp
     error.cpp
