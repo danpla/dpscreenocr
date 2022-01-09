@@ -214,7 +214,9 @@ static void threadLoop(DpsoOcr* ocr);
 
 struct DpsoOcr* dpsoOcrCreate()
 {
-    dpso::OcrUPtr ocr{new DpsoOcr{}};
+    // We don't use OcrUPtr here because dpsoOcrDelete() expects
+    // a joinable thread.
+    std::unique_ptr<DpsoOcr> ocr{new DpsoOcr{}};
 
     setCLocale(ocr.get());
     try {
@@ -245,6 +247,7 @@ void dpsoOcrDelete(struct DpsoOcr* ocr)
     if (!ocr)
         return;
 
+    assert(ocr->thread.joinable());
     dpsoOcrTerminateJobs(ocr);
 
     {
@@ -252,10 +255,6 @@ void dpsoOcrDelete(struct DpsoOcr* ocr)
         ocr->link.terminateThread = true;
     }
     ocr->thread.join();
-
-    setCLocale(ocr);
-    ocr->engine.reset();
-    restoreLocale(ocr);
 
     delete ocr;
 }
