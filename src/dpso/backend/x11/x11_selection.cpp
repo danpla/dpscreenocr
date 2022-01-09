@@ -6,10 +6,10 @@
 
 
 // We use XQueryPointer() instead of XGrabPointer(), because the
-// latter fails if it's already grabbed (usually by apps that work
-// in fullscreen mode). Stealing focus with XSetInputFocus() is also
-// not a good idea: while some fullscreen apps switch to windowed
-// mode, others minimize their windows.
+// latter fails if the pointer is already grabbed (usually by apps
+// that work in fullscreen mode). Stealing focus with XSetInputFocus()
+// is also not a good idea: while some fullscreen apps switch to
+// windowed mode, others minimize their windows.
 
 
 namespace dpso {
