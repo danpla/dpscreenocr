@@ -8,8 +8,7 @@ static const char* getMsgCtxId(const char* msgCtx, const char* msgId)
 {
     static std::string msgCtxId;
 
-    msgCtxId.clear();
-    msgCtxId += msgCtx;
+    msgCtxId = msgCtx;
     msgCtxId += '\004';
     msgCtxId += msgId;
 
