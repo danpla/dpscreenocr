@@ -533,7 +533,7 @@ static void threadLoop(DpsoOcr* ocr)
                 // Although processJob() will reset result to zero,
                 // this should also be done before incrementing
                 // curJob so we don't return the progress of the
-                // previous job from dpsoGetProgress() before
+                // previous job from dpsoOcrGetProgress() before
                 // the new one starts.
                 ocr->link.progress.curJobProgress = 0;
 
@@ -720,7 +720,7 @@ void dpsoOcrWaitJobsToComplete(
     ocr->link.waitingForResults = false;
 
     if (ocr->link.terminateJobs) {
-        // dpsoTerminateJobs() was called from the status callback
+        // dpsoOcrTerminateJobs() was called from the status callback
         // during waiting.
         ocr->link.results.clear();
 
@@ -743,7 +743,7 @@ void dpsoOcrTerminateJobs(struct DpsoOcr* ocr)
         ocr->link.terminateJobs = true;
 
         if (ocr->link.waitingForResults)
-            // dpsoWaitJobsToComplete() will set terminateJobs to
+            // dpsoOcrWaitJobsToComplete() will set terminateJobs to
             // false.
             return;
     }
