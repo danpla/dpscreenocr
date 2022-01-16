@@ -16,49 +16,23 @@ enum class Order {
 };
 
 
+static Order getOrder(int cmpResult)
+{
+    if (cmpResult < 0)
+        return Order::less;
+    if (cmpResult == 0)
+        return Order::equal;
+    return Order::greater;
+}
+
+
 static const char* orderToStr(Order order)
 {
     if (order == Order::less)
         return "<";
-    else if (order == Order::equal)
+    if (order == Order::equal)
         return "==";
-    else
-        return ">";
-}
-
-
-static void checkCmpSubStr(
-    const char* str,
-    const char* subStr, std::size_t subStrLen,
-    unsigned options,
-    Order expected,
-    int lineNum)
-{
-    const auto ret = dpso::str::cmpSubStr(
-        str, subStr, subStrLen, options);
-
-    Order got;
-    if (ret < 0)
-        got = Order::less;
-    else if (ret == 0)
-        got = Order::equal;
-    else
-        got = Order::greater;
-
-    if (got == expected)
-        return;
-
-    std::fprintf(
-        stderr,
-        "line %i: equalSubStr("
-        "\"%s\", \"%.*s\", "
-        "%i, %u): "
-        "got %s, expected %s\n",
-        lineNum,
-        str, static_cast<int>(subStrLen), subStr,
-        static_cast<int>(subStrLen), options,
-        orderToStr(got), orderToStr(expected));
-    test::failure();
+    return ">";
 }
 
 
@@ -66,27 +40,54 @@ static void testCmpSubStr()
 {
     using namespace dpso::str;
 
-    #define CHECK(str, subStr, subStrLen, options, expected) \
-        checkCmpSubStr( \
-            str, subStr, subStrLen, options, expected, __LINE__) \
+    struct Test {
+        const char* str;
+        const char* subStr;
+        std::size_t subStrLen;
+        unsigned cmpOptions;
+        Order expectedOrder;
+    };
 
-    for (int i = 0; i < 3; ++i) {
-        CHECK("", "", i, cmpNormal, Order::equal);
-        CHECK("Foo", "Foo", i, cmpNormal, Order::greater);
+    const Test tests[] = {
+        {"", "", 0, cmpNormal, Order::equal},
+        {"", "", 1, cmpNormal, Order::equal},
+        {"", "", 2, cmpNormal, Order::equal},
+
+        {"Foo", "Foo", 0, cmpNormal, Order::greater},
+        {"Foo", "Foo", 1, cmpNormal, Order::greater},
+        {"Foo", "Foo", 2, cmpNormal, Order::greater},
+        {"Foo", "Foo", 3, cmpNormal, Order::equal},
+        {"Foo", "Foo", 4, cmpNormal, Order::equal},
+
+        {"Foo", "FooBar", 2, cmpNormal, Order::greater},
+        {"Foo", "FooBar", 3, cmpNormal, Order::equal},
+        {"Foo", "FooBar", 4, cmpNormal, Order::less},
+
+        {"FooBar", "Foo", 0, cmpNormal, Order::greater},
+        {"FooBar", "Foo", 3, cmpNormal, Order::greater},
+        {"FooBar", "Foo", 6, cmpNormal, Order::greater},
+        {"FooBar", "Foo", 9, cmpNormal, Order::greater},
+
+        {"Foo", "foo", 3, cmpNormal, Order::less},
+        {"foo", "Foo", 3, cmpNormal, Order::greater},
+        {"Foo", "foo", 3, cmpIgnoreCase, Order::equal},
+    };
+
+    for (const auto& test : tests) {
+        const auto gotOrder = getOrder(cmpSubStr(
+            test.str, test.subStr, test.subStrLen, test.cmpOptions));
+
+        if (gotOrder == test.expectedOrder)
+            continue;
+
+        std::fprintf(
+            stderr,
+            "testCmpSubStr: cmpSubStr(\"%s\", \"%s\", %zu, %u): "
+            "got %s, expected %s\n",
+            test.str, test.subStr, test.subStrLen, test.cmpOptions,
+            orderToStr(gotOrder), orderToStr(test.expectedOrder));
+        test::failure();
     }
-
-    CHECK("Foo", "Foo", 3, cmpNormal, Order::equal);
-    CHECK("Foo", "Foo", 4, cmpNormal, Order::equal);
-    CHECK("Foo", "FooBar", 3, cmpNormal, Order::equal);
-    CHECK("Foo", "FooBar", 4, cmpNormal, Order::less);
-
-    for (int i = 0; i < 10; ++i)
-        CHECK("FooBar", "Foo", i, cmpNormal, Order::greater);
-
-    CHECK("Foo", "foo", 3, cmpNormal, Order::less);
-    CHECK("Foo", "foo", 3, cmpIgnoreCase, Order::equal);
-
-    #undef CHECK
 }
 
 

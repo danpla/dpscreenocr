@@ -2,6 +2,7 @@
 #include "utils.h"
 
 #include <cctype>
+#include <cstdio>
 
 
 namespace test {
@@ -19,8 +20,7 @@ std::string escapeStr(const char* str)
     std::string result;
 
     while (*str) {
-        const auto c = *str;
-        ++str;
+        const auto c = *str++;
 
         switch (c) {
             case '\b':

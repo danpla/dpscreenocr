@@ -18,7 +18,8 @@ static void cmpFields(
 
     std::fprintf(
         stderr,
-        "line %i: Fields \"%s\" don't match: \"%s\" != \"%s\"\n",
+        "line %i: DpsoHistoryEntry::%s don't match: "
+        "\"%s\" != \"%s\"\n",
         line,
         name,
         test::utils::escapeStr(a).c_str(),

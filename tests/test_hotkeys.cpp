@@ -9,26 +9,6 @@
 #include "flow.h"
 
 
-static void checkHotkeyToString(const DpsoHotkey& hotkey, int line)
-{
-    const char* str = dpsoHotkeyToString(&hotkey);
-
-    DpsoHotkey outHotkey;
-    dpsoHotkeyFromString(str, &outHotkey);
-
-    if (hotkey == outHotkey)
-        return;
-
-    std::fprintf(
-        stderr,
-        "line %i: "
-        "dpsoHotkeyToString: String \"%s\" wasn't successfully parsed by "
-        "dpsoHotkeyFromString())\n",
-        line, str);
-    test::failure();
-}
-
-
 const auto allMods = (
     dpsoKeyModCtrl
     | dpsoKeyModAlt
@@ -39,71 +19,79 @@ const auto allMods = (
 
 static void testHotkeyToString()
 {
-    #define CHECK(hotkey) checkHotkeyToString(hotkey, __LINE__)
-    using HK = DpsoHotkey;
+    const DpsoHotkey hotkeys[] = {
+        {dpsoUnknownKey, dpsoKeyModCtrl},
+        {dpsoKeyY, dpsoKeyModNone},
+        {dpsoKeyY, allMods},
+    };
 
-    CHECK((HK{dpsoUnknownKey, dpsoKeyModCtrl}));
-    CHECK((HK{dpsoKeyY, dpsoKeyModNone}));
-    CHECK((HK{dpsoKeyY, allMods}));
+    for (const auto& hotkey : hotkeys) {
+        const char* str = dpsoHotkeyToString(&hotkey);
 
-    #undef CHECK
-}
+        DpsoHotkey outHotkey;
+        dpsoHotkeyFromString(str, &outHotkey);
 
+        if (hotkey == outHotkey)
+            continue;
 
-static void checkHotkeyFromString(
-    const char* str,
-    const DpsoHotkey& expected,
-    int lineNum)
-{
-    DpsoHotkey got;
-    dpsoHotkeyFromString(str, &got);
-
-    if (got == expected)
-        return;
-
-    std::fprintf(
-        stderr,
-        "line %i: dpsoHotkeyFromString(\"%s\"): "
-        "expected (%i %u), got (%i %u)\n",
-        lineNum,
-        str,
-        expected.key, expected.mods,
-        got.key, got.mods);
-    test::failure();
+        std::fprintf(
+            stderr,
+            "testHotkeyToString: \"%s\" wasn't successfully parsed "
+            "by dpsoHotkeyFromString())\n",
+            str);
+        test::failure();
+    }
 }
 
 
 static void testHotkeyFromString()
 {
-    #define CHECK(str, expected) \
-        checkHotkeyFromString(str, expected, __LINE__)
+    struct Test {
+        const char* str;
+        DpsoHotkey expectedHotkey;
+    };
 
-    using HK = DpsoHotkey;
+    const Test tests[] = {
+        {"Y + Ctrl", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Ctrl Y", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Keypad  +", {dpsoUnknownKey, dpsoKeyModNone}},
 
-    CHECK("Y + Ctrl", (HK{dpsoUnknownKey, dpsoKeyModNone}));
-    CHECK("Ctrl Y", (HK{dpsoUnknownKey, dpsoKeyModNone}));
-    CHECK("Keypad  +", (HK{dpsoUnknownKey, dpsoKeyModNone}));
+        {"", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Ctrl", {dpsoUnknownKey, dpsoKeyModCtrl}},
+        {"Y", {dpsoKeyY, dpsoKeyModNone}},
+        {"y", {dpsoKeyY, dpsoKeyModNone}},
+        {"  y", {dpsoKeyY, dpsoKeyModNone}},
+        {"  y ", {dpsoKeyY, dpsoKeyModNone}},
+        {"Keypad +", {dpsoKeyKpPlus, dpsoKeyModNone}},
 
-    CHECK("", (HK{dpsoUnknownKey, dpsoKeyModNone}));
-    CHECK("Ctrl", (HK{dpsoUnknownKey, dpsoKeyModCtrl}));
-    CHECK("Y", (HK{dpsoKeyY, dpsoKeyModNone}));
-    CHECK("y", (HK{dpsoKeyY, dpsoKeyModNone}));
-    CHECK("  y", (HK{dpsoKeyY, dpsoKeyModNone}));
-    CHECK("  y ", (HK{dpsoKeyY, dpsoKeyModNone}));
-    CHECK("Keypad +", (HK{dpsoKeyKpPlus, dpsoKeyModNone}));
+        {"Ctrl + Alt + Shift + Windows + Y", {dpsoKeyY, allMods}},
+        {"Alt + Shift + Ctrl + Windows + Y", {dpsoKeyY, allMods}},
+        {"Alt+Shift+Ctrl+Windows+Y", {dpsoKeyY, allMods}},
+        {"  CTRL + alt + shifT + WiNdows + y  ", {dpsoKeyY, allMods}},
 
-    CHECK("Ctrl + Alt + Shift + Windows + Y", (HK{dpsoKeyY, allMods}));
-    CHECK("Alt + Shift + Ctrl + Windows + Y", (HK{dpsoKeyY, allMods}));
-    CHECK("Alt+Shift+Ctrl+Windows+Y", (HK{dpsoKeyY, allMods}));
-    CHECK("  CTRL + alt + shifT + WiNdows + y  ", (HK{dpsoKeyY, allMods}));
+        {"Ctrl+Alt+Shift+Windows+Keypad +", {dpsoKeyKpPlus, allMods}},
 
-    CHECK("Ctrl+Alt+Shift+Windows+Keypad +", (HK{dpsoKeyKpPlus, allMods}));
+        {"Windows + Keypad +", {dpsoKeyKpPlus, dpsoKeyModWin}},
+        {"Command + Keypad +", {dpsoKeyKpPlus, dpsoKeyModWin}},
+        {"Super + Keypad +", {dpsoKeyKpPlus, dpsoKeyModWin}},
+    };
 
-    CHECK("Windows + Keypad +", (HK{dpsoKeyKpPlus, dpsoKeyModWin}));
-    CHECK("Command + Keypad +", (HK{dpsoKeyKpPlus, dpsoKeyModWin}));
-    CHECK("Super + Keypad +", (HK{dpsoKeyKpPlus, dpsoKeyModWin}));
+    for (const auto& test : tests) {
+        DpsoHotkey got;
+        dpsoHotkeyFromString(test.str, &got);
 
-    #undef CHECK
+        if (got == test.expectedHotkey)
+            continue;
+
+        std::fprintf(
+            stderr,
+            "testHotkeyFromString: dpsoHotkeyFromString(\"%s\"): "
+            "expected (%i %u), got (%i %u)\n",
+            test.str,
+            test.expectedHotkey.key, test.expectedHotkey.mods,
+            got.key, got.mods);
+        test::failure();
+    }
 }
 
 
