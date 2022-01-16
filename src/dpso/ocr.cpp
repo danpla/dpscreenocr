@@ -64,7 +64,7 @@ static void setCLocale(const void* refHolder)
     if (localeRefHolders.size() > 1 || localeChanged)
         return;
 
-    if (auto* locale = std::setlocale(LC_ALL, nullptr)) {
+    if (const auto* locale = std::setlocale(LC_ALL, nullptr)) {
         lastLocale = locale;
         std::setlocale(LC_ALL, "C");
         localeChanged = true;
@@ -247,13 +247,13 @@ void dpsoOcrDelete(struct DpsoOcr* ocr)
     if (!ocr)
         return;
 
-    assert(ocr->thread.joinable());
     dpsoOcrTerminateJobs(ocr);
 
     {
         LINK_LOCK(ocr->link);
         ocr->link.terminateThread = true;
     }
+    assert(ocr->thread.joinable());
     ocr->thread.join();
 
     delete ocr;
@@ -435,7 +435,7 @@ static dpso::OcrImage prepareScreenshot(
 namespace {
 
 
-struct ProgressCallbackData {
+struct OcrProgressCallbackData {
     DpsoOcr& ocr;
     dpso::ProgressTracker& progressTracker;
 };
@@ -446,7 +446,7 @@ struct ProgressCallbackData {
 
 static bool ocrProgressCallback(int progress, void* userData)
 {
-    auto* data = static_cast<ProgressCallbackData*>(userData);
+    auto* data = static_cast<OcrProgressCallbackData*>(userData);
     assert(data);
     data->progressTracker.update(progress / 100.0f);
 
@@ -497,10 +497,10 @@ static void processJob(DpsoOcr& ocr, const Job& job)
 
     progressTracker.advanceJob();
 
-    ProgressCallbackData progressCallbackData{ocr, progressTracker};
+    OcrProgressCallbackData callbackData{ocr, progressTracker};
     auto ocrResult = ocr.engine->recognize(
         ocrImage, job.langIndices, job.ocrFeatures,
-        ocrProgressCallback, &progressCallbackData);
+        ocrProgressCallback, &callbackData);
 
     progressTracker.finish();
 
