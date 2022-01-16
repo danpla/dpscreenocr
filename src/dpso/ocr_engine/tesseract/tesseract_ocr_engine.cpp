@@ -177,9 +177,23 @@ OcrResult TesseractOcr::recognize(
 
 void TesseractOcr::cacheLangs()
 {
-    if (tess.Init(nullptr, nullptr) != 0)
-        throw OcrEngineError(
-            "Can't load languages: TessBaseAPI::Init() failed");
+    // GetAvailableLanguagesAsVector() is broken by design: it uses
+    // a data path from the last Init(), while Init() itself requires
+    // at least one language (null language is implicit "eng"). As
+    // a workaround, we don't check Init() for error: it will fail if
+    // "eng" is not available, but the path will remain in TessBaseAPI
+    // so GetAvailableLanguagesAsVector() can use it.
+    //
+    // The only alternative is to make sure that "eng" is available,
+    // e.g. make it a dependency of our application package when
+    // distributing on Unix-like systems.
+    //
+    // Writing our own routine to collect the list of "*.tessdata" is
+    // not an option, since the data path may be different on various
+    // Unix-like systems. It's hardcoded into the Tesseract library,
+    // but there's no API to retrieve it; you can only use it
+    // implicitly by passing null as the datapath argument to Init().
+    tess.Init(nullptr, nullptr);
 
     tess.GetAvailableLanguagesAsVector(&langCodes);
 
