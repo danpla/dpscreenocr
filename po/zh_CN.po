@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-01-01 23:23+0200\n"
+"POT-Creation-Date: 2022-01-23 01:43+0200\n"
 "PO-Revision-Date: 2022-01-18 11:52+0000\n"
 "Last-Translator: poi <erbaotao@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -538,63 +538,63 @@ msgstr "用于识别屏幕上文字的软件"
 msgid "License"
 msgstr "许可证"
 
-#: src/ui/qt/action_chooser.cpp:25
+#: src/ui/qt/action_chooser.cpp:26
 msgid "Copy text to clipboard"
 msgstr "把文本复制到剪贴板"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp:27
 msgid "Add text to history"
 msgstr "将文本添加到历史记录"
 
-#: src/ui/qt/action_chooser.cpp:28
+#: src/ui/qt/action_chooser.cpp:29
 msgid "Run executable:"
 msgstr "运行可执行文件："
 
-#: src/ui/qt/action_chooser.cpp:30
+#: src/ui/qt/action_chooser.cpp:31
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "运行一个可执行文件，把识别的文本作为运行的第一个参数"
 
-#: src/ui/qt/action_chooser.cpp:73
+#: src/ui/qt/action_chooser.cpp:74
 msgid "Choose an executable"
 msgstr "选择可执行文件"
 
-#: src/ui/qt/history.cpp:30
+#: src/ui/qt/history.cpp:31
 msgid "Wrap words"
 msgstr "环绕对象的文本"
 
-#: src/ui/qt/history.cpp:45 src/ui/qt/history.cpp:78
+#: src/ui/qt/history.cpp:46 src/ui/qt/history.cpp:79
 msgid "Clear"
 msgstr "清空"
 
-#: src/ui/qt/history.cpp:50
+#: src/ui/qt/history.cpp:51
 msgid "Save as…"
 msgstr "另存为…"
 
-#: src/ui/qt/history.cpp:52
+#: src/ui/qt/history.cpp:53
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "以纯文本、HTML 或 JSON 保存历史记录"
 
-#: src/ui/qt/history.cpp:71 src/ui/qt/main_window.cpp:110
+#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:132
 msgid "History"
 msgstr "历史记录"
 
-#: src/ui/qt/history.cpp:76
+#: src/ui/qt/history.cpp:77
 msgid "Clear the history?"
 msgstr "清空历史记录？"
 
-#: src/ui/qt/history.cpp:77 src/ui/qt/main_window.cpp:145
+#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:167
 msgid "Cancel"
 msgstr "取消"
 
-#: src/ui/qt/history.cpp:79
+#: src/ui/qt/history.cpp:80
 msgid "Save history"
 msgstr "保存历史记录"
 
-#: src/ui/qt/history.cpp:81
+#: src/ui/qt/history.cpp:82
 msgid "Plain text"
 msgstr "纯文本"
 
-#: src/ui/qt/history.cpp:84
+#: src/ui/qt/history.cpp:85
 msgid "All files"
 msgstr "所有文件"
 
@@ -603,83 +603,83 @@ msgctxt "hotkey.key"
 msgid "None"
 msgstr "无"
 
-#: src/ui/qt/lang_browser.cpp:34
+#: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Name"
 msgstr "名称"
 
-#: src/ui/qt/lang_browser.cpp:35
+#: src/ui/qt/lang_browser.cpp:36
 msgctxt "language"
 msgid "Code"
 msgstr "代号"
 
-#: src/ui/qt/main_window.cpp:108
+#: src/ui/qt/main_window.cpp:130
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "主页"
 
-#: src/ui/qt/main_window.cpp:109
+#: src/ui/qt/main_window.cpp:131
 msgid "Actions"
 msgstr "操作"
 
-#: src/ui/qt/main_window.cpp:111
+#: src/ui/qt/main_window.cpp:133
 msgid "About"
 msgstr "关于软件"
 
-#: src/ui/qt/main_window.cpp:135
+#: src/ui/qt/main_window.cpp:157
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "已识别 {progress}%（{current_job} / {total_jobs}）"
 
-#: src/ui/qt/main_window.cpp:136
+#: src/ui/qt/main_window.cpp:158
 msgid "Please install languages"
 msgstr "需安装语言"
 
-#: src/ui/qt/main_window.cpp:137
+#: src/ui/qt/main_window.cpp:159
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:139
+#: src/ui/qt/main_window.cpp:161
 msgid "Please select actions in the “Actions” tab"
 msgstr "请在“操作”选项卡中选择操作"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:142
+#: src/ui/qt/main_window.cpp:164
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "准备就绪"
 
-#: src/ui/qt/main_window.cpp:144
+#: src/ui/qt/main_window.cpp:166
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "识别还没完成。真的要退出吗？"
 
-#: src/ui/qt/main_window.cpp:146 src/ui/qt/main_window.cpp:246
+#: src/ui/qt/main_window.cpp:168 src/ui/qt/main_window.cpp:266
 msgid "Quit"
 msgstr "退出"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:258
 msgid "Show {app_name}"
 msgstr "显示 {app_name}"
 
-#: src/ui/qt/main_window.cpp:253
+#: src/ui/qt/main_window.cpp:273
 msgid "Status"
 msgstr "状态"
 
-#: src/ui/qt/main_window.cpp:264
+#: src/ui/qt/main_window.cpp:284
 msgid "Character recognition"
 msgstr "字符识别"
 
-#: src/ui/qt/main_window.cpp:269
+#: src/ui/qt/main_window.cpp:289
 msgid "Split text blocks"
 msgstr "分块识别文本"
 
-#: src/ui/qt/main_window.cpp:271
+#: src/ui/qt/main_window.cpp:291
 msgid "Split independent text blocks, e.g. columns"
 msgstr "分割独立的文本块（比如分栏的文本）"
 
-#: src/ui/qt/main_window.cpp:274
+#: src/ui/qt/main_window.cpp:294
 msgid "Languages:"
 msgstr "语言："
 
-#: src/ui/qt/main_window.cpp:278
+#: src/ui/qt/main_window.cpp:298
 msgid "Hotkey"
 msgstr "快捷键"
