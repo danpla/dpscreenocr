@@ -7,6 +7,9 @@ set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "${APP_URL}")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
+# CMake 3.6 and newer has CPACK_DEBIAN_FILE_NAME variable that can be
+# set to DEB-DEFAULT. We still need to support 2.8.12, so compose the
+# name manually.
 execute_process(
     COMMAND dpkg --print-architecture
     OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
