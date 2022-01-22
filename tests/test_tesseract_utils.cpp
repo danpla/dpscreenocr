@@ -29,11 +29,11 @@ static void testPrettifyText()
         {"a\n \nb", "ab"},
         {"a\n  \n", "a\n  \n"},
         {"a\n  \nb", "a\n  \nb"},
-        // Remove trailing newline
+        // Remove unnecessary trailing newlines
         {"a\n", "a\n"},
         {"a\n\n", "a\n"},
-        {"a\n\n\n", "a\n\n"},
-        {"a\n\n\n\n", "a\n\n\n"},
+        {"a\n\n\n", "a\n"},
+        {"a\n\n\n\n", "a\n"},
     };
 
     for (const auto& test : tests) {
