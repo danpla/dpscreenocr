@@ -60,6 +60,10 @@ if(NOT TARGET common)
     add_subdirectory(../common ${CMAKE_BINARY_DIR}/src/ui/common)
 endif()
 
+if(NOT TARGET dpso)
+    add_subdirectory(../../dpso ${CMAKE_BINARY_DIR}/src/dpso)
+endif()
+
 if(NOT TARGET dpso_intl)
     add_subdirectory(
         ../../dpso_intl ${CMAKE_BINARY_DIR}/src/dpso_intl

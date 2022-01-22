@@ -52,4 +52,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
 endif()
 
 target_include_directories(dpso_utils PRIVATE . PUBLIC ..)
+
+if(NOT TARGET dpso)
+    add_subdirectory(../dpso ${CMAKE_BINARY_DIR}/src/dpso)
+endif()
 target_link_libraries(dpso_utils dpso)
