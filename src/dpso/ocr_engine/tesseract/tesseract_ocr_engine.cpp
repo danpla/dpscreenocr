@@ -1,7 +1,9 @@
 
 #include "ocr_engine/tesseract/tesseract_ocr_engine.h"
 
+#include <algorithm>
 #include <cassert>
+#include <cstring>
 #include <string>
 #include <utility>
 #include <vector>
@@ -184,6 +186,18 @@ OcrResult TesseractOcr::recognize(
 }
 
 
+static bool shouldIgnoreLang(const char* lang)
+{
+    static const char* const ignoredLangs[] = {"osd", "equ"};
+
+    for (const auto* ignoredLang : ignoredLangs)
+        if (std::strcmp(lang, ignoredLang) == 0)
+            return true;
+
+    return false;
+}
+
+
 void TesseractOcr::cacheLangs()
 {
     // GetAvailableLanguagesAsVector() is broken by design: it uses
@@ -209,23 +223,29 @@ void TesseractOcr::cacheLangs()
 
     tess.GetAvailableLanguagesAsVector(&langCodes);
 
+    langCodes.erase(
+        std::remove_if(
+            langCodes.begin(), langCodes.end(),
+            [](const std::string& lang)
+            {
+                return shouldIgnoreLang(lang.c_str());
+            }),
+        langCodes.end());
+
     #else
 
     GenericVector<STRING> tessLangCodes;
     tess.GetAvailableLanguagesAsVector(&tessLangCodes);
 
-    for (int i = 0; i < langCodes.size(); ++i)
-        langCodes.push_back({langCode.c_str(), langCode.size()});
+    for (int i = 0; i < tessLangCodes.size(); ++i) {
+        const auto& langCode = tessLangCodes[i];
+        if (!shouldIgnoreLang(langCode.c_str()))
+            langCodes.push_back(
+                {langCode.c_str(),
+                    static_cast<std::size_t>(langCode.size())});
+    }
 
     #endif
-
-    for (std::size_t i = 0; i < langCodes.size();) {
-        const auto& langCode = langCodes[i];
-        if (langCode == "osd" || langCode == "equ")
-            langCodes.erase(langCodes.begin() + i);
-        else
-            ++i;
-    }
 }
 
 
