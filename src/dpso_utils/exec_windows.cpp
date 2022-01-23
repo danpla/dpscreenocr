@@ -132,8 +132,7 @@ void dpsoExec(
     if (!allowExecute(exePath))
         return;
 
-    const char* const args[] = {arg};
-    const auto cmdLine = dpso::windows::createCmdLine("", args);
+    const auto cmdLine = dpso::windows::createCmdLine("", {arg});
 
     std::wstring exePathUtf16;
     std::wstring cmdLineUtf16;

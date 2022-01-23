@@ -2,6 +2,7 @@
 #pragma once
 
 #include <cstddef>
+#include <initializer_list>
 #include <stdexcept>
 #include <string>
 
@@ -40,11 +41,11 @@ std::string createCmdLine(
     const char* programName,
     const char* const* args, std::size_t numArgs);
 
-template<std::size_t N>
-std::string createCmdLine(
-    const char* programName, const char* const (&args)[N])
+
+inline std::string createCmdLine(
+    const char* programName, std::initializer_list<const char*> args)
 {
-    return createCmdLine(programName, args, N);
+    return createCmdLine(programName, args.begin(), args.size());
 }
 
 
