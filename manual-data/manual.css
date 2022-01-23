@@ -2,7 +2,7 @@ body {
     max-width: 36em;
     margin: 0 auto;
     padding: 0 1em 0;
-    font-family: Helvetica, sans-serif;
+    font-family: sans-serif;
     line-height: 1.6;
 }
 
@@ -11,16 +11,15 @@ body {
 }
 
 code {
-    font-family: "DejaVu Sans Mono", Consolas, monospace;
-    font-size: 0.8em;
+    font-family: monospace;
     background: #eaeaea;
-    padding: 0.1em 0.4em;
+    padding: 0.1em 0.2em;
     white-space: pre-wrap;
 }
 
 pre code {
     display: block;
     white-space: pre;
-    padding: 1em;
+    padding: 0.8em 1em;
     overflow-x: auto;
 }
