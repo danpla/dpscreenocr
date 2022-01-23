@@ -4,11 +4,14 @@
 #include <cassert>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "tesseract/baseapi.h"
-#include "tesseract/genericvector.h"
 #include "tesseract/ocrclass.h"
+#if !defined(TESSERACT_MAJOR_VERSION) || TESSERACT_MAJOR_VERSION < 5
+#include "tesseract/genericvector.h"
 #include "tesseract/strngs.h"
+#endif
 
 #include "ocr_engine/tesseract/lang_names.h"
 #include "ocr_engine/tesseract/tesseract_result_text.h"
@@ -38,7 +41,7 @@ public:
         void* progressCallbackUserData) override;
 private:
     tesseract::TessBaseAPI tess;
-    GenericVector<STRING> langCodes;
+    std::vector<std::string> langCodes;
     std::string tessLangsStr;
 
     void cacheLangs();
@@ -92,7 +95,13 @@ namespace {
 
 
 struct CancelData {
-    ETEXT_DESC textDesc;
+    #if defined(TESSERACT_MAJOR_VERSION) \
+        && TESSERACT_MAJOR_VERSION >= 5
+    tesseract::ETEXT_DESC
+    #else
+    ETEXT_DESC
+    #endif
+        textDesc;
     OcrProgressCallback progressCallback;
     void* progressCallbackUserData;
     bool cancelled;
@@ -195,12 +204,25 @@ void TesseractOcr::cacheLangs()
     // implicitly by passing null as the datapath argument to Init().
     tess.Init(nullptr, nullptr);
 
+    #if defined(TESSERACT_MAJOR_VERSION) \
+        && TESSERACT_MAJOR_VERSION >= 5
+
     tess.GetAvailableLanguagesAsVector(&langCodes);
 
-    for (int i = 0; i < langCodes.size();) {
+    #else
+
+    GenericVector<STRING> tessLangCodes;
+    tess.GetAvailableLanguagesAsVector(&tessLangCodes);
+
+    for (int i = 0; i < langCodes.size(); ++i)
+        langCodes.push_back({langCode.c_str(), langCode.size()});
+
+    #endif
+
+    for (std::size_t i = 0; i < langCodes.size();) {
         const auto& langCode = langCodes[i];
         if (langCode == "osd" || langCode == "equ")
-            langCodes.remove(i);
+            langCodes.erase(langCodes.begin() + i);
         else
             ++i;
     }
@@ -216,8 +238,7 @@ void TesseractOcr::fillTessLangsStr(
         if (!tessLangsStr.empty())
             tessLangsStr += '+';
 
-        const auto& langCode = langCodes[langIdx];
-        tessLangsStr.append(langCode.c_str(), langCode.size());
+        tessLangsStr += langCodes[langIdx];
     }
 }
 
