@@ -139,7 +139,7 @@ void dpsoExec(
     std::wstring cmdLineUtf16;
     try {
         exePathUtf16 = dpso::windows::utf8ToUtf16(exePath);
-        cmdLineUtf16 = dpso::windows::utf8ToUtf16(cmdLine);
+        cmdLineUtf16 = dpso::windows::utf8ToUtf16(cmdLine.c_str());
     } catch (std::runtime_error&) {
         return;
     }

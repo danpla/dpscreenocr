@@ -30,7 +30,7 @@ static void testUtfConversion(const char* utf8Str)
 
     std::string utf16ToUtf8Result;
     try {
-        utf16ToUtf8Result = utf16ToUtf8(utf16Str);
+        utf16ToUtf8Result = utf16ToUtf8(utf16Str.c_str());
     } catch (std::runtime_error& e) {
         std::fprintf(
             stderr,
@@ -68,8 +68,7 @@ static void testUtfConversions()
 
 
 // Wrapper around CommandLineToArgvW()
-static std::vector<std::string> cmdLineToArgv(
-    const std::string& cmdLine)
+static std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 {
     int argc;
     wchar_t** argv = CommandLineToArgvW(
@@ -79,7 +78,7 @@ static std::vector<std::string> cmdLineToArgv(
         std::fprintf(
             stderr,
             "CommandLineToArgvW(%s) failed with error %lu.\n",
-            cmdLine.c_str(), GetLastError());
+            cmdLine, GetLastError());
         return {};
     }
 
@@ -118,7 +117,7 @@ static void testArgv(std::initializer_list<const char*> argv)
     const auto cmdLine = createCmdLine(
         *argv.begin(), argv.begin() + 1, argv.size() - 1);
 
-    const auto gotArgv = cmdLineToArgv(cmdLine);
+    const auto gotArgv = cmdLineToArgv(cmdLine.c_str());
 
     if (gotArgv.size() != argv.size()) {
         std::fprintf(

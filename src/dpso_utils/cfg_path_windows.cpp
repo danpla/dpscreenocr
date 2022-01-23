@@ -44,7 +44,7 @@ const char* dpsoGetCfgPath(const char* appName)
 
     static std::string path;
     try {
-        path = dpso::windows::utf16ToUtf8(pathUtf16);
+        path = dpso::windows::utf16ToUtf8(pathUtf16.c_str());
     } catch (std::runtime_error& e) {
         dpsoSetError("Can't convert path to UTF-8: %s", e.what());
         return nullptr;
