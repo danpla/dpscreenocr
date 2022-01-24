@@ -32,7 +32,7 @@ struct LangName {
 //
 // The entries must be sorted by the language code.
 //
-// "osd" is not included in the array.
+// "equ" and "osd" are not included.
 // "kur" is the v3.04 name.
 // "kur_ara" is renamed to "kmr" in the recent versions:
 //   https://github.com/tesseract-ocr/langdata/issues/124
@@ -74,7 +74,6 @@ const LangName names[] = {
     {"eng",          N_("English")},
     {"enm",          N_("English, Middle (1100-1500)")},
     {"epo",          N_("Esperanto")},
-    {"equ",          N_("Math and equations")},
     {"est",          N_("Estonian")},
     {"eus",          N_("Basque")},
     {"fao",          N_("Faroese")},
