@@ -162,17 +162,11 @@ void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey)
     if (!hotkey)
         return;
 
-    hotkey->mods = dpsoKeyModNone;
-    hotkey->key = dpsoUnknownKey;
+    *hotkey = {dpsoUnknownKey, dpsoKeyModNone};
 
-    const auto* s = str;
-
-    while (true) {
+    for (const auto* s = str; *s;) {
         while (std::isspace(*s))
             ++s;
-
-        if (!*s)
-            break;
 
         const auto* nameBegin = s;
         const auto* nameEnd = s;

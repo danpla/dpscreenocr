@@ -232,7 +232,7 @@ struct DpsoOcr* dpsoOcrCreate()
 
     ocr->thread = std::thread(threadLoop, ocr.get());
 
-    const char* dumpDebugImageEnvVar = std::getenv(
+    const auto* dumpDebugImageEnvVar = std::getenv(
         "DPSO_DUMP_DEBUG_IMAGE");
     ocr->dumpDebugImage = (
         dumpDebugImageEnvVar

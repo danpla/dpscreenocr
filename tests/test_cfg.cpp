@@ -123,12 +123,14 @@ static void testGet(
 
 static void getDefault(const DpsoCfg* cfg)
 {
-    TEST_GET(cfg, "default", "", "");
-    TEST_GET(cfg, "default", "default_value", "default_value");
-    TEST_GET(cfg, "default", 0, 0);
-    TEST_GET(cfg, "default", 9, 9);
-    TEST_GET(cfg, "default", false, false);
-    TEST_GET(cfg, "default", true, true);
+    const auto* key = "nonexistent_key";
+
+    TEST_GET(cfg, key, "", "");
+    TEST_GET(cfg, key, "default_value", "default_value");
+    TEST_GET(cfg, key, 0, 0);
+    TEST_GET(cfg, key, 1, 1);
+    TEST_GET(cfg, key, false, false);
+    TEST_GET(cfg, key, true, true);
 }
 
 
@@ -162,7 +164,7 @@ static void testWhitespaceStr(DpsoCfg* cfg, bool set)
 const char* const backslashTestString = R"(\b\f\n\r\t\\ \z)";
 
 
-static void setString(DpsoCfg* cfg)
+static void setStr(DpsoCfg* cfg)
 {
     testWhitespaceStr(cfg, true);
 
@@ -180,7 +182,7 @@ static void setString(DpsoCfg* cfg)
 }
 
 
-static void getString(DpsoCfg* cfg)
+static void getStr(DpsoCfg* cfg)
 {
     testWhitespaceStr(cfg, false);
 
@@ -372,7 +374,7 @@ static void testCfg()
         std::exit(EXIT_FAILURE);
     }
 
-    setString(cfg.get());
+    setStr(cfg.get());
     setInt(cfg.get());
     setBool(cfg.get());
     setHotkey(cfg.get());
@@ -381,7 +383,7 @@ static void testCfg()
 
     getDefault(cfg.get());
 
-    getString(cfg.get());
+    getStr(cfg.get());
     getInt(cfg.get());
     getBool(cfg.get());
     getHotkey(cfg.get());

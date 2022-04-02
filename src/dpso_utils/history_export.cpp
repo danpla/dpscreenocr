@@ -57,8 +57,7 @@ static void exportPlainText(
 static void writeEscapedHtml(
     std::FILE* fp, const char* indent, const char* text)
 {
-    const auto* s = text;
-    while (*s) {
+    for (const auto* s = text; *s;) {
         std::fputs(indent, fp);
 
         while (*s) {
@@ -138,8 +137,7 @@ static void exportHtml(
 
 static void writeEscapedJson(std::FILE* fp, const char* text)
 {
-    const auto* s = text;
-    while (*s) {
+    for (const auto* s = text; *s;) {
         const auto c = *s++;
 
         switch (c) {

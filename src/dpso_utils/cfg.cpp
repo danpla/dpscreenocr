@@ -92,10 +92,9 @@ static void getKeyValueBounds(
         ++valueBegin;
 
     valueEnd = valueBegin;
-    const auto* end = valueBegin;
-    for (; *end; ++end)
-        if (!std::isspace(*end))
-            valueEnd = end + 1;
+    for (const auto* s = valueBegin; *s; ++s)
+        if (!std::isspace(*s))
+            valueEnd = s + 1;
 }
 
 
@@ -104,8 +103,7 @@ static void assignUnescaped(
 {
     str.clear();
 
-    const auto* s = valueBegin;
-    while (s < valueEnd) {
+    for (const auto* s = valueBegin; s < valueEnd;) {
         const auto c = *s++;
         if (c != '\\') {
             str += c;
@@ -231,8 +229,7 @@ static void writeKeyValue(
     if (quote)
         std::fputc('"', fp);
 
-    const auto* s = kv.value.c_str();
-    while (*s) {
+    for (const auto* s = kv.value.c_str(); *s;) {
         const auto c = *s++;
 
         switch (c) {

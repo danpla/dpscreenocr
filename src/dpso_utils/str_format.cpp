@@ -26,8 +26,7 @@ const char* dpsoStrNamedFormat(
     static std::string result;
     result.clear();
 
-    const auto* s = str;
-    while (*s) {
+    for (const auto* s = str; *s;) {
         if (*s == '{') {
             ++s;
 

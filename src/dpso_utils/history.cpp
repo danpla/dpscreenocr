@@ -81,8 +81,7 @@ static bool createEntries(
 {
     entries.clear();
 
-    const auto* s = data;
-    while (*s) {
+    for (const auto* s = data; *s;) {
         const auto* timestampBegin = s;
         while (*s && *s != '\n')
             ++s;
