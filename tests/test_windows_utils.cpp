@@ -1,6 +1,5 @@
 
 #include <algorithm>
-#include <cstdio>
 #include <initializer_list>
 #include <vector>
 
@@ -21,36 +20,31 @@ static void testUtfConversion(const char* utf8Str)
     try {
         utf16Str = utf8ToUtf16(utf8Str);
     } catch (std::runtime_error& e) {
-        std::fprintf(
-            stderr,
+        test::failure(
             "utf8ToUtf16(\"%s\") failed: %s\n",
             test::utils::escapeStr(utf8Str).c_str(), e.what());
-        test::failure();
+        return;
     }
 
     std::string utf16ToUtf8Result;
     try {
         utf16ToUtf8Result = utf16ToUtf8(utf16Str.c_str());
     } catch (std::runtime_error& e) {
-        std::fprintf(
-            stderr,
+        test::failure(
             "utf16ToUtf8() failed to convert result of "
             "utf8ToUtf16(\"%s\"): %s\n",
             test::utils::escapeStr(utf8Str).c_str(), e.what());
-        test::failure();
+        return;
     }
 
-    if (utf16ToUtf8Result != utf8Str) {
-        std::fprintf(
-            stderr,
+    if (utf16ToUtf8Result != utf8Str)
+        test::failure(
             "utf8ToUtf16() <=> utf16ToUtf8() conversion failed.\n"
             "  Original:  %s\n"
             "  Converted: %s\n",
             test::utils::escapeStr(utf8Str).c_str(),
             test::utils::escapeStr(
                 utf16ToUtf8Result.c_str()).c_str());
-        test::failure();
-    }
 }
 
 
@@ -74,13 +68,10 @@ static std::vector<std::string> cmdLineToArgv(const char* cmdLine)
     wchar_t** argv = CommandLineToArgvW(
         dpso::windows::utf8ToUtf16(cmdLine).c_str(), &argc);
 
-    if (!argv) {
-        std::fprintf(
-            stderr,
+    if (!argv)
+        test::fatalError(
             "CommandLineToArgvW(%s) failed with error %lu.\n",
             cmdLine, GetLastError());
-        return {};
-    }
 
     std::vector<std::string> result;
     result.reserve(argc);
@@ -120,20 +111,18 @@ static void testArgv(std::initializer_list<const char*> argv)
     const auto gotArgv = cmdLineToArgv(cmdLine.c_str());
 
     if (gotArgv.size() != argv.size()) {
-        std::fprintf(
-            stderr,
+        test::failure(
             "CommandLineTogotArgvW(%s) returned a different number "
             "of arguments: %zu (was %zu in original array). "
             "Returned array:\n"
             "  %s\n",
             cmdLine.c_str(), gotArgv.size(), argv.size(),
             rangeToString(gotArgv.begin(), gotArgv.end()).c_str());
-        test::failure();
         return;
     }
 
-    if (!std::equal(gotArgv.begin(), gotArgv.end(), argv.begin())) {
-        std::fprintf(
+    if (!std::equal(gotArgv.begin(), gotArgv.end(), argv.begin()))
+        test::failure(
             stderr,
             "createCmdLine() and CommandLineTogotArgvW() don't "
             "match.\n"
@@ -146,8 +135,6 @@ static void testArgv(std::initializer_list<const char*> argv)
             cmdLine.c_str(),
             rangeToString(argv.begin(), argv.end()).c_str(),
             rangeToString(gotArgv.begin(), gotArgv.end()).c_str());
-        test::failure();
-    }
 }
 
 

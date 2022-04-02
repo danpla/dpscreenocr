@@ -1,6 +1,6 @@
 
+#include <cerrno>
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 
 #include "dpso/error.h"
@@ -16,15 +16,13 @@ static void cmpFields(
     if (std::strcmp(a, b) == 0)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: DpsoHistoryEntry::%s don't match: "
         "\"%s\" != \"%s\"\n",
         line,
         name,
         test::utils::escapeStr(a).c_str(),
         test::utils::escapeStr(b).c_str());
-    test::failure();
 }
 
 
@@ -50,13 +48,11 @@ static void testCount(
     if (got == expected)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: dpsoHistoryCount(): Expected %i, got %i\n",
         line,
         expected,
         got);
-    test::failure();
 }
 
 
@@ -90,15 +86,13 @@ static void testIO(bool append)
 
     dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
     if (!history) {
-        std::fprintf(
-            stderr,
+        std::remove(historyFileName);
+        test::fatalError(
             "testlIO(%sappend): "
             "dpsoHistoryOpen(\"%s\") failed: %s\n",
             append ? "" : "!",
             historyFileName,
             dpsoGetError());
-        std::remove(historyFileName);
-        std::exit(EXIT_FAILURE);
     }
 
     TEST_COUNT(history.get(), append ? 0 : numTests);
@@ -108,15 +102,14 @@ static void testIO(bool append)
 
         if (append) {
             if (!dpsoHistoryAppend(history.get(), &test.inEntry)) {
-                std::fprintf(
-                    stderr,
+                history.reset();
+                std::remove(historyFileName);
+
+                test::fatalError(
                     "testIO(%sappend): "
                     "dpsoHistoryAppend() failed: %s\n",
                     append ? "" : "!",
                     dpsoGetError());
-                history.reset();
-                std::remove(historyFileName);
-                std::exit(EXIT_FAILURE);
             }
 
             TEST_COUNT(history.get(), i + 1);
@@ -152,15 +145,12 @@ void testInvalidData()
 
     for (const auto& test : tests) {
         auto* fp = std::fopen(historyFileName, "wb");
-        if (!fp) {
-            std::fprintf(
-                stderr,
+        if (!fp)
+            test::fatalError(
                 "loadInvalidData(): "
                 "fopen(\"%s\", \"wb\") failed: %s\n",
                 historyFileName,
                 std::strerror(errno));
-            std::exit(EXIT_FAILURE);
-        }
 
         std::fputs(test.data, fp);
         std::fclose(fp);
@@ -173,12 +163,10 @@ void testInvalidData()
         if (!opened)
             continue;
 
-        std::fprintf(
-            stderr,
+        test::failure(
             "loadInvalidData(): dpsoHistoryOpen() doesn't fail in "
             "\"%s\" case\n",
             test.description);
-        test::failure();
     }
 }
 

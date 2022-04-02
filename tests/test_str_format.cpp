@@ -1,7 +1,6 @@
 
-#include <cstdio>
-#include <cstdlib>
 #include <cstring>
+#include <initializer_list>
 #include <string>
 
 #include "dpso_utils/str_format.h"
@@ -94,15 +93,13 @@ static void testStrFormat()
         if (std::strcmp(got, test.expected) == 0)
             continue;
 
-        std::fprintf(
-            stderr,
+        test::failure(
             "dpsoStrNamedFormat(\"%s\", %s): "
             "expected \"%s\", got \"%s\"\n",
             test.str,
             argsToStr(test.args).c_str(),
             test.expected,
             got);
-        test::failure();
     }
 }
 

@@ -1,7 +1,6 @@
 
 #include <cerrno>
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <string>
 
@@ -24,8 +23,7 @@ static void testGet(
     if (std::strcmp(gotVal, expectedVal) == 0)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: dpsoGetStr(\"%s\", \"%s\"): "
         "expected \"%s\", got \"%s\"\n",
         lineNum,
@@ -33,7 +31,6 @@ static void testGet(
         defaultVal,
         test::utils::escapeStr(expectedVal).c_str(),
         test::utils::escapeStr(gotVal).c_str());
-    test::failure();
 }
 
 
@@ -48,8 +45,7 @@ static void testGet(
     if (gotVal == expectedVal)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: dpsoGetInt(\"%s\", %i): "
         "expected %i, got %i\n",
         lineNum,
@@ -57,7 +53,6 @@ static void testGet(
         defaultVal,
         expectedVal,
         gotVal);
-    test::failure();
 }
 
 
@@ -72,8 +67,7 @@ static void testGet(
     if (gotVal == expectedVal)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: dpsoGetBool(\"%s\", %s) "
         "expected %s, got %s\n",
         lineNum,
@@ -81,7 +75,6 @@ static void testGet(
         test::utils::boolToStr(defaultVal).c_str(),
         test::utils::boolToStr(expectedVal).c_str(),
         test::utils::boolToStr(gotVal).c_str());
-    test::failure();
 }
 
 
@@ -104,8 +97,7 @@ static void testGet(
     if (gotVal == expectedVal)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: dpsoCfgGetHotkey(\"%s\", &, {%s}) "
         "expected {%s}, got {%s}\n",
         lineNum,
@@ -113,7 +105,6 @@ static void testGet(
         hotkeyToStr(defaultVal).c_str(),
         hotkeyToStr(expectedVal).c_str(),
         hotkeyToStr(gotVal).c_str());
-    test::failure();
 }
 
 
@@ -297,40 +288,31 @@ const char* const cfgFileName = "test_cfg_file.cfg";
 
 static void reload(DpsoCfg* cfg)
 {
-    if (!dpsoCfgSave(cfg, cfgFileName)) {
-        std::fprintf(
-            stderr,
+    if (!dpsoCfgSave(cfg, cfgFileName))
+        test::fatalError(
             "reload(): dpsoCfgSave(cfg, \"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
-        std::exit(EXIT_FAILURE);
-    }
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     std::remove(cfgFileName);
 
-    if (!loaded) {
-        std::fprintf(
-            stderr,
+    if (!loaded)
+        test::fatalError(
             "reload(): dpsoCfgLoad(cfg, \"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
-        std::exit(EXIT_FAILURE);
-    }
 }
 
 
 static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 {
     auto* fp = std::fopen(cfgFileName, "wb");
-    if (!fp) {
-        std::fprintf(
-            stderr,
+    if (!fp)
+        test::fatalError(
             "loadCfgData(): fopen(\"%s\", \"wb\") failed: %s\n",
             cfgFileName,
             std::strerror(errno));
-        std::exit(EXIT_FAILURE);
-    }
 
     std::fputs(cfgData, fp);
     std::fclose(fp);
@@ -338,14 +320,11 @@ static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     std::remove(cfgFileName);
 
-    if (!loaded) {
-        std::fprintf(
-            stderr,
+    if (!loaded)
+        test::fatalError(
             "loadCfgData(): dpsoCfgLoad(cfg, \"%s\") failed: %s\n",
             cfgFileName,
             dpsoGetError());
-        std::exit(EXIT_FAILURE);
-    }
 }
 
 
@@ -366,13 +345,9 @@ static void testUnescapedBackslashAtEndOfQuotedString(DpsoCfg* cfg)
 static void testCfg()
 {
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
-    if (!cfg) {
-        std::fprintf(
-            stderr,
-            "dpsoCfgCreate() failed: %s\n",
-            dpsoGetError());
-        std::exit(EXIT_FAILURE);
-    }
+    if (!cfg)
+        test::fatalError(
+            "dpsoCfgCreate() failed: %s\n", dpsoGetError());
 
     setStr(cfg.get());
     setInt(cfg.get());

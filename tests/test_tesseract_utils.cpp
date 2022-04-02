@@ -1,6 +1,4 @@
 
-#include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <string>
 
@@ -40,27 +38,21 @@ static void testPrettifyText()
         std::string str = test.original;
         const auto strLen = dpso::prettifyTesseractText(&str[0]);
 
-        if (std::strcmp(str.c_str(), test.prettified) != 0) {
-            std::fprintf(
-                stderr,
+        if (std::strcmp(str.c_str(), test.prettified) != 0)
+            test::failure(
                 "prettifyTesseractText(\"%s\"): "
                 "expected \"%s\", got \"%s\"\n",
                 test::utils::escapeStr(test.original).c_str(),
                 test::utils::escapeStr(test.prettified).c_str(),
                 test::utils::escapeStr(str.c_str()).c_str());
-            test::failure();
-        }
 
-        if (strLen != std::strlen(str.c_str())) {
-            std::fprintf(
-                stderr,
+        if (strLen != std::strlen(str.c_str()))
+            test::failure(
                 "prettifyTesseractText(\"%s\"): "
                 "expected string length %zu, got %zu\n",
                 test::utils::escapeStr(test.original).c_str(),
                 std::strlen(str.c_str()),
                 strLen);
-            test::failure();
-        }
     }
 }
 

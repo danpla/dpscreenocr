@@ -1,9 +1,4 @@
 
-#include <cassert>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
 #include "dpso/str.h"
 
 #include "flow.h"
@@ -80,13 +75,11 @@ static void testCmpSubStr()
         if (gotOrder == test.expectedOrder)
             continue;
 
-        std::fprintf(
-            stderr,
+        test::failure(
             "testCmpSubStr: cmpSubStr(\"%s\", \"%s\", %zu, %u): "
             "got %s, expected %s\n",
             test.str, test.subStr, test.subStrLen, test.cmpOptions,
             orderToStr(gotOrder), orderToStr(test.expectedOrder));
-        test::failure();
     }
 }
 

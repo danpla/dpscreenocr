@@ -33,16 +33,13 @@ static void testGetFileExt()
     for (const auto& test : tests) {
         const auto* ext = dpsoGetFileExt(test.path.c_str());
         if (!ext) {
-            if (!test.expectedExt.empty()) {
-                std::fprintf(
-                    stderr,
+            if (!test.expectedExt.empty())
+                test::failure(
                     "testGetFileExt(): dpsoGetFileExt(\"%s\") "
                     "returned null while \"%s\" was expected\n",
                     test::utils::escapeStr(test.path.c_str()).c_str(),
                     test::utils::escapeStr(
                         test.expectedExt.c_str()).c_str());
-                test::failure();
-            }
 
             continue;
         }
@@ -56,14 +53,12 @@ static void testGetFileExt()
         else
             expected = std::string{"\""} + test.expectedExt + '"';
 
-        std::fprintf(
-            stderr,
+        test::failure(
             "testGetFileExt(): dpsoGetFileExt(\"%s\") "
             "returned \"%s\" while %s was expected\n",
             test::utils::escapeStr(test.path.c_str()).c_str(),
             test::utils::escapeStr(ext).c_str(),
             test::utils::escapeStr(expected.c_str()).c_str());
-        test::failure();
     }
 }
 

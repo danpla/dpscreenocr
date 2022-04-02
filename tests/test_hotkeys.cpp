@@ -1,9 +1,4 @@
 
-#include <cassert>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
 #include "dpso/dpso.h"
 
 #include "flow.h"
@@ -34,12 +29,10 @@ static void testHotkeyToString()
         if (hotkey == outHotkey)
             continue;
 
-        std::fprintf(
-            stderr,
+        test::failure(
             "testHotkeyToString: \"%s\" wasn't successfully parsed "
             "by dpsoHotkeyFromString())\n",
             str);
-        test::failure();
     }
 }
 
@@ -83,14 +76,12 @@ static void testHotkeyFromString()
         if (got == test.expectedHotkey)
             continue;
 
-        std::fprintf(
-            stderr,
+        test::failure(
             "testHotkeyFromString: dpsoHotkeyFromString(\"%s\"): "
             "expected (%i %u), got (%i %u)\n",
             test.str,
             test.expectedHotkey.key, test.expectedHotkey.mods,
             got.key, got.mods);
-        test::failure();
     }
 }
 

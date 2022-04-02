@@ -1,8 +1,4 @@
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
 #include "dpso/geometry.h"
 
 #include "flow.h"
@@ -16,13 +12,11 @@ static void testEqual(const Point& a, const Point& b, int lineNum)
     if (a.x == b.x && a.y == b.y)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: Point(%i, %i) != Point(%i, %i)\n",
         lineNum,
         a.x, a.y,
         b.x, b.y);
-    test::failure();
 }
 
 
@@ -31,13 +25,11 @@ static void testEqual(const Side& a, const Side& b, int lineNum)
     if (a.start == b.start && a.size == b.size)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: Size(%i, %i) != Size(%i, %i)\n",
         lineNum,
         a.start, a.size,
         b.start, b.size);
-    test::failure();
 }
 
 
@@ -48,13 +40,11 @@ static void testEqual(const Rect& a, const Rect& b, int lineNum)
         return;
     #undef CMP
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: Rect(%i, %i, %i, %i) != Rect(%i, %i,  %i, %i)\n",
         lineNum,
         a.x, a.y, a.w, a.h,
         b.x, b.y, b.w, b.h);
-    test::failure();
 }
 
 
@@ -66,13 +56,11 @@ static void testEmpty(const Rect& r, bool expectEmpty, int lineNum)
     if (isEmpty(r) == expectEmpty)
         return;
 
-    std::fprintf(
-        stderr,
+    test::failure(
         "line %i: Rect(%i, %i, %i, %i) is expected to be %sempty\n",
         lineNum,
         r.x, r.y, r.w, r.h,
         expectEmpty ? "" : "non-");
-    test::failure();
 }
 
 

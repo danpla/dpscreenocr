@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "dpso/printf_fn.h"
+
 
 namespace test {
 
@@ -30,10 +32,19 @@ private:
 static test::Runner FN ## TestRunner(#FN, FN)
 
 
-void failure();
+// Report a test case failure, increment the failure counter, and
+// continue.
+void failure(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
 
+// Return the number of failure() calls.
 int getNumFailures();
+
+
+// Report an abnormal error and exit. The function is intended for
+// errors that are not directly related to test cases, e.g. an IO
+// error when setting up a test.
+[[noreturn]] void fatalError(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
 
 }
