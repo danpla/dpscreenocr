@@ -7,14 +7,14 @@
 
 int main()
 {
-    int curRunnerNum = 1;
+    int curRunnerNum = 0;
 
     for (const auto* runner = test::Runner::getFirst();
             runner;
             runner = runner->getNext()) {
         std::printf(
             "%4i/%i: %s\n",
-            curRunnerNum++, test::Runner::getNumRunners(),
+            ++curRunnerNum, test::Runner::getNumRunners(),
             runner->getName());
         runner->run();
     }
