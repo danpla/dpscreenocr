@@ -52,13 +52,13 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void);
 /**
  * Bind hotkey to action.
  *
- * If the hotkey is already bound, it's action will be updated. The
- * function does nothing if the hotkey's key is dpsoUnknownKey, or if
- * the action is < 0.
+ * If the hotkey is already bound, its action will be updated.
  *
- * It's possible to bind multiple hotkeys to the same action. In this
- * case, which hotkey dpsoFindActionHotkey() will return is
- * implementation-defined.
+ * Returns 0 if hotkey wasn't bound. Reasons include:
+ *   * hotkey is null
+ *   * hotkey->key is dpsoUnknownKey
+ *   * hotkey->key is not supported by the backend
+ *   * action is < 0
  */
 int dpsoBindHotkey(
     const struct DpsoHotkey* hotkey, DpsoHotkeyAction action);

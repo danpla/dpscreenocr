@@ -202,14 +202,17 @@ void TesseractOcr::cacheLangs()
 {
     // GetAvailableLanguagesAsVector() is broken by design: it uses
     // a data path from the last Init(), while Init() itself requires
-    // at least one language (null language is implicit "eng"). As
-    // a workaround, we don't check Init() for error: it will fail if
-    // "eng" is not available, but the path will remain in TessBaseAPI
-    // so GetAvailableLanguagesAsVector() can use it.
+    // at least one language (null language is implicit "eng" in
+    // versions before 5). As a workaround, we don't check Init() for
+    // error: it will fail if "eng" is not available, but the path
+    // will remain in TessBaseAPI so GetAvailableLanguagesAsVector()
+    // can use it.
     //
     // The only alternative is to make sure that "eng" is available,
     // e.g. make it a dependency of our application package when
     // distributing on Unix-like systems.
+    //
+    // See https://github.com/tesseract-ocr/tesseract/issues/1073
     //
     // Writing our own routine to collect the list of "*.tessdata" is
     // not an option, since the data path may be different on various
