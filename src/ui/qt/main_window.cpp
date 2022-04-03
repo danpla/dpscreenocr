@@ -67,6 +67,7 @@ MainWindow::MainWindow()
     , cancelSelectionHotkey{}
     , clipboardTextPending{}
     , minimizeToTray{}
+    , minimizeOnStart{}
 {
     setWindowTitle(appName);
     QApplication::setWindowIcon(getIcon(appFileName));
@@ -141,6 +142,14 @@ MainWindow::MainWindow()
         dpsoShutdown();
         std::exit(EXIT_FAILURE);
     }
+
+    if (minimizeOnStart) {
+        if (trayIcon->isVisible() && minimizeToTray)
+            visibilityAction->setChecked(false);
+        else
+            showMinimized();
+    } else
+        show();
 
     updateTimerId = startTimer(1000 / 60);
 }
@@ -217,7 +226,7 @@ void MainWindow::changeEvent(QEvent* event)
             && isMinimized()
             && trayIcon->isVisible()
             && minimizeToTray)
-        visibilityAction->toggle();
+        visibilityAction->setChecked(false);
 
     QWidget::changeEvent(event);
 }
@@ -452,6 +461,11 @@ bool MainWindow::loadState(const DpsoCfg* cfg)
         cfgKeyUiWindowMinimizeToTray,
         cfgDefaultValueUiWindowMinimizeToTray);
 
+    minimizeOnStart = dpsoCfgGetBool(
+        cfg,
+        cfgKeyUiWindowMinimizeOnStart,
+        cfgDefaultValueUiWindowMinimizeOnStart);
+
     return true;
 }
 
@@ -507,6 +521,9 @@ void MainWindow::saveState(DpsoCfg* cfg) const
     dpsoCfgSetBool(
         cfg, cfgKeyUiTrayIconVisible, trayIcon->isVisible());
     dpsoCfgSetBool(cfg, cfgKeyUiWindowMinimizeToTray, minimizeToTray);
+
+    dpsoCfgSetBool(
+        cfg, cfgKeyUiWindowMinimizeOnStart, minimizeOnStart);
 }
 
 

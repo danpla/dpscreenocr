@@ -100,7 +100,6 @@ int main(int argc, char *argv[])
     installQtTranslations(app);
 
     MainWindow mainWindow;
-    mainWindow.show();
 
     return app.exec();
 }

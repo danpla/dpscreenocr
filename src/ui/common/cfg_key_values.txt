@@ -18,6 +18,7 @@ ui_native_file_dialogs                  | int               | true
 ui_tray_icon_visible                    | int               | true
 ui_window_height
 ui_window_maximized
+ui_window_minimize_on_start             | int               | false
 ui_window_minimize_to_tray              | int               | false
 ui_window_width
 ui_window_x

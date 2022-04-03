@@ -95,6 +95,8 @@ private:
     QSystemTrayIcon* trayIcon;
     bool minimizeToTray;
 
+    bool minimizeOnStart;
+
     void createQActions();
 
     QWidget* createMainTab();

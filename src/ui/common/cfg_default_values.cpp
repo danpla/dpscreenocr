@@ -29,5 +29,7 @@ int const cfgDefaultValueUiNativeFileDialogs =
     true;
 int const cfgDefaultValueUiTrayIconVisible =
     true;
+int const cfgDefaultValueUiWindowMinimizeOnStart =
+    false;
 int const cfgDefaultValueUiWindowMinimizeToTray =
     false;
