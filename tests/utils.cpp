@@ -42,14 +42,15 @@ std::string escapeStr(const char* str)
                 result += "\\\\";
                 break;
             default: {
-                if (!std::isprint(c)) {
+                if (std::isprint(c))
+                    result += c;
+                else {
                     static char buf[5];
                     std::snprintf(
                         buf, sizeof(buf),
                         "\\x%.2x", static_cast<unsigned char>(c));
                     result += buf;
-                } else
-                    result += c;
+                }
                 break;
             }
         }
