@@ -225,7 +225,12 @@ void MainWindow::changeEvent(QEvent* event)
     if (event->type() == QEvent::WindowStateChange
             && isMinimized()
             && trayIcon->isVisible()
-            && minimizeToTray)
+            && minimizeToTray
+            // In Qt 4, the tray icon is unresponsive when a modal
+            // window is active, so it will be impossible to unhide
+            // the application in desktop environments where the modal
+            // window is hidden along with the main one.
+            && !QApplication::activeModalWidget())
         visibilityAction->setChecked(false);
 
     QWidget::changeEvent(event);
@@ -236,6 +241,7 @@ void MainWindow::invalidateStatus()
 {
     statusValid = false;
 }
+
 
 void MainWindow::setVisibility(bool visible)
 {
