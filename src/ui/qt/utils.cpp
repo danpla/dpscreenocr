@@ -66,11 +66,12 @@ bool confirmation(
     auto* cancelButton = confirmBox.addButton(
         cancelText, QMessageBox::RejectRole);
     confirmBox.setDefaultButton(cancelButton);
-    confirmBox.addButton(okText, QMessageBox::AcceptRole);
+    auto* okButton = confirmBox.addButton(
+        okText, QMessageBox::AcceptRole);
 
     confirmBox.exec();
 
-    return confirmBox.clickedButton() != cancelButton;
+    return confirmBox.clickedButton() == okButton;
 }
 
 
