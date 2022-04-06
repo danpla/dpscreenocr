@@ -178,9 +178,7 @@ inline bool operator!=(const DpsoHotkey& a, const DpsoHotkey& b)
  * for dpsoGetLastHotkeyAction(), or "hotkey is not bound" for
  * dpsoFindHotkeyAction().
  *
- * Using values < 0 in routines that expect DpsoHotkeyAction will
- * have no effect. For example, passing -1 to dpsoBindHotkey() will
- * not unbind a hotkey; you have to use dpsoUnbindHotkey() or
- * dpsoUnbindAction() instead.
+ * Routines that take DpsoHotkeyAction will do nothing if the action
+ * is < 0.
  */
 typedef int DpsoHotkeyAction;
