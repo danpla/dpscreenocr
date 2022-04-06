@@ -1,11 +1,15 @@
 
+// Default values for macros.
+
 #pragma once
 
-// Default values for macros.
+#include <QtGlobal>
 
 
 #define NEED_SET_WINDOW_TITLE_WORKAROUND() \
-    (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) \
+    (defined(Q_OS_UNIX) \
+        && !defined(Q_OS_DARWIN) \
+        && QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) \
         && QT_VERSION < QT_VERSION_CHECK(5, 3, 2))
 
 #ifndef DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND

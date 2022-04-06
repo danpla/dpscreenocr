@@ -116,8 +116,10 @@ else()
     )
 endif()
 
-if(DPSO_QT_VERSION EQUAL 5
-        AND DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
+if(DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
+        AND UNIX
+        AND NOT APPLE
+        AND DPSO_QT_VERSION EQUAL 5
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
     target_compile_definitions(
         dpscreenocr_qt
