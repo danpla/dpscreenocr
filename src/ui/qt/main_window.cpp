@@ -316,7 +316,7 @@ QWidget* MainWindow::createMainTab()
 
     hotkeyEditor = new HotkeyEditor(
         hotkeyActionToggleSelection,
-        {dpsoUnknownKey, dpsoKeyEscape},
+        {dpsoUnknownKey},
         Qt::Vertical);
     connect(
         hotkeyEditor, SIGNAL(changed()),
@@ -716,7 +716,13 @@ void MainWindow::checkHotkeyActions()
     } else if (hotkeyAction == hotkeyActionToggleSelection
             && canStartSelection()) {
         dpsoSetSelectionIsEnabled(true);
-        dpsoBindHotkey(
-            &cancelSelectionHotkey, hotkeyActionCancelSelection);
+
+        DpsoHotkey toggleSelectionHotkey;
+        dpsoFindActionHotkey(
+            hotkeyActionToggleSelection, &toggleSelectionHotkey);
+
+        if (cancelSelectionHotkey != toggleSelectionHotkey)
+            dpsoBindHotkey(
+                &cancelSelectionHotkey, hotkeyActionCancelSelection);
     }
 }
