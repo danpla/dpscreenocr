@@ -60,16 +60,13 @@ add_library(
 )
 
 target_compile_definitions(
-    dpso
-    PRIVATE
-    DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
+    dpso PRIVATE DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpso
-        PRIVATE -std=c++11 -Wall -Wextra -pedantic
+        dpso PRIVATE -std=c++11 -Wall -Wextra -pedantic
     )
 endif()
 
@@ -95,10 +92,7 @@ if(UNIX AND NOT APPLE)
     endif()
 
     target_include_directories(
-        dpso
-        PRIVATE
-        ${X11_INCLUDE_DIR}
-        ${X11_Xshape_INCLUDE_PATH}
+        dpso PRIVATE ${X11_INCLUDE_DIR} ${X11_Xshape_INCLUDE_PATH}
     )
     target_link_libraries(dpso ${X11_LIBRARIES} ${X11_Xext_LIB})
 endif()

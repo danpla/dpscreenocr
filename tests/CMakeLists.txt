@@ -28,8 +28,7 @@ add_executable(
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        tests
-        PRIVATE -std=c++11 -Wall -Wextra -pedantic
+        tests PRIVATE -std=c++11 -Wall -Wextra -pedantic
     )
 endif()
 
@@ -57,8 +56,7 @@ endif()
 
 if(NOT TARGET common)
     add_subdirectory(
-        ../src/ui/common
-        ${CMAKE_BINARY_DIR}/src/ui/common
+        ../src/ui/common ${CMAKE_BINARY_DIR}/src/ui/common
     )
 endif()
 

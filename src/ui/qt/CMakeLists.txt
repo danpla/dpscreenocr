@@ -46,7 +46,6 @@ if(WIN32)
     list(APPEND SRCS $<TARGET_OBJECTS:windows_rc>)
 endif()
 
-# qtX_ macros come from QtCore
 if(DPSO_QT_VERSION EQUAL 4)
     find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 elseif(DPSO_QT_VERSION EQUAL 5)
@@ -83,15 +82,13 @@ add_executable(dpscreenocr_qt ${SRCS})
 
 target_compile_definitions(
     dpscreenocr_qt
-    PRIVATE
-    DPSO_QT_LOCAL_DATA=$<BOOL:${DPSO_QT_LOCAL_DATA}>
+    PRIVATE DPSO_QT_LOCAL_DATA=$<BOOL:${DPSO_QT_LOCAL_DATA}>
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpscreenocr_qt
-        PRIVATE -std=c++11 -Wall -Wextra -pedantic
+        dpscreenocr_qt PRIVATE -std=c++11 -Wall -Wextra -pedantic
     )
 endif()
 
@@ -105,9 +102,7 @@ set_target_properties(
 if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     # Hide console window.
     set_target_properties(
-        dpscreenocr_qt
-        PROPERTIES
-        WIN32_EXECUTABLE TRUE
+        dpscreenocr_qt PROPERTIES WIN32_EXECUTABLE TRUE
     )
 endif()
 
@@ -121,13 +116,12 @@ else()
     )
 endif()
 
-if(NOT DPSO_QT_VERSION EQUAL 4
+if(DPSO_QT_VERSION EQUAL 5
         AND DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
     target_compile_definitions(
         dpscreenocr_qt
-        PRIVATE
-        DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1
+        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1
     )
 
     find_package(Qt5X11Extras REQUIRED)
@@ -135,15 +129,12 @@ if(NOT DPSO_QT_VERSION EQUAL 4
 
     find_package(X11 REQUIRED)
     target_include_directories(
-        dpscreenocr_qt
-        PRIVATE
-        ${X11_INCLUDE_DIR}
+        dpscreenocr_qt PRIVATE ${X11_INCLUDE_DIR}
     )
     target_link_libraries(dpscreenocr_qt ${X11_LIBRARIES})
 else()
     target_compile_definitions(
         dpscreenocr_qt
-        PRIVATE
-        DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=0
+        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=0
     )
 endif()
