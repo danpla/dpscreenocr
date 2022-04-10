@@ -8,5 +8,4 @@
 #include "history.h"
 #include "history_export.h"
 #include "os.h"
-#include "os_cpp.h"
 #include "str_format.h"

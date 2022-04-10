@@ -39,4 +39,30 @@ FILE* dpsoFopenUtf8(const char* filePath, const char* mode);
 
 #ifdef __cplusplus
 }
+
+
+#include <memory>
+
+
+namespace dpso {
+
+
+/**
+ * Deleter for a FILE* smart pointer.
+ */
+struct StdFileCloser {
+    void operator()(FILE* fp) const
+    {
+        if (fp)
+            fclose(fp);
+    }
+};
+
+
+using StdFileUPtr = std::unique_ptr<FILE, StdFileCloser>;
+
+
+}
+
+
 #endif

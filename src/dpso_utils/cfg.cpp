@@ -13,7 +13,6 @@
 #include "dpso/error.h"
 #include "dpso/str.h"
 #include "os.h"
-#include "os_cpp.h"
 
 
 // A config is a collection of key-value pairs in a text file. The

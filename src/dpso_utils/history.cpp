@@ -11,7 +11,6 @@
 
 #include "dpso/error.h"
 #include "os.h"
-#include "os_cpp.h"
 
 
 // Each entry in a history file consists of a timestamp, two line

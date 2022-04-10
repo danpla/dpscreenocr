@@ -9,7 +9,6 @@
 #include "dpso/str.h"
 #include "history.h"
 #include "os.h"
-#include "os_cpp.h"
 
 
 DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
