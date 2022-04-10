@@ -15,19 +15,29 @@ static Order getOrder(int cmpResult)
 {
     if (cmpResult < 0)
         return Order::less;
+
     if (cmpResult == 0)
         return Order::equal;
+
     return Order::greater;
 }
 
 
 static const char* orderToStr(Order order)
 {
-    if (order == Order::less)
-        return "<";
-    if (order == Order::equal)
-        return "==";
-    return ">";
+    switch (order) {
+        case Order::less:
+            return "<";
+            break;
+        case Order::equal:
+            return "==";
+            break;
+        case Order::greater:
+            return ">";
+            break;
+    }
+
+    return "";
 }
 
 
