@@ -123,7 +123,6 @@ static void testArgv(std::initializer_list<const char*> argv)
 
     if (!std::equal(gotArgv.begin(), gotArgv.end(), argv.begin()))
         test::failure(
-            stderr,
             "createCmdLine() and CommandLineTogotArgvW() don't "
             "match.\n"
             "  createCmdLine() string:\n"
