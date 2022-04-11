@@ -32,6 +32,11 @@ set(
     "${CMAKE_SOURCE_DIR}/data/nsis\\\\win.bmp"
 )
 
+set(
+    CPACK_NSIS_MUI_HEADERIMAGE
+    "${CMAKE_SOURCE_DIR}/data/nsis\\\\header.bmp"
+)
+
 set(CPACK_NSIS_HELP_LINK "${APP_URL}")
 set(CPACK_NSIS_URL_INFO_ABOUT "${APP_URL}")
 
