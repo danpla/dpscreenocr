@@ -60,7 +60,7 @@ static_assert(
 
 
 const char atomNamePrefix[] =
-    #ifdef DPSO_DLL
+    #if DPSO_DLL
     "dpso"
     #else
     "#"

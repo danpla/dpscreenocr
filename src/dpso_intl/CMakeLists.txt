@@ -4,7 +4,7 @@ project(dpso_intl)
 
 option(DPSO_ENABLE_NLS "Enable native language support" YES)
 
-add_library(dpso_intl dpso_intl.cpp)
+add_library(dpso_intl STATIC dpso_intl.cpp)
 
 target_compile_definitions(
     dpso_intl PUBLIC ENABLE_NLS=$<BOOL:${DPSO_ENABLE_NLS}>

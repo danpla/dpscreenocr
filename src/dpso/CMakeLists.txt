@@ -60,7 +60,10 @@ add_library(
 )
 
 target_compile_definitions(
-    dpso PRIVATE DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
+    dpso
+    PRIVATE
+    DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
+    DPSO_DLL=$<BOOL:${BUILD_SHARED_LIBS}>
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
@@ -69,6 +72,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         dpso PRIVATE -std=c++11 -Wall -Wextra -pedantic
     )
 endif()
+
+set_target_properties(
+    dpso PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
 
 target_include_directories(dpso PRIVATE . PUBLIC ..)
 

@@ -25,7 +25,7 @@ foreach(IN_SRC ${IN_SRCS})
 endforeach()
 
 add_library(
-    common
+    common STATIC
 
     cfg_default_values.cpp
     cfg_keys.cpp
