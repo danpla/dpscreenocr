@@ -15,7 +15,7 @@
 
 #include "dpso_intl/dpso_intl.h"
 
-#include "common/common.h"
+#include "ui_common/ui_common.h"
 
 #include "default_config.h"
 #include "main_window.h"

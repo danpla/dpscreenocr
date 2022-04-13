@@ -8,7 +8,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "common/common.h"
+#include "ui_common/ui_common.h"
 
 #include "default_config.h"
 

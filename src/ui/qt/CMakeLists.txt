@@ -55,8 +55,10 @@ else()
 endif()
 
 # Add libraries early to avoid AUTOMOC
-if(NOT TARGET common)
-    add_subdirectory(../common ${CMAKE_BINARY_DIR}/src/ui/common)
+if(NOT TARGET ui_common)
+    add_subdirectory(
+        ../ui_common ${CMAKE_BINARY_DIR}/src/ui/ui_common
+    )
 endif()
 
 if(NOT TARGET dpso)
@@ -106,7 +108,9 @@ if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     )
 endif()
 
-target_link_libraries(dpscreenocr_qt common dpso dpso_utils dpso_intl)
+target_link_libraries(
+    dpscreenocr_qt ui_common dpso dpso_utils dpso_intl
+)
 
 if(DPSO_QT_VERSION EQUAL 4)
     target_link_libraries(dpscreenocr_qt Qt4::QtCore Qt4::QtGui)

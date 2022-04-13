@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-project(common)
+project(ui_common)
 
 if(UNIX AND NOT APPLE)
     include(GNUInstallDirs)
@@ -25,7 +25,7 @@ foreach(IN_SRC ${IN_SRCS})
 endforeach()
 
 add_library(
-    common STATIC
+    ui_common STATIC
 
     cfg_default_values.cpp
     cfg_keys.cpp
@@ -35,13 +35,13 @@ add_library(
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        common PRIVATE -std=c++11 -Wall -Wextra -pedantic
+        ui_common PRIVATE -std=c++11 -Wall -Wextra -pedantic
     )
 endif()
 
-target_include_directories(common PRIVATE . PUBLIC ..)
+target_include_directories(ui_common PRIVATE . PUBLIC ..)
 
 if(NOT TARGET dpso)
     add_subdirectory(../../dpso ${CMAKE_BINARY_DIR}/src/dpso)
 endif()
-target_link_libraries(common dpso)
+target_link_libraries(ui_common dpso)

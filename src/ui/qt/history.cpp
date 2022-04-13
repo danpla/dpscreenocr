@@ -13,7 +13,7 @@
 #include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
 
-#include "common/common.h"
+#include "ui_common/ui_common.h"
 
 #include "utils.h"
 
