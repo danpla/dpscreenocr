@@ -54,10 +54,18 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     )
 endif()
 
+if(NOT TARGET dpso_intl)
+    add_subdirectory(
+        ../src/dpso_intl ${CMAKE_BINARY_DIR}/src/dpso_intl
+    )
+endif()
+
 if(NOT TARGET ui_common)
     add_subdirectory(
         ../src/ui/ui_common ${CMAKE_BINARY_DIR}/src/ui/ui_common
     )
 endif()
 
-target_link_libraries(test_c_compilation dpso dpso_utils ui_common)
+target_link_libraries(
+    test_c_compilation dpso dpso_intl dpso_utils ui_common
+)
