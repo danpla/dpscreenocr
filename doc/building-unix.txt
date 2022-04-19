@@ -6,24 +6,29 @@ Required:
   * C++ compiler with C++11 support
   * CMake 2.8.12 or newer
   * Make
-  * Qt (4 or 5)
+  * Qt 4 or 5
   * libtesseract
   * libx11
-  * libxext - for XShape (X11 Nonrectangular Window Shape Extension)
+  * libxext - for X11 Nonrectangular Window Shape Extension
 
 Optional:
 
-  * pkg-config - to find libtesseract. If not installed, or if you
-      have an old OS distributive where libtesseract comes without a
-      .pc file for pkg-config, the include directory is assumed to
-      be "/usr/include" and the library name is "libtesseract".
-  * Qt 5 X11 extras - to fix a bug in Qt 5 < 5.3.2 (see below)
-  * libintl - for translated user interface. On some systems libintl
-      is a part of GNU C library and doesn't need to be installed
-      separately.
+  * pkg-config - to find Tesseract. If pkg-config is not installed, or
+    if you have an old Tesseract version that comes without a .pc file
+    for pkg-config, the include directory will be "/usr/include" and
+    the library name is "libtesseract".
+
+  * Qt 5 X11 extras - to fix a window title bug in Qt 5 < 5.3.2.
+
+  * libintl - for translated user interface; DPSO_ENABLE_NLS CMake
+    option. On some systems libintl is a part of GNU C library and
+    doesn't need to be installed separately.
+
   * gettext utilities - msgfmt is needed to compile gettext message
-      catalogs.
-  * pandoc - to generate HTML manual.
+    catalogs; DPSO_ENABLE_NLS CMake option.
+
+  * pandoc - to generate HTML manual; DPSO_GEN_HTML_MANUAL CMake
+    option.
 
 To install dependencies on Debian, Ubuntu, and derivatives, run:
 
@@ -35,8 +40,7 @@ To install dependencies on Debian, Ubuntu, and derivatives, run:
 Building
 ========
 
-In the simplest case, you can build dpScreenOCR with the following
-commands:
+You can build dpScreenOCR with the following commands:
 
     cd path_to_dpscreenocr_source
     mkdir build
@@ -44,97 +48,49 @@ commands:
     cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
     make
 
-Along with standard CMake options (like CMAKE_BUILD_TYPE and
-CMAKE_INSTALL_PREFIX), there are several options specific to
-dpScreenOCR. All such options have "DPSO_" prefix. To list all
-options, run:
-
-    cmake -LH ..
-
-Let's look at some of the options in more detail:
+You can configure the build with various CMake options; run
+"cmake -LH .." to see them all. Options specific to dpScreenOCR have
+the "DPSO_" prefix; the most interesting on Unix-like systems are:
 
   * DPSO_ENABLE_NLS (ON by default) enables native language support
-      (translated user interface).
+    (translated user interface).
 
-      This option requires gettext runtime library - libintl. On
-      systems where libintl is not a part of GNU libc, it has to be
-      installed separately.
+    This option requires gettext runtime library (libintl) and tools
+    (namely, msgfmt to compile gettext catalogs). On some systems
+    libintl is a part of GNU C library and doesn't need to be
+    installed separately.
 
-      The option also requires gettext utilities (namely the msgfmt
-      program) to compile gettext catalogs. The MO files will be
-      written to the "locale" directory, which will have structure
-      expected by libintl.
+  * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like icons
+    and localization files) from the executable's directory.
 
-  * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like
-      icons and localization files) from the executable's directory.
+    In general, local data has higher priority than global. Icons are
+    an exception: globally installed icons have higher priority to
+    allow the desktop icon theme to override local icons.
 
-      In general, local data has higher priority than the global. The
-      exceptions are icons: globally installed icons have higher
-      priority to allow the desktop icon theme to override local
-      icons.
+    It makes sense to disable this option unless you want to use
+    dpScreenOCR without installation. See the "Using uninstalled"
+    section below for more information.
 
-      It makes sense to disable this option unless you want to use
-      dpScreenOCR without installation. See the "Using uninstalled"
-      section below for more information.
+  * DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND (ON by default) enables a
+    workaround for a bug in Qt 5 < 5.3.2. Requires Qt 5 X11 extras.
+    This option is ignored if Qt 5 >= 5.3.2.
 
-  * DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND (ON by default) enables
-      a workaround for a bug in Qt 5 < 5.3.2. This option requires
-      Qt 5 X11 extras.
-
-      As the name implies, the bug affects changing of the main window
-      title: it's not updated if you don't interact with the window.
-      This is a problem since dpScreenOCR uses the title to show the
-      progress to user, which is useful when the window is minimized.
-
-      If your Qt 5 version is >= 5.3.2, this option is ignored, even
-      if enabled.
+    As the name implies, the bug affects changing of the main window
+    title: it's not updated if you don't interact with the window, in
+    particular, while the window is minimized.
 
 
 Installing
 ==========
 
-You can install dpScreenOCR with "make install" or from a DEB package.
-The latter is preferable: installing the package will automatically
-resolve all dependencies, and you don't need to keep the "build"
-directory to remove the program later.
-
-It's also possible to use dpScreenOCR without installation.
-
-
-Using uninstalled
------------------
-
-When built with the DPSO_QT_LOCAL_DATA option enabled, dpScreenOCR
-doesn't need installation: you can use the program by simply running
-the executable. However, if you want to move it from the "build"
-directory to a different location, don't forget to move "locale" and
-"icons" directories as well (the former is only created if the
-DPSO_ENABLE_NLS option was enabled).
-
-
-DEB package
------------
-
-On Debian, Ubuntu, and derivative systems, you can create a DEB
-package with a single command:
-
-    cpack -G DEB
-
-To install the package, double-click it in your file manager or use
-gdebi:
-
-    sudo apt-get install gdebi
-    sudo gdebi dpscreenocr*.deb
-
-To remove the package:
-
-    sudo apt-get purge dpscreenocr
-
-
-Make
-----
-
 You can install and remove dpScreenOCR using the standard Make
 commands "make install" and "make uninstall". To choose the
 installation prefix, set the CMAKE_INSTALL_PREFIX at the build stage.
 The default prefix is "/usr/local".
+
+When built with the DPSO_QT_LOCAL_DATA option enabled, dpScreenOCR
+doesn't need installation: you can use the program by simply running
+the executable. However, if you want to move it from the "build"
+directory to a different location, don't forget to move "icons" and
+"locale" directories as well (the latter is only created if
+DPSO_ENABLE_NLS was enabled).

@@ -5,10 +5,9 @@
 
 # About dpScreenOCR
 
-dpScreenOCR is a program to recognize text on screen. Powered by
-[Tesseract][], it supports more than 100 languages and can split
-independent text blocks, e.g. columns. dpScreenOCR is free and open
-source software that works on Windows and Unix-like systems with X11.
+dpScreenOCR is a free and open-source program to recognize text on
+screen. Powered by [Tesseract][], it supports more than 100 languages
+and can split independent text blocks, e.g. columns.
 
 [Tesseract]: https://en.wikipedia.org/wiki/Tesseract_(software)
 
@@ -22,19 +21,17 @@ source software that works on Windows and Unix-like systems with X11.
 ### Windows
 
 The [dpScreenOCR website][] provides an installer and a ZIP archive.
-The latter doesn't need installation: unpack it anywhere you want and
-run `dpscreenocr.exe`.
+The latter doesn't need installation: unpack it anywhere and run
+dpscreenocr.exe.
 
 
 ### Unix-like systems
 
 The [dpScreenOCR website][] provides several download options,
-including repositories and packages for Debian, Ubuntu, and derivative
-systems. Downloads for other systems may be added later.
-
-If you don't find a suitable choice for your system, download the
-source code tarball, unpack it anywhere, and follow the instructions
-in the `doc/building-unix.txt` file.
+including repositories for Debian, Ubuntu, and derivative systems. If
+you don't find a suitable choice for your system, download the source
+code tarball, unpack it, and follow the instructions in the
+"doc/building-unix.txt" file.
 
 
 ## Installing languages
@@ -42,35 +39,35 @@ in the `doc/building-unix.txt` file.
 
 ### Windows
 
-dpScreenOCR for Windows is shipped with the English language pack.
-To install other languages, visit the [Languages][Language packs]
-page, download `.traineddata` files you want, and place them in the
-`tessdata` directory located in the same folder as the dpScreenOCR
+dpScreenOCR for Windows is shipped with the English language pack. To
+install other languages, visit the [Languages][Language packs] page,
+download ".traineddata" files you want, and place them in the
+"tessdata" directory, located in the same folder as the dpScreenOCR
 executable.
 
 You can also download languages from other places, but make sure they
-are intended for Tesseract 4. An attempt to use data designed for
-another Tesseract version will cause dpScreenOCR to crash.
+are intended for Tesseract 4 or newer. dpScreenOCR will crash if you
+try to use data designed for another Tesseract version.
 
 
 ### Unix-like systems
 
-Use your package manager to install language packs for Tesseract. The
-package names may vary slightly across systems, but they usually start
-with "tesseract" and end with a language code or name. For example,
-the package for German have the following names:
+Use your package manager to install languages for Tesseract. The
+package names may vary across systems, but they usually start with
+"tesseract" and end with a language code or name. For example, the
+package for German have the following names:
 
- * `tesseract-ocr-deu` on Debian, Ubuntu, and derivatives
- * `tesseract-data-deu` on Arch Linux
- * `tesseract-langpack-deu` on Fedora
- * `tesseract-ocr-traineddata-german` on openSUSE
+*   "tesseract-ocr-deu" on Debian, Ubuntu, and derivatives
+*   "tesseract-data-deu" on Arch Linux
+*   "tesseract-langpack-deu" on Fedora
+*   "tesseract-ocr-traineddata-german" on openSUSE
 
 Be aware that on some systems (like Fedora) English is a part of the
-main `tesseract` package.
+main "tesseract" package.
 
 There are also two special packs that provide extra features rather
-than languages: `osd` (automatic script and orientation detection) and
-`equ` (math and equation detection). dpScreenOCR doesn't use them.
+than languages: "osd" (automatic script and orientation detection) and
+"equ" (math and equation detection). dpScreenOCR doesn't use them.
 
 
 # Usage
@@ -80,10 +77,10 @@ than languages: `osd` (automatic script and orientation detection) and
 
 dpScreenOCR is simple to use:
 
- 1. Choose some languages in the [Main tab].
- 2. Move the mouse pointer near the screen area containing text and
+1.  Choose languages in the [Main tab].
+2.  Move the mouse pointer near the screen area containing text and
     press the hotkey shown in the [Main tab] to start the selection.
- 4. Move the mouse so that the selection covers the text and press the
+3.  Move the mouse so that the selection covers the text and press the
     hotkey again.
 
 After these steps, dpScreenOCR will recognize the text from the
@@ -93,57 +90,28 @@ selected area and process it according to the actions from the
 
 ## Main tab
 
-![](manual-data/main-tab.png)
-
-
-### Status
-
-The status shows the state of dpScreenOCR:
-
- *  Green: The program is ready to use. You can press the [hotkey] to
-    start a new selection.
-
- *  Yellow: The program recognizes text.
-
- *  Red: The program needs some setup. There may be three reasons:
-
-    *  No languages are available. Please install some language packs
-       for Tesseract as described in the "[Installing languages]"
-       section and restart dpScreenOCR.
-
-    *  No languages are selected. You need to select at least one
-       language in the language list.
-
-    *  No actions are selected. You need to select at least one action
-       in the [Actions tab].
-
-The yellow and red status messages are also displayed in the title of
-the dpScreenOCR's window.
-
 
 ### Character recognition
-
-Options in this section control how dpScreenOCR will recognize text.
 
 
 #### Split text blocks
 
 If this option is enabled, dpScreenOCR will try to detect and split
 independent text blocks, e.g. columns. This behavior is best described
-by the following picture, which shows original text (left) recognized
-with (middle) and without (right) the "Split text blocks" option.
+by the following picture, which shows a two-column text layout (A)
+recognized with (B) and without (C) the "Split text blocks" option:
 
-![](manual-data/split.svg){ width=100% }
+![](manual-data/split.svg)
 
 
 #### Languages
 
-The language list shows all available language packs that dpScreenOCR
-can use to recognize text. You can choose more than one language, but
-be aware that this may slow down recognition and reduce its accuracy.
+The language list shows available language packs that dpScreenOCR can
+use to recognize text. You can choose more than one language, but be
+aware that this may slow down recognition and reduce its accuracy.
 
-If you want to install more language packs, read the
-"[Installing languages]" section.
+Read the "[Installing languages]" section on how to install more
+language packs.
 
 
 ### Hotkey
@@ -154,8 +122,8 @@ Escape.
 
 The hotkey is global: it works even if dpScreenOCR's window is
 minimized. If pressing the hotkey has no effect, it probably means
-that another program is already using it. In this case, try to choose
-a different key combination.
+that another program is already using it. In this case, try another
+key combination.
 
 
 ## Actions tab
@@ -172,8 +140,7 @@ This action will copy the text to the clipboard.
 ### Add text to history
 
 This action will add the text to the history located in the
-[History tab]. You can later save the history to a file in plain text,
-HTML, or JSON format.
+[History tab].
 
 
 ### Run executable
@@ -181,17 +148,7 @@ HTML, or JSON format.
 This action will run an executable with the recognized text as the
 first argument. The "Run executable" entry expects either an absolute
 path to the executable, or just its name in case it's located in one
-of the paths of your `PATH` environment variable.
-
-
-#### Using dpScreenOCR with [GoldenDict][]
-
-Point "Run executable" to the path of the GoldenDict's executable (or
-just its name on Unix-like platforms) and make sure GoldenDict is
-running. This way GoldenDict will receive the text from dpScreenOCR
-and show it in a pop-up window.
-
-[GoldenDict]: https://en.wikipedia.org/wiki/GoldenDict
+of the paths of your PATH environment variable.
 
 
 #### Running scripts on Windows
@@ -208,42 +165,43 @@ reasons. Please use Python or any other scripting language instead.
 Before using a script, make sure that the file association is
 configured correctly so that you can launch the script just by its
 file name, without mentioning the interpreter explicitly. The simplest
-way to test this is to type the name of the script with some
-command-line arguments in `cmd.exe`. If the script runs and receives
-all arguments, you can skip this section.
+way to test this is to type the name of the script with some arguments
+in cmd.exe. If the script runs and receives all arguments, you can
+skip this section.
 
 We will use Python as an example, but for other languages the process
-is similar. Open `cmd.exe` as administrator and run:
+is similar. Open cmd.exe as administrator and run:
 
     C:\>assoc .py
 
-  * If the association doesn't exist, create a new one:
+*   If the association doesn't exist (assoc prints nothing), create
+    a new one:
 
         C:\>assoc .py=Python.File
         C:\>ftype Python.File="C:\Windows\py.exe" "%L" %*
 
-  * If the association exists (`assoc` prints something like
-    `.py=Python.File`), run `ftype` to see what command is used:
+*   If the association exists (assoc prints something like
+    `.py=Python.File`), run ftype to see what command is used:
 
         C:\>ftype Python.File
         Python.File="C:\Windows\py.exe" "%L" %*
 
-    If the command doesn't end with `%*`, fix it:
+    If the command doesn't end with "%*", fix it:
 
         C:\>ftype Python.File="C:\Windows\py.exe" "%L" %*
 
 If the script still receives only one argument (path to the script),
 this means that Windows actually use a different association for the
-given extension and ignores the one set with `assoc/ftype`. To fix
-that, open `regedit` and make sure the values of the following keys
-end with `%*`:
+given extension and ignores the one set with assoc/ftype. To fix
+that, open regedit and make sure the values of the following keys
+end with "%*":
 
     HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command
     HKEY_CLASSES_ROOT\py_auto_file\shell\open\command
 
-A special tip for Python users: note that in the examples above the
-association uses Python Launcher (`py.exe`) rather than a concrete
-Python executable (`python.exe`). This allows using Unix-style
+A tip for Python users: note that in the examples above the
+association uses Python Launcher (py.exe) rather than a concrete
+Python executable (python.exe). This allows using Unix-style
 [shebang][] lines to select the Python version on per-script basis.
 For more information, read [Using Python on Windows][].
 
@@ -252,40 +210,32 @@ For more information, read [Using Python on Windows][].
 
 ##### Hiding console window
 
-Almost all scripting language interpreters for Windows are shipped
-with a special version of the executable that doesn't show the console
-window. For example, it's `pythonw.exe` for Python and `wperl.exe` for
-Perl.
+Most scripting language interpreters for Windows are shipped with a
+special version of the executable that doesn't show the console
+window. For example, it's pythonw.exe for Python and wlua.exe for Lua.
 
-A special file association is usually added during installation, so
-you can hide the console window by simply changing the extension of
-the script. For example, Python scripts with `.pyw` extension are
-associated with `pythonw.exe` instead of `python.exe`. Other languages
-have their own conventions, like `.wpl` for Perl (`wperl.exe`), `.rbw`
-for Ruby (`rubyw.exe`), `.wlua` for Lua (`wlua.exe`), etc.  If such an
-association does not exist, you can create it manually as described in
-the previous section.
+A special file association is usually added during installation of the
+interpreter, so you can hide the console window by simply changing the
+extension of the script. For example, Python scripts with the ".pyw"
+extension are associated with pythonw.exe instead of python.exe. Other
+languages have their own conventions, like ".wlua" for Lua (wlua.exe),
+".rbw" for Ruby (rubyw.exe), etc. If such an association does not
+exist, create it manually as described in the previous section.
 
 
 #### Running scripts on Unix-like systems
 
 Before using your script, make sure it starts with a proper
-[shebang][] and you have execute permission (run
-`chmod u+x your_script...`).
+[shebang][] and you have the execute permission (run
+`chmod u+x your_script`).
 
 Here is an example Unix shell script that translates the recognized
-text to your native language using [Translate Shell][], appends both
-original and translation to the `translations.txt` file in your home
-directory, and displays the translation as a desktop notification.
+text to your native language using [Translate Shell][] and displays
+the translation as a desktop notification.
 
     #!/bin/sh
 
-    TR=$(trans -b "$1")
-
-    printf "> Original\n\n%s\n" "$1" >> ~/translations.txt
-    printf "> Translated\n\n%s\n\n\n" "$TR" >> ~/translations.txt
-
-    notify-send "Translation" "$TR"
+    notify-send "Translation" $(trans -b "$1")
 
 [Shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
 [Translate Shell]: https://www.soimort.org/translate-shell/
@@ -305,9 +255,8 @@ format.
 ## Notification area icon
 
 dpScreenOCR has an icon in the notification area. You can toggle
-visibility of the window either from the icon's context menu or by
-activating the icon (left or middle mouse click, depending on the
-platform).
+visibility of the window either by activating the icon (left or middle
+mouse click, depending on the platform), or via its context menu.
 
 
 # Tweaking
@@ -315,119 +264,106 @@ platform).
 This section describes how to change some settings that are not
 available in the dpScreenOCR's interface.
 
-
-## settings.cfg
-
-dpScreenOCR saves settings in the `settings.cfg` file. Depending on
+dpScreenOCR saves settings in the settings.cfg file. Depending on
 the platform, you can find it in the following directories:
 
- *  Windows:
+*   Windows: `%LOCALAPPDATA%\dpscreenocr`
 
-    * Vista and newer: `%LOCALAPPDATA%\dpscreenocr`
-    * XP: `%USERPROFILE%\Local Settings\Application Data\dpscreenocr`
+    You can copy this path to the folder address bar of Explorer to
+    open it. `%LOCALAPPDATA%` is a standard environment variable which
+    usually expands to `C:\Users\(your name)\AppData\Local\`
 
-    The strings within `%` are standard environment variables. You can
-    copy these paths directly to the folder address bar of Explorer to
-    open them.
-
- *  Unix-like systems: `~/.config/dpscreenocr`
+*   Unix-like systems: `~/.config/dpscreenocr`
 
 You can modify the file with any text editor. To reset an option to
 the default value, remove it from the file; to reset all options,
-clear the file or delete it. Be aware that dpScreenOCR rewrites
-settings on exit, so make sure you close the program before making
-changes.
+clear or delete the file. Be aware that dpScreenOCR rewrites settings
+on exit, so close the program before making changes.
 
-An option value can be one of the following types:
+A value can be one of the following types:
 
- *  String - an arbitrary sequence of characters.
+*   String - a sequence of characters.
 
-    If the string should have leading or trailing whitespace, enclose
-    it in double quotes. Obviously, quoting is also necessary if the
-    string actually starts and ends with a double quote.
+    Enclose a string in double quotes to preserve leading or trailing
+    whitespace characters, or if the text itself begins and ends with
+    a double quote.
 
     Strings can contain the following escape sequences:
 
-      * `\b` - backspace
-      * `\f` - form feed
-      * `\n` - line feed
-      * `\r` - carriage return
-      * `\t` - tabulation
-      * `\\` - backslash
+    * `\b` - backspace
+    * `\f` - form feed
+    * `\n` - line feed
+    * `\r` - carriage return
+    * `\t` - tabulation
 
-    Escaping a tabulation is optional. Escaping a backslash is
-    optional too, unless the backslash and the next character create
-    one of the escape sequences.
+    Any other character preceded by `\` is inserted as is. Escaping a
+    tabulation is optional.
 
- *  Boolean: `true` or `false`.
+*   Boolean: `true` or `false`.
 
- *  Number, like `10` or `-5`.
+*   Number, like `10` or `-5`.
 
 Here is the list of all options that can only be changed by editing
 the settings file:
 
- *  `action_copy_to_clipboard_text_separator` (`\n\n` by default)
+*   `action_copy_to_clipboard_text_separator` (`\n\n` by default)
     specify the separator for multiple texts for "Copy text to
     clipboard" action. This option only has effect if
     `ocr_allow_queuing` is enabled.
 
-    Keep in mind that every text, if not empty, ends with a newline.
+    Keep in mind that every recognized text, if not empty, ends with
+    a newline.
 
- *  `action_run_executable_wait_to_complete` (`true` by default)
-    whether to wait for the executable to complete.
+*   `action_run_executable_wait_to_complete` (`true` by default)
+    whether to wait for the executable to complete. If this option is
+    disabled, several instances of the executable can run
+    simultaneously.
 
-    If this option is disabled, several instances of the executable
-    can run simultaneously.
-
- *  `hotkey_cancel_selection` (`Escape` by default) - hotkey to cancel
+*   `hotkey_cancel_selection` (`Escape` by default) hotkey to cancel
     selection.
 
- *  `ocr_allow_queuing` (`true` by default) allows to queue a new
+*   `ocr_allow_queuing` (`true` by default) allows to queue a new
     selection for recognition without waiting for the previous one to
     complete.
 
-    If this option is enabled, "Copy text to clipboard" action may
-    receive more than one text at a time, in which case texts will be
-    joined together using `action_copy_to_clipboard_text_separator`.
+    If this option is enabled, the "Copy text to clipboard" action may
+    receive several recognized text at once, in which case they will
+    be joined together using `action_copy_to_clipboard_text_separator`
+    as separator.
 
     If this option is disabled, pressing the hotkey will have no
-    effect until the recognition is done. This guarantees that the
-    clipboard will receive exactly one text.
+    effect until the recognition is done.
 
- *  `ui_native_file_dialogs` (`true` by default) use file dialogs
+*   `ui_native_file_dialogs` (`true` by default) use file dialogs
     native to your platform instead of the ones specific to the GUI
     framework.
 
- *  `ui_tray_icon_visible` (`true` by default) whether to show an icon
+*   `ui_tray_icon_visible` (`true` by default) whether to show an icon
     in the notification area.
 
- *  `ui_window_minimize_to_tray` (`false` by default) hide window to
+*   `ui_window_minimize_on_start` (`false` by default) minimize window
+    on start.
+
+*   `ui_window_minimize_to_tray` (`false` by default) hide window to
     the notification area on minimizing. This option only has effect
     if `ui_tray_icon_visible` is enabled.
 
 
-## Environment variables
-
- *  `DPSO_DUMP_DEBUG_IMAGE` dump the image passed to Tesseract as
-    `dpso_debug.pgm` to the current working directory. "1" to enable,
-    "0" to disable.
-
-
 # Troubleshooting
 
-This section contains the list of common issues and solutions to them.
+This section contains the list of possible issues and their solutions.
 If the solutions don't help, or you have an issue that is not listed
 here, please report the problem on the [issue tracker][].
 
 [Issue tracker]: https://github.com/danpla/dpscreenocr/issues
 
- *  **The recognized text contains garbage**
+*   **Recognized text contains garbage**
 
     Make sure that you use the minimal set of [languages] needed to
     recognize the text. Don't enable languages just in case: this will
     dramatically reduce the accuracy of recognition.
 
- *  **Pressing the [hotkey] has no effect**
+*   **Pressing the [hotkey] has no effect**
 
     * This hotkey is probably used by another program. Try to choose
       another key combination.
@@ -435,11 +371,11 @@ here, please report the problem on the [issue tracker][].
     * (Unix) Are you using Wayland? It's not yet supported. If
       possible, switch to X11 session.
 
- *  **"Run executable" has no effect**
+*   **"Run executable" has no effect**
 
     * Make sure that the "Run executable" entry contains either an
       absolute path to the executable, or just the name of the
-      executable that resides in one of the paths of the `PATH`
+      executable that resides in one of the paths of the PATH
       environment variable.
 
     * (Windows) Are you trying to use a batch file (".bat" or ".cmd")?
@@ -447,24 +383,48 @@ here, please report the problem on the [issue tracker][].
       another scripting language instead.
 
     * (Unix) Make sure you have execute permission. Run
-      `chmod u+x executable...`.
+      `chmod u+x executable`.
 
     * (Unix) If your executable is a script, make sure it starts with
       a proper [shebang][].
 
- *  **"Run executable" hangs dpScreenOCR**
+*   **"Run executable" hangs dpScreenOCR**
 
-    This happens because dpScreenOCR waits for the executable to exit.
-    You can disable waiting with the
-    `action_run_executable_wait_to_complete` option as described in
-    the "[Tweaking]" section.
+    dpScreenOCR waits for the executable to exit. You can disable
+    waiting with the `action_run_executable_wait_to_complete` option
+    as described in the "[Tweaking]" section.
 
- *  **(Windows) "Run executable" opens the script in a text editor
-    instead of running it**
+*   **dpScreenOCR doesn't see language packs**
 
-    See [Creating file associations].
+    * Make sure that the TESSDATA_PREFIX environment variable is
+      either not set or points to the parent directory of your
+      "tessdata" directory. In particular, you have this variable on
+      Windows if you have ever used Tesseract installers from
+      SourceForge with default settings.
 
- *  **(Windows) "Run executable" runs the script without an
+    * (Windows) This may happen if the program is installed in a path
+      that have Unicode characters not supported by you current code
+      page. This is a Tesseract limitation that cannot be fixed on the
+      dpScreenOCR side. Try to install the program to another
+      location; any path consisting of ASCII characters will do.
+
+*   **(Windows) "Run executable" opens the script in a text editor**
+
+    Create a file association as described in
+    [Creating file associations].
+
+*   **(Windows) "Run executable" runs the script without an
     argument**
 
-    See [Creating file associations].
+    Make sure that the file association ends with `%*`. See
+    [Creating file associations] for the details.
+
+*   **(Unix) File dialogs are not translated**
+
+    This can happen if Qt 5 uses its own file dialogs instead of the
+    ones native to your desktop environment, and Qt translations are
+    not installed. If enabling the `ui_native_file_dialogs` option
+    (see the "Tweaking" section) doesn't help or is undesirable, use
+    your package manager to install a package that provides Qt 5
+    translations. For example, it's the "qttranslations5-l10n" package
+    on Debian, Ubuntu, and derivatives.

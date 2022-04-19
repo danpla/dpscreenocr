@@ -1,62 +1,56 @@
-This document describes how to build dpScreenOCR on Windows with
-MSYS2.
+Building dpScreenOCR on Windows with MSYS2.
 
 Contents:
 
-  1 Dependencies
-      1.1 Overview
-      1.2 Installing MSYS2
-      1.3 Installing dependencies
-      1.4 Installing Pandoc
+  1 Setting up environment
+      1.1 MSYS2
+      1.2 Dependencies
+      1.3 Pandoc
   2 Building
   3 Packaging
 
 
-1 Dependencies
-==============
+1 Setting up environment
+========================
 
 
-1.1 Overview
-------------
+1.1 MSYS2
+---------
 
-To build dpScreenOCR, you will need the following tools and libraries:
-
-Required:
-
-  * C++ compiler with C++11 support
-  * CMake 2.8.12 or newer
-  * Make
-  * Qt (4 or 5)
-  * tesseract
-  * pkg-config (to find tesseract)
-  * dos2unix package (line endings conversion)
-
-Optional; can be disabled with CMake options:
-
-  * libintl (gettext runtime; DPSO_ENABLE_NLS option)
-  * gettext tools (msgfmt is needed to compile message catalogs;
-      DPSO_ENABLE_NLS option)
-  * pandoc (to generate HTML manual; DPSO_GEN_HTML_MANUAL option)
-
-
-1.2 Installing MSYS2
---------------------
-
-We will work in MSYS2 environment, so the first thing to do is to
-visit https://www.msys2.org/ and follow the instructions.
+Visit https://www.msys2.org for instructions on how to install and set
+up MSYS2.
 
 MSYS2 provides three shells: MSYS shell ("MSYS2 MSYS") and two MinGW
 shells for 32 and 64-bit environments ("MSYS2 MinGW 32-bit" and "MSYS2
 MinGW 64-bit"). You will never need the MSYS shell; instead, pick a
 MinGW shell depending on whether you want to build a 32-bit or 64-bit
-version of the program. The 32-bit application will work on both
-32-bit and 64-bit Windows.
+version of the program.
 
 
-1.3 Installing dependencies
----------------------------
+1.2 Dependencies
+----------------
 
-Run in a MinGW shell:
+You will need the following tools and libraries to build dpScreenOCR:
+
+Required:
+
+  * C++ compiler with C++11 support
+  * CMake 2.8.12 or newer. 3.16 or newer is recommended as it can
+    automatically detect runtime dependencies of executables (DLLs).
+  * Make
+  * Qt 4 or 5
+  * tesseract
+  * pkg-config (to find tesseract)
+  * dos2unix
+
+Optional; can be disabled with CMake:
+
+  * libintl (gettext runtime; DPSO_ENABLE_NLS option)
+  * gettext tools (msgfmt is needed to compile message catalogs;
+    DPSO_ENABLE_NLS option)
+  * pandoc (to generate HTML manual; DPSO_GEN_HTML_MANUAL option)
+
+To install all dependencies except Pandoc, run in a MinGW shell:
 
     pacman -S --needed \
         dos2unix \
@@ -71,63 +65,34 @@ Run in a MinGW shell:
 
 Several notes:
 
-  * The command uses the MINGW_PACKAGE_PREFIX variable, which is
-    defined by both MinGW shells. For example, if you run it in 32-bit
-    shell, it will install 32-bit versions of packages with
-    "mingw-w64-i686" prefix.
-
-    The MSYS shell ("MSYS2 MSYS") does not define this variable. If
-    you want to run the command in the MSYS shell for some reason,
-    define the variable explicitly:
-
-        MINGW_PACKAGE_PREFIX=mingw-w64-i686
-
-    Alternatively, you can simply prefix each package name manually.
-
   * Tesseact data files don't depend on the architecture, so there is
     no need to install "tesseract-data-eng" and other languages for
     both i686 and x86_64; when building for x86_64, you can use data
-    from i686 and vice versa.
+    from i686 and vice versa. Alternatively, you can download the
+    languages as described in the user manual.
 
-    Alternatively, you can download the languages as described in the
-    user manual instead of using MSYS2. Still, be aware that CMake
-    will automatically copy the "tessdata" directory for the current
-    architecture to the build directory.
+    Still, be aware that CMake will automatically copy the "tessdata"
+    directory for the current architecture to the build directory.
 
   * In MSYS2, gettext utilities and the runtime library (libintl) come
     in one package.
 
 
-1.4 Installing Pandoc
----------------------
+1.3 Pandoc
+----------
 
 MSYS2 does not provide Pandoc, so you have to download it from
-https://pandoc.org. You can choose either an installer or a ZIP
-archive. In both cases, the simplest way to use Pandoc with CMake is
-to copy pandoc.exe in the build directory.
+https://pandoc.org and make it visible to CMake either by copying
+pandoc.exe to the build directory or by extending PATH in a MinGW
+shell:
 
-If you want to use Pandoc trough the PATH environment variable added
-by the installer, you will need to tell the MINGW shell to inherit the
-system PATH using one of the following ways:
-
-  * Extend PATH:
-
-        export PATH="${PATH}:path_to_pandoc_exe_parent_dir"
-
-  * Set MSYS2_PATH_TYPE=inherit environment variable, or uncomment the
-    appropriate line in msys2_shell.cmd, which resides in your MSYS2
-    installation directory.
-
-  * Append -use-full-path when invoking a shell:
-
-        msys2_shell.cmd -mingw32 -use-full-path
+    export PATH="$PATH:path_to_pandoc_dir"
 
 
 2 Building
 ==========
 
-In the simplest case, you can build dpScreenOCR with the following
-commands:
+You can build dpScreenOCR with the following commands:
 
     cd path_to_dpscreenocr_source
     mkdir build
@@ -135,68 +100,48 @@ commands:
     cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
     make
 
-This will create the release build in standard configuration (all
-optional dependencies enabled). It will also create and copy all
-necessary data files:
+You can configure the build with various CMake options; run
+"cmake -LH .." to see them all. Options specific to dpScreenOCR have
+the "DPSO_" prefix.
 
-  * "doc" dir - all documents: manual, license, changelog, etc.
-    Depending on the DPSO_GEN_HTML_MANUAL option, the manual
-    will be either in HTML or in plain text.
+DLLs are copied automatically if CMake version is 3.16 or newer. With
+older CMake, you have to copy them manually from "$MINGW_PREFIX/bin/".
 
-  * "icons" dir - app icons
-
-  * "locale" dir - compiled gettext catalogs. Only created if the
-    DPSO_ENABLE_NLS is enabled.
-
-  * "platforms" and "styles" dirs - platform-specific Qt plugins
-
-  * "tessdata" dir - Tesseract data files. CMake will copy that
-    directory from "$MINGW_PREFIX/share", and then remove "osd" and
-    "equ" traineddata files, which are not used by dpScreenOCR.
-
-  * "translations" dir - standard Qt translations. Only created if the
-    DPSO_ENABLE_NLS is enabled.
-
-You can configure the build with various CMake options. To list them
-all, run "cmake -LH ..". Non-standard options specific to dpScreenOCR
-have "DPSO_" prefix.
 
 
 3 Packaging
 ===========
 
-To create a package, run "cpack -G <generators>", where <generators>
-is a semicolon-separated list of generator names:
+To create packages, run "cpack -G <generators>", where <generators>
+is a semicolon-separated list of generator names you can find in
+"cpack --help". The most useful generators on Windows are:
 
   * ZIP - ZIP archive.
-
-  * 7Z - 7z archive. Has higher compression ratio than ZIP.
 
   * NSIS - EXE installer using NSIS. To install NSIS, run:
 
         pacman -S --needed $MINGW_PACKAGE_PREFIX-nsis
 
-  * WIX - MSI installer using WIX toolkit. You need to download WIX
-    from https://wixtoolset.org/ (either an installer or a ZIP archive
-    with binaries) and tell CPack the path to its binaries in one of
-    the following ways:
+  * WIX - MSI installer using WIX toolkit. Download WIX from
+    https://wixtoolset.org/ and tell CPack the path to its binaries in
+    one of the following ways:
 
-      * With CPACK_WIX_ROOT CPack variable:
+      * With the CPACK_WIX_ROOT CPack variable:
 
             cpack -D CPACK_WIX_ROOT="c:\\WiX Toolset\\bin" ...
 
-      * With WIX environment variable:
+      * With the WIX environment variable:
 
             export WIX="c:\\WiX Toolset\\bin"
             cpack ...
 
-      * By extending PATH environment variable:
+      * By extending the PATH environment variable:
 
             export PATH="$PATH:/c/WiX Toolset/bin"
             cpack ...
 
-    Note that the first two variants accept both native Windows (like
-    "c:\\WiX Toolset\\bin") and Unix-style (like "/c/WiX Toolset/bin")
-    paths. For the third option you should always use a Unix-style
-    path to avoid the colon after the drive letter to be interpreted
-    as PATH separator.
+    Note that the first two variants accept paths in both native
+    Windows (like "c:\\WiX Toolset\\bin") and Unix-style (like
+    "/c/WiX Toolset/bin") formats. For the third option you should
+    always use a Unix-style path to avoid the colon after the drive
+    letter to be interpreted as a PATH separator.
