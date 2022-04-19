@@ -13,9 +13,7 @@ set(CPACK_PACKAGE_VENDOR "${APP_AUTHOR}")
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    include(dist_deb)
-elseif(WIN32)
+if(WIN32)
     include(dist_nsis)
     include(dist_wix)
 endif()
