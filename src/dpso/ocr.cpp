@@ -46,7 +46,9 @@ static bool localeChanged;
 
 
 static auto localeRefHoldersLowerBound(const void* refHolder)
-    -> std::vector<const void*>::const_iterator
+    // In GCC 4.8, vectors' insert(), erase(), etc. only accept
+    // non-const iterators.
+    -> std::vector<const void*>::iterator
 {
     return std::lower_bound(
         localeRefHolders.begin(), localeRefHolders.end(), refHolder);
