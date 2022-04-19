@@ -15,7 +15,6 @@ SelectionExecutor::SelectionExecutor(
     : selection{selection}
     , actionExecutor{actionExecutor}
 {
-
 }
 
 

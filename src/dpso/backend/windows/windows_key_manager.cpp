@@ -133,7 +133,6 @@ WindowsKeyManager::WindowsKeyManager()
     , hotkeysEnabled{}
     , hotkeyAction{-1}
 {
-
 }
 
 

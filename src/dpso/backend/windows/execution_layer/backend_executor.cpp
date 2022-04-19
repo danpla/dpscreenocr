@@ -47,7 +47,6 @@ BackendExecutor::BackendExecutor(BackendCreatorFn creatorFn)
     , keyManagerExecutor{backend->getKeyManager(), *actionExecutor}
     , selectionExecutor{backend->getSelection(), *actionExecutor}
 {
-
 }
 
 

@@ -34,7 +34,6 @@ struct DcReleaser {
     explicit DcReleaser(HWND window)
         : window{window}
     {
-
     }
 
     void operator()(HDC dc) const
@@ -93,7 +92,6 @@ struct ObjectSelector {
         : dc{dc}
         , oldObject{SelectObject(dc, newObject)}
     {
-
     }
 
     ObjectSelector(const ObjectSelector& other) = delete;

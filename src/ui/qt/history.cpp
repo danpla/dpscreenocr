@@ -84,7 +84,6 @@ History::DynamicStrings::DynamicStrings()
         + "JSON (*.json);;"
         + _("All files") + " (*)"}
 {
-
 }
 
 

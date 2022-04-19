@@ -176,7 +176,6 @@ MainWindow::DynamicStrings::DynamicStrings()
     , cancel{_("Cancel")}
     , quit{_("Quit")}
 {
-
 }
 
 

@@ -13,7 +13,6 @@ public:
     explicit SimpleOcrResultText(const char* text)
         : text{text}
     {
-
     }
 
     const char* getData() const override

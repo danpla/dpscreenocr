@@ -17,7 +17,6 @@ public:
         : text{std::move(text)}
         , textLen{textLen}
     {
-
     }
 
     const char* getData() const override

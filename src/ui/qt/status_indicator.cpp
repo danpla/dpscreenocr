@@ -8,7 +8,6 @@ StatusIndicator::StatusIndicator(QWidget* parent)
     : QWidget{parent}
     , status{}
 {
-
 }
 
 

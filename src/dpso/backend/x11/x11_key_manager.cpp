@@ -55,7 +55,6 @@ X11KeyManager::X11KeyManager(Display* display)
     , hotkeysEnabled{}
     , hotkeyAction{-1}
 {
-
 }
 
 

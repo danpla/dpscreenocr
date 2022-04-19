@@ -15,7 +15,6 @@ KeyManagerExecutor::KeyManagerExecutor(
     : keyManager{keyManager}
     , actionExecutor{actionExecutor}
 {
-
 }
 
 

@@ -17,7 +17,6 @@ NullKeyManager::NullKeyManager()
     : hotkeysEnabled{}
     , bindings{}
 {
-
 }
 
 

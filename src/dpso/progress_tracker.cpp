@@ -47,7 +47,6 @@ ProgressTracker::ProgressTracker(int numJobs)
     , curJobNum{}
     , curProgress{}
 {
-
 }
 
 

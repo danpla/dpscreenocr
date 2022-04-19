@@ -13,7 +13,6 @@ OcrResult::OcrResult(Status status, const char* text)
     : status{status}
     , text{text ? OcrResultText::create(text) : nullptr}
 {
-
 }
 
 
@@ -22,7 +21,6 @@ OcrResult::OcrResult(
     : status{status}
     , text{std::move(text)}
 {
-
 }
 
 

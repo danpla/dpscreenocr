@@ -14,14 +14,12 @@ struct Point {
     Point()
         : Point{0, 0}
     {
-
     }
 
     Point(int x, int y)
         : x{x}
         , y{y}
     {
-
     }
 };
 
@@ -33,14 +31,12 @@ struct Side {
     Side()
         : Side{0, 0}
     {
-
     }
 
     Side(int start, int size)
         : start{start}
         , size{size}
     {
-
     }
 
     static Side betweenPoints(int a, int b);
@@ -59,7 +55,6 @@ struct Rect {
     Rect()
         : Rect{0, 0, 0, 0}
     {
-
     }
 
     Rect(int x, int y, int w, int h)
@@ -68,19 +63,16 @@ struct Rect {
         , w{w}
         , h{h}
     {
-
     }
 
     Rect(const Side& x, const Side& y)
         : Rect{x.start, y.start, x.size, y.size}
     {
-
     }
 
     explicit Rect(const DpsoRect& cRect)
         : Rect{cRect.x, cRect.y, cRect.w, cRect.h}
     {
-
     }
 
     static Rect betweenPoints(const Point& a, const Point& b);
