@@ -10,14 +10,6 @@ option(
     YES
 )
 
-# See https://bugreports.qt.io/browse/QTBUG-33775. This bug doesn't
-# affect Qt 4.
-option(
-    DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
-    "Use workaround for setWindowTitle() bug in Qt 5 < 5.3.2 with X11"
-    YES
-)
-
 # CMP0071: Let AUTOMOC and AUTOUIC process GENERATED files.
 # We don't rely on this behavior; we just need to suppress the warning,
 # as it's triggered for the generated .rcc files.
@@ -120,8 +112,9 @@ else()
     )
 endif()
 
-if(DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
-        AND UNIX
+# See https://bugreports.qt.io/browse/QTBUG-33775. This bug doesn't
+# affect Qt 4.
+if(UNIX
         AND NOT APPLE
         AND DPSO_QT_VERSION EQUAL 5
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")

@@ -71,14 +71,6 @@ the "DPSO_" prefix; the most interesting on Unix-like systems are:
     dpScreenOCR without installation. See the "Using uninstalled"
     section below for more information.
 
-  * DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND (ON by default) enables a
-    workaround for a bug in Qt 5 < 5.3.2. Requires Qt 5 X11 extras.
-    This option is ignored if Qt 5 >= 5.3.2.
-
-    As the name implies, the bug affects changing of the main window
-    title: it's not updated if you don't interact with the window, in
-    particular, while the window is minimized.
-
 
 Installing
 ==========
