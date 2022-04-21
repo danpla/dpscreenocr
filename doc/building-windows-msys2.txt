@@ -42,7 +42,8 @@ Required:
   * Make
   * Qt 4 or 5
   * tesseract
-  * pkg-config (to find tesseract)
+  * pkg-config (to find tesseract). Recent MSYS2 uses a compatible
+    pkgconf tool.
   * dos2unix
 
 Optional; can be disabled with CMake:
@@ -60,7 +61,7 @@ To install all dependencies except Pandoc, run in a MinGW shell:
         $MINGW_PACKAGE_PREFIX-cmake \
         $MINGW_PACKAGE_PREFIX-gcc \
         $MINGW_PACKAGE_PREFIX-qt5 \
-        $MINGW_PACKAGE_PREFIX-pkg-config \
+        $MINGW_PACKAGE_PREFIX-pkgconf \
         $MINGW_PACKAGE_PREFIX-tesseract-ocr \
         $MINGW_PACKAGE_PREFIX-tesseract-data-eng \
         $MINGW_PACKAGE_PREFIX-gettext
