@@ -4,7 +4,8 @@ Dependencies
 Required:
 
   * C++ compiler with C++11 support
-  * CMake 2.8.12 or newer
+  * CMake >= 2.8.12. A particular version of Qt may require a newer
+    version of CMake.
   * Make
   * Qt 4 or 5
   * libtesseract

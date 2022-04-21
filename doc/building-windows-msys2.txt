@@ -35,8 +35,10 @@ You will need the following tools and libraries to build dpScreenOCR:
 Required:
 
   * C++ compiler with C++11 support
-  * CMake 2.8.12 or newer. 3.16 or newer is recommended as it can
-    automatically detect runtime dependencies of executables (DLLs).
+  * CMake >= 2.8.12. At least 3.17 is recommended for automatic
+    copying of DLLs (requires 3.16) and to enable all features of NSIS
+    installer (requires 3.17). A particular version of Qt may require
+    a newer version of CMake.
   * Make
   * Qt 4 or 5
   * tesseract
