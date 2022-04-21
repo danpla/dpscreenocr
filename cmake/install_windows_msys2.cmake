@@ -13,7 +13,6 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.16)
         ALL
         COMMENT "Copying DLLs"
         COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
-        DEPENDS "${APP_FILE_NAME}.exe"
     )
 
     add_dependencies("copy_dlls" "${APP_FILE_NAME}_${DPSO_UI}")
