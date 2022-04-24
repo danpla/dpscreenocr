@@ -1,7 +1,11 @@
 
 #pragma once
 
+#include <cstdarg>
 #include <cstddef>
+#include <string>
+
+#include "printf_fn.h"
 
 
 namespace dpso {
@@ -39,6 +43,10 @@ inline int cmp(
 {
     return cmpSubStr(a, b, -1, options);
 }
+
+
+std::string vprintf(const char* fmt, std::va_list vlist);
+std::string printf(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
 
 }

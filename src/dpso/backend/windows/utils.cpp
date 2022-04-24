@@ -3,6 +3,8 @@
 
 #include <cstdio>
 
+#include "str.h"
+
 
 namespace dpso {
 namespace windows {
@@ -45,11 +47,7 @@ std::string getHresultMessage(HRESULT hresult)
     if (HRESULT_FACILITY(hresult) == FACILITY_WIN32)
         return getErrorMessage(HRESULT_CODE(hresult));
 
-    char buf[sizeof(hresult) * 2 + 1];
-    if (std::snprintf(buf, sizeof(buf), "%08lX", hresult) < 0)
-        buf[0] = 0;
-
-    return std::string{"HRESULT 0x"} + buf;
+    return str::printf("HRESULT 0x%08lX", hresult);
 }
 
 

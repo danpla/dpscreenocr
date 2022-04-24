@@ -94,9 +94,33 @@ static void testCmpSubStr()
 }
 
 
+static void testPrintf()
+{
+    using namespace dpso;
+
+    #define TEST(CALL, EXPECTED) \
+        do { \
+        const auto got = CALL; \
+        if (got != EXPECTED) \
+            test::failure( \
+                "testPrintf: %s: " \
+                "got \"%s\", expected \"%s\"\n", \
+                #CALL, got.c_str(), EXPECTED); \
+        } while (false)
+
+
+    TEST(str::printf("%s", ""), "");
+    TEST(str::printf("%s %i", "Str", 123), "Str 123");
+
+    const std::string longStr(4096, 'a');
+    TEST(str::printf("%s", longStr.c_str()), longStr.c_str());
+}
+
+
 static void testStr()
 {
     testCmpSubStr();
+    testPrintf();
 }
 
 
