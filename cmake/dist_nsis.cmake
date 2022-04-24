@@ -15,6 +15,8 @@ include(dist_installer_common)
 set(CPACK_NSIS_PACKAGE_NAME "${APP_NAME} ${APP_VERSION}")
 set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 
+set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL YES)
+
 # Start menu page defaults to CPACK_NSIS_PACKAGE_NAME, which contains
 # the program version.
 set(
