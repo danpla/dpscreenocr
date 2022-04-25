@@ -18,7 +18,7 @@ const char* dpsoGetError(void)
 
 void dpsoSetError(const char* fmt, ...)
 {
-    va_list args;
+    std::va_list args;
     va_start(args, fmt);
     lastError = dpso::str::printf(fmt, args);
     va_end(args);

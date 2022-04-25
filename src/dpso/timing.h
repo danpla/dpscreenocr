@@ -32,7 +32,7 @@ struct CodeTimer {
 
         std::printf("Timing: ");
 
-        va_list args;
+        std::va_list args;
         va_start(args, fmt);
         std::vprintf(fmt, args);
         va_end(args);

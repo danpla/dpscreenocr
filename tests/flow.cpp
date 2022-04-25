@@ -68,7 +68,7 @@ void failure(const char* fmt, ...)
 {
     ++numFailures;
 
-    va_list args;
+    std::va_list args;
     va_start(args, fmt);
     std::vfprintf(stderr, fmt, args);
     va_end(args);
@@ -85,7 +85,7 @@ void fatalError(const char* fmt, ...)
 {
     std::fputs("FATAL ERROR\n", stderr);
 
-    va_list args;
+    std::va_list args;
     va_start(args, fmt);
     std::vfprintf(stderr, fmt, args);
     va_end(args);
