@@ -114,6 +114,8 @@ static void testPrintf()
 
     const std::string longStr(4096, 'a');
     TEST(str::printf("%s", longStr.c_str()), longStr.c_str());
+
+    #undef TEST
 }
 
 
