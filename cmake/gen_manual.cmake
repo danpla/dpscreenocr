@@ -13,19 +13,22 @@ endif()
 
 function(gen_html_manual target_name dst_dir)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
-
     set(DST_HTML "${dst_dir}/manual.html")
+
+    configure_file("${DOC_DIR}/manual-metadata.yaml.in" "${CMAKE_BINARY_DIR}/manual-metadata.yaml")
+
     separate_arguments(
         PANDOC_ARGS
         UNIX_COMMAND
-        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --output=\"${DST_HTML}\" --template=\"${DOC_DIR}/manual-data/template.html\" --toc --number-sections -V lang:en -V title:\"${APP_NAME} Manual\" -V subtitle:\"Version ${APP_VERSION}\" -V toc-title:\"Table of contents\" -V pagetitle:\"${APP_NAME} Manual\" \"${DOC_DIR}/manual.md\""
+        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --output=\"${DST_HTML}\"  --toc --number-sections \"${CMAKE_BINARY_DIR}/manual-metadata.yaml\" \"${DOC_DIR}/manual.md\"  "
     )
 
     add_custom_command(
         OUTPUT "${DST_HTML}"
+        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_LIST_DIR}/gen_manual_metadata.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}"
         COMMAND "${PANDOC_EXE}" ${PANDOC_ARGS}
-        DEPENDS "${DOC_DIR}/manual.md" "${DOC_DIR}/manual-data/manual.css" "${DOC_DIR}/manual-data/template.html"
+        DEPENDS "${DOC_DIR}/manual.md" "${CMAKE_BINARY_DIR}/manual-metadata.yaml" "${DOC_DIR}/manual-data/manual.css" "${DOC_DIR}/manual-data/template.html"
         VERBATIM
     )
 
