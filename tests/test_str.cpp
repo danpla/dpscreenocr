@@ -87,9 +87,9 @@ static void testCmpSubStr()
 
         test::failure(
             "testCmpSubStr: cmpSubStr(\"%s\", \"%s\", %zu, %u): "
-            "got %s, expected %s\n",
+            "expected %s, got %s\n",
             test.str, test.subStr, test.subStrLen, test.cmpOptions,
-            orderToStr(gotOrder), orderToStr(test.expectedOrder));
+            orderToStr(test.expectedOrder), orderToStr(gotOrder));
     }
 }
 
@@ -104,8 +104,8 @@ static void testPrintf()
         if (got != EXPECTED) \
             test::failure( \
                 "testPrintf: %s: " \
-                "got \"%s\", expected \"%s\"\n", \
-                #CALL, got.c_str(), EXPECTED); \
+                "expected \"%s\", got \"%s\"\n", \
+                #CALL, EXPECTED, got.c_str()); \
         } while (false)
 
 

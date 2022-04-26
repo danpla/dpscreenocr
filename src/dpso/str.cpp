@@ -53,7 +53,6 @@ std::string vprintf(const char* fmt, std::va_list args)
 std::string printf(const char* fmt, ...)
 {
     std::va_list args;
-
     va_start(args, fmt);
     auto result = str::vprintf(fmt, args);
     va_end(args);
