@@ -46,9 +46,7 @@ std::string escapeStr(const char* str)
                     result += c;
                 else {
                     char buf[5];
-                    std::snprintf(
-                        buf, sizeof(buf),
-                        "\\x%02x", static_cast<unsigned char>(c));
+                    std::snprintf(buf, sizeof(buf), "\\x%02hhx", c);
                     result += buf;
                 }
                 break;

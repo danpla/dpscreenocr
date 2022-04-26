@@ -108,7 +108,7 @@ static bool createEntries(
         if (*s == '\f') {
             if (s[1] != '\n') {
                 dpsoSetError(
-                    "Unexpected 0x%x after \\f at %zu",
+                    "Unexpected 0x%hhx after \\f at %zu",
                     s[1], s - data);
                 return false;
             }
