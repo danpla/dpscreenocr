@@ -16,8 +16,7 @@ Optional:
 
   * pkg-config - to find Tesseract. If pkg-config is not installed, or
     if you have an old Tesseract version that comes without a .pc file
-    for pkg-config, the include directory will be "/usr/include" and
-    the library name is "libtesseract".
+    for pkg-config, CMake will try to find Tesseract on its own.
 
   * Qt 5 X11 extras - to fix a window title bug in Qt 5 < 5.3.2.
 

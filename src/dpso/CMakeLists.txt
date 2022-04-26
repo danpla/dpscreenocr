@@ -112,11 +112,17 @@ endif()
 if(NOT TESSERACT_FOUND)
     # No pkg-config or an old Tesseract version that doesn't provide
     # a .pc file.
-    if(NOT EXISTS "/usr/include/tesseract")
-        message(SEND_ERROR "Tesseract is not found")
+    find_path(
+        TESSERACT_INCLUDE_DIRS baseapi.h PATH_SUFFIXES tesseract
+    )
+    if(NOT TESSERACT_INCLUDE_DIRS)
+        message(SEND_ERROR "Can't find tesseract include dir")
     endif()
-    set(TESSERACT_INCLUDE_DIRS /usr/include)
-    set(TESSERACT_LIBRARIES tesseract)
+
+    find_library(TESSERACT_LIBRARIES tesseract)
+    if(NOT TESSERACT_INCLUDE_DIRS)
+        message(SEND_ERROR "Can't find tesseract library")
+    endif()
 endif()
 
 target_include_directories(dpso PRIVATE ${TESSERACT_INCLUDE_DIRS})
