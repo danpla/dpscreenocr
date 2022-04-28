@@ -15,7 +15,11 @@ function(gen_html_manual target_name dst_dir)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
     set(DST_HTML "${dst_dir}/manual.html")
 
-    configure_file("${DOC_DIR}/manual-metadata.yaml.in" "${CMAKE_BINARY_DIR}/manual-metadata.yaml")
+    configure_file(
+        "${DOC_DIR}/manual-metadata.yaml.in"
+        "${CMAKE_BINARY_DIR}/manual-metadata.yaml"
+        @ONLY
+    )
 
     separate_arguments(
         PANDOC_ARGS

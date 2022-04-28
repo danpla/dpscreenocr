@@ -20,7 +20,8 @@ endif()
 
 configure_file(
     "${CMAKE_CURRENT_LIST_DIR}/cpack_options.cmake.in"
-    "${CMAKE_BINARY_DIR}/cpack_options.cmake" @ONLY
+    "${CMAKE_BINARY_DIR}/cpack_options.cmake"
+    @ONLY
 )
 set(
     CPACK_PROJECT_CONFIG_FILE
