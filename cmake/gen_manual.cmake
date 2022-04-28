@@ -25,7 +25,6 @@ function(gen_html_manual target_name dst_dir)
 
     add_custom_command(
         OUTPUT "${DST_HTML}"
-        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_LIST_DIR}/gen_manual_metadata.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}"
         COMMAND "${PANDOC_EXE}" ${PANDOC_ARGS}
         DEPENDS "${DOC_DIR}/manual.md" "${CMAKE_BINARY_DIR}/manual-metadata.yaml" "${DOC_DIR}/manual-data/manual.css" "${DOC_DIR}/manual-data/template.html"
