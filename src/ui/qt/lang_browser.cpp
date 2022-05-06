@@ -28,12 +28,11 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     : QTreeWidget{parent}
     , ocr{ocr}
 {
-    setHeaderLabels(
-        QStringList()
+    setHeaderLabels({
         // Checkbox
-        << ""
-        << pgettext("language", "Name")
-        << pgettext("language", "Code"));
+        "",
+        pgettext("language", "Name"),
+        pgettext("language", "Code")});
 
     setSortingEnabled(true);
     sortByColumn(columnIdxName, Qt::AscendingOrder);
