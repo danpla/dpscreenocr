@@ -345,8 +345,8 @@ static const char* boolToStr(bool b)
 int dpsoCfgGetInt(
     const struct DpsoCfg* cfg, const char* key, int defaultVal)
 {
-    const auto* str = dpsoCfgGetStr(cfg, key, "");
-    if (!*str)
+    const auto* str = dpsoCfgGetStr(cfg, key, nullptr);
+    if (!str)
         return defaultVal;
 
     char* end;
