@@ -119,7 +119,10 @@ void X11Selection::setIsEnabled(bool newIsEnabled)
     if (isEnabled) {
         origin = getMousePosition(display);
         setGeometry({origin.x, origin.y, 0, 0});
-        XMapWindow(display, window);
+        // We raise the window as a workaround for qtile, which as of
+        // version 0.21.0 honors neither override_redirect nor
+        // _NET_WM_STATE_ABOVE.
+        XMapRaised(display, window);
     } else
         XUnmapWindow(display, window);
 
