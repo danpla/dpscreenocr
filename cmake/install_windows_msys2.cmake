@@ -20,25 +20,13 @@ else()
     message(WARNING "DLLs are not copied automatically because CMake version is < 3.16")
 endif()
 
-
-# Copy tessdata directory from share/ to dst_dir.
-function(copy_tessdata dst_dir)
-    set(SRC_DIR "$ENV{MINGW_PREFIX}/share/tessdata")
-
-    add_custom_command(
-        OUTPUT "${dst_dir}/tessdata"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${SRC_DIR}" "${dst_dir}/tessdata"
-        COMMAND ${CMAKE_COMMAND} -E remove -f "${dst_dir}/tessdata/osd.traineddata"
-        COMMAND ${CMAKE_COMMAND} -E remove -f "${dst_dir}/tessdata/equ.traineddata"
-        DEPENDS "${SRC_DIR}"
-        VERBATIM
-    )
-
-    add_custom_target("tessdata_dir" ALL DEPENDS "${dst_dir}/tessdata")
-endfunction()
-
-
-copy_tessdata("${CMAKE_BINARY_DIR}")
+include(tessdata_utils)
+copy_tessdata(
+    "$ENV{MINGW_PREFIX}/share/tessdata"
+    "${CMAKE_BINARY_DIR}/tessdata"
+    LANGUAGES eng
+    OPTIONAL
+)
 
 function(copy_qt5_plugins dst_dir)
     set(SRC_DIR "$ENV{MINGW_PREFIX}/share/qt5/plugins")
@@ -55,7 +43,6 @@ function(copy_qt5_plugins dst_dir)
 
     add_custom_target("qt5_plugins" ALL DEPENDS "${dst_dir}/platforms" "${dst_dir}/styles")
 endfunction()
-
 
 if(DPSO_UI STREQUAL "qt")
     copy_qt5_plugins("${CMAKE_BINARY_DIR}")

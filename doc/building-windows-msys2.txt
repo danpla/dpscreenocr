@@ -74,8 +74,8 @@ Several notes:
     from i686 and vice versa. Alternatively, you can download the
     languages as described in the user manual.
 
-    Still, be aware that CMake will automatically copy the "tessdata"
-    directory for the current architecture to the build directory.
+    Still, be aware that CMake will try to copy the English language
+    pack installed for the current architecture.
 
   * In MSYS2, gettext utilities and the runtime library (libintl) come
     in one package.
