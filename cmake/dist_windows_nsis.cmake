@@ -4,13 +4,12 @@
 # variables (like MUI_WELCOMEFINISHPAGE_BITMAP). We thus should use a
 # backslash instead.
 
-
 if(CMAKE_VERSION VERSION_LESS 3.17)
     # CPACK_NSIS_MUI_HEADERIMAGE requires 3.17
     message(WARNING "Use CMake 3.17 or newer to enable all features of NSIS installer")
 endif()
 
-include(dist_installer_common)
+include(dist_windows_installer_common)
 
 set(CPACK_NSIS_PACKAGE_NAME "${APP_NAME} ${APP_VERSION}")
 set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")

@@ -1,5 +1,5 @@
 
-include(dist_installer_common)
+include(dist_windows_installer_common)
 
 set(CPACK_WIX_UPGRADE_GUID "98CA2F9D-3464-49EC-81B9-A2DB0509A327")
 

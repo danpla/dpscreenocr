@@ -14,8 +14,8 @@ set(CPACK_PACKAGE_VENDOR "${APP_AUTHOR}")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
 
 if(WIN32)
-    include(dist_nsis)
-    include(dist_wix)
+    include(dist_windows_nsis)
+    include(dist_windows_wix)
 endif()
 
 configure_file(
