@@ -42,16 +42,21 @@ Required:
   * Make
   * Qt 4 or 5
   * tesseract
-  * pkg-config (to find tesseract). Recent MSYS2 uses a compatible
-    pkgconf tool.
   * dos2unix
 
-Optional; can be disabled with CMake:
+Optional:
 
-  * libintl (gettext runtime; DPSO_ENABLE_NLS option)
-  * gettext tools (msgfmt is needed to compile message catalogs;
-    DPSO_ENABLE_NLS option)
-  * pandoc (to generate HTML manual; DPSO_GEN_HTML_MANUAL option)
+  * pkg-config to find tesseract (recent MSYS2 uses a compatible
+    pkgconf tool). If not installed, or if you have an old Tesseract
+    version that comes without a .pc file for pkg-config, CMake will
+    try to find Tesseract on its own.
+
+  * libintl. DPSO_ENABLE_NLS CMake option.
+
+  * gettext tools (msgfmt is needed to compile message catalogs).
+    DPSO_ENABLE_NLS CMake option.
+
+  * pandoc to generate HTML manual. DPSO_GEN_HTML_MANUAL CMake option.
 
 To install all dependencies except Pandoc, run in a MinGW shell:
 
