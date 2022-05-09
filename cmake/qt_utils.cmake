@@ -31,15 +31,11 @@ function(copy_qt_translations src_dir dst_dir)
 
         add_custom_command(
             OUTPUT "${DST_QM}"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SRC_QM}" "${DST_QM}"
+            COMMAND ${CMAKE_COMMAND} -E copy "${SRC_QM}" "${DST_QM}"
             DEPENDS "${SRC_QM}"
             VERBATIM
         )
     endforeach()
 
-    add_custom_target(
-        "qt_translations"
-        ALL
-        DEPENDS ${DST_QMS}
-    )
+    add_custom_target("qt_translations" ALL DEPENDS ${DST_QMS})
 endfunction()
