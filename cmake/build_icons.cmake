@@ -55,7 +55,7 @@ function(build_icons dst_dir)
     foreach(SIZE ${SIZES})
         set(SIZE_DIR)
         if(SIZE STREQUAL "scalable")
-            set(SIZE_DIR "scalable")
+            set(SIZE_DIR "${SIZE}")
         else()
             set(SIZE_DIR "${SIZE}x${SIZE}")
         endif()
@@ -63,15 +63,19 @@ function(build_icons dst_dir)
         file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/${SIZE_DIR}/*")
 
         set(DST_SUBDIR "${dst_dir}/${SIZE}")
-        list(APPEND TARGET_DEPENDENCIES "${DST_SUBDIR}")
 
-        add_custom_command(
-            OUTPUT "${DST_SUBDIR}"
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${DST_SUBDIR}"
-            COMMAND ${CMAKE_COMMAND} -E copy ${SRC_FILES} "${DST_SUBDIR}"
-            DEPENDS ${SRC_FILES}
-            VERBATIM
-        )
+        foreach(SRC_FILE ${SRC_FILES})
+            get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
+            set(DST_FILE "${DST_SUBDIR}/${SRC_FILE_NAME}")
+
+            add_custom_command(
+                OUTPUT "${DST_FILE}"
+                COMMAND ${CMAKE_COMMAND} -E copy "${SRC_FILE}" "${DST_FILE}"
+                DEPENDS "${SRC_FILE}"
+                VERBATIM
+            )
+            list(APPEND TARGET_DEPENDENCIES "${DST_FILE}")
+        endforeach()
     endforeach()
 
     add_custom_target("icons" ALL DEPENDS ${TARGET_DEPENDENCIES})
