@@ -45,10 +45,5 @@ if(DPSO_UI STREQUAL "qt")
             LANGUAGES ${LANGS}
             COMPONENTS qt qtbase
         )
-        install(
-            DIRECTORY "${CMAKE_BINARY_DIR}/translations"
-            DESTINATION .
-            COMPONENT localization
-        )
     endif()
 endif()

@@ -25,22 +25,23 @@ if(DPSO_UI STREQUAL "qt")
         "${CMAKE_BINARY_DIR}/icons"
         RASTER_SIZES all
     )
+
     install(
-        DIRECTORY "${CMAKE_BINARY_DIR}/icons"
+        DIRECTORY
+            "${CMAKE_BINARY_DIR}/icons"
+            "${CMAKE_BINARY_DIR}/platforms"
+            "${CMAKE_BINARY_DIR}/styles"
         DESTINATION .
         COMPONENT Required
     )
 
-    install(
-        DIRECTORY "${CMAKE_BINARY_DIR}/platforms"
-        DESTINATION .
-        COMPONENT Required
-    )
-    install(
-        DIRECTORY "${CMAKE_BINARY_DIR}/styles"
-        DESTINATION .
-        COMPONENT Required
-    )
+    if(DPSO_ENABLE_NLS)
+        install(
+            DIRECTORY "${CMAKE_BINARY_DIR}/translations"
+            DESTINATION .
+            COMPONENT localization
+        )
+    endif()
 endif()
 
 install(
