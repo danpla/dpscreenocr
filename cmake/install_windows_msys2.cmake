@@ -28,30 +28,17 @@ copy_tessdata(
     OPTIONAL
 )
 
-function(copy_qt5_plugins dst_dir)
-    set(SRC_DIR "$ENV{MINGW_PREFIX}/share/qt5/plugins")
+if(DPSO_UI STREQUAL "qt")
+    include(qt_utils)
 
-    add_custom_command(
-        OUTPUT "${dst_dir}/platforms" "${dst_dir}/styles"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}/platforms"
-        COMMAND ${CMAKE_COMMAND} -E copy "${SRC_DIR}/platforms/qwindows.dll" "${dst_dir}/platforms"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}/styles"
-        COMMAND ${CMAKE_COMMAND} -E copy "${SRC_DIR}/styles/qwindowsvistastyle.dll" "${dst_dir}/styles"
-        DEPENDS "${SRC_DIR}/platforms/qwindows.dll" "${SRC_DIR}/styles/qwindowsvistastyle.dll"
-        VERBATIM
+    copy_qt_windows_plugins(
+        "$ENV{MINGW_PREFIX}/share/qt5/plugins" "${CMAKE_BINARY_DIR}"
     )
 
-    add_custom_target("qt5_plugins" ALL DEPENDS "${dst_dir}/platforms" "${dst_dir}/styles")
-endfunction()
-
-if(DPSO_UI STREQUAL "qt")
-    copy_qt5_plugins("${CMAKE_BINARY_DIR}")
-
-    include(qt_utils)
-    include(get_linguas)
-
     if(DPSO_ENABLE_NLS)
+        include(get_linguas)
         get_linguas(LANGS)
+
         copy_qt_translations(
             "$ENV{MINGW_PREFIX}/share/qt5/translations"
             "${CMAKE_BINARY_DIR}/translations"
