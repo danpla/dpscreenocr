@@ -2,16 +2,8 @@
 /**
  * \file Helpers for libintl.h
  *
- * The file mostly mimics to gettext.h, but contains only routines
- * we actually need. Obviously, it should only be included if you
- * don't use gettext.h.
- *
- * Be aware that although variants with _expr postfix also come from
- * gettext.h, they are not in the list of standard keywords xgettext
- * uses for C/C++, and thus should be added explicitly with -k or
- * --keyword argument:
- *
- *     -kpgettext_expr:1c,2 -knpgettext_expr:1c,2,3
+ * This file mimics gettext.h, but contains only routines we actually
+ * need. It should only be included if you don't use gettext.h.
  */
 
 #pragma once

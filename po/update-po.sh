@@ -18,7 +18,7 @@ xgettext --files-from=POTFILES.in --from-code=UTF-8 --add-comments \
     --package-name=$APP_NAME \
     --msgid-bugs-address=$BUGS_ADDRESS \
     -D.. -D. --output=$APP_FILE_NAME.pot \
-    -k_ -kN_ -kpgettext_expr:1c,2 -knpgettext_expr:1c,2,3 \
+    -k_ -kN_ \
     $APP_FILE_NAME.desktop.in.h
 
 for f in *.po
