@@ -18,10 +18,10 @@ xgettext --files-from=POTFILES.in --from-code=UTF-8 --add-comments \
     -k_ -kN_ -kpgettext_expr:1c,2 -knpgettext_expr:1c,2,3 \
     $APP_FILE_NAME.desktop.in.h
 
-for f in *.po;
+for f in *.po
 do
     msgmerge --quiet --update --no-fuzzy-matching --backup=off \
-        $f $APP_FILE_NAME.pot;
+        $f $APP_FILE_NAME.pot
 done
 
 
