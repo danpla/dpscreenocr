@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-01-24 07:21+0200\n"
+"POT-Creation-Date: 2022-05-11 01:54+0300\n"
 "PO-Revision-Date: 2020-11-29 05:15+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -571,7 +571,7 @@ msgstr "Зберегти як…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Зберегти історію як звичайний текст, HTML або JSON"
 
-#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:132
+#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:133
 msgid "History"
 msgstr "Історія"
 
@@ -579,7 +579,7 @@ msgstr "Історія"
 msgid "Clear the history?"
 msgstr "Очистити історію?"
 
-#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:167
+#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:176
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -600,86 +600,83 @@ msgctxt "hotkey.key"
 msgid "None"
 msgstr "Нічого"
 
-#: src/ui/qt/lang_browser.cpp:35
+#: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Name"
 msgstr "Назва"
 
-#: src/ui/qt/lang_browser.cpp:36
+#: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Code"
 msgstr "Код"
 
-#: src/ui/qt/main_window.cpp:130
+#: src/ui/qt/main_window.cpp:131
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Головне"
 
-#: src/ui/qt/main_window.cpp:131
+#: src/ui/qt/main_window.cpp:132
 msgid "Actions"
 msgstr "Дії"
 
-#: src/ui/qt/main_window.cpp:133
+#: src/ui/qt/main_window.cpp:134
 msgid "About"
 msgstr "Про програму"
 
-#: src/ui/qt/main_window.cpp:157
+#: src/ui/qt/main_window.cpp:166
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Розпізнавання {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:158
+#: src/ui/qt/main_window.cpp:167
 msgid "Please install languages"
 msgstr "Будь ласка, встановіть мови"
 
-#: src/ui/qt/main_window.cpp:159
+#: src/ui/qt/main_window.cpp:168
 msgid "Please select languages"
 msgstr "Будь ласка, виберіть мови"
 
-#: src/ui/qt/main_window.cpp:161
+#: src/ui/qt/main_window.cpp:170
 msgid "Please select actions in the “Actions” tab"
 msgstr "Будь ласка, виберіть дії у вкладці «Дії»"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:164
+#: src/ui/qt/main_window.cpp:173
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Готово"
 
-#: src/ui/qt/main_window.cpp:166
+#: src/ui/qt/main_window.cpp:175
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Розпізнавання ще не закінчено. Все одно вийти?"
 
-#: src/ui/qt/main_window.cpp:168 src/ui/qt/main_window.cpp:266
+#: src/ui/qt/main_window.cpp:177 src/ui/qt/main_window.cpp:280
 msgid "Quit"
 msgstr "Вийти"
 
-#: src/ui/qt/main_window.cpp:258
+#: src/ui/qt/main_window.cpp:272
 msgid "Show {app_name}"
 msgstr "Показати {app_name}"
 
-#: src/ui/qt/main_window.cpp:273
+#: src/ui/qt/main_window.cpp:287
 msgid "Status"
 msgstr "Статус"
 
-#: src/ui/qt/main_window.cpp:284
+#: src/ui/qt/main_window.cpp:298
 msgid "Character recognition"
 msgstr "Розпізнавання символів"
 
-#: src/ui/qt/main_window.cpp:289
+#: src/ui/qt/main_window.cpp:303
 msgid "Split text blocks"
 msgstr "Розділити блоки тексту"
 
-#: src/ui/qt/main_window.cpp:291
+#: src/ui/qt/main_window.cpp:305
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Розділити незалежні блоки тексту, такі як колонки"
 
-#: src/ui/qt/main_window.cpp:294
+#: src/ui/qt/main_window.cpp:308
 msgid "Languages:"
 msgstr "Мови:"
 
-#: src/ui/qt/main_window.cpp:298
+#: src/ui/qt/main_window.cpp:312
 msgid "Hotkey"
 msgstr "Гаряча клавіша"
-
-#~ msgid "Math and equations"
-#~ msgstr "Математика та рівняння"

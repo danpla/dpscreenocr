@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-01-24 07:21+0200\n"
+"POT-Creation-Date: 2022-05-11 01:54+0300\n"
 "PO-Revision-Date: 2022-01-18 11:52+0000\n"
 "Last-Translator: poi <erbaotao@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -570,7 +570,7 @@ msgstr "另存为…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "以纯文本、HTML 或 JSON 保存历史记录"
 
-#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:132
+#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:133
 msgid "History"
 msgstr "历史记录"
 
@@ -578,7 +578,7 @@ msgstr "历史记录"
 msgid "Clear the history?"
 msgstr "清空历史记录？"
 
-#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:167
+#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:176
 msgid "Cancel"
 msgstr "取消"
 
@@ -599,86 +599,83 @@ msgctxt "hotkey.key"
 msgid "None"
 msgstr "无"
 
-#: src/ui/qt/lang_browser.cpp:35
+#: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Name"
 msgstr "名称"
 
-#: src/ui/qt/lang_browser.cpp:36
+#: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Code"
 msgstr "代号"
 
-#: src/ui/qt/main_window.cpp:130
+#: src/ui/qt/main_window.cpp:131
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "主页"
 
-#: src/ui/qt/main_window.cpp:131
+#: src/ui/qt/main_window.cpp:132
 msgid "Actions"
 msgstr "操作"
 
-#: src/ui/qt/main_window.cpp:133
+#: src/ui/qt/main_window.cpp:134
 msgid "About"
 msgstr "关于软件"
 
-#: src/ui/qt/main_window.cpp:157
+#: src/ui/qt/main_window.cpp:166
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "已识别 {progress}%（{current_job} / {total_jobs}）"
 
-#: src/ui/qt/main_window.cpp:158
+#: src/ui/qt/main_window.cpp:167
 msgid "Please install languages"
 msgstr "需安装语言"
 
-#: src/ui/qt/main_window.cpp:159
+#: src/ui/qt/main_window.cpp:168
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:161
+#: src/ui/qt/main_window.cpp:170
 msgid "Please select actions in the “Actions” tab"
 msgstr "请在“操作”选项卡中选择操作"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:164
+#: src/ui/qt/main_window.cpp:173
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "准备就绪"
 
-#: src/ui/qt/main_window.cpp:166
+#: src/ui/qt/main_window.cpp:175
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "识别还没完成。真的要退出吗？"
 
-#: src/ui/qt/main_window.cpp:168 src/ui/qt/main_window.cpp:266
+#: src/ui/qt/main_window.cpp:177 src/ui/qt/main_window.cpp:280
 msgid "Quit"
 msgstr "退出"
 
-#: src/ui/qt/main_window.cpp:258
+#: src/ui/qt/main_window.cpp:272
 msgid "Show {app_name}"
 msgstr "显示 {app_name}"
 
-#: src/ui/qt/main_window.cpp:273
+#: src/ui/qt/main_window.cpp:287
 msgid "Status"
 msgstr "状态"
 
-#: src/ui/qt/main_window.cpp:284
+#: src/ui/qt/main_window.cpp:298
 msgid "Character recognition"
 msgstr "字符识别"
 
-#: src/ui/qt/main_window.cpp:289
+#: src/ui/qt/main_window.cpp:303
 msgid "Split text blocks"
 msgstr "分块识别文本"
 
-#: src/ui/qt/main_window.cpp:291
+#: src/ui/qt/main_window.cpp:305
 msgid "Split independent text blocks, e.g. columns"
 msgstr "分割独立的文本块（比如分栏的文本）"
 
-#: src/ui/qt/main_window.cpp:294
+#: src/ui/qt/main_window.cpp:308
 msgid "Languages:"
 msgstr "语言："
 
-#: src/ui/qt/main_window.cpp:298
+#: src/ui/qt/main_window.cpp:312
 msgid "Hotkey"
 msgstr "快捷键"
-
-#~ msgid "Math and equations"
-#~ msgstr "数学内容和方程式"

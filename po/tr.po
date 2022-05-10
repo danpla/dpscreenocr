@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-01-24 07:21+0200\n"
+"POT-Creation-Date: 2022-05-11 01:54+0300\n"
 "PO-Revision-Date: 2021-05-03 20:32+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -572,7 +572,7 @@ msgstr "Farklı kaydet…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Geçmişi düz metin, HTML veya JSON olarak kaydedin"
 
-#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:132
+#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:133
 msgid "History"
 msgstr "Geçmiş"
 
@@ -580,7 +580,7 @@ msgstr "Geçmiş"
 msgid "Clear the history?"
 msgstr "Geçmişi temizleyelim mi?"
 
-#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:167
+#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:176
 msgid "Cancel"
 msgstr "İptal"
 
@@ -601,86 +601,83 @@ msgctxt "hotkey.key"
 msgid "None"
 msgstr "Yok"
 
-#: src/ui/qt/lang_browser.cpp:35
+#: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Name"
 msgstr "İsim"
 
-#: src/ui/qt/lang_browser.cpp:36
+#: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Code"
 msgstr "Kod"
 
-#: src/ui/qt/main_window.cpp:130
+#: src/ui/qt/main_window.cpp:131
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Temel"
 
-#: src/ui/qt/main_window.cpp:131
+#: src/ui/qt/main_window.cpp:132
 msgid "Actions"
 msgstr "Eylemler"
 
-#: src/ui/qt/main_window.cpp:133
+#: src/ui/qt/main_window.cpp:134
 msgid "About"
 msgstr "Hakkında"
 
-#: src/ui/qt/main_window.cpp:157
+#: src/ui/qt/main_window.cpp:166
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "{progress}% Tanındı ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:158
+#: src/ui/qt/main_window.cpp:167
 msgid "Please install languages"
 msgstr "Lütfen dilleri yükleyin"
 
-#: src/ui/qt/main_window.cpp:159
+#: src/ui/qt/main_window.cpp:168
 msgid "Please select languages"
 msgstr "Lütfen dilleri seçiniz"
 
-#: src/ui/qt/main_window.cpp:161
+#: src/ui/qt/main_window.cpp:170
 msgid "Please select actions in the “Actions” tab"
 msgstr "Lütfen \"Eylemler\" sekmesindeki eylemleri seçin"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:164
+#: src/ui/qt/main_window.cpp:173
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Hazır"
 
-#: src/ui/qt/main_window.cpp:166
+#: src/ui/qt/main_window.cpp:175
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Tanıma henüz tamamlanmadı. Yine de bırakacak mısın?"
 
-#: src/ui/qt/main_window.cpp:168 src/ui/qt/main_window.cpp:266
+#: src/ui/qt/main_window.cpp:177 src/ui/qt/main_window.cpp:280
 msgid "Quit"
 msgstr "Çıkış"
 
-#: src/ui/qt/main_window.cpp:258
+#: src/ui/qt/main_window.cpp:272
 msgid "Show {app_name}"
 msgstr "Göster {app_name}"
 
-#: src/ui/qt/main_window.cpp:273
+#: src/ui/qt/main_window.cpp:287
 msgid "Status"
 msgstr "Durumlar"
 
-#: src/ui/qt/main_window.cpp:284
+#: src/ui/qt/main_window.cpp:298
 msgid "Character recognition"
 msgstr "Karakter tanıma"
 
-#: src/ui/qt/main_window.cpp:289
+#: src/ui/qt/main_window.cpp:303
 msgid "Split text blocks"
 msgstr "Bölünmüş metin blokları"
 
-#: src/ui/qt/main_window.cpp:291
+#: src/ui/qt/main_window.cpp:305
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Bağımsız metin bloklarını, örneğin sütunları bölme"
 
-#: src/ui/qt/main_window.cpp:294
+#: src/ui/qt/main_window.cpp:308
 msgid "Languages:"
 msgstr "Diller:"
 
-#: src/ui/qt/main_window.cpp:298
+#: src/ui/qt/main_window.cpp:312
 msgid "Hotkey"
 msgstr "Kısayol"
-
-#~ msgid "Math and equations"
-#~ msgstr "Matematik ve denklemler"

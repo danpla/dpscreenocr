@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-01-24 07:21+0200\n"
+"POT-Creation-Date: 2022-05-11 01:54+0300\n"
 "PO-Revision-Date: 2020-04-20 07:11+0000\n"
 "Last-Translator: Martin Beer <mv87@dismail.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -572,7 +572,7 @@ msgstr "Speichern unter…"
 msgid "Save the history as plain text, HTML, or JSON"
 msgstr "Speichert den Verlauf als Rohtext, im HTML- oder im JSON-Format ab"
 
-#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:132
+#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:133
 msgid "History"
 msgstr "Verlauf"
 
@@ -580,7 +580,7 @@ msgstr "Verlauf"
 msgid "Clear the history?"
 msgstr "Verlauf löschen?"
 
-#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:167
+#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:176
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -601,86 +601,83 @@ msgctxt "hotkey.key"
 msgid "None"
 msgstr "Keiner"
 
-#: src/ui/qt/lang_browser.cpp:35
+#: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Name"
 msgstr "Sprache"
 
-#: src/ui/qt/lang_browser.cpp:36
+#: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Code"
 msgstr "ISO-Code"
 
-#: src/ui/qt/main_window.cpp:130
+#: src/ui/qt/main_window.cpp:131
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Allgemein"
 
-#: src/ui/qt/main_window.cpp:131
+#: src/ui/qt/main_window.cpp:132
 msgid "Actions"
 msgstr "Aktionen"
 
-#: src/ui/qt/main_window.cpp:133
+#: src/ui/qt/main_window.cpp:134
 msgid "About"
 msgstr "Über"
 
-#: src/ui/qt/main_window.cpp:157
+#: src/ui/qt/main_window.cpp:166
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Texterkennung {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:158
+#: src/ui/qt/main_window.cpp:167
 msgid "Please install languages"
 msgstr "Bitte Sprachpakete für Tesseract installieren"
 
-#: src/ui/qt/main_window.cpp:159
+#: src/ui/qt/main_window.cpp:168
 msgid "Please select languages"
 msgstr "Bitte Sprachen auswählen"
 
-#: src/ui/qt/main_window.cpp:161
+#: src/ui/qt/main_window.cpp:170
 msgid "Please select actions in the “Actions” tab"
 msgstr "Bitte Aktionen im Reiter „Aktionen” auswählen"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:164
+#: src/ui/qt/main_window.cpp:173
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Bereit"
 
-#: src/ui/qt/main_window.cpp:166
+#: src/ui/qt/main_window.cpp:175
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Texterkennung läuft noch. Trotzdem beenden?"
 
-#: src/ui/qt/main_window.cpp:168 src/ui/qt/main_window.cpp:266
+#: src/ui/qt/main_window.cpp:177 src/ui/qt/main_window.cpp:280
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/ui/qt/main_window.cpp:258
+#: src/ui/qt/main_window.cpp:272
 msgid "Show {app_name}"
 msgstr "{app_name} anzeigen"
 
-#: src/ui/qt/main_window.cpp:273
+#: src/ui/qt/main_window.cpp:287
 msgid "Status"
 msgstr "Status"
 
-#: src/ui/qt/main_window.cpp:284
+#: src/ui/qt/main_window.cpp:298
 msgid "Character recognition"
 msgstr "Zeichenerkennung"
 
-#: src/ui/qt/main_window.cpp:289
+#: src/ui/qt/main_window.cpp:303
 msgid "Split text blocks"
 msgstr "Textblöcke aufteilen"
 
-#: src/ui/qt/main_window.cpp:291
+#: src/ui/qt/main_window.cpp:305
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Teile voneinander unabhängige Textblöcke, z.B. Spalten, auf"
 
-#: src/ui/qt/main_window.cpp:294
+#: src/ui/qt/main_window.cpp:308
 msgid "Languages:"
 msgstr "Sprachen:"
 
-#: src/ui/qt/main_window.cpp:298
+#: src/ui/qt/main_window.cpp:312
 msgid "Hotkey"
 msgstr "Tastenkürzel"
-
-#~ msgid "Math and equations"
-#~ msgstr "Mathematische Symbole und Gleichungen"
