@@ -400,13 +400,17 @@ static dpso::OcrImage prepareScreenshot(
         "screenshot.getGrayscaleData (%ix%i px)",
         screenshot.getWidth(), screenshot.getHeight());
 
+    dpso::ProgressTracker localProgressTracker(2, &progressTracker);
+    localProgressTracker.start();
+
+    localProgressTracker.advanceJob();
     START_TIMING(imageResizing);
     dpso::img::resize(
         &ocr.imgBuffers[0][0],
         screenshot.getWidth(), screenshot.getHeight(), bufferPitch,
         &ocr.imgBuffers[1][0],
         bufferW, bufferH, bufferPitch,
-        &progressTracker);
+        &localProgressTracker);
     END_TIMING(
         imageResizing,
         "Image resizing (%ix%i px -> %ix%i px, x%i)",
@@ -416,6 +420,7 @@ static dpso::OcrImage prepareScreenshot(
 
     const int unsharpMaskRadius = 10;
 
+    localProgressTracker.advanceJob();
     START_TIMING(unsharpMasking);
     dpso::img::unsharpMask(
         &ocr.imgBuffers[1][0], bufferPitch,
@@ -424,11 +429,13 @@ static dpso::OcrImage prepareScreenshot(
         bufferW, bufferH,
         unsharpMaskRadius,
         1.0f,
-        &progressTracker);
+        &localProgressTracker);
     END_TIMING(
         unsharpMasking,
         "Unsharp masking (radius=%i, %ix%i px)",
         unsharpMaskRadius, bufferW, bufferH);
+
+    localProgressTracker.finish();
 
     return {&ocr.imgBuffers[0][0], bufferW, bufferH, bufferPitch};
 }
@@ -483,11 +490,10 @@ static void processJob(DpsoOcr& ocr, const Job& job)
     assert(job.screenshot);
     assert(!job.langIndices.empty());
 
-    // There are 3 progress jobs: resizing and unsharp masking in
-    // prepareScreenshot() and OCR.
-    dpso::ProgressTracker progressTracker(3, progressTrackerFn, &ocr);
+    dpso::ProgressTracker progressTracker(2, progressTrackerFn, &ocr);
     progressTracker.start();
 
+    progressTracker.advanceJob();
     const auto ocrImage = prepareScreenshot(
         ocr, *job.screenshot, progressTracker);
 

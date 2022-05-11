@@ -40,11 +40,9 @@ void resize(
     std::uint8_t* dst, int dstW, int dstH, int dstPitch,
     ProgressTracker* progressTracker)
 {
-    if (progressTracker)
-        progressTracker->advanceJob();
-
     ProgressTracker localProgressTracker(1, progressTracker);
     localProgressTracker.start();
+    localProgressTracker.advanceJob();
 
     stbirSetProgressFn(resizeProgress, &localProgressTracker);
     stbir_resize_uint8(
@@ -69,8 +67,6 @@ static void hBoxBlur(
     assert(radius > 0);
     assert(srcPitch >= w);
     assert(dstPitch >= w);
-
-    progressTracker.advanceJob();
 
     const auto kernelSize = 1 + radius * 2;
 
@@ -110,8 +106,6 @@ static void vBoxBlur(
     assert(srcPitch >= w);
     assert(dstPitch >= w);
 
-    progressTracker.advanceJob();
-
     const auto kernelSize = 1 + radius * 2;
 
     for (int x = 0; x < w; ++x) {
@@ -138,15 +132,6 @@ static void vBoxBlur(
 }
 
 
-static int getNumBoxBlurJobs(int numIters)
-{
-    const auto numSubpassesPerIter = 2;  // vertical + horizontal
-    return numIters * numSubpassesPerIter;
-}
-
-
-// boxBlur() advances the progressTracker getNumBoxBlurJobs(numIters)
-// times.
 static void boxBlur(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
@@ -155,8 +140,14 @@ static void boxBlur(
     int numIters,
     ProgressTracker& progressTracker)
 {
+    const auto numSubpassesPerIter = 2;  // vertical + horizontal
+    const auto numJobs = numIters * numSubpassesPerIter;
+
+    ProgressTracker localProgressTracker(numJobs, &progressTracker);
+    localProgressTracker.start();
+
     if (w < 1 || h < 1 || radius < 1 || numIters < 1) {
-        progressTracker.advanceJob(getNumBoxBlurJobs(numIters));
+        localProgressTracker.advanceJob(numJobs);
         return;
     }
 
@@ -164,16 +155,21 @@ static void boxBlur(
     auto curSrcPitch = srcPitch;
 
     for (int i = 0; i < numIters; ++i) {
+        localProgressTracker.advanceJob();
         hBoxBlur(
             curSrc, curSrcPitch, tmp, tmpPitch, w, h, radius,
-            progressTracker);
+            localProgressTracker);
+
+        localProgressTracker.advanceJob();
         vBoxBlur(
             tmp, tmpPitch, dst, dstPitch, w, h, radius,
-            progressTracker);
+            localProgressTracker);
 
         curSrc = dst;
         curSrcPitch = dstPitch;
     }
+
+    localProgressTracker.finish();
 }
 
 
@@ -189,7 +185,9 @@ static void unsharp(
     assert(blurredPitch >= w);
     assert(dstPitch >= w);
 
-    progressTracker.advanceJob();
+    ProgressTracker localProgressTracker(1, &progressTracker);
+    localProgressTracker.start();
+    localProgressTracker.advanceJob();
 
     for (int y = 0; y < h; ++y) {
         const auto* srcRow = src + y * srcPitch;
@@ -207,8 +205,10 @@ static void unsharp(
             dstRow[x] = value;
         }
 
-        progressTracker.update(static_cast<float>(y) / h);
+        localProgressTracker.update(static_cast<float>(y) / h);
     }
+
+    localProgressTracker.finish();
 }
 
 
@@ -242,24 +242,20 @@ void unsharpMask(
     float amount,
     ProgressTracker* progressTracker)
 {
-    static const auto numBlurIters = 2;
-    static const auto numJobs = getNumBoxBlurJobs(numBlurIters) + 1;
-
-    if (progressTracker)
-        progressTracker->advanceJob();
-
-    ProgressTracker localProgressTracker(numJobs, progressTracker);
+    ProgressTracker localProgressTracker(2, progressTracker);
     localProgressTracker.start();
 
+    localProgressTracker.advanceJob();
     boxBlur(
         src, srcPitch,
         dst, dstPitch,
         tmp, tmpPitch,
         w, h,
         radius,
-        numBlurIters,
+        2,
         localProgressTracker);
 
+    localProgressTracker.advanceJob();
     unsharp(
         src, srcPitch,
         dst, dstPitch,
