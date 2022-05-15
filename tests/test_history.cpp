@@ -11,7 +11,7 @@
 
 
 static void cmpFields(
-    const char* name, const char* a, const char* b, int line)
+    const char* name, const char* a, const char* b, int lineNum)
 {
     if (std::strcmp(a, b) == 0)
         return;
@@ -19,7 +19,7 @@ static void cmpFields(
     test::failure(
         "line %i: DpsoHistoryEntry::%s don't match: "
         "\"%s\" != \"%s\"\n",
-        line,
+        lineNum,
         name,
         test::utils::escapeStr(a).c_str(),
         test::utils::escapeStr(b).c_str());
@@ -27,9 +27,9 @@ static void cmpFields(
 
 
 static void cmpEntries(
-    const DpsoHistoryEntry& a, const DpsoHistoryEntry& b, int line)
+    const DpsoHistoryEntry& a, const DpsoHistoryEntry& b, int lineNum)
 {
-    #define CMP(name) cmpFields(#name, a.name, b.name, line)
+    #define CMP(name) cmpFields(#name, a.name, b.name, lineNum)
 
     CMP(timestamp);
     CMP(text);
@@ -42,7 +42,7 @@ static void cmpEntries(
 
 
 static void testCount(
-    const DpsoHistory* history, int expected, int line)
+    const DpsoHistory* history, int expected, int lineNum)
 {
     const auto got = dpsoHistoryCount(history);
     if (got == expected)
@@ -50,7 +50,7 @@ static void testCount(
 
     test::failure(
         "line %i: dpsoHistoryCount(): Expected %i, got %i\n",
-        line,
+        lineNum,
         expected,
         got);
 }
