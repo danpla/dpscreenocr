@@ -62,12 +62,23 @@ package for German have the following names:
 *   "tesseract-langpack-deu" on Fedora
 *   "tesseract-ocr-traineddata-german" on openSUSE
 
-Be aware that on some systems (like Fedora) English is a part of the
-main "tesseract" package.
+When searching for a language, be aware that some codes are not from
+[ISO 639-3][]. In particular, "frk" is German Fraktur rather than
+Frankish. The Tesseract developers are aware of this and will
+probably fix the code in the future (see issues
+[68][tessdata-frk-issue-68], [49][tessdata-frk-issue-49], and
+[61][tessdata-frk-issue-61]); meanwhile, if "frk" is described as
+"Frankish" in your package manager, you can report the problem to the
+package maintainer.
 
 There are also two special packs that provide extra features rather
 than languages: "osd" (automatic script and orientation detection) and
 "equ" (math and equation detection). dpScreenOCR doesn't use them.
+
+[ISO 639-3]: https://en.wikipedia.org/wiki/ISO_639-3
+[tessdata-frk-issue-68]: https://github.com/tesseract-ocr/tessdata_best/issues/68
+[tessdata-frk-issue-49]: https://github.com/tesseract-ocr/tessdata/issues/49
+[tessdata-frk-issue-61]: https://github.com/tesseract-ocr/langdata/issues/61
 
 
 # Usage
