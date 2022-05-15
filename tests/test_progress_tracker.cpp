@@ -20,7 +20,7 @@ struct ProgressInfo {
 
 static void updateProgressInfo(float progress, void* userData)
 {
-    auto& pt = * static_cast<ProgressInfo*>(userData);
+    auto& pt = *static_cast<ProgressInfo*>(userData);
     ++pt.numCalls;
     pt.progress = progress;
 }
@@ -50,7 +50,7 @@ static void cmpProgressInfo(
         progressInfo, ProgressInfo{NUM_CALLS, PROGRESS}, __LINE__)
 
 
-static void testProgressTrackerHierarchy()
+static void testHierarchy()
 {
     ProgressInfo progressInfo{0, -1.0f};
 
@@ -94,7 +94,7 @@ static void testProgressTrackerHierarchy()
 }
 
 
-static void testProgressTrackerSensitivity()
+static void testSensitivity()
 {
     ProgressInfo progressInfo{0, -1.0f};
 
@@ -135,8 +135,8 @@ static void testProgressTrackerSensitivity()
 
 static void testProgressTracker()
 {
-    testProgressTrackerHierarchy();
-    testProgressTrackerSensitivity();
+    testHierarchy();
+    testSensitivity();
 }
 
 
