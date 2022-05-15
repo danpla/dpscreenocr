@@ -8,9 +8,8 @@ namespace dpso {
 /**
  * Progress tracker.
  *
- * The progress tracker solves the problem of reporting progress of
- * some operation that consists of several routines that don't aware
- * of each other.
+ * The progress tracker allows reporting progress of an operation
+ * consisting of several routines that don't aware of each other.
  *
  * The progress tracker operates on a fixed number of progress jobs.
  * A progress job is either an actual routine that reports it's
@@ -24,8 +23,8 @@ namespace dpso {
  *   * Toplevel - a tracker that reports progress via a callback.
  *
  *   * Child - a tracker that reports progress to the parent's
- *     update() method. That way, the child tracker acts like a group;
- *     it's treated as a single job by the parent.
+ *     update() method. It acts like a group and is treated as a
+ *     single job by the parent.
  *
  *   * Null - a tracker that does nothing. You can create it as a
  *     toplevel with a null callback, as a child with a null parent,
@@ -52,7 +51,7 @@ public:
      * \param sensitivity How often to invoke the progress callback.
      *     The smaller the value, the more often the callback is
      *     called. For example, with the default value (0.01) the
-     *     progress is reported every 1%.
+     *     progress is reported no more often than every 1%.
      */
     ProgressTracker(
         int numJobs,
@@ -77,15 +76,6 @@ public:
     explicit ProgressTracker(int numJobs);
 
     /**
-     * Start progress.
-     *
-     * start() resets the progress tracker and unconditionally
-     * reports 0.0 progress. Calling this method is optional, unless
-     * you want to reuse the tracker.
-     */
-    void start();
-
-    /**
      * Advance to the next job.
      *
      * The jobs are counted from 1. The initial number of the current
@@ -95,10 +85,8 @@ public:
      * The total number of jobs will be clamped to the maximum
      * specified in the constructor. At the same time, this method has
      * an assert() call to help you detect errors.
-     *
-     * \param count Number of jobs to advance. Values < 1 are ignored.
      */
-    void advanceJob(int count = 1);
+    void advanceJob();
 
     /**
      * Update progress of the current job.
@@ -110,8 +98,7 @@ public:
     /**
      * Finish progress.
      *
-     * finish() unconditionally reports 1.0 progress. Be aware that it
-     * doesn't reset the state of the tracker; use start() for that.
+     * finish() unconditionally reports 1.0.
      */
     void finish();
 private:
@@ -121,13 +108,9 @@ private:
     ProgressTracker* parent;
     float sensitivity;
 
-    float jobProgressScale;
-
-    float baseProgress;
     int curJobNum;
-    float curProgress;
+    float lastProgress;
 
-    void reset();
     void report(float progress);
 };
 

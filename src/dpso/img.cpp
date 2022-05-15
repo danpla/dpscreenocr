@@ -41,7 +41,6 @@ void resize(
     ProgressTracker* progressTracker)
 {
     ProgressTracker localProgressTracker(1, progressTracker);
-    localProgressTracker.start();
     localProgressTracker.advanceJob();
 
     stbirSetProgressFn(resizeProgress, &localProgressTracker);
@@ -144,10 +143,9 @@ static void boxBlur(
     const auto numJobs = numIters * numSubpassesPerIter;
 
     ProgressTracker localProgressTracker(numJobs, &progressTracker);
-    localProgressTracker.start();
 
     if (w < 1 || h < 1 || radius < 1 || numIters < 1) {
-        localProgressTracker.advanceJob(numJobs);
+        localProgressTracker.finish();
         return;
     }
 
@@ -186,7 +184,6 @@ static void unsharp(
     assert(dstPitch >= w);
 
     ProgressTracker localProgressTracker(1, &progressTracker);
-    localProgressTracker.start();
     localProgressTracker.advanceJob();
 
     for (int y = 0; y < h; ++y) {
@@ -243,7 +240,6 @@ void unsharpMask(
     ProgressTracker* progressTracker)
 {
     ProgressTracker localProgressTracker(2, progressTracker);
-    localProgressTracker.start();
 
     localProgressTracker.advanceJob();
     boxBlur(

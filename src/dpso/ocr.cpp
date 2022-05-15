@@ -401,7 +401,6 @@ static dpso::OcrImage prepareScreenshot(
         screenshot.getWidth(), screenshot.getHeight());
 
     dpso::ProgressTracker localProgressTracker(2, &progressTracker);
-    localProgressTracker.start();
 
     localProgressTracker.advanceJob();
     START_TIMING(imageResizing);
@@ -491,7 +490,6 @@ static void processJob(DpsoOcr& ocr, const Job& job)
     assert(!job.langIndices.empty());
 
     dpso::ProgressTracker progressTracker(2, progressTrackerFn, &ocr);
-    progressTracker.start();
 
     progressTracker.advanceJob();
     const auto ocrImage = prepareScreenshot(

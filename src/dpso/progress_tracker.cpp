@@ -2,6 +2,7 @@
 #include "progress_tracker.h"
 
 #include <cassert>
+#include <cmath>
 
 
 namespace dpso {
@@ -42,45 +43,26 @@ ProgressTracker::ProgressTracker(int numJobs)
     , userData{}
     , parent{}
     , sensitivity{}
-    , jobProgressScale{1.0f / this->numJobs}
-    , baseProgress{}
     , curJobNum{}
-    , curProgress{}
+    , lastProgress{-1.0f}
 {
 }
 
 
-void ProgressTracker::start()
+void ProgressTracker::advanceJob()
 {
-    reset();
-    report(0.0f);
-}
-
-
-void ProgressTracker::advanceJob(int count)
-{
-    if (count < 1)
-        return;
-
-    curJobNum += count;
+    ++curJobNum;
     assert(curJobNum <= numJobs);
     if (curJobNum > numJobs)
         curJobNum = numJobs;
 
-    baseProgress = jobProgressScale * (curJobNum - 1);
+    report((curJobNum - 1) / static_cast<float>(numJobs));
 }
 
 
 void ProgressTracker::update(float jobProgress)
 {
-    const auto newCurProgress = (
-        baseProgress + jobProgress * jobProgressScale);
-
-    if (newCurProgress - curProgress < sensitivity)
-        return;
-
-    curProgress = newCurProgress;
-    report(curProgress);
+    report((curJobNum - 1 + jobProgress) / numJobs);
 }
 
 
@@ -90,20 +72,26 @@ void ProgressTracker::finish()
 }
 
 
-void ProgressTracker::reset()
-{
-    baseProgress = {};
-    curJobNum = {};
-    curProgress = {};
-}
-
-
 void ProgressTracker::report(float progress)
 {
-    if (parent)
+    if (parent) {
         parent->update(progress);
-    else
-        progressFn(progress, userData);
+        return;
+    }
+
+    if (progress != 1.0f && sensitivity > 0.0f)
+        progress = std::floor(progress / sensitivity) * sensitivity;
+
+    // Even if sensitivity is 0, we still check the values to avoid
+    // invoking the callback when update() is called several times in
+    // a row with the same progress, e.g. when a hierarchy of trackers
+    // call advanceJob() for the first time, or when the child's
+    // finish() is followed by the parent's advanceJob().
+    if (progress <= lastProgress)
+        return;
+
+    progressFn(progress, userData);
+    lastProgress = progress;
 }
 
 
