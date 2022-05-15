@@ -429,13 +429,3 @@ here, please report the problem on the [issue tracker][].
 
     Make sure that the file association ends with `%*`. See
     [Creating file associations] for the details.
-
-*   **(Unix) File dialogs are not translated**
-
-    This can happen if Qt 5 uses its own file dialogs instead of the
-    ones native to your desktop environment, and Qt translations are
-    not installed. If enabling the `ui_native_file_dialogs` option
-    (see the "Tweaking" section) doesn't help or is undesirable, use
-    your package manager to install a package that provides Qt 5
-    translations. For example, it's the "qttranslations5-l10n" package
-    on Debian, Ubuntu, and derivatives.
