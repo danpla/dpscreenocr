@@ -315,7 +315,7 @@ QWidget* MainWindow::createMainTab()
 
     hotkeyEditor = new HotkeyEditor(
         hotkeyActionToggleSelection,
-        {dpsoUnknownKey},
+        true,
         Qt::Vertical);
     connect(
         hotkeyEditor, SIGNAL(changed()),

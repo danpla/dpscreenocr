@@ -1,6 +1,8 @@
 
 #include "hotkey_editor.h"
 
+#include <cassert>
+
 #include <QBoxLayout>
 #include <QCheckBox>
 #include <QComboBox>
@@ -10,11 +12,12 @@
 
 HotkeyEditor::HotkeyEditor(
         DpsoHotkeyAction action,
-        const QVector<DpsoKey>& hiddenKeys,
+        bool hideNoneKey,
         Qt::Orientation orientation,
         QWidget* parent)
     : QWidget{parent}
     , action{action}
+    , hideNoneKey{hideNoneKey}
     , keyCombo{}
     , modCheckBoxes{}
 {
@@ -31,32 +34,26 @@ HotkeyEditor::HotkeyEditor(
     layout->addWidget(
         keyCombo, orientation == Qt::Horizontal ? 1 : 0);
 
-    // To avoid an extra iteration over keyCombo items, we set
-    // setCurrentIndex() here manually instead of calling
-    // assignHotkey() .
     DpsoHotkey hotkey;
     dpsoFindActionHotkey(action, &hotkey);
 
-    int keyComboIdx = 0;
     for (int i = dpsoUnknownKey; i < dpsoNumKeys; ++i) {
-        const DpsoHotkey keyHotkey{
-            static_cast<DpsoKey>(i), dpsoKeyModNone};
-
-        // We use QVector and linear search assuming the hiddenKeys
-        // list is relatively small.
-        if (hiddenKeys.contains(keyHotkey.key))
+        const auto key = static_cast<DpsoKey>(i);
+        if (key == dpsoUnknownKey && hideNoneKey)
             continue;
 
         const char* keyName;
-        if (keyHotkey.key == dpsoUnknownKey)
+        if (key == dpsoUnknownKey)
             keyName = pgettext("hotkey.key", "None");
-        else
+        else {
+            const DpsoHotkey keyHotkey{key, dpsoKeyModNone};
             keyName = dpsoHotkeyToString(&keyHotkey);
-        keyCombo->addItem(keyName, keyHotkey.key);
+        }
 
-        if (keyHotkey.key == hotkey.key)
-            keyCombo->setCurrentIndex(keyComboIdx);
-        ++keyComboIdx;
+        keyCombo->addItem(keyName, key);
+
+        if (key == hotkey.key)
+            keyCombo->setCurrentIndex(keyCombo->count() - 1);
     }
 
     connect(
@@ -102,13 +99,18 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
     bool hotkeyChanged = false;
 
-    if (hotkey.key != getCurrentKey())
-        for (int i = 0; i < keyCombo->count(); ++i)
-            if (keyCombo->itemData(i) == hotkey.key) {
-                keyCombo->setCurrentIndex(i);
-                hotkeyChanged = true;
-                break;
-            }
+    if (hotkey.key != getCurrentKey()) {
+        // If hideNoneKey is true, we pass dpsoUnknownKey (-1) as is
+        // so that keyCombo becomes unselected.
+        const auto idx = hotkey.key + !hideNoneKey;
+        assert(
+            idx == -1
+            || (idx >=0
+                && idx < keyCombo->count()
+                && keyCombo->itemData(idx).toInt() == hotkey.key));
+        keyCombo->setCurrentIndex(idx);
+        hotkeyChanged = true;
+    }
 
     const auto keySelected = getCurrentKey() != dpsoUnknownKey;
 

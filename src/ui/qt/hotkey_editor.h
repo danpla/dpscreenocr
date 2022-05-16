@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <QVector>
 #include <QWidget>
 
 #include "dpso/dpso.h"
@@ -26,8 +25,8 @@ public:
      *
      * \param action Hotkey action. HotkeyEditor doesn't treat actions
      *     < 0 especially.
-     * \param hiddenKeys The list of keys to be excluded from the key
-     *     combo box.
+     * \param hideNoneKey Hide the "None" key (dpsoUnknownKey) from
+     *     the key combo box.
      * \param orientation Orientation specifies where to put the list
      *     of key modifier checkboxes relative to the key combo box:
      *     on the right of the combo box if Qt::Horizontal, or below
@@ -35,7 +34,7 @@ public:
      */
     explicit HotkeyEditor(
         DpsoHotkeyAction action,
-        const QVector<DpsoKey>& hiddenKeys = {},
+        bool hideNoneKey = true,
         Qt::Orientation orientation = Qt::Horizontal,
         QWidget* parent = nullptr);
 signals:
@@ -65,6 +64,7 @@ private slots:
     void keyChanged();
 private:
     DpsoHotkeyAction action;
+    bool hideNoneKey;
 
     QComboBox* keyCombo;
     QCheckBox* modCheckBoxes[dpsoNumKeyMods];
