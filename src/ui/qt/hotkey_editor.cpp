@@ -52,9 +52,6 @@ HotkeyEditor::HotkeyEditor(
         keyCombo, SIGNAL(currentIndexChanged(int)),
         this, SLOT(keyChanged()));
 
-    auto* modsLayout = new QHBoxLayout();
-    layout->addLayout(modsLayout);
-
     const auto keySelected = getCurrentKey() != dpsoUnknownKey;
 
     for (int i = 0; i < dpsoNumKeyMods; ++i) {
@@ -72,7 +69,7 @@ HotkeyEditor::HotkeyEditor(
             modCheckBox, SIGNAL(stateChanged(int)),
             this, SIGNAL(changed()));
 
-        modsLayout->addWidget(modCheckBox);
+        layout->addWidget(modCheckBox);
     }
 }
 
