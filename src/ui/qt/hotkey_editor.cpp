@@ -3,9 +3,9 @@
 
 #include <cassert>
 
-#include <QBoxLayout>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QHBoxLayout>
 
 #include "dpso_intl/dpso_intl.h"
 
@@ -13,7 +13,6 @@
 HotkeyEditor::HotkeyEditor(
         DpsoHotkeyAction action,
         bool hideNoneKey,
-        Qt::Orientation orientation,
         QWidget* parent)
     : QWidget{parent}
     , action{action}
@@ -21,18 +20,11 @@ HotkeyEditor::HotkeyEditor(
     , keyCombo{}
     , modCheckBoxes{}
 {
-    QBoxLayout::Direction layoutDir;
-    if (orientation == Qt::Horizontal)
-        layoutDir = QBoxLayout::LeftToRight;
-    else
-        layoutDir = QBoxLayout::TopToBottom;
-
-    auto* layout = new QBoxLayout(layoutDir, this);
+    auto* layout = new QHBoxLayout(this);
     layout->setContentsMargins({});
 
     keyCombo = new QComboBox();
-    layout->addWidget(
-        keyCombo, orientation == Qt::Horizontal ? 1 : 0);
+    layout->addWidget(keyCombo, 1);
 
     DpsoHotkey hotkey;
     dpsoFindActionHotkey(action, &hotkey);
@@ -82,9 +74,6 @@ HotkeyEditor::HotkeyEditor(
 
         modsLayout->addWidget(modCheckBox);
     }
-
-    if (orientation == Qt::Vertical)
-        modsLayout->addStretch();
 }
 
 

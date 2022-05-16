@@ -27,15 +27,10 @@ public:
      *     < 0 especially.
      * \param hideNoneKey Hide the "None" key (dpsoUnknownKey) from
      *     the key combo box.
-     * \param orientation Orientation specifies where to put the list
-     *     of key modifier checkboxes relative to the key combo box:
-     *     on the right of the combo box if Qt::Horizontal, or below
-     *     it if Qt::Vertical.
      */
     explicit HotkeyEditor(
         DpsoHotkeyAction action,
         bool hideNoneKey = true,
-        Qt::Orientation orientation = Qt::Horizontal,
         QWidget* parent = nullptr);
 signals:
     /**

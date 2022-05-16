@@ -314,9 +314,7 @@ QWidget* MainWindow::createMainTab()
     hotkeyGroup->setLayout(hotkeyGroupLayout);
 
     hotkeyEditor = new HotkeyEditor(
-        hotkeyActionToggleSelection,
-        true,
-        Qt::Vertical);
+        hotkeyActionToggleSelection, true);
     connect(
         hotkeyEditor, SIGNAL(changed()),
         hotkeyEditor, SLOT(bind()));
