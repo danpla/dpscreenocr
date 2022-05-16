@@ -5,18 +5,20 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-05-11 01:54+0300\n"
-"PO-Revision-Date: 2022-05-11 01:54+0300\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2022-05-17 11:16+0000\n"
+"Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:45
 msgid "Afrikaans"
-msgstr ""
+msgstr "Africain"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:46
 msgid "Amharic"
@@ -24,7 +26,7 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:47
 msgid "Arabic"
-msgstr ""
+msgstr "Arabe"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:48
 msgid "Assamese"
@@ -40,7 +42,7 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:51
 msgid "Belarusian"
-msgstr ""
+msgstr "Biélorusse"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:52
 msgid "Bengali"
@@ -48,19 +50,19 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:53
 msgid "Tibetan"
-msgstr ""
+msgstr "Tibétain"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:54
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnien"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:55
 msgid "Breton"
-msgstr ""
+msgstr "Breton"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:56
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgare"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:57
 msgid "Catalan; Valencian"
@@ -72,23 +74,23 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:59
 msgid "Czech"
-msgstr ""
+msgstr "Tchèque"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:60
 msgid "Chinese - Simplified"
-msgstr ""
+msgstr "Chinois - Simplifié"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:61
 msgid "Chinese - Simplified (vertical)"
-msgstr ""
+msgstr "Chinois - Simplifié (vertical)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:62
 msgid "Chinese - Traditional"
-msgstr ""
+msgstr "Chinois - Traditionnel"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:63
 msgid "Chinese - Traditional (vertical)"
-msgstr ""
+msgstr "Chinois - Traditionnel (vertical)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:64
 msgid "Cherokee"
@@ -96,7 +98,7 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:65
 msgid "Corsican"
-msgstr ""
+msgstr "Corse"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:66
 msgid "Welsh"
@@ -104,7 +106,7 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:67
 msgid "Danish"
-msgstr ""
+msgstr "Danois"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:68
 msgid "Danish - Fraktur"
@@ -112,7 +114,7 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:69
 msgid "German"
-msgstr ""
+msgstr "Allemand"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:70
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:84
@@ -526,31 +528,31 @@ msgstr ""
 
 #: src/ui/qt/about.cpp:53 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
-msgstr ""
+msgstr "Programme de reconnaissance du texte à l'écran"
 
 #: src/ui/qt/about.cpp:67
 msgid "License"
-msgstr ""
+msgstr "Licence"
 
 #: src/ui/qt/action_chooser.cpp:26
 msgid "Copy text to clipboard"
-msgstr ""
+msgstr "Copier le text dans le presse-papier"
 
 #: src/ui/qt/action_chooser.cpp:27
 msgid "Add text to history"
-msgstr ""
+msgstr "Ajouter le texte à l'historique"
 
 #: src/ui/qt/action_chooser.cpp:29
 msgid "Run executable:"
-msgstr ""
+msgstr "Lancer l'exécutable :"
 
 #: src/ui/qt/action_chooser.cpp:31
 msgid "Run an executable with the recognized text as the first argument"
-msgstr ""
+msgstr "Lance un exécutable avec le texte reconnu comme premier argument"
 
 #: src/ui/qt/action_chooser.cpp:74
 msgid "Choose an executable"
-msgstr ""
+msgstr "Sélectionner un exécutable"
 
 #: src/ui/qt/history.cpp:31
 msgid "Wrap words"
@@ -558,122 +560,122 @@ msgstr ""
 
 #: src/ui/qt/history.cpp:46 src/ui/qt/history.cpp:79
 msgid "Clear"
-msgstr ""
+msgstr "Effacer"
 
 #: src/ui/qt/history.cpp:51
 msgid "Save as…"
-msgstr ""
+msgstr "Enregistrer sous…"
 
 #: src/ui/qt/history.cpp:53
 msgid "Save the history as plain text, HTML, or JSON"
-msgstr ""
+msgstr "Enregistrer dans l'historique en texte brut, HTML ou JSON"
 
 #: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:133
 msgid "History"
-msgstr ""
+msgstr "Historique"
 
 #: src/ui/qt/history.cpp:77
 msgid "Clear the history?"
-msgstr ""
+msgstr "Effacer l'historique ?"
 
 #: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:176
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: src/ui/qt/history.cpp:80
 msgid "Save history"
-msgstr ""
+msgstr "Enregistrer dans l'historique"
 
 #: src/ui/qt/history.cpp:82
 msgid "Plain text"
-msgstr ""
+msgstr "Texte brut"
 
 #: src/ui/qt/history.cpp:85
 msgid "All files"
-msgstr ""
+msgstr "Tous les fichiers"
 
 #: src/ui/qt/hotkey_editor.cpp:52
 msgctxt "hotkey.key"
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: src/ui/qt/lang_browser.cpp:34
 msgctxt "language"
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: src/ui/qt/lang_browser.cpp:35
 msgctxt "language"
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: src/ui/qt/main_window.cpp:131
 msgctxt "ui.tab"
 msgid "Main"
-msgstr ""
+msgstr "Général"
 
 #: src/ui/qt/main_window.cpp:132
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: src/ui/qt/main_window.cpp:134
 msgid "About"
-msgstr ""
+msgstr "À propos"
 
 #: src/ui/qt/main_window.cpp:166
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr ""
+msgstr "Reconnaissance en cours {progress}% ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp:167
 msgid "Please install languages"
-msgstr ""
+msgstr "Veuillez installer les langues"
 
 #: src/ui/qt/main_window.cpp:168
 msgid "Please select languages"
-msgstr ""
+msgstr "Veuillez sélectionner des langues"
 
 #: src/ui/qt/main_window.cpp:170
 msgid "Please select actions in the “Actions” tab"
-msgstr ""
+msgstr "Veuillez sélectionner les actions dans l'onglet « Actions »"
 
 #. Translators: Program is ready for OCR
 #: src/ui/qt/main_window.cpp:173
 msgctxt "ocr.status"
 msgid "Ready"
-msgstr ""
+msgstr "Prêt"
 
 #: src/ui/qt/main_window.cpp:175
 msgid "Recognition is not yet finished. Quit anyway?"
-msgstr ""
+msgstr "La reconnaissance n'est pas terminée. Quitter quand même ?"
 
 #: src/ui/qt/main_window.cpp:177 src/ui/qt/main_window.cpp:280
 msgid "Quit"
-msgstr ""
+msgstr "Quitter"
 
 #: src/ui/qt/main_window.cpp:272
 msgid "Show {app_name}"
-msgstr ""
+msgstr "Afficher {app_name}"
 
 #: src/ui/qt/main_window.cpp:287
 msgid "Status"
-msgstr ""
+msgstr "État"
 
 #: src/ui/qt/main_window.cpp:298
 msgid "Character recognition"
-msgstr ""
+msgstr "Reconnaissance de caractères"
 
 #: src/ui/qt/main_window.cpp:303
 msgid "Split text blocks"
-msgstr ""
+msgstr "Couper les blocs de texte"
 
 #: src/ui/qt/main_window.cpp:305
 msgid "Split independent text blocks, e.g. columns"
-msgstr ""
+msgstr "Couper les blocs de texte indépendant, par ex. les colonnes"
 
 #: src/ui/qt/main_window.cpp:308
 msgid "Languages:"
-msgstr ""
+msgstr "Langues :"
 
 #: src/ui/qt/main_window.cpp:312
 msgid "Hotkey"
-msgstr ""
+msgstr "Raccourcis"
