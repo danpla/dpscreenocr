@@ -285,8 +285,7 @@ void MainWindow::createQActions()
 QWidget* MainWindow::createMainTab()
 {
     auto* statusGroup = new QGroupBox(_("Status"));
-    auto* statusGroupLayout = new QHBoxLayout();
-    statusGroup->setLayout(statusGroupLayout);
+    auto* statusGroupLayout = new QHBoxLayout(statusGroup);
 
     statusIndicator = new StatusIndicator();
     statusGroupLayout->addWidget(statusIndicator);
@@ -296,8 +295,7 @@ QWidget* MainWindow::createMainTab()
     statusGroupLayout->addWidget(statusLabel, 1);
 
     auto* ocrGroup = new QGroupBox(_("Character recognition"));
-    auto* ocrGroupLayout = new QVBoxLayout();
-    ocrGroup->setLayout(ocrGroupLayout);
+    auto* ocrGroupLayout = new QVBoxLayout(ocrGroup);
 
     splitTextBlocksCheck = new QCheckBox(
         _("Split text blocks"));
@@ -310,8 +308,7 @@ QWidget* MainWindow::createMainTab()
     ocrGroupLayout->addWidget(langBrowser);
 
     auto* hotkeyGroup = new QGroupBox(_("Hotkey"));
-    auto* hotkeyGroupLayout = new QVBoxLayout();
-    hotkeyGroup->setLayout(hotkeyGroupLayout);
+    auto* hotkeyGroupLayout = new QVBoxLayout(hotkeyGroup);
 
     hotkeyEditor = new HotkeyEditor(
         hotkeyActionToggleSelection, true);
