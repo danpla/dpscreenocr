@@ -1,10 +1,14 @@
 
 * We still target Ubuntu 14.04, which comes with GCC 4.8 and CMake
-  2.8.12. The code is thus written in C++11 and must actually be
-  tested with GCC 4.8, since C++11 support in this version is not
-  perfect. Support for CMake 2.8.12 is actually only required on
-  Unix-like systems; many Windows-specific CMake files use features
-  from version 3.
+  2.8.12.
+
+  The code is thus written in C++11 and must be tested to compile with
+  GCC 4.8, since C++11 support in this version is not perfect. In
+  particular, it emits erroneous -Wmissing-field-initializers in some
+  places; we intentionally don't add workarounds for this warning.
+
+  Support for CMake 2.8.12 is only required on Unix-like systems; many
+  Windows-specific CMake files use features from version 3.
 
 * Don't use UTF-8 string literals (u8""). Since C++20, their type is
   changed from char to char8_t, breaking the backward compatibility.
