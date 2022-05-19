@@ -424,10 +424,6 @@ bool MainWindow::loadState(const DpsoCfg* cfg)
         cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
         cfgDefaultValueActionCopyToClipboardTextSeparator);
-    runExeWaitToComplete = dpsoCfgGetBool(
-        cfg,
-        cfgKeyActionRunExecutableWaitToComplete,
-        cfgDefaultValueActionRunExecutableWaitToComplete);
 
     tabs->setCurrentIndex(dpsoCfgGetInt(cfg, cfgKeyUiActiveTab, 0));
 
@@ -492,10 +488,6 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
         copyToClipboardTextSeparator.toUtf8().data());
-    dpsoCfgSetBool(
-        cfg,
-        cfgKeyActionRunExecutableWaitToComplete,
-        runExeWaitToComplete);
 
     if (!dpsoCfgKeyExists(cfg, cfgKeyUiNativeFileDialogs))
         dpsoCfgSetBool(
@@ -665,8 +657,7 @@ void MainWindow::checkResults()
             history->append(result.timestamp, result.text);
 
         if (actions & ActionChooser::Action::runExe)
-            dpsoExec(
-                exePath.data(), result.text, runExeWaitToComplete);
+            dpsoExec(exePath.data(), result.text);
     }
 
     if (jobsCompleted && clipboardTextPending) {

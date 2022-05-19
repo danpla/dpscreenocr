@@ -88,7 +88,6 @@ private:
     QString clipboardText;
     bool clipboardTextPending;
     QString copyToClipboardTextSeparator;
-    bool runExeWaitToComplete;
 
     History* history;
 

@@ -325,11 +325,6 @@ the settings file:
     Keep in mind that every recognized text, if not empty, ends with
     a newline.
 
-*   `action_run_executable_wait_to_complete` (`true` by default)
-    whether to wait for the executable to complete. If this option is
-    disabled, several instances of the executable can run
-    simultaneously.
-
 *   `hotkey_cancel_selection` (`Escape` by default) hotkey to cancel
     selection.
 
@@ -398,12 +393,6 @@ here, please report the problem on the [issue tracker][].
 
     * (Unix) If your executable is a script, make sure it starts with
       a proper [shebang][].
-
-*   **"Run executable" hangs dpScreenOCR**
-
-    dpScreenOCR waits for the executable to exit. You can disable
-    waiting with the `action_run_executable_wait_to_complete` option
-    as described in the "[Tweaking]" section.
 
 *   **dpScreenOCR doesn't see language packs**
 

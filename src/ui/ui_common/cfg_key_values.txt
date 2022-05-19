@@ -3,7 +3,6 @@ action_copy_to_clipboard                | int               | false
 action_copy_to_clipboard_text_separator | const char*       | "\n\n"
 action_run_executable                   | int               | false
 action_run_executable_path
-action_run_executable_wait_to_complete  | int               | true
 history_export_dir
 history_wrap_words                      | int               | true
 hotkey_cancel_selection                 | struct DpsoHotkey | {dpsoKeyEscape, dpsoKeyModNone}

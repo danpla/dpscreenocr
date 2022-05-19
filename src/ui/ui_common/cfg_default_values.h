@@ -8,7 +8,6 @@ extern int const cfgDefaultValueActionAddToHistory;
 extern int const cfgDefaultValueActionCopyToClipboard;
 extern const char* const cfgDefaultValueActionCopyToClipboardTextSeparator;
 extern int const cfgDefaultValueActionRunExecutable;
-extern int const cfgDefaultValueActionRunExecutableWaitToComplete;
 extern int const cfgDefaultValueHistoryWrapWords;
 extern struct DpsoHotkey const cfgDefaultValueHotkeyCancelSelection;
 extern struct DpsoHotkey const cfgDefaultValueHotkeyToggleSelection;

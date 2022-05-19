@@ -14,8 +14,6 @@ const char* const cfgKeyActionRunExecutable =
     "action_run_executable";
 const char* const cfgKeyActionRunExecutablePath =
     "action_run_executable_path";
-const char* const cfgKeyActionRunExecutableWaitToComplete =
-    "action_run_executable_wait_to_complete";
 const char* const cfgKeyHistoryExportDir =
     "history_export_dir";
 const char* const cfgKeyHistoryWrapWords =

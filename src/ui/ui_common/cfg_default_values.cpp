@@ -13,8 +13,6 @@ const char* const cfgDefaultValueActionCopyToClipboardTextSeparator =
     "\n\n";
 int const cfgDefaultValueActionRunExecutable =
     false;
-int const cfgDefaultValueActionRunExecutableWaitToComplete =
-    true;
 int const cfgDefaultValueHistoryWrapWords =
     true;
 struct DpsoHotkey const cfgDefaultValueHotkeyCancelSelection =

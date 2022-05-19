@@ -2,7 +2,7 @@
 #include "exec.h"
 
 #include <cctype>
-#include <string>
+#include <initializer_list>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -116,8 +116,7 @@ static bool allowExecute(const char* exePath)
         if (!std::isspace(*s))
             extEnd = s + 1;
 
-    static const char* const batchExts[] = {".bat", ".cmd"};
-    for (const auto* batchExt : batchExts)
+    for (const auto* batchExt : {".bat", ".cmd"})
         if (dpso::str::cmpSubStr(
                 batchExt,
                 ext,
@@ -129,8 +128,7 @@ static bool allowExecute(const char* exePath)
 }
 
 
-void dpsoExec(
-    const char* exePath, const char* arg, int waitToComplete)
+void dpsoExec(const char* exePath, const char* arg)
 {
     if (!allowExecute(exePath))
         return;
@@ -166,8 +164,6 @@ void dpsoExec(
     if (!ShellExecuteExW(&si))
         return;
 
-    if (waitToComplete)
-        WaitForSingleObject(si.hProcess, INFINITE);
-
+    WaitForSingleObject(si.hProcess, INFINITE);
     CloseHandle(si.hProcess);
 }
