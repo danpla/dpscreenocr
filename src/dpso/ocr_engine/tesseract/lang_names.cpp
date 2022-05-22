@@ -22,32 +22,21 @@ struct LangName {
 #define N_(S) S
 
 
-// The names are from:
-//   https://github.com/tesseract-ocr/tesseract/wiki/Data-Files-in-different-versions
-//   https://iso639-3.sil.org/code_tables/download_tables
+// The list below is generated using scripts from
+// tools/tessdata_info_gen for tessdata:3.04.00 and
+// tessdata_fast:4.1.0. Please don't edit manually.
 //
-// Be aware that the table at the first link is not complete. We use
-// names from that table to match the names of Tesseract language
-// packs on most Linux distributions.
-//
-// The entries must be sorted by the language code.
+// The names are based on data from ISO 639-3 code tables:
+// https://iso639-3.sil.org/code_tables/download_tables
 //
 // "equ" and "osd" are not included.
-// "kur" is the v3.04 name.
-// "kur_ara" is renamed to "kmr" in the recent versions:
-//   https://github.com/tesseract-ocr/langdata/issues/124
-//
-// Useful links:
-//   https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-//   https://en.wikipedia.org/wiki/List_of_ISO_639-3_codes
-//   https://github.com/tesseract-ocr/tesseract/wiki/Data-Files
 const LangName names[] = {
     {"afr",          N_("Afrikaans")},
     {"amh",          N_("Amharic")},
     {"ara",          N_("Arabic")},
     {"asm",          N_("Assamese")},
     {"aze",          N_("Azerbaijani")},
-    {"aze_cyrl",     N_("Azerbaijani - Cyrilic")},
+    {"aze_cyrl",     N_("Azerbaijani (Cyrillic)")},
     {"bel",          N_("Belarusian")},
     {"ben",          N_("Bengali")},
     {"bod",          N_("Tibetan")},
@@ -57,17 +46,17 @@ const LangName names[] = {
     {"cat",          N_("Catalan; Valencian")},
     {"ceb",          N_("Cebuano")},
     {"ces",          N_("Czech")},
-    {"chi_sim",      N_("Chinese - Simplified")},
-    {"chi_sim_vert", N_("Chinese - Simplified (vertical)")},
-    {"chi_tra",      N_("Chinese - Traditional")},
-    {"chi_tra_vert", N_("Chinese - Traditional (vertical)")},
+    {"chi_sim",      N_("Chinese (simplified)")},
+    {"chi_sim_vert", N_("Chinese (simplified, vertical)")},
+    {"chi_tra",      N_("Chinese (traditional)")},
+    {"chi_tra_vert", N_("Chinese (traditional, vertical)")},
     {"chr",          N_("Cherokee")},
     {"cos",          N_("Corsican")},
     {"cym",          N_("Welsh")},
     {"dan",          N_("Danish")},
-    {"dan_frak",     N_("Danish - Fraktur")},
+    {"dan_frak",     N_("Danish (Fraktur)")},
     {"deu",          N_("German")},
-    {"deu_frak",     N_("German - Fraktur")},
+    {"deu_frak",     N_("German (Fraktur)")},
     {"div",          N_("Dhivehi; Divehi; Maldivian")},
     {"dzo",          N_("Dzongkha")},
     {"ell",          N_("Greek, Modern (1453-)")},
@@ -81,15 +70,15 @@ const LangName names[] = {
     {"fil",          N_("Filipino; Pilipino")},
     {"fin",          N_("Finnish")},
     {"fra",          N_("French")},
-    {"frk",          N_("German - Fraktur")},
-    {"frm",          N_("French, Middle (ca.1400-1600)")},
-    {"fry",          N_("Western Frisian")},
-    {"gla",          N_("Scottish Gaelic; Gaelic")},
+    {"frk",          N_("German (Fraktur)")},
+    {"frm",          N_("French, Middle (ca. 1400-1600)")},
+    {"fry",          N_("Frisian, Western")},
+    {"gla",          N_("Gaelic, Scottish")},
     {"gle",          N_("Irish")},
     {"glg",          N_("Galician")},
     {"grc",          N_("Greek, Ancient (to 1453)")},
     {"guj",          N_("Gujarati")},
-    {"hat",          N_("Haitian; Haitian Creole")},
+    {"hat",          N_("Creole, Haitian")},
     {"heb",          N_("Hebrew")},
     {"hin",          N_("Hindi")},
     {"hrv",          N_("Croatian")},
@@ -99,26 +88,25 @@ const LangName names[] = {
     {"ind",          N_("Indonesian")},
     {"isl",          N_("Icelandic")},
     {"ita",          N_("Italian")},
-    {"ita_old",      N_("Italian - Old")},
+    {"ita_old",      N_("Italian (old)")},
     {"jav",          N_("Javanese")},
-    {"jpn",          N_("Japanese (vertical)")},
     {"jpn",          N_("Japanese")},
+    {"jpn_vert",     N_("Japanese (vertical)")},
     {"kan",          N_("Kannada")},
     {"kat",          N_("Georgian")},
-    {"kat_old",      N_("Georgian - Old")},
+    {"kat_old",      N_("Georgian (old)")},
     {"kaz",          N_("Kazakh")},
-    {"khm",          N_("Central Khmer")},
+    {"khm",          N_("Khmer, Central")},
     {"kir",          N_("Kirghiz; Kyrgyz")},
-    {"kmr",          N_("Kurmanji (Kurdish - Latin Script)")},
+    {"kmr",          N_("Kurdish, Northern")},
     {"kor",          N_("Korean")},
     {"kor_vert",     N_("Korean (vertical)")},
-    {"kur",          N_("Kurdish (Arabic Script)")},
-    {"kur_ara",      N_("Kurdish (Arabic Script)")},
+    {"kur",          N_("Kurdish")},
     {"lao",          N_("Lao")},
     {"lat",          N_("Latin")},
     {"lav",          N_("Latvian")},
     {"lit",          N_("Lithuanian")},
-    {"ltz",          N_("Luxembourgish")},
+    {"ltz",          N_("Luxembourgish; Letzeburgesch")},
     {"mal",          N_("Malayalam")},
     {"mar",          N_("Marathi")},
     {"mkd",          N_("Macedonian")},
@@ -142,14 +130,14 @@ const LangName names[] = {
     {"san",          N_("Sanskrit")},
     {"sin",          N_("Sinhala; Sinhalese")},
     {"slk",          N_("Slovak")},
-    {"slk_frak",     N_("Slovak - Fraktur")},
+    {"slk_frak",     N_("Slovak (Fraktur)")},
     {"slv",          N_("Slovenian")},
     {"snd",          N_("Sindhi")},
     {"spa",          N_("Spanish; Castilian")},
-    {"spa_old",      N_("Spanish; Castilian - Old")},
+    {"spa_old",      N_("Spanish; Castilian (old)")},
     {"sqi",          N_("Albanian")},
     {"srp",          N_("Serbian")},
-    {"srp_latn",     N_("Serbian - Latin")},
+    {"srp_latn",     N_("Serbian (Latin)")},
     {"sun",          N_("Sundanese")},
     {"swa",          N_("Swahili")},
     {"swe",          N_("Swedish")},
@@ -161,13 +149,13 @@ const LangName names[] = {
     {"tgl",          N_("Tagalog")},
     {"tha",          N_("Thai")},
     {"tir",          N_("Tigrinya")},
-    {"ton",          N_("Tonga")},
+    {"ton",          N_("Tonga (Tonga Islands)")},
     {"tur",          N_("Turkish")},
     {"uig",          N_("Uighur; Uyghur")},
     {"ukr",          N_("Ukrainian")},
     {"urd",          N_("Urdu")},
     {"uzb",          N_("Uzbek")},
-    {"uzb_cyrl",     N_("Uzbek - Cyrilic")},
+    {"uzb_cyrl",     N_("Uzbek (Cyrillic)")},
     {"vie",          N_("Vietnamese")},
     {"yid",          N_("Yiddish")},
     {"yor",          N_("Yoruba")},
