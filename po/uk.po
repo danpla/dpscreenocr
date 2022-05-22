@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-05-22 22:00+0300\n"
-"PO-Revision-Date: 2020-11-29 05:15+0000\n"
+"PO-Revision-Date: 2022-05-22 23:04+0300\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/uk/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -38,9 +38,8 @@ msgid "Azerbaijani"
 msgstr "Азербайджанська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:39
-#, fuzzy
 msgid "Azerbaijani (Cyrillic)"
-msgstr "Азербайджанська - Кирилиця"
+msgstr "Азербайджанська (кирилиця)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:40
 msgid "Belarusian"
@@ -79,24 +78,20 @@ msgid "Czech"
 msgstr "Чеська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:49
-#, fuzzy
 msgid "Chinese (simplified)"
-msgstr "Китайська - Спрощена"
+msgstr "Китайська (спрощена)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:50
-#, fuzzy
 msgid "Chinese (simplified, vertical)"
-msgstr "Китайська - Спрощена (вертикальна)"
+msgstr "Китайська (спрощена, вертикальна)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:51
-#, fuzzy
 msgid "Chinese (traditional)"
-msgstr "Китайська - Традиційна"
+msgstr "Китайська (традиційна)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:52
-#, fuzzy
 msgid "Chinese (traditional, vertical)"
-msgstr "Китайська - Традиційна (вертикальна)"
+msgstr "Китайська (традиційна, вертикальна)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:53
 msgid "Cherokee"
@@ -115,9 +110,8 @@ msgid "Danish"
 msgstr "Данська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:57
-#, fuzzy
 msgid "Danish (Fraktur)"
-msgstr "Данська - Фрактура"
+msgstr "Данська (фрактура)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:58
 msgid "German"
@@ -125,9 +119,8 @@ msgstr "Німецька"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:59
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:73
-#, fuzzy
 msgid "German (Fraktur)"
-msgstr "Німецька - Фрактура"
+msgstr "Німецька (фрактура)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:60
 msgid "Dhivehi; Divehi; Maldivian"
@@ -182,17 +175,14 @@ msgid "French"
 msgstr "Французька"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:74
-#, fuzzy
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Французька, Середньофранцузька (прибл. 1400-1600)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:75
-#, fuzzy
 msgid "Frisian, Western"
 msgstr "Західнофризька"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:76
-#, fuzzy
 msgid "Gaelic, Scottish"
 msgstr "Шотландська гельська"
 
@@ -213,9 +203,8 @@ msgid "Gujarati"
 msgstr "Гуджараті"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
-#, fuzzy
 msgid "Creole, Haitian"
-msgstr "Гаїтянська креольська"
+msgstr "Гаїтянська, креольська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:82
 msgid "Hebrew"
@@ -254,9 +243,8 @@ msgid "Italian"
 msgstr "Італійська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:91
-#, fuzzy
 msgid "Italian (old)"
-msgstr "Італійська - Стара"
+msgstr "Італійська (стара)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:92
 msgid "Javanese"
@@ -279,16 +267,14 @@ msgid "Georgian"
 msgstr "Грузинська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:97
-#, fuzzy
 msgid "Georgian (old)"
-msgstr "Грузинська - Стара"
+msgstr "Грузинська (стара)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:98
 msgid "Kazakh"
 msgstr "Казахська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:99
-#, fuzzy
 msgid "Khmer, Central"
 msgstr "Кхмерська"
 
@@ -297,9 +283,8 @@ msgid "Kirghiz; Kyrgyz"
 msgstr "Киргизька"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:101
-#, fuzzy
 msgid "Kurdish, Northern"
-msgstr "Курманджі (Курдська - Латиниця)"
+msgstr "Північнокурдська, Курманджі"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:102
 msgid "Korean"
@@ -310,9 +295,8 @@ msgid "Korean (vertical)"
 msgstr "Корейська (вертикальна)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:104
-#, fuzzy
 msgid "Kurdish"
-msgstr "Курдська (Арабське письмо)"
+msgstr "Курдська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:105
 msgid "Lao"
@@ -331,7 +315,6 @@ msgid "Lithuanian"
 msgstr "Литовська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:109
-#, fuzzy
 msgid "Luxembourgish; Letzeburgesch"
 msgstr "Люксембурзька"
 
@@ -428,9 +411,8 @@ msgid "Slovak"
 msgstr "Словацька"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:133
-#, fuzzy
 msgid "Slovak (Fraktur)"
-msgstr "Словацька - Фрактура"
+msgstr "Словацька (фрактура)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:134
 msgid "Slovenian"
@@ -445,9 +427,8 @@ msgid "Spanish; Castilian"
 msgstr "Іспанська; Кастильська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:137
-#, fuzzy
 msgid "Spanish; Castilian (old)"
-msgstr "Іспанська; Кастильська - Стара"
+msgstr "Іспанська; Кастильська (стара)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:138
 msgid "Albanian"
@@ -458,9 +439,8 @@ msgid "Serbian"
 msgstr "Сербська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:140
-#, fuzzy
 msgid "Serbian (Latin)"
-msgstr "Сербська - Латиниця"
+msgstr "Сербська (латиниця)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:141
 msgid "Sundanese"
@@ -507,7 +487,6 @@ msgid "Tigrinya"
 msgstr "Тигринья"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:152
-#, fuzzy
 msgid "Tonga (Tonga Islands)"
 msgstr "Тонганська"
 
@@ -532,9 +511,8 @@ msgid "Uzbek"
 msgstr "Узбецька"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:158
-#, fuzzy
 msgid "Uzbek (Cyrillic)"
-msgstr "Узбецька - Кирилиця"
+msgstr "Узбецька (кирилиця)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:159
 msgid "Vietnamese"
