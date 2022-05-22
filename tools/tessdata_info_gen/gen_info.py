@@ -10,7 +10,6 @@ you need iso-639-3.tab and and iso-639-3_Name_Index.tab from:
 from collections import namedtuple
 import argparse
 import csv
-import itertools
 import json
 import os
 
@@ -200,18 +199,14 @@ def _main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument(
+        'names_file',
+        type=argparse.FileType('r', encoding='utf-8'),
+        help='File to read names from ("-" for stdin).')
+    parser.add_argument(
         'out_file',
         type=argparse.FileType('w', encoding='utf-8'),
         help='Output JSON file ("-" for stdout).')
 
-    parser.add_argument(
-        'names',
-        nargs='*',
-        help='List of names without extensions.')
-    parser.add_argument(
-        '-n', '--names-file',
-        type=argparse.FileType('r', encoding='utf-8'),
-        help='File to read names from ("-" for stdin).')
     parser.add_argument(
         '--ignored-names',
         metavar='NAME',
@@ -233,18 +228,12 @@ def _main():
 
     args = parser.parse_args()
 
-    if args.names_file:
-        names = itertools.chain(
-            args.names,
-            filter(None, (l.strip() for l in args.names_file)))
-    else:
-        names = args.names
-
     db = InfoDb(args.tables_dir)
 
     infos = []
-    for name in names:
-        if name in args.ignored_names:
+    for line in args.names_file:
+        name = line.strip()
+        if not name or name in args.ignored_names:
             continue
 
         infos.append(db.get_info(name, args.silent)._asdict())
