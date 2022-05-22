@@ -40,7 +40,7 @@ msgstr "Azerski"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:39
 #, fuzzy
 msgid "Azerbaijani (Cyrillic)"
-msgstr "Azerbejdżański (Cyrylica)"
+msgstr "Azerbejdżański (cyrylica)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:40
 msgid "Belarusian"
@@ -113,7 +113,7 @@ msgstr "Duński"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:57
 #, fuzzy
 msgid "Danish (Fraktur)"
-msgstr "Duński (Fraktur)"
+msgstr "Duński (fraktura)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:58
 msgid "German"
@@ -123,7 +123,7 @@ msgstr "Niemiecki"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:73
 #, fuzzy
 msgid "German (Fraktur)"
-msgstr "Niemiecki (Fraktur)"
+msgstr "Niemiecki (fraktura)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:60
 msgid "Dhivehi; Divehi; Maldivian"
@@ -421,8 +421,9 @@ msgid "Slovak"
 msgstr "Słowacki"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:133
+#, fuzzy
 msgid "Slovak (Fraktur)"
-msgstr "Słowacki (Fraktur)"
+msgstr "Słowacki (fraktura)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:134
 msgid "Slovenian"
@@ -451,7 +452,7 @@ msgstr "Serbski"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:140
 #, fuzzy
 msgid "Serbian (Latin)"
-msgstr "Serbski (Łaciński)"
+msgstr "Serbski (łaciński)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:141
 msgid "Sundanese"
@@ -525,7 +526,7 @@ msgstr "Uzbecki"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:158
 #, fuzzy
 msgid "Uzbek (Cyrillic)"
-msgstr "Uzbecki (Cyrylica)"
+msgstr "Uzbecki (cyrylica)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:159
 msgid "Vietnamese"
