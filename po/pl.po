@@ -438,7 +438,7 @@ msgstr "Hiszpański; Kastylijski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:137
 msgid "Spanish; Castilian (old)"
-msgstr "Hiszpański; Kastylijski (Stary)"
+msgstr "Hiszpański; Kastylijski (stary)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:138
 msgid "Albanian"
