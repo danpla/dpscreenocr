@@ -206,6 +206,7 @@ msgid "Gujarati"
 msgstr "Гуджарати"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
+#, fuzzy
 msgid "Creole, Haitian"
 msgstr "Хаитянски креолски"
 
