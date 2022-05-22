@@ -204,7 +204,7 @@ msgstr "Гуджараті"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
 msgid "Creole, Haitian"
-msgstr "Гаїтянська, креольська"
+msgstr "Креольська, гаїтянська"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:82
 msgid "Hebrew"
