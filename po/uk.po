@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-05-11 01:54+0300\n"
+"POT-Creation-Date: 2022-05-22 21:17+0300\n"
 "PO-Revision-Date: 2020-11-29 05:15+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -595,7 +595,7 @@ msgstr "Звичайний текст"
 msgid "All files"
 msgstr "Усі файли"
 
-#: src/ui/qt/hotkey_editor.cpp:52
+#: src/ui/qt/hotkey_editor.cpp:39
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Нічого"
@@ -661,22 +661,22 @@ msgstr "Показати {app_name}"
 msgid "Status"
 msgstr "Статус"
 
-#: src/ui/qt/main_window.cpp:298
+#: src/ui/qt/main_window.cpp:297
 msgid "Character recognition"
 msgstr "Розпізнавання символів"
 
-#: src/ui/qt/main_window.cpp:303
+#: src/ui/qt/main_window.cpp:301
 msgid "Split text blocks"
 msgstr "Розділити блоки тексту"
 
-#: src/ui/qt/main_window.cpp:305
+#: src/ui/qt/main_window.cpp:303
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Розділити незалежні блоки тексту, такі як колонки"
 
-#: src/ui/qt/main_window.cpp:308
+#: src/ui/qt/main_window.cpp:306
 msgid "Languages:"
 msgstr "Мови:"
 
-#: src/ui/qt/main_window.cpp:312
+#: src/ui/qt/main_window.cpp:310
 msgid "Hotkey"
 msgstr "Гаряча клавіша"

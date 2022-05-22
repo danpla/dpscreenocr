@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-05-11 01:54+0300\n"
+"POT-Creation-Date: 2022-05-22 21:17+0300\n"
 "PO-Revision-Date: 2020-06-14 12:21+0000\n"
 "Last-Translator: WaldiS <sto@tutanota.de>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -596,7 +596,7 @@ msgstr "Zwykły tekst"
 msgid "All files"
 msgstr "Wszystkie pliki"
 
-#: src/ui/qt/hotkey_editor.cpp:52
+#: src/ui/qt/hotkey_editor.cpp:39
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Żaden"
@@ -662,22 +662,22 @@ msgstr "Pokaż {app_name}"
 msgid "Status"
 msgstr "Stan"
 
-#: src/ui/qt/main_window.cpp:298
+#: src/ui/qt/main_window.cpp:297
 msgid "Character recognition"
 msgstr "Rozpoznawanie znaków"
 
-#: src/ui/qt/main_window.cpp:303
+#: src/ui/qt/main_window.cpp:301
 msgid "Split text blocks"
 msgstr "Podziel bloki tekstu"
 
-#: src/ui/qt/main_window.cpp:305
+#: src/ui/qt/main_window.cpp:303
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Podziel niezależne bloki tekstu, np. kolumny"
 
-#: src/ui/qt/main_window.cpp:308
+#: src/ui/qt/main_window.cpp:306
 msgid "Languages:"
 msgstr "Języki:"
 
-#: src/ui/qt/main_window.cpp:312
+#: src/ui/qt/main_window.cpp:310
 msgid "Hotkey"
 msgstr "Skróty klawiszowe"

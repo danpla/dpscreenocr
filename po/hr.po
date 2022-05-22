@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-05-11 01:54+0300\n"
+"POT-Creation-Date: 2022-05-22 21:17+0300\n"
 "PO-Revision-Date: 2020-07-16 18:41+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -595,7 +595,7 @@ msgstr "Običan tekst"
 msgid "All files"
 msgstr "Sve datoteke"
 
-#: src/ui/qt/hotkey_editor.cpp:52
+#: src/ui/qt/hotkey_editor.cpp:39
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Bez"
@@ -661,22 +661,22 @@ msgstr "Prikaži {app_name}"
 msgid "Status"
 msgstr "Stanje"
 
-#: src/ui/qt/main_window.cpp:298
+#: src/ui/qt/main_window.cpp:297
 msgid "Character recognition"
 msgstr "Prepoznavanje znakova"
 
-#: src/ui/qt/main_window.cpp:303
+#: src/ui/qt/main_window.cpp:301
 msgid "Split text blocks"
 msgstr "Razdvoji tekstualne blokove"
 
-#: src/ui/qt/main_window.cpp:305
+#: src/ui/qt/main_window.cpp:303
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Razdvoji samostalne tekstualne blokove, npr. stupce"
 
-#: src/ui/qt/main_window.cpp:308
+#: src/ui/qt/main_window.cpp:306
 msgid "Languages:"
 msgstr "Jezici:"
 
-#: src/ui/qt/main_window.cpp:312
+#: src/ui/qt/main_window.cpp:310
 msgid "Hotkey"
 msgstr "Tipkovnički prečac"
