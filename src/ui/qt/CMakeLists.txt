@@ -40,8 +40,10 @@ endif()
 
 if(DPSO_QT_VERSION EQUAL 4)
     find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
-elseif(DPSO_QT_VERSION EQUAL 5)
-    find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+elseif(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
+    find_package(
+        Qt${DPSO_QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets
+    )
 else()
     message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
 endif()
@@ -81,9 +83,18 @@ target_compile_definitions(
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    if(DPSO_QT_VERSION EQUAL 6)
+        set(CPP_STANDARD 17)
+    else()
+        set(CPP_STANDARD 11)
+    endif()
+
     target_compile_options(
-        dpscreenocr_qt PRIVATE -std=c++11 -Wall -Wextra -pedantic
+        dpscreenocr_qt
+        PRIVATE -std=c++${CPP_STANDARD} -Wall -Wextra -pedantic
     )
+
+    unset(CPP_STANDARD)
 endif()
 
 set_target_properties(
@@ -108,7 +119,10 @@ if(DPSO_QT_VERSION EQUAL 4)
     target_link_libraries(dpscreenocr_qt Qt4::QtCore Qt4::QtGui)
 else()
     target_link_libraries(
-        dpscreenocr_qt Qt5::Core Qt5::Gui Qt5::Widgets
+        dpscreenocr_qt
+        Qt${DPSO_QT_VERSION}::Core
+        Qt${DPSO_QT_VERSION}::Gui
+        Qt${DPSO_QT_VERSION}::Widgets
     )
 endif()
 

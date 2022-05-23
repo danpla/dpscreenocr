@@ -32,7 +32,8 @@ if(DPSO_UI STREQUAL "qt")
     include(qt_utils)
 
     copy_qt_windows_plugins(
-        "$ENV{MINGW_PREFIX}/share/qt5/plugins" "${CMAKE_BINARY_DIR}"
+        "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/plugins"
+        "${CMAKE_BINARY_DIR}"
     )
 
     if(DPSO_ENABLE_NLS)
@@ -40,7 +41,7 @@ if(DPSO_UI STREQUAL "qt")
         get_linguas(LANGS)
 
         copy_qt_translations(
-            "$ENV{MINGW_PREFIX}/share/qt5/translations"
+            "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/translations"
             "${CMAKE_BINARY_DIR}/translations"
             LANGUAGES ${LANGS}
             COMPONENTS qt qtbase

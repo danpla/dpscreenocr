@@ -10,7 +10,9 @@
 #include <QDir>
 #include <QLibraryInfo>
 #include <QLocale>
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QTextCodec>
+#endif
 #include <QTranslator>
 
 #include "dpso_intl/dpso_intl.h"
