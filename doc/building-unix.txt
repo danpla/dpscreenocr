@@ -3,11 +3,11 @@ Dependencies
 
 Required:
 
-  * C++ compiler with C++11 support
+  * C++ compiler with C++11 support (or C++17 when using Qt 6)
   * CMake >= 2.8.12. A particular version of Qt may require a newer
     version of CMake.
   * Make
-  * Qt 4 or 5
+  * Qt 4-6
   * libtesseract
   * libx11
   * libxext - for X11 Nonrectangular Window Shape Extension
