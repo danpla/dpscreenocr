@@ -65,7 +65,8 @@ To install all dependencies except Pandoc, run in a MinGW shell:
         make \
         $MINGW_PACKAGE_PREFIX-cmake \
         $MINGW_PACKAGE_PREFIX-gcc \
-        $MINGW_PACKAGE_PREFIX-qt5 \
+        $MINGW_PACKAGE_PREFIX-qt5-base \
+        $MINGW_PACKAGE_PREFIX-qt5-translations \
         $MINGW_PACKAGE_PREFIX-pkgconf \
         $MINGW_PACKAGE_PREFIX-tesseract-ocr \
         $MINGW_PACKAGE_PREFIX-tesseract-data-eng \
