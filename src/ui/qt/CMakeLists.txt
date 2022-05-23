@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dpScreenOCR-QT)
 
-set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4 or 5")
-set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5)
+set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4, 5 or 6")
+set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5 6)
 option(
     DPSO_QT_LOCAL_DATA
     "Allow to load data (e.g. locales) from the executable's dir"
