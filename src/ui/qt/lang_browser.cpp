@@ -42,7 +42,7 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
 
     header()->setStretchLastSection(false);
 
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     header()->setSectionResizeMode(
         columnIdxCheckbox, QHeaderView::ResizeToContents);
     header()->setSectionResizeMode(
