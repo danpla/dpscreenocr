@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
+#include <QSessionManager>
 #include <QTabWidget>
 #include <QTimerEvent>
 #include <QVBoxLayout>
@@ -152,6 +153,17 @@ MainWindow::MainWindow()
         show();
 
     updateTimerId = startTimer(1000 / 60);
+
+    // See comments in commitData().
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0) \
+        && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QApplication::setFallbackSessionManagementEnabled(false);
+    #endif
+
+    connect(
+        qApp, SIGNAL(commitDataRequest(QSessionManager&)),
+        this, SLOT(commitData(QSessionManager&)),
+        Qt::DirectConnection);
 }
 
 
@@ -262,6 +274,88 @@ void MainWindow::trayIconActivated(
 {
     if (reason == QSystemTrayIcon::Trigger)
         visibilityAction->toggle();
+}
+
+
+void MainWindow::commitData(QSessionManager& sessionManager)
+{
+    // Our main goal here is to save settings. Still, we also try to
+    // use interaction if allowed by the session manager, and here
+    // come the problems related to different behavior and bugs in
+    // various Qt versions.
+    //
+    // There are two types of session management:
+    //
+    // * The fallback management, when after commitData() Qt tries to
+    //   close all toplevel windows (invoking closeEvent()), and, if
+    //   that fails, assumes that the shutdown process is canceled by
+    //   the user.
+    //
+    // * The "true" management, when Qt only calls commitData() and
+    //   no closeEvent().
+
+    // 1. Qt 4 always use the fallback management. There is no sense
+    //    to use commitData(); we don't want to show the confirmation
+    //    dialog for the second time from closeEvent().
+    #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    return;
+    #endif
+
+    bool noInteraction{};
+    // 2. Qt version 5.2.1 (and probably all Qt 5 versions before 5.6,
+    //    which introduced setFallbackSessionManagementEnabled()) has
+    //    a bug: it doesn't call closeEvent(), but instead hides the
+    //    window even after QSessionManager::cancel(). The best we can
+    //    do here is to disable interaction.
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) \
+            && QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
+    noInteraction = true;
+    #endif
+
+    // 3. Qt versions from 5.6 till 6.0 allow to disable the fallback
+    //    management via setFallbackSessionManagementEnabled(). The
+    //    "true" management seem to give a better desktop integration
+    //    (see https://bugs.kde.org/show_bug.cgi?id=354724), so we
+    //    actually disable it in the constructor.
+
+    // 4. The fallback management is removed in Qt 6. But there's an
+    //    issue on Windows 10 with Qt 6.3.0; it's not clear whether
+    //    it's a bug in Qt or intended OS behavior. While shutting
+    //    down, there is the system screen with a list of apps that
+    //    prevent OS from exiting, and two buttons: "Shut down anyway"
+    //    and "Cancel". This means that the user can only see our
+    //    confirmation dialog after explicitly canceling the shutdown,
+    //    which makes the dialog useless (in particular, confirming to
+    //    quit at this point will not close the application).
+    //
+    //    Let's hope that the issue is fixed in the future, but for
+    //    now we have to save settings before showing the dialog.
+
+    saveState(cfg.get());
+    dpsoCfgSave(cfg.get(), cfgFilePath.c_str());
+
+    if (!noInteraction
+            && sessionManager.allowsInteraction()
+            && dpsoOcrGetJobsPending(ocr.get())
+            && !confirmation(
+                this,
+                dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
+        sessionManager.cancel();
+        return;
+    }
+
+    sessionManager.release();
+
+    // Terminate jobs in case the session manager actually decides to
+    // quit (it may not if e.g. another app cancels shutdown process)
+    // so that we don't show the confirmation dialog for the second
+    // time from closeEvent() (if the current Qt version use the
+    // fallback session management and the checks above didn't help)
+    // and don't get partially written files or similar surprises when
+    // the app is terminated while processing a new recognized text
+    // (if the current Qt version doesn't use the fallback management,
+    // and closeEvent(), which stops the update timer, is not called).
+    dpsoOcrTerminateJobs(ocr.get());
 }
 
 

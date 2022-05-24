@@ -15,6 +15,7 @@
 class QAction;
 class QCheckBox;
 class QLabel;
+class QSessionManager;
 class QSystemTrayIcon;
 class QTabWidget;
 
@@ -39,6 +40,7 @@ private slots:
     void invalidateStatus();
     void setVisibility(bool vilible);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void commitData(QSessionManager& sessionManager);
 private:
     struct DynamicStrings {
         std::string progress;
