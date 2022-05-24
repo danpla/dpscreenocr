@@ -137,6 +137,14 @@ MainWindow::MainWindow()
     auto* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabs);
 
+    // Our main window may be hidden to tray. As of Qt 5.15, ignoring
+    // QCloseEvent has no effect if the window is hidden when
+    // closeEvent() returns, even if WA_QuitOnClose is disabled. A
+    // workaround is to either disable quitOnLastWindowClosed and
+    // quit explicitly when needed (our approach), or to make sure
+    // that the window is visible before returning from closeEvent().
+    QApplication::setQuitOnLastWindowClosed(false);
+
     createTrayIcon();
 
     if (!loadState(cfg.get())) {
