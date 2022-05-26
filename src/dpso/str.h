@@ -45,6 +45,8 @@ inline int cmp(
 }
 
 
+// We can't use overloading here, since on some systems va_list is a
+// typedef for char*.
 std::string vprintf(const char* fmt, std::va_list vlist);
 std::string printf(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
