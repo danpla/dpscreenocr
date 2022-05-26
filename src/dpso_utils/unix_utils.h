@@ -20,8 +20,13 @@ namespace unix {
  * on failure.
  */
 bool makeDirs(char* path, mode_t mode = 0777);
-
 bool makeDirs(const char* path, mode_t mode = 0777);
+
+
+/**
+ * fsync() wrapper with F_FULLFSYNC on macOS.
+ */
+int fsync(int fd);
 
 
 }

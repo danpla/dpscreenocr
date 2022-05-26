@@ -129,10 +129,17 @@ static bool createEntries(
 static dpso::StdFileUPtr openForAppending(const char* filePath)
 {
     dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "ab")};
-    if (!fp)
+    if (!fp) {
         dpsoSetError(
             "dpsoFopenUtf8(..., \"ab\") failed: %s",
             std::strerror(errno));
+        return nullptr;
+    }
+
+    if (!dpsoSyncFileDir(filePath)) {
+        dpsoSetError("dpsoSyncFileDir() failed: %s", dpsoGetError());
+        return nullptr;
+    }
 
     return fp;
 }
@@ -221,6 +228,12 @@ int dpsoHistoryAppend(
 
     if (std::fflush(fp) == EOF) {
         dpsoSetError("fflush() failed");
+        history->fp.reset();
+        return false;
+    }
+
+    if (!dpsoSyncFile(fp)) {
+        dpsoSetError("dpsoSyncFile() failed: %s", dpsoGetError());
         history->fp.reset();
         return false;
     }
