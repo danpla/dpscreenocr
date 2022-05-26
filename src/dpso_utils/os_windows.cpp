@@ -2,7 +2,10 @@
 #include "os.h"
 
 #include <cerrno>
+#include <cstring>
+#include <io.h>
 
+#include "dpso/error.h"
 #include "windows_utils.h"
 
 
@@ -23,4 +26,29 @@ FILE* dpsoFopenUtf8(const char* filePath, const char* mode)
     }
 
     return _wfopen(filePathUtf16.c_str(), modeUtf16.c_str());
+}
+
+
+int dpsoSyncFile(FILE* fp)
+{
+    const auto fd = _fileno(fp);
+    if (fd == -1) {
+        dpsoSetError("_fileno() failed: %s", std::strerror(errno));
+        return false;
+    }
+
+    if (_commit(fd) == -1) {
+        dpsoSetError("_commit() failed: %s", std::strerror(errno));
+        return false;
+    }
+
+    return true;
+}
+
+
+int dpsoSyncFileDir(const char* filePath)
+{
+    (void)filePath;
+    // Windows doesn't support directory synchronization.
+    return true;
 }
