@@ -20,6 +20,6 @@ void dpsoSetError(const char* fmt, ...)
 {
     std::va_list args;
     va_start(args, fmt);
-    lastError = dpso::str::printf(fmt, args);
+    lastError = dpso::str::vprintf(fmt, args);
     va_end(args);
 }
