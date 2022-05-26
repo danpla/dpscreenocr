@@ -51,7 +51,6 @@ auto execute(ActionExecutor& executor, CallableT callable)
         explicit CallableAction(CallableT callable)
             : callable{callable}
         {
-
         }
 
         void action() override
@@ -75,7 +74,6 @@ auto execute(ActionExecutor& executor, CallableT callable)
         explicit CallableAction(CallableT callable)
             : callable{callable}
         {
-
         }
 
         void action() override

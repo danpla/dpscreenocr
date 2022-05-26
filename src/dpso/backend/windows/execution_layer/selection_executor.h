@@ -2,11 +2,13 @@
 #pragma once
 
 #include "backend/selection.h"
-#include "backend/windows/execution_layer/action_executor.h"
 
 
 namespace dpso {
 namespace backend {
+
+
+class ActionExecutor;
 
 
 class SelectionExecutor : public Selection {

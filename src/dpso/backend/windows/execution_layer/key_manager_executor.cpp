@@ -1,12 +1,14 @@
 
 #include "backend/windows/execution_layer/key_manager_executor.h"
 
+#include "backend/windows/execution_layer/action_executor.h"
+
 
 namespace dpso {
 namespace backend {
 
 
-#define EXEC_DELEGATE(CALL) \
+#define EXECUTE(CALL) \
     execute(actionExecutor, [&](){ return keyManager.CALL; })
 
 
@@ -20,44 +22,44 @@ KeyManagerExecutor::KeyManagerExecutor(
 
 bool KeyManagerExecutor::getHotkeysEnabled() const
 {
-    return EXEC_DELEGATE(getHotkeysEnabled());
+    return EXECUTE(getHotkeysEnabled());
 }
 
 
 void KeyManagerExecutor::setHotkeysEnabled(bool newHotkeysEnabled)
 {
-    EXEC_DELEGATE(setHotkeysEnabled(newHotkeysEnabled));
+    EXECUTE(setHotkeysEnabled(newHotkeysEnabled));
 }
 
 
 DpsoHotkeyAction KeyManagerExecutor::getLastHotkeyAction() const
 {
-    return EXEC_DELEGATE(getLastHotkeyAction());
+    return EXECUTE(getLastHotkeyAction());
 }
 
 
 bool KeyManagerExecutor::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
-    return EXEC_DELEGATE(bindHotkey(hotkey, action));
+    return EXECUTE(bindHotkey(hotkey, action));
 }
 
 
 int KeyManagerExecutor::getNumBindings() const
 {
-    return EXEC_DELEGATE(getNumBindings());
+    return EXECUTE(getNumBindings());
 }
 
 
 HotkeyBinding KeyManagerExecutor::getBinding(int idx) const
 {
-    return EXEC_DELEGATE(getBinding(idx));
+    return EXECUTE(getBinding(idx));
 }
 
 
 void KeyManagerExecutor::removeBinding(int idx)
 {
-    EXEC_DELEGATE(removeBinding(idx));
+    EXECUTE(removeBinding(idx));
 }
 
 

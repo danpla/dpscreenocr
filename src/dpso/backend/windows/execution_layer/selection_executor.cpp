@@ -1,12 +1,14 @@
 
 #include "backend/windows/execution_layer/selection_executor.h"
 
+#include "backend/windows/execution_layer/action_executor.h"
+
 
 namespace dpso {
 namespace backend {
 
 
-#define EXEC_DELEGATE(CALL) \
+#define EXECUTE(CALL) \
     execute(actionExecutor, [&](){ return selection.CALL; })
 
 
@@ -20,19 +22,19 @@ SelectionExecutor::SelectionExecutor(
 
 bool SelectionExecutor::getIsEnabled() const
 {
-    return EXEC_DELEGATE(getIsEnabled());
+    return EXECUTE(getIsEnabled());
 }
 
 
 void SelectionExecutor::setIsEnabled(bool newIsEnabled)
 {
-    EXEC_DELEGATE(setIsEnabled(newIsEnabled));
+    EXECUTE(setIsEnabled(newIsEnabled));
 }
 
 
 Rect SelectionExecutor::getGeometry() const
 {
-    return EXEC_DELEGATE(getGeometry());
+    return EXECUTE(getGeometry());
 }
 
 
