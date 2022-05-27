@@ -782,7 +782,13 @@ void MainWindow::checkHotkeyActions()
         dpsoSetSelectionIsEnabled(false);
         dpsoUnbindAction(hotkeyActionCancelSelection);
 
-        if (hotkeyAction == hotkeyActionToggleSelection) {
+        if (hotkeyAction == hotkeyActionToggleSelection
+                // The selection doesn't block mouse interaction, so
+                // make sure that adding a new job really makes sense.
+                // Perhaps it would be better to disable the selection
+                // automatically when the last language or action is
+                // unselected.
+                && canStartSelection()) {
             DpsoOcrJobArgs jobArgs;
 
             dpsoGetSelectionGeometry(&jobArgs.screenRect);
