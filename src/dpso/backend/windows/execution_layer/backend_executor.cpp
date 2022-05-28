@@ -39,11 +39,7 @@ private:
 
 BackendExecutor::BackendExecutor(BackendCreatorFn creatorFn)
     : actionExecutor{createBgThreadActionExecutor()}
-    , backend{
-        execute(*actionExecutor, [&creatorFn](){
-            return creatorFn();
-        })
-    }
+    , backend{execute(*actionExecutor, creatorFn)}
     , keyManagerExecutor{backend->getKeyManager(), *actionExecutor}
     , selectionExecutor{backend->getSelection(), *actionExecutor}
 {
