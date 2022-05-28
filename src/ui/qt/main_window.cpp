@@ -787,7 +787,7 @@ void MainWindow::checkHotkeyActions()
                 // make sure that adding a new job really makes sense.
                 // Perhaps it would be better to disable the selection
                 // automatically when the last language or action is
-                // unselected.
+                // unchecked.
                 && canStartSelection()) {
             DpsoOcrJobArgs jobArgs;
 
