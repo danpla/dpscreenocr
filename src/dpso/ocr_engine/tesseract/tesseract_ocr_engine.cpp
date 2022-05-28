@@ -214,11 +214,11 @@ void TesseractOcr::cacheLangs()
     //
     // See https://github.com/tesseract-ocr/tesseract/issues/1073
     //
-    // Writing our own routine to collect the list of "*.tessdata" is
-    // not an option, since the data path may be different on various
-    // Unix-like systems. It's hardcoded into the Tesseract library,
-    // but there's no API to retrieve it; you can only use it
-    // implicitly by passing null as the datapath argument to Init().
+    // We can't get around the problem by writing our own routine that
+    // will collect the list of "*.tessdata". The data path may be
+    // different on various Unix-like systems (it's hardcoded at
+    // compilation time), and you can only get it via GetDatapath(),
+    // which also requires the same dummy Init() call.
     tess.Init(nullptr, nullptr);
 
     #if defined(TESSERACT_MAJOR_VERSION) \
