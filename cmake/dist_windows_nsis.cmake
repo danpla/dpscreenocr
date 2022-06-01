@@ -1,54 +1,44 @@
 
-# There is a bug in NSIS that doesn't handle absolute paths that
-# contain a forward slash before the final component for some
-# variables (like MUI_WELCOMEFINISHPAGE_BITMAP). We thus should use a
-# backslash instead.
+# We no longer use CPack's NSIS generator due to lack of flexibility.
+# For example:
+#
+# * It's impossible to remove the installed app silently.
+#   CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL dialog not only allows
+#   to skip uninstalling, but also uses hardcoded text that can't be
+#   translated.
+#
+# * It's impossible to fix NSIS' InstallDirRegKey bug when installing
+#   a 64-bit app from 32-bit installer (InstallDirRegKey always reads
+#   32-bit view of registry in this case).
 
-if(CMAKE_VERSION VERSION_LESS 3.17)
-    # CPACK_NSIS_MUI_HEADERIMAGE requires 3.17
-    message(WARNING "Use CMake 3.17 or newer to enable all features of NSIS installer")
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(IS_64_BIT_BUILD 1)
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    set(IS_64_BIT_BUILD 0)
 endif()
 
-include(dist_windows_installer_common)
-
-set(CPACK_NSIS_PACKAGE_NAME "${APP_NAME} ${APP_VERSION}")
-set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
-
-set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL YES)
-
-# Start menu page defaults to CPACK_NSIS_PACKAGE_NAME, which contains
-# the program version.
-set(
-    CPACK_NSIS_DEFINES
-    "  !define MUI_STARTMENUPAGE_DEFAULTFOLDER \\\"${APP_NAME}\\\""
+configure_file(
+    "${CMAKE_SOURCE_DIR}/data/nsis/nsis.nsi.in"
+    "${CMAKE_BINARY_DIR}/nsis.nsi"
+    @ONLY
+)
+file(
+    WRITE
+    "${CMAKE_BINARY_DIR}/nsis.nsi.readme.txt"
+    "Build the \"prepare_nsis\" target to complete preparation and then run makensisw for nsis.nsi."
 )
 
-set(CPACK_NSIS_INSTALLED_ICON_NAME "${APP_FILE_NAME}.exe")
-set(
-    CPACK_NSIS_MUI_ICON
-    "${CMAKE_SOURCE_DIR}/data/icons/${APP_FILE_NAME}.ico"
+unset(IS_64_BIT_BUILD)
+
+configure_file(
+    "${CMAKE_CURRENT_LIST_DIR}/dist_windows_nsis_prepare.cmake.in"
+    "${CMAKE_BINARY_DIR}/dist_windows_nsis_prepare.cmake"
+    @ONLY
 )
 
-set(
-    CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP
-    "${CMAKE_SOURCE_DIR}/data/nsis\\\\win.bmp"
+add_custom_target(
+    "prepare_nsis"
+    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/dist_windows_nsis_prepare.cmake"
+    COMMAND ${CMAKE_COMMAND} -E echo "Run makensisw for nsis.nsi to build the installer"
+    VERBATIM
 )
-
-set(
-    CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP
-    "${CMAKE_SOURCE_DIR}/data/nsis\\\\win.bmp"
-)
-
-set(
-    CPACK_NSIS_MUI_HEADERIMAGE
-    "${CMAKE_SOURCE_DIR}/data/nsis\\\\header.bmp"
-)
-
-set(CPACK_NSIS_HELP_LINK "${APP_URL}")
-set(CPACK_NSIS_URL_INFO_ABOUT "${APP_URL}")
-
-set(CPACK_NSIS_MENU_LINKS "doc" "Documents")
-
-set(CPACK_NSIS_MUI_FINISHPAGE_RUN "${APP_FILE_NAME}.exe")
-
-set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
