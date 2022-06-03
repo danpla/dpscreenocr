@@ -19,8 +19,8 @@
 # with a capital letter; by convention, all other component names
 # start with a lower-case letter.
 #
-# Note: We can't use "default" as a component name, because NSIS gives
-# an error in this case.
+# We can't use "default" as a component name, because NSIS gives an
+# error in this case.
 
 set(CPACK_COMPONENT_REQUIRED_DISPLAY_NAME "${APP_NAME}")
 set(CPACK_COMPONENT_REQUIRED_REQUIRED TRUE)

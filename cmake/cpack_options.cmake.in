@@ -2,15 +2,5 @@
 # Per-generator overrides.
 
 if(CPACK_GENERATOR MATCHES "NSIS")
-    # We set MUI_STARTMENUPAGE_DEFAULTFOLDER with CPACK_NSIS_DEFINES,
-    # because otherwise the Start menu page defaults to
-    # CPACK_NSIS_PACKAGE_NAME that contains the program version.
-    #
-    # However, CPACK_NSIS_DEFINES is ignored during component-based
-    # installation due to the CMake bug #14522, so we disable
-    # component install till the bug is fixed. We use
-    # CPACK_MONOLITHIC_INSTALL because
-    # CPACK_<GENERATOR>_COMPONENT_INSTALL has no effect in case of
-    # NSIS.
-    set(CPACK_MONOLITHIC_INSTALL ON)
+    message(FATAL_ERROR "NSIS is no longer supported. Use Inno Setup instead.")
 endif()
