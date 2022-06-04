@@ -67,6 +67,12 @@ if(NOT TARGET ui_common)
     )
 endif()
 
+if(NOT TARGET ui_taskbar)
+    add_subdirectory(
+        ../src/ui/ui_taskbar ${CMAKE_BINARY_DIR}/src/ui/ui_taskbar
+    )
+endif()
+
 target_link_libraries(
-    test_c_compilation dpso dpso_intl dpso_utils ui_common
+    test_c_compilation dpso dpso_intl dpso_utils ui_common ui_taskbar
 )

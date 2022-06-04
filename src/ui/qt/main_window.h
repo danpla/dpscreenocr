@@ -8,6 +8,7 @@
 
 #include "dpso/dpso.h"
 #include "dpso_utils/dpso_utils.h"
+#include "ui_taskbar/ui_taskbar.h"
 
 #include "status.h"
 
@@ -97,6 +98,8 @@ private:
     bool minimizeToTray;
 
     bool minimizeOnStart;
+
+    ui::TaskbarUPtr taskbar;
 
     void createQActions();
 

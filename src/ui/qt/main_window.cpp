@@ -172,6 +172,13 @@ MainWindow::MainWindow()
         qApp, SIGNAL(commitDataRequest(QSessionManager&)),
         this, SLOT(commitData(QSessionManager&)),
         Qt::DirectConnection);
+
+    #ifdef _WIN32
+    taskbar.reset(
+        uiTaskbarCreateWin(reinterpret_cast<HWND>(winId())));
+    if (!taskbar)
+        qWarning("uiTaskbarCreateWin() failed: %s", dpsoGetError());
+    #endif
 }
 
 
@@ -655,6 +662,21 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     statusLabel->setText(text);
 
     trayIcon->setToolTip(textWithAppName);
+
+    UiTaskbarState tbState{};
+    switch (newStatus) {
+        case Status::ok:
+            tbState = UiTaskbarStateNormal;
+            break;
+        case Status::busy:
+            tbState = UiTaskbarStateProgress;
+            break;
+        case Status::warning:
+            tbState = UiTaskbarStateError;
+            break;
+    }
+
+    uiTaskbarSetState(taskbar.get(), tbState);
 }
 
 
@@ -695,6 +717,8 @@ void MainWindow::updateStatus()
                     {"total_jobs",
                         std::to_string(
                             progress.totalJobs).c_str()}}));
+
+        uiTaskbarSetProgress(taskbar.get(), totalProgress);
 
         return;
     }
