@@ -22,7 +22,7 @@ unset(APP_IS_64_BIT)
 unset(APP_SOURCE_DIR)
 
 # Generate inno_setup_languages.isi.
-function(gen_language_list)
+function(gen_inno_setup_language_list)
     # This is the mapping from a locale name in po/LINGUAS to a name
     # if the Inno Setup language file from "compiler:Languages\".
     # English is always included and is not listed here. To skip a
@@ -90,4 +90,4 @@ function(gen_language_list)
     endif()
 endfunction()
 
-gen_language_list()
+gen_inno_setup_language_list()
