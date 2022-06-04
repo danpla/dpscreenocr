@@ -35,10 +35,9 @@ You will need the following tools and libraries to build dpScreenOCR:
 Required:
 
   * C++ compiler with C++11 support (or C++17 when using Qt 6)
-  * CMake >= 2.8.12. At least 3.17 is recommended for automatic
-    copying of DLLs (requires 3.16) and to enable all features of NSIS
-    installer (requires 3.17). A particular version of Qt may require
-    a newer version of CMake.
+  * CMake >= 2.8.12. At least 3.16 is recommended for automatic
+    copying of DLLs. A particular version of Qt may require a newer
+    version of CMake.
   * Make
   * Qt 4-6
   * tesseract
@@ -117,40 +116,35 @@ DLLs are copied automatically if CMake version is 3.16 or newer. With
 older CMake, you have to copy them manually from "$MINGW_PREFIX/bin/".
 
 
-
 3 Packaging
 ===========
 
+
+3.1 CPack
+---------
+
 To create packages, run "cpack -G <generators>", where <generators>
 is a semicolon-separated list of generator names you can find in
-"cpack --help". The most useful generators on Windows are:
+"cpack --help".
 
-  * ZIP - ZIP archive.
+The WIX generator creates an MSI installer. Download WIX from
+https://wixtoolset.org/ and tell CPack the path to its binaries either
+with CPACK_WIX_ROOT CPack variable (cpack -D CPACK_WIX_ROOT="...") or
+with the WIX environment variable (export WIX="...").
 
-  * NSIS - EXE installer using NSIS. To install NSIS, run:
+The NSIS and NSIS64 generators are no longer supported. Use Inno Setup
+instead.
 
-        pacman -S --needed $MINGW_PACKAGE_PREFIX-nsis
 
-  * WIX - MSI installer using WIX toolkit. Download WIX from
-    https://wixtoolset.org/ and tell CPack the path to its binaries in
-    one of the following ways:
+3.2 Inno Setup
+--------------
 
-      * With the CPACK_WIX_ROOT CPack variable:
+There is inno_setup.iss in the build directory to create an installer
+with Inno Setup.
 
-            cpack -D CPACK_WIX_ROOT="c:\\WiX Toolset\\bin" ...
-
-      * With the WIX environment variable:
-
-            export WIX="c:\\WiX Toolset\\bin"
-            cpack ...
-
-      * By extending the PATH environment variable:
-
-            export PATH="$PATH:/c/WiX Toolset/bin"
-            cpack ...
-
-    Note that the first two variants accept paths in both native
-    Windows (like "c:\\WiX Toolset\\bin") and Unix-style (like
-    "/c/WiX Toolset/bin") formats. For the third option you should
-    always use a Unix-style path to avoid the colon after the drive
-    letter to be interpreted as a PATH separator.
+Unless you disable the DPSO_ENABLE_NLS option, you will need some
+unofficial language files listed in inno_setup_languages.isi. Download
+them from the Inno Setup website or source code repository
+(Files/Languages/Unofficial/), and place them in the
+"Languages/Unofficial/" directory in the root of your Inno
+Setup installation.
