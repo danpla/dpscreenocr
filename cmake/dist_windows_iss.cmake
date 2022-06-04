@@ -29,7 +29,7 @@ function(gen_language_list)
     # locale that has no corresponding language file, use - as the
     # file name, e.g.:
     #
-    #   set(LANG_NAME_en_GB "-")
+    #   set(ISL_en_GB "-")
     #
     # Inno Setup is only shipped with official languages. You can
     # download the unofficial ones either from the Inno Setup source
@@ -37,18 +37,18 @@ function(gen_language_list)
     # https://jrsoftware.org/files/istrans/. The list below expects
     # the unofficial languages to be in the "Unofficial" subdirectory,
     # i.e. "compiler:Languages\Unofficial\".
-    set(LANG_NAME_bg "Bulgarian")
-    set(LANG_NAME_ca "Catalan")
-    set(LANG_NAME_de "German")
-    set(LANG_NAME_es "Spanish")
-    set(LANG_NAME_fr "French")
-    set(LANG_NAME_hr "Unofficial\\Croatian")
-    set(LANG_NAME_nb_NO "Norwegian")
-    set(LANG_NAME_pl "Polish")
-    set(LANG_NAME_ru "Russian")
-    set(LANG_NAME_tr "Turkish")
-    set(LANG_NAME_uk "Ukrainian")
-    set(LANG_NAME_zh_CN "Unofficial\\ChineseSimplified")
+    set(ISL_bg "Bulgarian")
+    set(ISL_ca "Catalan")
+    set(ISL_de "German")
+    set(ISL_es "Spanish")
+    set(ISL_fr "French")
+    set(ISL_hr "Unofficial\\Croatian")
+    set(ISL_nb_NO "Norwegian")
+    set(ISL_pl "Polish")
+    set(ISL_ru "Russian")
+    set(ISL_tr "Turkish")
+    set(ISL_uk "Ukrainian")
+    set(ISL_zh_CN "Unofficial\\ChineseSimplified")
 
     set(OUT_FILE "${CMAKE_BINARY_DIR}/inno_setup_languages.isi")
 
@@ -63,29 +63,29 @@ function(gen_language_list)
 
     file(REMOVE "${OUT_FILE}")
 
-    set(UNDEFINED_NAMES)
+    set(UNDEFINED_ISLS)
 
     include(get_linguas)
     get_linguas(LANGS)
     foreach(LANG ${LANGS})
-        if(NOT LANG_NAME_${LANG})
-            list(APPEND UNDEFINED_NAMES "${LANG}")
-        elseif(NOT LANG_NAME_${LANG} STREQUAL "-")
+        if(NOT ISL_${LANG})
+            list(APPEND UNDEFINED_ISLS "${LANG}")
+        elseif(NOT ISL_${LANG} STREQUAL "-")
             file(
                 APPEND
                 "${OUT_FILE}"
-                "Name: \"${LANG}\"; MessagesFile: \"compiler:Languages\\${LANG_NAME_${LANG}}.isl\"\n"
+                "Name: \"${LANG}\"; MessagesFile: \"compiler:Languages\\${ISL_${LANG}}.isl\"\n"
             )
         endif()
     endforeach()
 
-    if(UNDEFINED_NAMES)
+    if(UNDEFINED_ISLS)
         string(
-            REPLACE ";" ", " UNDEFINED_NAMES_STR "${UNDEFINED_NAMES}"
+            REPLACE ";" ", " UNDEFINED_ISLS_STR "${UNDEFINED_ISLS}"
         )
         message(
             WARNING
-            "Names for the following languages are not defined: ${UNDEFINED_NAMES_STR}. Add them to the list above."
+            "Inno Setup language files for the following locales are not defined: ${UNDEFINED_ISLS_STR}. Add them to the list above."
         )
     endif()
 endfunction()
