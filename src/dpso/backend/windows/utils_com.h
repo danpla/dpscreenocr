@@ -3,6 +3,7 @@
 
 #include <objbase.h>
 
+#include <memory>
 #include <utility>
 
 
@@ -70,6 +71,36 @@ private:
     HRESULT hresult;
     bool moved;
 };
+
+
+struct IUnknwonReleaser {
+    void operator()(IUnknown* v) const
+    {
+        if (v)
+            v->Release();
+    }
+};
+
+
+template<typename T>
+using CoUPtr = std::unique_ptr<T, IUnknwonReleaser>;
+
+
+// Wrapper around CoCreateInstance() that returns CoUPtr.
+template<typename T>
+HRESULT coCreateInstance(
+    REFCLSID rclsid,
+    LPUNKNOWN pUnkOuter,
+    DWORD dwClsContext,
+    CoUPtr<T>& ptr)
+{
+    T* rawPtr;
+    const auto hresult = CoCreateInstance(
+        rclsid, pUnkOuter, dwClsContext, IID_PPV_ARGS(&rawPtr));
+
+    ptr = CoUPtr<T>{rawPtr};
+    return hresult;
+}
 
 
 }

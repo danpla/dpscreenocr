@@ -15,7 +15,7 @@
 
 struct UiTaskbar {
     dpso::windows::CoInitializer coInitializer;
-    ITaskbarList3* tbl3;
+    dpso::windows::CoUPtr<ITaskbarList3> tbl;
     HWND hwnd;
 };
 
@@ -43,40 +43,31 @@ struct UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
         return nullptr;
     }
 
-    ITaskbarList3* tbl3;
-
-    auto hresult = CoCreateInstance(
-        CLSID_TaskbarList,
-        nullptr,
-        CLSCTX_INPROC_SERVER,
-        IID_ITaskbarList3,
-        (void**)&tbl3);
+    dpso::windows::CoUPtr<ITaskbarList3> tbl;
+    auto hresult = dpso::windows::coCreateInstance(
+        CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, tbl);
     if (FAILED(hresult)) {
         dpsoSetError(
-            "CoCreateInstance() with IID_ITaskbarList3 failed: %s",
+            "CoCreateInstance() for ITaskbarList3 failed: %s",
             dpso::windows::getHresultMessage(hresult).c_str());
         return nullptr;
     }
 
-    hresult = tbl3->HrInit();
+    hresult = tbl->HrInit();
     if (FAILED(hresult)) {
-        tbl3->Release();
         dpsoSetError(
             "HrInit() failed: %s",
             dpso::windows::getHresultMessage(hresult).c_str());
         return nullptr;
     }
 
-    return new UiTaskbar{std::move(coInitializer), tbl3, hwnd};
+    return new UiTaskbar{
+        std::move(coInitializer), std::move(tbl), hwnd};
 }
 
 
 void uiTaskbarDelete(struct UiTaskbar* tb)
 {
-    if (!tb)
-        return;
-
-    tb->tbl3->Release();
     delete tb;
 }
 
@@ -114,9 +105,9 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState)
     // Another way to display error is an overlay icon, but such icons
     // are hidden if the taskbar is configured to use small buttons.
     if (tbpFlag == TBPF_ERROR)
-        tb->tbl3->SetProgressValue(tb->hwnd, 100, 100);
+        tb->tbl->SetProgressValue(tb->hwnd, 100, 100);
 
-    tb->tbl3->SetProgressState(tb->hwnd, tbpFlag);
+    tb->tbl->SetProgressState(tb->hwnd, tbpFlag);
 }
 
 
@@ -125,5 +116,5 @@ void uiTaskbarSetProgress(struct UiTaskbar* tb, int progress)
     if (!tb)
         return;
 
-    tb->tbl3->SetProgressValue(tb->hwnd, progress, 100);
+    tb->tbl->SetProgressValue(tb->hwnd, progress, 100);
 }
