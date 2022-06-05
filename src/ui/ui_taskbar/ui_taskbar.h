@@ -3,7 +3,7 @@
  * \file
  * Taskbar handler.
  *
- * The "taskbar" here is used as an abstract term; the implemetation
+ * The "taskbar" here is used as an abstract term; the implementation
  * is free to wrap any kind of indicator on a platform that doesn't
  * use a classic Windows-style taskbar.
  */
@@ -39,7 +39,7 @@ typedef enum {
     /**
      * Progress.
      *
-     * The implementation is not required to do anything meaningfull
+     * The implementation is not required to do anything meaningful
      * when switching to this state (e.g. displaying 0 progress).
      * Instead, you should think of it as just a switch that enables
      * uiTaskbarSetProgress().
