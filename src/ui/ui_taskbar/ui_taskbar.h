@@ -3,9 +3,20 @@
  * \file
  * Taskbar handler.
  *
- * The "taskbar" here is used as an abstract term; the implementation
- * is free to wrap any kind of indicator on a platform that doesn't
- * use a classic Windows-style taskbar.
+ * The taskbar handler allows to show a progress or error indicator on
+ * a taskbar entry, usually known as a taskbar button. The "taskbar"
+ * here is used as an abstract term; the implementation is free to
+ * wrap any indicator (other than an interactive tray/status icon) on
+ * a platform that doesn't use a classic Windows-style taskbar.
+ *
+ * Each platform platform-specific uiTaskbarCreate*() function should
+ * return null and set an error message (dpsoGetError()) in case of
+ * failure. For simplicity, we assume that an error when creating a
+ * taskbar handler is normally not fatal for an application, so all
+ * functions that accept a UiTaskbar pointer don't treat null as an
+ * error. In particular, there's no special uiTaskbarCreate*() for
+ * platforms on which the taskbar handler is not implemented: it's
+ * supposed that UiTaskbar is explicitly set to null in this case.
  */
 
 #pragma once
