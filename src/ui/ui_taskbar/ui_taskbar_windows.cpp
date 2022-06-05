@@ -85,6 +85,23 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState)
             break;
     }
 
+    // Make sure that the whole button has red background. Although
+    // the documentation states that moving to TBPF_ERROR from
+    // TBPF_INDETERMINATE should show "a generic percentage not
+    // indicative of actual progress", it doesn't work well on
+    // Windows 7, where it shows just a small red bar as if the
+    // progress is set to ~1%. On Windows 10 it looks a bit better,
+    // since the button gets a red underline.
+    //
+    // Also, TBPF_INDETERMINATE itself will not be visible if
+    // animations are disabled in the system settings, so explicit
+    // full progress and TBPF_ERROR is more reliable anyway.
+    //
+    // Another way to display error is an overlay icon, but such icons
+    // are hidden if the taskbar is configured to use small buttons.
+    if (tbpFlag == TBPF_ERROR)
+        tb->tbl3->SetProgressValue(tb->hwnd, 100, 100);
+
     tb->tbl3->SetProgressState(tb->hwnd, tbpFlag);
 }
 
