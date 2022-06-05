@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <shellapi.h>
 
+#include "dpso/backend/windows/utils_com.h"
 #include "dpso/str.h"
 #include "os.h"
 #include "windows_utils.h"
@@ -132,6 +133,9 @@ void dpsoExec(const char* exePath, const char* arg)
 {
     if (!allowExecute(exePath))
         return;
+
+    dpso::windows::CoInitializer coInitializer{
+        COINIT_APARTMENTTHREADED};
 
     const auto cmdLine = dpso::windows::createCmdLine("", {arg});
 

@@ -6,11 +6,15 @@
 #include <shobjidl.h>
 #include <versionhelpers.h>
 
+#include <utility>
+
 #include "dpso/backend/windows/utils.h"
+#include "dpso/backend/windows/utils_com.h"
 #include "dpso/error.h"
 
 
 struct UiTaskbar {
+    dpso::windows::CoInitializer coInitializer;
     ITaskbarList3* tbl3;
     HWND hwnd;
 };
@@ -26,6 +30,16 @@ struct UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
     if (!IsWindows7OrGreater()) {
         dpsoSetError(
             "ITaskbarList3 is only available on Windows 7 or newer");
+        return nullptr;
+    }
+
+    dpso::windows::CoInitializer coInitializer{
+        COINIT_APARTMENTTHREADED};
+    if (!dpso::windows::coInitSuccess(coInitializer.getHresult())) {
+        dpsoSetError(
+            "COM initialization failed: %s",
+            dpso::windows::getHresultMessage(
+                coInitializer.getHresult()).c_str());
         return nullptr;
     }
 
@@ -53,7 +67,7 @@ struct UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
         return nullptr;
     }
 
-    return new UiTaskbar{tbl3, hwnd};
+    return new UiTaskbar{std::move(coInitializer), tbl3, hwnd};
 }
 
 
