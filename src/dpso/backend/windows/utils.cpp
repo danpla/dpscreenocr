@@ -1,8 +1,6 @@
 
 #include "backend/windows/utils.h"
 
-#include <cstdio>
-
 #include "str.h"
 
 
