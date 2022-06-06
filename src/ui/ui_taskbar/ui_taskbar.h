@@ -80,7 +80,7 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState);
  *
  * Does nothing if the current state is not UiTaskbarStateProgress.
  */
-void uiTaskbarSetProgress(struct UiTaskbar* tb, int progress);
+void uiTaskbarSetProgress(struct UiTaskbar* tb, int newProgress);
 
 
 #ifdef __cplusplus

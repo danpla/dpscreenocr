@@ -15,8 +15,8 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState)
 }
 
 
-void uiTaskbarSetProgress(struct UiTaskbar* tb, int progress)
+void uiTaskbarSetProgress(struct UiTaskbar* tb, int newProgress)
 {
     (void)tb;
-    (void)progress;
+    (void)newProgress;
 }

@@ -101,10 +101,10 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState)
 }
 
 
-void uiTaskbarSetProgress(struct UiTaskbar* tb, int progress)
+void uiTaskbarSetProgress(struct UiTaskbar* tb, int newProgress)
 {
     if (!tb)
         return;
 
-    tb->tbl->SetProgressValue(tb->hwnd, progress, 100);
+    tb->tbl->SetProgressValue(tb->hwnd, newProgress, 100);
 }
