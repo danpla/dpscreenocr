@@ -22,11 +22,10 @@ Contents:
 Visit https://www.msys2.org for instructions on how to install and set
 up MSYS2.
 
-MSYS2 provides three shells: MSYS shell ("MSYS2 MSYS") and two MinGW
-shells for 32 and 64-bit environments ("MSYS2 MinGW 32-bit" and "MSYS2
-MinGW 64-bit"). You will never need the MSYS shell; instead, pick a
-MinGW shell depending on whether you want to build a 32-bit or 64-bit
-version of the program.
+MSYS2 provides several shells. Pick a MinGW shell depending on whether
+you want to build a 32-bit or 64-bit version of the program, e.g.
+"MSYS2 MinGW x86" or "MSYS2 MinGW x64". You will never need the MSYS
+shell ("MSYS2 MSYS").
 
 
 1.2 Dependencies
