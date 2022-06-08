@@ -44,7 +44,7 @@ if(DPSO_UI STREQUAL "qt")
     endif()
 endif()
 
-install(DIRECTORY DESTINATION "tessdata")
+install(DIRECTORY DESTINATION "tessdata" COMPONENT Required)
 install(
     FILES "${CMAKE_BINARY_DIR}/tessdata/eng.traineddata"
     DESTINATION "tessdata"
