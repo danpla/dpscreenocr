@@ -84,8 +84,6 @@ than languages: "osd" (automatic script and orientation detection) and
 # Usage
 
 
-## Overview
-
 dpScreenOCR is simple to use:
 
 1.  Choose languages in the [Main tab].
@@ -100,6 +98,15 @@ selected area and process it according to the actions from the
 
 
 ## Main tab
+
+
+### Status
+
+Status describes the current state of dpScreenOCR. Green means the
+program is ready to use, and you can press the [Hotkey] to start
+selection. Yellow shows the progress of recognition. Red warns that
+the program needs some setup, and you will not be able to start
+selection until the problem is fixed.
 
 
 ### Character recognition
@@ -139,27 +146,17 @@ key combination.
 
 ## Actions tab
 
-The Actions tab allows you to choose what dpScreenOCR will do with the
-recognized text.
-
-
-### Copy text to clipboard
-
-This action will copy the text to the clipboard.
-
-
-### Add text to history
-
-This action will add the text to the history located in the
-[History tab].
+The Actions tab lets you choose what to do with the recognized text:
+copy to the clipboard, add to history (see the [History tab]), or pass
+as an argument to an executable.
 
 
 ### Run executable
 
-This action will run an executable with the recognized text as the
-first argument. The "Run executable" entry expects either an absolute
-path to the executable, or just its name in case it's located in one
-of the paths of your PATH environment variable.
+The "Run executable" action will run an executable with the recognized
+text as the first argument. The "Run executable" entry expects either
+an absolute path to the executable, or just its name in case it's
+located in one of the paths of your PATH environment variable.
 
 
 #### Running scripts on Windows
@@ -229,9 +226,9 @@ A special file association is usually added during installation of the
 interpreter, so you can hide the console window by simply changing the
 extension of the script. For example, Python scripts with the ".pyw"
 extension are associated with pythonw.exe instead of python.exe. Other
-languages have their own conventions, like ".wlua" for Lua (wlua.exe),
-".rbw" for Ruby (rubyw.exe), etc. If such an association does not
-exist, create it manually as described in the previous section.
+languages may have their own conventions, like ".wlua" for Lua
+(wlua.exe). If such an association does not exist, create it manually
+as described in the previous section.
 
 
 #### Running scripts on Unix-like systems
@@ -275,8 +272,9 @@ mouse click, depending on the platform), or via its context menu.
 This section describes how to change some settings that are not
 available in the dpScreenOCR's interface.
 
-dpScreenOCR saves settings in the settings.cfg file. Depending on
-the platform, you can find it in the following directories:
+dpScreenOCR saves settings in settings.cfg — a plain text file that
+you can modify with any text editor. Depending on the platform, you
+can find it in the following directories:
 
 *   Windows: `%LOCALAPPDATA%\dpscreenocr`
 
@@ -286,10 +284,11 @@ the platform, you can find it in the following directories:
 
 *   Unix-like systems: `~/.config/dpscreenocr`
 
-You can modify the file with any text editor. To reset an option to
-the default value, remove it from the file; to reset all options,
-clear or delete the file. Be aware that dpScreenOCR rewrites settings
-on exit, so close the program before making changes.
+Each line in settings.cfg contains an option in the form of key-value
+pair. To reset an option to the default value, remove it from the
+file; to reset all options, clear or delete the file. Be aware that
+dpScreenOCR rewrites settings on exit, so make sure you close the
+program before making changes.
 
 A value can be one of the following types:
 
@@ -335,10 +334,8 @@ the settings file:
     If this option is enabled, the "Copy text to clipboard" action may
     receive several recognized text at once, in which case they will
     be joined together using `action_copy_to_clipboard_text_separator`
-    as separator.
-
-    If this option is disabled, pressing the hotkey will have no
-    effect until the recognition is done.
+    as separator. If this option is disabled, pressing the hotkey will
+    have no effect until the recognition is done.
 
 *   `ui_native_file_dialogs` (`true` by default) use file dialogs
     native to your platform instead of the ones specific to the GUI
