@@ -88,11 +88,10 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState)
             break;
         case UiTaskbarStateError:
             tbpFlag = TBPF_ERROR;
-            // Make sure that the whole button has red background.
-            //
-            // Another way to display error is an overlay icon, but
-            // such icons are hidden if the taskbar is configured to
-            // use small buttons.
+            // Set full progress so that the whole button has red
+            // background. Another way to display error is an overlay
+            // icon, but such icons are hidden if the taskbar is
+            // configured to use small buttons.
             tb->tbl->SetProgressValue(tb->hwnd, 100, 100);
             break;
     }
