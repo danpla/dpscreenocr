@@ -44,10 +44,12 @@ if(DPSO_UI STREQUAL "qt")
     endif()
 endif()
 
+install(DIRECTORY DESTINATION "tessdata")
 install(
-    DIRECTORY "${CMAKE_BINARY_DIR}/tessdata"
-    DESTINATION .
+    FILES "${CMAKE_BINARY_DIR}/tessdata/eng.traineddata"
+    DESTINATION "tessdata"
     COMPONENT Required
+    OPTIONAL
 )
 
 if(DPSO_ENABLE_NLS)
