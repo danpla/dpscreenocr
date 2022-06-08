@@ -21,7 +21,9 @@
 
 #pragma once
 
-#ifdef _WIN32
+#include "ui_taskbar_config.h"
+
+#if UI_TASKBAR_WIN
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
@@ -34,7 +36,7 @@ extern "C" {
 struct UiTaskbar;
 
 
-#ifdef _WIN32
+#if UI_TASKBAR_WIN
 struct UiTaskbar* uiTaskbarCreateWin(HWND hwnd);
 #endif
 

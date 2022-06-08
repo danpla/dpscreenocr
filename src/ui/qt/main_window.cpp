@@ -173,7 +173,7 @@ MainWindow::MainWindow()
         this, SLOT(commitData(QSessionManager&)),
         Qt::DirectConnection);
 
-    #ifdef _WIN32
+    #if UI_TASKBAR_WIN
     taskbar.reset(
         uiTaskbarCreateWin(reinterpret_cast<HWND>(winId())));
     if (!taskbar)
