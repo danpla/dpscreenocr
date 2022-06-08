@@ -68,6 +68,22 @@ int main(int argc, char *argv[])
         QTextCodec::codecForName("UTF-8"));
     #endif
 
+    // High DPI support is enabled by default in Qt 6.
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0) \
+        && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    #endif
+
+    // We could also set HighDpiScaleFactorRoundingPolicy to
+    // PassThrough since this is default in Qt 6, but high DPI support
+    // in Qt 5 is worse than in 6, and the default policy (Round)
+    // actually looks better: at least it doesn't result in tiny text
+    // on Windows 10 at 150% scale.
+    #endif
+
     QApplication app(argc, argv);
 
     setlocale(LC_ALL, "");
