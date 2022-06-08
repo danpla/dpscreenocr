@@ -2,16 +2,6 @@
 /**
  * \file
  * OCR routines
- *
- * Usage:
- *
- *   1. Activate at least one language with dpsoOcrSetLangIsActive()
- *   2. Queue one or more jobs with dpsoOcrQueueJob()
- *   3. Fetch job results:
- *     * Synchronously, with dpsoOcrWaitJobsToComplete() followed by
- *         dpsoOcrFetchResults()
- *     * Asynchronously, by calling dpsoOcrFetchResults() repeatedly
- *         till all results are fetched
  */
 
 #pragma once

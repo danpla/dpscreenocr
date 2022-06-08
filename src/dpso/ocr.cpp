@@ -756,12 +756,9 @@ void dpsoOcrTerminateJobs(struct DpsoOcr* ocr)
 
     waitJobsToFinish(*ocr);
 
-    // Locking here is not actually necessary since the idling
-    // background thread doesn't access variables we use below.
     LINK_LOCK(ocr->link);
 
     ocr->link.results.clear();
-
     ocr->link.terminateJobs = false;
 
     restoreLocale(ocr);
