@@ -2,7 +2,6 @@
 #pragma once
 
 #include <memory>
-#include <string>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -10,23 +9,6 @@
 
 namespace dpso {
 namespace windows {
-
-
-std::string getErrorMessage(DWORD error);
-std::string getHresultMessage(HRESULT hresult);
-
-
-struct WindowDestroyer {
-    using pointer = HWND;
-
-    void operator()(HWND window) const
-    {
-        DestroyWindow(window);
-    }
-};
-
-
-using WindowPtr = std::unique_ptr<HWND, WindowDestroyer>;
 
 
 struct DcReleaser {
@@ -57,22 +39,22 @@ struct DcDeleter {
 
 
 template<typename FinalizerT>
-using DcPtr = std::unique_ptr<HDC, FinalizerT>;
+using DcUPtr = std::unique_ptr<HDC, FinalizerT>;
 
 
-inline DcPtr<DcReleaser> getDc(HWND window)
+inline DcUPtr<DcReleaser> getDc(HWND window)
 {
-    return DcPtr<DcReleaser>(GetDC(window), DcReleaser(window));
+    return DcUPtr<DcReleaser>(GetDC(window), DcReleaser(window));
 }
 
 
-inline DcPtr<DcDeleter> createCompatibleDc(HDC dc)
+inline DcUPtr<DcDeleter> createCompatibleDc(HDC dc)
 {
-    return DcPtr<DcDeleter>(CreateCompatibleDC(dc));
+    return DcUPtr<DcDeleter>(CreateCompatibleDC(dc));
 }
 
 
-template<typename T>
+template <typename T>
 struct ObjectDeleter {
     using pointer = T;
 
@@ -83,8 +65,8 @@ struct ObjectDeleter {
 };
 
 
-template<typename ObjectT>
-using ObjectPtr = std::unique_ptr<ObjectT, ObjectDeleter<ObjectT>>;
+template<typename T>
+using ObjectUPtr = std::unique_ptr<T, ObjectDeleter<T>>;
 
 
 // RAII for SelectObject()
@@ -95,17 +77,17 @@ struct ObjectSelector {
     {
     }
 
-    ObjectSelector(const ObjectSelector& other) = delete;
-    ObjectSelector& operator=(const ObjectSelector& other) = delete;
-
-    ObjectSelector(ObjectSelector&& other) = delete;
-    ObjectSelector& operator=(ObjectSelector&& other) = delete;
-
     ~ObjectSelector()
     {
         if (oldObject)
             SelectObject(dc, oldObject);
     }
+
+    ObjectSelector(const ObjectSelector& other) = delete;
+    ObjectSelector& operator=(const ObjectSelector& other) = delete;
+
+    ObjectSelector(ObjectSelector&& other) = delete;
+    ObjectSelector& operator=(ObjectSelector&& other) = delete;
 private:
     HDC dc;
     HGDIOBJ oldObject;

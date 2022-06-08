@@ -5,7 +5,8 @@
 #include <windows.h>
 
 #include "backend/selection.h"
-#include "backend/windows/utils.h"
+#include "backend/windows/utils/gdi.h"
+#include "backend/windows/utils/window.h"
 
 
 namespace dpso {
@@ -28,10 +29,10 @@ private:
     Point origin;
     Rect geom;
 
-    windows::WindowPtr window;
+    windows::WindowUPtr window;
 
     DWORD dashPenPattern[2];
-    windows::ObjectPtr<HPEN> pens[2];
+    windows::ObjectUPtr<HPEN> pens[2];
 
     static LRESULT CALLBACK wndProc(
         HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);

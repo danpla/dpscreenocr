@@ -24,7 +24,7 @@ elseif(WIN32)
         backend/windows/execution_layer/backend_executor.cpp
         backend/windows/execution_layer/key_manager_executor.cpp
         backend/windows/execution_layer/selection_executor.cpp
-        backend/windows/utils.cpp
+        backend/windows/utils/error.cpp
         backend/windows/windows_backend.cpp
         backend/windows/windows_key_manager.cpp
         backend/windows/windows_screenshot.cpp

@@ -8,7 +8,7 @@
 #include <windows.h>
 #include <shellapi.h>
 
-#include "dpso/backend/windows/utils_com.h"
+#include "dpso/backend/windows/utils/com.h"
 #include "dpso/str.h"
 #include "os.h"
 #include "windows_utils.h"

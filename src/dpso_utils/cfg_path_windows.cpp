@@ -7,7 +7,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "dpso/backend/windows/utils.h"
+#include "dpso/backend/windows/utils/error.h"
 #include "dpso/error.h"
 #include "os.h"
 #include "windows_utils.h"

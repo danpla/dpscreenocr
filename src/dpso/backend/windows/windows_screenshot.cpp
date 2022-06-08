@@ -8,7 +8,8 @@
 #include <windows.h>
 
 #include "backend/screenshot_error.h"
-#include "backend/windows/utils.h"
+#include "backend/windows/utils/error.h"
+#include "backend/windows/utils/gdi.h"
 #include "geometry.h"
 #include "img.h"
 
@@ -106,7 +107,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
         throw ScreenshotError(
             "CreateCompatibleDC() for screen DC failed");
 
-    windows::ObjectPtr<HBITMAP> imageBitmap(CreateCompatibleBitmap(
+    windows::ObjectUPtr<HBITMAP> imageBitmap(CreateCompatibleBitmap(
         screenDc.get(), captureRect.w, captureRect.h));
     if (!imageBitmap)
         throw ScreenshotError(

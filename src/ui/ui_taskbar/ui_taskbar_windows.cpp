@@ -8,8 +8,8 @@
 
 #include <utility>
 
-#include "dpso/backend/windows/utils.h"
-#include "dpso/backend/windows/utils_com.h"
+#include "dpso/backend/windows/utils/com.h"
+#include "dpso/backend/windows/utils/error.h"
 #include "dpso/error.h"
 
 

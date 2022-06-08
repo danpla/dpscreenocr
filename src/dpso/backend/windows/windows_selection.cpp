@@ -2,6 +2,7 @@
 #include "backend/windows/windows_selection.h"
 
 #include "backend/backend_error.h"
+#include "backend/windows/utils/error.h"
 
 
 // We use window regions (SetWindowRgn()) for selection.
@@ -308,12 +309,12 @@ void WindowsSelection::draw(HDC dc)
 
 void WindowsSelection::updateWindowRegion()
 {
-    windows::ObjectPtr<HRGN> region(CreateRectRgn(
+    windows::ObjectUPtr<HRGN> region(CreateRectRgn(
         0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2));
     if (!region)
         return;
 
-    windows::ObjectPtr<HRGN> holeRegion(CreateRectRgn(
+    windows::ObjectUPtr<HRGN> holeRegion(CreateRectRgn(
         borderWidth, borderWidth,
         borderWidth + geom.w, borderWidth + geom.h));
     if (!holeRegion)
