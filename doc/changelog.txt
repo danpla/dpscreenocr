@@ -1,4 +1,77 @@
 
+1.1.0 (2022-??-??)
+==================
+
+* Added system tray icon
+* Enabled high DPI support in Qt 5
+* Languages:
+  * All names are now inverted, e.g. "Creole, Haitian" instead of
+    "Haitian Creole"
+  * Fixed missing name for of jpn_vert
+  * jpn is no longer identified as vertical
+  * Fixed missing "l" in "Cyrillic"
+* Key modifier checkboxes are now on the same line as key combo box
+* If there are multiple texts in the recognition queue, "Add text to
+  history" and "Run executable" actions now process each text as it
+  arrives instead of waiting for the entire chain
+* History:
+  * Recognized text is now immediately added to the history file to
+    minimize possible data loss in case of abnormal program
+    termination
+  * Font size is now taken from system settings. This also fixes
+    zooming history text with Control + mouse wheel
+  * HTML export:
+    * " and ' are no longer replaced by &quot and &apos
+    * CSS: Reduced left text margin from 2 to 1 em and added 1 em
+      right margin
+  * "Save history" file dialog now uses "History" as the default file
+    name instead of leaving it empty
+  * "Save history" file dialog now remembers the file name until you
+    close the program
+  * "Save history" file dialog can now be native when using Qt 4
+* Unix:
+  * Program was moved from "Utility" to "Graphics" menu to comply with
+    the freedesktop.org standard
+* X11:
+  * "Copy to clipboard" no longer sets text to the PRIMARY clipboard
+  * Fixed taking images in 30-bit depth
+  * Fixed selection appearing behind newly opened windows in qtile WM
+* Windows:
+  * Installer now allows local installation, e.g. for users without
+    administrator rights
+  * Enabled native interface theme
+  * App now shows progress in the background of the taskbar button
+  * Updated Tesseract to 5.1.0
+  * Default history export directory is now the user's home dir
+    instead of the executable's dir
+  * "Run executable" no longer opens Explorer if the path is empty
+  * "Run executable" no longer executes a batch file if its name has
+    trailing spaces or upper-case characters in the extension
+* settings.cfg:
+  * Added ui_tray_icon_visible, ui_window_minimize_on_start, and
+    ui_window_minimize_to_tray options
+  * Removed action_run_executable_wait_to_complete; waiting is now
+    always enabled
+  * ocr_dump_debug_image was replaced by the DPSO_DUMP_DEBUG_IMAGE
+    environment variable
+  * Fixed extra double quote in strings loaded from quoted text with
+    unescaped trailing backslash, e.g. "A\" in CFG is now properly
+    loaded as A instead of A"
+* New translations: Bulgarian, Catalan, Chinese (Simplified),
+  Croatian, German, Norwegian Bokmål, Polish, Spanish, Turkish, and
+  Ukrainian
+* Added support for building with Tesseract 5 and Qt 6
+* CMake:
+  * Replaced DPSO_QT4 by DPSO_QT_VERSION
+  * Removed DPSO_COMPILE_PO in favor of DPSO_ENABLE_NLS
+  * Removed DPSO_QT_RCC_ICONS in favor of DPSO_QT_LOCAL_DATA
+  * Removed DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND; Qt5X11Extras is
+    now required when building with Qt 5.0.0-5.3.1.
+  * Removed "cpack -G DEB" support
+  * Removed "cpack -G NSIS" support in favor of Inno Setup
+  * DLLs are now collected automatically when using CMake >= 3.16
+
+
 1.0.2 (2019-06-20)
 ==================
 
