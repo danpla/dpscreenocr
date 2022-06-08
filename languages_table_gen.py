@@ -44,7 +44,7 @@ def make_info(lang_info, repo_name, repo_tag):
         'name': name,
         'iso_639_3': make_span(lang_info['iso_639_3'], 'iso-code'),
         'iso_639_1': make_span(lang_info['iso_639_1'], 'iso-code'),
-        'data_url': make_data_link(
+        'data_link': make_data_link(
             repo_name, repo_tag, lang_info['data_name']),
     }
 
@@ -63,11 +63,11 @@ COLUMN_NAMES = {
     'name': 'Name',
     'iso_639_3': 'ISO 693-3',
     'iso_639_1': 'ISO 693-1',
-    'data_url': 'Download',
+    'data_link': 'Download',
 }
 
 
-COLUMNS = ('name', 'iso_639_3', 'iso_639_1', 'data_url')
+COLUMNS = ('name', 'iso_639_3', 'iso_639_1', 'data_link')
 SORT_BY = 'name'
 
 
