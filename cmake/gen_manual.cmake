@@ -24,7 +24,7 @@ function(gen_html_manual target_name dst_dir)
     separate_arguments(
         PANDOC_ARGS
         UNIX_COMMAND
-        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --output=\"${DST_HTML}\"  --toc --number-sections \"${CMAKE_BINARY_DIR}/manual-metadata.yaml\" \"${DOC_DIR}/manual.md\"  "
+        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --template=\"${DOC_DIR}/manual-data/template.html\" --output=\"${DST_HTML}\" --toc --number-sections \"${CMAKE_BINARY_DIR}/manual-metadata.yaml\" \"${DOC_DIR}/manual.md\"  "
     )
 
     add_custom_command(
