@@ -70,21 +70,15 @@ To install all dependencies except Pandoc, run in a MinGW shell:
         $MINGW_PACKAGE_PREFIX-pkgconf \
         $MINGW_PACKAGE_PREFIX-tesseract-ocr \
         $MINGW_PACKAGE_PREFIX-tesseract-data-eng \
+        $MINGW_PACKAGE_PREFIX-libintl \
         $MINGW_PACKAGE_PREFIX-gettext
 
-Several notes:
-
-  * Tesseact data files don't depend on the architecture, so there is
-    no need to install "tesseract-data-eng" and other languages for
-    both i686 and x86_64; when building for x86_64, you can use data
-    from i686 and vice versa. Alternatively, you can download the
-    languages as described in the user manual.
-
-    Still, be aware that CMake will try to copy the English language
-    pack installed for the current architecture.
-
-  * In MSYS2, gettext utilities and the runtime library (libintl) come
-    in one package.
+Note that Tesseact data files don't depend on the architecture, so
+there is no need to install "tesseract-data-eng" and other languages
+for both i686 and x86_64; when building for x86_64, you can use data
+from i686 and vice versa. Alternatively, you can download languages as
+described in the user manual. Still, be aware that CMake will try to
+copy the English language pack installed for the current architecture.
 
 
 1.3 Pandoc
