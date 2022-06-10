@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-05-22 22:00+0300\n"
-"PO-Revision-Date: 2022-05-22 22:30+0300\n"
-"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"PO-Revision-Date: 2022-06-11 12:17+0000\n"
+"Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/hr/>\n"
 "Language: hr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Weblate 4.13-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -175,19 +175,16 @@ msgid "French"
 msgstr "Francuski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:74
-#, fuzzy
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Francuski, srednjovjekovni (oko 1400. – 1600.)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:75
-#, fuzzy
 msgid "Frisian, Western"
-msgstr "Zapadni frizijski"
+msgstr "Frizijski, zapadni"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:76
-#, fuzzy
 msgid "Gaelic, Scottish"
-msgstr "Škotski galski"
+msgstr "Galski, škotski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:77
 msgid "Irish"
@@ -206,9 +203,8 @@ msgid "Gujarati"
 msgstr "Gujarati"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
-#, fuzzy
 msgid "Creole, Haitian"
-msgstr "Haićanski kreolski"
+msgstr "Kreolski, haićanski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:82
 msgid "Hebrew"
@@ -279,18 +275,16 @@ msgid "Kazakh"
 msgstr "Kazaški"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:99
-#, fuzzy
 msgid "Khmer, Central"
-msgstr "Centralni kmerski"
+msgstr "Kmerski, centralni"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:100
 msgid "Kirghiz; Kyrgyz"
 msgstr "Kirgiški"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:101
-#, fuzzy
 msgid "Kurdish, Northern"
-msgstr "Kurmanđi (kurdski – latinica)"
+msgstr "Kurdski, sjeverni"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:102
 msgid "Korean"
@@ -301,9 +295,8 @@ msgid "Korean (vertical)"
 msgstr "Korejski (okomito)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:104
-#, fuzzy
 msgid "Kurdish"
-msgstr "Kurdski (arapsko pismo)"
+msgstr "Kurdski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:105
 msgid "Lao"
@@ -494,9 +487,8 @@ msgid "Tigrinya"
 msgstr "Tigrinjanski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:152
-#, fuzzy
 msgid "Tonga (Tonga Islands)"
-msgstr "Tonga"
+msgstr "Tonga (Tonga otočje)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:153
 msgid "Turkish"
