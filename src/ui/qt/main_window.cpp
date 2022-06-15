@@ -78,17 +78,17 @@ MainWindow::MainWindow()
         std::exit(EXIT_FAILURE);
     }
 
-    ocr.reset(dpsoOcrCreate());
-    if (!ocr) {
+    if (!startupSetup(false)) {
         QMessageBox::critical(
             nullptr,
             appName,
-            QString("Can't create OCR: ") + dpsoGetError());
+            QString("Startup setup failed: ") + dpsoGetError());
         dpsoShutdown();
         std::exit(EXIT_FAILURE);
     }
 
-    const auto* cfgPath = dpsoGetCfgPath(appFileName);
+    const auto* cfgPath = dpsoGetUserDir(
+        DpsoUserDirConfig, appFileName);
     if (!cfgPath) {
         QMessageBox::critical(
             nullptr,
@@ -119,6 +119,53 @@ MainWindow::MainWindow()
             appName,
             QString("Can't load \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
+
+    const auto* dataPath = dpsoGetUserDir(
+        DpsoUserDirData, appFileName);
+    if (!dataPath) {
+        QMessageBox::critical(
+            nullptr,
+            appName,
+            QString("Can't get data path: ") + dpsoGetError());
+
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
+
+    if (dpsoOcrGetNumEngines() == 0) {
+        QMessageBox::critical(
+            nullptr,
+            appName,
+            QString("No OCR engines are available"));
+
+        dpsoShutdown();
+        std::exit(EXIT_FAILURE);
+    }
+
+    // Our GUI currently doesn't allow to select an engine.
+    DpsoOcrEngineInfo ocrEngineInfo;
+    dpsoOcrGetEngineInfo(0, &ocrEngineInfo);
+
+    std::string ocrDataDirPath;
+    if (const char* dataDirName = getOcrDataDirName(&ocrEngineInfo))
+        ocrDataDirPath =
+            std::string{dataPath} + *dpsoDirSeparators + dataDirName;
+
+    const DpsoOcrArgs ocrArgs{
+        ocrEngineInfo.id,
+        ocrDataDirPath.empty() ? nullptr : ocrDataDirPath.c_str()
+    };
+    ocr.reset(dpsoOcrCreate(&ocrArgs));
+    if (!ocr) {
+        QMessageBox::critical(
+            nullptr,
+            appName,
+            QString("Can't create OCR with \"%1\" engine: %2").arg(
+                ocrEngineInfo.id,
+                dpsoGetError()));
         dpsoShutdown();
         std::exit(EXIT_FAILURE);
     }
@@ -460,6 +507,9 @@ QWidget* MainWindow::createActionsTab()
 
 QWidget* MainWindow::createHistoryTab()
 {
+    // Of course, the data directory is a better place for history,
+    // but we keep using the config directory for backward
+    // compatibility.
     history = new History(cfgDirPath);
 
     auto* tabLayout = new QVBoxLayout();

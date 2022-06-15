@@ -1,25 +1,28 @@
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(APP_IS_64_BIT 1)
-elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-    set(APP_IS_64_BIT 0)
-else()
-    message(
-        FATAL_ERROR
-        "Unexpected CMAKE_SIZEOF_VOID_P (${CMAKE_SIZEOF_VOID_P})"
+# Generate inno_setup_config.isi.
+function(gen_inno_setup_config)
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(APP_IS_64_BIT 1)
+    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        set(APP_IS_64_BIT 0)
+    else()
+        message(
+            FATAL_ERROR
+            "Unexpected CMAKE_SIZEOF_VOID_P (${CMAKE_SIZEOF_VOID_P})"
+        )
+    endif()
+
+    set(APP_USES_NLS ${DPSO_ENABLE_NLS})
+    set(APP_UI ${DPSO_UI})
+
+    string(REPLACE "/" "\\" APP_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
+
+    configure_file(
+        "${CMAKE_SOURCE_DIR}/data/iss/inno_setup_config.isi.in"
+        "${CMAKE_BINARY_DIR}/inno_setup_config.isi"
+        @ONLY
     )
-endif()
-
-string(REPLACE "/" "\\" APP_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
-
-configure_file(
-    "${CMAKE_SOURCE_DIR}/data/iss/inno_setup.iss.in"
-    "${CMAKE_BINARY_DIR}/inno_setup.iss"
-    @ONLY
-)
-
-unset(APP_IS_64_BIT)
-unset(APP_SOURCE_DIR)
+endfunction()
 
 # Generate inno_setup_languages.isi.
 function(gen_inno_setup_language_list)
@@ -90,4 +93,11 @@ function(gen_inno_setup_language_list)
     endif()
 endfunction()
 
+configure_file(
+    "${CMAKE_SOURCE_DIR}/data/iss/inno_setup.iss"
+    "${CMAKE_BINARY_DIR}/inno_setup.iss"
+    COPYONLY
+)
+
+gen_inno_setup_config()
 gen_inno_setup_language_list()

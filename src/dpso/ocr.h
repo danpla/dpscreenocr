@@ -16,6 +16,87 @@ extern "C" {
 #endif
 
 
+/**
+ * Get the number of available OCR engines.
+ */
+int dpsoOcrGetNumEngines(void);
+
+
+/**
+ * What DpsoOcrArgs::dataDir the OCR engine prefers.
+ */
+typedef enum {
+    /**
+     * Engine doesn't use external data.
+     *
+     * DpsoOcrArgs::dataDir is ignored.
+     */
+    DpsoOcrEngineDataDirPreferenceNoDataDir,
+
+    /**
+     * Engine prefers the default data directory.
+     *
+     * Usually this means that on the current platform, the data is
+     * installed in a system-wide path that is hardcoded into the OCR
+     * library at build time.
+     */
+    DpsoOcrEngineDataDirPreferencePreferDefault,
+
+    /**
+     * Engine prefers an explicit path to data directory.
+     *
+     * This is normally the default mode for non-Unix platforms, where
+     * the data is usually installed in the application-specific
+     * directory.
+     */
+    DpsoOcrEngineDataDirPreferencePreferExplicit
+} DpsoOcrEngineDataDirPreference;
+
+
+struct DpsoOcrEngineInfo {
+    /**
+     * Unique engine id.
+     *
+     * An id consists of lower-case ASCII alphabetical letters,
+     * numbers, and uses underscore to separate words.
+     */
+    const char* id;
+
+    /**
+     * Engine name.
+     *
+     * This is normal, readable engine name, which, unlike id, doesn't
+     * have any restrictions.
+     */
+    const char* name;
+
+    DpsoOcrEngineDataDirPreference dataDirPreference;
+};
+
+
+/**
+ * Get OCR engine info.
+ *
+ * Does nothing if the index is out of [0, dpsoOcrGetNumEngines()).
+ */
+void dpsoOcrGetEngineInfo(int idx, struct DpsoOcrEngineInfo* info);
+
+
+struct DpsoOcrArgs {
+    const char* engineId;
+
+    /**
+     * Path to OCR engine data directory.
+     *
+     * May be null to use the default directory, which is mostly
+     * useful on Unix-like systems where this path is hardcoded when
+     * the OCR library is built. See DpsoOcrEngineDataDirPreference
+     * for the details.
+     */
+    const char* dataDir;
+};
+
+
 struct DpsoOcr;
 
 
@@ -25,7 +106,7 @@ struct DpsoOcr;
  * On failure, sets an error message (dpsoGetError()) and returns
  * null.
  */
-struct DpsoOcr* dpsoOcrCreate(void);
+struct DpsoOcr* dpsoOcrCreate(const struct DpsoOcrArgs* ocrArgs);
 
 
 void dpsoOcrDelete(struct DpsoOcr* ocr);
@@ -40,9 +121,8 @@ int dpsoOcrGetNumLangs(const struct DpsoOcr* ocr);
 /**
  * Get the language code.
  *
- * Returns an empty string if langIdx is out of bounds.
- *
- * \param idx Language index [0, dpsoOcrGetNumLangs())
+ * Returns an empty string if langIdx is out of
+ * [0, dpsoOcrGetNumLangs()).
  */
 const char* dpsoOcrGetLangCode(
     const struct DpsoOcr* ocr, int langIdx);
@@ -81,9 +161,7 @@ int dpsoOcrGetLangIdx(
 /**
  * Get whether the language is active.
  *
- * Returns 0 if langIdx is out of bounds.
- *
- * \param idx Language index [0, dpsoOcrGetNumLangs())
+ * Returns 0 if langIdx is out of [0, dpsoOcrGetNumLangs()).
  */
 int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx);
 
@@ -91,9 +169,7 @@ int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx);
 /**
  * Set whether the language is active.
  *
- * Does nothing if langIdx is out of bounds.
- *
- * \param idx Language index [0, dpsoOcrGetNumLangs())
+ * Does nothing if langIdx is out of [0, dpsoOcrGetNumLangs()).
  */
 void dpsoOcrSetLangIsActive(
     struct DpsoOcr* ocr, int langIdx, int newIsActive);

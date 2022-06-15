@@ -1,9 +1,7 @@
 
 #pragma once
 
-#include <cstddef>
 #include <cstdint>
-#include <memory>
 #include <stdexcept>
 #include <vector>
 
@@ -15,11 +13,21 @@ namespace dpso {
 
 /**
  * OCR engine error.
- *
- * The exception may be thrown from the OcrEngine constructor.
  */
 class OcrEngineError : public std::runtime_error {
     using runtime_error::runtime_error;
+};
+
+
+struct OcrEngineArgs {
+    /**
+     * Path to OCR engine data directory.
+     *
+     * May be null to use the default path, or if the engine doesn't
+     * use external data. See OcrEngineInfo::DataDirPreference for the
+     * details.
+     */
+    const char* dataDir;
 };
 
 
@@ -54,13 +62,6 @@ using OcrProgressCallback = bool (*)(int progress, void* userData);
 
 class OcrEngine {
 public:
-    /**
-     * Create OCR engine.
-     *
-     * \throws OcrEngineError
-     */
-    static std::unique_ptr<OcrEngine> create();
-
     OcrEngine() = default;
     virtual ~OcrEngine() = default;
 

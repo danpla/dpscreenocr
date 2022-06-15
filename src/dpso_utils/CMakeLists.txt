@@ -16,14 +16,14 @@ endif()
 if(UNIX AND NOT APPLE)
     list(
         APPEND PLATFORM_SRCS
-        cfg_path_unix_xdg.cpp
+        user_dirs_unix_xdg.cpp
     )
 elseif(WIN32)
     list(
         APPEND PLATFORM_SRCS
-        cfg_path_windows.cpp
         exec_windows.cpp
         os_windows.cpp
+        user_dirs_windows.cpp
         windows_utils.cpp
     )
 else()

@@ -7,7 +7,8 @@
 namespace dpso {
 
 
-std::unique_ptr<OcrEngine> createTesseractOcrEngine();
+std::unique_ptr<OcrEngine> createTesseractOcrEngine(
+    const OcrEngineArgs& args);
 
 
 }

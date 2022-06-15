@@ -117,6 +117,8 @@ static void checkHotkeyActions(struct DpsoOcr* ocr)
 
 int main(void)
 {
+    struct DpsoOcrEngineInfo ocrEngineInfo;
+    struct DpsoOcrArgs ocrArgs = {"", NULL};
     struct DpsoOcr* ocr;
     struct DpsoOcrProgress lastProgress = {0};
 
@@ -126,11 +128,24 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    ocr = dpsoOcrCreate();
-    if (!ocr) {
+    if (dpsoOcrGetNumEngines() == 0) {
+        fprintf(stderr, "No OCR engines available\n");
         dpsoShutdown();
+        exit(EXIT_FAILURE);
+    }
+
+    dpsoOcrGetEngineInfo(0, &ocrEngineInfo);
+
+    ocrArgs.engineId = ocrEngineInfo.id;
+    ocrArgs.dataDir = NULL;
+
+    ocr = dpsoOcrCreate(&ocrArgs);
+    if (!ocr) {
         fprintf(
-            stderr, "dpsoOcrCreate() failed: %s\n", dpsoGetError());
+            stderr,
+            "dpsoOcrCreate() with \"%s\" engine failed: %s\n",
+            ocrArgs.engineId, dpsoGetError());
+        dpsoShutdown();
         return EXIT_FAILURE;
     }
 

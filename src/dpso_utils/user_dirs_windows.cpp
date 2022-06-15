@@ -1,5 +1,5 @@
 
-#include "cfg_path.h"
+#include "user_dirs.h"
 
 #include <string>
 
@@ -13,8 +13,12 @@
 #include "windows_utils.h"
 
 
-const char* dpsoGetCfgPath(const char* appName)
+const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
 {
+    // FOLDERID_RoamingAppData is actually better path for config, but
+    // we keep using FOLDERID_LocalAppData for backward compatibility.
+    (void)userDir;
+
     wchar_t* appDataPathUtf16{};
     const auto hresult = SHGetKnownFolderPath(
             FOLDERID_LocalAppData,

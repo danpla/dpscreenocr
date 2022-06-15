@@ -21,12 +21,11 @@
 #define _(S) gettext(S)
 
 
-History::History(const std::string& cfgDirPath, QWidget* parent)
+History::History(const std::string& dirPath, QWidget* parent)
     : QWidget{parent}
     , nativeFileDialogs{}
 {
-    historyFilePath = (
-        cfgDirPath + *dpsoDirSeparators + historyFileName);
+    historyFilePath = dirPath + *dpsoDirSeparators + historyFileName;
 
     wordWrapCheck = new QCheckBox(_("Wrap words"));
     wordWrapCheck->setChecked(true);

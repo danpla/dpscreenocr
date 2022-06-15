@@ -25,6 +25,7 @@
 #include "geometry_c.h"
 #include "img.h"
 #include "ocr_engine/ocr_engine.h"
+#include "ocr_engine/ocr_engine_creator.h"
 #include "progress_tracker.h"
 #include "timing.h"
 
@@ -175,6 +176,43 @@ struct Link {
 }
 
 
+int dpsoOcrGetNumEngines(void)
+{
+    return dpso::OcrEngineCreator::getAll().size();
+}
+
+
+void dpsoOcrGetEngineInfo(int idx, struct DpsoOcrEngineInfo* info)
+{
+    const auto& creators = dpso::OcrEngineCreator::getAll();
+
+    if (idx < 0
+            || static_cast<std::size_t>(idx) >= creators.size()
+            || !info)
+        return;
+
+    const auto& internalInfo = creators[idx]->getInfo();
+
+    DpsoOcrEngineDataDirPreference dataDirPreference{};
+    switch (internalInfo.dataDirPreference) {
+        case dpso::OcrEngineInfo::DataDirPreference::noDataDir:
+            dataDirPreference =
+                DpsoOcrEngineDataDirPreferenceNoDataDir;
+            break;
+        case dpso::OcrEngineInfo::DataDirPreference::preferDefault:
+            dataDirPreference =
+                DpsoOcrEngineDataDirPreferencePreferDefault;
+            break;
+        case dpso::OcrEngineInfo::DataDirPreference::preferExplicit:
+            dataDirPreference =
+                DpsoOcrEngineDataDirPreferencePreferExplicit;
+            break;
+    }
+
+    *info = {internalInfo.id, internalInfo.name, dataDirPreference};
+}
+
+
 struct DpsoOcr {
     std::unique_ptr<dpso::OcrEngine> engine;
 
@@ -214,15 +252,27 @@ static void cacheLangs(DpsoOcr& ocr)
 static void threadLoop(DpsoOcr* ocr);
 
 
-struct DpsoOcr* dpsoOcrCreate()
+struct DpsoOcr* dpsoOcrCreate(const struct DpsoOcrArgs* ocrArgs)
 {
+    if (!ocrArgs) {
+        dpsoSetError("ocrArgs is null");
+        return nullptr;
+    }
+
+    const auto* ocrEngineCreator = dpso::OcrEngineCreator::find(
+        ocrArgs->engineId);
+    if (!ocrEngineCreator) {
+        dpsoSetError("No OCR engine with the given id");
+        return nullptr;
+    }
+
     // We don't use OcrUPtr here because dpsoOcrDelete() expects
     // a joinable thread.
     std::unique_ptr<DpsoOcr> ocr{new DpsoOcr{}};
 
     setCLocale(ocr.get());
     try {
-        ocr->engine = dpso::OcrEngine::create();
+        ocr->engine = ocrEngineCreator->create({ocrArgs->dataDir});
     } catch (dpso::OcrEngineError& e) {
         dpsoSetError("Can't create OCR engine: %s", e.what());
         restoreLocale(ocr.get());

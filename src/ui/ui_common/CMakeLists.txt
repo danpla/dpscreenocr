@@ -10,7 +10,7 @@ else()
 endif()
 
 set(IN_SRCS app_info.cpp file_names.cpp paths.cpp)
-set(CONFIGURED_SRCS "")
+set(CONFIGURED_SRCS)
 foreach(IN_SRC ${IN_SRCS})
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/${IN_SRC}.in"
@@ -24,12 +24,21 @@ foreach(IN_SRC ${IN_SRCS})
     )
 endforeach()
 
+set(PLATFORM_SRCS)
+if(WIN32)
+    list(APPEND PLATFORM_SRCS startup_setup_windows.cpp)
+else()
+    list(APPEND PLATFORM_SRCS startup_setup_null.cpp)
+endif()
+
 add_library(
     ui_common STATIC
 
     cfg_default_values.cpp
     cfg_keys.cpp
+    ocr_data_dir_name.cpp
     ${CONFIGURED_SRCS}
+    ${PLATFORM_SRCS}
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
@@ -44,4 +53,12 @@ target_include_directories(ui_common PRIVATE . PUBLIC ..)
 if(NOT TARGET dpso)
     add_subdirectory(../../dpso ${CMAKE_BINARY_DIR}/src/dpso)
 endif()
-target_link_libraries(ui_common dpso)
+
+if(NOT TARGET dpso_utils)
+    add_subdirectory(
+        ../../dpso_utils
+        ${CMAKE_BINARY_DIR}/src/dpso_utils
+    )
+endif()
+
+target_link_libraries(ui_common dpso dpso_utils)

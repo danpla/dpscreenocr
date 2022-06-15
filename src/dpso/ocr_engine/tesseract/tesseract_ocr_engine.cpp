@@ -26,7 +26,7 @@ namespace {
 
 class TesseractOcr : public OcrEngine {
 public:
-    TesseractOcr();
+    explicit TesseractOcr(const OcrEngineArgs& args);
 
     OcrFeatures getFeatures() const override;
 
@@ -42,10 +42,12 @@ public:
         OcrProgressCallback progressCallback,
         void* progressCallbackUserData) override;
 private:
+    std::string dataDir;
     tesseract::TessBaseAPI tess;
     std::vector<std::string> langCodes;
     std::string tessLangsStr;
 
+    bool initTess(const char* langs);
     void cacheLangs();
     void fillTessLangsStr(const std::vector<int>& langIndices);
 };
@@ -54,8 +56,9 @@ private:
 }
 
 
-TesseractOcr::TesseractOcr()
-    : tess{}
+TesseractOcr::TesseractOcr(const OcrEngineArgs& args)
+    : dataDir{args.dataDir ? args.dataDir : ""}
+    , tess{}
     , langCodes{}
     , tessLangsStr{}
 {
@@ -150,7 +153,7 @@ OcrResult TesseractOcr::recognize(
     void* progressCallbackUserData)
 {
     fillTessLangsStr(langIndices);
-    if (tess.Init(nullptr, tessLangsStr.c_str()) != 0)
+    if (!initTess(tessLangsStr.c_str()) != 0)
         return {
             OcrResult::Status::error, "TessBaseAPI::Init() failed"};
 
@@ -183,6 +186,13 @@ OcrResult TesseractOcr::recognize(
         OcrResult::Status::success,
         std::unique_ptr<OcrResultText>(
             new TesseractOcrResultText(std::move(text), textLen))};
+}
+
+
+bool TesseractOcr::initTess(const char* langs)
+{
+    return tess.Init(
+        dataDir.empty() ? nullptr : dataDir.c_str(), langs) == 0;
 }
 
 
@@ -219,7 +229,7 @@ void TesseractOcr::cacheLangs()
     // different on various Unix-like systems (it's hardcoded at
     // compilation time), and you can only get it via GetDatapath(),
     // which also requires the same dummy Init() call.
-    tess.Init(nullptr, nullptr);
+    initTess(nullptr);
 
     #if defined(TESSERACT_MAJOR_VERSION) \
         && TESSERACT_MAJOR_VERSION >= 5
@@ -266,9 +276,10 @@ void TesseractOcr::fillTessLangsStr(
 }
 
 
-std::unique_ptr<OcrEngine> createTesseractOcrEngine()
+std::unique_ptr<OcrEngine> createTesseractOcrEngine(
+    const OcrEngineArgs& args)
 {
-    return std::unique_ptr<OcrEngine>(new TesseractOcr{});
+    return std::unique_ptr<OcrEngine>(new TesseractOcr{args});
 }
 
 

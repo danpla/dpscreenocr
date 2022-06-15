@@ -23,7 +23,7 @@ endif()
 include(tessdata_utils)
 copy_tessdata(
     "$ENV{MINGW_PREFIX}/share/tessdata"
-    "${CMAKE_BINARY_DIR}/tessdata"
+    "${CMAKE_BINARY_DIR}/tesseract_data"
     LANGUAGES eng
     OPTIONAL
 )
