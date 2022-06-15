@@ -1,5 +1,5 @@
 
-#include "cfg_path.h"
+#include "user_dirs.h"
 
 #include <cerrno>
 #include <cstdlib>
@@ -54,10 +54,10 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
 {
     switch (userDir) {
         case DpsoUserDirConfig:
-            return getDir("XDG_CONFIG_HOME", ".config");
+            return getDir("XDG_CONFIG_HOME", ".config", appName);
             break;
         case DpsoUserDirData:
-            return getDir("XDG_DATA_HOME", ".local/share");
+            return getDir("XDG_DATA_HOME", ".local/share", appName);
             break;
     }
 
