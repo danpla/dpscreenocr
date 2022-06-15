@@ -20,8 +20,6 @@ code {
 pre code {
   display: block;
   padding: 0.8em 1em;
-  white-space: pre;
-  overflow-x: auto;
 }
 
 img {
