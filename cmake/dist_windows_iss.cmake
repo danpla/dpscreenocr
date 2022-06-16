@@ -18,7 +18,7 @@ function(gen_inno_setup_config)
     string(REPLACE "/" "\\" APP_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
 
     configure_file(
-        "${CMAKE_SOURCE_DIR}/data/iss/inno_setup_config.isi.in"
+        "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup_config.isi.in"
         "${CMAKE_BINARY_DIR}/inno_setup_config.isi"
         @ONLY
     )
@@ -94,7 +94,7 @@ function(gen_inno_setup_language_list)
 endfunction()
 
 configure_file(
-    "${CMAKE_SOURCE_DIR}/data/iss/inno_setup.iss"
+    "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup.iss"
     "${CMAKE_BINARY_DIR}/inno_setup.iss"
     COPYONLY
 )

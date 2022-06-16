@@ -36,10 +36,12 @@ UninstallDisplayIcon={app}\{#APP_FILE_NAME}.exe
 SetupIconFile={#APP_SOURCE_DIR}\data\icons\{#APP_FILE_NAME}.ico
 
 ShowLanguageDialog=auto
-WizardImageFile={#APP_SOURCE_DIR}\data\iss\wizard.bmp
-WizardSmallImageFile={#APP_SOURCE_DIR}\data\iss\wizard_small.bmp
 
-Compression=lzma2
+#define RES_DIR APP_SOURCE_DIR + "\dist\windows\iss"
+WizardImageFile={#RES_DIR}\wizard.bmp
+WizardSmallImageFile={#RES_DIR}\wizard_small.bmp
+
+Compression=none
 SolidCompression=yes
 
 [Files]

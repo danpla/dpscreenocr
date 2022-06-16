@@ -11,5 +11,9 @@ set(
 set(CPACK_WIX_PROPERTY_ARPHELPLINK "${APP_URL}")
 set(CPACK_WIX_PROPERTY_ARPURLINFOABOUT "${APP_URL}")
 
-set(CPACK_WIX_UI_BANNER "${CMAKE_SOURCE_DIR}/data/wix/banner.bmp")
-set(CPACK_WIX_UI_DIALOG "${CMAKE_SOURCE_DIR}/data/wix/dialog.bmp")
+set(WIX_DATA_DIR "${CMAKE_SOURCE_DIR}/dist/windows/wix")
+
+set(CPACK_WIX_UI_BANNER "${WIX_DATA_DIR}/banner.bmp")
+set(CPACK_WIX_UI_DIALOG "${WIX_DATA_DIR}/dialog.bmp")
+
+unset(WIX_DATA_DIR)
