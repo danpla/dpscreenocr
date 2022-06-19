@@ -28,16 +28,16 @@ public:
     void saveState(DpsoCfg* cfg) const;
 private slots:
     void setWordWrap(bool wordWrap);
+    void doExport();
     void clear();
-    void saveAs();
 private:
     struct DynamicStrings {
+        QString exportHistory;
+        QString nameFilters;
+
         QString clearQuestion;
         QString cancel;
         QString clear;
-
-        QString saveHistory;
-        QString nameFilters;
 
         DynamicStrings();
     } dynStr;
@@ -52,8 +52,8 @@ private:
     QTextBlockFormat blockFormat;
     int blockMargin;
 
+    QPushButton* exportButton;
     QPushButton* clearButton;
-    QPushButton* saveAsButton;
 
     bool nativeFileDialogs;
     QString lastDirPath;

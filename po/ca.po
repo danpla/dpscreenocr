@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-05-22 22:00+0300\n"
+"POT-Creation-Date: 2022-06-19 02:24+0300\n"
 "PO-Revision-Date: 2020-05-23 00:21+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -575,45 +575,47 @@ msgstr "Executeu un programa amb el text reconegut com a primer argument"
 msgid "Choose an executable"
 msgstr "Trieu un executable"
 
-#: src/ui/qt/history.cpp:31
+#: src/ui/qt/history.cpp:30
 msgid "Wrap words"
 msgstr "Ajusta els mots"
 
-#: src/ui/qt/history.cpp:46 src/ui/qt/history.cpp:79
-msgid "Clear"
-msgstr "Neteja"
-
-#: src/ui/qt/history.cpp:51
-msgid "Save as…"
+#: src/ui/qt/history.cpp:45
+#, fuzzy
+msgid "Export…"
 msgstr "Anomena i desa…"
 
-#: src/ui/qt/history.cpp:53
-msgid "Save the history as plain text, HTML, or JSON"
-msgstr "Desa l’historial com a text pla, HTML o JSON"
+#: src/ui/qt/history.cpp:50
+msgid "Clear…"
+msgstr "Neteja…"
 
-#: src/ui/qt/history.cpp:72 src/ui/qt/main_window.cpp:133
+#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:181
 msgid "History"
 msgstr "Historial"
 
-#: src/ui/qt/history.cpp:77
-msgid "Clear the history?"
-msgstr "Voleu netejar l’historial?"
-
-#: src/ui/qt/history.cpp:78 src/ui/qt/main_window.cpp:176
-msgid "Cancel"
-msgstr "Cancel·la"
-
-#: src/ui/qt/history.cpp:80
-msgid "Save history"
+#: src/ui/qt/history.cpp:74
+#, fuzzy
+msgid "Export history"
 msgstr "Desa l’historial"
 
-#: src/ui/qt/history.cpp:82
+#: src/ui/qt/history.cpp:76
 msgid "Plain text"
 msgstr "Text pla"
 
-#: src/ui/qt/history.cpp:85
+#: src/ui/qt/history.cpp:79
 msgid "All files"
 msgstr "Tots els fitxers"
+
+#: src/ui/qt/history.cpp:80
+msgid "Clear the history?"
+msgstr "Voleu netejar l’historial?"
+
+#: src/ui/qt/history.cpp:81 src/ui/qt/main_window.cpp:250
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: src/ui/qt/history.cpp:82
+msgid "Clear"
+msgstr "Neteja"
 
 #: src/ui/qt/hotkey_editor.cpp:39
 msgctxt "hotkey.key"
@@ -630,73 +632,73 @@ msgctxt "language"
 msgid "Code"
 msgstr "Codi"
 
-#: src/ui/qt/main_window.cpp:131
+#: src/ui/qt/main_window.cpp:179
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Principal"
 
-#: src/ui/qt/main_window.cpp:132
+#: src/ui/qt/main_window.cpp:180
 msgid "Actions"
 msgstr "Accions"
 
-#: src/ui/qt/main_window.cpp:134
+#: src/ui/qt/main_window.cpp:182
 msgid "About"
 msgstr "Acerca de"
 
-#: src/ui/qt/main_window.cpp:166
+#: src/ui/qt/main_window.cpp:240
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Reconeixement al {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:167
+#: src/ui/qt/main_window.cpp:241
 msgid "Please install languages"
 msgstr "Instal·leu llengües"
 
-#: src/ui/qt/main_window.cpp:168
+#: src/ui/qt/main_window.cpp:242
 msgid "Please select languages"
 msgstr "Seleccioneu llengües"
 
-#: src/ui/qt/main_window.cpp:170
+#: src/ui/qt/main_window.cpp:244
 msgid "Please select actions in the “Actions” tab"
 msgstr "Seleccioneu accions a la pestanya «Accions»"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:173
+#: src/ui/qt/main_window.cpp:247
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Preparat"
 
-#: src/ui/qt/main_window.cpp:175
+#: src/ui/qt/main_window.cpp:249
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "El reconeixement no ha finalitzat. Voleu sortir igualment?"
 
-#: src/ui/qt/main_window.cpp:177 src/ui/qt/main_window.cpp:280
+#: src/ui/qt/main_window.cpp:251 src/ui/qt/main_window.cpp:436
 msgid "Quit"
 msgstr "Surt"
 
-#: src/ui/qt/main_window.cpp:272
+#: src/ui/qt/main_window.cpp:428
 msgid "Show {app_name}"
 msgstr "Mostra «{app_name}»"
 
-#: src/ui/qt/main_window.cpp:287
+#: src/ui/qt/main_window.cpp:443
 msgid "Status"
 msgstr "Estat"
 
-#: src/ui/qt/main_window.cpp:297
+#: src/ui/qt/main_window.cpp:453
 msgid "Character recognition"
 msgstr "Reconeixement de caràcters"
 
-#: src/ui/qt/main_window.cpp:301
+#: src/ui/qt/main_window.cpp:457
 msgid "Split text blocks"
 msgstr "Divideix els blocs de text"
 
-#: src/ui/qt/main_window.cpp:303
+#: src/ui/qt/main_window.cpp:459
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Divideix els blocs de text independents, p. ex., les columnes"
 
-#: src/ui/qt/main_window.cpp:306
+#: src/ui/qt/main_window.cpp:462
 msgid "Languages:"
 msgstr "Llengües:"
 
-#: src/ui/qt/main_window.cpp:310
+#: src/ui/qt/main_window.cpp:466
 msgid "Hotkey"
 msgstr "Drecera de teclat"

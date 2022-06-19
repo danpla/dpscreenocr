@@ -42,17 +42,15 @@ History::History(const std::string& dirPath, QWidget* parent)
         140, QTextBlockFormat::ProportionalHeight);
     blockMargin = QFontMetrics(charFormat.font()).height();
 
-    clearButton = new QPushButton(_("Clear"));
+    exportButton = new QPushButton(_("Export\342\200\246"));
+    connect(
+        exportButton, SIGNAL(clicked()),
+        this, SLOT(doExport()));
+
+    clearButton = new QPushButton(_("Clear\342\200\246"));
     connect(
         clearButton, SIGNAL(clicked()),
         this, SLOT(clear()));
-
-    saveAsButton = new QPushButton(_("Save as\342\200\246"));
-    saveAsButton->setToolTip(
-        _("Save the history as plain text, HTML, or JSON"));
-    connect(
-        saveAsButton, SIGNAL(clicked()),
-        this, SLOT(saveAs()));
 
     setButtonsEnabled(false);
 
@@ -63,8 +61,8 @@ History::History(const std::string& dirPath, QWidget* parent)
     layout->addWidget(textEdit);
 
     auto* buttonsLayout = new QHBoxLayout();
+    buttonsLayout->addWidget(exportButton);
     buttonsLayout->addWidget(clearButton);
-    buttonsLayout->addWidget(saveAsButton);
     buttonsLayout->addStretch();
     layout->addLayout(buttonsLayout);
 
@@ -73,15 +71,15 @@ History::History(const std::string& dirPath, QWidget* parent)
 
 
 History::DynamicStrings::DynamicStrings()
-    : clearQuestion{_("Clear the history?")}
-    , cancel{_("Cancel")}
-    , clear{_("Clear")}
-    , saveHistory{_("Save history")}
+    : exportHistory{_("Export history")}
     , nameFilters{
         QString{_("Plain text")} + " (*.txt);;"
         + "HTML (*.html *.htm);;"
         + "JSON (*.json);;"
         + _("All files") + " (*)"}
+    , clearQuestion{_("Clear the history?")}
+    , cancel{_("Cancel")}
+    , clear{_("Clear")}
 {
 }
 
@@ -89,7 +87,7 @@ History::DynamicStrings::DynamicStrings()
 void History::setButtonsEnabled(bool enabled)
 {
     clearButton->setEnabled(enabled);
-    saveAsButton->setEnabled(enabled);
+    exportButton->setEnabled(enabled);
 }
 
 
@@ -100,30 +98,7 @@ void History::setWordWrap(bool wordWrap)
 }
 
 
-void History::clear()
-{
-    if (!history)
-        return;
-
-    if (!confirmation(
-            this,
-            dynStr.clearQuestion, dynStr.cancel, dynStr.clear))
-        return;
-
-    if (!dpsoHistoryClear(history.get())) {
-        QMessageBox::critical(
-            this,
-            appName,
-            QString("Can't clear history: ") + dpsoGetError());
-        return;
-    }
-
-    textEdit->clear();
-    setButtonsEnabled(false);
-}
-
-
-void History::saveAs()
+void History::doExport()
 {
     if (!history)
         return;
@@ -141,7 +116,7 @@ void History::saveAs()
     const auto filePath = QDir::toNativeSeparators(
         QFileDialog::getSaveFileName(
             this,
-            dynStr.saveHistory,
+            dynStr.exportHistory,
             QDir(dirPath).filePath(lastFileName),
             dynStr.nameFilters,
             &selectedNameFilter,
@@ -168,6 +143,29 @@ void History::saveAs()
 
     lastDirPath = QDir::toNativeSeparators(
         fileInfo.dir().absolutePath());
+}
+
+
+void History::clear()
+{
+    if (!history)
+        return;
+
+    if (!confirmation(
+            this,
+            dynStr.clearQuestion, dynStr.cancel, dynStr.clear))
+        return;
+
+    if (!dpsoHistoryClear(history.get())) {
+        QMessageBox::critical(
+            this,
+            appName,
+            QString("Can't clear history: ") + dpsoGetError());
+        return;
+    }
+
+    textEdit->clear();
+    setButtonsEnabled(false);
 }
 
 
