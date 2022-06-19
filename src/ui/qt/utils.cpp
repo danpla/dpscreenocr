@@ -18,8 +18,8 @@ static QIcon loadIcon(const QString &name)
 {
     QIcon icon;
 
-    static const auto iconsDir = (
-        QCoreApplication::applicationDirPath() + "/icons");
+    static const auto iconsDir =
+        QCoreApplication::applicationDirPath() + "/icons";
 
     static const auto sizes = QDir(iconsDir).entryList(QDir::Dirs);
     for (const auto& size : sizes) {

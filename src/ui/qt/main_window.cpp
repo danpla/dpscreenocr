@@ -750,10 +750,10 @@ void MainWindow::updateStatus()
         if (progress.curJob == 0)
             totalProgress = 0;
         else
-            totalProgress = (
+            totalProgress =
                 ((progress.curJob - 1) * 100
                     + progress.curJobProgress)
-                / progress.totalJobs);
+                / progress.totalJobs;
 
         setStatus(
             Status::busy,
@@ -775,8 +775,8 @@ void MainWindow::updateStatus()
 
     // Invalidate status when the number of active languages
     // changes from or to 0.
-    const auto hasActiveLangs = (
-        dpsoOcrGetNumActiveLangs(ocr.get()) > 0);
+    const auto hasActiveLangs =
+        dpsoOcrGetNumActiveLangs(ocr.get()) > 0;
     if (hasActiveLangs != wasActiveLangs) {
         wasActiveLangs = hasActiveLangs;
         statusValid = false;

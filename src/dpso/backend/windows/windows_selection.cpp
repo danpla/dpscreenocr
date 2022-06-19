@@ -159,8 +159,8 @@ WindowsSelection::WindowsSelection(HINSTANCE instance)
 
 void WindowsSelection::createPens()
 {
-    const auto commonStyle = (
-        PS_GEOMETRIC | PS_ENDCAP_FLAT | PS_JOIN_MITER);
+    const auto commonStyle =
+        PS_GEOMETRIC | PS_ENDCAP_FLAT | PS_JOIN_MITER;
 
     // White background.
     LOGBRUSH lb{BS_SOLID, RGB(255, 255, 255), 0};

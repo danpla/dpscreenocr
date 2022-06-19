@@ -189,8 +189,8 @@ static std::string replaceReservedChar(
 }
 
 
-const char* const failureStateErrorMsg = (
-    "History is in failure state and is read-only");
+const char* const failureStateErrorMsg =
+    "History is in failure state and is read-only";
 
 
 int dpsoHistoryAppend(

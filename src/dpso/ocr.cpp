@@ -286,9 +286,9 @@ struct DpsoOcr* dpsoOcrCreate(const struct DpsoOcrArgs* ocrArgs)
 
     const auto* dumpDebugImageEnvVar = std::getenv(
         "DPSO_DUMP_DEBUG_IMAGE");
-    ocr->dumpDebugImage = (
+    ocr->dumpDebugImage =
         dumpDebugImageEnvVar
-        && std::strcmp(dumpDebugImageEnvVar, "0") != 0);
+        && std::strcmp(dumpDebugImageEnvVar, "0") != 0;
 
     return ocr.release();
 }

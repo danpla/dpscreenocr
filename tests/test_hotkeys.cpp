@@ -4,12 +4,11 @@
 #include "flow.h"
 
 
-const auto allMods = (
+const auto allMods =
     dpsoKeyModCtrl
     | dpsoKeyModAlt
     | dpsoKeyModShift
-    | dpsoKeyModWin
-);
+    | dpsoKeyModWin;
 
 
 static void testHotkeyToString()

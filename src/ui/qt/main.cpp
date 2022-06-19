@@ -25,13 +25,13 @@
 
 static void installQtTranslations(QApplication& app)
 {
-    const auto qtTranslationsPath = (
+    const auto qtTranslationsPath =
         #ifdef Q_OS_WIN
         QCoreApplication::applicationDirPath() + "/translations"
         #else
         QLibraryInfo::location(QLibraryInfo::TranslationsPath)
         #endif
-    );
+    ;
 
     const auto qtLocaleName = QLocale::system().name();
 
@@ -41,8 +41,8 @@ static void installQtTranslations(QApplication& app)
         "qtbase",
         #endif
     };
-    static const auto numTranslations = (
-        sizeof(translations) / sizeof(*translations));
+    static const auto numTranslations =
+        sizeof(translations) / sizeof(*translations);
 
     static QTranslator translators[numTranslations];
 

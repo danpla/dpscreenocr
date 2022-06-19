@@ -311,8 +311,8 @@ static void testValueOverridingOnLoad(DpsoCfg* cfg)
 
 static void testUnescapedBackslashAtEndOfQuotedString(DpsoCfg* cfg)
 {
-    const std::string key = (
-        "unescaped_backslash_at_end_of_quoted_string");
+    const std::string key =
+        "unescaped_backslash_at_end_of_quoted_string";
 
     loadCfgData(cfg, (key + " \"a\\\"").c_str());
     testGetStr(cfg, key.c_str(), "a", "");

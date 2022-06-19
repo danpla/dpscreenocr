@@ -80,8 +80,8 @@ static void hBoxBlur(
         for (int x = 0; x < w; ++x) {
             dstRow[x] = sum / kernelSize;
 
-            const auto addPx = (
-                srcRow[std::min(x + radius + 1, w - 1)]);
+            const auto addPx =
+                srcRow[std::min(x + radius + 1, w - 1)];
             const auto removePx = srcRow[std::max(x - radius, 0)];
 
             sum += addPx - removePx;
@@ -118,10 +118,10 @@ static void vBoxBlur(
         for (int y = 0; y < h; ++y) {
             dstCol[y * dstPitch] = sum / kernelSize;
 
-            const auto addPx = (
-                srcCol[std::min(y + radius + 1, h - 1) * srcPitch]);
-            const auto removePx = (
-                srcCol[std::max(y - radius, 0) * srcPitch]);
+            const auto addPx =
+                srcCol[std::min(y + radius + 1, h - 1) * srcPitch];
+            const auto removePx =
+                srcCol[std::max(y - radius, 0) * srcPitch];
 
             sum += addPx - removePx;
         }

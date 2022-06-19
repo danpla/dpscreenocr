@@ -27,8 +27,8 @@ struct CodeTimer {
     void report(const char* fmt, ...) const DPSO_PRINTF_FN(2)
     {
         const auto end = Clock::now();
-        const std::chrono::duration<float, std::milli> ms = (
-            end - start);
+        const std::chrono::duration<float, std::milli> ms =
+            end - start;
 
         std::printf("Timing: ");
 

@@ -72,8 +72,8 @@ const auto atomNamePrefixLen = sizeof(atomNamePrefix) - 1;
 
 static std::string hotkeyToAtomName(const DpsoHotkey& hotkey)
 {
-    const ATOM atom = (
-        sentinelBit | (hotkey.key << modsBits) | hotkey.mods);
+    const ATOM atom =
+        sentinelBit | (hotkey.key << modsBits) | hotkey.mods;
 
     return atomNamePrefix + std::to_string(atom);
 }

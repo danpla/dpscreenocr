@@ -92,25 +92,25 @@ static void getGrayscaleData32bpp(
     const auto bShift = img::getMaskRightShift(image.blue_mask);
 
     for (int y = 0; y < image.height; ++y) {
-        const auto* srcRow = (
+        const auto* srcRow =
             reinterpret_cast<std::uint8_t*>(image.data)
-            + image.bytes_per_line * y);
+            + image.bytes_per_line * y;
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < image.width; ++x) {
             std::uint32_t px;
             if (image.byte_order == LSBFirst)
-                px = (
+                px =
                     static_cast<std::uint32_t>(srcRow[3]) << 24
                     | static_cast<std::uint32_t>(srcRow[2]) << 16
                     | static_cast<std::uint32_t>(srcRow[1]) << 8
-                    | srcRow[0]);
+                    | srcRow[0];
             else
-                px = (
+                px =
                     static_cast<std::uint32_t>(srcRow[0]) << 24
                     | static_cast<std::uint32_t>(srcRow[1]) << 16
                     | static_cast<std::uint32_t>(srcRow[2]) << 8
-                    | srcRow[3]);
+                    | srcRow[3];
             srcRow += 4;
 
             const auto r = ccTransformer(
@@ -140,21 +140,21 @@ static void getGrayscaleData16bpp(
     static const auto bBits = 5;
 
     for (int y = 0; y < image.height; ++y) {
-        const auto* srcRow = (
+        const auto* srcRow =
             reinterpret_cast<std::uint8_t*>(image.data)
-            + image.bytes_per_line * y);
+            + image.bytes_per_line * y;
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < image.width; ++x) {
             std::uint32_t px;
             if (image.byte_order == LSBFirst)
-                px = (
+                px =
                     static_cast<std::uint32_t>(srcRow[1]) << 8
-                    | srcRow[0]);
+                    | srcRow[0];
             else
-                px = (
+                px =
                     static_cast<std::uint32_t>(srcRow[0]) << 8
-                    | srcRow[1]);
+                    | srcRow[1];
             srcRow += 2;
 
             const auto r = img::expandTo8Bit(

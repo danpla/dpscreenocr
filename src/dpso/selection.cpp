@@ -26,8 +26,8 @@ void dpsoGetSelectionGeometry(struct DpsoRect* rect)
     if (!rect)
         return;
 
-    *rect = (
-        selection ? toCRect(selection->getGeometry()) : DpsoRect{});
+    *rect =
+        selection ? toCRect(selection->getGeometry()) : DpsoRect{};
 }
 
 

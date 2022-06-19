@@ -144,8 +144,8 @@ static bool setupEntry(
             (std::wstring{dstDir} + L'\\' + entryName).c_str()))
         return true;
 
-    const auto srcPath = (
-        std::wstring{srcDir} + L'\\' + entryName);
+    const auto srcPath =
+        std::wstring{srcDir} + L'\\' + entryName;
     if (!entryExists(srcPath.c_str()))
         return true;
 
