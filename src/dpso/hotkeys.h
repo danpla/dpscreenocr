@@ -60,14 +60,13 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void);
  *   * hotkey->key is not supported by the backend
  *   * action is < 0
  */
-int dpsoBindHotkey(
-    const struct DpsoHotkey* hotkey, DpsoHotkeyAction action);
+int dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action);
 
 
 /**
  * Unbind hotkey.
  */
-void dpsoUnbindHotkey(const struct DpsoHotkey* hotkey);
+void dpsoUnbindHotkey(const DpsoHotkey* hotkey);
 
 
 /**
@@ -86,7 +85,7 @@ void dpsoUnbindAction(DpsoHotkeyAction action);
  * returned depends on the implementation.
  */
 void dpsoFindActionHotkey(
-    DpsoHotkeyAction action, struct DpsoHotkey* hotkey);
+    DpsoHotkeyAction action, DpsoHotkey* hotkey);
 
 
 /**
@@ -94,8 +93,7 @@ void dpsoFindActionHotkey(
  *
  * Returns -1 if the hotkey is not bound.
  */
-DpsoHotkeyAction dpsoFindHotkeyAction(
-    const struct DpsoHotkey* hotkey);
+DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey);
 
 
 /**
@@ -124,7 +122,7 @@ DpsoKeyMod dpsoGetKeyModAt(int idx);
  * accepts all the mentioned alternatives regardless of the current
  * platform.
  */
-const char* dpsoHotkeyToString(const struct DpsoHotkey* hotkey);
+const char* dpsoHotkeyToString(const DpsoHotkey* hotkey);
 
 
 /**
@@ -142,7 +140,7 @@ const char* dpsoHotkeyToString(const struct DpsoHotkey* hotkey);
  * example "Page Up" is a valid key name, but "PageUp" or "Page   Up"
  * is not.
  */
-void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey);
+void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey);
 
 
 #ifdef __cplusplus

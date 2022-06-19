@@ -21,7 +21,7 @@ void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled)
 }
 
 
-void dpsoGetSelectionGeometry(struct DpsoRect* rect)
+void dpsoGetSelectionGeometry(DpsoRect* rect)
 {
     if (!rect)
         return;

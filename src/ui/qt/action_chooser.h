@@ -4,11 +4,11 @@
 #include <QFlags>
 #include <QWidget>
 
+#include "dpso_utils/dpso_utils.h"
+
 
 class QCheckBox;
 class QLineEdit;
-
-struct DpsoCfg;
 
 
 class ActionChooser : public QWidget {

@@ -20,7 +20,7 @@ struct UiTaskbar {
 };
 
 
-struct UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
+UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
 {
     if (!hwnd) {
         dpsoSetError("hwnd is null");
@@ -66,13 +66,13 @@ struct UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
 }
 
 
-void uiTaskbarDelete(struct UiTaskbar* tb)
+void uiTaskbarDelete(UiTaskbar* tb)
 {
     delete tb;
 }
 
 
-void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState)
+void uiTaskbarSetState(UiTaskbar* tb, UiTaskbarState newState)
 {
     if (!tb)
         return;
@@ -100,7 +100,7 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState)
 }
 
 
-void uiTaskbarSetProgress(struct UiTaskbar* tb, int newProgress)
+void uiTaskbarSetProgress(UiTaskbar* tb, int newProgress)
 {
     if (!tb)
         return;

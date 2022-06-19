@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "dpso/dpso.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,8 +16,7 @@ extern "C" {
  * DpsoOcrEngineDataDirPreferencePreferExplicit, returns
  * DpsoOcrEngineInfo::id followed by "_data". Otherwise, returns null.
  */
-const char* getOcrDataDirName(
-    const struct DpsoOcrEngineInfo* ocrEngineInfo);
+const char* getOcrDataDirName(const DpsoOcrEngineInfo* ocrEngineInfo);
 
 
 #ifdef __cplusplus

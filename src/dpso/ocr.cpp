@@ -182,7 +182,7 @@ int dpsoOcrGetNumEngines(void)
 }
 
 
-void dpsoOcrGetEngineInfo(int idx, struct DpsoOcrEngineInfo* info)
+void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
 {
     const auto& creators = dpso::OcrEngineCreator::getAll();
 
@@ -252,7 +252,7 @@ static void cacheLangs(DpsoOcr& ocr)
 static void threadLoop(DpsoOcr* ocr);
 
 
-struct DpsoOcr* dpsoOcrCreate(const struct DpsoOcrArgs* ocrArgs)
+DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
 {
     if (!ocrArgs) {
         dpsoSetError("ocrArgs is null");
@@ -294,7 +294,7 @@ struct DpsoOcr* dpsoOcrCreate(const struct DpsoOcrArgs* ocrArgs)
 }
 
 
-void dpsoOcrDelete(struct DpsoOcr* ocr)
+void dpsoOcrDelete(DpsoOcr* ocr)
 {
     if (!ocr)
         return;
@@ -312,13 +312,13 @@ void dpsoOcrDelete(struct DpsoOcr* ocr)
 }
 
 
-int dpsoOcrGetNumLangs(const struct DpsoOcr* ocr)
+int dpsoOcrGetNumLangs(const DpsoOcr* ocr)
 {
     return ocr ? ocr->langs.size() : 0;
 }
 
 
-const char* dpsoOcrGetLangCode(const struct DpsoOcr* ocr, int langIdx)
+const char* dpsoOcrGetLangCode(const DpsoOcr* ocr, int langIdx)
 {
     if (!ocr
             || langIdx < 0
@@ -329,20 +329,20 @@ const char* dpsoOcrGetLangCode(const struct DpsoOcr* ocr, int langIdx)
 }
 
 
-const char* dpsoOcrGetDefaultLangCode(const struct DpsoOcr* ocr)
+const char* dpsoOcrGetDefaultLangCode(const DpsoOcr* ocr)
 {
     return ocr ? ocr->engine->getDefaultLangCode() : "";
 }
 
 
 const char* dpsoOcrGetLangName(
-    const struct DpsoOcr* ocr, const char* langCode)
+    const DpsoOcr* ocr, const char* langCode)
 {
     return ocr ? ocr->engine->getLangName(langCode) : nullptr;
 }
 
 
-int dpsoOcrGetLangIdx(const struct DpsoOcr* ocr, const char* langCode)
+int dpsoOcrGetLangIdx(const DpsoOcr* ocr, const char* langCode)
 {
     if (!ocr)
         return -1;
@@ -365,7 +365,7 @@ int dpsoOcrGetLangIdx(const struct DpsoOcr* ocr, const char* langCode)
 }
 
 
-int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx)
+int dpsoOcrGetLangIsActive(const DpsoOcr* ocr, int langIdx)
 {
     if (!ocr
             || langIdx < 0
@@ -377,7 +377,7 @@ int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx)
 
 
 void dpsoOcrSetLangIsActive(
-    struct DpsoOcr* ocr, int langIdx, int newIsActive)
+    DpsoOcr* ocr, int langIdx, int newIsActive)
 {
     if (!ocr
             || langIdx < 0
@@ -394,7 +394,7 @@ void dpsoOcrSetLangIsActive(
 }
 
 
-int dpsoOcrGetNumActiveLangs(const struct DpsoOcr* ocr)
+int dpsoOcrGetNumActiveLangs(const DpsoOcr* ocr)
 {
     return ocr ? ocr->numActiveLangs : 0;
 }
@@ -611,8 +611,7 @@ static void threadLoop(DpsoOcr* ocr)
 }
 
 
-int dpsoOcrQueueJob(
-    struct DpsoOcr* ocr, const struct DpsoOcrJobArgs* jobArgs)
+int dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
 {
     if (!backend) {
         dpsoSetError("Library is not initialized");
@@ -682,7 +681,7 @@ int dpsoOcrQueueJob(
 
 
 int dpsoOcrProgressEqual(
-    const struct DpsoOcrProgress* a, const struct DpsoOcrProgress* b)
+    const DpsoOcrProgress* a, const DpsoOcrProgress* b)
 {
     return (
         a && b
@@ -692,8 +691,7 @@ int dpsoOcrProgressEqual(
 }
 
 
-void dpsoOcrGetProgress(
-    const struct DpsoOcr* ocr, struct DpsoOcrProgress* progress)
+void dpsoOcrGetProgress(const DpsoOcr* ocr, DpsoOcrProgress* progress)
 {
     if (!ocr || !progress)
         return;
@@ -703,7 +701,7 @@ void dpsoOcrGetProgress(
 }
 
 
-int dpsoOcrGetJobsPending(const struct DpsoOcr* ocr)
+int dpsoOcrGetJobsPending(const DpsoOcr* ocr)
 {
     if (!ocr)
         return false;
@@ -713,8 +711,7 @@ int dpsoOcrGetJobsPending(const struct DpsoOcr* ocr)
 }
 
 
-void dpsoOcrFetchResults(
-    struct DpsoOcr* ocr, struct DpsoOcrJobResults* results)
+void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
 {
     if (!ocr || !results)
         return;
@@ -756,7 +753,7 @@ static void waitJobsToFinish(const DpsoOcr& ocr)
 
 
 void dpsoOcrWaitJobsToComplete(
-    struct DpsoOcr* ocr,
+    DpsoOcr* ocr,
     DpsoOcrProgressCallback progressCallback,
     void* userData)
 {
@@ -787,7 +784,7 @@ void dpsoOcrWaitJobsToComplete(
 }
 
 
-void dpsoOcrTerminateJobs(struct DpsoOcr* ocr)
+void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 {
     if (!ocr)
         return;

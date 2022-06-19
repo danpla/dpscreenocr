@@ -7,7 +7,6 @@
 
 #include "dpso/error.h"
 #include "dpso/str.h"
-#include "history.h"
 #include "os.h"
 
 
@@ -37,8 +36,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
 }
 
 
-static void exportPlainText(
-    const struct DpsoHistory* history, std::FILE* fp)
+static void exportPlainText(const DpsoHistory* history, std::FILE* fp)
 {
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
@@ -92,8 +90,7 @@ static void writeEscapedHtml(
 
 
 // W3C Markup Validator: https://validator.w3.org/
-static void exportHtml(
-    const struct DpsoHistory* history, std::FILE* fp)
+static void exportHtml(const DpsoHistory* history, std::FILE* fp)
 {
     std::fputs(
         "<!DOCTYPE html>\n"
@@ -167,8 +164,7 @@ static void writeEscapedJson(std::FILE* fp, const char* text)
 
 // To validate JSON:
 //   python3 -m json.tool *.json > /dev/null
-static void exportJson(
-    const struct DpsoHistory* history, std::FILE* fp)
+static void exportJson(const DpsoHistory* history, std::FILE* fp)
 {
     std::fputs("[\n", fp);
 
@@ -200,7 +196,7 @@ static void exportJson(
 
 
 int dpsoHistoryExport(
-    const struct DpsoHistory* history,
+    const DpsoHistory* history,
     const char* filePath,
     DpsoHistoryExportFormat exportFormat)
 {

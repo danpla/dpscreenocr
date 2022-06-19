@@ -1,14 +1,13 @@
 
 #pragma once
 
+#include "cfg.h"
+#include "dpso/dpso.h"
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
-struct DpsoCfg;
-struct DpsoOcr;
 
 
 /**
@@ -21,16 +20,14 @@ struct DpsoOcr;
  * you don't want to use a fallback.
  */
 void dpsoCfgLoadActiveLangs(
-    const struct DpsoCfg* cfg,
+    const DpsoCfg* cfg,
     const char* key,
-    struct DpsoOcr* ocr,
+    DpsoOcr* ocr,
     const char* fallbackLangCode);
 
 void dpsoCfgSaveActiveLangs(
-    struct DpsoCfg* cfg, const char* key, const struct DpsoOcr* ocr);
+    DpsoCfg* cfg, const char* key, const DpsoOcr* ocr);
 
-
-struct DpsoHotkey;
 
 /**
  * Get hotkey.
@@ -42,10 +39,10 @@ struct DpsoHotkey;
  * defaultHotkey is null, {dpsoUnknownKey, dpsoKeyModNone} is used.
  */
 void dpsoCfgGetHotkey(
-    const struct DpsoCfg* cfg,
+    const DpsoCfg* cfg,
     const char* key,
-    struct DpsoHotkey* hotkey,
-    const struct DpsoHotkey* defaultHotkey);
+    DpsoHotkey* hotkey,
+    const DpsoHotkey* defaultHotkey);
 
 /**
  * Set hotkey.
@@ -53,9 +50,7 @@ void dpsoCfgGetHotkey(
  * The value is set to the result of dpsoHotkeyToString().
  */
 void dpsoCfgSetHotkey(
-    struct DpsoCfg* cfg,
-    const char* key,
-    const struct DpsoHotkey* hotkey);
+    DpsoCfg* cfg, const char* key, const DpsoHotkey* hotkey);
 
 
 #ifdef __cplusplus

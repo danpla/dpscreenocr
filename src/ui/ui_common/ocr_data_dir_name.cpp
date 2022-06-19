@@ -6,8 +6,7 @@
 #include "dpso/ocr.h"
 
 
-const char* getOcrDataDirName(
-    const struct DpsoOcrEngineInfo* ocrEngineInfo)
+const char* getOcrDataDirName(const DpsoOcrEngineInfo* ocrEngineInfo)
 {
     if (!ocrEngineInfo)
         return nullptr;

@@ -12,10 +12,10 @@ extern "C" {
 #endif
 
 
-struct DpsoHistoryEntry {
+typedef struct DpsoHistoryEntry {
     const char* timestamp;
     const char* text;
-};
+} DpsoHistoryEntry;
 
 
 /**
@@ -26,7 +26,7 @@ struct DpsoHistoryEntry {
  * failure state: it becomes read-only, and all further modification
  * attempts will be rejected.
  */
-struct DpsoHistory;
+typedef struct DpsoHistory DpsoHistory;
 
 
 /**
@@ -36,16 +36,16 @@ struct DpsoHistory;
  * null. Nonexistent filePath is not considered an error; the file
  * will be created in this case.
  */
-struct DpsoHistory* dpsoHistoryOpen(const char* filePath);
+DpsoHistory* dpsoHistoryOpen(const char* filePath);
 
 
-void dpsoHistoryClose(struct DpsoHistory* history);
+void dpsoHistoryClose(DpsoHistory* history);
 
 
 /**
  * Get the number of history entries.
  */
-int dpsoHistoryCount(const struct DpsoHistory* history);
+int dpsoHistoryCount(const DpsoHistory* history);
 
 
 /**
@@ -61,8 +61,7 @@ int dpsoHistoryCount(const struct DpsoHistory* history);
  *   * History is in failure state
  */
 int dpsoHistoryAppend(
-    struct DpsoHistory* history,
-    const struct DpsoHistoryEntry* entry);
+    DpsoHistory* history, const DpsoHistoryEntry* entry);
 
 
 /**
@@ -73,9 +72,7 @@ int dpsoHistoryAppend(
  * like dpsoHistoryAppend() or dpsoHistoryClear().
  */
 void dpsoHistoryGet(
-    const struct DpsoHistory* history,
-    int idx,
-    struct DpsoHistoryEntry* entry);
+    const DpsoHistory* history, int idx, DpsoHistoryEntry* entry);
 
 
 /**
@@ -87,7 +84,7 @@ void dpsoHistoryGet(
  *   * IO error
  *   * History is in failure state
  */
-int dpsoHistoryClear(struct DpsoHistory* history);
+int dpsoHistoryClear(DpsoHistory* history);
 
 
 #ifdef __cplusplus

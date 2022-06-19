@@ -33,15 +33,15 @@ extern "C" {
 #endif
 
 
-struct UiTaskbar;
+typedef struct UiTaskbar UiTaskbar;
 
 
 #if UI_TASKBAR_WIN
-struct UiTaskbar* uiTaskbarCreateWin(HWND hwnd);
+UiTaskbar* uiTaskbarCreateWin(HWND hwnd);
 #endif
 
 
-void uiTaskbarDelete(struct UiTaskbar* tb);
+void uiTaskbarDelete(UiTaskbar* tb);
 
 
 typedef enum {
@@ -65,7 +65,7 @@ typedef enum {
      * showing an overlay icon, or in any other way suitable for the
      * current platform.
      */
-    UiTaskbarStateError,
+    UiTaskbarStateError
 } UiTaskbarState;
 
 
@@ -74,7 +74,7 @@ typedef enum {
  *
  * The default state is UiTaskbarStateNormal.
  */
-void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState);
+void uiTaskbarSetState(UiTaskbar* tb, UiTaskbarState newState);
 
 
 /**
@@ -82,7 +82,7 @@ void uiTaskbarSetState(struct UiTaskbar* tb, UiTaskbarState newState);
  *
  * Does nothing if the current state is not UiTaskbarStateProgress.
  */
-void uiTaskbarSetProgress(struct UiTaskbar* tb, int newProgress);
+void uiTaskbarSetProgress(UiTaskbar* tb, int newProgress);
 
 
 #ifdef __cplusplus

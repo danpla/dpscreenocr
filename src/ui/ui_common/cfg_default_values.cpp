@@ -2,7 +2,6 @@
 /* This file was automatically generated. Do not edit. */
 
 #include "cfg_default_values.h"
-#include "dpso/dpso.h"
 
 
 int const cfgDefaultValueActionAddToHistory =
@@ -15,9 +14,9 @@ int const cfgDefaultValueActionRunExecutable =
     false;
 int const cfgDefaultValueHistoryWrapWords =
     true;
-struct DpsoHotkey const cfgDefaultValueHotkeyCancelSelection =
+DpsoHotkey const cfgDefaultValueHotkeyCancelSelection =
     {dpsoKeyEscape, dpsoKeyModNone};
-struct DpsoHotkey const cfgDefaultValueHotkeyToggleSelection =
+DpsoHotkey const cfgDefaultValueHotkeyToggleSelection =
     {dpsoKeyGrave, dpsoKeyModCtrl};
 int const cfgDefaultValueOcrAllowQueuing =
     true;

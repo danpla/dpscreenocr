@@ -53,7 +53,7 @@ typedef enum {
 } DpsoOcrEngineDataDirPreference;
 
 
-struct DpsoOcrEngineInfo {
+typedef struct DpsoOcrEngineInfo {
     /**
      * Unique engine id.
      *
@@ -71,7 +71,7 @@ struct DpsoOcrEngineInfo {
     const char* name;
 
     DpsoOcrEngineDataDirPreference dataDirPreference;
-};
+} DpsoOcrEngineInfo;
 
 
 /**
@@ -79,10 +79,10 @@ struct DpsoOcrEngineInfo {
  *
  * Does nothing if the index is out of [0, dpsoOcrGetNumEngines()).
  */
-void dpsoOcrGetEngineInfo(int idx, struct DpsoOcrEngineInfo* info);
+void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info);
 
 
-struct DpsoOcrArgs {
+typedef struct DpsoOcrArgs {
     const char* engineId;
 
     /**
@@ -94,10 +94,10 @@ struct DpsoOcrArgs {
      * for the details.
      */
     const char* dataDir;
-};
+} DpsoOcrArgs;
 
 
-struct DpsoOcr;
+typedef struct DpsoOcr DpsoOcr;
 
 
 /**
@@ -106,16 +106,16 @@ struct DpsoOcr;
  * On failure, sets an error message (dpsoGetError()) and returns
  * null.
  */
-struct DpsoOcr* dpsoOcrCreate(const struct DpsoOcrArgs* ocrArgs);
+DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs);
 
 
-void dpsoOcrDelete(struct DpsoOcr* ocr);
+void dpsoOcrDelete(DpsoOcr* ocr);
 
 
 /**
  * Get the number of available languages.
  */
-int dpsoOcrGetNumLangs(const struct DpsoOcr* ocr);
+int dpsoOcrGetNumLangs(const DpsoOcr* ocr);
 
 
 /**
@@ -124,8 +124,7 @@ int dpsoOcrGetNumLangs(const struct DpsoOcr* ocr);
  * Returns an empty string if langIdx is out of
  * [0, dpsoOcrGetNumLangs()).
  */
-const char* dpsoOcrGetLangCode(
-    const struct DpsoOcr* ocr, int langIdx);
+const char* dpsoOcrGetLangCode(const DpsoOcr* ocr, int langIdx);
 
 
 /**
@@ -137,7 +136,7 @@ const char* dpsoOcrGetLangCode(
  * Returns an empty string if the OCR engine has no meaningful default
  * language.
  */
-const char* dpsoOcrGetDefaultLangCode(const struct DpsoOcr* ocr);
+const char* dpsoOcrGetDefaultLangCode(const DpsoOcr* ocr);
 
 
 /**
@@ -146,7 +145,7 @@ const char* dpsoOcrGetDefaultLangCode(const struct DpsoOcr* ocr);
  * Returns null if the language name for the given code is not known.
  */
 const char* dpsoOcrGetLangName(
-    const struct DpsoOcr* ocr, const char* langCode);
+    const DpsoOcr* ocr, const char* langCode);
 
 
 /**
@@ -154,8 +153,7 @@ const char* dpsoOcrGetLangName(
  *
  * Returns -1 if the language with the given code is not available.
  */
-int dpsoOcrGetLangIdx(
-    const struct DpsoOcr* ocr, const char* langCode);
+int dpsoOcrGetLangIdx(const DpsoOcr* ocr, const char* langCode);
 
 
 /**
@@ -163,7 +161,7 @@ int dpsoOcrGetLangIdx(
  *
  * Returns 0 if langIdx is out of [0, dpsoOcrGetNumLangs()).
  */
-int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx);
+int dpsoOcrGetLangIsActive(const DpsoOcr* ocr, int langIdx);
 
 
 /**
@@ -172,13 +170,13 @@ int dpsoOcrGetLangIsActive(const struct DpsoOcr* ocr, int langIdx);
  * Does nothing if langIdx is out of [0, dpsoOcrGetNumLangs()).
  */
 void dpsoOcrSetLangIsActive(
-    struct DpsoOcr* ocr, int langIdx, int newIsActive);
+    DpsoOcr* ocr, int langIdx, int newIsActive);
 
 
 /**
  * Get the number of active languages.
  */
-int dpsoOcrGetNumActiveLangs(const struct DpsoOcr* ocr);
+int dpsoOcrGetNumActiveLangs(const DpsoOcr* ocr);
 
 
 typedef enum {
@@ -194,17 +192,17 @@ typedef enum {
 /**
  * OCR job arguments.
  */
-struct DpsoOcrJobArgs {
+typedef struct DpsoOcrJobArgs {
     /**
      * The rectangle to capture from screen for recognition.
      */
-    struct DpsoRect screenRect;
+    DpsoRect screenRect;
 
     /**
      * Combination of DpsoOcrJobFlag flags.
      */
     unsigned flags;
-};
+} DpsoOcrJobArgs;
 
 
 /**
@@ -225,11 +223,10 @@ struct DpsoOcrJobArgs {
  * dpsoOcrTerminateJobs(), or dpsoOcrFetchResults() when all jobs are
  * completed. Don't change the locale between these two points.
  */
-int dpsoOcrQueueJob(
-    struct DpsoOcr* ocr, const struct DpsoOcrJobArgs* jobArgs);
+int dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs);
 
 
-struct DpsoOcrProgress {
+typedef struct DpsoOcrProgress {
     /**
      * Progress of the current job in percents (0-100).
      */
@@ -250,14 +247,14 @@ struct DpsoOcrProgress {
      * dpsoOcrCreate().
      */
     int totalJobs;
-};
+} DpsoOcrProgress;
 
 
 /**
  * Return 1 if two DpsoOcrProgress are equal, 0 otherwise.
  */
 int dpsoOcrProgressEqual(
-    const struct DpsoOcrProgress* a, const struct DpsoOcrProgress* b);
+    const DpsoOcrProgress* a, const DpsoOcrProgress* b);
 
 
 /**
@@ -267,7 +264,7 @@ int dpsoOcrProgressEqual(
  * dpsoOcrGetJobsPending().
  */
 void dpsoOcrGetProgress(
-    const struct DpsoOcr* ocr, struct DpsoOcrProgress* progress);
+    const DpsoOcr* ocr, DpsoOcrProgress* progress);
 
 
 /**
@@ -277,13 +274,13 @@ void dpsoOcrGetProgress(
  * is an active or at least one queued job), 0 otherwise. This is
  * basically the same as testing DpsoOcrProgress::totalJobs.
  */
-int dpsoOcrGetJobsPending(const struct DpsoOcr* ocr);
+int dpsoOcrGetJobsPending(const DpsoOcr* ocr);
 
 
 /**
  * Result of a single OCR job.
  */
-struct DpsoOcrJobResult {
+typedef struct DpsoOcrJobResult {
     /**
      * Null-terminated text in UTF-8 encoding.
      *
@@ -302,7 +299,7 @@ struct DpsoOcrJobResult {
      * Timestamp in "YYYY-MM-DD hh:mm:ss" format.
      */
     const char* timestamp;
-};
+} DpsoOcrJobResult;
 
 
 /**
@@ -313,10 +310,10 @@ struct DpsoOcrJobResult {
  *
  * \sa dpsoOcrFetchResults
  */
-struct DpsoOcrJobResults {
-    const struct DpsoOcrJobResult* items;
+typedef struct DpsoOcrJobResults {
+    const DpsoOcrJobResult* items;
     int numItems;
-};
+} DpsoOcrJobResults;
 
 
 /**
@@ -327,8 +324,7 @@ struct DpsoOcrJobResults {
  * the array will be empty. The previously returned results are
  * invalidated.
  */
-void dpsoOcrFetchResults(
-    struct DpsoOcr* ocr, struct DpsoOcrJobResults* results);
+void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results);
 
 
 /**
@@ -348,7 +344,7 @@ typedef void (*DpsoOcrProgressCallback)(void* userData);
  * progress changes.
  */
 void dpsoOcrWaitJobsToComplete(
-    struct DpsoOcr* ocr,
+    DpsoOcr* ocr,
     DpsoOcrProgressCallback progressCallback,
     void* userData);
 
@@ -360,7 +356,7 @@ void dpsoOcrWaitJobsToComplete(
  * drops all unfetched job results. dpsoOcrTerminateJobs() is
  * implicitly called on dpsoOcrDelete().
  */
-void dpsoOcrTerminateJobs(struct DpsoOcr* ocr);
+void dpsoOcrTerminateJobs(DpsoOcr* ocr);
 
 
 #ifdef __cplusplus

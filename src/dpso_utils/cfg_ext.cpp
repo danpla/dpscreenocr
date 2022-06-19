@@ -5,9 +5,7 @@
 #include <cstring>
 #include <string>
 
-#include "dpso/dpso.h"
 #include "dpso/str.h"
-#include "cfg.h"
 
 
 static void disableAllLangs(DpsoOcr* ocr)
@@ -28,9 +26,9 @@ const char langSeparator = ',';
 
 
 void dpsoCfgLoadActiveLangs(
-    const struct DpsoCfg* cfg,
+    const DpsoCfg* cfg,
     const char* key,
-    struct DpsoOcr* ocr,
+    DpsoOcr* ocr,
     const char* fallbackLangCode)
 {
     disableAllLangs(ocr);
@@ -63,7 +61,7 @@ void dpsoCfgLoadActiveLangs(
 
 
 void dpsoCfgSaveActiveLangs(
-    struct DpsoCfg* cfg, const char* key, const struct DpsoOcr* ocr)
+    DpsoCfg* cfg, const char* key, const DpsoOcr* ocr)
 {
     std::string str;
 
@@ -84,10 +82,10 @@ void dpsoCfgSaveActiveLangs(
 
 
 void dpsoCfgGetHotkey(
-    const struct DpsoCfg* cfg,
+    const DpsoCfg* cfg,
     const char* key,
-    struct DpsoHotkey* hotkey,
-    const struct DpsoHotkey* defaultHotkey)
+    DpsoHotkey* hotkey,
+    const DpsoHotkey* defaultHotkey)
 {
     if (!hotkey)
         return;
@@ -102,9 +100,7 @@ void dpsoCfgGetHotkey(
 
 
 void dpsoCfgSetHotkey(
-    struct DpsoCfg* cfg,
-    const char* key,
-    const struct DpsoHotkey* hotkey)
+    DpsoCfg* cfg, const char* key, const DpsoHotkey* hotkey)
 {
     if (!hotkey)
         return;

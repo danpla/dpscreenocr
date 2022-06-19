@@ -3,11 +3,11 @@
 
 #include <QTreeWidget>
 
+#include "dpso/dpso.h"
+#include "dpso_utils/dpso_utils.h"
+
 
 class QTreeWidgetItem;
-
-struct DpsoOcr;
-struct DpsoCfg;
 
 
 class LangBrowser : public QTreeWidget {

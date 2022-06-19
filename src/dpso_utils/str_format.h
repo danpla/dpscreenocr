@@ -17,10 +17,10 @@ extern "C" {
 /**
  * Argument for dpsoStrNamedFormat().
  */
-struct DpsoFormatArg {
+typedef struct DpsoFormatArg {
     const char* name;
     const char* str;
-};
+} DpsoFormatArg;
 
 
 /**
@@ -37,8 +37,7 @@ struct DpsoFormatArg {
  * of printf-like magic numbers.
  */
 const char* dpsoStrNamedFormat(
-    const char* str,
-    const struct DpsoFormatArg* args, size_t numArgs);
+    const char* str, const DpsoFormatArg* args, size_t numArgs);
 
 
 #ifdef __cplusplus

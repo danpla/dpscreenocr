@@ -7,7 +7,7 @@
 #include "dpso/dpso.h"
 
 
-static void setupLanguages(struct DpsoOcr* ocr)
+static void setupLanguages(DpsoOcr* ocr)
 {
     int langIdx;
 
@@ -36,7 +36,7 @@ enum HotkeyActions {
 
 static void setupHotkeys(void)
 {
-    const struct DpsoHotkey toggleSelectionHotkey = {
+    const DpsoHotkey toggleSelectionHotkey = {
         dpsoKeyGrave, dpsoKeyModCtrl
     };
 
@@ -48,9 +48,9 @@ static void setupHotkeys(void)
 
 
 static void reportProgress(
-    const struct DpsoOcr* ocr, struct DpsoOcrProgress* lastProgress)
+    const DpsoOcr* ocr, DpsoOcrProgress* lastProgress)
 {
-    struct DpsoOcrProgress progress;
+    DpsoOcrProgress progress;
     int totalProgress;
 
     dpsoOcrGetProgress(ocr, &progress);
@@ -74,15 +74,15 @@ static void reportProgress(
 }
 
 
-static void checkResults(struct DpsoOcr* ocr)
+static void checkResults(DpsoOcr* ocr)
 {
-    struct DpsoOcrJobResults results;
+    DpsoOcrJobResults results;
     int i;
 
     dpsoOcrFetchResults(ocr, &results);
 
     for (i = 0; i < results.numItems; ++i) {
-        const struct DpsoOcrJobResult* result = &results.items[i];
+        const DpsoOcrJobResult* result = &results.items[i];
         printf(
             "=== %s ===\n%s\n",
             result->timestamp, result->text);
@@ -90,12 +90,12 @@ static void checkResults(struct DpsoOcr* ocr)
 }
 
 
-static void checkHotkeyActions(struct DpsoOcr* ocr)
+static void checkHotkeyActions(DpsoOcr* ocr)
 {
     const DpsoHotkeyAction hotkeyAction = dpsoGetLastHotkeyAction();
     if (hotkeyAction == hotkeyActionToggleSelection) {
         if (dpsoGetSelectionIsEnabled()) {
-            struct DpsoOcrJobArgs jobArgs;
+            DpsoOcrJobArgs jobArgs;
 
             dpsoSetSelectionIsEnabled(false);
 
@@ -117,10 +117,10 @@ static void checkHotkeyActions(struct DpsoOcr* ocr)
 
 int main(void)
 {
-    struct DpsoOcrEngineInfo ocrEngineInfo;
-    struct DpsoOcrArgs ocrArgs = {"", NULL};
-    struct DpsoOcr* ocr;
-    struct DpsoOcrProgress lastProgress = {0};
+    DpsoOcrEngineInfo ocrEngineInfo;
+    DpsoOcrArgs ocrArgs = {"", NULL};
+    DpsoOcr* ocr;
+    DpsoOcrProgress lastProgress = {0};
 
     if (!dpsoInit()) {
         fprintf(

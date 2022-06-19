@@ -42,13 +42,13 @@ struct DpsoCfg {
 };
 
 
-struct DpsoCfg* dpsoCfgCreate(void)
+DpsoCfg* dpsoCfgCreate(void)
 {
     return new DpsoCfg{};
 }
 
 
-void dpsoCfgDelete(struct DpsoCfg* cfg)
+void dpsoCfgDelete(DpsoCfg* cfg)
 {
     delete cfg;
 }
@@ -175,7 +175,7 @@ static bool getLine(std::FILE* fp, std::string& line)
 }
 
 
-int dpsoCfgLoad(struct DpsoCfg* cfg, const char* filePath)
+int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
         dpsoSetError("cfg is null");
@@ -263,7 +263,7 @@ static void writeKeyValue(
 }
 
 
-int dpsoCfgSave(const struct DpsoCfg* cfg, const char* filePath)
+int dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
         dpsoSetError("cfg is null");
@@ -291,23 +291,21 @@ int dpsoCfgSave(const struct DpsoCfg* cfg, const char* filePath)
 }
 
 
-void dpsoCfgClear(struct DpsoCfg* cfg)
+void dpsoCfgClear(DpsoCfg* cfg)
 {
     if (cfg)
         cfg->keyValues.clear();
 }
 
 
-int dpsoCfgKeyExists(const struct DpsoCfg* cfg, const char* key)
+int dpsoCfgKeyExists(const DpsoCfg* cfg, const char* key)
 {
     return dpsoCfgGetStr(cfg, key, nullptr) != nullptr;
 }
 
 
 const char* dpsoCfgGetStr(
-    const struct DpsoCfg* cfg,
-    const char* key,
-    const char* defaultVal)
+    const DpsoCfg* cfg, const char* key, const char* defaultVal)
 {
     if (!cfg)
         return defaultVal;
@@ -321,8 +319,7 @@ const char* dpsoCfgGetStr(
 }
 
 
-void dpsoCfgSetStr(
-    struct DpsoCfg* cfg, const char* key, const char* val)
+void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
 {
     if (!cfg)
         return;
@@ -342,8 +339,7 @@ static const char* boolToStr(bool b)
 }
 
 
-int dpsoCfgGetInt(
-    const struct DpsoCfg* cfg, const char* key, int defaultVal)
+int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
 {
     const auto* str = dpsoCfgGetStr(cfg, key, nullptr);
     if (!str)
@@ -377,20 +373,20 @@ int dpsoCfgGetInt(
 }
 
 
-void dpsoCfgSetInt(struct DpsoCfg* cfg, const char* key, int val)
+void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val)
 {
     dpsoCfgSetStr(cfg, key, std::to_string(val).c_str());
 }
 
 
 int dpsoCfgGetBool(
-    const struct DpsoCfg* cfg, const char* key, int defaultVal)
+    const DpsoCfg* cfg, const char* key, int defaultVal)
 {
     return dpsoCfgGetInt(cfg, key, defaultVal) != 0;
 }
 
 
-void dpsoCfgSetBool(struct DpsoCfg* cfg, const char* key, int val)
+void dpsoCfgSetBool(DpsoCfg* cfg, const char* key, int val)
 {
     dpsoCfgSetStr(cfg, key, boolToStr(val));
 }

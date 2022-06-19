@@ -4,10 +4,7 @@
 #include <QHeaderView>
 #include <QTreeWidgetItem>
 
-#include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
-#include "dpso_utils/dpso_utils.h"
-
 #include "ui_common/ui_common.h"
 
 

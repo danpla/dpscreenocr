@@ -9,7 +9,7 @@
 
 static const char* findArg(
     const char* name, std::size_t nameLen,
-    const struct DpsoFormatArg* args, std::size_t numArgs)
+    const DpsoFormatArg* args, std::size_t numArgs)
 {
     for (std::size_t i = 0; i < numArgs; ++i)
         if (dpso::str::cmpSubStr(args[i].name, name, nameLen) == 0)
@@ -20,8 +20,7 @@ static const char* findArg(
 
 
 const char* dpsoStrNamedFormat(
-    const char* str,
-    const struct DpsoFormatArg* args, size_t numArgs)
+    const char* str, const DpsoFormatArg* args, size_t numArgs)
 {
     static std::string result;
     result.clear();

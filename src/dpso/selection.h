@@ -46,7 +46,7 @@ void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled);
  * case it will return the geometry at the moment the selection was
  * disabled.
  */
-void dpsoGetSelectionGeometry(struct DpsoRect* rect);
+void dpsoGetSelectionGeometry(DpsoRect* rect);
 
 
 #ifdef __cplusplus

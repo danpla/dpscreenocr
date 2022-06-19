@@ -26,7 +26,7 @@ extern "C" {
  *     represents an integer; if not, a user-provided default is
  *     returned.
  */
-struct DpsoCfg;
+typedef struct DpsoCfg DpsoCfg;
 
 
 /**
@@ -35,10 +35,10 @@ struct DpsoCfg;
  * On failure, sets an error message (dpsoGetError()) and returns
  * null.
  */
-struct DpsoCfg* dpsoCfgCreate(void);
+DpsoCfg* dpsoCfgCreate(void);
 
 
-void dpsoCfgDelete(struct DpsoCfg* cfg);
+void dpsoCfgDelete(DpsoCfg* cfg);
 
 
 /**
@@ -49,7 +49,7 @@ void dpsoCfgDelete(struct DpsoCfg* cfg);
  * On failure, sets an error message (dpsoGetError()) and returns 0.
  * Nonexistent filePath is not considered an error.
  */
-int dpsoCfgLoad(struct DpsoCfg* cfg, const char* filePath);
+int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath);
 
 
 /**
@@ -59,7 +59,7 @@ int dpsoCfgLoad(struct DpsoCfg* cfg, const char* filePath);
  *
  * \sa dpsoLoadCfg()
  */
-int dpsoCfgSave(const struct DpsoCfg* cfg, const char* filePath);
+int dpsoCfgSave(const DpsoCfg* cfg, const char* filePath);
 
 
 /**
@@ -67,7 +67,7 @@ int dpsoCfgSave(const struct DpsoCfg* cfg, const char* filePath);
  *
  * The function clears all key-value pairs.
  */
-void dpsoCfgClear(struct DpsoCfg* cfg);
+void dpsoCfgClear(DpsoCfg* cfg);
 
 
 /**
@@ -75,7 +75,7 @@ void dpsoCfgClear(struct DpsoCfg* cfg);
  *
  * Returns 1 if the key exists, 0 otherwise.
  */
-int dpsoCfgKeyExists(const struct DpsoCfg* cfg, const char* key);
+int dpsoCfgKeyExists(const DpsoCfg* cfg, const char* key);
 
 
 /**
@@ -91,11 +91,8 @@ int dpsoCfgKeyExists(const struct DpsoCfg* cfg, const char* key);
  * dpsoCfgSet*().
  */
 const char* dpsoCfgGetStr(
-    const struct DpsoCfg* cfg,
-    const char* key,
-    const char* defaultVal);
-void dpsoCfgSetStr(
-    struct DpsoCfg* cfg, const char* key, const char* val);
+    const DpsoCfg* cfg, const char* key, const char* defaultVal);
+void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val);
 
 
 /**
@@ -107,8 +104,8 @@ void dpsoCfgSetStr(
  * respectively. Otherwise, defaultVal is returned.
  */
 int dpsoCfgGetInt(
-    const struct DpsoCfg* cfg, const char* key, int defaultVal);
-void dpsoCfgSetInt(struct DpsoCfg* cfg, const char* key, int val);
+    const DpsoCfg* cfg, const char* key, int defaultVal);
+void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val);
 
 
 /**
@@ -120,8 +117,8 @@ void dpsoCfgSetInt(struct DpsoCfg* cfg, const char* key, int val);
  * \sa dpsoCfgGetInt()
  */
 int dpsoCfgGetBool(
-    const struct DpsoCfg* cfg, const char* key, int defaultVal);
-void dpsoCfgSetBool(struct DpsoCfg* cfg, const char* key, int val);
+    const DpsoCfg* cfg, const char* key, int defaultVal);
+void dpsoCfgSetBool(DpsoCfg* cfg, const char* key, int val);
 
 
 #ifdef __cplusplus

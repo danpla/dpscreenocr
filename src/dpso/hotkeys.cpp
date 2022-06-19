@@ -32,8 +32,7 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void)
 }
 
 
-int dpsoBindHotkey(
-    const struct DpsoHotkey* hotkey, DpsoHotkeyAction action)
+int dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action)
 {
     if (!keyManager
             || !hotkey
@@ -46,7 +45,7 @@ int dpsoBindHotkey(
 }
 
 
-void dpsoUnbindHotkey(const struct DpsoHotkey* hotkey)
+void dpsoUnbindHotkey(const DpsoHotkey* hotkey)
 {
     if (!keyManager || !hotkey)
         return;
@@ -72,8 +71,7 @@ void dpsoUnbindAction(DpsoHotkeyAction action)
 }
 
 
-void dpsoFindActionHotkey(
-    DpsoHotkeyAction action, struct DpsoHotkey* hotkey)
+void dpsoFindActionHotkey(DpsoHotkeyAction action, DpsoHotkey* hotkey)
 {
     if (!hotkey)
         return;
@@ -93,7 +91,7 @@ void dpsoFindActionHotkey(
 }
 
 
-DpsoHotkeyAction dpsoFindHotkeyAction(const struct DpsoHotkey* hotkey)
+DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey)
 {
     if (!keyManager || !hotkey)
         return -1;
@@ -127,7 +125,7 @@ DpsoKeyMod dpsoGetKeyModAt(int idx)
 }
 
 
-const char* dpsoHotkeyToString(const struct DpsoHotkey* hotkey)
+const char* dpsoHotkeyToString(const DpsoHotkey* hotkey)
 {
     static std::string str;
     str.clear();
@@ -157,7 +155,7 @@ const char* dpsoHotkeyToString(const struct DpsoHotkey* hotkey)
 }
 
 
-void dpsoHotkeyFromString(const char* str, struct DpsoHotkey* hotkey)
+void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
 {
     if (!hotkey)
         return;

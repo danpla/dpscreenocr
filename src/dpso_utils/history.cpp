@@ -145,7 +145,7 @@ static dpso::StdFileUPtr openForAppending(const char* filePath)
 }
 
 
-struct DpsoHistory* dpsoHistoryOpen(const char* filePath)
+DpsoHistory* dpsoHistoryOpen(const char* filePath)
 {
     dpso::HistoryUPtr history{new DpsoHistory{}};
     history->filePath = filePath;
@@ -163,13 +163,13 @@ struct DpsoHistory* dpsoHistoryOpen(const char* filePath)
 }
 
 
-void dpsoHistoryClose(struct DpsoHistory* history)
+void dpsoHistoryClose(DpsoHistory* history)
 {
     delete history;
 }
 
 
-int dpsoHistoryCount(const struct DpsoHistory* history)
+int dpsoHistoryCount(const DpsoHistory* history)
 {
     return history ? history->entries.size() : 0;
 }
@@ -194,7 +194,7 @@ const char* const failureStateErrorMsg =
 
 
 int dpsoHistoryAppend(
-    struct DpsoHistory* history, const struct DpsoHistoryEntry* entry)
+    DpsoHistory* history, const DpsoHistoryEntry* entry)
 {
     if (!history) {
         dpsoSetError("history is null");
@@ -245,9 +245,7 @@ int dpsoHistoryAppend(
 
 
 void dpsoHistoryGet(
-    const struct DpsoHistory* history,
-    int idx,
-    struct DpsoHistoryEntry* entry)
+    const DpsoHistory* history, int idx, DpsoHistoryEntry* entry)
 {
     if (!entry)
         return;
@@ -267,7 +265,7 @@ void dpsoHistoryGet(
 }
 
 
-int dpsoHistoryClear(struct DpsoHistory* history)
+int dpsoHistoryClear(DpsoHistory* history)
 {
     if (!history) {
         dpsoSetError("history is null");
