@@ -11,24 +11,19 @@
 static std::unique_ptr<dpso::backend::Backend> backend;
 
 
+#define DECL_MODULE_FUNCTIONS(NAME) \
+namespace NAME { \
+void init(dpso::backend::Backend& backend); \
+void shutdown(); \
+}
+
 namespace dpso {
-
-namespace hotkeys {
-void init(dpso::backend::Backend& backend);
-void shutdown();
+DECL_MODULE_FUNCTIONS(hotkeys)
+DECL_MODULE_FUNCTIONS(ocr)
+DECL_MODULE_FUNCTIONS(selection)
 }
 
-namespace ocr {
-void init(dpso::backend::Backend& backend);
-void shutdown();
-}
-
-namespace selection {
-void init(dpso::backend::Backend& backend);
-void shutdown();
-}
-
-}
+#undef DECL_MODULE_FUNCTIONS
 
 
 namespace {
@@ -44,7 +39,7 @@ struct Module {
 }
 
 
-#define MODULE(name) {#name, dpso::name::init, dpso::name::shutdown}
+#define MODULE(NAME) {#NAME, dpso::NAME::init, dpso::NAME::shutdown}
 
 const Module modules[] = {
     MODULE(hotkeys),
