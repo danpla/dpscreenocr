@@ -1,7 +1,6 @@
 
 #include "history.h"
 
-#include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
 #include <QHBoxLayout>
@@ -22,15 +21,10 @@
 
 History::History(const std::string& dirPath, QWidget* parent)
     : QWidget{parent}
+    , wrapWords{true}
     , nativeFileDialogs{}
 {
     historyFilePath = dirPath + *dpsoDirSeparators + historyFileName;
-
-    wordWrapCheck = new QCheckBox(_("Wrap words"));
-    wordWrapCheck->setChecked(true);
-    connect(
-        wordWrapCheck, SIGNAL(toggled(bool)),
-        this, SLOT(setWordWrap(bool)));
 
     textEdit = new QTextEdit();
     textEdit->setReadOnly(true);
@@ -42,21 +36,16 @@ History::History(const std::string& dirPath, QWidget* parent)
     blockMargin = QFontMetrics(charFormat.font()).height();
 
     exportButton = new QPushButton(_("Export\342\200\246"));
-    connect(
-        exportButton, SIGNAL(clicked()),
-        this, SLOT(doExport()));
+    connect(exportButton, SIGNAL(clicked()), this, SLOT(doExport()));
 
     clearButton = new QPushButton(_("Clear\342\200\246"));
-    connect(
-        clearButton, SIGNAL(clicked()),
-        this, SLOT(clear()));
+    connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
     setButtonsEnabled(false);
 
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins({});
 
-    layout->addWidget(wordWrapCheck);
     layout->addWidget(textEdit);
 
     auto* buttonsLayout = new QHBoxLayout();
@@ -250,11 +239,10 @@ bool History::loadState(const DpsoCfg* cfg)
         appendToTextEdit(entry.timestamp, entry.text);
     }
 
-    wordWrapCheck->setChecked(
-        dpsoCfgGetBool(
-            cfg,
-            cfgKeyHistoryWrapWords,
-            cfgDefaultValueHistoryWrapWords));
+    wrapWords = dpsoCfgGetBool(
+        cfg, cfgKeyHistoryWrapWords, cfgDefaultValueHistoryWrapWords);
+    textEdit->setWordWrapMode(
+        wrapWords ? QTextOption::WordWrap : QTextOption::NoWrap);
 
     setButtonsEnabled(dpsoHistoryCount(history.get()) > 0);
 
@@ -270,8 +258,7 @@ bool History::loadState(const DpsoCfg* cfg)
 
 void History::saveState(DpsoCfg* cfg) const
 {
-    dpsoCfgSetBool(
-        cfg, cfgKeyHistoryWrapWords, wordWrapCheck->isChecked());
+    dpsoCfgSetBool(cfg, cfgKeyHistoryWrapWords, wrapWords);
     dpsoCfgSetStr(
         cfg, cfgKeyHistoryExportDir, lastDirPath.toUtf8().data());
 }

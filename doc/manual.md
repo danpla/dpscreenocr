@@ -324,6 +324,10 @@ the settings file:
     Keep in mind that every recognized text, if not empty, ends with
     a newline.
 
+*   `history_wrap_words` (`true` by default) whether to break long
+    lines of text in the history so that you don't have to scroll
+    horizontally.
+
 *   `hotkey_cancel_selection` (`Escape` by default) hotkey to cancel
     selection.
 

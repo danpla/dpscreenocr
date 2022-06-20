@@ -10,7 +10,6 @@
 #include "dpso_utils/dpso_utils.h"
 
 
-class QCheckBox;
 class QPushButton;
 class QTextEdit;
 
@@ -45,7 +44,7 @@ private:
     std::string historyFilePath;
     dpso::HistoryUPtr history;
 
-    QCheckBox* wordWrapCheck;
+    bool wrapWords;
 
     QTextEdit* textEdit;
     QTextCharFormat charFormat;
