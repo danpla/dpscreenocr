@@ -60,6 +60,7 @@ enum HotkeyAction {
 
 MainWindow::MainWindow()
     : QWidget{}
+    , ocrAllowQueuing{}
     , lastProgress{}
     , wasActiveLangs{}
     , statusValid{}
