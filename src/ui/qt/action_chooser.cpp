@@ -7,7 +7,7 @@
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QLineEdit>
-#include <QPushButton>
+#include <QToolButton>
 #include <QVBoxLayout>
 
 #include "dpso_intl/dpso_intl.h"
@@ -31,7 +31,8 @@ ActionChooser::ActionChooser(QWidget* parent)
     exeLineEdit = new QLineEdit();
     exeLineEdit->setEnabled(false);
 
-    auto* selectExeButton = new QPushButton("\342\200\246");
+    auto* selectExeButton = new QToolButton();
+    selectExeButton->setText("\342\200\246");
     selectExeButton->setEnabled(false);
     connect(
         selectExeButton, SIGNAL(clicked()),
