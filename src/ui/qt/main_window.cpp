@@ -679,10 +679,10 @@ void MainWindow::saveState(DpsoCfg* cfg) const
 
 bool MainWindow::canStartSelection() const
 {
-    return (
+    return
         dpsoOcrGetNumActiveLangs(ocr.get()) > 0
         && (ocrAllowQueuing || !dpsoOcrGetJobsPending(ocr.get()))
-        && actionChooser->getSelectedActions());
+        && actionChooser->getSelectedActions();
 }
 
 

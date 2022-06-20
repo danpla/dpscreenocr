@@ -683,11 +683,11 @@ int dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
 int dpsoOcrProgressEqual(
     const DpsoOcrProgress* a, const DpsoOcrProgress* b)
 {
-    return (
+    return
         a && b
         && a->curJobProgress == b->curJobProgress
         && a->curJob == b->curJob
-        && a->totalJobs == b->totalJobs);
+        && a->totalJobs == b->totalJobs;
 }
 
 
