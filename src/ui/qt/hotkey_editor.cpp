@@ -1,8 +1,6 @@
 
 #include "hotkey_editor.h"
 
-#include <cassert>
-
 #include <QCheckBox>
 #include <QComboBox>
 #include <QHBoxLayout>
@@ -83,18 +81,10 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
     DpsoHotkey hotkey;
     dpsoFindActionHotkey(action, &hotkey);
 
-    bool hotkeyChanged = false;
+    auto hotkeyChanged = false;
 
     if (hotkey.key != getCurrentKey()) {
-        // If hideNoneKey is true, we pass dpsoUnknownKey (-1) as is
-        // so that keyCombo becomes unselected.
-        const auto idx = hotkey.key + !hideNoneKey;
-        assert(
-            idx == -1
-            || (idx >=0
-                && idx < keyCombo->count()
-                && keyCombo->itemData(idx).toInt() == hotkey.key));
-        keyCombo->setCurrentIndex(idx);
+        keyCombo->setCurrentIndex(keyCombo->findData(hotkey.key));
         hotkeyChanged = true;
     }
 
