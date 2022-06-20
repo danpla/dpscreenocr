@@ -7,19 +7,20 @@
 * Languages:
   * All names are now inverted, e.g. "Creole, Haitian" instead of
     "Haitian Creole"
-  * Fixed missing name for of jpn_vert
+  * Fixed missing name for jpn_vert
   * jpn is no longer identified as vertical
   * Fixed missing "l" in "Cyrillic"
-* Key modifier checkboxes are now on the same line as key combo box
 * If there are multiple texts in the recognition queue, "Add text to
   history" and "Run executable" actions now process each text as it
   arrives instead of waiting for the entire chain
 * History:
+  * Removed "Wrap words" checkbox (the history_wrap_words option in
+    settings.cfg is still available)
   * Recognized text is now immediately added to the history file to
     minimize possible data loss in case of abnormal program
     termination
   * Font size is now taken from system settings. This also fixes
-    zooming history text with Control + mouse wheel
+    zooming text with Control + mouse wheel
   * HTML export:
     * " and ' are no longer replaced by &quot and &apos
     * CSS: Reduced left text margin from 2 to 1 em and added 1 em
@@ -39,6 +40,8 @@
 * Windows:
   * Installer now allows local installation, e.g. for users without
     administrator rights
+  * Tesseract language files are now stored in
+    "C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_data"
   * Enabled native interface theme
   * App now shows progress in the background of the taskbar button
   * Updated Tesseract to 5.1.0
