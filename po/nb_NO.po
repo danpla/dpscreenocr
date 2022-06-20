@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-19 02:24+0300\n"
+"POT-Creation-Date: 2022-06-20 04:33+0300\n"
 "PO-Revision-Date: 2020-03-26 15:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -533,65 +533,61 @@ msgstr "Program for gjenkjenning av tekst på skjermen"
 msgid "License"
 msgstr "Lisens"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp:24
 msgid "Copy text to clipboard"
 msgstr "Kopier tekst til utklippstavle"
 
-#: src/ui/qt/action_chooser.cpp:27
+#: src/ui/qt/action_chooser.cpp:25
 msgid "Add text to history"
 msgstr "Legg til tekst i historikk"
 
-#: src/ui/qt/action_chooser.cpp:29
+#: src/ui/qt/action_chooser.cpp:27
 msgid "Run executable:"
 msgstr "Kjør program:"
 
-#: src/ui/qt/action_chooser.cpp:31
+#: src/ui/qt/action_chooser.cpp:29
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "Kjør et program med gjenkjent tekst som første argument"
 
-#: src/ui/qt/action_chooser.cpp:74
+#: src/ui/qt/action_chooser.cpp:73
 msgid "Choose an executable"
 msgstr "Velg en kjørbar fil"
 
-#: src/ui/qt/history.cpp:30
-msgid "Wrap words"
-msgstr "Linjebrytning"
-
-#: src/ui/qt/history.cpp:45
+#: src/ui/qt/history.cpp:38
 #, fuzzy
 msgid "Export…"
 msgstr "Lagre som…"
 
-#: src/ui/qt/history.cpp:50
+#: src/ui/qt/history.cpp:41
 msgid "Clear…"
 msgstr "Tøm…"
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:181
+#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:180
 msgid "History"
 msgstr "Historikk"
 
-#: src/ui/qt/history.cpp:74
+#: src/ui/qt/history.cpp:62
 #, fuzzy
 msgid "Export history"
 msgstr "Lagre historikk"
 
-#: src/ui/qt/history.cpp:76
+#: src/ui/qt/history.cpp:64
 msgid "Plain text"
 msgstr "Klartekst"
 
-#: src/ui/qt/history.cpp:79
+#: src/ui/qt/history.cpp:67
 msgid "All files"
 msgstr "Alle filer"
 
-#: src/ui/qt/history.cpp:80
+#: src/ui/qt/history.cpp:68
 msgid "Clear the history?"
 msgstr "Tøm historikken?"
 
-#: src/ui/qt/history.cpp:81 src/ui/qt/main_window.cpp:250
+#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:249
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: src/ui/qt/history.cpp:82
+#: src/ui/qt/history.cpp:70
 msgid "Clear"
 msgstr "Tøm"
 
@@ -600,83 +596,83 @@ msgctxt "hotkey.key"
 msgid "None"
 msgstr "Ingen"
 
-#: src/ui/qt/lang_browser.cpp:34
+#: src/ui/qt/lang_browser.cpp:31
 msgctxt "language"
 msgid "Name"
 msgstr "Navn"
 
-#: src/ui/qt/lang_browser.cpp:35
+#: src/ui/qt/lang_browser.cpp:32
 msgctxt "language"
 msgid "Code"
 msgstr "Kode"
 
-#: src/ui/qt/main_window.cpp:179
+#: src/ui/qt/main_window.cpp:178
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Grunnleggende"
 
-#: src/ui/qt/main_window.cpp:180
+#: src/ui/qt/main_window.cpp:179
 msgid "Actions"
 msgstr "Handlinger"
 
-#: src/ui/qt/main_window.cpp:182
+#: src/ui/qt/main_window.cpp:181
 msgid "About"
 msgstr "Om"
 
-#: src/ui/qt/main_window.cpp:240
+#: src/ui/qt/main_window.cpp:239
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Gjenkjenning {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:241
+#: src/ui/qt/main_window.cpp:240
 msgid "Please install languages"
 msgstr "Installer språk"
 
-#: src/ui/qt/main_window.cpp:242
+#: src/ui/qt/main_window.cpp:241
 msgid "Please select languages"
 msgstr "Velg språk"
 
-#: src/ui/qt/main_window.cpp:244
+#: src/ui/qt/main_window.cpp:243
 msgid "Please select actions in the “Actions” tab"
 msgstr "Velg handlinger i \"Handlinger\"-fanen"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:247
+#: src/ui/qt/main_window.cpp:246
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Klar"
 
-#: src/ui/qt/main_window.cpp:249
+#: src/ui/qt/main_window.cpp:248
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Gjenkjenning er ikke fullført enda. Avslutt uansett?"
 
-#: src/ui/qt/main_window.cpp:251 src/ui/qt/main_window.cpp:436
+#: src/ui/qt/main_window.cpp:250 src/ui/qt/main_window.cpp:435
 msgid "Quit"
 msgstr "Avslutt"
 
-#: src/ui/qt/main_window.cpp:428
+#: src/ui/qt/main_window.cpp:427
 msgid "Show {app_name}"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:443
+#: src/ui/qt/main_window.cpp:442
 msgid "Status"
 msgstr "Status"
 
-#: src/ui/qt/main_window.cpp:453
+#: src/ui/qt/main_window.cpp:452
 msgid "Character recognition"
 msgstr "Tegngjenkjenning"
 
-#: src/ui/qt/main_window.cpp:457
+#: src/ui/qt/main_window.cpp:456
 msgid "Split text blocks"
 msgstr "Splitt tekstblokker"
 
-#: src/ui/qt/main_window.cpp:459
+#: src/ui/qt/main_window.cpp:458
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Splitt uavhengige tekstblokker, f.eks. kolonner"
 
-#: src/ui/qt/main_window.cpp:462
+#: src/ui/qt/main_window.cpp:461
 msgid "Languages:"
 msgstr "Språk:"
 
-#: src/ui/qt/main_window.cpp:466
+#: src/ui/qt/main_window.cpp:465
 msgid "Hotkey"
 msgstr "Hurtigtast"
