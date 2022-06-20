@@ -52,6 +52,7 @@ const char* const keyNames[dpsoNumKeys] = {
 
     "[",
     "]",
+    "\\",
 
     ";",
     "'",

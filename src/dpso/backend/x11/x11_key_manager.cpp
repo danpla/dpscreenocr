@@ -207,6 +207,7 @@ const KeySym keyToKeySym[dpsoNumKeys] = {
 
     XK_bracketleft,
     XK_bracketright,
+    XK_backslash,
 
     XK_semicolon,
     XK_apostrophe,

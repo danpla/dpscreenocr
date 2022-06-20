@@ -300,6 +300,7 @@ const UINT keyToVk[dpsoNumKeys] = {
 
     VK_OEM_4,  // 0xDB, left bracket
     VK_OEM_6,  // 0xDD, right bracket
+    VK_OEM_5,  // 0xDC, backslash
 
     VK_OEM_1,  // 0xBA, semicolon
     VK_OEM_7,  // 0xDE, apostrophe

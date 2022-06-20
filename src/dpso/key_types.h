@@ -57,6 +57,7 @@ typedef enum {
 
     dpsoKeyLeftBracket,
     dpsoKeyRightBracket,
+    dpsoKeyBackslash,
 
     dpsoKeySemicolon,
     dpsoKeyApostrophe,
