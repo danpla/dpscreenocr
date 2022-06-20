@@ -201,23 +201,25 @@ const KeySym keyToKeySym[dpsoNumKeys] = {
     XK_9,
     XK_0,
 
-    XK_Return,
-    XK_Escape,
-    XK_BackSpace,
-    XK_Tab,
-    XK_space,
-
     XK_minus,
     XK_equal,
+    XK_BackSpace,
+
     XK_bracketleft,
     XK_bracketright,
 
     XK_semicolon,
     XK_apostrophe,
-    XK_grave,
+    XK_Return,
+
     XK_comma,
     XK_period,
     XK_slash,
+
+    XK_Escape,
+    XK_grave,
+    XK_Tab,
+    XK_space,
 
     XK_F1,
     XK_F2,
@@ -235,15 +237,15 @@ const KeySym keyToKeySym[dpsoNumKeys] = {
     XK_Print,
     XK_Pause,
     XK_Insert,
-    XK_Home,
-    XK_Prior,
     XK_Delete,
+    XK_Home,
     XK_End,
+    XK_Prior,
     XK_Next,
-    XK_Right,
-    XK_Left,
-    XK_Down,
     XK_Up,
+    XK_Down,
+    XK_Left,
+    XK_Right,
 
     XK_KP_Divide,
     XK_KP_Multiply,
@@ -269,8 +271,7 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
     if (key < 0 || key >= dpsoNumKeys)
         return 0;
 
-    const auto keySym = keyToKeySym[key];
-    return XKeysymToKeycode(display, keySym);
+    return XKeysymToKeycode(display, keyToKeySym[key]);
 }
 
 

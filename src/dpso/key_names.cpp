@@ -46,23 +46,25 @@ const char* const keyNames[dpsoNumKeys] = {
     "9",
     "0",
 
-    "Return",
-    "Escape",
-    "Backspace",
-    "Tab",
-    "Space",
-
     "-",
     "=",
+    "Backspace",
+
     "[",
     "]",
 
     ";",
     "'",
-    "`",
+    "Return",
+
     ",",
     ".",
     "/",
+
+    "Escape",
+    "`",
+    "Tab",
+    "Space",
 
     "F1",
     "F2",
@@ -80,15 +82,15 @@ const char* const keyNames[dpsoNumKeys] = {
     "Print Screen",
     "Pause",
     "Insert",
-    "Home",
-    "Page Up",
     "Delete",
+    "Home",
     "End",
+    "Page Up",
     "Page Down",
-    "Right",
-    "Left",
-    "Down",
     "Up",
+    "Down",
+    "Left",
+    "Right",
 
     "Keypad /",
     "Keypad *",

@@ -294,23 +294,25 @@ const UINT keyToVk[dpsoNumKeys] = {
     '9',
     '0',
 
-    VK_RETURN,
-    VK_ESCAPE,
-    VK_BACK,
-    VK_TAB,
-    VK_SPACE,
-
     VK_OEM_MINUS,
     VK_OEM_PLUS,  // 0xBB, equals
+    VK_BACK,
+
     VK_OEM_4,  // 0xDB, left bracket
     VK_OEM_6,  // 0xDD, right bracket
 
     VK_OEM_1,  // 0xBA, semicolon
     VK_OEM_7,  // 0xDE, apostrophe
-    VK_OEM_3,  // 0xC0, grave
+    VK_RETURN,
+
     VK_OEM_COMMA,
     VK_OEM_PERIOD,
     VK_OEM_2,  // 0xBF, slash
+
+    VK_ESCAPE,
+    VK_OEM_3,  // 0xC0, grave
+    VK_TAB,
+    VK_SPACE,
 
     VK_F1,
     VK_F2,
@@ -328,15 +330,15 @@ const UINT keyToVk[dpsoNumKeys] = {
     VK_PRINT,
     VK_PAUSE,
     VK_INSERT,
-    VK_HOME,
-    VK_PRIOR,
     VK_DELETE,
+    VK_HOME,
     VK_END,
+    VK_PRIOR,
     VK_NEXT,
-    VK_RIGHT,
-    VK_LEFT,
-    VK_DOWN,
     VK_UP,
+    VK_DOWN,
+    VK_LEFT,
+    VK_RIGHT,
 
     VK_DIVIDE,
     VK_MULTIPLY,

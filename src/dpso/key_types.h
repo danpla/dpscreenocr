@@ -51,23 +51,25 @@ typedef enum {
     dpsoKey9,
     dpsoKey0,
 
-    dpsoKeyReturn,
-    dpsoKeyEscape,
-    dpsoKeyBackspace,
-    dpsoKeyTab,
-    dpsoKeySpace,
-
     dpsoKeyMinus,
     dpsoKeyEquals,
+    dpsoKeyBackspace,
+
     dpsoKeyLeftBracket,
     dpsoKeyRightBracket,
 
     dpsoKeySemicolon,
     dpsoKeyApostrophe,
-    dpsoKeyGrave,
+    dpsoKeyReturn,
+
     dpsoKeyComma,
     dpsoKeyPeriod,
     dpsoKeySlash,
+
+    dpsoKeyEscape,
+    dpsoKeyGrave,
+    dpsoKeyTab,
+    dpsoKeySpace,
 
     dpsoKeyF1,
     dpsoKeyF2,
@@ -85,15 +87,15 @@ typedef enum {
     dpsoKeyPrintScreen,
     dpsoKeyPause,
     dpsoKeyInsert,
-    dpsoKeyHome,
-    dpsoKeyPageUp,
     dpsoKeyDelete,
+    dpsoKeyHome,
     dpsoKeyEnd,
+    dpsoKeyPageUp,
     dpsoKeyPageDown,
-    dpsoKeyRight,
-    dpsoKeyLeft,
-    dpsoKeyDown,
     dpsoKeyUp,
+    dpsoKeyDown,
+    dpsoKeyLeft,
+    dpsoKeyRight,
 
     dpsoKeyKpDivide,
     dpsoKeyKpMultiply,
