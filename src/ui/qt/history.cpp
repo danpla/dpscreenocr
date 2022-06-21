@@ -79,13 +79,6 @@ void History::setButtonsEnabled(bool enabled)
 }
 
 
-void History::setWordWrap(bool wordWrap)
-{
-    textEdit->setWordWrapMode(
-        wordWrap ? QTextOption::WordWrap : QTextOption::NoWrap);
-}
-
-
 void History::doExport()
 {
     if (!history)

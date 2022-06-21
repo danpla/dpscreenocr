@@ -26,7 +26,6 @@ public:
     bool loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;
 private slots:
-    void setWordWrap(bool wordWrap);
     void doExport();
     void clear();
 private:
