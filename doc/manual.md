@@ -403,12 +403,6 @@ here, please report the problem on the [issue tracker][].
       Windows if you have ever used Tesseract installers from
       SourceForge with default settings.
 
-    * (Windows) This may happen if the program is installed in a path
-      that have Unicode characters not supported by you current code
-      page. This is a Tesseract limitation that cannot be fixed on the
-      dpScreenOCR side. Try to install the program to another
-      location; any path consisting of ASCII characters will do.
-
 *   **(Windows) "Run executable" opens the script in a text editor**
 
     Create a file association as described in
