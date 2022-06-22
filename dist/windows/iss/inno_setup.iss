@@ -41,7 +41,7 @@ ShowLanguageDialog=auto
 WizardImageFile={#RES_DIR}\wizard.bmp
 WizardSmallImageFile={#RES_DIR}\wizard_small.bmp
 
-Compression=none
+Compression=lzma2
 SolidCompression=yes
 
 [Files]
