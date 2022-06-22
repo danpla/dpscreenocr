@@ -31,7 +31,7 @@ OutputDir=.
 OutputBaseFilename={#APP_FILE_NAME}-{#APP_VERSION}-win{#OUTPUT_SUFFIX}
 
 DefaultDirName={autopf}\{#APP_NAME}
-DefaultGroupName={#APP_NAME}
+DisableProgramGroupPage=yes
 UninstallDisplayIcon={app}\{#APP_FILE_NAME}.exe
 SetupIconFile={#APP_SOURCE_DIR}\data\icons\{#APP_FILE_NAME}.ico
 
@@ -111,12 +111,8 @@ Source: "translations\*"; \
 #endif
 
 [Icons]
-Name: "{group}\{#APP_NAME}"; \
-  Filename: "{app}\{#APP_FILE_NAME}.exe"
-Name: "{group}\{cm:UninstallProgram,{#APP_NAME}}"; \
-  Filename: "{uninstallexe}"
-Name: "{group}\Documents"; \
-  Filename: "{app}\doc"
+Name: "{autoprograms}\{#APP_NAME}"; \
+    Filename: "{app}\{#APP_FILE_NAME}.exe"
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
