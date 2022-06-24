@@ -28,6 +28,12 @@ QSize StatusIndicator::minimumSizeHint() const
 }
 
 
+QSize StatusIndicator::sizeHint() const
+{
+    return minimumSizeHint();
+}
+
+
 static const QColor& getStatusColor(Status status)
 {
     static QColor green(0x60, 0xee, 0x60);
