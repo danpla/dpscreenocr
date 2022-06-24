@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-20 04:33+0300\n"
+"POT-Creation-Date: 2022-06-24 05:00+0300\n"
 "PO-Revision-Date: 2022-05-22 23:04+0300\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -526,13 +526,25 @@ msgstr "Їдиш"
 msgid "Yoruba"
 msgstr "Йоруба"
 
-#: src/ui/qt/about.cpp:53 dpscreenocr.desktop.in.h:1
-msgid "Program to recognize text on screen"
-msgstr "Програма для розпізнавання тексту не екрані"
+#: src/ui/qt/about.cpp:56
+msgid "User manual"
+msgstr "Посібник користувача"
 
-#: src/ui/qt/about.cpp:67
+#: src/ui/qt/about.cpp:58
+msgid "Changelog"
+msgstr "Список змін"
+
+#: src/ui/qt/about.cpp:60 src/ui/qt/about.cpp:68
 msgid "License"
 msgstr "Ліцензія"
+
+#: src/ui/qt/about.cpp:65
+msgid "Third-party licenses"
+msgstr "Ліцензії третіх сторін"
+
+#: src/ui/qt/about.cpp:117 dpscreenocr.desktop.in.h:1
+msgid "Program to recognize text on screen"
+msgstr "Програма для розпізнавання тексту не екрані"
 
 #: src/ui/qt/action_chooser.cpp:24
 msgid "Copy text to clipboard"
@@ -590,7 +602,7 @@ msgstr "Скасувати"
 msgid "Clear"
 msgstr "Очистити"
 
-#: src/ui/qt/hotkey_editor.cpp:39
+#: src/ui/qt/hotkey_editor.cpp:37
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Нічого"

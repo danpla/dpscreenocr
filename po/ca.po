@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-20 04:33+0300\n"
+"POT-Creation-Date: 2022-06-24 05:00+0300\n"
 "PO-Revision-Date: 2020-05-23 00:21+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -547,13 +547,25 @@ msgstr "ídix"
 msgid "Yoruba"
 msgstr "ioruba"
 
-#: src/ui/qt/about.cpp:53 dpscreenocr.desktop.in.h:1
-msgid "Program to recognize text on screen"
-msgstr "Programa per a reconèixer el text en pantalla"
+#: src/ui/qt/about.cpp:56
+msgid "User manual"
+msgstr ""
 
-#: src/ui/qt/about.cpp:67
+#: src/ui/qt/about.cpp:58
+msgid "Changelog"
+msgstr ""
+
+#: src/ui/qt/about.cpp:60 src/ui/qt/about.cpp:68
 msgid "License"
 msgstr "Llicència"
+
+#: src/ui/qt/about.cpp:65
+msgid "Third-party licenses"
+msgstr ""
+
+#: src/ui/qt/about.cpp:117 dpscreenocr.desktop.in.h:1
+msgid "Program to recognize text on screen"
+msgstr "Programa per a reconèixer el text en pantalla"
 
 #: src/ui/qt/action_chooser.cpp:24
 msgid "Copy text to clipboard"
@@ -613,7 +625,7 @@ msgstr "Cancel·la"
 msgid "Clear"
 msgstr "Neteja"
 
-#: src/ui/qt/hotkey_editor.cpp:39
+#: src/ui/qt/hotkey_editor.cpp:37
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Cap"

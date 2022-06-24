@@ -53,7 +53,7 @@ static QStringList createLinks()
         QCoreApplication::applicationDirPath() + "/doc";
     if (QDir(docDirPath).exists()) {
         appendFileLink(
-            result, docDirPath, "manual.html", _("Manual"));
+            result, docDirPath, "manual.html", _("User manual"));
         appendFileLink(
             result, docDirPath, "changelog.txt", _("Changelog"));
         appendFileLink(
