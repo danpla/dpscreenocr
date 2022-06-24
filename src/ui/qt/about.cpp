@@ -47,7 +47,7 @@ static void appendFileLink(
 static QStringList createLinks()
 {
     QStringList result;
-    result.append(formatLink("Website", QUrl(appWebsite)));
+    result.append(formatLink(_("Website"), QUrl(appWebsite)));
 
     const auto docDirPath =
         QCoreApplication::applicationDirPath() + "/doc";

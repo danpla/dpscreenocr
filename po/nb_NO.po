@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-24 05:00+0300\n"
+"POT-Creation-Date: 2022-06-24 05:07+0300\n"
 "PO-Revision-Date: 2020-03-26 15:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -523,6 +523,10 @@ msgstr ""
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:161
 msgid "Yoruba"
+msgstr ""
+
+#: src/ui/qt/about.cpp:50
+msgid "Website"
 msgstr ""
 
 #: src/ui/qt/about.cpp:56

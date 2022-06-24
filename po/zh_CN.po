@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-24 05:00+0300\n"
+"POT-Creation-Date: 2022-06-24 05:07+0300\n"
 "PO-Revision-Date: 2022-06-20 01:27+0000\n"
 "Last-Translator: Eric <alchemillatruth@purelymail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -524,6 +524,10 @@ msgstr "意第绪语"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:161
 msgid "Yoruba"
 msgstr "约鲁巴语"
+
+#: src/ui/qt/about.cpp:50
+msgid "Website"
+msgstr ""
 
 #: src/ui/qt/about.cpp:56
 msgid "User manual"

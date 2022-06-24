@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-24 05:00+0300\n"
+"POT-Creation-Date: 2022-06-24 05:07+0300\n"
 "PO-Revision-Date: 2022-05-22 23:01+0300\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: \n"
@@ -525,6 +525,10 @@ msgstr "Идиш"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:161
 msgid "Yoruba"
 msgstr "Йоруба"
+
+#: src/ui/qt/about.cpp:50
+msgid "Website"
+msgstr "Веб-сайт"
 
 #: src/ui/qt/about.cpp:56
 msgid "User manual"

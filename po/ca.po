@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-24 05:00+0300\n"
+"POT-Creation-Date: 2022-06-24 05:07+0300\n"
 "PO-Revision-Date: 2020-05-23 00:21+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -546,6 +546,10 @@ msgstr "ídix"
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:161
 msgid "Yoruba"
 msgstr "ioruba"
+
+#: src/ui/qt/about.cpp:50
+msgid "Website"
+msgstr ""
 
 #: src/ui/qt/about.cpp:56
 msgid "User manual"
