@@ -91,7 +91,7 @@ static QString joinInLayoutDirection(
 About::About(QWidget* parent)
     : QWidget{parent}
 {
-    const auto fontHeight = QFontMetrics(font()).height();
+    const auto fontHeight = fontMetrics().height();
 
     auto* iconLabel = new QLabel();
     iconLabel->setAlignment(Qt::AlignCenter);
