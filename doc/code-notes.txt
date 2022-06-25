@@ -10,6 +10,42 @@
   Support for CMake 2.8.12 is only required on Unix-like systems; many
   Windows-specific CMake files use features from version 3.
 
+* A C/CPP file should include headers in the following order:
+
+  * H of the current C/CPP file
+  * Standard C/C++ library headers. On Unix-like systems, OS API
+    (POSIX) headers may also be in this group.
+  * OS API headers.
+  * Other third-party headers, including src/thirdparty.
+  * Our headers from src/.
+
+  These #include groups should be separated by an empty line.
+
+* When a CPP file implements a function from a C header, the signature
+  should be copied verbatim to the CPP file. This includes the case
+  when a C type from the signature is available in CPP in the std::
+  namespace, e.g. size_t (<stddef.h>) vs std::size_t (<cstddef>).
+
+* In both C and C++ code, a C string (char*, const or not) is not
+  expected to be null, unless the opposite is explicitly stated in the
+  documentation. Other pointer types are handled as follows:
+
+  * C: A function from a public C API should expect a pointer argument
+    to be null. If null is a valid value, its semantics should be
+    explicitly documented. If null is an invalid value, the routine
+    should either report an error or (if there's no way to report an
+    error) do nothing.
+
+  * C++: In C++ code, raw pointers are only used to express optional
+    references and thus always expected to be null. Exceptions to
+    this rule should be revised to use references (or
+    reference_wrapper), or at least be explicitly documented.
+
+    In case of errors, a function returning a created an object via a
+    smart pointer should either throw an exception and never return
+    null (this is the preferred way), or never throw and return null
+    to signal an error.
+
 * Don't use UTF-8 string literals (u8""). Since C++20, their type is
   changed from char to char8_t, breaking the backward compatibility.
 
@@ -20,9 +56,9 @@
 
       "\xC2\xA9" "2018" (gives ©2018)
 
-* You can implicitly create QStrings from UTF-8 data. Qt 5 uses
-  fromUtf8() to convert from const char* and QByteArray. For Qt 4,
-  which uses fromAscii(), we have setCodecForCStrings() in main.cpp.
+* You can implicitly create QStrings from UTF-8 data. Qt 5 and newer
+  uses fromUtf8() in this case. For Qt 4, which uses fromAscii(), we
+  have setCodecForCStrings() in main.cpp.
 
 * Tesseract versions before 4.1.0 require "C" locale during OCR,
   forcing gettext to return English. As a workaround, we cache

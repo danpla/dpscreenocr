@@ -60,8 +60,8 @@ static void installQtTranslations(QApplication& app)
 int main(int argc, char *argv[])
 {
     // Setting UTF-8 is only necessary in Qt 4, where
-    // QString(const char *) constructor uses fromAscii(). In Qt 5,
-    // it uses fromUtf8(), and there is no from/toAscii() and
+    // QString(const char *) constructor uses fromAscii(). In Qt 5 and
+    // newer, it uses fromUtf8(), and there is no from/toAscii() and
     // setCodecForCStrings().
     #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QTextCodec::setCodecForCStrings(
