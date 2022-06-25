@@ -143,7 +143,10 @@ About::About(QWidget* parent)
     textEdit->setCurrentFont(textEditFont);
 
     auto* layout = new QVBoxLayout(this);
-    layout->setContentsMargins({});
+
+    QMargins margins;
+    margins.setTop(fontHeight);
+    layout->setContentsMargins(margins);
 
     layout->addWidget(iconLabel);
     layout->addWidget(infoTextLabel);
