@@ -59,5 +59,5 @@ private:
     QString selectedNameFilter;
 
     void setButtonsEnabled(bool enabled);
-    void appendToTextEdit(const char* text, const char* timestamp);
+    void appendToTextEdit(const char* timestamp, const char* text);
 };
