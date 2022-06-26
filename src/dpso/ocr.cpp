@@ -178,20 +178,20 @@ struct Link {
 
 int dpsoOcrGetNumEngines(void)
 {
-    return dpso::OcrEngineCreator::getAll().size();
+    return dpso::OcrEngineCreator::getCount();
 }
 
 
 void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
 {
-    const auto& creators = dpso::OcrEngineCreator::getAll();
-
     if (idx < 0
-            || static_cast<std::size_t>(idx) >= creators.size()
+            || static_cast<std::size_t>(idx)
+                >= dpso::OcrEngineCreator::getCount()
             || !info)
         return;
 
-    const auto& internalInfo = creators[idx]->getInfo();
+    const auto& internalInfo = dpso::OcrEngineCreator::get(
+        idx).getInfo();
 
     DpsoOcrEngineDataDirPreference dataDirPreference{};
     switch (internalInfo.dataDirPreference) {

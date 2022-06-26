@@ -1,8 +1,8 @@
 
 #pragma once
 
+#include <cstddef>
 #include <memory>
-#include <vector>
 
 
 namespace dpso {
@@ -64,9 +64,10 @@ struct OcrEngineInfo {
 
 class OcrEngineCreator {
 public:
-    static const std::vector<const OcrEngineCreator*>& getAll();
-    static void add(std::unique_ptr<OcrEngineCreator> creator);
+    static const OcrEngineCreator& get(std::size_t idx);
+    static std::size_t getCount();
     static const OcrEngineCreator* find(const char* id);
+    static void add(std::unique_ptr<OcrEngineCreator> creator);
 
     OcrEngineCreator() = default;
     virtual ~OcrEngineCreator() = default;
