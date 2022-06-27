@@ -139,15 +139,16 @@ if(NOT TESSERACT_FOUND)
 
     # Try to extract the major version from the header.
     find_file(
-        VERSION_SOURCE_H
+        TESSERACT_VERSION_SOURCE_H
         NAMES
         version.h # v5
         tess_version.h # v4
         baseapi.h # v3
         PATHS "${TESSERACT_INCLUDE_DIRS}"
-        NO_CACHE)
-    if(VERSION_SOURCE_H)
-        file(READ "${VERSION_SOURCE_H}" VERSION_SOURCE_DATA)
+        NO_DEFAULT_PATH
+    )
+    if(TESSERACT_VERSION_SOURCE_H)
+        file(READ "${TESSERACT_VERSION_SOURCE_H}" VERSION_SOURCE_DATA)
         string(
             REGEX MATCH
             # Tesseract has TESSERACT_MAJOR_VERSION since version 4.
