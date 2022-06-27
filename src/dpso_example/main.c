@@ -45,6 +45,10 @@ static void setupHotkeys(void)
 
     dpsoBindHotkey(
         &toggleSelectionHotkey, hotkeyActionToggleSelection);
+
+    printf(
+        "Press %s to toggle selection\n",
+        dpsoHotkeyToString(&toggleSelectionHotkey));
 }
 
 
@@ -128,6 +132,7 @@ static void sigintHandler(int signum)
 
 int main(void)
 {
+    DpsoOcrEngineInfo ocrEngineInfo;
     DpsoOcrArgs ocrArgs = {0};
     DpsoOcr* ocr;
     DpsoOcrProgress lastProgress = {0};
@@ -144,11 +149,10 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
+    dpsoOcrGetEngineInfo(ocrArgs.engineIdx, &ocrEngineInfo);
+
     ocr = dpsoOcrCreate(&ocrArgs);
     if (!ocr) {
-        DpsoOcrEngineInfo ocrEngineInfo;
-        dpsoOcrGetEngineInfo(ocrArgs.engineIdx, &ocrEngineInfo);
-
         fprintf(
             stderr,
             "dpsoOcrCreate() failed to create \"%s\" engine: %s\n",
@@ -156,6 +160,11 @@ int main(void)
         dpsoShutdown();
         return EXIT_FAILURE;
     }
+
+    printf(
+        "Using %s OCR engine, version %s\n",
+        ocrEngineInfo.name,
+        ocrEngineInfo.version);
 
     setupLanguages(ocr);
     setupHotkeys();
