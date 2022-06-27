@@ -225,10 +225,10 @@ void TesseractOcr::cacheLangs()
     // See https://github.com/tesseract-ocr/tesseract/issues/1073
     //
     // We can't get around the problem by writing our own routine that
-    // will collect the list of "*.tessdata". The data path may be
-    // different on various Unix-like systems (it's hardcoded at
-    // compilation time), and you can only get it via GetDatapath(),
-    // which also requires the same dummy Init() call.
+    // will collect the list of "*.traineddata" files. The data path
+    // may be different on various Unix-like systems (it's hardcoded
+    // at compilation time), and you can only get it via
+    // GetDatapath(), which also requires the same dummy Init() call.
     initTess(nullptr);
 
     #if defined(TESSERACT_MAJOR_VERSION) \
