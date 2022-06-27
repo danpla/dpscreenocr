@@ -164,6 +164,15 @@ end;
 // if not, this means it was intentionally removed by the user and we
 // don't need to install it again.
 //
+// If the old version is already uninstalled (either by the user or by
+// the previous invocation of our installer), we try to detect the
+// "tessdata" directory either in the installation target directory or
+// in "{commonpf32}\(APP_NAME)" (the old version was 32-bit only). The
+// later is mainly needed in case we switch to 64-bit version of the
+// application, but can also be useful with the 32-bit one if the user
+// chooses a custom installation directory (this will obviously only
+// work if the old version was installed in the default location).
+//
 // Keep in mind that our old NSIS-based installer only works in admin
 // mode, i.e. it only installs for all users. If we are in non-admin
 // mode, we don't touch anything NSIS-related at all.
@@ -301,6 +310,58 @@ begin
   end;
 
   Result := UninstallerPath;
+end;
+
+// Set up NsisInstallDirPath and NsisWasEngTraineddata.
+procedure NsisSetupInstallVars(const UninstallerPath: String);
+var
+  LogScope: String;
+  DirPath: String;
+begin
+  LogScope := 'NsisSetupInstallVars';
+
+  NsisInstallDirPath := ExtractFileDir(UninstallerPath);
+  if NsisInstallDirPath <> '' then
+  begin
+    NsisWasEngTraineddata := FileExists(
+      NsisInstallDirPath + '\{#TESSDATA_DIR}\{#ENG_TRAINEDDATA}');
+
+    OurLog(LogScope, format(
+      'Set NSIS install dir to the dir of the uninstaller ("%s")'
+      , [NsisInstallDirPath]));
+    exit;
+  end;
+
+  if not IsAdminInstallMode() then
+    exit;
+
+  // In case the old version is already uninstalled (either by the
+  // user or by our installer), try to adopt the "tessdata" dir from
+  // the target installation directory, assuming that most users
+  // install apps to default locations.
+  DirPath := ExpandConstant('{app}');
+  if DirExists(DirPath + '\{#TESSDATA_DIR}') then
+    NsisInstallDirPath := DirPath
+  else if IsWin64 then
+  begin
+    // Check '{commonpf32}\{#APP_NAME}' explicitly, mainly in case we
+    // switch from 32 to 64-bit executable, i.e. when the default
+    // install path becomes "C:\Program Files\" instead of
+    // "C:\Program Files (x86)\". The old NSIS-based version was
+    // 32-bit only, so don't bother with {commonpf64}. Note that if
+    // our app is still 32-bit, this check will most likely be the
+    // same as the previous, i.e. the path will be '{app}'.
+    DirPath := ExpandConstant('{commonpf32}\{#APP_NAME}');
+    if DirExists(DirPath + '\{#TESSDATA_DIR}') then
+      NsisInstallDirPath := DirPath;
+  end;
+
+  if NsisInstallDirPath <> '' then
+    OurLog(LogScope, format(
+      'Detected old NSIS install dir by "{#TESSDATA_DIR}" in "%s"'
+      , [NsisInstallDirPath]));
+
+  NsisWasEngTraineddata := NsisInstallDirPath <> '';
 end;
 
 // Remove an installation created by our old installer made by
@@ -450,13 +511,9 @@ begin
   if CurStep = ssInstall then
   begin
     NsisUninstallerPath := NsisGetUninstallerPath();
-    NsisInstallDirPath := ExtractFileDir(NsisUninstallerPath);
-    NsisWasEngTraineddata :=
-      (NsisInstallDirPath <> '')
-      and FileExists(
-        NsisInstallDirPath + '\{#TESSDATA_DIR}\{#ENG_TRAINEDDATA}');
-
+    NsisSetupInstallVars(NsisUninstallerPath);
     NsisUninstallExisting(NsisUninstallerPath);
+
     UninstallExisting();
   end;
 end;
