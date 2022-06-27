@@ -12,7 +12,7 @@
 
 * A C/CPP file should include headers in the following order:
 
-  * H of the current C/CPP file
+  * The header of the current C/CPP file
   * Standard C/C++ library headers. On Unix-like systems, OS API
     (POSIX) headers may also be in this group.
   * OS API headers.
@@ -26,15 +26,16 @@
   when a C type from the signature is available in CPP in the std::
   namespace, e.g. size_t (<stddef.h>) vs std::size_t (<cstddef>).
 
-* In both C and C++ code, a C string (char*, const or not) is not
-  expected to be null, unless the opposite is explicitly stated in the
-  documentation. Other pointer types are handled as follows:
+* In both C and C++ code, a pointer is not expected to be null (unless
+  the opposite is explicitly stated in the documentation) in case it
+  implies an arbitrary sized memory region (e.g. array, C string,
+  void*, etc.) rather than a pointer to a single object. Other pointer
+  types are handled as follows:
 
   * C: A function from a public C API should expect a pointer argument
-    to be null. If null is a valid value, its semantics should be
-    explicitly documented. If null is an invalid value, the routine
-    should either report an error or (if there's no way to report an
-    error) do nothing.
+    to be null. If null is an invalid value, the routine should either
+    report an error or (if there's no way to report an error) do
+    nothing.
 
   * C++: In C++ code, raw pointers are only used to express optional
     references and thus always expected to be null. Exceptions to
