@@ -1,4 +1,5 @@
 
+#include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -115,6 +116,16 @@ static void checkHotkeyActions(DpsoOcr* ocr)
 }
 
 
+volatile sig_atomic_t interrupted;
+
+
+static void sigintHandler(int signum)
+{
+    (void)signum;
+    interrupted = 1;
+}
+
+
 int main(void)
 {
     DpsoOcrArgs ocrArgs = {0};
@@ -149,7 +160,8 @@ int main(void)
     setupLanguages(ocr);
     setupHotkeys();
 
-    while (true) {
+    signal(SIGINT, sigintHandler);
+    while (!interrupted) {
         dpsoUpdate();
 
         reportProgress(ocr, &lastProgress);
