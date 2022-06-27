@@ -259,12 +259,15 @@ DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
         return nullptr;
     }
 
-    const auto* ocrEngineCreator = dpso::OcrEngineCreator::find(
-        ocrArgs->engineId);
-    if (!ocrEngineCreator) {
-        dpsoSetError("No OCR engine with the given id");
+    if (ocrArgs->engineIdx < 0
+            || static_cast<std::size_t>(ocrArgs->engineIdx)
+                >= dpso::OcrEngineCreator::getCount()) {
+        dpsoSetError("ocrArgs->engineIdx is out of bounds");
         return nullptr;
     }
+
+    const auto& ocrEngineCreator = dpso::OcrEngineCreator::get(
+        ocrArgs->engineIdx);
 
     // We don't use OcrUPtr here because dpsoOcrDelete() expects
     // a joinable thread.
@@ -272,7 +275,7 @@ DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
 
     setCLocale(ocr.get());
     try {
-        ocr->engine = ocrEngineCreator->create({ocrArgs->dataDir});
+        ocr->engine = ocrEngineCreator.create({ocrArgs->dataDir});
     } catch (dpso::OcrEngineError& e) {
         dpsoSetError("Can't create OCR engine: %s", e.what());
         restoreLocale(ocr.get());

@@ -154,8 +154,7 @@ MainWindow::MainWindow()
             std::string{dataPath} + *dpsoDirSeparators + dataDirName;
 
     const DpsoOcrArgs ocrArgs{
-        ocrEngineInfo.id,
-        ocrDataDirPath.empty() ? nullptr : ocrDataDirPath.c_str()
+        0, ocrDataDirPath.empty() ? nullptr : ocrDataDirPath.c_str()
     };
     ocr.reset(dpsoOcrCreate(&ocrArgs));
     if (!ocr) {

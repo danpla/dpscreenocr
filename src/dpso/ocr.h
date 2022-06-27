@@ -83,7 +83,10 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info);
 
 
 typedef struct DpsoOcrArgs {
-    const char* engineId;
+    /**
+     * Engine index [0, dpsoOcrGetNumEngines()).
+     */
+    int engineIdx;
 
     /**
      * Path to OCR engine data directory.

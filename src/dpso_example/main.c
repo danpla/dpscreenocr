@@ -117,8 +117,7 @@ static void checkHotkeyActions(DpsoOcr* ocr)
 
 int main(void)
 {
-    DpsoOcrEngineInfo ocrEngineInfo;
-    DpsoOcrArgs ocrArgs = {"", NULL};
+    DpsoOcrArgs ocrArgs = {0};
     DpsoOcr* ocr;
     DpsoOcrProgress lastProgress = {0};
 
@@ -134,17 +133,15 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    dpsoOcrGetEngineInfo(0, &ocrEngineInfo);
-
-    ocrArgs.engineId = ocrEngineInfo.id;
-    ocrArgs.dataDir = NULL;
-
     ocr = dpsoOcrCreate(&ocrArgs);
     if (!ocr) {
+        DpsoOcrEngineInfo ocrEngineInfo;
+        dpsoOcrGetEngineInfo(ocrArgs.engineIdx, &ocrEngineInfo);
+
         fprintf(
             stderr,
-            "dpsoOcrCreate() with \"%s\" engine failed: %s\n",
-            ocrArgs.engineId, dpsoGetError());
+            "dpsoOcrCreate() failed to create \"%s\" engine: %s\n",
+            ocrEngineInfo.id, dpsoGetError());
         dpsoShutdown();
         return EXIT_FAILURE;
     }
