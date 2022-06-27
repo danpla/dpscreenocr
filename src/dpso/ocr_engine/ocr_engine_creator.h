@@ -29,6 +29,15 @@ struct OcrEngineInfo {
     const char* name;
 
     /**
+     * Engine version.
+     *
+     * If the OCR engine library is linked dynamically, this should
+     * be the runtime version, if possible. May be empty if the engine
+     * doesn't provide any version information.
+     */
+    const char* version;
+
+    /**
      * What OcrEngineArgs::dataDir the engine prefers.
      */
     enum class DataDirPreference {

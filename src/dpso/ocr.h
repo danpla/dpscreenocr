@@ -70,6 +70,14 @@ typedef struct DpsoOcrEngineInfo {
      */
     const char* name;
 
+    /**
+     * Engine version.
+     *
+     * If the OCR engine library is linked dynamically, this will
+     * normally be the runtime version.
+     */
+    const char* version;
+
     DpsoOcrEngineDataDirPreference dataDirPreference;
 } DpsoOcrEngineInfo;
 

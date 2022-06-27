@@ -209,7 +209,12 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
             break;
     }
 
-    *info = {internalInfo.id, internalInfo.name, dataDirPreference};
+    *info = {
+        internalInfo.id,
+        internalInfo.name,
+        internalInfo.version,
+        dataDirPreference
+    };
 }
 
 

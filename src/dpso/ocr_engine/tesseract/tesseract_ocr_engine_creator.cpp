@@ -34,6 +34,7 @@ public:
         , info{
             id.c_str(),
             "Tesseract",
+            tesseract::TessBaseAPI::Version(),
             #if defined(__unix__) && !defined(__APPLE__)
             OcrEngineInfo::DataDirPreference::preferDefault
             #else
