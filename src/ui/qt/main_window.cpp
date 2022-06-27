@@ -77,7 +77,7 @@ MainWindow::MainWindow()
         std::exit(EXIT_FAILURE);
     }
 
-    if (!startupSetup(false)) {
+    if (!startupSetup()) {
         QMessageBox::critical(
             nullptr,
             appName,

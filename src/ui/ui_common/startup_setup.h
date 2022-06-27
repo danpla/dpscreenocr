@@ -12,10 +12,9 @@ extern "C" {
  *
  * The purpose of startupSetup() is to setup local user data, migrate
  * files from previous version of the program, etc. Normally, this
- * function operates on user paths from dpsoGetUserDir(), or on the
- * directory of the executable if portableMode is nonzero.
+ * function operates on paths from dpsoGetUserDir().
  */
-int startupSetup(int portableMode);
+int startupSetup(void);
 
 
 #ifdef __cplusplus

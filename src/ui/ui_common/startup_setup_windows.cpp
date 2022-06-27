@@ -203,11 +203,8 @@ static int setupUserData(const wchar_t* userDataDir)
 }
 
 
-int startupSetup(int portableMode)
+int startupSetup(void)
 {
-    if (portableMode)
-        return true;
-
     const auto* userDataDir = dpsoGetUserDir(
         DpsoUserDirData, appFileName);
     if (!userDataDir) {

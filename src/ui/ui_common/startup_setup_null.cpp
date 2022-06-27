@@ -2,8 +2,7 @@
 #include "startup_setup.h"
 
 
-int startupSetup(int portableMode)
+int startupSetup(void)
 {
-    (void)portableMode;
     return true;
 }
