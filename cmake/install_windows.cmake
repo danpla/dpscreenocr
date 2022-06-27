@@ -44,13 +44,23 @@ if(DPSO_UI STREQUAL "qt")
     endif()
 endif()
 
-install(DIRECTORY DESTINATION "tesseract_data" COMPONENT Required)
-install(
-    FILES "${CMAKE_BINARY_DIR}/tesseract_data/eng.traineddata"
-    DESTINATION "tesseract_data"
-    COMPONENT Required
-    OPTIONAL
-)
+include(tesseract_utils)
+get_tesseract_data_dir_name(TESSERACT_DATA_DIR_NAME)
+if(TESSERACT_DATA_DIR_NAME)
+    install(
+        DIRECTORY
+        DESTINATION "${TESSERACT_DATA_DIR_NAME}"
+        COMPONENT Required
+    )
+    install(
+        FILES "${CMAKE_BINARY_DIR}/${TESSERACT_DATA_DIR_NAME}/eng.traineddata"
+        DESTINATION "${TESSERACT_DATA_DIR_NAME}"
+        COMPONENT Required
+        OPTIONAL
+    )
+else()
+    message("Tesseract data dir was not detected; please set up Tesseract data manually")
+endif()
 
 if(DPSO_ENABLE_NLS)
     include(compile_po)

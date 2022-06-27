@@ -64,7 +64,8 @@ Source: "locale\*"; \
 #endif
 
 #define TESSDATA_DIR "tessdata"
-#define TESSERACT_DATA_DIR "tesseract_data"
+#define TESSERACT_DATA_DIR \
+    "tesseract" + APP_TESSERACT_VERSION_MAJOR + "_data"
 #define ENG_TRAINEDDATA "eng.traineddata"
 
 ; Here we try to migrate any custom user data from the previously
@@ -76,7 +77,7 @@ Source: "locale\*"; \
 ; the details.
 Source: "{code:NsisGetTessdataDir}\*"; \
   DestDir: "{app}\{#TESSERACT_DATA_DIR}"; \
-  Check: DirExists(ExpandConstant('{code:NsisGetTessdataDir}')); \
+  Check: NsisCanMigrateTessdata(); \
   Flags: ignoreversion recursesubdirs external
 
 ; Our application copies TESSERACT_DATA_DIR (if any) to the current
@@ -132,21 +133,26 @@ end;
 // "tessdata" directory located in the installation path.
 //
 // Since version 1.1.0 (which uses Inno Setup), "tessdata" was renamed
-// to "tesseract_data". Instead of using data directly from
-// "tesseract_data", the application now just copies this directory to
-// the user's local app data path on the first start.
+// to "tesseractN_data", where N is the major Tesseract version.
+// Instead of using data directly from "tesseractN_data", the
+// application now just copies this directory to the user's local app
+// data path on the first start.
 //
 // When updating from an old NSIS-based version, we need to migrate
 // all custom user data from "tessdata" of the old installation to
-// "tesseract_data" of the new one. Although it's possible to just
-// copy the data before uninstalling the old version, we instead take
-// a different approach based on a [Files] entry with an "external"
-// flag. The main advantage is that the uninstaller will remove copied
-// data from "tesseract_data". This is more robust than using
-// [UninstallDelete], which will wipe not only files that were copied
-// from "tessdata", but also those that were in "tesseract_data"
-// before installation. We also don't have to write a routine to copy
-// a directory (Inno Setup does not provide one as of version 6.2).
+// "tesseractN_data" of the new one. The old version used Tesseract 4,
+// so we only do migration if our current Tesseract version is either
+// 4 or 5 (both use the same data format).
+//
+// Although it's possible to just copy the data before uninstalling
+// the old version, we instead take a different approach based on a
+// [Files] entry with an "external" flag. The main advantage is that
+// the uninstaller will remove copied data from "tesseractN_data".
+// This is more robust than using [UninstallDelete], which will wipe
+// not only files that were copied from "tessdata", but also those
+// that were in "tesseractN_data" before installation. We also don't
+// have to write a routine to copy a directory (Inno Setup does not
+// provide one as of version 6.2).
 //
 // Note that we don't remove files in the "tessdata" directory after
 // copying them. We can't be sure the user no longer needs them.
@@ -174,6 +180,17 @@ begin
   Result := NsisInstallDirPath + '\{#TESSDATA_DIR}';
 end;
 
+function NsisCanMigrateTessdata(): Boolean;
+begin
+  Result :=
+  #if APP_TESSERACT_VERSION_MAJOR == "4" \
+    || APP_TESSERACT_VERSION_MAJOR == "5"
+    DirExists(NsisGetTessdataDir(''));
+  #else
+    False;
+  #endif
+end;
+
 // The two following Should*() checks are used in "Check:"; they are
 // mutually exclusive and intended for admin and non-admin install
 // modes, respectively. See the [Files] section for the details.
@@ -181,7 +198,7 @@ end;
 function ShouldInstallEngTraineddata(): Boolean;
 begin
   Result := IsAdminInstallMode()
-    and ((NsisInstallDirPath = '') or NsisWasEngTraineddata);
+    and (not NsisCanMigrateTessdata() or NsisWasEngTraineddata);
 end;
 
 function ShouldCopyEngTraineddataForCurrentUser(): Boolean;
@@ -215,7 +232,8 @@ const
   UninstallStringKey = 'UninstallString';
 
 // Return path to uninstaller created by our old installer made by
-// "CPack -G NSIS", or an empty string if it's not installed.
+// "CPack -G NSIS", or an empty string if it's not installed or we
+// are in non-admin install mode.
 function NsisGetUninstallerPath(): String;
 var
   LogScope: String;

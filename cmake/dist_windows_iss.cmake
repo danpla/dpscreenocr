@@ -14,6 +14,7 @@ function(gen_inno_setup_config)
 
     set(APP_USES_NLS ${DPSO_ENABLE_NLS})
     set(APP_UI ${DPSO_UI})
+    set(APP_TESSERACT_VERSION_MAJOR ${DPSO_TESSERACT_VERSION_MAJOR})
 
     string(REPLACE "/" "\\" APP_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
 

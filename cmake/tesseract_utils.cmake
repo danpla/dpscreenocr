@@ -1,6 +1,18 @@
 
 include(CMakeParseArguments)
 
+# Get name of tesseract data directory to be used in install().
+#
+# The returned string may be empty if the Tesseract version was not
+# detected.
+function(get_tesseract_data_dir_name var)
+    set(
+        ${var}
+        "tesseract${DPSO_TESSERACT_VERSION_MAJOR}_data"
+        PARENT_SCOPE
+    )
+endfunction()
+
 # Copy contents of tessdata directory.
 #
 # copy_tessdata(

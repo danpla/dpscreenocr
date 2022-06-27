@@ -20,13 +20,16 @@ else()
     message(WARNING "DLLs are not copied automatically because CMake version is < 3.16")
 endif()
 
-include(tessdata_utils)
-copy_tessdata(
-    "$ENV{MINGW_PREFIX}/share/tessdata"
-    "${CMAKE_BINARY_DIR}/tesseract_data"
-    LANGUAGES eng
-    OPTIONAL
-)
+include(tesseract_utils)
+get_tesseract_data_dir_name(TESSERACT_DATA_DIR_NAME)
+if(TESSERACT_DATA_DIR_NAME)
+    copy_tessdata(
+        "$ENV{MINGW_PREFIX}/share/tessdata"
+        "${CMAKE_BINARY_DIR}/${TESSERACT_DATA_DIR_NAME}"
+        LANGUAGES eng
+        OPTIONAL
+    )
+endif()
 
 if(DPSO_UI STREQUAL "qt")
     include(qt_utils)

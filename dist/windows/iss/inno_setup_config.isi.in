@@ -8,3 +8,4 @@
 #cmakedefine APP_URL "@APP_URL@"
 #cmakedefine APP_SOURCE_DIR "@APP_SOURCE_DIR@"
 #cmakedefine APP_UI "@APP_UI@"
+#cmakedefine APP_TESSERACT_VERSION_MAJOR "@APP_TESSERACT_VERSION_MAJOR@"
