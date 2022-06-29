@@ -16,7 +16,13 @@ BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "CompanyName", "@APP_AUTHOR@"
-      VALUE "FileDescription", "Program to recognize text on screen"
+      // In some contexts, the description is the only thing that is
+      // shown to the user, so we should include the application name.
+      // An example is Restart Manager API
+      // (RM_PROCESS_INFO::strAppName) that installers use to get the
+      // names of running applications that need to be closed before
+      // installing an update.
+      VALUE "FileDescription", "@APP_NAME@ - Program to recognize text on screen"
       VALUE "FileVersion", "@APP_VERSION@"
       VALUE "InternalName", "@APP_FILE_NAME@"
       VALUE "LegalCopyright", "Copyright (c) @APP_COPYRIGHT_YEAR@ @APP_AUTHOR@"
