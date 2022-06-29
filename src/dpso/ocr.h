@@ -130,7 +130,11 @@ int dpsoOcrGetNumLangs(const DpsoOcr* ocr);
 
 
 /**
- * Get the language code.
+ * Get language code.
+ *
+ * The languages are sorted alphabetically by their codes. If you need
+ * to find a language index by its code, use dpsoOcrGetLangIdx()
+ * instead of linear search.
  *
  * Returns an empty string if langIdx is out of
  * [0, dpsoOcrGetNumLangs()).
@@ -162,7 +166,8 @@ const char* dpsoOcrGetLangName(
 /**
  * Get language index.
  *
- * Returns -1 if the language with the given code is not available.
+ * The function uses binary search. Returns -1 if the language with
+ * the given code is not available.
  */
 int dpsoOcrGetLangIdx(const DpsoOcr* ocr, const char* langCode);
 
