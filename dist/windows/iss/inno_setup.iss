@@ -70,12 +70,12 @@ Source: "locale\*"; \
 
 ; Here we try to migrate any custom user data from the previously
 ; installed version created by "CPack -G NSIS". At this moment, the
-; old version is already removed together with the eng data, so
-; NsisGetTessdataDir will only exist if it actually has custom data.
-; Note that there's no "uninsneveruninstall" flag, and we don't remove
-; files from NsisGetTessdataDir. See comments in the code section for
-; the details.
-Source: "{code:NsisGetTessdataDir}\*"; \
+; old version is already removed together with the eng data, so the
+; path returned by NsisGetTessdataDirPath will only exist if it
+; actually has custom data. Note that there's no "uninsneveruninstall"
+; flag, and we don't remove files from NsisGetTessdataDirPath. See
+; comments in the code section for the details.
+Source: "{code:NsisGetTessdataDirPath}\*"; \
   DestDir: "{app}\{#TESSERACT_DATA_DIR}"; \
   Check: NsisCanMigrateTessdata(); \
   Flags: ignoreversion recursesubdirs external
@@ -159,7 +159,7 @@ end;
 //
 // The [Files] entry is processed after the old version is removed, so
 // we have to cache some information before invoking the uninstaller.
-// First is NsisInstallDirPath that is used in "Source:". Second is
+// First is NsisTessdataDirPath that is used in "Source:". Second is
 // NsisWasEngTraineddata, which tells whether the eng data existed;
 // if not, this means it was intentionally removed by the user and we
 // don't need to install it again.
@@ -177,16 +177,16 @@ end;
 // mode, i.e. it only installs for all users. If we are in non-admin
 // mode, we don't touch anything NSIS-related at all.
 var
-  // Empty if the old NSIS-based version is not installed, or if we
-  // are in the non-admin install mode.
-  NsisInstallDirPath: String;
-  // Only relevant if NsisInstallDirPath is not empty.
+  // Empty if the "tessdata" of the old NSIS-based version was not
+  // detected, or if we are in the non-admin install mode.
+  NsisTessdataDirPath: String;
+  // Only relevant if NsisTessdataDirPath is not empty and exists.
   NsisWasEngTraineddata: Boolean;
 
 // For {code:...}
-function NsisGetTessdataDir(Param: String): String;
+function NsisGetTessdataDirPath(Param: String): String;
 begin
-  Result := NsisInstallDirPath + '\{#TESSDATA_DIR}';
+  Result := NsisTessdataDirPath;
 end;
 
 function NsisCanMigrateTessdata(): Boolean;
@@ -194,7 +194,7 @@ begin
   Result :=
   #if APP_TESSERACT_VERSION_MAJOR == "4" \
     || APP_TESSERACT_VERSION_MAJOR == "5"
-    DirExists(NsisGetTessdataDir(''));
+    DirExists(NsisTessdataDirPath);
   #else
     False;
   #endif
@@ -312,23 +312,27 @@ begin
   Result := UninstallerPath;
 end;
 
-// Set up NsisInstallDirPath and NsisWasEngTraineddata.
-procedure NsisSetupInstallVars(const UninstallerPath: String);
+// Set up NsisTessdataDirPath and NsisWasEngTraineddata.
+procedure NsisSetupTessdataVars(const UninstallerPath: String);
 var
   LogScope: String;
   DirPath: String;
 begin
-  LogScope := 'NsisSetupInstallVars';
+  LogScope := 'NsisSetupTessdataVars';
 
-  NsisInstallDirPath := ExtractFileDir(UninstallerPath);
-  if NsisInstallDirPath <> '' then
+  DirPath := ExtractFileDir(UninstallerPath);
+  if DirPath <> '' then
   begin
+    // DirExists() doesn't make sense here since the current version
+    // is not uninstalled yet.
+    NsisTessdataDirPath := DirPath + '\{#TESSDATA_DIR}';
     NsisWasEngTraineddata := FileExists(
-      NsisInstallDirPath + '\{#TESSDATA_DIR}\{#ENG_TRAINEDDATA}');
+      NsisTessdataDirPath + '\{#ENG_TRAINEDDATA}');
 
     OurLog(LogScope, format(
-      'Set NSIS install dir to the dir of the uninstaller ("%s")'
-      , [NsisInstallDirPath]));
+      'Set "{#TESSDATA_DIR}" parent to the directory of '
+      + 'the uninstaller (\"%s\")'
+      , [DirPath]));
     exit;
   end;
 
@@ -339,9 +343,9 @@ begin
   // user or by our installer), try to adopt the "tessdata" dir from
   // the target installation directory, assuming that most users
   // install apps to default locations.
-  DirPath := ExpandConstant('{app}');
-  if DirExists(DirPath + '\{#TESSDATA_DIR}') then
-    NsisInstallDirPath := DirPath
+  DirPath := ExpandConstant('{app}\{#TESSDATA_DIR}');
+  if DirExists(DirPath) then
+    NsisTessdataDirPath := DirPath
   else if IsWin64 then
   begin
     // Check '{commonpf32}\{#APP_NAME}' explicitly, mainly in case we
@@ -351,17 +355,16 @@ begin
     // 32-bit only, so don't bother with {commonpf64}. Note that if
     // our app is still 32-bit, this check will most likely be the
     // same as the previous, i.e. the path will be '{app}'.
-    DirPath := ExpandConstant('{commonpf32}\{#APP_NAME}');
-    if DirExists(DirPath + '\{#TESSDATA_DIR}') then
-      NsisInstallDirPath := DirPath;
+    DirPath := ExpandConstant(
+      '{commonpf32}\{#APP_NAME}\{#TESSDATA_DIR}');
+    if DirExists(DirPath) then
+      NsisTessdataDirPath := DirPath;
   end;
 
-  if NsisInstallDirPath <> '' then
-    OurLog(LogScope, format(
-      'Detected old NSIS install dir by "{#TESSDATA_DIR}" in "%s"'
-      , [NsisInstallDirPath]));
+  if NsisTessdataDirPath <> '' then
+    OurLog(LogScope, format('Detected "%s"' , [NsisTessdataDirPath]));
 
-  NsisWasEngTraineddata := NsisInstallDirPath <> '';
+  NsisWasEngTraineddata := NsisTessdataDirPath <> '';
 end;
 
 // Remove an installation created by our old installer made by
@@ -498,7 +501,7 @@ end;
 
 function InitializeSetup(): Boolean;
 begin
-  NsisInstallDirPath := '';
+  NsisTessdataDirPath := '';
   NsisWasEngTraineddata := False;
 
   Result := True;
@@ -511,7 +514,7 @@ begin
   if CurStep = ssInstall then
   begin
     NsisUninstallerPath := NsisGetUninstallerPath();
-    NsisSetupInstallVars(NsisUninstallerPath);
+    NsisSetupTessdataVars(NsisUninstallerPath);
     NsisUninstallExisting(NsisUninstallerPath);
 
     UninstallExisting();
