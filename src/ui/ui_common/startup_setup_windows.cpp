@@ -15,6 +15,29 @@
 #include "ocr_data_dir_name.h"
 
 
+// The main goal of registering restart is to give the installer
+// (e.g. Inno Setup) an ability to restart our application in case it
+// was automatically closed before installing an update.
+static void registerApplicationRestart()
+{
+    const auto* cmdLine = GetCommandLineW();
+
+    // RegisterApplicationRestart() doesn't need the path to the
+    // executable, so skip it. It may be in double quotes if it
+    // contains spaces.
+    const auto endChar = *cmdLine++ == L'\"' ? L'\"' : L' ';
+    while (*cmdLine)
+        if (*cmdLine++ == endChar)
+            break;
+
+    while (*cmdLine == L' ')
+        ++cmdLine;
+
+    RegisterApplicationRestart(
+        cmdLine, RESTART_NO_CRASH | RESTART_NO_HANG);
+}
+
+
 // Returns true if a file system entry (file, dir, etc.) exists.
 static bool entryExists(const wchar_t* path)
 {
@@ -205,6 +228,8 @@ static int setupUserData(const wchar_t* userDataDir)
 
 int startupSetup(void)
 {
+    registerApplicationRestart();
+
     const auto* userDataDir = dpsoGetUserDir(
         DpsoUserDirData, appFileName);
     if (!userDataDir) {
