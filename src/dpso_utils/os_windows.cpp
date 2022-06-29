@@ -29,6 +29,21 @@ FILE* dpsoFopenUtf8(const char* filePath, const char* mode)
 }
 
 
+int dpsoRemoveUtf8(const char* filePath)
+{
+    std::wstring filePathUtf16;
+
+    try {
+        filePathUtf16 = dpso::windows::utf8ToUtf16(filePath);
+    } catch (std::runtime_error&) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    return _wremove(filePathUtf16.c_str());
+}
+
+
 int dpsoSyncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);

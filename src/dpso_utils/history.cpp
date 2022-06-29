@@ -280,9 +280,9 @@ int dpsoHistoryClear(DpsoHistory* history)
     history->entries.clear();
     history->fp.reset();
 
-    if (std::remove(history->filePath.c_str()) != 0) {
+    if (dpsoRemoveUtf8(history->filePath.c_str()) != 0) {
         dpsoSetError(
-            "remove(\"%s\") failed: %s",
+            "dpsoRemoveUtf8(\"%s\") failed: %s",
             history->filePath.c_str(),
             std::strerror(errno));
         return false;

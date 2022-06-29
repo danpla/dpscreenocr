@@ -22,6 +22,12 @@ FILE* dpsoFopenUtf8(const char* filePath, const char* mode)
 }
 
 
+int dpsoRemoveUtf8(const char* filePath)
+{
+    return remove(filePath);
+}
+
+
 int dpsoSyncFile(FILE* fp)
 {
     const auto fd = fileno(fp);

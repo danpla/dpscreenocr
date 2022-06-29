@@ -32,9 +32,15 @@ const char* dpsoGetFileExt(const char* filePath);
 
 
 /**
- * fopen() wrapper that accepts filePath in UTF-8.
+ * fopen() that accepts filePath in UTF-8.
  */
 FILE* dpsoFopenUtf8(const char* filePath, const char* mode);
+
+
+/**
+ * remove() that accepts filePath in UTF-8.
+ */
+int dpsoRemoveUtf8(const char* filePath);
 
 
 /**
