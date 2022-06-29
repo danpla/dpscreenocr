@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "dpso/ocr.h"
-
 
 const char* getOcrDataDirName(const DpsoOcrEngineInfo* ocrEngineInfo)
 {
