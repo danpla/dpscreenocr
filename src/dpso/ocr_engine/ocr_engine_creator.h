@@ -75,8 +75,6 @@ class OcrEngineCreator {
 public:
     static const OcrEngineCreator& get(std::size_t idx);
     static std::size_t getCount();
-    static const OcrEngineCreator* find(const char* id);
-    static void add(std::unique_ptr<OcrEngineCreator> creator);
 
     OcrEngineCreator() = default;
     virtual ~OcrEngineCreator() = default;
