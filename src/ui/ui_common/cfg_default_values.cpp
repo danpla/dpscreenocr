@@ -21,7 +21,7 @@ DpsoHotkey const cfgDefaultValueHotkeyToggleSelection =
 int const cfgDefaultValueOcrAllowQueuing =
     true;
 int const cfgDefaultValueOcrSplitTextBlocks =
-    false;
+    true;
 int const cfgDefaultValueUiNativeFileDialogs =
     true;
 int const cfgDefaultValueUiTrayIconVisible =
