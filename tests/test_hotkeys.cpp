@@ -1,6 +1,8 @@
 
 #include "dpso/dpso.h"
 
+#include <string>
+
 #include "flow.h"
 
 
@@ -36,6 +38,12 @@ static void testHotkeyToString()
 }
 
 
+static std::string hotkeyToStr(const DpsoHotkey& hotkey)
+{
+    return dpsoHotkeyToString(&hotkey);
+}
+
+
 static void testHotkeyFromString()
 {
     struct Test {
@@ -44,31 +52,37 @@ static void testHotkeyFromString()
     };
 
     const Test tests[] = {
-        {"Y + Ctrl", {dpsoUnknownKey, dpsoKeyModNone}},
-        {"Ctrl Y", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"???", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Ctrl + ???", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Ctrl +", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Ctrl + ", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Ctrl + + ", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"+ Ctrl", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"A", {dpsoKeyA, dpsoKeyModNone}},
+        {"Ctrl", {dpsoUnknownKey, dpsoKeyModCtrl}},
+        {"Ctrl + A", {dpsoKeyA, dpsoKeyModCtrl}},
+        {"Ctrl A", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"A + Ctrl", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Ctrl + Ctrl + A", {dpsoUnknownKey, dpsoKeyModNone}},
+        {"Keypad +", {dpsoKeyKpPlus, dpsoKeyModNone}},
         {"Keypad  +", {dpsoUnknownKey, dpsoKeyModNone}},
 
-        {"", {dpsoUnknownKey, dpsoKeyModNone}},
-        {"Ctrl", {dpsoUnknownKey, dpsoKeyModCtrl}},
-        {"Y", {dpsoKeyY, dpsoKeyModNone}},
-        {"y", {dpsoKeyY, dpsoKeyModNone}},
-        {"  y", {dpsoKeyY, dpsoKeyModNone}},
-        {"  y ", {dpsoKeyY, dpsoKeyModNone}},
-        {"Keypad +", {dpsoKeyKpPlus, dpsoKeyModNone}},
-
-        {"Ctrl + Alt + Shift + Windows + Y", {dpsoKeyY, allMods}},
-        {"Alt + Shift + Ctrl + Windows + Y", {dpsoKeyY, allMods}},
-        {"Alt+Shift+Ctrl+Windows+Y", {dpsoKeyY, allMods}},
-        {"  CTRL + alt + shifT + WiNdows + y  ", {dpsoKeyY, allMods}},
-
+        {"Ctrl + Alt + Shift + Windows + A", {dpsoKeyA, allMods}},
+        {"Alt + Shift + Ctrl + Windows + A", {dpsoKeyA, allMods}},
+        {"Alt+Shift+Ctrl+Windows+A", {dpsoKeyA, allMods}},
+        {
+            "  CTRL  +  alt  +  shifT  +  WiNdows  +  a  ",
+            {dpsoKeyA, allMods}
+        },
         {"Ctrl+Alt+Shift+Windows+Keypad +", {dpsoKeyKpPlus, allMods}},
 
-        {"Windows + A", {dpsoKeyA, dpsoKeyModWin}},
-        {"Command + A", {dpsoKeyA, dpsoKeyModWin}},
-        {"Super + A", {dpsoKeyA, dpsoKeyModWin}},
+        {"Windows", {dpsoUnknownKey, dpsoKeyModWin}},
+        {"Command", {dpsoUnknownKey, dpsoKeyModWin}},
+        {"Super", {dpsoUnknownKey, dpsoKeyModWin}},
 
-        {"Alt + A", {dpsoKeyA, dpsoKeyModAlt}},
-        {"Option + A", {dpsoKeyA, dpsoKeyModAlt}},
+        {"Alt", {dpsoUnknownKey, dpsoKeyModAlt}},
+        {"Option", {dpsoUnknownKey, dpsoKeyModAlt}},
     };
 
     for (const auto& test : tests) {
@@ -80,10 +94,10 @@ static void testHotkeyFromString()
 
         test::failure(
             "testHotkeyFromString: dpsoHotkeyFromString(\"%s\"): "
-            "expected (%i %u), got (%i %u)\n",
+            "expected \"%s\", got \"%s\"\n",
             test.str,
-            test.expectedHotkey.key, test.expectedHotkey.mods,
-            got.key, got.mods);
+            hotkeyToStr(test.expectedHotkey).c_str(),
+            hotkeyToStr(got).c_str());
     }
 }
 

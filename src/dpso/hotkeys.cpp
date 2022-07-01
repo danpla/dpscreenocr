@@ -162,7 +162,10 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
 
     *hotkey = {dpsoUnknownKey, dpsoKeyModNone};
 
-    for (const auto* s = str; *s;) {
+    // There's no empty string check in the loop condition since we
+    // should clear modifiers in case of an empty name after the last
+    // +, e.g "Ctrl +".
+    for (const auto* s = str; true;) {
         while (std::isspace(*s))
             ++s;
 
@@ -174,23 +177,30 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
 
         const auto mod = dpso::modFromString(
             nameBegin, nameEnd - nameBegin);
-        if (mod != dpsoKeyModNone) {
+        if (mod != dpsoKeyModNone
+                && !(hotkey->mods & mod)) {
             hotkey->mods |= mod;
 
-            if (*s == '+')
+            if (*s == '+') {
                 ++s;
+                continue;
+            }
 
-            continue;
+            break;
         }
 
-        // The current substring is not a valid modifier, so
-        // consume the rest of the string and assume it's a key.
+        // The current substring is either an invalid or duplicate
+        // modifier, so consume the rest and assume it's a key.
         for (; *s; ++s)
             if (!std::isspace(*s))
                 nameEnd = s + 1;
 
         hotkey->key = dpso::keyFromString(
             nameBegin, nameEnd - nameBegin);
+
+        if (hotkey->key == dpsoUnknownKey)
+            hotkey->mods = dpsoKeyModNone;
+
         break;
     }
 }
