@@ -64,9 +64,10 @@ static void setCLocale(const void* refHolder)
 
     localeRefHolders.insert(iter, refHolder);
 
-    if (localeRefHolders.size() > 1 || localeChanged)
+    if (localeRefHolders.size() > 1)
         return;
 
+    assert(!localeChanged);
     if (const auto* locale = std::setlocale(LC_ALL, nullptr)) {
         lastLocale = locale;
         std::setlocale(LC_ALL, "C");
