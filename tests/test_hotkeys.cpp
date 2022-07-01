@@ -63,9 +63,12 @@ static void testHotkeyFromString()
 
         {"Ctrl+Alt+Shift+Windows+Keypad +", {dpsoKeyKpPlus, allMods}},
 
-        {"Windows + Keypad +", {dpsoKeyKpPlus, dpsoKeyModWin}},
-        {"Command + Keypad +", {dpsoKeyKpPlus, dpsoKeyModWin}},
-        {"Super + Keypad +", {dpsoKeyKpPlus, dpsoKeyModWin}},
+        {"Windows + A", {dpsoKeyA, dpsoKeyModWin}},
+        {"Command + A", {dpsoKeyA, dpsoKeyModWin}},
+        {"Super + A", {dpsoKeyA, dpsoKeyModWin}},
+
+        {"Alt + A", {dpsoKeyA, dpsoKeyModAlt}},
+        {"Option + A", {dpsoKeyA, dpsoKeyModAlt}},
     };
 
     for (const auto& test : tests) {
