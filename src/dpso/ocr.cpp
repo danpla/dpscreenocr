@@ -38,8 +38,8 @@ static dpso::backend::Backend* backend;
 // setlocale() from the background thread nor let the user to change
 // the locale while OCR is active.
 //
-// When the locale is changed and restored is documented in
-// dpsoOcrQueueJob().
+// See the dpsoOcrQueueJob() documentation for when locale is set
+// and restored.
 
 static std::vector<const void*> localeRefHolders;
 static std::string lastLocale;
