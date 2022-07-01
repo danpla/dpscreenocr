@@ -9,7 +9,6 @@
 
 #include "dpso/backend/windows/utils/error.h"
 #include "dpso/error.h"
-#include "os.h"
 #include "windows_utils.h"
 
 

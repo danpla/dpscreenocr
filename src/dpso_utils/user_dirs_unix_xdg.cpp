@@ -7,7 +7,6 @@
 #include <string>
 
 #include "dpso/error.h"
-#include "os.h"
 #include "unix_utils.h"
 
 
