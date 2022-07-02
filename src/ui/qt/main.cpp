@@ -15,6 +15,7 @@
 #endif
 #include <QTranslator>
 
+#include "dpso_intl/dpso_bindtextdomain_utf8.h"
 #include "dpso_intl/dpso_intl.h"
 
 #include "ui_common/ui_common.h"
@@ -93,14 +94,14 @@ int main(int argc, char *argv[])
     const auto localLocaleDir = QDir::toNativeSeparators(
         QCoreApplication::applicationDirPath() + "/locale");
     if (QDir(localLocaleDir).exists())
-        bindtextdomain(
-            uiAppFileName, localLocaleDir.toLocal8Bit().data());
+        bindtextdomainUtf8(
+            uiAppFileName, localLocaleDir.toUtf8().data());
     else
-        bindtextdomain(uiAppFileName, uiLocaleDir);
+        bindtextdomainUtf8(uiAppFileName, uiLocaleDir);
 
     #else
 
-    bindtextdomain(uiAppFileName, uiLocaleDir);
+    bindtextdomainUtf8(uiAppFileName, uiLocaleDir);
 
     #endif
 
