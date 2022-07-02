@@ -50,13 +50,13 @@ static bool appendFileLink(
 static QStringList createLinks()
 {
     QStringList result;
-    result.append(formatLink(_("Website"), QUrl(appWebsite)));
+    result.append(formatLink(_("Website"), QUrl(uiAppWebsite)));
 
     auto docDirPath =
         QCoreApplication::applicationDirPath() + "/doc";
     auto hasDocDir = QDir(docDirPath).exists();
     if (!hasDocDir) {
-        docDirPath = docDir;
+        docDirPath = uiDocDir;
         hasDocDir = QDir(docDirPath).exists();
     }
 
@@ -127,8 +127,8 @@ About::About(QWidget* parent)
         "%4<br>"
         "%5</p>"
         ).arg(
-            appName,
-            appVersion,
+            uiAppName,
+            uiAppVersion,
             _("Program to recognize text on screen"),
             // The proper way to add spacing around a piece of text is
             // to use <span> with the margin or padding CSS property,
@@ -140,7 +140,7 @@ About::About(QWidget* parent)
             // the link).
             joinInLayoutDirection(
                 "&nbsp;&nbsp;|&nbsp;&nbsp;", createLinks()),
-            appCopyright));
+            uiAppCopyright));
 
     connect(
         infoTextLabel, SIGNAL(linkActivated(const QString&)),
@@ -173,7 +173,7 @@ About::About(QWidget* parent)
 static QString getTextForLink(const QString& link)
 {
     if (link == aboutLicenseUrl)
-        return appLicense;
+        return uiAppLicense;
 
     const QUrl url(link);
 

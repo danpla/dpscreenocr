@@ -2,5 +2,5 @@
 #include "paths.h"
 
 
-const char* const localeDir = "@APP_LOCALE_DIR@";
-const char* const docDir = "@APP_DOC_DIR@";
+const char* const uiLocaleDir = "@APP_LOCALE_DIR@";
+const char* const uiDocDir = "@APP_DOC_DIR@";

@@ -69,29 +69,29 @@ MainWindow::MainWindow()
     , minimizeToTray{}
     , minimizeOnStart{}
 {
-    setWindowTitle(appName);
-    QApplication::setWindowIcon(getIcon(appFileName));
+    setWindowTitle(uiAppName);
+    QApplication::setWindowIcon(getIcon(uiAppFileName));
 
     if (!dpsoInit()) {
-        QMessageBox::critical(nullptr, appName, dpsoGetError());
+        QMessageBox::critical(nullptr, uiAppName, dpsoGetError());
         std::exit(EXIT_FAILURE);
     }
 
-    if (!startupSetup()) {
+    if (!uiStartupSetup()) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("Startup setup failed: ") + dpsoGetError());
         dpsoShutdown();
         std::exit(EXIT_FAILURE);
     }
 
     const auto* cfgPath = dpsoGetUserDir(
-        DpsoUserDirConfig, appFileName);
+        DpsoUserDirConfig, uiAppFileName);
     if (!cfgPath) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("Can't get configuration path: ")
                 + dpsoGetError());
 
@@ -100,13 +100,13 @@ MainWindow::MainWindow()
     }
 
     cfgDirPath = cfgPath;
-    cfgFilePath = cfgDirPath + *dpsoDirSeparators + cfgFileName;
+    cfgFilePath = cfgDirPath + *dpsoDirSeparators + uiCfgFileName;
 
     cfg.reset(dpsoCfgCreate());
     if (!cfg) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("Can't create Cfg: ") + dpsoGetError());
         dpsoShutdown();
         std::exit(EXIT_FAILURE);
@@ -115,7 +115,7 @@ MainWindow::MainWindow()
     if (!dpsoCfgLoad(cfg.get(), cfgFilePath.c_str())) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("Can't load \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
         dpsoShutdown();
@@ -123,11 +123,11 @@ MainWindow::MainWindow()
     }
 
     const auto* dataPath = dpsoGetUserDir(
-        DpsoUserDirData, appFileName);
+        DpsoUserDirData, uiAppFileName);
     if (!dataPath) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("Can't get data path: ") + dpsoGetError());
 
         dpsoShutdown();
@@ -137,7 +137,7 @@ MainWindow::MainWindow()
     if (dpsoOcrGetNumEngines() == 0) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("No OCR engines are available"));
 
         dpsoShutdown();
@@ -149,7 +149,7 @@ MainWindow::MainWindow()
     dpsoOcrGetEngineInfo(0, &ocrEngineInfo);
 
     std::string ocrDataDirPath;
-    if (const char* dataDirName = getOcrDataDirName(&ocrEngineInfo))
+    if (const char* dataDirName = uiGetOcrDataDirName(&ocrEngineInfo))
         ocrDataDirPath =
             std::string{dataPath} + *dpsoDirSeparators + dataDirName;
 
@@ -160,7 +160,7 @@ MainWindow::MainWindow()
     if (!ocr) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("Can't create OCR with \"%1\" engine: %2").arg(
                 ocrEngineInfo.id,
                 dpsoGetError()));
@@ -280,7 +280,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
     if (!dpsoCfgSave(cfg.get(), cfgFilePath.c_str()))
         QMessageBox::critical(
             this,
-            appName,
+            uiAppName,
             QString("Can't save \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
 
@@ -423,7 +423,7 @@ void MainWindow::createQActions()
 {
     visibilityAction = new QAction(
         dpsoStrNamedFormat(
-            _("Show {app_name}"), {{"app_name", appName}}),
+            _("Show {app_name}"), {{"app_name", uiAppName}}),
         this);
     visibilityAction->setCheckable(true);
     visibilityAction->setChecked(true);
@@ -538,7 +538,7 @@ void MainWindow::createTrayIcon()
     menu->addAction(visibilityAction);
     menu->addAction(quitAction);
 
-    trayIcon = new QSystemTrayIcon(getIcon(appFileName), this);
+    trayIcon = new QSystemTrayIcon(getIcon(uiAppFileName), this);
     trayIcon->setContextMenu(menu);
 
     connect(
@@ -697,10 +697,10 @@ void MainWindow::updateDpso()
 
 void MainWindow::setStatus(Status newStatus, const QString& text)
 {
-    const auto textWithAppName = text + " - " + appName;
+    const auto textWithAppName = text + " - " + uiAppName;
 
     setWindowTitle(
-        newStatus == Status::ok ? appName : textWithAppName);
+        newStatus == Status::ok ? uiAppName : textWithAppName);
 
     #if DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
     XFlush(QX11Info::display());
@@ -874,7 +874,7 @@ void MainWindow::checkHotkeyActions()
             if (!dpsoOcrQueueJob(ocr.get(), &jobArgs))
                 QMessageBox::warning(
                     this,
-                    appName,
+                    uiAppName,
                     QString("Can't queue OCR job: ")
                         + dpsoGetError());
         }

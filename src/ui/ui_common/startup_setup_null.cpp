@@ -2,7 +2,7 @@
 #include "startup_setup.h"
 
 
-int startupSetup(void)
+int uiStartupSetup(void)
 {
     return true;
 }

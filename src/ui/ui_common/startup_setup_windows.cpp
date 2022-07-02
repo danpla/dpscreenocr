@@ -226,7 +226,7 @@ static int setupUserData(const wchar_t* userDataDir)
 }
 
 
-int startupSetup(void)
+int uiStartupSetup(void)
 {
     registerApplicationRestart();
 

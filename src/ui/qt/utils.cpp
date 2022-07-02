@@ -76,7 +76,7 @@ bool confirmation(
 {
     QMessageBox confirmBox(parent);
 
-    confirmBox.setWindowTitle(appName);
+    confirmBox.setWindowTitle(uiAppName);
     confirmBox.setText(question);
     confirmBox.setIcon(QMessageBox::Question);
 

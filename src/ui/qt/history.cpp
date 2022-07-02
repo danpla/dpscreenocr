@@ -24,7 +24,8 @@ History::History(const std::string& dirPath, QWidget* parent)
     , wrapWords{true}
     , nativeFileDialogs{}
 {
-    historyFilePath = dirPath + *dpsoDirSeparators + historyFileName;
+    historyFilePath =
+        dirPath + *dpsoDirSeparators + uiHistoryFileName;
 
     textEdit = new QTextEdit();
     textEdit->setReadOnly(true);
@@ -114,7 +115,7 @@ void History::doExport()
                 dpsoHistoryExportFormatPlainText)))
         QMessageBox::critical(
             this,
-            appName,
+            uiAppName,
             QString("Can't save \"%1\": %2").arg(
                 filePath, dpsoGetError()));
 
@@ -140,7 +141,7 @@ void History::clear()
     if (!dpsoHistoryClear(history.get())) {
         QMessageBox::critical(
             this,
-            appName,
+            uiAppName,
             QString("Can't clear history: ") + dpsoGetError());
         return;
     }
@@ -159,7 +160,7 @@ void History::append(const char* timestamp, const char* text)
     if (!dpsoHistoryAppend(history.get(), &entry)) {
         QMessageBox::critical(
             this,
-            appName,
+            uiAppName,
             QString("Can't append to history: ") + dpsoGetError());
         return;
     }
@@ -219,7 +220,7 @@ bool History::loadState(const DpsoCfg* cfg)
     if (!history) {
         QMessageBox::critical(
             nullptr,
-            appName,
+            uiAppName,
             QString("Can't open \"%1\": %2").arg(
                 historyFilePath.c_str(), dpsoGetError()));
         return false;

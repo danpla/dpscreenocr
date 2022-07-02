@@ -17,7 +17,7 @@
  * path pointing to installation prefix + "share/locale". May be empty
  * on platforms that don't use it.
  */
-extern const char* const localeDir;
+extern const char* const uiLocaleDir;
 
 
 /*
@@ -26,4 +26,4 @@ extern const char* const localeDir;
  * installation prefix + "share/doc". May be empty on platforms that
  * don't use it.
  */
-extern const char* const docDir;
+extern const char* const uiDocDir;

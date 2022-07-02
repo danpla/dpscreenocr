@@ -4,7 +4,8 @@
 #include <string>
 
 
-const char* getOcrDataDirName(const DpsoOcrEngineInfo* ocrEngineInfo)
+const char* uiGetOcrDataDirName(
+    const DpsoOcrEngineInfo* ocrEngineInfo)
 {
     if (!ocrEngineInfo)
         return nullptr;

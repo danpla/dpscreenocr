@@ -94,18 +94,18 @@ int main(int argc, char *argv[])
         QCoreApplication::applicationDirPath() + "/locale");
     if (QDir(localLocaleDir).exists())
         bindtextdomain(
-            appFileName, localLocaleDir.toLocal8Bit().data());
+            uiAppFileName, localLocaleDir.toLocal8Bit().data());
     else
-        bindtextdomain(appFileName, localeDir);
+        bindtextdomain(uiAppFileName, uiLocaleDir);
 
     #else
 
-    bindtextdomain(appFileName, localeDir);
+    bindtextdomain(uiAppFileName, localeDir);
 
     #endif
 
-    bind_textdomain_codeset(appFileName, "UTF-8");
-    textdomain(appFileName);
+    bind_textdomain_codeset(uiAppFileName, "UTF-8");
+    textdomain(uiAppFileName);
 
     installQtTranslations(app);
 

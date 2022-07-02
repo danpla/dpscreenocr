@@ -2,8 +2,8 @@
 #pragma once
 
 
-extern const char* const appName;
-extern const char* const appVersion;
-extern const char* const appWebsite;
-extern const char* const appCopyright;
-extern const char* const appLicense;
+extern const char* const uiAppName;
+extern const char* const uiAppVersion;
+extern const char* const uiAppWebsite;
+extern const char* const uiAppCopyright;
+extern const char* const uiAppLicense;
