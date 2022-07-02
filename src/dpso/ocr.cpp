@@ -232,7 +232,7 @@ struct DpsoOcr {
     bool dumpDebugImage;
 
     std::vector<JobResult> fetchedResults;
-    std::vector<DpsoOcrJobResult> returnResults;
+    std::vector<DpsoOcrJobResult> returnedResults;
 };
 
 
@@ -734,16 +734,16 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
             restoreLocale(ocr);
     }
 
-    ocr->returnResults.clear();
-    ocr->returnResults.reserve(ocr->fetchedResults.size());
+    ocr->returnedResults.clear();
+    ocr->returnedResults.reserve(ocr->fetchedResults.size());
     for (const auto& result : ocr->fetchedResults)
-        ocr->returnResults.push_back(
+        ocr->returnedResults.push_back(
             {result.ocrResult.getText(),
                 result.ocrResult.getTextLen(),
                 result.timestamp.data()});
 
-    results->items = ocr->returnResults.data();
-    results->numItems = ocr->returnResults.size();
+    results->items = ocr->returnedResults.data();
+    results->numItems = ocr->returnedResults.size();
 }
 
 
