@@ -199,7 +199,7 @@ static bool setupOcrData(
         dpsoOcrGetEngineInfo(i, &ocrEngineInfo);
 
         std::wstring dirName;
-        if (const auto* name = getOcrDataDirName(&ocrEngineInfo))
+        if (const auto* name = uiGetOcrDataDirName(&ocrEngineInfo))
             try {
                 dirName = dpso::windows::utf8ToUtf16(name);
             } catch (std::runtime_error& e) {
@@ -231,7 +231,7 @@ int uiStartupSetup(void)
     registerApplicationRestart();
 
     const auto* userDataDir = dpsoGetUserDir(
-        DpsoUserDirData, appFileName);
+        DpsoUserDirData, uiAppFileName);
     if (!userDataDir) {
         dpsoSetError("Can't get user data dir: %s", dpsoGetError());
         return false;
