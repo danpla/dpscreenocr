@@ -5,8 +5,15 @@ project(ui_common)
 if(UNIX AND NOT APPLE)
     include(GNUInstallDirs)
     set(APP_LOCALE_DIR "${CMAKE_INSTALL_FULL_LOCALEDIR}")
+
+    # Construct doc dir manually since DOCDIR uses PROJECT_NAME.
+    set(
+        APP_DOC_DIR
+        "${CMAKE_INSTALL_FULL_DATADIR}/doc/${APP_FILE_NAME}"
+    )
 else()
     set(APP_LOCALE_DIR "")
+    set(APP_DOC_DIR "")
 endif()
 
 set(IN_SRCS app_info.cpp file_names.cpp paths.cpp)

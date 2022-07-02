@@ -52,9 +52,14 @@ static QStringList createLinks()
     QStringList result;
     result.append(formatLink(_("Website"), QUrl(appWebsite)));
 
-    const auto docDirPath =
+    auto docDirPath =
         QCoreApplication::applicationDirPath() + "/doc";
-    const auto hasDocDir = QDir(docDirPath).exists();
+    auto hasDocDir = QDir(docDirPath).exists();
+    if (!hasDocDir) {
+        docDirPath = docDir;
+        hasDocDir = QDir(docDirPath).exists();
+    }
+
     if (hasDocDir) {
         for (const auto* ext : {".html", ".txt"})
             if (appendFileLink(

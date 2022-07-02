@@ -3,3 +3,4 @@
 
 
 const char* const localeDir = "@APP_LOCALE_DIR@";
+const char* const docDir = "@APP_DOC_DIR@";

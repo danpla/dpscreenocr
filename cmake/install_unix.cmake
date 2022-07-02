@@ -38,10 +38,10 @@ if(DPSO_ENABLE_NLS)
 endif()
 
 # DOCDIR uses PROJECT_NAME, which is in title case.
-string(
-    REPLACE
-    "${PROJECT_NAME}" "${APP_FILE_NAME}"
-    CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DOCDIR}
+# Construct doc dir manually since default DOCDIR uses PROJECT_NAME.
+set(
+    CMAKE_INSTALL_DOCDIR
+    "${CMAKE_INSTALL_DATADIR}/doc/${APP_FILE_NAME}"
 )
 if(DPSO_GEN_HTML_MANUAL)
     include(gen_manual)
