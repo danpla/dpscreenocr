@@ -1,6 +1,8 @@
 
 #include "about.h"
 
+#include <initializer_list>
+
 #include <QApplication>
 #include <QCursor>
 #include <QDesktopServices>
@@ -30,7 +32,7 @@ static QString formatLink(const QString& name, const QUrl& url)
 }
 
 
-static void appendFileLink(
+static bool appendFileLink(
     QStringList& links,
     const QString& docDirPath,
     const QString& fileName,
@@ -38,9 +40,10 @@ static void appendFileLink(
 {
     const auto filePath = docDirPath + '/' + fileName;
     if (!QFileInfo(filePath).exists())
-        return;
+        return false;
 
     links.append(formatLink(linkName, QUrl::fromLocalFile(filePath)));
+    return true;
 }
 
 
@@ -51,21 +54,28 @@ static QStringList createLinks()
 
     const auto docDirPath =
         QCoreApplication::applicationDirPath() + "/doc";
-    if (QDir(docDirPath).exists()) {
-        appendFileLink(
-            result, docDirPath, "manual.html", _("User manual"));
+    const auto hasDocDir = QDir(docDirPath).exists();
+    if (hasDocDir) {
+        for (const auto* ext : {".html", ".txt"})
+            if (appendFileLink(
+                    result,
+                    docDirPath,
+                    QString("manual") + ext,
+                    _("User manual")))
+                break;
+
         appendFileLink(
             result, docDirPath, "changelog.txt", _("Changelog"));
-        appendFileLink(
-            result, docDirPath, "LICENSE.txt", _("License"));
+    }
+
+    result.append(formatLink(_("License"), QUrl(aboutLicenseUrl)));
+
+    if (hasDocDir)
         appendFileLink(
             result,
             docDirPath,
             "third-party-licenses",
             _("Third-party licenses"));
-    } else
-        result.append(
-            formatLink(_("License"), QUrl(aboutLicenseUrl)));
 
     return result;
 }
