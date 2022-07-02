@@ -19,12 +19,12 @@ namespace backend {
 namespace {
 
 
-using BufPtr = std::unique_ptr<std::uint8_t[]>;
+using DataUPtr = std::unique_ptr<std::uint8_t[]>;
 
 
 class WindowsScreenshot : public Screenshot {
 public:
-    WindowsScreenshot(BufPtr data, int w, int h, int pitch);
+    WindowsScreenshot(DataUPtr data, int w, int h, int pitch);
 
     int getWidth() const override;
     int getHeight() const override;
@@ -32,7 +32,7 @@ public:
     void getGrayscaleData(
         std::uint8_t* buf, int pitch) const override;
 private:
-    BufPtr buf;
+    DataUPtr data;
     int w;
     int h;
     int pitch;
@@ -43,13 +43,13 @@ private:
 
 
 WindowsScreenshot::WindowsScreenshot(
-        BufPtr buf, int w, int h, int pitch)
-    : buf{std::move(buf)}
+        DataUPtr data, int w, int h, int pitch)
+    : data{std::move(data)}
     , w{w}
     , h{h}
     , pitch{pitch}
 {
-    assert(this->buf);
+    assert(this->data);
     assert(w > 0);
     assert(h > 0);
     assert(pitch >= w);
@@ -72,7 +72,7 @@ void WindowsScreenshot::getGrayscaleData(
     std::uint8_t* buf, int pitch) const
 {
     for (int y = 0; y < h; ++y) {
-        const auto* srcRow = this->buf.get() + this->pitch * y;
+        const auto* srcRow = data.get() + this->pitch * y;
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < w; ++x) {
@@ -143,12 +143,12 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
 
     // Pitch is called "stride" in Microsoft docs.
     const auto pitch = (captureRect.w * bi.biBitCount + 31) / 32 * 4;
-    BufPtr buf(new std::uint8_t[pitch * captureRect.h]);
+    DataUPtr data(new std::uint8_t[pitch * captureRect.h]);
 
     if (!GetDIBits(
             imageDc.get(), imageBitmap.get(),
             0, captureRect.h,
-            buf.get(),
+            data.get(),
             reinterpret_cast<BITMAPINFO*>(&bi),
             DIB_RGB_COLORS))
         throw ScreenshotError(
@@ -156,7 +156,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
             + windows::getErrorMessage(GetLastError()));
 
     return std::unique_ptr<Screenshot>(new WindowsScreenshot(
-        std::move(buf), captureRect.w, captureRect.h, pitch));
+        std::move(data), captureRect.w, captureRect.h, pitch));
 }
 
 
