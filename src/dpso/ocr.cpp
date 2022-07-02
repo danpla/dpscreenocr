@@ -682,7 +682,6 @@ int dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
     LINK_LOCK(ocr->link);
 
     ocr->link.jobQueue.push(std::move(job));
-
     ++ocr->link.progress.totalJobs;
 
     return true;
@@ -725,10 +724,15 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
     if (!ocr || !results)
         return;
 
-    LINK_LOCK(ocr->link);
+    {
+        LINK_LOCK(ocr->link);
 
-    ocr->fetchedResults.clear();
-    ocr->fetchedResults.swap(ocr->link.results);
+        ocr->fetchedResults.clear();
+        ocr->fetchedResults.swap(ocr->link.results);
+
+        if (!ocr->link.jobsPending())
+            restoreLocale(ocr);
+    }
 
     ocr->returnResults.clear();
     ocr->returnResults.reserve(ocr->fetchedResults.size());
@@ -740,9 +744,6 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
 
     results->items = ocr->returnResults.data();
     results->numItems = ocr->returnResults.size();
-
-    if (!ocr->link.jobsPending())
-        restoreLocale(ocr);
 }
 
 
