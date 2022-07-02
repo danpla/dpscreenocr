@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 
     #else
 
-    bindtextdomain(uiAppFileName, localeDir);
+    bindtextdomain(uiAppFileName, uiLocaleDir);
 
     #endif
 
