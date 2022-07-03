@@ -28,9 +28,9 @@ dpscreenocr.exe.
 ### Unix-like systems
 
 The [dpScreenOCR website][] provides several download options,
-including repositories for Debian, Ubuntu, and derivative systems. If
-you don't find a suitable choice for your system, download the source
-code tarball, unpack it, and follow the instructions in the
+including repositories for Debian, Ubuntu, and derivatives. If you
+don't find a suitable choice for your system, download the source code
+tarball, unpack it, and follow the instructions in the
 "doc/building-unix.txt" file.
 
 
@@ -42,12 +42,10 @@ code tarball, unpack it, and follow the instructions in the
 dpScreenOCR for Windows is shipped with the English language pack. To
 install other languages, visit the [Languages][Language packs] page,
 download ".traineddata" files you want, and place them in the
-"tessdata" directory, located in the same folder as the dpScreenOCR
-executable.
-
-You can also download languages from other places, but make sure they
-are intended for Tesseract 4 or newer. dpScreenOCR will crash if you
-try to use data designed for another Tesseract version.
+`C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data`
+folder. To quickly navigate to this folder, press Windows + R to open
+"Run" and paste `%LOCALDATA%\dpscreenocr\tesseract5_data`. You can
+also paste this path to the folder address bar of File Explorer.
 
 
 ### Unix-like systems
@@ -128,15 +126,14 @@ The language list shows available language packs that dpScreenOCR can
 use to recognize text. You can choose more than one language, but be
 aware that this may slow down recognition and reduce its accuracy.
 
-Read the "[Installing languages]" section on how to install more
-language packs.
+Read the "[Installing languages]" section on how to install language
+packs.
 
 
 ### Hotkey
 
-The hotkey is used to start and end the on-screen selection. The
-default is Control + Grave accent. To cancel the selection, press
-Escape.
+The hotkey starts and ends the on-screen selection. To cancel the
+selection, press Escape.
 
 The hotkey is global: it works even if dpScreenOCR's window is
 minimized. If pressing the hotkey has no effect, it probably means
@@ -154,9 +151,9 @@ as an argument to an executable.
 ### Run executable
 
 The "Run executable" action will run an executable with the recognized
-text as the first argument. The "Run executable" entry expects either
-an absolute path to the executable, or just its name in case it's
-located in one of the paths of your PATH environment variable.
+text as the first argument. The entry expects either an absolute path
+to the executable, or just its name in case it's located in one of the
+paths of your PATH environment variable.
 
 
 #### Running scripts on Windows
@@ -194,15 +191,15 @@ is similar. Open cmd.exe as administrator and run:
         C:\>ftype Python.File
         Python.File="C:\Windows\py.exe" "%L" %*
 
-    If the command doesn't end with "%*", fix it:
+    If the command doesn't end with `%*`, fix it:
 
         C:\>ftype Python.File="C:\Windows\py.exe" "%L" %*
 
 If the script still receives only one argument (path to the script),
 this means that Windows actually use a different association for the
 given extension and ignores the one set with assoc/ftype. To fix
-that, open regedit and make sure the values of the following keys
-end with "%*":
+that, open regedit and make sure the values of the following keys use
+the correct path to the Python executable and end with `%*`:
 
     HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command
     HKEY_CLASSES_ROOT\py_auto_file\shell\open\command
@@ -256,15 +253,8 @@ added here if the corresponding action is enabled in the
 [Actions tab]. Every text in the list has a timestamp taken at the
 moment you finish the selection.
 
-You can save the history to a file in plain text, HTML, or JSON
+You can export the history to a file in plain text, HTML, or JSON
 format.
-
-
-## Notification area icon
-
-dpScreenOCR has an icon in the notification area. You can toggle
-visibility of the window either by activating the icon (left or middle
-mouse click, depending on the platform), or via its context menu.
 
 
 # Tweaking
@@ -278,8 +268,8 @@ can find it in the following directories:
 
 *   Windows: `%LOCALAPPDATA%\dpscreenocr`
 
-    You can copy this path to the folder address bar of Explorer to
-    open it. `%LOCALAPPDATA%` is a standard environment variable which
+    You can paste this path to the folder address bar of File Explorer
+    to open it. `%LOCALAPPDATA%` is an environment variable which
     usually expands to `C:\Users\(your name)\AppData\Local\`
 
 *   Unix-like systems: `~/.config/dpscreenocr`
@@ -319,10 +309,8 @@ the settings file:
 *   `action_copy_to_clipboard_text_separator` (`\n\n` by default)
     specify the separator for multiple texts for "Copy text to
     clipboard" action. This option only has effect if
-    `ocr_allow_queuing` is enabled.
-
-    Keep in mind that every recognized text, if not empty, ends with
-    a newline.
+    `ocr_allow_queuing` is enabled. Keep in mind that every recognized
+    text, if not empty, ends with a newline.
 
 *   `history_wrap_words` (`true` by default) whether to break long
     lines of text in the history so that you don't have to scroll
@@ -395,13 +383,42 @@ here, please report the problem on the [issue tracker][].
     * (Unix) If your executable is a script, make sure it starts with
       a proper [shebang][].
 
-*   **dpScreenOCR doesn't see language packs**
+*   **(Unix) Recognition is very slow**
 
-    * Make sure that the TESSDATA_PREFIX environment variable is
-      either not set or points to the parent directory of your
-      "tessdata" directory. In particular, you have this variable on
-      Windows if you have ever used Tesseract installers from
-      SourceForge with default settings.
+    On some hardware, OpenMP multithreading in Tesseract 4 and 5
+    results in dramatically slow recognition. The solution is to
+    set the `OMP_THREAD_LIMIT` environment variable to `1` before
+    running dpScreenOCR.
+
+    Its not recommended to set `OMP_THREAD_LIMIT` globally because it
+    will affect other programs that use OpenMP. Instead, create a
+    helper script that sets the variable and then runs dpScreenOCR,
+    e.g. via `env OMP_THREAD_LIMIT=1 dpscreenocr`. An even more
+    convenient solution is to add an item to the applications menu by
+    making a desktop entry that will either execute the helper script
+    or will set `OMP_THREAD_LIMIT` itself:
+
+    1.  Copy `dpscreenocr.desktop` from `/usr/share/applications/`
+        or `/usr/local/share/applications/` to
+        `~/.local/share/applications/` and rename it to
+        `dpscreenocr-no-openmp.desktop`.
+
+    2.  Open `dpscreenocr-no-openmp.desktop` in a text editor and
+        change `Name=dpScreenOCR` to `Name=dpScreenOCR (No OpenMP)`
+        and `Exec=dpscreenocr` to
+        `Exec=env OMP_THREAD_LIMIT=1 dpscreenocr`. You can also tell
+        `Exec` to launch a helper script instead, e.g.
+        `Exec=/home/your_name/your_script.sh`.
+
+    4.  If the entry does not appear in the applications menu, run
+        `update-desktop-database ~/.local/share/applications` or
+        re-login.
+
+*   **(Unix) No languages**
+
+    Make sure that the TESSDATA_PREFIX environment variable is either
+    not set or points to the parent directory of your "tessdata"
+    directory.
 
 *   **(Windows) "Run executable" opens the script in a text editor**
 
