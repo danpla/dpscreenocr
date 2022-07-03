@@ -51,7 +51,7 @@ Optional:
     version that comes without a .pc file for pkg-config, CMake will
     try to find Tesseract on its own.
 
-  * libintl. DPSO_ENABLE_NLS CMake option.
+  * libintl >= 0.21. DPSO_ENABLE_NLS CMake option.
 
   * gettext tools (msgfmt is needed to compile message catalogs).
     DPSO_ENABLE_NLS CMake option.
