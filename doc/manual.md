@@ -18,13 +18,6 @@ and can split independent text blocks, e.g. columns.
 ## Installing dpScreenOCR
 
 
-### Windows
-
-The [dpScreenOCR website][] provides an installer and a ZIP archive.
-The latter doesn't need installation: unpack it anywhere and run
-dpscreenocr.exe.
-
-
 ### Unix-like systems
 
 The [dpScreenOCR website][] provides several download options,
@@ -34,18 +27,14 @@ tarball, unpack it, and follow the instructions in the
 "doc/building-unix.txt" file.
 
 
-## Installing languages
-
-
 ### Windows
 
-dpScreenOCR for Windows is shipped with the English language pack. To
-install other languages, visit the [Languages][Language packs] page,
-download ".traineddata" files you want, and place them in the
-`C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data`
-folder. To quickly navigate to this folder, press Windows + R to open
-"Run" and paste `%LOCALDATA%\dpscreenocr\tesseract5_data`. You can
-also paste this path to the folder address bar of File Explorer.
+The [dpScreenOCR website][] provides an installer and a ZIP archive.
+The latter doesn't need installation: unpack it anywhere and run
+dpscreenocr.exe.
+
+
+## Installing languages
 
 
 ### Unix-like systems
@@ -77,6 +66,17 @@ than languages: "osd" (automatic script and orientation detection) and
 [tessdata-frk-issue-68]: https://github.com/tesseract-ocr/tessdata_best/issues/68
 [tessdata-frk-issue-49]: https://github.com/tesseract-ocr/tessdata/issues/49
 [tessdata-frk-issue-61]: https://github.com/tesseract-ocr/langdata/issues/61
+
+
+### Windows
+
+dpScreenOCR for Windows is shipped with the English language pack. To
+install other languages, visit the [Languages][Language packs] page,
+download ".traineddata" files you want, and place them in the
+`C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data`
+folder. To quickly navigate to this folder, press Windows + R to open
+"Run" and paste `%LOCALDATA%\dpscreenocr\tesseract5_data`. You can
+also paste this path to the folder address bar of File Explorer.
 
 
 # Usage
@@ -156,6 +156,24 @@ to the executable, or just its name in case it's located in one of the
 paths of your PATH environment variable.
 
 
+#### Running scripts on Unix-like systems
+
+Before using your script, make sure it starts with a proper
+[shebang][] and you have the execute permission (run
+`chmod u+x your_script`).
+
+Here is an example Unix shell script that translates the recognized
+text to your native language using [Translate Shell][] and displays
+the translation as a desktop notification.
+
+    #!/bin/sh
+
+    notify-send "Translation" $(trans -b "$1")
+
+[Shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
+[Translate Shell]: https://www.soimort.org/translate-shell/
+
+
 #### Running scripts on Windows
 
 
@@ -206,9 +224,9 @@ the correct path to the Python executable and end with `%*`:
 
 A tip for Python users: note that in the examples above the
 association uses Python Launcher (py.exe) rather than a concrete
-Python executable (python.exe). This allows using Unix-style
-[shebang][] lines to select the Python version on per-script basis.
-For more information, read [Using Python on Windows][].
+Python executable (python.exe). This allows using [shebang][] lines to
+select the Python version on per-script basis. For more information,
+read [Using Python on Windows][].
 
 [Using Python on Windows]: https://docs.python.org/3/using/windows.html
 
@@ -226,24 +244,6 @@ extension are associated with pythonw.exe instead of python.exe. Other
 languages may have their own conventions, like ".wlua" for Lua
 (wlua.exe). If such an association does not exist, create it manually
 as described in the previous section.
-
-
-#### Running scripts on Unix-like systems
-
-Before using your script, make sure it starts with a proper
-[shebang][] and you have the execute permission (run
-`chmod u+x your_script`).
-
-Here is an example Unix shell script that translates the recognized
-text to your native language using [Translate Shell][] and displays
-the translation as a desktop notification.
-
-    #!/bin/sh
-
-    notify-send "Translation" $(trans -b "$1")
-
-[Shebang]: https://en.wikipedia.org/wiki/Shebang_(Unix)
-[Translate Shell]: https://www.soimort.org/translate-shell/
 
 
 ## History tab
@@ -373,15 +373,15 @@ here, please report the problem on the [issue tracker][].
       executable that resides in one of the paths of the PATH
       environment variable.
 
-    * (Windows) Are you trying to use a batch file (".bat" or ".cmd")?
-      This is not allowed for security reasons. Please use Python or
-      another scripting language instead.
-
     * (Unix) Make sure you have execute permission. Run
       `chmod u+x executable`.
 
     * (Unix) If your executable is a script, make sure it starts with
       a proper [shebang][].
+
+    * (Windows) Are you trying to use a batch file (".bat" or ".cmd")?
+      This is not allowed for security reasons. Please use Python or
+      another scripting language instead.
 
 *   **(Unix) Recognition is very slow**
 
