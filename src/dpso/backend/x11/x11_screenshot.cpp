@@ -42,7 +42,8 @@ public:
     int getWidth() const override;
     int getHeight() const override;
 
-    void getGrayscaleData(std::uint8_t* buf, int pitch) const override;
+    void getGrayscaleData(
+        std::uint8_t* buf, int pitch) const override;
 private:
     XImage* image;
 };
