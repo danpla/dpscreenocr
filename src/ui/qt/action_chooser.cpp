@@ -19,7 +19,6 @@
 
 ActionChooser::ActionChooser(QWidget* parent)
     : QWidget{parent}
-    , nativeFileDialogs{}
 {
     copyToClipboardCheck = new QCheckBox(_("Copy text to clipboard"));
     addToHistoryCheck = new QCheckBox(_("Add text to history"));
@@ -117,11 +116,6 @@ void ActionChooser::loadState(const DpsoCfg* cfg)
             cfgDefaultValueActionRunExecutable));
     exeLineEdit->setText(
         dpsoCfgGetStr(cfg, cfgKeyActionRunExecutablePath, ""));
-
-    nativeFileDialogs = dpsoCfgGetBool(
-        cfg,
-        cfgKeyUiNativeFileDialogs,
-        cfgDefaultValueUiNativeFileDialogs);
 }
 
 
@@ -158,13 +152,8 @@ void ActionChooser::chooseExe()
         // contains just an exe name.
         exeDir = QDir::homePath();
 
-    QFileDialog::Options options;
-    if (!nativeFileDialogs)
-        options |= QFileDialog::DontUseNativeDialog;
-
     exePath = QFileDialog::getOpenFileName(
-        this,
-        dynStr.chooseExeDialogTitle, exeDir, "", nullptr, options);
+        this, dynStr.chooseExeDialogTitle, exeDir);
     if (exePath.isEmpty())
         return;
 

@@ -329,10 +329,6 @@ the settings file:
     as separator. If this option is disabled, pressing the hotkey will
     have no effect until the recognition is done.
 
-*   `ui_native_file_dialogs` (`true` by default) use file dialogs
-    native to your platform instead of the ones specific to the GUI
-    framework.
-
 *   `ui_tray_icon_visible` (`true` by default) whether to show an icon
     in the notification area.
 

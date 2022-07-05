@@ -22,7 +22,6 @@
 History::History(const std::string& dirPath, QWidget* parent)
     : QWidget{parent}
     , wrapWords{true}
-    , nativeFileDialogs{}
 {
     historyFilePath =
         dirPath + *dpsoDirSeparators + uiHistoryFileName;
@@ -85,10 +84,6 @@ void History::doExport()
     if (!history)
         return;
 
-    QFileDialog::Options options;
-    if (!nativeFileDialogs)
-        options |= QFileDialog::DontUseNativeDialog;
-
     auto dirPath = lastDirPath;
     // Don't pass an empty path to QDir since in this case QDir points
     // to the current working directory.
@@ -101,8 +96,7 @@ void History::doExport()
             dynStr.exportHistory,
             QDir(dirPath).filePath(lastFileName),
             dynStr.nameFilters,
-            &selectedNameFilter,
-            options));
+            &selectedNameFilter));
     if (filePath.isEmpty())
         return;
 
@@ -240,10 +234,6 @@ bool History::loadState(const DpsoCfg* cfg)
 
     setButtonsEnabled(dpsoHistoryCount(history.get()) > 0);
 
-    nativeFileDialogs = dpsoCfgGetBool(
-        cfg,
-        cfgKeyUiNativeFileDialogs,
-        cfgDefaultValueUiNativeFileDialogs);
     lastDirPath = dpsoCfgGetStr(cfg, cfgKeyHistoryExportDir, "");
 
     return true;

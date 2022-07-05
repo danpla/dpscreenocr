@@ -15,7 +15,6 @@ extern DpsoHotkey const cfgDefaultValueHotkeyCancelSelection;
 extern DpsoHotkey const cfgDefaultValueHotkeyToggleSelection;
 extern int const cfgDefaultValueOcrAllowQueuing;
 extern int const cfgDefaultValueOcrSplitTextBlocks;
-extern int const cfgDefaultValueUiNativeFileDialogs;
 extern int const cfgDefaultValueUiTrayIconVisible;
 extern int const cfgDefaultValueUiWindowMinimizeOnStart;
 extern int const cfgDefaultValueUiWindowMinimizeToTray;

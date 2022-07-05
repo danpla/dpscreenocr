@@ -19,7 +19,6 @@ extern const char* const cfgKeyOcrSplitTextBlocks;
 extern const char* const cfgKeyUiActiveTab;
 extern const char* const cfgKeyUiLanguagesSortColumn;
 extern const char* const cfgKeyUiLanguagesSortDescending;
-extern const char* const cfgKeyUiNativeFileDialogs;
 extern const char* const cfgKeyUiTrayIconVisible;
 extern const char* const cfgKeyUiWindowHeight;
 extern const char* const cfgKeyUiWindowMaximized;

@@ -60,6 +60,7 @@
     ui_window_minimize_to_tray options
   * Removed action_run_executable_wait_to_complete; waiting is now
     always enabled
+  * Removed ui_native_file_dialogs
   * ocr_dump_debug_image was replaced by the DPSO_DUMP_DEBUG_IMAGE
     environment variable
   * Fixed extra double quote in strings loaded from quoted text with

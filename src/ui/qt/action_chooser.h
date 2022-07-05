@@ -46,8 +46,6 @@ private:
     QCheckBox* addToHistoryCheck;
     QCheckBox* runExeCheck;
     QLineEdit* exeLineEdit;
-
-    bool nativeFileDialogs;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ActionChooser::Actions)

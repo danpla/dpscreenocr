@@ -22,8 +22,6 @@ int const cfgDefaultValueOcrAllowQueuing =
     true;
 int const cfgDefaultValueOcrSplitTextBlocks =
     true;
-int const cfgDefaultValueUiNativeFileDialogs =
-    true;
 int const cfgDefaultValueUiTrayIconVisible =
     true;
 int const cfgDefaultValueUiWindowMinimizeOnStart =

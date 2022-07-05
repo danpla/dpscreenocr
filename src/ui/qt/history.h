@@ -53,7 +53,6 @@ private:
     QPushButton* exportButton;
     QPushButton* clearButton;
 
-    bool nativeFileDialogs;
     QString lastDirPath;
     QString lastFileName;
     QString selectedNameFilter;

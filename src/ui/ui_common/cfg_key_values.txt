@@ -13,7 +13,6 @@ ocr_split_text_blocks                   | int               | true
 ui_active_tab
 ui_languages_sort_column
 ui_languages_sort_descending
-ui_native_file_dialogs                  | int               | true
 ui_tray_icon_visible                    | int               | true
 ui_window_height
 ui_window_maximized

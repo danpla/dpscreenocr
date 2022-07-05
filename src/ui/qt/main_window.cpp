@@ -646,12 +646,6 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         cfgKeyActionCopyToClipboardTextSeparator,
         copyToClipboardTextSeparator.toUtf8().data());
 
-    if (!dpsoCfgKeyExists(cfg, cfgKeyUiNativeFileDialogs))
-        dpsoCfgSetBool(
-            cfg,
-            cfgKeyUiNativeFileDialogs,
-            cfgDefaultValueUiNativeFileDialogs);
-
     dpsoCfgSetInt(cfg, cfgKeyUiActiveTab, tabs->currentIndex());
 
     if (!isMaximized()) {
