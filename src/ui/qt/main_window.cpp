@@ -354,7 +354,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
     // * The "true" management, when Qt only calls commitData() and
     //   no closeEvent().
 
-    // 1. Qt 4 always use the fallback management. There is no sense
+    // 1. Qt 4 always uses the fallback management. There is no sense
     //    to use commitData(); we don't want to show the confirmation
     //    dialog for the second time from closeEvent().
     #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
