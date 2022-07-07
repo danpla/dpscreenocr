@@ -11,23 +11,15 @@
 #include "dpso_intl/dpso_bindtextdomain_utf8.h"
 #include "dpso_intl/dpso_intl.h"
 
-#include "dpso_utils/os.h"
-
+#include "dirs.h"
 #include "file_names.h"
-#include "paths.h"
 
 
 void uiInitIntl(void)
 {
     setlocale(LC_ALL, "");
 
-    const auto localeDirPath =
-        std::string(uiGetBaseDirPath())
-        + *dpsoDirSeparators
-        + uiLocaleDir;
-
-    bindtextdomainUtf8(uiAppFileName, localeDirPath.c_str());
-
+    bindtextdomainUtf8(uiAppFileName, uiGetDir(UiDirLocale));
     bind_textdomain_codeset(uiAppFileName, "UTF-8");
     textdomain(uiAppFileName);
 }

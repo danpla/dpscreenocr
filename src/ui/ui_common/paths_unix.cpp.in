@@ -1,7 +1,0 @@
-
-#include "paths.h"
-
-
-const char* const uiDataDir = "@CMAKE_INSTALL_DATADIR@/@APP_FILE_NAME@";
-const char* const uiDocDir = "@CMAKE_INSTALL_DATADIR@/doc/@APP_FILE_NAME@";
-const char* const uiLocaleDir = "@CMAKE_INSTALL_LOCALEDIR@";

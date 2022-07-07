@@ -11,6 +11,8 @@
 #include "dpso/ocr.h"
 #include "dpso_utils/user_dirs.h"
 #include "dpso_utils/windows_utils.h"
+
+#include "dirs.h"
 #include "file_names.h"
 #include "ocr_data_dir_name.h"
 
@@ -42,37 +44,6 @@ static void registerApplicationRestart()
 static bool entryExists(const wchar_t* path)
 {
     return GetFileAttributesW(path) != INVALID_FILE_ATTRIBUTES;
-}
-
-
-// Returns an empty string on error.
-static std::wstring getExeDir()
-{
-    std::wstring result(32, 0);
-
-    while (true) {
-        const auto size = GetModuleFileNameW(
-            nullptr, &result[0], result.size());
-
-        if (size == 0) {
-            dpsoSetError(
-                "GetModuleFileNameW() failed: %s",
-                dpso::windows::getErrorMessage(
-                    GetLastError()).c_str());
-            return {};
-        }
-
-        if (size < result.size())
-            break;
-
-        result.resize(result.size() * 2);
-    }
-
-    const auto slashPos = result.rfind(L'\\');
-    if (slashPos != result.npos)
-        result.resize(slashPos);
-
-    return result;
 }
 
 
@@ -192,7 +163,7 @@ static bool setupEntry(
 
 
 static bool setupOcrData(
-    const wchar_t* exeDir, const wchar_t* userDataDir)
+    const wchar_t* srcDataDir, const wchar_t* userDataDir)
 {
     for (int i = 0; i < dpsoOcrGetNumEngines(); ++i) {
         DpsoOcrEngineInfo ocrEngineInfo;
@@ -206,7 +177,7 @@ static bool setupOcrData(
             }
 
         if (!dirName.empty() &&
-                !setupEntry(dirName.c_str(), exeDir, userDataDir))
+                !setupEntry(dirName.c_str(), srcDataDir, userDataDir))
             return false;
     }
 
@@ -216,13 +187,17 @@ static bool setupOcrData(
 
 static int setupUserData(const wchar_t* userDataDir)
 {
-    const auto exeDir = getExeDir();
-    if (exeDir.empty()) {
-        dpsoSetError("getExeDir() filed: %s", dpsoGetError());
+    std::wstring srcDataDir;
+    try {
+        srcDataDir = dpso::windows::utf8ToUtf16(
+            uiGetDir(UiDirData));
+    } catch (std::runtime_error& e) {
+        dpsoSetError(
+            "Can't convert UiDirData to UTF-16: %s", e.what());
         return false;
     }
 
-    return setupOcrData(exeDir.c_str(), userDataDir);
+    return setupOcrData(srcDataDir.c_str(), userDataDir);
 }
 
 

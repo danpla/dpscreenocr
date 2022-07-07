@@ -12,7 +12,7 @@
 // where argv[0] fails at the same time, we can give up and fall back
 // to the hardcoded install prefix.
 
-#include "paths.h"
+#include "dirs.h"
 
 #include <errno.h>
 #include <stdlib.h>
@@ -20,7 +20,9 @@
 #include <string>
 #include <unistd.h>
 
+#include "dirs_unix_cfg.h"
 #include "dpso/error.h"
+#include "file_names.h"
 
 
 static std::string findExeInPath(const char* exeName)
@@ -97,5 +99,20 @@ int uiInitBaseDirPath(const char* argv0)
 
 const char* uiGetBaseDirPath(void)
 {
-    return baseDirPath.c_str();
+    static std::string result;
+    result = baseDirPath;
+
+    switch (dir) {
+        case UiDirData:
+            result += dataDir;
+            break;
+        case UiDirDoc:
+            result += docDir;
+            break;
+        case UiDirLocale:
+            result += localeDir;
+            break;
+    }
+
+    return result.c_str();
 }

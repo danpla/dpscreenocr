@@ -1,0 +1,7 @@
+
+#pragma once
+
+
+const char* const dataDir = "@CMAKE_INSTALL_DATADIR@/@APP_FILE_NAME@";
+const char* const docDir = "@CMAKE_INSTALL_DATADIR@/doc/@APP_FILE_NAME@";
+const char* const localeDir = "@CMAKE_INSTALL_LOCALEDIR@";

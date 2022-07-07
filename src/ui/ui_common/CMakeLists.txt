@@ -14,15 +14,12 @@ set(
 set(IN_SRCS app_info.cpp file_names.cpp)
 
 if(UNIX AND NOT APPLE)
-    list(APPEND SRCS startup_setup_null.cpp paths_unix_base_dir.cpp)
-
-    include(GNUInstallDirs)
-    list(APPEND IN_SRCS paths_unix.cpp)
-else(WIN32)
+    list(APPEND SRCS startup_setup_null.cpp dirs_unix.cpp)
+    list(APPEND IN_SRCS dirs_unix_cfg.h)
+elseif(WIN32)
     list(
         APPEND SRCS
-        paths_generic.cpp
-        paths_windows_base_dir.cpp
+        dirs_windows.cpp
         startup_setup_windows.cpp
     )
 else()
@@ -62,8 +59,7 @@ endif()
 
 if(NOT TARGET dpso_utils)
     add_subdirectory(
-        ../../dpso_utils
-        ${CMAKE_BINARY_DIR}/src/dpso_utils
+        ../../dpso_utils ${CMAKE_BINARY_DIR}/src/dpso_utils
     )
 endif()
 

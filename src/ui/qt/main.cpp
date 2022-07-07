@@ -26,7 +26,7 @@ static void installQtTranslations(QApplication& app)
         #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
         QLibraryInfo::location(QLibraryInfo::TranslationsPath);
         #else
-        QDir::fromNativeSeparators(uiGetBaseDirPath())
+        QDir::fromNativeSeparators(uiGetDir(UiDirData))
             + "/translations";
         #endif
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    if (!uiInitBaseDirPath(argv[0])) {
+    if (!uiInitDirs(argv[0])) {
         QMessageBox::critical(
             nullptr,
             uiAppName,

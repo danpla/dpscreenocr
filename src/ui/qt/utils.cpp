@@ -18,10 +18,7 @@ static QIcon loadIcon(const QString &name)
     QIcon icon;
 
     static const auto iconsDir =
-        QDir::fromNativeSeparators(uiGetBaseDirPath())
-        + '/'
-        + uiDataDir
-        + "/icons";
+        QDir::fromNativeSeparators(uiGetDir(UiDirData)) + "/icons";
 
     static const auto sizes = QDir(iconsDir).entryList(QDir::Dirs);
     for (const auto& size : sizes) {
