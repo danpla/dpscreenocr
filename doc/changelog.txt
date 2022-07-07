@@ -71,14 +71,17 @@
   Ukrainian
 * Added support for building with Tesseract 5 and Qt 6
 * CMake:
-  * Replaced DPSO_QT4 by DPSO_QT_VERSION
   * Removed DPSO_COMPILE_PO in favor of DPSO_ENABLE_NLS
-  * Removed DPSO_QT_RCC_ICONS in favor of DPSO_QT_LOCAL_DATA
+  * Removed DPSO_QT_LOCAL_DATA; the program is now relocatable on
+    Unix-like systems
+  * Removed DPSO_QT_RCC_ICONS
   * Removed DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND; Qt5X11Extras is
     now required when building with Qt 5.0.0-5.3.1.
+  * Replaced DPSO_QT4 by DPSO_QT_VERSION
   * Removed "cpack -G DEB" support
   * Removed "cpack -G NSIS" support in favor of Inno Setup
-  * DLLs are now collected automatically when using CMake >= 3.16
+  * Windows DLLs are now collected automatically when using
+    CMake >= 3.16
 
 
 1.0.2 (2019-06-20)

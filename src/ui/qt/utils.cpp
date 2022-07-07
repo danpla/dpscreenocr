@@ -13,13 +13,15 @@
 #include "default_config.h"
 
 
-#if DPSO_QT_LOCAL_DATA
 static QIcon loadIcon(const QString &name)
 {
     QIcon icon;
 
     static const auto iconsDir =
-        QCoreApplication::applicationDirPath() + "/icons";
+        QDir::fromNativeSeparators(uiGetBaseDirPath())
+        + '/'
+        + uiDataDir
+        + "/icons";
 
     static const auto sizes = QDir(iconsDir).entryList(QDir::Dirs);
     for (const auto& size : sizes) {
@@ -31,23 +33,18 @@ static QIcon loadIcon(const QString &name)
 
     return icon;
 }
-#endif
 
 
 QIcon getIcon(const QString &name)
 {
-    #if DPSO_QT_LOCAL_DATA
+    #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
 
     if (QIcon::hasThemeIcon(name))
         return QIcon::fromTheme(name);
 
-    return loadIcon(name);
-
-    #else
-
-    return QIcon::fromTheme(name);
-
     #endif
+
+    return loadIcon(name);
 }
 
 

@@ -4,11 +4,6 @@ project(dpScreenOCR-QT)
 
 set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4, 5, or 6")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5 6)
-option(
-    DPSO_QT_LOCAL_DATA
-    "Allow to load data (e.g. locales) from the executable's dir"
-    YES
-)
 
 # CMP0071: Let AUTOMOC and AUTOUIC process GENERATED files.
 # We don't rely on this behavior; we just need to suppress the warning,
@@ -81,11 +76,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 add_executable(dpscreenocr_qt ${SRCS})
-
-target_compile_definitions(
-    dpscreenocr_qt
-    PRIVATE DPSO_QT_LOCAL_DATA=$<BOOL:${DPSO_QT_LOCAL_DATA}>
-)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")

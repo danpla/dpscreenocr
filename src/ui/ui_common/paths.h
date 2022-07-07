@@ -1,29 +1,54 @@
 
 #pragma once
 
-/*
- * At this moment, all paths are absolute an are intended mainly for
- * Unix-like systems. Once we implement relocatibility on on these
- * systems, the paths become relative and we can use these constants
- * on all platforms. The values will obviously still be
- * platform-specific, e.g. on Windows we want to put icons in "icons"
- * rather than in "share/icons".
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+/**
+ * Initialize base directory path.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
  */
+int uiInitBaseDirPath(const char* argv0);
 
 
-/*
- * Path to localization data to be passed to bindtextdomain(). Mainly
- * intended for non-Apple Unix-like systems, where it's an absolute
- * path pointing to installation prefix + "share/locale". May be empty
- * on platforms that don't use it.
+/**
+ * Get the base path for all other subdirectories.
+ *
+ * All ui*Dir constants are intended to be appended to this path.
+ *
+ * The prefix depends on the platform. For example:
+ *
+ * * On Windows, this is the directory of the executable.
+ * * On Unix-like systems, this is the parent directory of the
+ *   executable (it's assumed that the executable is in bin/), or the
+ *   absolute installation prefix if relocation is not supported or
+ *   was disabled at compile time.
+ */
+const char* uiGetBaseDirPath(void);
+
+
+/**
+ * General data directory.
+ */
+extern const char* const uiDataDir;
+
+
+/**
+ * Path to directory with documents.
+ */
+extern const char* const uiDocDir;
+
+
+/**
+ * Path to localization data for bindtextdomain().
  */
 extern const char* const uiLocaleDir;
 
 
-/*
- * Path to directory with documents. Mainly intended for non-Apple
- * Unix-like systems, where it's an absolute path pointing to
- * installation prefix + "share/doc". May be empty on platforms that
- * don't use it.
- */
-extern const char* const uiDocDir;
+#ifdef __cplusplus
+}
+#endif

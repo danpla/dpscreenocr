@@ -52,35 +52,29 @@ static QStringList createLinks()
     QStringList result;
     result.append(formatLink(_("Website"), QUrl(uiAppWebsite)));
 
-    auto docDirPath =
-        QCoreApplication::applicationDirPath() + "/doc";
-    auto hasDocDir = QDir(docDirPath).exists();
-    if (!hasDocDir) {
-        docDirPath = uiDocDir;
-        hasDocDir = QDir(docDirPath).exists();
-    }
+    const auto docDirPath =
+        QDir::fromNativeSeparators(uiGetBaseDirPath())
+        + '/'
+        + uiDocDir;
 
-    if (hasDocDir) {
-        for (const auto* ext : {".html", ".txt"})
-            if (appendFileLink(
-                    result,
-                    docDirPath,
-                    QString("manual") + ext,
-                    _("User manual")))
-                break;
+    for (const auto* ext : {".html", ".txt"})
+        if (appendFileLink(
+                result,
+                docDirPath,
+                QString("manual") + ext,
+                _("User manual")))
+            break;
 
-        appendFileLink(
-            result, docDirPath, "changelog.txt", _("Changelog"));
-    }
+    appendFileLink(
+        result, docDirPath, "changelog.txt", _("Changelog"));
 
     result.append(formatLink(_("License"), QUrl(aboutLicenseUrl)));
 
-    if (hasDocDir)
-        appendFileLink(
-            result,
-            docDirPath,
-            "third-party-licenses",
-            _("Third-party licenses"));
+    appendFileLink(
+        result,
+        docDirPath,
+        "third-party-licenses",
+        _("Third-party licenses"));
 
     return result;
 }

@@ -10,11 +10,13 @@
 #include <QDir>
 #include <QLibraryInfo>
 #include <QLocale>
+#include <QMessageBox>
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QTextCodec>
 #endif
 #include <QTranslator>
 
+#include "dpso/dpso.h"
 #include "dpso_intl/dpso_bindtextdomain_utf8.h"
 #include "dpso_intl/dpso_intl.h"
 
@@ -27,12 +29,12 @@
 static void installQtTranslations(QApplication& app)
 {
     const auto qtTranslationsPath =
-        #ifdef Q_OS_WIN
-        QCoreApplication::applicationDirPath() + "/translations"
+        #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
+        QLibraryInfo::location(QLibraryInfo::TranslationsPath);
         #else
-        QLibraryInfo::location(QLibraryInfo::TranslationsPath)
+        QDir::fromNativeSeparators(uiGetBaseDirPath())
+            + "/translations";
         #endif
-    ;
 
     const auto qtLocaleName = QLocale::system().name();
 
@@ -87,23 +89,22 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    if (!uiInitBaseDirPath(argv[0])) {
+        QMessageBox::critical(
+            nullptr,
+            uiAppName,
+            QString("uiInitBaseDirPath(): ") + dpsoGetError());
+        std::exit(EXIT_FAILURE);
+    }
+
     setlocale(LC_ALL, "");
 
-    #if DPSO_QT_LOCAL_DATA
+    const auto localeDirPath =
+        std::string(uiGetBaseDirPath())
+        + *dpsoDirSeparators
+        + uiLocaleDir;
 
-    const auto localLocaleDir = QDir::toNativeSeparators(
-        QCoreApplication::applicationDirPath() + "/locale");
-    if (QDir(localLocaleDir).exists())
-        bindtextdomainUtf8(
-            uiAppFileName, localLocaleDir.toUtf8().data());
-    else
-        bindtextdomainUtf8(uiAppFileName, uiLocaleDir);
-
-    #else
-
-    bindtextdomainUtf8(uiAppFileName, uiLocaleDir);
-
-    #endif
+    bindtextdomainUtf8(uiAppFileName, localeDirPath.c_str());
 
     bind_textdomain_codeset(uiAppFileName, "UTF-8");
     textdomain(uiAppFileName);

@@ -16,8 +16,3 @@
 #else
     #undef DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
 #endif
-
-
-#ifndef DPSO_QT_LOCAL_DATA
-    #define DPSO_QT_LOCAL_DATA 1
-#endif

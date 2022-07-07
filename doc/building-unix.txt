@@ -50,39 +50,19 @@ You can build dpScreenOCR with the following commands:
 
 You can configure the build with various CMake options; run
 "cmake -LH .." to see them all. Options specific to dpScreenOCR have
-the "DPSO_" prefix; the most interesting on Unix-like systems are:
-
-  * DPSO_ENABLE_NLS (ON by default) enables native language support
-    (translated user interface).
-
-    This option requires gettext runtime library (libintl) and tools
-    (namely, msgfmt to compile gettext catalogs). On some systems
-    libintl is a part of GNU C library and doesn't need to be
-    installed separately.
-
-  * DPSO_QT_LOCAL_DATA (ON by default) allows to load data (like icons
-    and localization files) from the executable's directory.
-
-    In general, local data has higher priority than global. Icons are
-    an exception: globally installed icons have higher priority to
-    allow the desktop icon theme to override local icons.
-
-    It makes sense to disable this option unless you want to use
-    dpScreenOCR without installation. See the "Using uninstalled"
-    section below for more information.
+the "DPSO_" prefix.
 
 
 Installing
 ==========
 
-You can install and remove dpScreenOCR using the standard Make
-commands "make install" and "make uninstall". To choose the
-installation prefix, set the CMAKE_INSTALL_PREFIX at the build stage.
-The default prefix is "/usr/local".
+Use "make install" and "make uninstall" to install and remove
+dpScreenOCR, respectively. You can set the installation prefix via
+CMAKE_INSTALL_PREFIX at the build stage; the default is "/usr/local".
 
-When built with the DPSO_QT_LOCAL_DATA option enabled, dpScreenOCR
-doesn't need installation: you can use the program by simply running
-the executable. However, if you want to move it from the "build"
-directory to a different location, don't forget to move "icons" and
-"locale" directories as well (the latter is only created if
-DPSO_ENABLE_NLS was enabled).
+Since version 1.1.0, dpScreenOCR supports relocation: it now loads
+resources from paths relative to the location of the executable,
+rather than from absolute paths based on the installation prefix. For
+example, you can install in "~/dpscreenocr", then move the
+"dpscreenocr" directory to a different location, and the program will
+still work correctly.

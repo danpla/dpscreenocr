@@ -14,6 +14,8 @@ extern "C" {
  * platform-specific tasks that need to be done on program startup,
  * like setting up local user data, migrating files from previous
  * versions of the program, etc.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns 0.
  */
 int uiStartupSetup(void);
 

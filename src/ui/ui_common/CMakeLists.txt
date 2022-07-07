@@ -2,22 +2,32 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(ui_common)
 
-if(UNIX AND NOT APPLE)
-    include(GNUInstallDirs)
-    set(APP_LOCALE_DIR "${CMAKE_INSTALL_FULL_LOCALEDIR}")
+set(
+    SRCS
+    cfg_default_values.cpp
+    cfg_keys.cpp
+    ocr_data_dir_name.cpp
+)
 
-    # Construct doc dir manually since DOCDIR uses PROJECT_NAME.
-    set(
-        APP_DOC_DIR
-        "${CMAKE_INSTALL_FULL_DATADIR}/doc/${APP_FILE_NAME}"
+# Files for configure_file()
+set(IN_SRCS app_info.cpp file_names.cpp)
+
+if(UNIX AND NOT APPLE)
+    list(APPEND SRCS startup_setup_null.cpp paths_unix_base_dir.cpp)
+
+    include(GNUInstallDirs)
+    list(APPEND IN_SRCS paths_unix.cpp)
+else(WIN32)
+    list(
+        APPEND SRCS
+        paths_generic.cpp
+        paths_windows_base_dir.cpp
+        startup_setup_windows.cpp
     )
 else()
-    set(APP_LOCALE_DIR "")
-    set(APP_DOC_DIR "")
+    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
 
-set(IN_SRCS app_info.cpp file_names.cpp paths.cpp)
-set(CONFIGURED_SRCS)
 foreach(IN_SRC ${IN_SRCS})
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/${IN_SRC}.in"
@@ -25,28 +35,10 @@ foreach(IN_SRC ${IN_SRCS})
         @ONLY
     )
 
-    list(
-        APPEND
-        CONFIGURED_SRCS "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}"
-    )
+    list(APPEND SRCS "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}")
 endforeach()
 
-set(PLATFORM_SRCS)
-if(WIN32)
-    list(APPEND PLATFORM_SRCS startup_setup_windows.cpp)
-else()
-    list(APPEND PLATFORM_SRCS startup_setup_null.cpp)
-endif()
-
-add_library(
-    ui_common STATIC
-
-    cfg_default_values.cpp
-    cfg_keys.cpp
-    ocr_data_dir_name.cpp
-    ${CONFIGURED_SRCS}
-    ${PLATFORM_SRCS}
-)
+add_library(ui_common STATIC ${SRCS})
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
