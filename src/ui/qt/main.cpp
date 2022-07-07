@@ -1,10 +1,6 @@
 
-// On Windows, libintl patches setlocale with a macro that expands to
-// libintl_setlocale. std::setlocale becomes std::libintl_setlocale,
-// so we must use <locale.h> rather than <clocale>.
-#include <locale.h>
-
 #include <cstddef>
+#include <cstdlib>
 
 #include <QApplication>
 #include <QDir>
@@ -17,8 +13,6 @@
 #include <QTranslator>
 
 #include "dpso/dpso.h"
-#include "dpso_intl/dpso_bindtextdomain_utf8.h"
-#include "dpso_intl/dpso_intl.h"
 
 #include "ui_common/ui_common.h"
 
@@ -97,18 +91,7 @@ int main(int argc, char *argv[])
         std::exit(EXIT_FAILURE);
     }
 
-    setlocale(LC_ALL, "");
-
-    const auto localeDirPath =
-        std::string(uiGetBaseDirPath())
-        + *dpsoDirSeparators
-        + uiLocaleDir;
-
-    bindtextdomainUtf8(uiAppFileName, localeDirPath.c_str());
-
-    bind_textdomain_codeset(uiAppFileName, "UTF-8");
-    textdomain(uiAppFileName);
-
+    uiInitIntl();
     installQtTranslations(app);
 
     MainWindow mainWindow;

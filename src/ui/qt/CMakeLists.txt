@@ -108,7 +108,7 @@ if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
 endif()
 
 target_link_libraries(
-    dpscreenocr_qt ui_common ui_taskbar dpso dpso_utils dpso_intl
+    dpscreenocr_qt ui_common ui_taskbar dpso dpso_intl dpso_utils
 )
 
 if(DPSO_QT_VERSION EQUAL 4)

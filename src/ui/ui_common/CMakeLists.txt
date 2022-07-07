@@ -6,6 +6,7 @@ set(
     SRCS
     cfg_default_values.cpp
     cfg_keys.cpp
+    init_intl.cpp
     ocr_data_dir_name.cpp
 )
 
@@ -53,6 +54,12 @@ if(NOT TARGET dpso)
     add_subdirectory(../../dpso ${CMAKE_BINARY_DIR}/src/dpso)
 endif()
 
+if(NOT TARGET dpso_intl)
+    add_subdirectory(
+        ../../dpso_intl ${CMAKE_BINARY_DIR}/src/dpso_intl
+    )
+endif()
+
 if(NOT TARGET dpso_utils)
     add_subdirectory(
         ../../dpso_utils
@@ -60,4 +67,4 @@ if(NOT TARGET dpso_utils)
     )
 endif()
 
-target_link_libraries(ui_common dpso dpso_utils)
+target_link_libraries(ui_common dpso dpso_intl dpso_utils)
