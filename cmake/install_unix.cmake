@@ -1,7 +1,6 @@
 
 include(GNUInstallDirs)
 
-
 install(
     PROGRAMS "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}"
     DESTINATION "${CMAKE_INSTALL_BINDIR}"
@@ -10,19 +9,27 @@ install(
     FILES "${CMAKE_SOURCE_DIR}/data/${APP_FILE_NAME}.desktop"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/applications"
 )
+
+include(build_icons)
+build_icons(
+    "${CMAKE_BINARY_DIR}/icons"
+    RASTER_SIZES all
+    INCLUDE_SCALABLE
+)
 install(
-    DIRECTORY "data/icons/hicolor"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/icons"
+    DIRECTORY "${CMAKE_BINARY_DIR}/icons"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/${APP_FILE_NAME}"
 )
 
-if(DPSO_QT_LOCAL_DATA AND DPSO_UI STREQUAL "qt")
-    include(build_icons)
-    build_icons(
-        "${CMAKE_BINARY_DIR}/icons"
-        RASTER_SIZES all
-        INCLUDE_SCALABLE
-    )
-endif()
+configure_file(
+    "${CMAKE_CURRENT_LIST_DIR}/install_unix_hicolor_icons.cmake.in"
+    "${CMAKE_BINARY_DIR}/install_unix_hicolor_icons.cmake"
+    @ONLY
+)
+install(
+    SCRIPT
+    "${CMAKE_BINARY_DIR}/install_unix_hicolor_icons.cmake"
+)
 
 if(DPSO_ENABLE_NLS)
     include(compile_po)
@@ -37,8 +44,8 @@ if(DPSO_ENABLE_NLS)
     )
 endif()
 
-# DOCDIR uses PROJECT_NAME, which is in title case.
-# Construct doc dir manually since default DOCDIR uses PROJECT_NAME.
+# Construct doc dir manually since default DOCDIR uses PROJECT_NAME,
+# which is in title case.
 set(
     CMAKE_INSTALL_DOCDIR
     "${CMAKE_INSTALL_DATADIR}/doc/${APP_FILE_NAME}"

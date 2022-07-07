@@ -1,10 +1,7 @@
 
 include(CMakeParseArguments)
 
-# The function copies icons from "/data/icons/hicolor" so that each
-# icon is placed in "{dst_dir}/{size}" dir, where {size} is either a
-# size of one side of a raster icon (icons are square), or "scalable"
-# in case of SVG.
+# Copy icons from "data/icons/sizes" to dst_dir.
 #
 # build_icons(
 #   dst_dir
@@ -14,17 +11,21 @@ include(CMakeParseArguments)
 # RASTER_SIZES is either a list of raster icon sizes to include, or
 # "all" to include all sizes. INCLUDE_SCALABLE includes SVG icons.
 function(build_icons dst_dir)
-    cmake_parse_arguments(ARG "INCLUDE_SCALABLE" "" "RASTER_SIZES" ${ARGN})
+    cmake_parse_arguments(
+        ARG "INCLUDE_SCALABLE" "" "RASTER_SIZES" ${ARGN}
+    )
 
-    set(SRC_DIR "${CMAKE_SOURCE_DIR}/data/icons/hicolor")
+    set(SRC_DIR "${CMAKE_SOURCE_DIR}/data/icons/sizes")
 
     set(INCLUDE_ALL_SIZES FALSE)
     foreach(SIZE ${ARG_RASTER_SIZES})
         if(SIZE STREQUAL "all")
             set(INCLUDE_ALL_SIZES TRUE)
             break()
-        elseif(NOT IS_DIRECTORY "${SRC_DIR}/${SIZE}x${SIZE}")
-            message(FATAL_ERROR "No ${SIZE} icon size in \"${SRC_DIR}\"")
+        elseif(NOT IS_DIRECTORY "${SRC_DIR}/${SIZE}")
+            message(
+                FATAL_ERROR "No ${SIZE} icon size in \"${SRC_DIR}\""
+            )
         endif()
     endforeach()
 
@@ -32,8 +33,8 @@ function(build_icons dst_dir)
     if(INCLUDE_ALL_SIZES)
         file(GLOB SIZE_DIRS RELATIVE "${SRC_DIR}" "${SRC_DIR}/*")
         foreach(DIR ${SIZE_DIRS})
-            string(REGEX MATCH "^([0-9]+)x([0-9]+)$" _ "${DIR}")
-            if (CMAKE_MATCH_1 EQUAL CMAKE_MATCH_2)
+            string(REGEX MATCH "^([0-9]+)$" _ "${DIR}")
+            if (CMAKE_MATCH_1)
                 list(APPEND SIZES "${CMAKE_MATCH_1}")
             endif()
         endforeach()
@@ -53,24 +54,16 @@ function(build_icons dst_dir)
 
     list(SORT SIZES)
     foreach(SIZE ${SIZES})
-        set(SIZE_DIR)
-        if(SIZE STREQUAL "scalable")
-            set(SIZE_DIR "${SIZE}")
-        else()
-            set(SIZE_DIR "${SIZE}x${SIZE}")
-        endif()
-
-        file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/${SIZE_DIR}/*")
-
-        set(DST_SUBDIR "${dst_dir}/${SIZE}")
-
+        file(GLOB SRC_FILES "${SRC_DIR}/${SIZE}/*")
         foreach(SRC_FILE ${SRC_FILES})
             get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
-            set(DST_FILE "${DST_SUBDIR}/${SRC_FILE_NAME}")
+            set(DST_FILE "${dst_dir}/${SIZE}/${SRC_FILE_NAME}")
 
             add_custom_command(
                 OUTPUT "${DST_FILE}"
-                COMMAND ${CMAKE_COMMAND} -E copy "${SRC_FILE}" "${DST_FILE}"
+                COMMAND
+                    ${CMAKE_COMMAND} -E copy
+                    "${SRC_FILE}" "${DST_FILE}"
                 DEPENDS "${SRC_FILE}"
                 VERBATIM
             )
