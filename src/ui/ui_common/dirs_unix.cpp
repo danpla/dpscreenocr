@@ -6,7 +6,7 @@
 // We use argv[0] in the general case. While it's not as robust as a
 // platform-specific approach, it's definitely more portable and
 // works in all normal invocation scenarios. Let's add
-// platform-specific only when the argv[0] way fails.
+// platform-specific things only when the argv[0] way fails.
 //
 // On platforms that don't provide a way to query executable path and
 // where argv[0] fails at the same time, we can give up and fall back
@@ -61,7 +61,7 @@ static std::string findExeInPath(const char* exeName)
 static std::string baseDirPath;
 
 
-int uiInitBaseDirPath(const char* argv0)
+int uiInitDirs(const char* argv0)
 {
     std::string path;
 
@@ -97,10 +97,10 @@ int uiInitBaseDirPath(const char* argv0)
 }
 
 
-const char* uiGetBaseDirPath(void)
+const char* uiGetDir(UiDir dir)
 {
     static std::string result;
-    result = baseDirPath;
+    result = baseDirPath + '/';
 
     switch (dir) {
         case UiDirData:

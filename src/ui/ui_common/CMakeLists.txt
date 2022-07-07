@@ -15,6 +15,8 @@ set(IN_SRCS app_info.cpp file_names.cpp)
 
 if(UNIX AND NOT APPLE)
     list(APPEND SRCS startup_setup_null.cpp dirs_unix.cpp)
+
+    include(GNUInstallDirs)
     list(APPEND IN_SRCS dirs_unix_cfg.h)
 elseif(WIN32)
     list(
@@ -45,7 +47,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     )
 endif()
 
-target_include_directories(ui_common PRIVATE . PUBLIC ..)
+target_include_directories(
+    ui_common
+    PRIVATE . "${CMAKE_CURRENT_BINARY_DIR}"
+    PUBLIC ..
+)
 
 if(NOT TARGET dpso)
     add_subdirectory(../../dpso ${CMAKE_BINARY_DIR}/src/dpso)
