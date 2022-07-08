@@ -160,6 +160,12 @@ if(NOT TESSERACT_FOUND)
         )
         set(TESSERACT_VERSION_MAJOR "${CMAKE_MATCH_1}")
     endif()
+
+    mark_as_advanced(
+        TESSERACT_INCLUDE_DIRS
+        TESSERACT_LIBRARIES
+        TESSERACT_VERSION_SOURCE_H
+    )
 endif()
 
 set(
