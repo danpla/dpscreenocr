@@ -22,36 +22,38 @@
 
 #include "dirs_unix_cfg.h"
 #include "dpso/error.h"
-#include "file_names.h"
 
 
 static std::string findExeInPath(const char* exeName)
 {
-    const auto* pathEnv = getenv("PATH");
-    if (!pathEnv)
+    const auto* p = getenv("PATH");
+    if (!p || !*p)
         return {};
 
-    for (const auto* s = pathEnv; *s;) {
-        const auto* pathBegin = s;
-
-        while (*s && *s != ':')
-            ++s;
-
-        const auto* pathEnd = s;
-        if (*s == ':')
-            ++s;
+    while (true) {
+        const auto* pathBegin = p;
+        while (*p && *p != ':')
+            ++p;
+        const auto* pathEnd = p;
 
         std::string path{pathBegin, pathEnd};
-        if (path.empty())
-            // Empty path is a legacy feature that indicates the
-            // current working directory.
-            path += '.';
 
-        path += '/';
+        // An empty path is a legacy feature indicating the current
+        // working directory. It can appear as two colons in the
+        // middle of the list, as well a colon at the beginning or end
+        // of the list.
+        if (!path.empty() && path.back() != '/')
+            path += '/';
+
         path += exeName;
 
         if (access(path.c_str(), X_OK) == 0)
             return path;
+
+        if (!*p)
+            break;
+
+        ++p;
     }
 
     return {};
