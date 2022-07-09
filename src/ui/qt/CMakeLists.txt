@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 2.8.12)
-
-project(dpScreenOCR-QT)
 
 set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4, 5, or 6")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5 6)

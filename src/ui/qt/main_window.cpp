@@ -173,8 +173,7 @@ MainWindow::MainWindow()
     createQActions();
 
     tabs = new QTabWidget();
-    tabs->addTab(
-        createMainTab(), pgettext("ui.tab", "Main"));
+    tabs->addTab(createMainTab(), pgettext("ui.tab", "Main"));
     tabs->addTab(createActionsTab(), _("Actions"));
     tabs->addTab(createHistoryTab(), _("History"));
     tabs->addTab(createAboutTab(), _("About"));

@@ -44,12 +44,6 @@ if(DPSO_ENABLE_NLS)
     )
 endif()
 
-# Construct doc dir manually since default DOCDIR uses PROJECT_NAME,
-# which is in title case.
-set(
-    CMAKE_INSTALL_DOCDIR
-    "${CMAKE_INSTALL_DATADIR}/doc/${APP_FILE_NAME}"
-)
 if(DPSO_GEN_HTML_MANUAL)
     include(gen_manual)
     gen_html_manual(html_manual "${CMAKE_BINARY_DIR}/manual")

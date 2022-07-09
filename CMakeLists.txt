@@ -23,6 +23,8 @@ set(APP_URL "https://danpla.github.io/dpscreenocr/")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+include(fixup_gnu_install_dirs)
+
 if(DPSO_BUILD_EXAMPLE)
     add_subdirectory(src/dpso_example)
 endif()
