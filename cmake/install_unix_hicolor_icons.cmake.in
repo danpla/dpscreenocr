@@ -49,6 +49,7 @@ foreach(SIZE ${SIZES})
     endif()
 
     set(FILE_NAME "@APP_FILE_NAME@${FILE_EXT}")
+    set(SYMLINK_PATH "@CMAKE_BINARY_DIR@/${FILE_NAME}")
 
     execute_process(
         # A hicolor icon resides in:
@@ -58,13 +59,13 @@ foreach(SIZE ${SIZES})
         COMMAND
             ${CMAKE_COMMAND} -E create_symlink
             "../../../../@APP_FILE_NAME@/icons/${SIZE}/${FILE_NAME}"
-            "${FILE_NAME}"
+            "${SYMLINK_PATH}"
     )
 
     file(
         INSTALL
-        FILES "${FILE_NAME}"
+        FILES "${SYMLINK_PATH}"
         DESTINATION "${CMAKE_INSTALL_PREFIX}/@CMAKE_INSTALL_DATADIR@/icons/hicolor/${DST_SIZE_DIR}/apps"
     )
-    file(REMOVE "${FILE_NAME}")
+    file(REMOVE "${SYMLINK_PATH}")
 endforeach()
