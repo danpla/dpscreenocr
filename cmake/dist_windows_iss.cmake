@@ -8,8 +8,7 @@ function(gen_inno_setup_config)
     else()
         message(
             FATAL_ERROR
-            "Unexpected CMAKE_SIZEOF_VOID_P (${CMAKE_SIZEOF_VOID_P})"
-        )
+            "Unexpected CMAKE_SIZEOF_VOID_P (${CMAKE_SIZEOF_VOID_P})")
     endif()
 
     set(APP_USES_NLS ${DPSO_ENABLE_NLS})
@@ -21,8 +20,7 @@ function(gen_inno_setup_config)
     configure_file(
         "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup_config.isi.in"
         "${CMAKE_BINARY_DIR}/inno_setup_config.isi"
-        @ONLY
-    )
+        @ONLY)
 endfunction()
 
 # Generate inno_setup_languages.isi.
@@ -60,8 +58,7 @@ function(gen_inno_setup_language_list)
         file(
             WRITE
             "${OUT_FILE}"
-            "; No languages since NLS was disabled"
-        )
+            "; No languages since NLS was disabled")
         return()
     endif()
 
@@ -78,27 +75,23 @@ function(gen_inno_setup_language_list)
             file(
                 APPEND
                 "${OUT_FILE}"
-                "Name: \"${LANG}\"; MessagesFile: \"compiler:Languages\\${ISL_${LANG}}.isl\"\n"
-            )
+                "Name: \"${LANG}\"; MessagesFile: \"compiler:Languages\\${ISL_${LANG}}.isl\"\n")
         endif()
     endforeach()
 
     if(UNDEFINED_ISLS)
         string(
-            REPLACE ";" ", " UNDEFINED_ISLS_STR "${UNDEFINED_ISLS}"
-        )
+            REPLACE ";" ", " UNDEFINED_ISLS_STR "${UNDEFINED_ISLS}")
         message(
             WARNING
-            "Inno Setup language files for the following locales are not defined: ${UNDEFINED_ISLS_STR}. Add them to the list above."
-        )
+            "Inno Setup language files for the following locales are not defined: ${UNDEFINED_ISLS_STR}. Add them to the list above.")
     endif()
 endfunction()
 
 configure_file(
     "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup.iss"
     "${CMAKE_BINARY_DIR}/inno_setup.iss"
-    COPYONLY
-)
+    COPYONLY)
 
 gen_inno_setup_config()
 gen_inno_setup_language_list()

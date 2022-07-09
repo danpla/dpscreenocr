@@ -12,8 +12,7 @@ include(CMakeParseArguments)
 # "all" to include all sizes. INCLUDE_SCALABLE includes SVG icons.
 function(build_icons dst_dir)
     cmake_parse_arguments(
-        ARG "INCLUDE_SCALABLE" "" "RASTER_SIZES" ${ARGN}
-    )
+        ARG "INCLUDE_SCALABLE" "" "RASTER_SIZES" ${ARGN})
 
     set(SRC_DIR "${CMAKE_SOURCE_DIR}/data/icons/sizes")
 
@@ -24,8 +23,7 @@ function(build_icons dst_dir)
             break()
         elseif(NOT IS_DIRECTORY "${SRC_DIR}/${SIZE}")
             message(
-                FATAL_ERROR "No ${SIZE} icon size in \"${SRC_DIR}\""
-            )
+                FATAL_ERROR "No ${SIZE} icon size in \"${SRC_DIR}\"")
         endif()
     endforeach()
 
@@ -62,14 +60,14 @@ function(build_icons dst_dir)
             add_custom_command(
                 OUTPUT "${DST_FILE}"
                 COMMAND
-                    ${CMAKE_COMMAND} -E copy
+                    "${CMAKE_COMMAND}" -E copy
                     "${SRC_FILE}" "${DST_FILE}"
                 DEPENDS "${SRC_FILE}"
-                VERBATIM
-            )
+                VERBATIM)
+
             list(APPEND TARGET_DEPENDENCIES "${DST_FILE}")
         endforeach()
     endforeach()
 
-    add_custom_target("icons" ALL DEPENDS ${TARGET_DEPENDENCIES})
+    add_custom_target(icons ALL DEPENDS ${TARGET_DEPENDENCIES})
 endfunction()

@@ -20,13 +20,11 @@ set(
     main.cpp
     main_window.cpp
     status_indicator.cpp
-    utils.cpp
-)
+    utils.cpp)
 
 if(WIN32)
     add_subdirectory(
-        ../windows_rc ${CMAKE_BINARY_DIR}/src/ui/windows_rc
-    )
+        ../windows_rc "${CMAKE_BINARY_DIR}/src/ui/windows_rc")
     list(APPEND SRCS $<TARGET_OBJECTS:windows_rc>)
 endif()
 
@@ -34,8 +32,7 @@ if(DPSO_QT_VERSION EQUAL 4)
     find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 elseif(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
     find_package(
-        Qt${DPSO_QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets
-    )
+        Qt${DPSO_QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets)
 else()
     message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
 endif()
@@ -43,30 +40,26 @@ endif()
 # Add libraries early to avoid AUTOMOC
 if(NOT TARGET ui_common)
     add_subdirectory(
-        ../ui_common ${CMAKE_BINARY_DIR}/src/ui/ui_common
-    )
+        ../ui_common "${CMAKE_BINARY_DIR}/src/ui/ui_common")
 endif()
 
 if(NOT TARGET ui_taskbar)
     add_subdirectory(
-        ../ui_taskbar ${CMAKE_BINARY_DIR}/src/ui/ui_taskbar
-    )
+        ../ui_taskbar "${CMAKE_BINARY_DIR}/src/ui/ui_taskbar")
 endif()
 
 if(NOT TARGET dpso)
-    add_subdirectory(../../dpso ${CMAKE_BINARY_DIR}/src/dpso)
+    add_subdirectory(../../dpso "${CMAKE_BINARY_DIR}/src/dpso")
 endif()
 
 if(NOT TARGET dpso_intl)
     add_subdirectory(
-        ../../dpso_intl ${CMAKE_BINARY_DIR}/src/dpso_intl
-    )
+        ../../dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
 endif()
 
 if(NOT TARGET dpso_utils)
     add_subdirectory(
-        ../../dpso_utils ${CMAKE_BINARY_DIR}/src/dpso_utils
-    )
+        ../../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -84,8 +77,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
 
     target_compile_options(
         dpscreenocr_qt
-        PRIVATE -std=c++${CPP_STANDARD} -Wall -Wextra -pedantic
-    )
+        PRIVATE -std=c++${CPP_STANDARD} -Wall -Wextra -pedantic)
 
     unset(CPP_STANDARD)
 endif()
@@ -94,19 +86,16 @@ set_target_properties(
     dpscreenocr_qt
     PROPERTIES
     OUTPUT_NAME "dpscreenocr"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-)
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     # Hide console window.
     set_target_properties(
-        dpscreenocr_qt PROPERTIES WIN32_EXECUTABLE TRUE
-    )
+        dpscreenocr_qt PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
 target_link_libraries(
-    dpscreenocr_qt ui_common ui_taskbar dpso dpso_intl dpso_utils
-)
+    dpscreenocr_qt ui_common ui_taskbar dpso dpso_intl dpso_utils)
 
 if(DPSO_QT_VERSION EQUAL 4)
     target_link_libraries(dpscreenocr_qt Qt4::QtCore Qt4::QtGui)
@@ -115,8 +104,7 @@ else()
         dpscreenocr_qt
         Qt${DPSO_QT_VERSION}::Core
         Qt${DPSO_QT_VERSION}::Gui
-        Qt${DPSO_QT_VERSION}::Widgets
-    )
+        Qt${DPSO_QT_VERSION}::Widgets)
 endif()
 
 # See https://bugreports.qt.io/browse/QTBUG-33775. This bug doesn't
@@ -127,20 +115,17 @@ if(UNIX
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
     target_compile_definitions(
         dpscreenocr_qt
-        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1
-    )
+        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1)
 
     find_package(Qt5X11Extras REQUIRED)
     target_link_libraries(dpscreenocr_qt Qt5::X11Extras)
 
     find_package(X11 REQUIRED)
     target_include_directories(
-        dpscreenocr_qt PRIVATE ${X11_INCLUDE_DIR}
-    )
+        dpscreenocr_qt PRIVATE ${X11_INCLUDE_DIR})
     target_link_libraries(dpscreenocr_qt ${X11_LIBRARIES})
 else()
     target_compile_definitions(
         dpscreenocr_qt
-        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=0
-    )
+        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=0)
 endif()

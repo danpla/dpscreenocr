@@ -9,23 +9,20 @@ if(UNIX)
         APPEND PLATFORM_SRCS
         exec_posix.cpp
         os_unix.cpp
-        unix_utils.cpp
-    )
+        unix_utils.cpp)
 endif()
 
 if(UNIX AND NOT APPLE)
     list(
         APPEND PLATFORM_SRCS
-        user_dirs_unix_xdg.cpp
-    )
+        user_dirs_unix_xdg.cpp)
 elseif(WIN32)
     list(
         APPEND PLATFORM_SRCS
         exec_windows.cpp
         os_windows.cpp
         user_dirs_windows.cpp
-        windows_utils.cpp
-    )
+        windows_utils.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
@@ -40,24 +37,21 @@ add_library(
     os.cpp
     str_format.cpp
 
-    ${PLATFORM_SRCS}
-)
+    ${PLATFORM_SRCS})
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpso_utils PRIVATE -std=c++11 -Wall -Wextra -pedantic
-    )
+        dpso_utils PRIVATE -std=c++11 -Wall -Wextra -pedantic)
 endif()
 
 set_target_properties(
     dpso_utils
-    PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-)
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 target_include_directories(dpso_utils PRIVATE . PUBLIC ..)
 
 if(NOT TARGET dpso)
-    add_subdirectory(../dpso ${CMAKE_BINARY_DIR}/src/dpso)
+    add_subdirectory(../dpso "${CMAKE_BINARY_DIR}/src/dpso")
 endif()
 target_link_libraries(dpso_utils dpso)

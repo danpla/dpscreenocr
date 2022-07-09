@@ -4,37 +4,42 @@ if(NOT PANDOC_EXE)
     message(SEND_ERROR "pandoc not found")
 endif()
 
-function(gen_html_manual target_name dst_dir)
+function(gen_html_manual dst_dir)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
     set(DST_HTML "${dst_dir}/manual.html")
 
     configure_file(
         "${DOC_DIR}/manual-metadata.yaml.in"
         "${CMAKE_BINARY_DIR}/manual-metadata.yaml"
-        @ONLY
-    )
-
-    separate_arguments(
-        PANDOC_ARGS
-        UNIX_COMMAND
-        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --template=\"${DOC_DIR}/manual-data/template.html\" --output=\"${DST_HTML}\" --toc --number-sections \"${CMAKE_BINARY_DIR}/manual-metadata.yaml\" \"${DOC_DIR}/manual.md\""
-    )
+        @ONLY)
 
     add_custom_command(
         OUTPUT "${DST_HTML}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}"
-        COMMAND "${PANDOC_EXE}" ${PANDOC_ARGS}
-        DEPENDS "${DOC_DIR}/manual.md" "${CMAKE_BINARY_DIR}/manual-metadata.yaml" "${DOC_DIR}/manual-data/template.html"
-        VERBATIM
-    )
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${dst_dir}"
+        COMMAND
+            "${PANDOC_EXE}"
+            "--from=markdown"
+            "--to=html5"
+            "--standalone"
+            "--css=manual-data/manual.css"
+            "--template=${DOC_DIR}/manual-data/template.html"
+            "--output=${DST_HTML}"
+            "--toc"
+            "--number-sections"
+            "${CMAKE_BINARY_DIR}/manual-metadata.yaml"
+            "${DOC_DIR}/manual.md"
+        DEPENDS
+            "${DOC_DIR}/manual.md"
+            "${CMAKE_BINARY_DIR}/manual-metadata.yaml"
+            "${DOC_DIR}/manual-data/template.html"
+        VERBATIM)
 
     file(
         GLOB
         SRC_DATA_FILES
         "${DOC_DIR}/manual-data/*.png"
         "${DOC_DIR}/manual-data/*.svg"
-        "${DOC_DIR}/manual-data/*.css"
-    )
+        "${DOC_DIR}/manual-data/*.css")
 
     set(DST_DATA_FILES)
     foreach(SRC_FILE ${SRC_DATA_FILES})
@@ -44,15 +49,12 @@ function(gen_html_manual target_name dst_dir)
 
         add_custom_command(
             OUTPUT "${DST_FILE}"
-            COMMAND ${CMAKE_COMMAND} -E copy "${SRC_FILE}" "${DST_FILE}"
+            COMMAND
+                "${CMAKE_COMMAND}" -E copy "${SRC_FILE}" "${DST_FILE}"
             DEPENDS "${SRC_FILE}"
-            VERBATIM
-        )
+            VERBATIM)
     endforeach()
 
     add_custom_target(
-        "${target_name}"
-        ALL
-        DEPENDS "${DST_HTML}" ${DST_DATA_FILES}
-    )
+        html_manual ALL DEPENDS "${DST_HTML}" ${DST_DATA_FILES})
 endfunction()

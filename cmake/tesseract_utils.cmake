@@ -9,8 +9,7 @@ function(get_tesseract_data_dir_name var)
     set(
         ${var}
         "tesseract${DPSO_TESSERACT_VERSION_MAJOR}_data"
-        PARENT_SCOPE
-    )
+        PARENT_SCOPE)
 endfunction()
 
 # Copy contents of tessdata directory.
@@ -34,9 +33,8 @@ function(copy_tessdata src_dir dst_dir)
     # shipped with the program.
     add_custom_command(
         OUTPUT "${dst_dir}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}"
-        VERBATIM
-    )
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${dst_dir}"
+        VERBATIM)
     list(APPEND TARGET_DEPENDENCIES "${dst_dir}")
 
     foreach(LANG ${ARG_LANGUAGES})
@@ -55,15 +53,13 @@ function(copy_tessdata src_dir dst_dir)
 
         add_custom_command(
             OUTPUT "${DST_FILE}"
-            COMMAND ${CMAKE_COMMAND} -E copy "${SRC_FILE}" "${DST_FILE}"
+            COMMAND
+                "${CMAKE_COMMAND}" -E copy "${SRC_FILE}" "${DST_FILE}"
             DEPENDS "${SRC_FILE}"
-            VERBATIM
-        )
+            VERBATIM)
 
         list(APPEND TARGET_DEPENDENCIES "${DST_FILE}")
     endforeach()
 
-    add_custom_target(
-        "tessdata_dir" ALL DEPENDS ${TARGET_DEPENDENCIES}
-    )
+    add_custom_target(tessdata_dir ALL DEPENDS ${TARGET_DEPENDENCIES})
 endfunction()

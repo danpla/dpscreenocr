@@ -1,8 +1,7 @@
 
 set(
     CPACK_PACKAGE_DESCRIPTION_SUMMARY
-    "Program to recognize text on screen"
-)
+    "Program to recognize text on screen")
 
 set(CPACK_PACKAGE_VERSION_MAJOR "${APP_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${APP_VERSION_MINOR}")
@@ -21,11 +20,9 @@ endif()
 configure_file(
     "${CMAKE_CURRENT_LIST_DIR}/cpack_options.cmake.in"
     "${CMAKE_BINARY_DIR}/cpack_options.cmake"
-    @ONLY
-)
+    @ONLY)
 set(
     CPACK_PROJECT_CONFIG_FILE
-    "${CMAKE_BINARY_DIR}/cpack_options.cmake"
-)
+    "${CMAKE_BINARY_DIR}/cpack_options.cmake")
 
 include(CPack)

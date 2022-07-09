@@ -18,17 +18,15 @@ add_library(ui_taskbar STATIC ${SRCS})
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        ui_taskbar PRIVATE -std=c++11 -Wall -Wextra -pedantic
-    )
+        ui_taskbar PRIVATE -std=c++11 -Wall -Wextra -pedantic)
 endif()
 
 target_include_directories(
     ui_taskbar
     PRIVATE .
-    PUBLIC .. "${CMAKE_CURRENT_BINARY_DIR}"
-)
+    PUBLIC .. "${CMAKE_CURRENT_BINARY_DIR}")
 
 if(NOT TARGET dpso)
-    add_subdirectory(../../dpso ${CMAKE_BINARY_DIR}/src/dpso)
+    add_subdirectory(../../dpso "${CMAKE_BINARY_DIR}/src/dpso")
 endif()
 target_link_libraries(ui_taskbar dpso)

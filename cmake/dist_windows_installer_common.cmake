@@ -29,8 +29,7 @@ set(CPACK_COMPONENT_REQUIRED_DESCRIPTION "${APP_NAME} ${APP_VERSION}")
 set(CPACK_COMPONENT_LOCALIZATION_DISPLAY_NAME "Translations")
 set(
     CPACK_COMPONENT_LOCALIZATION_DESCRIPTION
-    "Translations for the user interface. Without this, ${APP_NAME} will only be available in English."
-)
+    "Translations for the user interface. Without this, ${APP_NAME} will only be available in English.")
 
 set(CPACK_PACKAGE_EXECUTABLES "${APP_FILE_NAME}" "${APP_NAME}")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "${APP_NAME}")

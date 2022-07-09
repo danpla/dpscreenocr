@@ -57,15 +57,13 @@ foreach(SIZE ${SIZES})
         # We thus need to skip 4 parent directories to get to the
         # "share" dir.
         COMMAND
-            ${CMAKE_COMMAND} -E create_symlink
+            "${CMAKE_COMMAND}" -E create_symlink
             "../../../../@APP_FILE_NAME@/icons/${SIZE}/${FILE_NAME}"
-            "${SYMLINK_PATH}"
-    )
+            "${SYMLINK_PATH}")
 
     file(
         INSTALL
         FILES "${SYMLINK_PATH}"
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/@CMAKE_INSTALL_DATADIR@/icons/hicolor/${DST_SIZE_DIR}/apps"
-    )
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/@CMAKE_INSTALL_DATADIR@/icons/hicolor/${DST_SIZE_DIR}/apps")
     file(REMOVE "${SYMLINK_PATH}")
 endforeach()

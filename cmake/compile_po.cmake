@@ -12,7 +12,7 @@ endif()
 # The full path of a MO file will be:
 #
 #   dst_dir/{LANGUAGE}/LC_MESSAGES/${mo_name}.mo
-function(compile_po target_name dst_dir mo_name)
+function(compile_po dst_dir mo_name)
     set(MO_FILES)
     get_linguas(LANGS)
     foreach(LANG ${LANGS})
@@ -23,14 +23,13 @@ function(compile_po target_name dst_dir mo_name)
         add_custom_command(
             OUTPUT "${MO_FILE}"
             # msgfmt doesn't create intermediate directories.
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${MO_DIR}"
+            COMMAND "${CMAKE_COMMAND}" -E make_directory "${MO_DIR}"
             COMMAND "${MSGFMT_EXE}" -o "${MO_FILE}" "${PO_FILE}"
             DEPENDS "${PO_FILE}"
-            VERBATIM
-        )
+            VERBATIM)
 
         list(APPEND MO_FILES "${MO_FILE}")
     endforeach()
 
-    add_custom_target("${target_name}" ALL DEPENDS ${MO_FILES})
+    add_custom_target(mo_files ALL DEPENDS ${MO_FILES})
 endfunction()

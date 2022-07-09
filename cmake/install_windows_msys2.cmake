@@ -5,19 +5,22 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.16)
     configure_file(
         "${CMAKE_CURRENT_LIST_DIR}/install_windows_msys2_copy_dlls.cmake.in"
         "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
-        @ONLY
-    )
+        @ONLY)
 
     add_custom_target(
-        "copy_dlls"
+        copy_dlls
         ALL
         COMMENT "Copying DLLs"
-        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
-    )
+        COMMAND
+            "${CMAKE_COMMAND}" -P
+            "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
+        VERBATIM)
 
-    add_dependencies("copy_dlls" "${APP_FILE_NAME}_${DPSO_UI}")
+    add_dependencies(copy_dlls "${APP_FILE_NAME}_${DPSO_UI}")
 else()
-    message(WARNING "DLLs are not copied automatically because CMake version is < 3.16")
+    message(
+        WARNING
+        "DLLs are not copied automatically because CMake version is < 3.16")
 endif()
 
 include(tesseract_utils)
@@ -27,8 +30,7 @@ if(TESSERACT_DATA_DIR_NAME)
         "$ENV{MINGW_PREFIX}/share/tessdata"
         "${CMAKE_BINARY_DIR}/${TESSERACT_DATA_DIR_NAME}"
         LANGUAGES eng
-        OPTIONAL
-    )
+        OPTIONAL)
 endif()
 
 if(DPSO_UI STREQUAL "qt")
@@ -36,8 +38,7 @@ if(DPSO_UI STREQUAL "qt")
 
     copy_qt_windows_plugins(
         "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/plugins"
-        "${CMAKE_BINARY_DIR}"
-    )
+        "${CMAKE_BINARY_DIR}")
 
     if(DPSO_ENABLE_NLS)
         include(get_linguas)
@@ -47,7 +48,6 @@ if(DPSO_UI STREQUAL "qt")
             "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/translations"
             "${CMAKE_BINARY_DIR}/translations"
             LANGUAGES ${LANGS}
-            COMPONENTS qt qtbase
-        )
+            COMPONENTS qt qtbase)
     endif()
 endif()

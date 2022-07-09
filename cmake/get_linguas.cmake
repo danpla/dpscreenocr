@@ -3,8 +3,7 @@
 function(get_linguas languages)
     file(
         STRINGS "${CMAKE_SOURCE_DIR}/po/LINGUAS" LANGS
-        REGEX "^[^#].*"
-    )
+        REGEX "^[^#].*")
 
     set(${languages} ${LANGS} PARENT_SCOPE)
 endfunction()
