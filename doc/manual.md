@@ -75,7 +75,7 @@ install other languages, visit the [Languages][Language packs] page,
 download ".traineddata" files you want, and place them in the
 `C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data`
 folder. To quickly navigate to this folder, press Windows + R to open
-"Run" and paste `%LOCALDATA%\dpscreenocr\tesseract5_data`. You can
+"Run" and paste `%LOCALAPPDATA%\dpscreenocr\tesseract5_data`. You can
 also paste this path to the folder address bar of File Explorer.
 
 
