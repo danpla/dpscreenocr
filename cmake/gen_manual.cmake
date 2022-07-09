@@ -1,11 +1,5 @@
 
-find_program(
-    PANDOC_EXE pandoc
-    # Allow to put pandoc.exe in the build directory. Makes life
-    # simpler when building on Windows with MSYS2, as MSYS2 doesn't
-    # inherit system PATH by default.
-    PATHS "${CMAKE_BINARY_DIR}"
-)
+find_program(PANDOC_EXE pandoc)
 if(NOT PANDOC_EXE)
     message(SEND_ERROR "pandoc not found")
 endif()
