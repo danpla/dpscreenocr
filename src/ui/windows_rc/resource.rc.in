@@ -22,7 +22,7 @@ BEGIN
       // (RM_PROCESS_INFO::strAppName) that installers use to get the
       // names of running applications that need to be closed before
       // installing an update.
-      VALUE "FileDescription", "@APP_NAME@ - Program to recognize text on screen"
+      VALUE "FileDescription", "@APP_NAME@ - @APP_DESCRIPTION@"
       VALUE "FileVersion", "@APP_VERSION@"
       VALUE "InternalName", "@APP_FILE_NAME@"
       VALUE "LegalCopyright", "Copyright (c) @APP_COPYRIGHT_YEAR@ @APP_AUTHOR@"

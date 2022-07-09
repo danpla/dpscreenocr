@@ -19,6 +19,8 @@ set(
     APP_VERSION
     "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_PATCH}")
 
+set(APP_DESCRIPTION "Program to recognize text on screen")
+
 set(APP_AUTHOR "Daniel Plakhotich")
 set(APP_COPYRIGHT_YEAR "2019-2022")
 set(APP_URL "https://danpla.github.io/dpscreenocr/")
