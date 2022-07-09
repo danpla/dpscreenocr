@@ -1,4 +1,3 @@
-
 1.1.0 (2022-??-??)
 ==================
 
@@ -32,8 +31,11 @@
     close the program
   * "Save history" file dialog can now be native when using Qt 4
 * Unix:
-  * Program was moved from "Utility" to "Graphics" menu to comply with
-    the freedesktop.org standard
+  * Program is now relocatable, e.g. it now loads resources from paths
+    relative to the location of the executable, rather than from
+    absolute paths based on the installation prefix
+  * Moved from "Utility" to "Graphics" menu to comply with the
+    freedesktop.org standard
 * X11:
   * "Copy to clipboard" no longer sets text to the PRIMARY clipboard
   * Fixed taking images in 30-bit depth
@@ -42,10 +44,10 @@
   * Installer now allows local installation, e.g. for users without
     administrator rights
   * Tesseract language files are now stored in
-    "C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data"
+    "C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data".
   * Enabled native interface theme
   * App now shows progress in the background of the taskbar button
-  * Updated Tesseract to 5.1.0
+  * Updated Tesseract to 5.2.0
   * (Windows 10 version 1903 and newer) Added a workaround for
     Tesseract that fixes an empty language list when the application
     resides in a path containing Unicode symbols not supported by the
@@ -56,19 +58,31 @@
   * "Run executable" no longer executes a batch file if its name has
     trailing spaces or upper-case characters in the extension
 * settings.cfg:
-  * Added ui_tray_icon_visible, ui_window_minimize_on_start, and
-    ui_window_minimize_to_tray options
-  * Removed action_run_executable_wait_to_complete; waiting is now
-    always enabled
-  * Removed ui_native_file_dialogs
-  * ocr_dump_debug_image was replaced by the DPSO_DUMP_DEBUG_IMAGE
-    environment variable
+  * New options:
+    * ui_tray_icon_visible
+    * ui_window_minimize_on_start
+    * ui_window_minimize_to_tray
+  * Removed options:
+    * action_run_executable_wait_to_complete; waiting is now always
+      enabled
+    * ocr_dump_debug_image was replaced by the DPSO_DUMP_DEBUG_IMAGE
+      environment variable
+    * ui_native_file_dialogs
   * Fixed extra double quote in strings loaded from quoted text with
     unescaped trailing backslash, e.g. "A\" in CFG is now properly
     loaded as A instead of A"
-* New translations: Bulgarian, Catalan, Chinese (Simplified),
-  Croatian, German, Norwegian Bokmål, Polish, Spanish, Turkish, and
-  Ukrainian
+* New translations:
+  * Bulgarian
+  * Catalan
+  * Chinese (Simplified)
+  * Croatian
+  * French
+  * German
+  * Norwegian Bokmål
+  * Polish
+  * Spanish
+  * Turkish
+  * Ukrainian
 * Added support for building with Tesseract 5 and Qt 6
 * CMake:
   * Removed DPSO_COMPILE_PO in favor of DPSO_ENABLE_NLS
