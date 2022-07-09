@@ -4,7 +4,6 @@ if(NOT PANDOC_EXE)
     message(SEND_ERROR "pandoc not found")
 endif()
 
-
 function(gen_html_manual target_name dst_dir)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
     set(DST_HTML "${dst_dir}/manual.html")
@@ -18,14 +17,14 @@ function(gen_html_manual target_name dst_dir)
     separate_arguments(
         PANDOC_ARGS
         UNIX_COMMAND
-        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --template=\"${DOC_DIR}/manual-data/template.html\" --output=\"${DST_HTML}\" --toc --number-sections \"${CMAKE_BINARY_DIR}/manual-metadata.yaml\" \"${DOC_DIR}/manual.md\"  "
+        "--from=markdown --to=html5 --standalone --css=manual-data/manual.css --template=\"${DOC_DIR}/manual-data/template.html\" --output=\"${DST_HTML}\" --toc --number-sections \"${CMAKE_BINARY_DIR}/manual-metadata.yaml\" \"${DOC_DIR}/manual.md\""
     )
 
     add_custom_command(
         OUTPUT "${DST_HTML}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_dir}"
         COMMAND "${PANDOC_EXE}" ${PANDOC_ARGS}
-        DEPENDS "${DOC_DIR}/manual.md" "${CMAKE_BINARY_DIR}/manual-metadata.yaml" "${DOC_DIR}/manual-data/manual.css" "${DOC_DIR}/manual-data/template.html"
+        DEPENDS "${DOC_DIR}/manual.md" "${CMAKE_BINARY_DIR}/manual-metadata.yaml" "${DOC_DIR}/manual-data/template.html"
         VERBATIM
     )
 
