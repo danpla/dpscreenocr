@@ -5,7 +5,7 @@
 
 # About dpScreenOCR
 
-dpScreenOCR is a free and open-source program to recognize text on
+dpScreenOCR is a free and open-source program to recognize text on the
 screen. Powered by [Tesseract][], it supports more than 100 languages
 and can split independent text blocks, e.g. columns.
 
@@ -179,8 +179,9 @@ the translation as a desktop notification.
 
 ##### Batch files
 
-dpScreenOCR doesn't run batch files (".bat" or ".cmd") for security
-reasons. Please use Python or any other scripting language instead.
+dpScreenOCR doesn't run batch files (".bat" or ".cmd") because there's
+no way to safely pass them arbitrary text. Please use Python or any
+other scripting language instead.
 
 
 ##### Creating file associations
@@ -235,13 +236,13 @@ read [Using Python on Windows][].
 
 Most scripting language interpreters for Windows are shipped with a
 special version of the executable that doesn't show the console
-window. For example, it's pythonw.exe for Python and wlua.exe for Lua.
+window. For example, it's pyw.exe for Python and wlua.exe for Lua.
 
 A special file association is usually added during installation of the
 interpreter, so you can hide the console window by simply changing the
 extension of the script. For example, Python scripts with the ".pyw"
-extension are associated with pythonw.exe instead of python.exe. Other
-languages may have their own conventions, like ".wlua" for Lua
+extension are associated with pyw.exe instead of py.exe. Other
+languages can have their own conventions, like ".wlua" for Lua
 (wlua.exe). If such an association does not exist, create it manually
 as described in the previous section.
 
@@ -274,37 +275,32 @@ can find it in the following directories:
 
 *   Unix-like systems: `~/.config/dpscreenocr`
 
-Each line in settings.cfg contains an option in the form of key-value
-pair. To reset an option to the default value, remove it from the
-file; to reset all options, clear or delete the file. Be aware that
+Each line in settings.cfg contains an option as a key-value pair. A
+value is a string, which, depending on the option, should represent a
+boolean (`true` or `false`), number (like `10` or `-5`), file path,
+arbitrary text, etc.
+
+You can enclose the string in double quotes to preserve leading or
+trailing whitespace characters, or if the text itself begins and ends
+with a double quote. Strings can contain the following escape
+sequences:
+
+*   `\b` - backspace
+*   `\f` - form feed
+*   `\n` - line feed
+*   `\r` - carriage return
+*   `\t` - tabulation
+
+Any other character preceded by `\` is kept as is. Escaping a
+tabulation is optional.
+
+To reset an option to the default value, remove it from settings.cfg;
+to reset all options, clear or delete the file. Be aware that
 dpScreenOCR rewrites settings on exit, so make sure you close the
 program before making changes.
 
-A value can be one of the following types:
-
-*   String - a sequence of characters.
-
-    Enclose a string in double quotes to preserve leading or trailing
-    whitespace characters, or if the text itself begins and ends with
-    a double quote.
-
-    Strings can contain the following escape sequences:
-
-    * `\b` - backspace
-    * `\f` - form feed
-    * `\n` - line feed
-    * `\r` - carriage return
-    * `\t` - tabulation
-
-    Any other character preceded by `\` is inserted as is. Escaping a
-    tabulation is optional.
-
-*   Boolean: `true` or `false`.
-
-*   Number, like `10` or `-5`.
-
-Here is the list of all options that can only be changed by editing
-the settings file:
+Here is the list of options that can only be changed by editing the
+settings file:
 
 *   `action_copy_to_clipboard_text_separator` (`\n\n` by default)
     specify the separator for multiple texts for "Copy text to
@@ -376,7 +372,7 @@ here, please report the problem on the [issue tracker][].
       a proper [shebang][].
 
     * (Windows) Are you trying to use a batch file (".bat" or ".cmd")?
-      This is not allowed for security reasons. Please use Python or
+      This is not allowed for safety reasons. Please use Python or
       another scripting language instead.
 
 *   **(Unix) Recognition is very slow**
