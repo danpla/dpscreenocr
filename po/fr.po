@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-07-12 22:18+0300\n"
-"PO-Revision-Date: 2022-07-12 19:18+0000\n"
+"PO-Revision-Date: 2022-07-13 23:18+0000\n"
 "Last-Translator: Mak Greg <makgreg@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/fr/>\n"
@@ -547,7 +547,7 @@ msgstr "Licences tierces"
 
 #: src/ui/qt/about.cpp:124 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
-msgstr "Programme de reconnaissance du texte à l'écran"
+msgstr "Programme de reconnaissance de texte à l'écran"
 
 #: src/ui/qt/action_chooser.cpp:23
 msgid "Copy text to clipboard"
@@ -669,7 +669,7 @@ msgstr "Afficher {app_name}"
 
 #: src/ui/qt/main_window.cpp:440
 msgid "Status"
-msgstr "État"
+msgstr "Statut"
 
 #: src/ui/qt/main_window.cpp:450
 msgid "Character recognition"
