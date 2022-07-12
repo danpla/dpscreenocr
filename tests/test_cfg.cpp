@@ -1,5 +1,6 @@
 
 #include <cerrno>
+#include <climits>
 #include <cstdio>
 #include <cstring>
 #include <initializer_list>
@@ -339,12 +340,12 @@ static void testValueOverridingOnLoad(DpsoCfg* cfg)
 }
 
 
-static void testValueParsing(DpsoCfg* cfg)
+static void testStrValueParsing(DpsoCfg* cfg)
 {
     struct Test {
         const char* key;
-        const char* valueInFile;
-        const char* expectedValue;
+        const char* valInFile;
+        const char* expectedVal;
     };
 
     const Test tests[] = {
@@ -385,9 +386,36 @@ static void testValueParsing(DpsoCfg* cfg)
     for (const auto& test : tests) {
         loadCfgData(
             cfg,
-            (std::string{test.key} + " " + test.valueInFile).c_str());
-        testGetStr(
-            cfg, test.key, test.expectedValue, "default value");
+            (std::string{test.key} + " " + test.valInFile).c_str());
+        testGetStr(cfg, test.key, test.expectedVal, "default value");
+    }
+}
+
+
+static void testIntValueParsing(DpsoCfg* cfg)
+{
+    struct Test {
+        const char* key;
+        const char* valInFile;
+        int expectedVal;
+        int defaultVal;
+    };
+
+    const Test tests[] = {
+        {"int_minus_0", "-0", 0, 1},
+        {"int_123", "123", 123, 0},
+        {"int_minus_123", "-123", -123, 0},
+        {"int_too_big", "999999999999999999999999", INT_MAX, 0},
+        {"int_too_small", "-999999999999999999999999", INT_MIN, 0},
+        {"int_leading_0x", "0x01", 5, 5},
+        {"int_leading_0", "012", 12, 1},
+    };
+
+    for (const auto& test : tests) {
+        loadCfgData(
+            cfg,
+            (std::string{test.key} + " " + test.valInFile).c_str());
+        testGetInt(cfg, test.key, test.expectedVal, test.defaultVal);
     }
 }
 
@@ -452,7 +480,8 @@ static void testCfg()
     getHotkey(cfg.get());
 
     testValueOverridingOnLoad(cfg.get());
-    testValueParsing(cfg.get());
+    testStrValueParsing(cfg.get());
+    testIntValueParsing(cfg.get());
 
     testKeyValidity(cfg.get());
     testKeyCaseInsensitivity(cfg.get());

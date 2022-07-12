@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cerrno>
+#include <climits>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -328,6 +329,12 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
         for (; *end; ++end)
             if (!std::isspace(*end))
                 return defaultVal;
+
+        if (result >= INT_MAX)
+            return INT_MAX;
+
+        if (result <= INT_MIN)
+            return INT_MIN;
 
         return result;
     }
