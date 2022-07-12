@@ -420,6 +420,32 @@ static void testIntValueParsing(DpsoCfg* cfg)
 }
 
 
+static void testBoolValueParsing(DpsoCfg* cfg)
+{
+    struct Test {
+        const char* key;
+        const char* valInFile;
+        bool expectedVal;
+        bool defaultVal;
+    };
+
+    const Test tests[] = {
+        {"bool_True", "True", true, false},
+        {"bool_TRUE", "TRUE", true, false},
+        {"bool_TRUE_x", "TRUE x", false, false},
+        {"bool_False", "False", false, true},
+        {"bool_FALSE", "FALSE", false, true},
+    };
+
+    for (const auto& test : tests) {
+        loadCfgData(
+            cfg,
+            (std::string{test.key} + " " + test.valInFile).c_str());
+        testGetInt(cfg, test.key, test.expectedVal, test.defaultVal);
+    }
+}
+
+
 static void testKeyValidity(DpsoCfg* cfg)
 {
     struct Test {
@@ -482,6 +508,7 @@ static void testCfg()
     testValueOverridingOnLoad(cfg.get());
     testStrValueParsing(cfg.get());
     testIntValueParsing(cfg.get());
+    testBoolValueParsing(cfg.get());
 
     testKeyValidity(cfg.get());
     testKeyCaseInsensitivity(cfg.get());
