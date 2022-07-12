@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-06-24 05:07+0300\n"
+"POT-Creation-Date: 2022-07-12 22:18+0300\n"
 "PO-Revision-Date: 2022-06-29 17:19+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -526,47 +526,47 @@ msgstr "Jidiš"
 msgid "Yoruba"
 msgstr "Joruba"
 
-#: src/ui/qt/about.cpp:50
+#: src/ui/qt/about.cpp:53
 msgid "Website"
 msgstr "Web-stranica"
 
-#: src/ui/qt/about.cpp:56
+#: src/ui/qt/about.cpp:63
 msgid "User manual"
 msgstr "Korisnički priručnik"
 
-#: src/ui/qt/about.cpp:58
+#: src/ui/qt/about.cpp:67
 msgid "Changelog"
 msgstr "Dnevnik promjena"
 
-#: src/ui/qt/about.cpp:60 src/ui/qt/about.cpp:68
+#: src/ui/qt/about.cpp:69
 msgid "License"
 msgstr "Licenca"
 
-#: src/ui/qt/about.cpp:65
+#: src/ui/qt/about.cpp:75
 msgid "Third-party licenses"
 msgstr "Licence trećih strana"
 
-#: src/ui/qt/about.cpp:117 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:124 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
 msgstr "Program za prepoznavanje teksta na ekranu"
 
-#: src/ui/qt/action_chooser.cpp:24
+#: src/ui/qt/action_chooser.cpp:23
 msgid "Copy text to clipboard"
 msgstr "Kopiraj tekst u međuspremnik"
 
-#: src/ui/qt/action_chooser.cpp:25
+#: src/ui/qt/action_chooser.cpp:24
 msgid "Add text to history"
 msgstr "Dodaj tekst u kronologiju"
 
-#: src/ui/qt/action_chooser.cpp:27
+#: src/ui/qt/action_chooser.cpp:26
 msgid "Run executable:"
 msgstr "Pokreni izvršnu datoteku:"
 
-#: src/ui/qt/action_chooser.cpp:29
+#: src/ui/qt/action_chooser.cpp:28
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "Pokreni izvršnu datoteku s prepoznatim tekstom kao prvim argumentom"
 
-#: src/ui/qt/action_chooser.cpp:73
+#: src/ui/qt/action_chooser.cpp:72
 msgid "Choose an executable"
 msgstr "Odaberi izvršnu datoteku"
 
@@ -578,7 +578,7 @@ msgstr "Izvezi …"
 msgid "Clear…"
 msgstr "Isprazni …"
 
-#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:180
+#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:178
 msgid "History"
 msgstr "Kronologija"
 
@@ -598,7 +598,7 @@ msgstr "Sve datoteke"
 msgid "Clear the history?"
 msgstr "Isprazniti kronologiju?"
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:249
+#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:247
 msgid "Cancel"
 msgstr "Odustani"
 
@@ -621,73 +621,73 @@ msgctxt "language"
 msgid "Code"
 msgstr "Kȏd"
 
-#: src/ui/qt/main_window.cpp:178
+#: src/ui/qt/main_window.cpp:176
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Glavno"
 
-#: src/ui/qt/main_window.cpp:179
+#: src/ui/qt/main_window.cpp:177
 msgid "Actions"
 msgstr "Radnje"
 
-#: src/ui/qt/main_window.cpp:181
+#: src/ui/qt/main_window.cpp:179
 msgid "About"
 msgstr "Informacije"
 
-#: src/ui/qt/main_window.cpp:239
+#: src/ui/qt/main_window.cpp:237
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Prepoznavanje {progress} % ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:240
+#: src/ui/qt/main_window.cpp:238
 msgid "Please install languages"
 msgstr "Instaliraj jezike"
 
-#: src/ui/qt/main_window.cpp:241
+#: src/ui/qt/main_window.cpp:239
 msgid "Please select languages"
 msgstr "Odaberi jezike"
 
-#: src/ui/qt/main_window.cpp:243
+#: src/ui/qt/main_window.cpp:241
 msgid "Please select actions in the “Actions” tab"
 msgstr "Odaberi radnje u kartici „Radnje”"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:246
+#: src/ui/qt/main_window.cpp:244
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Spremno"
 
-#: src/ui/qt/main_window.cpp:248
+#: src/ui/qt/main_window.cpp:246
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Prepoznavanje još nije gotovo. Svejedno prekinuti?"
 
-#: src/ui/qt/main_window.cpp:250 src/ui/qt/main_window.cpp:435
+#: src/ui/qt/main_window.cpp:248 src/ui/qt/main_window.cpp:433
 msgid "Quit"
 msgstr "Prekini"
 
-#: src/ui/qt/main_window.cpp:427
+#: src/ui/qt/main_window.cpp:425
 msgid "Show {app_name}"
 msgstr "Prikaži {app_name}"
 
-#: src/ui/qt/main_window.cpp:442
+#: src/ui/qt/main_window.cpp:440
 msgid "Status"
 msgstr "Stanje"
 
-#: src/ui/qt/main_window.cpp:452
+#: src/ui/qt/main_window.cpp:450
 msgid "Character recognition"
 msgstr "Prepoznavanje znakova"
 
-#: src/ui/qt/main_window.cpp:456
+#: src/ui/qt/main_window.cpp:454
 msgid "Split text blocks"
 msgstr "Razdvoji tekstualne blokove"
 
-#: src/ui/qt/main_window.cpp:458
+#: src/ui/qt/main_window.cpp:456
 msgid "Split independent text blocks, e.g. columns"
 msgstr "Razdvoji samostalne tekstualne blokove, npr. stupce"
 
-#: src/ui/qt/main_window.cpp:461
+#: src/ui/qt/main_window.cpp:459
 msgid "Languages:"
 msgstr "Jezici:"
 
-#: src/ui/qt/main_window.cpp:465
+#: src/ui/qt/main_window.cpp:463
 msgid "Hotkey"
 msgstr "Tipkovnički prečac"
