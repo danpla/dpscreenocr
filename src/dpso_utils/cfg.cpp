@@ -15,23 +15,6 @@
 #include "os.h"
 
 
-// A config is a collection of key-value pairs in a text file. The
-// format is designed to be simple and human-friendly: the first word
-// of a line is a key, and the rest (with stripped whitespace) is a
-// value. Empty lines are ignored.
-//
-// If a value in the file is enclosed in double quotes, the quotes
-// will be removed. This allows to preserve leading and trailing
-// whitespace. Obviously, quoting is also necessary if the value
-// actually starts and ends with a double quote. In other cases
-// (including a value consisting of a single double quote) quoting
-// is optional.
-//
-// The characters \b, \f, \n, \r, and \t are escaped with a backslash.
-// Any other character preceded by \ is inserted as is. Escaping \t is
-// optional.
-
-
 struct DpsoCfg {
     struct KeyValue {
         std::string key;
@@ -73,87 +56,72 @@ static auto keyValuesLowerBound(
 }
 
 
-static void getKeyValueBounds(
-    const char* str,
-    const char*& keyBegin, const char*& keyEnd,
-    const char*& valueBegin, const char*& valueEnd)
+// Note that we use isblank() rather than isspace() because we only
+// care about spaces and tabs. With isspace(), we would also need to
+// handle \f and \v especially, either by adding the corresponding
+// escape sequences, or by wrapping a value in double quotes when it
+// begins or ends with such a character.
+static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 {
-    keyBegin = str;
-    while (std::isspace(*keyBegin))
+    const auto* keyBegin = str;
+    while (std::isblank(*keyBegin))
         ++keyBegin;
 
-    keyEnd = keyBegin;
-    while (*keyEnd && !std::isspace(*keyEnd))
+    const auto* keyEnd = keyBegin;
+    while (*keyEnd && !std::isblank(*keyEnd))
         ++keyEnd;
 
-    valueBegin = keyEnd;
-    while (std::isspace(*valueBegin))
+    kv.key.assign(keyBegin, keyEnd);
+
+    const auto* valueBegin = keyEnd;
+    while (std::isblank(*valueBegin))
         ++valueBegin;
 
-    valueEnd = valueBegin;
-    for (const auto* s = valueBegin; *s; ++s)
-        if (!std::isspace(*s))
-            valueEnd = s + 1;
-}
+    kv.value.clear();
 
+    // We will trim any unescaped trailing blanks. \ at the end is
+    // ignored, which allows to explicitly mark the end of the value
+    // instead of escaping its last space.
+    const auto* blanksBegin = valueBegin;
+    const auto* blanksEnd = blanksBegin;
 
-static void assignUnescaped(
-    std::string& str, const char* valueBegin, const char* valueEnd)
-{
-    str.clear();
+    for (const auto* s = valueBegin; *s;) {
+        if (std::isblank(*s)) {
+            if (s != blanksEnd)
+                blanksBegin = s;
 
-    for (const auto* s = valueBegin; s < valueEnd;) {
-        const auto c = *s++;
-        if (c != '\\') {
-            str += c;
+            blanksEnd = ++s;
             continue;
         }
 
-        if (s == valueEnd)
+        if (s == blanksEnd)
+            kv.value.append(blanksBegin, blanksEnd);
+
+        const auto c = *s++;
+        if (c != '\\') {
+            kv.value += c;
+            continue;
+        }
+
+        if (!*s)
             break;
 
         const auto e = *s++;
         switch (e) {
-            case 'b':
-                str += '\b';
-                break;
-            case 'f':
-                str += '\f';
-                break;
             case 'n':
-                str += '\n';
+                kv.value += '\n';
                 break;
             case 'r':
-                str += '\r';
+                kv.value += '\r';
                 break;
             case 't':
-                str += '\t';
+                kv.value += '\t';
                 break;
             default:
-                str += e;
+                kv.value += e;
                 break;
         }
     }
-}
-
-
-static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
-{
-    const char* keyBegin;
-    const char* keyEnd;
-    const char* valueBegin;
-    const char* valueEnd;
-    getKeyValueBounds(str, keyBegin, keyEnd, valueBegin, valueEnd);
-
-    if (valueEnd - valueBegin > 1
-            && *valueBegin == '"'
-            && valueEnd[-1] == '"') {
-        ++valueBegin;
-        --valueEnd;
-    }
-
-    kv.key.assign(keyBegin, keyEnd - keyBegin);
-    assignUnescaped(kv.value, valueBegin, valueEnd);
 }
 
 
@@ -165,6 +133,9 @@ static bool getLine(std::FILE* fp, std::string& line)
         const auto c = std::fgetc(fp);
         if (c == EOF)
             return !line.empty();
+
+        // We don't care about line ending formats (e.g. CRLF) since
+        // empty lines are ignored anyway.
         if (c == '\n' || c == '\r')
             break;
 
@@ -195,8 +166,9 @@ int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
         return false;
     }
 
+    std::string line;
     DpsoCfg::KeyValue kv;
-    for (std::string line; getLine(fp.get(), line);) {
+    while (getLine(fp.get(), line)) {
         parseKeyValue(line.c_str(), kv);
         if (!kv.key.empty())
             dpsoCfgSetStr(cfg, kv.key.c_str(), kv.value.c_str());
@@ -206,38 +178,18 @@ int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 }
 
 
-static bool needQuote(const std::string& str)
-{
-    if (str.empty())
-        return false;
-
-    // \t will be escaped
-    if (str.front() == ' ' || str.back() == ' ')
-        return true;
-
-    return str.size() > 1 && str.front() == '"' && str.back() == '"';
-}
-
-
 static void writeKeyValue(
     std::FILE* fp, const DpsoCfg::KeyValue& kv, int maxKeyLen)
 {
     std::fprintf(fp, "%-*s ", maxKeyLen, kv.key.c_str());
 
-    const auto quote = needQuote(kv.value);
-    if (quote)
-        std::fputc('"', fp);
+    if (!kv.value.empty() && kv.value.front() == ' ')
+        std::fputc('\\', fp);
 
     for (const auto* s = kv.value.c_str(); *s;) {
         const auto c = *s++;
 
         switch (c) {
-            case '\b':
-                std::fputs("\\b", fp);
-                break;
-            case '\f':
-                std::fputs("\\f", fp);
-                break;
             case '\n':
                 std::fputs("\\n", fp);
                 break;
@@ -256,8 +208,10 @@ static void writeKeyValue(
         }
     }
 
-    if (quote)
-        std::fputc('"', fp);
+    // If we have a single space, it's already escaped, but we still
+    // append \ to make the end visible.
+    if (!kv.value.empty() && kv.value.back() == ' ')
+        std::fputc('\\', fp);
 
     std::fputc('\n', fp);
 }
@@ -319,9 +273,25 @@ const char* dpsoCfgGetStr(
 }
 
 
+static bool isValidKey(const char* key)
+{
+    if (!*key)
+        return false;
+
+    for (const auto* s = key; *s; ++s)
+        if (std::isblank(*s) || *s == '\r' || *s == '\n')
+            return false;
+
+    return true;
+}
+
+
 void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
 {
     if (!cfg)
+        return;
+
+    if (!isValidKey(key))
         return;
 
     const auto iter = keyValuesLowerBound(cfg->keyValues, key);

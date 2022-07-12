@@ -13,18 +13,21 @@ extern "C" {
 
 
 /**
- * DpsoCfg is a collection of key-value pairs.
+ * DpsoCfg.
  *
- * Things to keep in mind:
+ * The format of the configuration file is designed to be simple and
+ * human-friendly. Each line contains a key-value pair; empty lines
+ * are ignored. The first word is a key, and the rest is a value.
+ * Spaces and tabs around both the key and the value are ignored. The
+ * value can have \n, \r, and \t escape sequences. Other characters
+ * preceded by \ are kept as is; \ at the end of the line is ignored.
+ * To preserve leading spaces, escape the first one; to preserve
+ * trailing spaces, either escape the last one or put \ after it at
+ * the end of the line (dpsoCfgSave() will do the latter).
  *
- *   * Keys must only consist of alphanumeric characters and an
- *     underscore.
- *
- *   * Values are stored as strings, and can act like variant types.
- *     For example, you can set a value as int, and then retrieve it
- *     as string. The opposite is also possible, as long as the string
- *     represents an integer; if not, a user-provided default is
- *     returned.
+ * Regarding the API, the file format implies that the key should not
+ * be empty or contain a space, \t, \r, or \n. The functions will do
+ * nothing on attempt to set such a key.
  */
 typedef struct DpsoCfg DpsoCfg;
 
@@ -99,9 +102,9 @@ void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val);
  * Get integer.
  *
  * The function returns the value of the config field key as int. If
- * the string is a valid integer, it's value is returned. If the
- * string is "true" or "false" (ignoring case), 1 or 0 is returned
- * respectively. Otherwise, defaultVal is returned.
+ * the string represents is a valid integer, it's value is returned.
+ * If the string is "true" or "false" (ignoring case), 1 or 0 is
+ * returned respectively. Otherwise, defaultVal is returned.
  */
 int dpsoCfgGetInt(
     const DpsoCfg* cfg, const char* key, int defaultVal);

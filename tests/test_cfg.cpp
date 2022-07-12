@@ -6,6 +6,7 @@
 #include <string>
 
 #include "dpso/dpso.h"
+#include "dpso/str.h"
 #include "dpso_utils/cfg.h"
 #include "dpso_utils/cfg_ext.h"
 
@@ -148,10 +149,37 @@ const std::initializer_list<BasicTypesTest> boolTests{
 };
 
 
+const std::string makeCfgKeyForChar(char c)
+{
+    return dpso::str::printf("str_char_%02hhx", c);
+}
+
+
+static void setStrByteChars(DpsoCfg* cfg)
+{
+    for (int c = 1; c < 256; ++c) {
+        const char val[2] = {static_cast<char>(c), 0};
+        dpsoCfgSetStr(cfg, makeCfgKeyForChar(c).c_str(), val);
+    }
+}
+
+
+static void getStrByteChars(const DpsoCfg* cfg)
+{
+    for (int c = 1; c < 256; ++c) {
+        const char val[2] = {static_cast<char>(c), 0};
+        testGetStr(
+            cfg, makeCfgKeyForChar(c).c_str(), val, "");
+    }
+}
+
+
 static void setBasicTypes(DpsoCfg* cfg)
 {
     for (const auto& test : strTests)
         dpsoCfgSetStr(cfg, test.key, test.strVal);
+
+    setStrByteChars(cfg);
 
     for (const auto& test : intTests)
         dpsoCfgSetInt(cfg, test.key, test.intVal);
@@ -173,6 +201,8 @@ static void getBasicTypes(const DpsoCfg* cfg)
     testGetBool(cfg, nonexistentKey, true, true);
     testGetBool(cfg, nonexistentKey, true, 5);
     testGetBool(cfg, nonexistentKey, true, -5);
+
+    getStrByteChars(cfg);
 
     for (const auto& tests : {strTests, intTests, boolTests})
         for (const auto& test : tests) {
@@ -309,13 +339,100 @@ static void testValueOverridingOnLoad(DpsoCfg* cfg)
 }
 
 
-static void testUnescapedBackslashAtEndOfQuotedString(DpsoCfg* cfg)
+static void testValueParsing(DpsoCfg* cfg)
 {
-    const std::string key =
-        "unescaped_backslash_at_end_of_quoted_string";
+    struct Test {
+        const char* key;
+        const char* valueInFile;
+        const char* expectedValue;
+    };
 
-    loadCfgData(cfg, (key + " \"a\\\"").c_str());
-    testGetStr(cfg, key.c_str(), "a", "");
+    const Test tests[] = {
+        {"space", " ", ""},
+        {"line_feed", "\n", ""},
+        {"carriage_return", "\r", ""},
+        {"tab", "\t", ""},
+        {"vertical_tab", "\v", "\v"},
+        {"backspace", "\b", "\b"},
+        {"form_feed", "\f", "\f"},
+        {"byte_x01", "\x01", "\x01"},
+        {"byte_xff", "\xff", "\xff"},
+        {"backslash_n", "\\n", "\n"},
+        {"backslash_r", "\\r", "\r"},
+        {"backslash_t", "\\t", "\t"},
+        {"backslash_v", "\\v", "v"},
+        {"backslash_b", "\\b", "b"},
+        {"backslash_f", "\\f", "f"},
+        {"backslash_a", "\\a", "a"},
+        {"double_quote", "\"", "\""},
+        {"two_double_quotes", "\"\"", "\"\""},
+        {"space_a", " a", "a"},
+        {"a_space", "a ", "a"},
+        {"backslash_space", "\\ ", " "},
+        {"backslash_space_space", "\\  ", " "},
+        {"backslash", "\\", ""},
+        {"backslash_newline", "\\\nkey value", ""},
+        {"backslash_backslash", "\\\\", "\\"},
+        {"backslash_space_backslash", "\\ \\", " "},
+        {"backslash_space_backslash_space", "\\ \\ ", "  "},
+        {"backslash_space_a", "\\ a", " a"},
+        {"a_space_backslash", "a \\", "a "},
+        {"backslash_space_a_space_backslash", "\\ a \\", " a "},
+        {"backslash_space_tab_space_backslash", "\\ \t \\", " \t "},
+
+    };
+
+    for (const auto& test : tests) {
+        loadCfgData(
+            cfg,
+            (std::string{test.key} + " " + test.valueInFile).c_str());
+        testGetStr(
+            cfg, test.key, test.expectedValue, "default value");
+    }
+}
+
+
+static void testKeyValidity(DpsoCfg* cfg)
+{
+    struct Test {
+        const char* key;
+        bool isValid;
+    };
+
+    const Test tests[] = {
+        {"", false},
+        {" ", false},
+        {" a", false},
+        {"a ", false},
+        {"a a", false},
+        {"\t", false},
+        {"\r", false},
+        {"\n", false},
+        {"\f", true},
+        {"\v", true},
+        {"\x01", true},
+    };
+
+    for (const auto& test : tests) {
+        dpsoCfgSetStr(cfg, test.key, "");
+        const auto wasSet = dpsoCfgKeyExists(cfg, test.key);
+        if (wasSet == test.isValid)
+            continue;
+
+        test::failure(
+            "testKeyValidity: \"%s\" key is expected to be %s and "
+            "%s be set\n",
+            test::utils::escapeStr(test.key).c_str(),
+            test.isValid ? "valid" : "invalid",
+            test.isValid ? "should" : "should not");
+    }
+}
+
+static void testKeyCaseInsensitivity(DpsoCfg* cfg)
+{
+    dpsoCfgSetStr(cfg, "Case_Insensitivity_TEST", "");
+    if (!dpsoCfgKeyExists(cfg, "case_insensitivity_test"))
+        test::failure("testKeyCaseInsensitivity failed\n");
 }
 
 
@@ -335,7 +452,10 @@ static void testCfg()
     getHotkey(cfg.get());
 
     testValueOverridingOnLoad(cfg.get());
-    testUnescapedBackslashAtEndOfQuotedString(cfg.get());
+    testValueParsing(cfg.get());
+
+    testKeyValidity(cfg.get());
+    testKeyCaseInsensitivity(cfg.get());
 }
 
 

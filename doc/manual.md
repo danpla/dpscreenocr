@@ -280,19 +280,15 @@ value is a string, which, depending on the option, should represent a
 boolean (`true` or `false`), number (like `10` or `-5`), file path,
 arbitrary text, etc.
 
-You can enclose the string in double quotes to preserve leading or
-trailing whitespace characters, or if the text itself begins and ends
-with a double quote. Strings can contain the following escape
-sequences:
+The value can contain the following escape sequences:
 
-*   `\b` - backspace
-*   `\f` - form feed
 *   `\n` - line feed
 *   `\r` - carriage return
 *   `\t` - tabulation
 
-Any other character preceded by `\` is kept as is. Escaping a
-tabulation is optional.
+Any other character preceded by `\` is kept as is. To preserve leading
+spaces, escape the first one with `\`; to preserve trailing spaces,
+either escape the last one or put `\` after it at the end of the line.
 
 To reset an option to the default value, remove it from settings.cfg;
 to reset all options, clear or delete the file. Be aware that

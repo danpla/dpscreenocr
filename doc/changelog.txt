@@ -68,9 +68,11 @@
     * ocr_dump_debug_image was replaced by the DPSO_DUMP_DEBUG_IMAGE
       environment variable
     * ui_native_file_dialogs
-  * Fixed extra double quote in strings loaded from quoted text with
-    unescaped trailing backslash, e.g. "A\" in CFG is now properly
-    loaded as A instead of A"
+  * Leading and trailing double quotes are no longer treated
+    especially; if you need to preserve leading and trailing spaces,
+    wrap the value in \ instead of double quotes. This change is not
+    backward compatible with version 1.0, but in practice it will only
+    affect the action_copy_to_clipboard_text_separator option.
 * New translations:
   * Bulgarian
   * Catalan
