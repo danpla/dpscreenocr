@@ -156,7 +156,12 @@ int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
     cfg->keyValues.clear();
 
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "r")};
+    // On Windows, reading in the text mode implies not only
+    // translation from CRLF to LF, but also terminating on 0x1a. In
+    // general, our file format allows using any byte values (even
+    // null) and doesn't require distinguishing between line ending
+    // styles, so don't use text mode for reading.
+    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return true;
