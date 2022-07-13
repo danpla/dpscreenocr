@@ -9,7 +9,7 @@
   * Fixed missing name for jpn_vert
   * jpn is no longer identified as vertical
   * Fixed missing "l" in "Cyrillic"
-* Added \ to the list of keys of the hotkey
+* Added \ to the list of keys for the hotkey
 * If there are multiple texts in the recognition queue, "Add text to
   history" and "Run executable" actions now process each text as it
   arrives instead of waiting for the entire chain
@@ -25,11 +25,11 @@
     * " and ' are no longer replaced by &quot and &apos
     * CSS: Reduced left text margin from 2 to 1 em and added 1 em
       right margin
-  * "Save history" file dialog now uses "History" as the default file
-    name instead of leaving it empty
-  * "Save history" file dialog now remembers the file name until you
+  * "Export history" file dialog now uses "History" as the default
+    file name instead of leaving it empty
+  * "Export history" file dialog now remembers the file name until you
     close the program
-  * "Save history" file dialog can now be native when using Qt 4
+  * "Export history" file dialog is now native when using Qt 4
 * Unix:
   * Program is now relocatable, e.g. it now loads resources from paths
     relative to the location of the executable, rather than from
@@ -44,7 +44,7 @@
   * Installer now allows local installation, e.g. for users without
     administrator rights
   * Tesseract language files are now stored in
-    "C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data".
+    "C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data"
   * Enabled native interface theme
   * App now shows progress in the background of the taskbar button
   * Updated Tesseract to 5.2.0
@@ -52,8 +52,8 @@
     Tesseract that fixes an empty language list when the application
     resides in a path containing Unicode symbols not supported by the
     current code page
-  * Default history export directory is now the user's home dir
-    instead of the executable's dir
+  * Default history export path is now the user's home directory
+    instead of the directory of the executable
   * "Run executable" no longer opens Explorer if the path is empty
   * "Run executable" no longer executes a batch file if its name has
     trailing spaces or upper-case characters in the extension
