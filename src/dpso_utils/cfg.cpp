@@ -72,7 +72,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
     while (*keyEnd && !std::isblank(*keyEnd))
         ++keyEnd;
 
-    kv.key.assign(keyBegin, keyEnd);
+    kv.key.assign(keyBegin, keyEnd - keyBegin);
 
     const auto* valueBegin = keyEnd;
     while (std::isblank(*valueBegin))
@@ -96,7 +96,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
         }
 
         if (s == blanksEnd)
-            kv.value.append(blanksBegin, blanksEnd);
+            kv.value.append(blanksBegin, blanksEnd - blanksBegin);
 
         const auto c = *s++;
         if (c != '\\') {
