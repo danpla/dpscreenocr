@@ -44,11 +44,15 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
         columnIdxCheckbox, QHeaderView::ResizeToContents);
     header()->setSectionResizeMode(
         columnIdxName, QHeaderView::Stretch);
+    header()->setSectionResizeMode(
+        columnIdxCode, QHeaderView::ResizeToContents);
     header()->setSectionsMovable(false);
     #else
     header()->setResizeMode(
         columnIdxCheckbox, QHeaderView::ResizeToContents);
     header()->setResizeMode(columnIdxName, QHeaderView::Stretch);
+    header()->setResizeMode(
+        columnIdxCode, QHeaderView::ResizeToContents);
     header()->setMovable(false);
     #endif
 
