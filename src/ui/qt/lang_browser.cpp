@@ -104,11 +104,11 @@ void LangBrowser::loadState(const DpsoCfg* cfg)
     blockSignals(false);
     setSortingEnabled(true);
 
-    const auto columnIdx = qBound(
-        static_cast<int>(columnIdxName),
+    const auto columnIdx = qBound<int>(
+        columnIdxName,
         dpsoCfgGetInt(
             cfg, cfgKeyUiLanguagesSortColumn, columnIdxName),
-        static_cast<int>(columnIdxCode));
+        columnIdxCode);
 
     Qt::SortOrder sortOrder;
     if (dpsoCfgGetBool(cfg, cfgKeyUiLanguagesSortDescending, false))
