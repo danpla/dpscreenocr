@@ -147,6 +147,14 @@ static bool getLine(std::FILE* fp, std::string& line)
 }
 
 
+// Our file format allows using any byte values, so we don't use the
+// text mode (i.e. fopen() without the "b" flag) for IO - neither for
+// reading nor for writing - to avoid surprises when we actually need
+// to handle "binary" data (for example, the text mode on Windows
+// treats 0x1a as EOF when reading). We will still write CRLF line
+// endings on Windows to make Notepad users happy.
+
+
 int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
@@ -156,18 +164,13 @@ int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
     cfg->keyValues.clear();
 
-    // On Windows, reading in the text mode implies not only
-    // translation from CRLF to LF, but also terminating on 0x1a. In
-    // general, our file format allows using any byte values (even
-    // null) and doesn't require distinguishing between line ending
-    // styles, so don't use text mode for reading.
     dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"r\") failed: %s",
+            "dpsoFopenUtf8(..., \"rb\") failed: %s",
             std::strerror(errno));
         return false;
     }
@@ -219,6 +222,11 @@ static void writeKeyValue(
     if (!kv.value.empty() && kv.value.back() == ' ')
         std::fputc('\\', fp);
 
+    // Use CRLF on Windows to make Notepad users happy.
+    #ifdef _WIN32
+    std::fputc('\r', fp);
+    #endif
+
     std::fputc('\n', fp);
 }
 
@@ -230,10 +238,10 @@ int dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
         return false;
     }
 
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "w")};
+    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "wb")};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"w\") failed: %s",
+            "dpsoFopenUtf8(..., \"wb\") failed: %s",
             std::strerror(errno));
         return false;
     }
