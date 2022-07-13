@@ -256,6 +256,19 @@ HotkeyBinding* WindowsKeyManager::findBinding(
 
 
 const UINT keyToVk[dpsoNumKeys] = {
+    VK_F1,
+    VK_F2,
+    VK_F3,
+    VK_F4,
+    VK_F5,
+    VK_F6,
+    VK_F7,
+    VK_F8,
+    VK_F9,
+    VK_F10,
+    VK_F11,
+    VK_F12,
+
     'A',
     'B',
     'C',
@@ -313,20 +326,8 @@ const UINT keyToVk[dpsoNumKeys] = {
     VK_ESCAPE,
     VK_OEM_3,  // 0xC0, grave
     VK_TAB,
-    VK_SPACE,
 
-    VK_F1,
-    VK_F2,
-    VK_F3,
-    VK_F4,
-    VK_F5,
-    VK_F6,
-    VK_F7,
-    VK_F8,
-    VK_F9,
-    VK_F10,
-    VK_F11,
-    VK_F12,
+    VK_SPACE,
 
     VK_PRINT,
     VK_PAUSE,

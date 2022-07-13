@@ -163,6 +163,19 @@ void X11KeyManager::handleEvent(const XEvent& event)
 
 
 const KeySym keyToKeySym[dpsoNumKeys] = {
+    XK_F1,
+    XK_F2,
+    XK_F3,
+    XK_F4,
+    XK_F5,
+    XK_F6,
+    XK_F7,
+    XK_F8,
+    XK_F9,
+    XK_F10,
+    XK_F11,
+    XK_F12,
+
     XK_a,
     XK_b,
     XK_c,
@@ -220,20 +233,8 @@ const KeySym keyToKeySym[dpsoNumKeys] = {
     XK_Escape,
     XK_grave,
     XK_Tab,
-    XK_space,
 
-    XK_F1,
-    XK_F2,
-    XK_F3,
-    XK_F4,
-    XK_F5,
-    XK_F6,
-    XK_F7,
-    XK_F8,
-    XK_F9,
-    XK_F10,
-    XK_F11,
-    XK_F12,
+    XK_space,
 
     XK_Print,
     XK_Pause,
