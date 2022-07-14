@@ -17,10 +17,11 @@ static void testPrettifyText()
 
     const Test tests[] = {
         // Trim whitespace
-        {"\n\t\r", ""},
-        {"\n\t\ra", "a"},
-        {"a\n\t\r", "a"},
-        {"\n\t\ra\n\t\r", "a"},
+        {" \n\t\r", ""},
+        {" \n\t\ra", "a"},
+        {"a \n\t\r", "a"},
+        {" \n\t\ra \n\t\r ", "a"},
+        {" \n\t\ra \n\t\r b", "a \n\t\r b"},
         // Split ligatures
         {"a\357\254\201b", "afib"},
         {"a\357\254\202b", "aflb"},
