@@ -9,7 +9,7 @@ int const cfgDefaultValueActionAddToHistory =
 int const cfgDefaultValueActionCopyToClipboard =
     false;
 const char* const cfgDefaultValueActionCopyToClipboardTextSeparator =
-    "\n\n";
+    "\n\n\n";
 int const cfgDefaultValueActionRunExecutable =
     false;
 int const cfgDefaultValueHistoryWrapWords =

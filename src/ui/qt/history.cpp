@@ -197,6 +197,9 @@ void History::appendToTextEdit(
     blockFormat.setRightMargin(blockMargin);
     cursor.insertBlock(blockFormat, charFormat);
 
+    // Although we no longer add a trailing newline to the recognized
+    // text, we still trim trailing whitespace so that texts from the
+    // older versions look pretty.
     cursor.insertText(QString(text).trimmed());
 
     // We must scroll to the bottom before scrolling to textBegin,

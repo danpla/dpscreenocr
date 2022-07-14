@@ -13,6 +13,7 @@
 * If there are multiple texts in the recognition queue, "Add text to
   history" and "Run executable" actions now process each text as it
   arrives instead of waiting for the entire chain
+* Non-empty recognized text no longer has a trailing newline
 * History:
   * Removed "Wrap words" checkbox (the history_wrap_words option in
     settings.cfg is still available)

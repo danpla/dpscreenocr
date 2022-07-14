@@ -299,8 +299,6 @@ int dpsoOcrGetJobsPending(const DpsoOcr* ocr);
 typedef struct DpsoOcrJobResult {
     /**
      * Null-terminated text in UTF-8 encoding.
-     *
-     * The text, if not empty, will have a trailing newline.
      */
     const char* text;
 

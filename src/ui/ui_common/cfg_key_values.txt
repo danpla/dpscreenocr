@@ -1,6 +1,6 @@
 action_add_to_history                   | int               | true
 action_copy_to_clipboard                | int               | false
-action_copy_to_clipboard_text_separator | const char*       | "\n\n"
+action_copy_to_clipboard_text_separator | const char*       | "\n\n\n"
 action_run_executable                   | int               | false
 action_run_executable_path
 history_export_dir

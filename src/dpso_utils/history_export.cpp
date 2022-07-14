@@ -40,7 +40,7 @@ static void exportPlainText(const DpsoHistory* history, std::FILE* fp)
 {
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
-            std::fputs("\n\n", fp);
+            std::fputs("\n\n\n", fp);
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);

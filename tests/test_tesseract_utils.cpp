@@ -16,22 +16,18 @@ static void testPrettifyText()
     };
 
     const Test tests[] = {
-        // Remove leading whitespace
+        // Trim whitespace
         {"\n\t\r", ""},
         {"\n\t\ra", "a"},
+        {"a\n\t\r", "a"},
+        {"\n\t\ra\n\t\r", "a"},
         // Split ligatures
         {"a\357\254\201b", "afib"},
         {"a\357\254\202b", "aflb"},
         // Remove paragraph consisting of a single space
-        {"a\n \n", "a"},
+        {"a\n\nb", "a\n\nb"},
         {"a\n \nb", "ab"},
-        {"a\n  \n", "a\n  \n"},
         {"a\n  \nb", "a\n  \nb"},
-        // Remove unnecessary trailing newlines
-        {"a\n", "a\n"},
-        {"a\n\n", "a\n"},
-        {"a\n\n\n", "a\n"},
-        {"a\n\n\n\n", "a\n"},
     };
 
     for (const auto& test : tests) {

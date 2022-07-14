@@ -298,11 +298,10 @@ program before making changes.
 Here is the list of options that can only be changed by editing the
 settings file:
 
-*   `action_copy_to_clipboard_text_separator` (`\n\n` by default)
+*   `action_copy_to_clipboard_text_separator` (`\n\n\n` by default)
     specify the separator for multiple texts for "Copy text to
     clipboard" action. This option only has effect if
-    `ocr_allow_queuing` is enabled. Keep in mind that every recognized
-    text, if not empty, ends with a newline.
+    `ocr_allow_queuing` is enabled.
 
 *   `history_wrap_words` (`true` by default) whether to break long
     lines of text in the history so that you don't have to scroll

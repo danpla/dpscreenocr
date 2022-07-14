@@ -69,10 +69,8 @@ std::size_t prettifyTesseractText(char* text)
             *dst++ = *src++;
     }
 
-    // Tesseract ends text with two newlines, while we need only one.
-    if (dst - text > 1 && dst[-1] == '\n')
-        while (dst - text > 1 && dst[-2] == '\n')
-            --dst;
+    while (dst > text && std::isspace(dst[-1]))
+        --dst;
 
     *dst = 0;
 
