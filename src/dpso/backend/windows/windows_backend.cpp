@@ -102,20 +102,11 @@ void WindowsBackend::update()
 }
 
 
-// We can't do anything in the main thread because its messages will
-// be handed by a GUI framework. Of course we can provide a routine to
-// connect to an event filter provided by the framework, but some
-// frameworks may not provide such a filter, and it's better to keep
-// the API as high-level as possible.
-//
-// BackendExecutor and its proxy components do the job of handling the
-// backend implementation in the background thread. Note that although
-// everything is called trough an executor, the only routines that
-// must be called in the background are the ones that rely on Windows
-// message queue; others don't technically need this.
-
 std::unique_ptr<Backend> Backend::create()
 {
+    // We can't do anything in the main thread because its messages
+    // may be consumed by a GUI framework. BackendExecutor will do the
+    // job of calling the backend in the background thread.
     return createBackendExecutor(
         *[]()
         {
