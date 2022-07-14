@@ -27,16 +27,6 @@ function(copy_tessdata src_dir dst_dir)
 
     set(TARGET_DEPENDENCIES)
 
-    # Create dst_dir even if LANGUAGES is empty or OPTIONAL is given.
-    # This way, we don't need to add OPTIONAL for install(), and users
-    # don't have to create the directory manually if no languages are
-    # shipped with the program.
-    add_custom_command(
-        OUTPUT "${dst_dir}"
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${dst_dir}"
-        VERBATIM)
-    list(APPEND TARGET_DEPENDENCIES "${dst_dir}")
-
     foreach(LANG ${ARG_LANGUAGES})
         set(TRAINEDDATA_NAME "${LANG}.traineddata")
         set(SRC_FILE "${src_dir}/${TRAINEDDATA_NAME}")
