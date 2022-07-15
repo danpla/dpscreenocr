@@ -55,7 +55,14 @@ public:
 
     Status getStatus() const;
 
+    /**
+     * Get null-terminated text.
+     */
     const char* getText() const;
+
+    /**
+     * Get length of the text excluding the null terminator.
+     */
     std::size_t getTextLen() const;
 private:
     Status status;

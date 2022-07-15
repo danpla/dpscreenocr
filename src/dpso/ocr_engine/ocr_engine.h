@@ -46,6 +46,10 @@ enum OcrFeature {
     ocrFeatureTextSegmentation = 1 << 0
 };
 
+
+/**
+ * Combination or OcrFeature flags.
+ */
 using OcrFeatures = unsigned;
 
 
@@ -72,9 +76,7 @@ public:
     OcrEngine& operator=(OcrEngine&& other) = delete;
 
     /**
-     * Get extra OCR features supported by engine.
-     *
-     * Returns combination of OcrFeature flags.
+     * Get OCR features supported by engine.
      */
     virtual OcrFeatures getFeatures() const = 0;
 
