@@ -2,13 +2,6 @@
 set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4, 5, or 6")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5 6)
 
-# CMP0071: Let AUTOMOC and AUTOUIC process GENERATED files.
-# We don't rely on this behavior; we just need to suppress the warning,
-# as it's triggered for the generated .rcc files.
-if(POLICY CMP0071)
-    cmake_policy(SET CMP0071 NEW)
-endif()
-
 set(
     SRCS
 
@@ -28,43 +21,6 @@ if(WIN32)
     list(APPEND SRCS $<TARGET_OBJECTS:windows_rc>)
 endif()
 
-if(DPSO_QT_VERSION EQUAL 4)
-    find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
-elseif(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
-    find_package(
-        Qt${DPSO_QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets)
-else()
-    message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
-endif()
-
-# Add libraries early to avoid AUTOMOC
-if(NOT TARGET ui_common)
-    add_subdirectory(
-        ../ui_common "${CMAKE_BINARY_DIR}/src/ui/ui_common")
-endif()
-
-if(NOT TARGET ui_taskbar)
-    add_subdirectory(
-        ../ui_taskbar "${CMAKE_BINARY_DIR}/src/ui/ui_taskbar")
-endif()
-
-if(NOT TARGET dpso)
-    add_subdirectory(../../dpso "${CMAKE_BINARY_DIR}/src/dpso")
-endif()
-
-if(NOT TARGET dpso_intl)
-    add_subdirectory(
-        ../../dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
-endif()
-
-if(NOT TARGET dpso_utils)
-    add_subdirectory(
-        ../../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
-endif()
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-
 add_executable(dpscreenocr_qt ${SRCS})
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
@@ -82,9 +38,12 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     unset(CPP_STANDARD)
 endif()
 
+target_include_directories(dpscreenocr_qt PRIVATE .)
+
 set_target_properties(
     dpscreenocr_qt
     PROPERTIES
+    AUTOMOC ON
     OUTPUT_NAME "dpscreenocr"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
@@ -94,21 +53,50 @@ if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
         dpscreenocr_qt PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
+if(NOT TARGET dpso)
+    add_subdirectory(../../dpso "${CMAKE_BINARY_DIR}/src/dpso")
+endif()
+
+if(NOT TARGET dpso_intl)
+    add_subdirectory(
+        ../../dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
+endif()
+
+if(NOT TARGET dpso_utils)
+    add_subdirectory(
+        ../../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
+endif()
+
+if(NOT TARGET ui_common)
+    add_subdirectory(
+        ../ui_common "${CMAKE_BINARY_DIR}/src/ui/ui_common")
+endif()
+
+if(NOT TARGET ui_taskbar)
+    add_subdirectory(
+        ../ui_taskbar "${CMAKE_BINARY_DIR}/src/ui/ui_taskbar")
+endif()
+
 target_link_libraries(
-    dpscreenocr_qt ui_common ui_taskbar dpso dpso_intl dpso_utils)
+    dpscreenocr_qt dpso dpso_intl dpso_utils ui_common ui_taskbar)
 
 if(DPSO_QT_VERSION EQUAL 4)
+    find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
     target_link_libraries(dpscreenocr_qt Qt4::QtCore Qt4::QtGui)
-else()
+elseif(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
+    find_package(
+        Qt${DPSO_QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets)
     target_link_libraries(
         dpscreenocr_qt
         Qt${DPSO_QT_VERSION}::Core
         Qt${DPSO_QT_VERSION}::Gui
         Qt${DPSO_QT_VERSION}::Widgets)
+else()
+    message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
 endif()
 
-# See https://bugreports.qt.io/browse/QTBUG-33775. This bug doesn't
-# affect Qt 4.
+# See https://bugreports.qt.io/browse/QTBUG-33775. This bug only
+# affects Qt 5 < 5.3.2.
 if(UNIX
         AND NOT APPLE
         AND DPSO_QT_VERSION EQUAL 5
