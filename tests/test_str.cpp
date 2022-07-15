@@ -28,13 +28,10 @@ static const char* orderToStr(Order order)
     switch (order) {
         case Order::less:
             return "<";
-            break;
         case Order::equal:
             return "==";
-            break;
         case Order::greater:
             return ">";
-            break;
     }
 
     return "";
