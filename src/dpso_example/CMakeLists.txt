@@ -15,8 +15,6 @@ set_target_properties(
     dpso_example
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
-target_include_directories(dpso_example PRIVATE .)
-
 if(NOT TARGET dpso)
     add_subdirectory(../dpso "${CMAKE_BINARY_DIR}/src/dpso")
 endif()
