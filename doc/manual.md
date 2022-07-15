@@ -347,11 +347,8 @@ here, please report the problem on the [issue tracker][].
 
 *   **Pressing the [hotkey] has no effect**
 
-    * This hotkey is probably used by another program. Try to choose
-      another key combination.
-
-    * (Unix) Are you using Wayland? It's not yet supported. If
-      possible, switch to X11 session.
+    This hotkey is probably used by another program. Try to choose
+    another key combination.
 
 *   **"Run executable" has no effect**
 
