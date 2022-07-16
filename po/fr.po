@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-07-12 22:18+0300\n"
-"PO-Revision-Date: 2022-07-13 23:18+0000\n"
+"PO-Revision-Date: 2022-07-17 03:21+0000\n"
 "Last-Translator: Mak Greg <makgreg@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/fr/>\n"
@@ -26,7 +26,7 @@ msgstr "Amharique"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:36
 msgid "Arabic"
-msgstr "ffArabe"
+msgstr "Arabe"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:37
 msgid "Assamese"
