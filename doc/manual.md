@@ -7,7 +7,7 @@
 
 dpScreenOCR is a free and open-source program to recognize text on the
 screen. Powered by [Tesseract][], it supports more than 100 languages
-and can split independent text blocks, e.g. columns.
+and can split independent text blocks, such as columns.
 
 [Tesseract]: https://en.wikipedia.org/wiki/Tesseract_(software)
 
@@ -20,10 +20,10 @@ and can split independent text blocks, e.g. columns.
 
 ### Unix-like systems
 
-The [dpScreenOCR website][] provides several download options,
-including repositories for Debian, Ubuntu, and derivatives. If you
-don't find a suitable choice for your system, download the source code
-tarball, unpack it, and follow the instructions in the
+The [dpScreenOCR website][] provides several options, including
+repositories for Debian, Ubuntu, and derivatives. If you don't find a
+suitable choice for your system, download the source code tarball,
+unpack it, and follow the instructions in the
 "doc/building-unix.txt" file.
 
 
@@ -78,6 +78,25 @@ folder. To quickly navigate to this folder, press Windows + R to open
 "Run" and paste `%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`. You can
 also paste this path to the folder address bar of File Explorer.
 
+If the "tesseract_5_data" folder does not exist in
+`%LOCALAPPDATA%\dpscreenocr` when you start dpScreenOCR, the program
+will copy it from the directory if the EXE file.
+
+
+#### Migrating from version 1.0
+
+When upgrading from version 1.0, the installer will automatically
+migrate languages from the old location, which was the "tessdata"
+folder in the directory of the EXE file. To be more specific, the
+contents of "tessdata" are copied to the "tesseract_5_data" folder in
+the directory of the EXE file, and then each user launching
+dpScreenOCR gets their own copy of "tesseract_5_data" in
+`%LOCALAPPDATA%\dpscreenocr`.
+
+For the ZIP version, you need
+to manually copy languages from "tessdata" to
+`%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`.
+
 
 # Usage
 
@@ -101,9 +120,9 @@ selected area and process it according to the actions from the
 ### Status
 
 Status describes the current state of dpScreenOCR. Green means the
-program is ready to use, and you can press the [Hotkey] to start
+program is ready to use, and you can press the [Hotkey] to start the
 selection. Yellow shows the progress of recognition. Red warns that
-the program needs some setup, and you will not be able to start
+the program needs some setup, and you will not be able to start the
 selection until the problem is fixed.
 
 
@@ -113,18 +132,20 @@ selection until the problem is fixed.
 #### Split text blocks
 
 If this option is enabled, dpScreenOCR will try to detect and split
-independent text blocks, e.g. columns. This behavior is best described
-by the following picture, which shows a two-column text layout (A)
-recognized with (B) and without (C) the "Split text blocks" option:
+independent text blocks, such as columns. Otherwise, everything is
+treated as a contiguous block of text. This behavior is best
+described by the following picture, which shows a two-column text
+layout (A) recognized with (B) and without (C) the "Split text blocks"
+option:
 
 ![](manual-data/split.svg)
 
 
 #### Languages
 
-The language list shows available language packs that dpScreenOCR can
-use to recognize text. You can choose more than one language, but be
-aware that this may slow down recognition and reduce its accuracy.
+This is the list of languages that dpScreenOCR can use to recognize
+text. You can choose more than one, but be aware that this may slow
+down recognition and reduce its accuracy.
 
 Read the "[Installing languages]" section on how to install language
 packs.
@@ -135,7 +156,7 @@ packs.
 The hotkey starts and ends the on-screen selection. To cancel the
 selection, press Escape.
 
-The hotkey is global: it works even if dpScreenOCR's window is
+The hotkey is global: it works even if the dpScreenOCR's window is
 minimized. If pressing the hotkey has no effect, it probably means
 that another program is already using it. In this case, try another
 key combination.
@@ -144,8 +165,8 @@ key combination.
 ## Actions tab
 
 The Actions tab lets you choose what to do with the recognized text:
-copy to the clipboard, add to history (see the [History tab]), or pass
-as an argument to an executable.
+copy it to the clipboard, add it to history (see the [History tab]),
+or pass it as an argument to an executable.
 
 
 ### Run executable
@@ -153,7 +174,7 @@ as an argument to an executable.
 The "Run executable" action will run an executable with the recognized
 text as the first argument. The entry expects either an absolute path
 to the executable, or just its name in case it's located in one of the
-paths of your PATH environment variable.
+paths listed in your PATH environment variable.
 
 
 #### Running scripts on Unix-like systems
@@ -180,8 +201,8 @@ the translation as a desktop notification.
 ##### Batch files
 
 dpScreenOCR doesn't run batch files (".bat" or ".cmd") because there's
-no way to safely pass them arbitrary text. Please use Python or any
-other scripting language instead.
+no way to safely pass them arbitrary text. Please use another
+scripting language instead.
 
 
 ##### Creating file associations
@@ -194,25 +215,25 @@ in cmd.exe. If the script runs and receives all arguments, you can
 skip this section.
 
 We will use Python as an example, but for other languages the process
-is similar. Open cmd.exe as administrator and run:
+is similar. Open cmd.exe as administrator and run asscoc with the
+extension of the script file as an argument:
 
-    C:\>assoc .py
+    > assoc .py
 
-*   If the association doesn't exist (assoc prints nothing), create
-    a new one:
+*   If the association doesn't exist, create a new one:
 
-        C:\>assoc .py=Python.File
-        C:\>ftype Python.File="C:\Windows\py.exe" "%L" %*
+        > assoc .py=Python.File
+        > ftype Python.File="C:\Windows\py.exe" "%L" %*
 
 *   If the association exists (assoc prints something like
     `.py=Python.File`), run ftype to see what command is used:
 
-        C:\>ftype Python.File
+        > ftype Python.File
         Python.File="C:\Windows\py.exe" "%L" %*
 
     If the command doesn't end with `%*`, fix it:
 
-        C:\>ftype Python.File="C:\Windows\py.exe" "%L" %*
+        > ftype Python.File="C:\Windows\py.exe" "%L" %*
 
 If the script still receives only one argument (path to the script),
 this means that Windows actually use a different association for the
@@ -249,13 +270,10 @@ as described in the previous section.
 
 ## History tab
 
-The History tab shows the history of recognized texts. A text is only
-added here if the corresponding action is enabled in the
-[Actions tab]. Every text in the list has a timestamp taken at the
-moment you finish the selection.
-
-You can export the history to a file in plain text, HTML, or JSON
-format.
+The History tab shows the history of the recognized texts. A text is
+only added here if the corresponding action is enabled in the
+[Actions tab]. Each text has a timestamp taken at the moment you
+finish the selection.
 
 
 # Tweaking
@@ -263,22 +281,21 @@ format.
 This section describes how to change some settings that are not
 available in the dpScreenOCR's interface.
 
-dpScreenOCR saves settings in settings.cfg — a plain text file that
-you can modify with any text editor. Depending on the platform, you
-can find it in the following directories:
+dpScreenOCR saves settings in settings.cfg. Depending on the platform,
+you can find it in the following directories:
 
 *   Windows: `%LOCALAPPDATA%\dpscreenocr`
 
     You can paste this path to the folder address bar of File Explorer
-    to open it. `%LOCALAPPDATA%` is an environment variable which
+    to open it. `%LOCALAPPDATA%` is an environment variable that
     usually expands to `C:\Users\(your name)\AppData\Local\`
 
 *   Unix-like systems: `~/.config/dpscreenocr`
 
 Each line in settings.cfg contains an option as a key-value pair. A
-value is a string, which, depending on the option, should represent a
+value is a string, which, depending on the option, represents a
 boolean (`true` or `false`), number (like `10` or `-5`), file path,
-arbitrary text, etc.
+etc.
 
 The value can contain the following escape sequences:
 
@@ -299,9 +316,9 @@ Here is the list of options that can only be changed by editing the
 settings file:
 
 *   `action_copy_to_clipboard_text_separator` (`\n\n\n` by default)
-    specify the separator for multiple texts for "Copy text to
-    clipboard" action. This option only has effect if
-    `ocr_allow_queuing` is enabled.
+    the separator for multiple texts for the "Copy text to clipboard"
+    action. This option only has effect if `ocr_allow_queuing` is
+    enabled.
 
 *   `history_wrap_words` (`true` by default) whether to break long
     lines of text in the history so that you don't have to scroll
@@ -334,8 +351,10 @@ settings file:
 # Troubleshooting
 
 This section contains the list of possible issues and their solutions.
-If the solutions don't help, or you have an issue that is not listed
-here, please report the problem on the [issue tracker][].
+If the solution doesn't help, or you have an issue that is not listed
+here, please report the problem on the [issue tracker][]. You can also
+contact the author by email; the link is at the bottom of the
+[dpScreenOCR website][].
 
 [Issue tracker]: https://github.com/danpla/dpscreenocr/issues
 
@@ -354,18 +373,18 @@ here, please report the problem on the [issue tracker][].
 
     * Make sure that the "Run executable" entry contains either an
       absolute path to the executable, or just the name of the
-      executable that resides in one of the paths of the PATH
+      executable that resides in one of the paths listed in the PATH
       environment variable.
 
-    * (Unix) Make sure you have execute permission. Run
+    * (Unix) Make sure you have the execute permission. Run
       `chmod u+x executable`.
 
     * (Unix) If your executable is a script, make sure it starts with
       a proper [shebang][].
 
     * (Windows) Are you trying to use a batch file (".bat" or ".cmd")?
-      This is not allowed for safety reasons. Please use Python or
-      another scripting language instead.
+      This is not allowed for safety reasons. Please use another
+      scripting language instead.
 
 *   **(Unix) Recognition is very slow**
 
@@ -374,8 +393,8 @@ here, please report the problem on the [issue tracker][].
     set the `OMP_THREAD_LIMIT` environment variable to `1` before
     running dpScreenOCR.
 
-    Its not recommended to set `OMP_THREAD_LIMIT` globally because it
-    will affect other programs that use OpenMP. Instead, create a
+    It is not recommended to set `OMP_THREAD_LIMIT` globally because
+    this  will affect other programs using OpenMP. Instead, create a
     helper script that sets the variable and then runs dpScreenOCR,
     e.g. via `env OMP_THREAD_LIMIT=1 dpscreenocr`. An even more
     convenient solution is to add an item to the applications menu by
@@ -402,7 +421,7 @@ here, please report the problem on the [issue tracker][].
 
     Make sure that the TESSDATA_PREFIX environment variable is either
     not set or points to the parent directory of your "tessdata"
-    directory.
+    folder.
 
 *   **(Windows) "Run executable" opens the script in a text editor**
 
