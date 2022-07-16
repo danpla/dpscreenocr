@@ -1,11 +1,15 @@
 body {
   font-family: sans-serif;
   line-height: 1.6;
-  margin: 0 1em;
+}
+
+h1 {
+  text-align: center;
 }
 
 table {
   border-collapse: collapse;
+  margin: 0 auto;
 }
 
 td, th {
