@@ -60,9 +60,8 @@ Use "make install" and "make uninstall" to install and remove
 dpScreenOCR, respectively. You can set the installation prefix via
 CMAKE_INSTALL_PREFIX at the build stage; the default is "/usr/local".
 
-Since version 1.1.0, dpScreenOCR supports relocation: it now loads
-resources from paths relative to the location of the executable,
-rather than from absolute paths based on the installation prefix. For
-example, you can install in "~/dpscreenocr", then move the
-"dpscreenocr" directory to a different location, and the program will
-still work correctly.
+Since version 1.1, dpScreenOCR supports relocation: it loads resources
+from paths relative to the location of the executable, rather than
+from absolute paths based on the installation prefix. For example, you
+can install in "~/dpscreenocr", then move the "dpscreenocr" directory
+to a different location, and the program will still work correctly.
