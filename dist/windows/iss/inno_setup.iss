@@ -1,4 +1,4 @@
-
+﻿
 #include "inno_setup_config.isi"
 
 [Setup]
@@ -11,6 +11,7 @@ AppName={#APP_NAME}
 AppVersion={#APP_VERSION}
 AppPublisher={#APP_AUTHOR}
 AppPublisherURL={#APP_URL}
+AppCopyright=Copyright (c) {#APP_COPYRIGHT_YEAR} {#APP_AUTHOR}
 AppSupportURL={#APP_URL}
 LicenseFile={#APP_SOURCE_DIR}\LICENSE.txt
 

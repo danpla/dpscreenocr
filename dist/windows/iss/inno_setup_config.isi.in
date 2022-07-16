@@ -1,11 +1,12 @@
-
+﻿
+#cmakedefine APP_AUTHOR "@APP_AUTHOR@"
+#cmakedefine APP_COPYRIGHT_YEAR "@APP_COPYRIGHT_YEAR@"
+#cmakedefine APP_FILE_NAME "@APP_FILE_NAME@"
+#cmakedefine APP_NAME "@APP_NAME@"
+#cmakedefine APP_SOURCE_DIR "@APP_SOURCE_DIR@"
+#cmakedefine APP_TESSERACT_VERSION_MAJOR "@APP_TESSERACT_VERSION_MAJOR@"
+#cmakedefine APP_UI "@APP_UI@"
+#cmakedefine APP_URL "@APP_URL@"
+#cmakedefine APP_VERSION "@APP_VERSION@"
 #cmakedefine01 APP_IS_64_BIT
 #cmakedefine01 APP_USES_NLS
-#cmakedefine APP_NAME "@APP_NAME@"
-#cmakedefine APP_FILE_NAME "@APP_FILE_NAME@"
-#cmakedefine APP_VERSION "@APP_VERSION@"
-#cmakedefine APP_AUTHOR "@APP_AUTHOR@"
-#cmakedefine APP_URL "@APP_URL@"
-#cmakedefine APP_SOURCE_DIR "@APP_SOURCE_DIR@"
-#cmakedefine APP_UI "@APP_UI@"
-#cmakedefine APP_TESSERACT_VERSION_MAJOR "@APP_TESSERACT_VERSION_MAJOR@"
