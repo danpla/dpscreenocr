@@ -45,7 +45,7 @@
   * Installer now allows local installation, e.g. for users without
     administrator rights
   * Tesseract language files are now stored in
-    "C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data"
+    "C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data"
   * Enabled native interface theme
   * App now shows progress in the background of the taskbar button
   * Updated Tesseract to 5.2.0

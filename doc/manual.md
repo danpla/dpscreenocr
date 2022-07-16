@@ -73,9 +73,9 @@ than languages: "osd" (automatic script and orientation detection) and
 dpScreenOCR for Windows is shipped with the English language pack. To
 install other languages, visit the [Languages][Language packs] page,
 download ".traineddata" files you want, and place them in the
-`C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract5_data`
+`C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data`
 folder. To quickly navigate to this folder, press Windows + R to open
-"Run" and paste `%LOCALAPPDATA%\dpscreenocr\tesseract5_data`. You can
+"Run" and paste `%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`. You can
 also paste this path to the folder address bar of File Explorer.
 
 

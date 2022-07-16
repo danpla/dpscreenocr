@@ -6,10 +6,14 @@ include(CMakeParseArguments)
 # The returned string may be empty if the Tesseract version was not
 # detected.
 function(get_tesseract_data_dir_name var)
-    set(
-        ${var}
-        "tesseract${DPSO_TESSERACT_VERSION_MAJOR}_data"
-        PARENT_SCOPE)
+    if(DPSO_TESSERACT_VERSION_MAJOR)
+        set(
+            ${var}
+            "tesseract_${DPSO_TESSERACT_VERSION_MAJOR}_data"
+            PARENT_SCOPE)
+    else()
+        set(${var} "" PARENT_SCOPE)
+    endif()
 endfunction()
 
 # Copy contents of tessdata directory.

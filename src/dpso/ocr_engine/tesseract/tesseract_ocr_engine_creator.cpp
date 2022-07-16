@@ -30,7 +30,7 @@ static std::string getTesseractMajorVersionString()
 class TesseractOcrEngineCreator : public OcrEngineCreator {
 public:
     TesseractOcrEngineCreator()
-        : id{"tesseract" + getTesseractMajorVersionString()}
+        : id{"tesseract_" + getTesseractMajorVersionString()}
         , info{
             id.c_str(),
             "Tesseract",

@@ -65,7 +65,7 @@ Source: "locale\*"; \
 
 #define TESSDATA_DIR "tessdata"
 #define TESSERACT_DATA_DIR \
-  "tesseract" + APP_TESSERACT_VERSION_MAJOR + "_data"
+  "tesseract_" + APP_TESSERACT_VERSION_MAJOR + "_data"
 #define ENG_TRAINEDDATA "eng.traineddata"
 
 ; Here we try to migrate any custom user data from the previously
