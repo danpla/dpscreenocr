@@ -3,7 +3,7 @@
 [Language packs]: https://danpla.github.io/dpscreenocr/languages
 
 
-# About dpScreenOCR
+# About
 
 dpScreenOCR is a free and open-source program to recognize text on the
 screen. Powered by [Tesseract][], it supports more than 100 languages
@@ -71,7 +71,7 @@ than languages: "osd" (automatic script and orientation detection) and
 ### Windows
 
 dpScreenOCR for Windows is shipped with the English language pack. To
-install other languages, visit the [Languages][Language packs] page,
+install other languages, visit the [languages][Language packs] page,
 download ".traineddata" files you want, and place them in the
 `C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data`
 folder. To quickly navigate to this folder, press Windows + R to open
