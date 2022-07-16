@@ -7,6 +7,10 @@ ArchitecturesInstallIn64BitMode=x64
 ArchitecturesAllowed=x64
 #endif
 
+; Windows 7. The program should also work on Vista (6.0), but this was
+; not tested.
+MinVersion=6.1
+
 AppName={#APP_NAME}
 AppVersion={#APP_VERSION}
 AppPublisher={#APP_AUTHOR}
