@@ -1,25 +1,27 @@
 body {
-    max-width: 36em;
-    margin: 0 auto;
-    padding: 0 1em 0;
-    font-family: sans-serif;
-    line-height: 1.6;
+  max-width: 36em;
+  margin: 0 auto;
+  padding: 0 1em 0;
+  font-family: sans-serif;
+  line-height: 1.6;
 }
 
 #TOC ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 code {
-    font-family: monospace;
-    background: #eaeaea;
-    padding: 0.1em 0.2em;
-    white-space: pre-wrap;
+  font-family: monospace;
+  background: #ddd;
+  padding: 0.1em 0.2em;
+  white-space: pre-wrap;
 }
 
 pre code {
-    display: block;
-    white-space: pre;
-    padding: 0.8em 1em;
-    overflow-x: auto;
+  display: block;
+  padding: 0.8em 1em;
+}
+
+img {
+  max-width: 100%;
 }
