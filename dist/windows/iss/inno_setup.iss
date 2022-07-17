@@ -204,8 +204,7 @@ begin
     // To ensure that the returned name will never exist, we use
     // some characters that Windows doesn't allow to be in file names
     // (excluding ? and * have special meaning in the FindFirstFile()
-    // function). This workaround also implies that we should add the
-    // skipifsourcedoesntexist flag.
+    // function).
     Result := '<>:|';
 end;
 
