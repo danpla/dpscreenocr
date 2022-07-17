@@ -191,7 +191,22 @@ var
 // For {code:...}
 function NsisGetTessdataDirPath(Param: String): String;
 begin
-  Result := NsisTessdataDirPath;
+  if NsisTessdataDirPath <> '' then
+    Result := NsisTessdataDirPath
+  else
+    // As of version 6.2.1, the "Source:" path of [Files] entries with
+    // the external flag is processed before the "Check:" function is
+    // called. We thus must make sure that the expanded source path
+    // is nether an empty string nor "\*", because with the
+    // recursesubdirs flag this will lead to scanning either the
+    // directory of the installer or the whole drive, respectively.
+    //
+    // To ensure that the returned name will never exist, we use
+    // some characters that Windows doesn't allow to be in file names
+    // (excluding ? and * have special meaning in the FindFirstFile()
+    // function). This workaround also implies that we should add the
+    // skipifsourcedoesntexist flag.
+    Result := '<>:|';
 end;
 
 function NsisCanMigrateTessdata(): Boolean;
