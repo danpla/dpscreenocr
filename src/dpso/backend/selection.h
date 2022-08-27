@@ -15,6 +15,20 @@ namespace backend {
  */
 class Selection {
 public:
+    /**
+     * Default border with at a standard (e.g. 96) DPI.
+     */
+    static const auto defaultBorderWidth = 4;
+
+    /**
+     * Dash length.
+     *
+     * The selection border is filled with a pattern of black and
+     * white dashes. The dash length defines the number of squares in
+     * a single dash.
+     */
+    static const auto dashLen = 3;
+
     Selection() = default;
     virtual ~Selection() = default;
 

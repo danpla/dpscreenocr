@@ -48,16 +48,13 @@ namespace dpso {
 namespace backend {
 
 
-const int borderWidth96Dpi = 4;
-
-
 // TODO: Support dynamic DPI changes (WM_DPICHANGED) on Windows 8.1
 // and newer.
 static int getBorderWidth()
 {
     auto dc = windows::getDc(nullptr);
     if (!dc)
-        return borderWidth96Dpi;
+        return Selection::defaultBorderWidth;
 
     // LOGPIXELSX and LOGPIXELSY are identical (as well as values
     // returned by GetDpiForMonitor()).
@@ -65,7 +62,7 @@ static int getBorderWidth()
 
     const auto scale = dpi / 96.0f;
 
-    return borderWidth96Dpi * scale + 0.5f;
+    return Selection::defaultBorderWidth * scale + 0.5f;
 }
 
 
@@ -169,8 +166,8 @@ void WindowsSelection::createPens()
 
     // The docs don't say whether ExtCreatePen() copies the array, so
     // it's a class member just in case.
-    dashPenPattern[0] = borderWidth * 3;
-    dashPenPattern[1] = borderWidth * 3;
+    dashPenPattern[0] = borderWidth * Selection::dashLen;
+    dashPenPattern[1] = borderWidth * Selection::dashLen;
 
     pens[1].reset(ExtCreatePen(
         commonStyle | PS_USERSTYLE, borderWidth, &lb,

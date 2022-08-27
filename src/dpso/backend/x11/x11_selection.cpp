@@ -53,7 +53,8 @@ static Rect getCurrentSelectionRect(
 }
 
 
-const int borderWidth = 4;
+// TODO: Scale according to DPI.
+const auto borderWidth = Selection::defaultBorderWidth;
 
 
 X11Selection::X11Selection(Display* display)
@@ -84,7 +85,7 @@ X11Selection::X11Selection(Display* display)
     gcval.background = XBlackPixel(display, 0);
     gcval.line_width = borderWidth;
     gcval.line_style = LineDoubleDash;
-    gcval.dashes = borderWidth * 3;
+    gcval.dashes = borderWidth * Selection::dashLen;
 
     gc = XCreateGC(
         display,
