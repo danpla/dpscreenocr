@@ -65,13 +65,7 @@ static int getBorderWidth()
 
     const auto scale = dpi / 96.0f;
 
-    int scaledBorderWidth = borderWidth96Dpi * scale + 0.5f;
-    // The width must be even since we will draw it with pens; the
-    // middle of the pen is placed on the edge of a shape. See draw().
-    if (scaledBorderWidth % 2)
-        ++scaledBorderWidth;
-
-    return scaledBorderWidth;
+    return borderWidth96Dpi * scale + 0.5f;
 }
 
 
