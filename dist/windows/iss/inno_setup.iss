@@ -92,7 +92,6 @@ Source: "{code:NsisGetTessdataDirPath}\*"; \
 ; copying from the installer and avoid installing TESSERACT_DATA_DIR
 ; to save disk space. Therefore, there are two source lines below: for
 ; admin and non-admin install modes, respectively.
-; onlyifdestfileexists skipifsourcedoesntexist
 Source: "{#TESSERACT_DATA_DIR}\{#ENG_TRAINEDDATA}"; \
   DestDir: "{app}\{#TESSERACT_DATA_DIR}"; \
   Check: ShouldInstallEngTraineddata(); \
@@ -182,6 +181,7 @@ end;
 // mode, i.e. it only installs for all users. If we are in non-admin
 // mode, we don't touch anything NSIS-related at all.
 var
+  NsisUninstallerPath: String;
   // Empty if the "tessdata" of the old NSIS-based version was not
   // detected, or if we are in the non-admin install mode.
   NsisTessdataDirPath: String;
@@ -203,8 +203,8 @@ begin
     //
     // To ensure that the returned name will never exist, we use
     // some characters that Windows doesn't allow to be in file names
-    // (excluding ? and * have special meaning in the FindFirstFile()
-    // function).
+    // (excluding ? and * that have special meaning in the
+    // FindFirstFile() function).
     Result := '<>:|';
 end;
 
@@ -339,6 +339,12 @@ var
 begin
   LogScope := 'NsisSetupTessdataVars';
 
+  NsisTessdataDirPath := '';
+  NsisWasEngTraineddata := False;
+
+  if not IsAdminInstallMode() then
+    exit;
+
   DirPath := ExtractFileDir(UninstallerPath);
   if DirPath <> '' then
   begin
@@ -355,35 +361,26 @@ begin
     exit;
   end;
 
-  if not IsAdminInstallMode() then
-    exit;
-
   // In case the old version is already uninstalled (either by the
-  // user or by our installer), try to adopt the "tessdata" dir from
-  // the target installation directory, assuming that most users
-  // install apps to default locations.
-  DirPath := ExpandConstant('{app}\{#TESSDATA_DIR}');
+  // user or by previous run of our installer), try to adopt the
+  // "tessdata" dir from '{commonpf32}\{#APP_NAME}'. The NSIS-based
+  // version was 32-bit only, so don't bother with {commonpf64}.
+  //
+  // Ideally, we should first check the target installation directory,
+  // but the {app} variable is not initialized yet when this function
+  // is called from InitializeSetup(). Probably the only alternative
+  // is not to rely on a [Files] entry with "recursesubdirs" and
+  // "external" flags, but instead to write a custom function to copy
+  // a directory recursively.
+  DirPath := ExpandConstant(
+    '{commonpf32}\{#APP_NAME}\{#TESSDATA_DIR}');
   if DirExists(DirPath) then
-    NsisTessdataDirPath := DirPath
-  else if IsWin64 then
   begin
-    // Check '{commonpf32}\{#APP_NAME}' explicitly, mainly in case we
-    // switch from 32 to 64-bit executable, i.e. when the default
-    // install path becomes "C:\Program Files\" instead of
-    // "C:\Program Files (x86)\". The old NSIS-based version was
-    // 32-bit only, so don't bother with {commonpf64}. Note that if
-    // our app is still 32-bit, this check will most likely be the
-    // same as the previous, i.e. the path will be '{app}'.
-    DirPath := ExpandConstant(
-      '{commonpf32}\{#APP_NAME}\{#TESSDATA_DIR}');
-    if DirExists(DirPath) then
-      NsisTessdataDirPath := DirPath;
-  end;
+    NsisTessdataDirPath := DirPath;
+    NsisWasEngTraineddata := True;
 
-  if NsisTessdataDirPath <> '' then
     OurLog(LogScope, format('Detected "%s"' , [NsisTessdataDirPath]));
-
-  NsisWasEngTraineddata := NsisTessdataDirPath <> '';
+  end;
 end;
 
 // Remove an installation created by our old installer made by
@@ -520,22 +517,20 @@ end;
 
 function InitializeSetup(): Boolean;
 begin
-  NsisTessdataDirPath := '';
-  NsisWasEngTraineddata := False;
+  // [File] entries may be processed even before the install step
+  // (ssInstall in CurStepChanged()), so we cache variables as early
+  // as possible so that {code:...} always gives reasonable values.
+  NsisUninstallerPath := NsisGetUninstallerPath();
+  NsisSetupTessdataVars(NsisUninstallerPath);
 
   Result := True;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
-var
-  NsisUninstallerPath: String;
 begin
   if CurStep = ssInstall then
   begin
-    NsisUninstallerPath := NsisGetUninstallerPath();
-    NsisSetupTessdataVars(NsisUninstallerPath);
     NsisUninstallExisting(NsisUninstallerPath);
-
     UninstallExisting();
   end;
 end;
