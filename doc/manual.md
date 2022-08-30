@@ -39,10 +39,10 @@ dpscreenocr.exe.
 
 ### Unix-like systems
 
-Use your package manager to install languages for Tesseract. The
-package names may vary across systems, but they usually start with
-"tesseract" and end with a language code or name. For example, the
-package for German have the following names:
+Use your package manager to install languages for Tesseract. Package
+names may vary across systems, but they usually start with "tesseract"
+and end with a language code or name. For example, the package for
+German has the following names:
 
 *   "tesseract-ocr-deu" on Debian, Ubuntu, and derivatives
 *   "tesseract-data-deu" on Arch Linux
@@ -70,7 +70,7 @@ than languages: "osd" (automatic script and orientation detection) and
 
 ### Windows
 
-dpScreenOCR for Windows is shipped with the English language pack. To
+dpScreenOCR for Windows comes with the English language pack. To
 install other languages, visit the [languages][Language packs] page,
 download ".traineddata" files you want, and place them in the
 `C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data`
@@ -93,9 +93,8 @@ the directory of the EXE file, and then each user launching
 dpScreenOCR gets their own copy of "tesseract_5_data" in
 `%LOCALAPPDATA%\dpscreenocr`.
 
-For the ZIP version, you need
-to manually copy languages from "tessdata" to
-`%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`.
+For the ZIP version, you need to manually copy languages from
+"tessdata" to `%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`.
 
 
 # Usage
@@ -119,7 +118,7 @@ selected area and process it according to the actions from the
 
 ### Status
 
-Status describes the current state of dpScreenOCR. Green means the
+The status describes the current state of dpScreenOCR. Green means the
 program is ready to use, and you can press the [Hotkey] to start the
 selection. Yellow shows the progress of recognition. Red warns that
 the program needs some setup, and you will not be able to start the
@@ -165,8 +164,8 @@ key combination.
 ## Actions tab
 
 The Actions tab lets you choose what to do with the recognized text:
-copy it to the clipboard, add it to history (see the [History tab]),
-or pass it as an argument to an executable.
+copy it to the clipboard, add it to the history (see the
+[History tab]), or pass it as an argument to an executable.
 
 
 ### Run executable
