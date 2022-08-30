@@ -168,15 +168,6 @@ end;
 // if not, this means it was intentionally removed by the user and we
 // don't need to install it again.
 //
-// If the old version is already uninstalled (either by the user or by
-// the previous invocation of our installer), we try to detect the
-// "tessdata" directory either in the installation target directory or
-// in "{commonpf32}\(APP_NAME)" (the old version was 32-bit only). The
-// later is mainly needed in case we switch to 64-bit version of the
-// application, but can also be useful with the 32-bit one if the user
-// chooses a custom installation directory (this will obviously only
-// work if the old version was installed in the default location).
-//
 // Keep in mind that our old NSIS-based installer only works in admin
 // mode, i.e. it only installs for all users. If we are in non-admin
 // mode, we don't touch anything NSIS-related at all.
