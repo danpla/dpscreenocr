@@ -1,6 +1,8 @@
 
 #include "backend/x11/x11_selection.h"
 
+#include <cstdlib>
+
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
 
@@ -53,18 +55,17 @@ static Rect getCurrentSelectionRect(
 }
 
 
-// TODO: Scale according to DPI.
-const auto borderWidth = Selection::defaultBorderWidth;
-
-
 X11Selection::X11Selection(Display* display)
     : display{display}
     , window{}
     , gc{}
     , isEnabled{}
+    , borderWidth{Selection::defaultBorderWidth}
     , origin{}
     , geom{}
 {
+    calcBorderWidth();
+
     XSetWindowAttributes windowAttrs;
     windowAttrs.override_redirect = True;
 
@@ -108,6 +109,34 @@ X11Selection::~X11Selection()
 bool X11Selection::getIsEnabled() const
 {
     return isEnabled;
+}
+
+
+void X11Selection::calcBorderWidth()
+{
+    borderWidth = Selection::defaultBorderWidth;
+
+    // X resources are attached to the root window when the program
+    // starts, so calling XGetDefault() will always return the same
+    // value. An alternative that allows to be notified of DPI changes
+    // is to use the XSettings' "Xft/DPI" property instead (on modern
+    // systems, it seems to be kept in sync with "Xft.dpi").
+    //
+    // In addition to font scale, some modern desktop environments
+    // also allow to set windows scale factor. We should probably take
+    // this into account in the future. See:
+    // https://wiki.archlinux.org/title/HiDPI
+    const auto* dpiStr = XGetDefault(display, "Xft", "dpi");
+    if (!dpiStr)
+        // Xft.dpi may be unset when the default 96 is used.
+        return;
+
+    // Xft.dpi is normally written as an integer, but Xft itself
+    // parses it as a double. We don't care about fractional part for
+    // now so that parsing doesn't depend on the current locale.
+    borderWidth = borderWidth * std::atoi(dpiStr) / 96.0f + 0.5f;
+    if (borderWidth < 1)
+        borderWidth = 1;
 }
 
 

@@ -29,9 +29,11 @@ private:
     GC gc;
 
     bool isEnabled;
+    int borderWidth;
     Point origin;
     Rect geom;
 
+    void calcBorderWidth();
     void setGeometry(const Rect& newGeom);
     void reshapeWindow();
     void drawSelection();
