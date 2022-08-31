@@ -21,6 +21,22 @@ void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled)
 }
 
 
+int dpsoGetSelectionDefaultBorderWidth(void)
+{
+    return dpso::backend::Selection::defaultBorderWidth;
+}
+
+
+void dpsoSetSelectionBorderWidth(int newBorderWidth)
+{
+    if (newBorderWidth < 1)
+        newBorderWidth = 1;
+
+    if (selection)
+        selection->setBorderWidth(newBorderWidth);
+}
+
+
 void dpsoGetSelectionGeometry(DpsoRect* rect)
 {
     if (!rect)

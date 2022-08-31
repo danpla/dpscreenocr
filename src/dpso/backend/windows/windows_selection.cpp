@@ -200,6 +200,13 @@ void WindowsSelection::setIsEnabled(bool newIsEnabled)
 }
 
 
+void WindowsSelection::setBorderWidth(int newBorderWidth)
+{
+    // TODO
+    (void)newBorderWidth;
+}
+
+
 Rect WindowsSelection::getGeometry() const
 {
     return geom;

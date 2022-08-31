@@ -60,7 +60,8 @@ X11Selection::X11Selection(Display* display)
     , window{}
     , gc{}
     , isEnabled{}
-    , borderWidth{Selection::defaultBorderWidth}
+    , baseBorderWidth{Selection::defaultBorderWidth}
+    , borderWidth{baseBorderWidth}
     , origin{}
     , geom{}
 {
@@ -114,7 +115,7 @@ bool X11Selection::getIsEnabled() const
 
 void X11Selection::calcBorderWidth()
 {
-    borderWidth = Selection::defaultBorderWidth;
+    borderWidth = baseBorderWidth;
 
     // X resources are attached to the root window when the program
     // starts, so calling XGetDefault() will always return the same
@@ -137,6 +138,32 @@ void X11Selection::calcBorderWidth()
     borderWidth = borderWidth * std::atoi(dpiStr) / 96.0f + 0.5f;
     if (borderWidth < 1)
         borderWidth = 1;
+}
+
+
+void X11Selection::setBorderWidth(int newBorderWidth)
+{
+    if (newBorderWidth == baseBorderWidth)
+        return;
+
+    baseBorderWidth = newBorderWidth;
+    calcBorderWidth();
+
+    XGCValues gcval;
+    gcval.line_width = borderWidth;
+    gcval.dashes = borderWidth * Selection::dashLen;
+
+    XChangeGC(display, gc, GCLineWidth | GCDashList, &gcval);
+
+    XMoveResizeWindow(
+        display,
+        window,
+        geom.x - borderWidth,
+        geom.y - borderWidth,
+        geom.w + borderWidth * 2,
+        geom.h + borderWidth * 2);
+
+    reshapeWindow();
 }
 
 
@@ -174,29 +201,27 @@ void X11Selection::setGeometry(const Rect& newGeom)
     if (newGeom.x != geom.x) {
         windowChanges.x = newGeom.x - borderWidth;
         valueMask |= CWX;
-        geom.x = newGeom.x;
     }
 
     if (newGeom.y != geom.y) {
         windowChanges.y = newGeom.y - borderWidth;
         valueMask |= CWY;
-        geom.y = newGeom.y;
     }
 
     if (newGeom.w != geom.w) {
         windowChanges.width = newGeom.w + borderWidth * 2;
         valueMask |= CWWidth;
-        geom.w = newGeom.w;
     }
 
     if (newGeom.h != geom.h) {
         windowChanges.height = newGeom.h + borderWidth * 2;
         valueMask |= CWHeight;
-        geom.h = newGeom.h;
     }
 
     if (valueMask == 0)
         return;
+
+    geom = newGeom;
 
     XConfigureWindow(display, window, valueMask, &windowChanges);
     if (valueMask & (CWWidth | CWHeight))

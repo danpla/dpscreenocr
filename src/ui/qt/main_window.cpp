@@ -68,6 +68,7 @@ MainWindow::MainWindow()
     , clipboardTextPending{}
     , minimizeToTray{}
     , minimizeOnStart{}
+    , selectionBorderWidth{}
 {
     setWindowTitle(uiAppName);
     QApplication::setWindowIcon(getIcon(uiAppFileName));
@@ -618,6 +619,12 @@ bool MainWindow::loadState(const DpsoCfg* cfg)
         cfgKeyUiWindowMinimizeOnStart,
         cfgDefaultValueUiWindowMinimizeOnStart);
 
+    selectionBorderWidth = dpsoCfgGetInt(
+        cfg,
+        cfgKeySelectionBorderWidth,
+        dpsoGetSelectionDefaultBorderWidth());
+    dpsoSetSelectionBorderWidth(selectionBorderWidth);
+
     return true;
 }
 
@@ -666,6 +673,9 @@ void MainWindow::saveState(DpsoCfg* cfg) const
 
     dpsoCfgSetBool(
         cfg, cfgKeyUiWindowMinimizeOnStart, minimizeOnStart);
+
+    dpsoCfgSetInt(
+        cfg, cfgKeySelectionBorderWidth, selectionBorderWidth);
 }
 
 

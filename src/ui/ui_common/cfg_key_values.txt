@@ -10,6 +10,7 @@ hotkey_toggle_selection                 | DpsoHotkey        | {dpsoKeyGrave, dps
 ocr_allow_queuing                       | int               | true
 ocr_languages
 ocr_split_text_blocks                   | int               | true
+selection_border_width
 ui_active_tab
 ui_languages_sort_column
 ui_languages_sort_descending

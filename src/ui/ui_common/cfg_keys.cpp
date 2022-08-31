@@ -28,6 +28,8 @@ const char* const cfgKeyOcrLanguages =
     "ocr_languages";
 const char* const cfgKeyOcrSplitTextBlocks =
     "ocr_split_text_blocks";
+const char* const cfgKeySelectionBorderWidth =
+    "selection_border_width";
 const char* const cfgKeyUiActiveTab =
     "ui_active_tab";
 const char* const cfgKeyUiLanguagesSortColumn =

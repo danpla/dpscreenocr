@@ -19,6 +19,8 @@ public:
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
 
+    void setBorderWidth(int newBorderWidth) override;
+
     Rect getGeometry() const override;
 
     void updateStart() override;
@@ -29,6 +31,7 @@ private:
     GC gc;
 
     bool isEnabled;
+    int baseBorderWidth;
     int borderWidth;
     Point origin;
     Rect geom;

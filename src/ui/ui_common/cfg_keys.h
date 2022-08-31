@@ -16,6 +16,7 @@ extern const char* const cfgKeyHotkeyToggleSelection;
 extern const char* const cfgKeyOcrAllowQueuing;
 extern const char* const cfgKeyOcrLanguages;
 extern const char* const cfgKeyOcrSplitTextBlocks;
+extern const char* const cfgKeySelectionBorderWidth;
 extern const char* const cfgKeyUiActiveTab;
 extern const char* const cfgKeyUiLanguagesSortColumn;
 extern const char* const cfgKeyUiLanguagesSortDescending;

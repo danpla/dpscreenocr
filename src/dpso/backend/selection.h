@@ -53,6 +53,15 @@ public:
     virtual void setIsEnabled(bool newIsEnabled) = 0;
 
     /**
+     * Set selection border width.
+     *
+     * The method is always called with newBorderWidth > 0.
+     *
+     * \sa dpsoSetSelectionBorderWidth()
+     */
+    virtual void setBorderWidth(int newBorderWidth) = 0;
+
+    /**
      * Get selection geometry.
      *
      * \sa dpsoGetSelectionGeometry()

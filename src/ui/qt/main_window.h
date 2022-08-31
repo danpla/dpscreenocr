@@ -101,6 +101,8 @@ private:
 
     ui::TaskbarUPtr taskbar;
 
+    int selectionBorderWidth;
+
     void createQActions();
 
     QWidget* createMainTab();
