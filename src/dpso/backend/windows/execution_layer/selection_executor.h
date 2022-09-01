@@ -19,6 +19,8 @@ public:
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
 
+    void setBorderWidth(int newBorderWidth) override;
+
     Rect getGeometry() const override;
 private:
     Selection& selection;

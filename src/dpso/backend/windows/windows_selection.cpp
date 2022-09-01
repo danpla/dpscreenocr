@@ -50,19 +50,17 @@ namespace backend {
 
 // TODO: Support dynamic DPI changes (WM_DPICHANGED) on Windows 8.1
 // and newer.
-static int getBorderWidth()
+static int getBorderWidth(int baseBorderWidth)
 {
     auto dc = windows::getDc(nullptr);
     if (!dc)
-        return Selection::defaultBorderWidth;
+        return baseBorderWidth;
 
     // LOGPIXELSX and LOGPIXELSY are identical (as well as values
     // returned by GetDpiForMonitor()).
     const auto dpi = GetDeviceCaps(dc.get(), LOGPIXELSX);
 
-    const auto scale = dpi / 96.0f;
-
-    return Selection::defaultBorderWidth * scale + 0.5f;
+    return baseBorderWidth * dpi / 96.0f + 0.5f;
 }
 
 
@@ -113,7 +111,8 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 
 
 WindowsSelection::WindowsSelection(HINSTANCE instance)
-    : borderWidth{getBorderWidth()}
+    : baseBorderWidth{defaultBorderWidth}
+    , borderWidth{getBorderWidth(baseBorderWidth)}
     , isEnabled{}
     , origin{}
     , geom{}
@@ -202,8 +201,21 @@ void WindowsSelection::setIsEnabled(bool newIsEnabled)
 
 void WindowsSelection::setBorderWidth(int newBorderWidth)
 {
-    // TODO
-    (void)newBorderWidth;
+    if (newBorderWidth == baseBorderWidth)
+        return;
+
+    baseBorderWidth = newBorderWidth;
+    borderWidth = getBorderWidth(baseBorderWidth);
+
+    createPens();
+
+    SetWindowPos(
+        window.get(), nullptr,
+        geom.x - borderWidth, geom.y - borderWidth,
+        geom.w + borderWidth * 2, geom.h + borderWidth * 2,
+        SWP_NOZORDER | SWP_NOACTIVATE);
+
+    updateWindowRegion();
 }
 
 
@@ -274,7 +286,7 @@ void WindowsSelection::setGeometry(const Rect& newGeom)
     geom = newGeom;
 
     SetWindowPos(
-        window.get(), 0,
+        window.get(), nullptr,
         geom.x - borderWidth, geom.y - borderWidth,
         geom.w + borderWidth * 2, geom.h + borderWidth * 2,
         flags);

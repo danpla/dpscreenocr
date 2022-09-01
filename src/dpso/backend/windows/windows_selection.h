@@ -26,6 +26,7 @@ public:
 
     void update();
 private:
+    int baseBorderWidth;
     int borderWidth;
     bool isEnabled;
     Point origin;

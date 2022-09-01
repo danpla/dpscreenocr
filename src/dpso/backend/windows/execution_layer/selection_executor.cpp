@@ -32,6 +32,12 @@ void SelectionExecutor::setIsEnabled(bool newIsEnabled)
 }
 
 
+void SelectionExecutor::setBorderWidth(int newBorderWidth)
+{
+    EXECUTE(setBorderWidth(newBorderWidth));
+}
+
+
 Rect SelectionExecutor::getGeometry() const
 {
     return EXECUTE(getGeometry());
