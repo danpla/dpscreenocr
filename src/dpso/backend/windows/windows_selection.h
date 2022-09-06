@@ -26,9 +26,10 @@ public:
 
     void update();
 private:
+    bool isEnabled;
+    int dpi;
     int baseBorderWidth;
     int borderWidth;
-    bool isEnabled;
     Point origin;
     Rect geom;
 
@@ -41,10 +42,11 @@ private:
         HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
     LRESULT processMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 
-    void createPens();
+    void updatePens();
+    void updateWindowGeometry();
+    void updateWindowRegion();
     void setGeometry(const Rect& newGeom);
     void draw(HDC dc);
-    void updateWindowRegion();
 };
 
 
