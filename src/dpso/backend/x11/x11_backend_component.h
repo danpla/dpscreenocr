@@ -10,7 +10,6 @@ namespace backend {
 
 class X11BackendComponent {
 public:
-    X11BackendComponent() = default;
     virtual ~X11BackendComponent() = default;
 
     virtual void updateStart() {}

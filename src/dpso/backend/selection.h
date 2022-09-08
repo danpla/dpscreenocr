@@ -29,14 +29,7 @@ public:
      */
     static const auto dashLen = 3;
 
-    Selection() = default;
     virtual ~Selection() = default;
-
-    Selection(const Selection& other) = delete;
-    Selection& operator=(const Selection& other) = delete;
-
-    Selection(Selection&& other) = delete;
-    Selection& operator=(Selection&& other) = delete;
 
     /**
      * Get whether selection is enabled.

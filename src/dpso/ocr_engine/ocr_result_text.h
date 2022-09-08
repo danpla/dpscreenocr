@@ -23,14 +23,7 @@ public:
      */
     static std::unique_ptr<OcrResultText> create(const char* text);
 
-    OcrResultText() = default;
     virtual ~OcrResultText() = default;
-
-    OcrResultText(const OcrResultText& other) = delete;
-    OcrResultText& operator=(const OcrResultText& other) = delete;
-
-    OcrResultText(OcrResultText&& other) = delete;
-    OcrResultText& operator=(OcrResultText&& other) = delete;
 
     /**
      * Get null-terminated text data.

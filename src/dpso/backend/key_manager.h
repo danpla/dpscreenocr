@@ -29,14 +29,7 @@ struct HotkeyBinding {
  */
 class KeyManager {
 public:
-    KeyManager() = default;
     virtual ~KeyManager() = default;
-
-    KeyManager(const KeyManager& other) = delete;
-    KeyManager& operator=(const KeyManager& other) = delete;
-
-    KeyManager(KeyManager&& other) = delete;
-    KeyManager& operator=(KeyManager&& other) = delete;
 
     /**
      * Get whether hotkeys are enabled.

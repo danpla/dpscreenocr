@@ -29,14 +29,7 @@ public:
      */
     static std::unique_ptr<Backend> create();
 
-    Backend() = default;
     virtual ~Backend() = default;
-
-    Backend(const Backend& other) = delete;
-    Backend& operator=(const Backend& other) = delete;
-
-    Backend(Backend&& other) = delete;
-    Backend& operator=(Backend&& other) = delete;
 
     virtual KeyManager& getKeyManager() = 0;
     virtual Selection& getSelection() = 0;

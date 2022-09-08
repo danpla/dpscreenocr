@@ -77,15 +77,7 @@ public:
     static const OcrEngineCreator& get(std::size_t idx);
     static std::size_t getCount();
 
-    OcrEngineCreator() = default;
     virtual ~OcrEngineCreator() = default;
-
-    OcrEngineCreator(const OcrEngineCreator& other) = delete;
-    OcrEngineCreator& operator=(
-        const OcrEngineCreator& other) = delete;
-
-    OcrEngineCreator(OcrEngineCreator&& other) = delete;
-    OcrEngineCreator& operator=(OcrEngineCreator&& other) = delete;
 
     virtual const OcrEngineInfo& getInfo() const = 0;
 

@@ -11,14 +11,7 @@ namespace backend {
 
 
 struct Action {
-    Action() = default;
     virtual ~Action() = default;
-
-    Action(const Action& other) = delete;
-    Action& operator=(const Action& other) = delete;
-
-    Action(Action&& other) = delete;
-    Action& operator=(Action&& other) = delete;
 
     virtual void action() = 0;
 };
@@ -26,14 +19,7 @@ struct Action {
 
 class ActionExecutor {
 public:
-    ActionExecutor() = default;
     virtual ~ActionExecutor() = default;
-
-    ActionExecutor(const ActionExecutor& other) = delete;
-    ActionExecutor& operator=(const ActionExecutor& other) = delete;
-
-    ActionExecutor(ActionExecutor&& other) = delete;
-    ActionExecutor& operator=(ActionExecutor&& other) = delete;
 
     virtual void execute(Action& action) = 0;
 };

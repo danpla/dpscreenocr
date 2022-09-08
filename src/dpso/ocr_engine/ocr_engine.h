@@ -66,14 +66,7 @@ using OcrProgressCallback = bool (*)(int progress, void* userData);
 
 class OcrEngine {
 public:
-    OcrEngine() = default;
     virtual ~OcrEngine() = default;
-
-    OcrEngine(const OcrEngine& other) = delete;
-    OcrEngine& operator=(const OcrEngine& other) = delete;
-
-    OcrEngine(OcrEngine&& other) = delete;
-    OcrEngine& operator=(OcrEngine&& other) = delete;
 
     /**
      * Get OCR features supported by engine.
