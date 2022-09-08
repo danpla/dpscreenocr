@@ -36,10 +36,11 @@ private:
     Point origin;
     Rect geom;
 
-    void calcBorderWidth();
+    void updateBorderWidth();
+    void updateWindowGeometry();
+    void updateWindowShape();
     void setGeometry(const Rect& newGeom);
-    void reshapeWindow();
-    void drawSelection();
+    void draw();
 };
 
 

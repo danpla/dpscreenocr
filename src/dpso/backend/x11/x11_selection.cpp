@@ -10,8 +10,8 @@
 // We use XQueryPointer() instead of XGrabPointer(), because the
 // latter fails if the pointer is already grabbed (usually by apps
 // that work in fullscreen mode). Stealing focus with XSetInputFocus()
-// is also not a good idea: while some fullscreen apps switch to
-// windowed mode, others minimize their windows.
+// is also not a good idea, as in this case most fullscreen apps will
+// either switch to windowed mode or minimize their windows.
 
 
 namespace dpso {
@@ -40,18 +40,31 @@ static Point getMousePosition(Display* display)
 }
 
 
-static Rect getCurrentSelectionRect(
-    Display* display, const Point& origin)
+const auto baseDpi = 96;
+
+
+static int getDpi(Display* display)
 {
-    auto result = Rect::betweenPoints(
-        origin, getMousePosition(display));
+    // X resources are attached to the root window when the program
+    // starts, so XGetDefault() will always return the same value. An
+    // alternative that allows to be notified of DPI changes is to use
+    // the XSettings' "Xft/DPI" property instead (on modern systems,
+    // it seems to be kept in sync with "Xft.dpi").
+    //
+    // In addition to font scale, some modern desktop environments
+    // also allow to set windows scale factor. We should probably take
+    // this into account in the future. See:
+    // https://wiki.archlinux.org/title/HiDPI
+    if (const auto* dpiStr = XGetDefault(display, "Xft", "dpi"))
+        // Xft.dpi may be unset when the default 96 is used.
+        //
+        // Xft.dpi is usually written as an integer, but Xft itself
+        // parses it as a double. We treat it as int, ignoring the
+        // fractional part, so that we don't depend on the current
+        // locale by using strtod() and similar routines.
+        return std::atoi(dpiStr);
 
-    // The maximum cursor position is 1 pixel less than the size
-    // of the display.
-    ++result.w;
-    ++result.h;
-
-    return result;
+    return baseDpi;
 }
 
 
@@ -60,20 +73,18 @@ X11Selection::X11Selection(Display* display)
     , window{}
     , gc{}
     , isEnabled{}
-    , baseBorderWidth{Selection::defaultBorderWidth}
+    , baseBorderWidth{defaultBorderWidth}
     , borderWidth{baseBorderWidth}
     , origin{}
     , geom{}
 {
-    calcBorderWidth();
-
     XSetWindowAttributes windowAttrs;
     windowAttrs.override_redirect = True;
 
     window = XCreateWindow(
         display, XDefaultRootWindow(display),
-        geom.x - borderWidth, geom.y - borderWidth,
-        geom.w + borderWidth * 2, geom.h + borderWidth * 2,
+        0, 0,
+        1, 1,
         0,
         CopyFromParent,
         CopyFromParent,
@@ -81,6 +92,8 @@ X11Selection::X11Selection(Display* display)
         CWOverrideRedirect,
         &windowAttrs);
     XSelectInput(display, window, ExposureMask);
+
+    updateBorderWidth();
 
     XGCValues gcval;
     gcval.foreground = XWhitePixel(display, 0);
@@ -96,7 +109,8 @@ X11Selection::X11Selection(Display* display)
             | GCDashList,
         &gcval);
 
-    reshapeWindow();
+    updateWindowGeometry();
+    updateWindowShape();
 }
 
 
@@ -113,41 +127,13 @@ bool X11Selection::getIsEnabled() const
 }
 
 
-void X11Selection::calcBorderWidth()
-{
-    borderWidth = baseBorderWidth;
-
-    // X resources are attached to the root window when the program
-    // starts, so calling XGetDefault() will always return the same
-    // value. An alternative that allows to be notified of DPI changes
-    // is to use the XSettings' "Xft/DPI" property instead (on modern
-    // systems, it seems to be kept in sync with "Xft.dpi").
-    //
-    // In addition to font scale, some modern desktop environments
-    // also allow to set windows scale factor. We should probably take
-    // this into account in the future. See:
-    // https://wiki.archlinux.org/title/HiDPI
-    const auto* dpiStr = XGetDefault(display, "Xft", "dpi");
-    if (!dpiStr)
-        // Xft.dpi may be unset when the default 96 is used.
-        return;
-
-    // Xft.dpi is normally written as an integer, but Xft itself
-    // parses it as a double. We don't care about fractional part for
-    // now so that parsing doesn't depend on the current locale.
-    borderWidth = borderWidth * std::atoi(dpiStr) / 96.0f + 0.5f;
-    if (borderWidth < 1)
-        borderWidth = 1;
-}
-
-
 void X11Selection::setBorderWidth(int newBorderWidth)
 {
     if (newBorderWidth == baseBorderWidth)
         return;
 
     baseBorderWidth = newBorderWidth;
-    calcBorderWidth();
+    updateBorderWidth();
 
     XGCValues gcval;
     gcval.line_width = borderWidth;
@@ -155,15 +141,8 @@ void X11Selection::setBorderWidth(int newBorderWidth)
 
     XChangeGC(display, gc, GCLineWidth | GCDashList, &gcval);
 
-    XMoveResizeWindow(
-        display,
-        window,
-        geom.x - borderWidth,
-        geom.y - borderWidth,
-        geom.w + borderWidth * 2,
-        geom.h + borderWidth * 2);
-
-    reshapeWindow();
+    updateWindowGeometry();
+    updateWindowShape();
 }
 
 
@@ -193,64 +172,53 @@ Rect X11Selection::getGeometry() const
 }
 
 
-void X11Selection::setGeometry(const Rect& newGeom)
-{
-    XWindowChanges windowChanges;
-    unsigned valueMask = 0;
-
-    if (newGeom.x != geom.x) {
-        windowChanges.x = newGeom.x - borderWidth;
-        valueMask |= CWX;
-    }
-
-    if (newGeom.y != geom.y) {
-        windowChanges.y = newGeom.y - borderWidth;
-        valueMask |= CWY;
-    }
-
-    if (newGeom.w != geom.w) {
-        windowChanges.width = newGeom.w + borderWidth * 2;
-        valueMask |= CWWidth;
-    }
-
-    if (newGeom.h != geom.h) {
-        windowChanges.height = newGeom.h + borderWidth * 2;
-        valueMask |= CWHeight;
-    }
-
-    if (valueMask == 0)
-        return;
-
-    geom = newGeom;
-
-    XConfigureWindow(display, window, valueMask, &windowChanges);
-    if (valueMask & (CWWidth | CWHeight))
-        reshapeWindow();
-}
-
-
 void X11Selection::updateStart()
 {
     if (!isEnabled)
         return;
 
-    setGeometry(getCurrentSelectionRect(display, origin));
+    auto newGeom = Rect::betweenPoints(
+        origin, getMousePosition(display));
+
+    // The maximum cursor position is 1 pixel less than the size
+    // of the display.
+    ++newGeom.w;
+    ++newGeom.h;
+
+    setGeometry(newGeom);
 }
 
 
 void X11Selection::handleEvent(const XEvent& event)
 {
-    if (!isEnabled
-            || event.type != Expose
-            || event.xexpose.window != window
-            || event.xexpose.count > 0)
-        return;
-
-    drawSelection();
+    if (event.type == Expose
+            && event.xexpose.window == window
+            && event.xexpose.count == 0)
+        draw();
 }
 
 
-void X11Selection::reshapeWindow()
+void X11Selection::updateBorderWidth()
+{
+    borderWidth = baseBorderWidth * getDpi(display) / baseDpi + 0.5f;
+    if (borderWidth < 1)
+        borderWidth = 1;
+}
+
+
+void X11Selection::updateWindowGeometry()
+{
+    XMoveResizeWindow(
+        display,
+        window,
+        geom.x - borderWidth,
+        geom.y - borderWidth,
+        geom.w + borderWidth * 2,
+        geom.h + borderWidth * 2);
+}
+
+
+void X11Selection::updateWindowShape()
 {
     const auto sideH = geom.h;
     const auto windowW = geom.w + borderWidth * 2;
@@ -294,7 +262,7 @@ void X11Selection::reshapeWindow()
         ShapeSet,
         Unsorted);
 
-    XRectangle windowRect = {
+    XRectangle windowRect{
         0,
         0,
         static_cast<unsigned short>(windowW),
@@ -313,7 +281,22 @@ void X11Selection::reshapeWindow()
 }
 
 
-void X11Selection::drawSelection()
+void X11Selection::setGeometry(const Rect& newGeom)
+{
+    const auto newSize = newGeom.w != geom.w || newGeom.h != geom.h;
+    if (!newSize && newGeom.x == geom.x && newGeom.y != geom.y)
+        return;
+
+    geom = newGeom;
+
+    updateWindowGeometry();
+
+    if (newSize)
+        updateWindowShape();
+}
+
+
+void X11Selection::draw()
 {
     XDrawRectangle(
         display,
