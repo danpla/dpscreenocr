@@ -29,11 +29,13 @@ int dpsoGetSelectionDefaultBorderWidth(void)
 
 void dpsoSetSelectionBorderWidth(int newBorderWidth)
 {
+    if (!selection)
+        return;
+
     if (newBorderWidth < 1)
         newBorderWidth = 1;
 
-    if (selection)
-        selection->setBorderWidth(newBorderWidth);
+    selection->setBorderWidth(newBorderWidth);
 }
 
 
