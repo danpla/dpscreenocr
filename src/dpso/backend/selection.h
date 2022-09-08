@@ -16,7 +16,7 @@ namespace backend {
 class Selection {
 public:
     /**
-     * Default border with at a standard (e.g. 96) DPI.
+     * Default border with at base (e.g. 96) DPI.
      */
     static const auto defaultBorderWidth = 3;
 

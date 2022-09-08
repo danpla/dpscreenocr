@@ -336,14 +336,14 @@ settings file:
     as separator. If this option is disabled, pressing the hotkey will
     have no effect until the recognition is done.
 
-*   `selection_border_width` (`4` by default) width of the selection
+*   `selection_border_width` (`3` by default) width of the selection
     border.
 
-    Depending on the platform, the final width may be scaled
-    proportionally to DPI, which may be a physical DPI of the display,
-    a virtual DPI set via global GUI/font scale settings, or a
-    combination of both. On some platforms, it may be impossible to
-    change the border width at all, in which case this option will
+    Depending on the platform, the final width can be scaled
+    proportionally to DPI, which may be the physical DPI of the
+    display, the virtual DPI set via global GUI/font scale settings,
+    or a combination of both. On some platforms, it may be impossible
+    to change the border width at all, in which case this option will
     have no effect.
 
 *   `ui_tray_icon_visible` (`true` by default) whether to show an icon

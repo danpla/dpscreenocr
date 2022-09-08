@@ -43,7 +43,7 @@ void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled);
  * Get default selection border width.
  *
  * This is the width that is set by default for backends that support
- * custom border width.
+ * a custom border width.
  */
 int dpsoGetSelectionDefaultBorderWidth(void);
 
@@ -52,13 +52,13 @@ int dpsoGetSelectionDefaultBorderWidth(void);
  * Set selection border width.
  *
  * The function treats the given width as a value for the base (e.g.
- * 96) DPI. If supported by the backend, the final width may be scaled
- * proportionally to the actual DPI, which may be a physical DPI of
- * the display, a virtual DPI set via global GUI/font scale
+ * 96) DPI. If supported by the backend, the final width can be scaled
+ * proportionally to the actual DPI, which may be the physical DPI of
+ * the display, the virtual DPI set via global GUI/font scale
  * settings, or a combination of both. Some backends may not support
- * changing border width at all.
+ * changing the border width at all.
  *
- * A width < 1 will be clamped to 1.
+ * Values < 1 will be clamped to 1.
  */
 void dpsoSetSelectionBorderWidth(int newBorderWidth);
 
