@@ -42,6 +42,7 @@ private:
         HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);
     LRESULT processMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 
+    void updateBorderWidth();
     void updatePens();
     void updateWindowGeometry();
     void updateWindowRegion();

@@ -136,12 +136,6 @@ static int getDpi(const Point& point)
 }
 
 
-static int scaleByDpi(int baseBorderWidth, int dpi)
-{
-    return baseBorderWidth * dpi / baseDpi + 0.5f;
-}
-
-
 static Point getMousePosition()
 {
     POINT point;
@@ -233,8 +227,8 @@ WindowsSelection::WindowsSelection(HINSTANCE instance)
     // Note that getDpi() is not in the initialization list since it
     // should be protected by the DPI awareness guard.
     dpi = getDpi(origin);
-    borderWidth = scaleByDpi(baseBorderWidth, dpi);
 
+    updateBorderWidth();
     updatePens();
     updateWindowGeometry();
     updateWindowRegion();
@@ -273,8 +267,8 @@ void WindowsSelection::setBorderWidth(int newBorderWidth)
     const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
     baseBorderWidth = newBorderWidth;
-    borderWidth = scaleByDpi(baseBorderWidth, dpi);
 
+    updateBorderWidth();
     updatePens();
     updateWindowGeometry();
     updateWindowRegion();
@@ -342,8 +336,8 @@ LRESULT WindowsSelection::processMessage(
             // dragging and resizing, but not for SetWindowPos().
 
             dpi = HIWORD(wParam);
-            borderWidth = scaleByDpi(baseBorderWidth, dpi);
 
+            updateBorderWidth();
             updatePens();
             updateWindowGeometry();
             updateWindowRegion();
@@ -362,6 +356,14 @@ LRESULT WindowsSelection::processMessage(
     }
 
     return DefWindowProc(window.get(), msg, wParam, lParam);
+}
+
+
+void WindowsSelection::updateBorderWidth()
+{
+    borderWidth = baseBorderWidth * dpi / baseDpi + 0.5f;
+    if (borderWidth < 1)
+        borderWidth = 1;
 }
 
 
