@@ -18,7 +18,7 @@ public:
     /**
      * Default border with at a standard (e.g. 96) DPI.
      */
-    static const auto defaultBorderWidth = 4;
+    static const auto defaultBorderWidth = 3;
 
     /**
      * Dash length.
