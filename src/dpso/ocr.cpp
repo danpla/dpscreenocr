@@ -211,9 +211,9 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
     }
 
     *info = {
-        internalInfo.id,
-        internalInfo.name,
-        internalInfo.version,
+        internalInfo.id.c_str(),
+        internalInfo.name.c_str(),
+        internalInfo.version.c_str(),
         dataDirPreference
     };
 }

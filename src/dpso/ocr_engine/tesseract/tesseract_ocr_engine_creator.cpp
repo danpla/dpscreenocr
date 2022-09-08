@@ -1,8 +1,6 @@
 
 #include "ocr_engine/tesseract/tesseract_ocr_engine_creator.h"
 
-#include <string>
-
 #include "tesseract/baseapi.h"
 
 #include "ocr_engine/ocr_engine_creator.h"
@@ -30,9 +28,8 @@ static std::string getTesseractMajorVersionString()
 class TesseractOcrEngineCreator : public OcrEngineCreator {
 public:
     TesseractOcrEngineCreator()
-        : id{"tesseract_" + getTesseractMajorVersionString()}
-        , info{
-            id.c_str(),
+        : info{
+            "tesseract_" + getTesseractMajorVersionString(),
             "Tesseract",
             tesseract::TessBaseAPI::Version(),
             #if defined(__unix__) && !defined(__APPLE__)
@@ -55,7 +52,6 @@ public:
         return createTesseractOcrEngine(args);
     }
 private:
-    std::string id;
     OcrEngineInfo info;
 };
 

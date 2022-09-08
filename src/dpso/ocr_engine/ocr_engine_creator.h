@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <string>
 
 
 namespace dpso {
@@ -19,14 +20,14 @@ struct OcrEngineInfo {
      * Unique id of the engine consisting of lower-case ASCII
      * alphanumeric characters and underscores to separate words.
      */
-    const char* id;
+    std::string id;
 
     /**
      * Human-readable engine name.
      *
      * Unlike id, the name doesn't have any restrictions.
      */
-    const char* name;
+    std::string name;
 
     /**
      * Engine version.
@@ -35,7 +36,7 @@ struct OcrEngineInfo {
      * be the runtime version, if possible. May be empty if the engine
      * doesn't provide any version information.
      */
-    const char* version;
+    std::string version;
 
     /**
      * What OcrEngineArgs::dataDir the engine prefers.
