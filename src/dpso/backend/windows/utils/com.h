@@ -25,9 +25,9 @@ inline bool coInitSuccess(HRESULT hresult)
 // COINIT_DISABLE_OLE1DDE is always added to dwCoInit.
 //
 // The class doesn't throw if CoInitialize() returns an error (e.g.
-// RPC_E_CHANGED_MODE). Instead, it only calls CoUninitialize() on
-// success (i.e. S_OK or S_FALSE), and gives access to HRESULT to
-// check for failure explicitly via coInitSuccess().
+// RPC_E_CHANGED_MODE). Instead, it only calls CoUninitialize() from
+// the destructor on success (i.e. S_OK or S_FALSE), and gives access
+// to HRESULT to check for failure explicitly via coInitSuccess().
 struct CoInitializer {
     explicit CoInitializer(DWORD dwCoInit)
         : hresult{
