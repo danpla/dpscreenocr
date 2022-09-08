@@ -1,3 +1,17 @@
+1.2.0 (2022-??-??)
+==================
+
+* On X11, selection border now scales proportionally to the system
+  font DPI setting (the "Xft.dpi" property from X resources)
+* Windows 8.1 and newer:
+  * Selection border now scales proportionally to the display DPI
+  * Fixed selection position when moving it to a display with a
+    different DPI
+* Reduced default selection border width from 4 to 3 pixels
+* Added selection_border_width option in settings.cfg to change the
+  selection border width
+
+
 1.1.0 (2022-07-17)
 ==================
 
