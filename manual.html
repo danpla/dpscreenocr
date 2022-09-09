@@ -16,7 +16,7 @@
 <body>
 <header>
 <h1 class="title">dpScreenOCR User Manual</h1>
-<p class="subtitle">Version 1.1</p>
+<p class="subtitle">Version 1.2</p>
 </header>
 <nav id="TOC">
 <h2 id="toc-title">Table of contents</h2>
@@ -63,7 +63,7 @@
 <p>The <a href="https://danpla.github.io/dpscreenocr">dpScreenOCR website</a> provides an installer and a ZIP archive. The latter doesn’t need installation: unpack it anywhere and run dpscreenocr.exe.</p>
 <h2 data-number="2.2" id="installing-languages"><span class="header-section-number">2.2</span> Installing languages</h2>
 <h3 data-number="2.2.1" id="unix-like-systems-1"><span class="header-section-number">2.2.1</span> Unix-like systems</h3>
-<p>Use your package manager to install languages for Tesseract. The package names may vary across systems, but they usually start with “tesseract” and end with a language code or name. For example, the package for German have the following names:</p>
+<p>Use your package manager to install languages for Tesseract. Package names may vary across systems, but they usually start with “tesseract” and end with a language code or name. For example, the package for German has the following names:</p>
 <ul>
 <li>“tesseract-ocr-deu” on Debian, Ubuntu, and derivatives</li>
 <li>“tesseract-data-deu” on Arch Linux</li>
@@ -73,7 +73,7 @@
 <p>When searching for a language, be aware that some codes are not from <a href="https://en.wikipedia.org/wiki/ISO_639-3">ISO 639-3</a>. In particular, “frk” is German Fraktur rather than Frankish. The Tesseract developers are aware of this and will probably fix the code in the future (see issues <a href="https://github.com/tesseract-ocr/tessdata_best/issues/68">68</a>, <a href="https://github.com/tesseract-ocr/tessdata/issues/49">49</a>, and <a href="https://github.com/tesseract-ocr/langdata/issues/61">61</a>); meanwhile, if “frk” is described as “Frankish” in your package manager, you can report the problem to the package maintainer.</p>
 <p>There are also two special packs that provide extra features rather than languages: “osd” (automatic script and orientation detection) and “equ” (math and equation detection). dpScreenOCR doesn’t use them.</p>
 <h3 data-number="2.2.2" id="windows-1"><span class="header-section-number">2.2.2</span> Windows</h3>
-<p>dpScreenOCR for Windows is shipped with the English language pack. To install other languages, visit the <a href="https://danpla.github.io/dpscreenocr/languages">languages</a> page, download “.traineddata” files you want, and place them in the <code>C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data</code> folder. To quickly navigate to this folder, press Windows + R to open “Run” and paste <code>%LOCALAPPDATA%\dpscreenocr\tesseract_5_data</code>. You can also paste this path to the folder address bar of File Explorer.</p>
+<p>dpScreenOCR for Windows comes with the English language pack. To install other languages, visit the <a href="https://danpla.github.io/dpscreenocr/languages">languages</a> page, download “.traineddata” files you want, and place them in the <code>C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data</code> folder. To quickly navigate to this folder, press Windows + R to open “Run” and paste <code>%LOCALAPPDATA%\dpscreenocr\tesseract_5_data</code>. You can also paste this path to the folder address bar of File Explorer.</p>
 <p>If the “tesseract_5_data” folder does not exist in <code>%LOCALAPPDATA%\dpscreenocr</code> when you start dpScreenOCR, the program will copy it from the directory if the EXE file.</p>
 <h4 data-number="2.2.2.1" id="migrating-from-version-1.0"><span class="header-section-number">2.2.2.1</span> Migrating from version 1.0</h4>
 <p>When upgrading from version 1.0, the installer will automatically migrate languages from the old location, which was the “tessdata” folder in the directory of the EXE file. To be more specific, the contents of “tessdata” are copied to the “tesseract_5_data” folder in the directory of the EXE file, and then each user launching dpScreenOCR gets their own copy of “tesseract_5_data” in <code>%LOCALAPPDATA%\dpscreenocr</code>.</p>
@@ -88,7 +88,7 @@
 <p>After these steps, dpScreenOCR will recognize the text from the selected area and process it according to the actions from the <a href="#actions-tab">Actions tab</a>.</p>
 <h2 data-number="3.1" id="main-tab"><span class="header-section-number">3.1</span> Main tab</h2>
 <h3 data-number="3.1.1" id="status"><span class="header-section-number">3.1.1</span> Status</h3>
-<p>Status describes the current state of dpScreenOCR. Green means the program is ready to use, and you can press the <a href="#hotkey">Hotkey</a> to start the selection. Yellow shows the progress of recognition. Red warns that the program needs some setup, and you will not be able to start the selection until the problem is fixed.</p>
+<p>The status describes the current state of dpScreenOCR. Green means the program is ready to use, and you can press the <a href="#hotkey">Hotkey</a> to start the selection. Yellow shows the progress of recognition. Red warns that the program needs some setup, and you will not be able to start the selection until the problem is fixed.</p>
 <h3 data-number="3.1.2" id="character-recognition"><span class="header-section-number">3.1.2</span> Character recognition</h3>
 <h4 data-number="3.1.2.1" id="split-text-blocks"><span class="header-section-number">3.1.2.1</span> Split text blocks</h4>
 <p>If this option is enabled, dpScreenOCR will try to detect and split independent text blocks, such as columns. Otherwise, everything is treated as a contiguous block of text. This behavior is best described by the following picture, which shows a two-column text layout (A) recognized with (B) and without (C) the “Split text blocks” option:</p>
@@ -100,7 +100,7 @@
 <p>The hotkey starts and ends the on-screen selection. To cancel the selection, press Escape.</p>
 <p>The hotkey is global: it works even if the dpScreenOCR’s window is minimized. If pressing the hotkey has no effect, it probably means that another program is already using it. In this case, try another key combination.</p>
 <h2 data-number="3.2" id="actions-tab"><span class="header-section-number">3.2</span> Actions tab</h2>
-<p>The Actions tab lets you choose what to do with the recognized text: copy it to the clipboard, add it to history (see the <a href="#history-tab">History tab</a>), or pass it as an argument to an executable.</p>
+<p>The Actions tab lets you choose what to do with the recognized text: copy it to the clipboard, add it to the history (see the <a href="#history-tab">History tab</a>), or pass it as an argument to an executable.</p>
 <h3 data-number="3.2.1" id="run-executable"><span class="header-section-number">3.2.1</span> Run executable</h3>
 <p>The “Run executable” action will run an executable with the recognized text as the first argument. The entry expects either an absolute path to the executable, or just its name in case it’s located in one of the paths listed in your PATH environment variable.</p>
 <h4 data-number="3.2.1.1" id="running-scripts-on-unix-like-systems"><span class="header-section-number">3.2.1.1</span> Running scripts on Unix-like systems</h4>
@@ -159,6 +159,8 @@ HKEY_CLASSES_ROOT\py_auto_file\shell\open\command</code></pre>
 <li><p><code>hotkey_cancel_selection</code> (<code>Escape</code> by default) hotkey to cancel selection.</p></li>
 <li><p><code>ocr_allow_queuing</code> (<code>true</code> by default) allows to queue a new selection for recognition without waiting for the previous one to complete.</p>
 <p>If this option is enabled, the “Copy text to clipboard” action may receive several recognized text at once, in which case they will be joined together using <code>action_copy_to_clipboard_text_separator</code> as separator. If this option is disabled, pressing the hotkey will have no effect until the recognition is done.</p></li>
+<li><p><code>selection_border_width</code> (<code>3</code> by default) width of the selection border.</p>
+<p>Depending on the platform, the final width can be scaled proportionally to DPI, which may be the physical DPI of the display, the virtual DPI set via global GUI/font scale settings, or a combination of both.</p></li>
 <li><p><code>ui_tray_icon_visible</code> (<code>true</code> by default) whether to show an icon in the notification area.</p></li>
 <li><p><code>ui_window_minimize_on_start</code> (<code>false</code> by default) minimize window on start.</p></li>
 <li><p><code>ui_window_minimize_to_tray</code> (<code>false</code> by default) hide window to the notification area on minimizing. This option only has effect if <code>ui_tray_icon_visible</code> is enabled.</p></li>
