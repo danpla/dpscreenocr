@@ -13,7 +13,7 @@ set(APP_NAME "dpScreenOCR")
 set(APP_FILE_NAME "dpscreenocr")
 
 set(APP_VERSION_MAJOR "1")
-set(APP_VERSION_MINOR "1")
+set(APP_VERSION_MINOR "2")
 set(APP_VERSION_PATCH "0")
 set(
     APP_VERSION

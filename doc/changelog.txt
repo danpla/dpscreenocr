@@ -1,4 +1,4 @@
-1.2.0 (2022-??-??)
+1.2.0 (2022-09-09)
 ==================
 
 * On X11, selection border now scales proportionally to the system
