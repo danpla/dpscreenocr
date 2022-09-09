@@ -1,5 +1,5 @@
 
-#include "ui_taskbar.h"
+#include "taskbar.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

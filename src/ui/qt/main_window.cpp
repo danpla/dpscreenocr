@@ -32,7 +32,6 @@
 #endif
 
 #include "dpso_intl/dpso_intl.h"
-#include "ui_common/ui_common.h"
 
 #include "about.h"
 #include "action_chooser.h"

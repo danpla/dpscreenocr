@@ -72,13 +72,8 @@ if(NOT TARGET ui_common)
         ../ui_common "${CMAKE_BINARY_DIR}/src/ui/ui_common")
 endif()
 
-if(NOT TARGET ui_taskbar)
-    add_subdirectory(
-        ../ui_taskbar "${CMAKE_BINARY_DIR}/src/ui/ui_taskbar")
-endif()
-
 target_link_libraries(
-    dpscreenocr_qt dpso dpso_intl dpso_utils ui_common ui_taskbar)
+    dpscreenocr_qt dpso dpso_intl dpso_utils ui_common)
 
 if(DPSO_QT_VERSION EQUAL 4)
     find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)

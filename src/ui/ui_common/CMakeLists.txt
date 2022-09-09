@@ -23,10 +23,22 @@ else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
 
+list(APPEND IN_SRCS taskbar_config.h)
+if(WIN32)
+    set(UI_TASKBAR_WIN 1)
+    list(APPEND SRCS taskbar_windows.cpp)
+else()
+    set(UI_TASKBAR_NULL 1)
+    list(APPEND SRCS taskbar_null.cpp)
+endif()
+
 foreach(IN_SRC ${IN_SRCS})
     configure_file("${IN_SRC}.in" "${IN_SRC}" @ONLY)
 
-    list(APPEND SRCS "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}")
+    get_filename_component(IN_SRC_EXT "${IN_SRC}" EXT)
+    if(NOT IN_SRC_EXT STREQUAL ".h")
+        list(APPEND SRCS "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}")
+    endif()
 endforeach()
 
 add_library(ui_common STATIC ${SRCS})
@@ -39,8 +51,8 @@ endif()
 
 target_include_directories(
     ui_common
-    PRIVATE . "${CMAKE_CURRENT_BINARY_DIR}"
-    PUBLIC ..)
+    PRIVATE .
+    PUBLIC .. "${CMAKE_CURRENT_BINARY_DIR}")
 
 if(NOT TARGET dpso)
     add_subdirectory(../../dpso "${CMAKE_BINARY_DIR}/src/dpso")

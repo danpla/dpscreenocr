@@ -4,7 +4,6 @@
 #include "dpso_intl/dpso_bindtextdomain_utf8.h"
 #include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"
-#include "ui_taskbar/ui_taskbar.h"
 
 
 int main(void)

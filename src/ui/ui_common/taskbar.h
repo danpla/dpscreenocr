@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "ui_taskbar_config.h"
+#include "taskbar_config.h"
 
 #if UI_TASKBAR_WIN
 #define WIN32_LEAN_AND_MEAN

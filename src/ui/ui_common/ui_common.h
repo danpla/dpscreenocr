@@ -9,3 +9,4 @@
 #include "init_intl.h"
 #include "ocr_data_dir_name.h"
 #include "startup_setup.h"
+#include "taskbar.h"
