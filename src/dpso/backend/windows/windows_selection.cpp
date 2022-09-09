@@ -361,7 +361,8 @@ LRESULT WindowsSelection::processMessage(
 
 void WindowsSelection::updateBorderWidth()
 {
-    borderWidth = baseBorderWidth * dpi / baseDpi + 0.5f;
+    borderWidth = static_cast<float>(baseBorderWidth)
+        * dpi / baseDpi + 0.5f;
     if (borderWidth < 1)
         borderWidth = 1;
 }

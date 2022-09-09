@@ -200,7 +200,8 @@ void X11Selection::handleEvent(const XEvent& event)
 
 void X11Selection::updateBorderWidth()
 {
-    borderWidth = baseBorderWidth * getDpi(display) / baseDpi + 0.5f;
+    borderWidth = static_cast<float>(baseBorderWidth)
+        * getDpi(display) / baseDpi + 0.5f;
     if (borderWidth < 1)
         borderWidth = 1;
 }
