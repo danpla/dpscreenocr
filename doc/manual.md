@@ -342,9 +342,7 @@ settings file:
     Depending on the platform, the final width can be scaled
     proportionally to DPI, which may be the physical DPI of the
     display, the virtual DPI set via global GUI/font scale settings,
-    or a combination of both. On some platforms, it may be impossible
-    to change the border width at all, in which case this option will
-    have no effect.
+    or a combination of both.
 
 *   `ui_tray_icon_visible` (`true` by default) whether to show an icon
     in the notification area.
