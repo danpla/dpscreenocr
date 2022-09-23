@@ -196,18 +196,17 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
 
     DpsoOcrEngineDataDirPreference dataDirPreference{};
     switch (internalInfo.dataDirPreference) {
-        case dpso::OcrEngineInfo::DataDirPreference::noDataDir:
-            dataDirPreference =
-                DpsoOcrEngineDataDirPreferenceNoDataDir;
-            break;
-        case dpso::OcrEngineInfo::DataDirPreference::preferDefault:
-            dataDirPreference =
-                DpsoOcrEngineDataDirPreferencePreferDefault;
-            break;
-        case dpso::OcrEngineInfo::DataDirPreference::preferExplicit:
-            dataDirPreference =
-                DpsoOcrEngineDataDirPreferencePreferExplicit;
-            break;
+    case dpso::OcrEngineInfo::DataDirPreference::noDataDir:
+        dataDirPreference = DpsoOcrEngineDataDirPreferenceNoDataDir;
+        break;
+    case dpso::OcrEngineInfo::DataDirPreference::preferDefault:
+        dataDirPreference =
+            DpsoOcrEngineDataDirPreferencePreferDefault;
+        break;
+    case dpso::OcrEngineInfo::DataDirPreference::preferExplicit:
+        dataDirPreference =
+            DpsoOcrEngineDataDirPreferencePreferExplicit;
+        break;
     }
 
     *info = {

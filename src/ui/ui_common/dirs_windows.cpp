@@ -60,14 +60,14 @@ const char* uiGetDir(UiDir dir)
     result = baseDirPath;
 
     switch (dir) {
-        case UiDirData:
-            break;
-        case UiDirDoc:
-            result += "\\doc";
-            break;
-        case UiDirLocale:
-            result += "\\locale";
-            break;
+    case UiDirData:
+        break;
+    case UiDirDoc:
+        result += "\\doc";
+        break;
+    case UiDirLocale:
+        result += "\\locale";
+        break;
     }
 
     return result.c_str();

@@ -14,13 +14,13 @@ const char* uiGetOcrDataDirName(
     result.clear();
 
     switch (ocrEngineInfo->dataDirPreference) {
-        case DpsoOcrEngineDataDirPreferenceNoDataDir:
-        case DpsoOcrEngineDataDirPreferencePreferDefault:
-            break;
-        case DpsoOcrEngineDataDirPreferencePreferExplicit:
-            result = ocrEngineInfo->id;
-            result += "_data";
-            break;
+    case DpsoOcrEngineDataDirPreferenceNoDataDir:
+    case DpsoOcrEngineDataDirPreferencePreferDefault:
+        break;
+    case DpsoOcrEngineDataDirPreferencePreferExplicit:
+        result = ocrEngineInfo->id;
+        result += "_data";
+        break;
     }
 
     return result.empty() ? nullptr : result.c_str();

@@ -105,15 +105,15 @@ const char* uiGetDir(UiDir dir)
     result = baseDirPath + '/';
 
     switch (dir) {
-        case UiDirData:
-            result += dataDir;
-            break;
-        case UiDirDoc:
-            result += docDir;
-            break;
-        case UiDirLocale:
-            result += localeDir;
-            break;
+    case UiDirData:
+        result += dataDir;
+        break;
+    case UiDirDoc:
+        result += docDir;
+        break;
+    case UiDirLocale:
+        result += localeDir;
+        break;
     }
 
     return result.c_str();

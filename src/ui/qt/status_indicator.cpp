@@ -41,12 +41,12 @@ static const QColor& getStatusColor(Status status)
     static QColor red(0xee, 0x60, 0x60);
 
     switch (status) {
-        case Status::ok:
-            return green;
-        case Status::busy:
-            return yellow;
-        case Status::warning:
-            return red;
+    case Status::ok:
+        return green;
+    case Status::busy:
+        return yellow;
+    case Status::warning:
+        return red;
     }
 
     return green;

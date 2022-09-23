@@ -109,18 +109,18 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 
         const auto e = *s++;
         switch (e) {
-            case 'n':
-                kv.value += '\n';
-                break;
-            case 'r':
-                kv.value += '\r';
-                break;
-            case 't':
-                kv.value += '\t';
-                break;
-            default:
-                kv.value += e;
-                break;
+        case 'n':
+            kv.value += '\n';
+            break;
+        case 'r':
+            kv.value += '\r';
+            break;
+        case 't':
+            kv.value += '\t';
+            break;
+        default:
+            kv.value += e;
+            break;
         }
     }
 }
@@ -199,21 +199,21 @@ static void writeKeyValue(
         const auto c = *s++;
 
         switch (c) {
-            case '\n':
-                std::fputs("\\n", fp);
-                break;
-            case '\r':
-                std::fputs("\\r", fp);
-                break;
-            case '\t':
-                std::fputs("\\t", fp);
-                break;
-            case '\\':
-                std::fputs("\\\\", fp);
-                break;
-            default:
-                std::fputc(c, fp);
-                break;
+        case '\n':
+            std::fputs("\\n", fp);
+            break;
+        case '\r':
+            std::fputs("\\r", fp);
+            break;
+        case '\t':
+            std::fputs("\\t", fp);
+            break;
+        case '\\':
+            std::fputs("\\\\", fp);
+            break;
+        default:
+            std::fputc(c, fp);
+            break;
         }
     }
 

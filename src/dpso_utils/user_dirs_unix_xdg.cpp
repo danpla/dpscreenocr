@@ -52,10 +52,10 @@ static const char* getDir(
 const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
 {
     switch (userDir) {
-        case DpsoUserDirConfig:
-            return getDir("XDG_CONFIG_HOME", ".config", appName);
-        case DpsoUserDirData:
-            return getDir("XDG_DATA_HOME", ".local/share", appName);
+    case DpsoUserDirConfig:
+        return getDir("XDG_CONFIG_HOME", ".config", appName);
+    case DpsoUserDirData:
+        return getDir("XDG_DATA_HOME", ".local/share", appName);
     }
 
     return {};

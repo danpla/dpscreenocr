@@ -26,12 +26,12 @@ static Order getOrder(int cmpResult)
 static const char* orderToStr(Order order)
 {
     switch (order) {
-        case Order::less:
-            return "<";
-        case Order::equal:
-            return "==";
-        case Order::greater:
-            return ">";
+    case Order::less:
+        return "<";
+    case Order::equal:
+        return "==";
+    case Order::greater:
+        return ">";
     }
 
     return "";

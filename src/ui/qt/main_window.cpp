@@ -715,15 +715,15 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
 
     UiTaskbarState tbState{};
     switch (newStatus) {
-        case Status::ok:
-            tbState = UiTaskbarStateNormal;
-            break;
-        case Status::busy:
-            tbState = UiTaskbarStateProgress;
-            break;
-        case Status::warning:
-            tbState = UiTaskbarStateError;
-            break;
+    case Status::ok:
+        tbState = UiTaskbarStateNormal;
+        break;
+    case Status::busy:
+        tbState = UiTaskbarStateProgress;
+        break;
+    case Status::warning:
+        tbState = UiTaskbarStateError;
+        break;
     }
 
     uiTaskbarSetState(taskbar.get(), tbState);

@@ -61,25 +61,25 @@ static void writeEscapedHtml(
             const auto c = *s++;
 
             switch (c) {
-                case '\n':
-                    // Trailing <br> has no effect; it doesn't add
-                    // an empty line when rendering in browsers.
-                    if (*s)
-                        std::fputs("<br>", fp);
-                    std::putc('\n', fp);
-                    break;
-                case '<':
-                    std::fputs("&lt;", fp);
-                    break;
-                case '>':
-                    std::fputs("&gt;", fp);
-                    break;
-                case '&':
-                    std::fputs("&amp;", fp);
-                    break;
-                default:
-                    std::fputc(c, fp);
-                    break;
+            case '\n':
+                // Trailing <br> has no effect; it doesn't add
+                // an empty line when rendering in browsers.
+                if (*s)
+                    std::fputs("<br>", fp);
+                std::putc('\n', fp);
+                break;
+            case '<':
+                std::fputs("&lt;", fp);
+                break;
+            case '>':
+                std::fputs("&gt;", fp);
+                break;
+            case '&':
+                std::fputs("&amp;", fp);
+                break;
+            default:
+                std::fputc(c, fp);
+                break;
             }
 
             if (c == '\n')
@@ -137,26 +137,26 @@ static void writeEscapedJson(std::FILE* fp, const char* text)
         const auto c = *s++;
 
         switch (c) {
-            case '\b':
-                std::fputs("\\b", fp);
-                break;
-            case '\f':
-                std::fputs("\\f", fp);
-                break;
-            case '\n':
-                std::fputs("\\n", fp);
-                break;
-            case '\r':
-                std::fputs("\\r", fp);
-                break;
-            case '\t':
-                std::fputs("\\t", fp);
-                break;
-            default:
-                if (c == '\\' || c == '/' || c == '"')
-                    std::fputc('\\', fp);
-                std::fputc(c, fp);
-                break;
+        case '\b':
+            std::fputs("\\b", fp);
+            break;
+        case '\f':
+            std::fputs("\\f", fp);
+            break;
+        case '\n':
+            std::fputs("\\n", fp);
+            break;
+        case '\r':
+            std::fputs("\\r", fp);
+            break;
+        case '\t':
+            std::fputs("\\t", fp);
+            break;
+        default:
+            if (c == '\\' || c == '/' || c == '"')
+                std::fputc('\\', fp);
+            std::fputc(c, fp);
+            break;
         }
     }
 }
@@ -217,17 +217,17 @@ int dpsoHistoryExport(
     }
 
     switch (exportFormat) {
-        case dpsoHistoryExportFormatPlainText:
-            exportPlainText(history, fp.get());
-            break;
-        case dpsoHistoryExportFormatHtml:
-            exportHtml(history, fp.get());
-            break;
-        case dpsoHistoryExportFormatJson:
-            exportJson(history, fp.get());
-            break;
-        case dpsoNumHistoryExportFormats:
-            break;
+    case dpsoHistoryExportFormatPlainText:
+        exportPlainText(history, fp.get());
+        break;
+    case dpsoHistoryExportFormatHtml:
+        exportHtml(history, fp.get());
+        break;
+    case dpsoHistoryExportFormatJson:
+        exportJson(history, fp.get());
+        break;
+    case dpsoNumHistoryExportFormats:
+        break;
     }
 
     return true;

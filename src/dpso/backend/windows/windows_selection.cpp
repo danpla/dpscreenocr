@@ -322,37 +322,36 @@ LRESULT WindowsSelection::processMessage(
     // thread when the window is created).
 
     switch (msg) {
-        case WM_DPICHANGED:
-            // We intentionally ignore the suggested rect from lParam.
-            // It will never be correct in our case, since Windows
-            // will just keep the position and linearly scale the
-            // size. As a result, the origin point of our selection
-            // will be shifted and the opposite point will come out
-            // from under the cursor.
-            //
-            // There is the WM_GETDPISCALEDSIZE event for the v2
-            // per-monitor awareness that allows to set a custom rect
-            // for WM_DPICHANGED, but it's only called on interactive
-            // dragging and resizing, but not for SetWindowPos().
+    case WM_DPICHANGED:
+        // We intentionally ignore the suggested rect from lParam. It
+        // will never be correct in our case, since Windows will just
+        // keep the position and linearly scale the size. As a result,
+        // the origin point of our selection will be shifted and the
+        // opposite point will come out from under the cursor.
+        //
+        // There is the WM_GETDPISCALEDSIZE event for the v2
+        // per-monitor awareness that allows to set a custom rect for
+        // WM_DPICHANGED, but it's only called on interactive dragging
+        // and resizing, not for SetWindowPos().
 
-            dpi = HIWORD(wParam);
+        dpi = HIWORD(wParam);
 
-            updateBorderWidth();
-            updatePens();
-            updateWindowGeometry();
-            updateWindowRegion();
+        updateBorderWidth();
+        updatePens();
+        updateWindowGeometry();
+        updateWindowRegion();
 
-            return 0;
-        case WM_ERASEBKGND:
-            return 1;
-        case WM_PAINT: {
-            PAINTSTRUCT ps;
-            auto dc = BeginPaint(window.get(), &ps);
-            draw(dc);
-            EndPaint(window.get(), &ps);
+        return 0;
+    case WM_ERASEBKGND:
+        return 1;
+    case WM_PAINT: {
+        PAINTSTRUCT ps;
+        auto dc = BeginPaint(window.get(), &ps);
+        draw(dc);
+        EndPaint(window.get(), &ps);
 
-            return 0;
-        }
+        return 0;
+    }
     }
 
     return DefWindowProc(window.get(), msg, wParam, lParam);
