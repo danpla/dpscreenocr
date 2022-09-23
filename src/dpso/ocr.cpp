@@ -708,7 +708,7 @@ void dpsoOcrGetProgress(const DpsoOcr* ocr, DpsoOcrProgress* progress)
 }
 
 
-bool dpsoOcrGetJobsPending(const DpsoOcr* ocr)
+bool dpsoOcrHasPendingJobs(const DpsoOcr* ocr)
 {
     LINK_LOCK(ocr->link);
     return ocr && ocr->link.jobsPending();

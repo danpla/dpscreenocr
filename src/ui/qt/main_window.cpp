@@ -259,7 +259,7 @@ void MainWindow::timerEvent(QTimerEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-    if (dpsoOcrGetJobsPending(ocr.get())
+    if (dpsoOcrHasPendingJobs(ocr.get())
             && !confirmation(
                 this,
                 dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
@@ -395,7 +395,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
 
     if (!noInteraction
             && sessionManager.allowsInteraction()
-            && dpsoOcrGetJobsPending(ocr.get())
+            && dpsoOcrHasPendingJobs(ocr.get())
             && !confirmation(
                 this,
                 dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
@@ -682,7 +682,7 @@ bool MainWindow::canStartSelection() const
 {
     return
         dpsoOcrGetNumActiveLangs(ocr.get()) > 0
-        && (ocrAllowQueuing || !dpsoOcrGetJobsPending(ocr.get()))
+        && (ocrAllowQueuing || !dpsoOcrHasPendingJobs(ocr.get()))
         && actionChooser->getSelectedActions();
 }
 
@@ -802,7 +802,7 @@ void MainWindow::checkResults()
     // Check if jobs are completed before fetching results, since new
     // jobs may finish right after dpsoFetchResults() and before
     // dpsoGetJobsPending() call.
-    const auto jobsCompleted = !dpsoOcrGetJobsPending(ocr.get());
+    const auto jobsCompleted = !dpsoOcrHasPendingJobs(ocr.get());
 
     DpsoOcrJobResults results;
     dpsoOcrFetchResults(ocr.get(), &results);

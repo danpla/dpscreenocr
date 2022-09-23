@@ -278,7 +278,7 @@ bool dpsoOcrProgressEqual(
  * Get jobs progress.
  *
  * If you just need to test if there are pending jobs, consider using
- * dpsoOcrGetJobsPending().
+ * dpsoOcrHasPendingJobs().
  */
 void dpsoOcrGetProgress(
     const DpsoOcr* ocr, DpsoOcrProgress* progress);
@@ -289,7 +289,7 @@ void dpsoOcrGetProgress(
  *
  * This is basically the same as testing DpsoOcrProgress::totalJobs.
  */
-bool dpsoOcrGetJobsPending(const DpsoOcr* ocr);
+bool dpsoOcrHasPendingJobs(const DpsoOcr* ocr);
 
 
 /**
