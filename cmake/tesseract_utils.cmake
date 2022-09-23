@@ -7,8 +7,7 @@ include(CMakeParseArguments)
 # detected.
 function(get_tesseract_data_dir_name var)
     if(DPSO_TESSERACT_VERSION_MAJOR)
-        set(
-            ${var}
+        set(${var}
             "tesseract_${DPSO_TESSERACT_VERSION_MAJOR}_data"
             PARENT_SCOPE)
     else()

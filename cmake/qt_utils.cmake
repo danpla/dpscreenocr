@@ -37,8 +37,7 @@ function(copy_qt_translations src_dir dst_dir)
 endfunction()
 
 function(copy_qt_windows_plugins src_dir dst_dir)
-    set(
-        PLUGINS
+    set(PLUGINS
         "platforms/qwindows.dll"
         "styles/qwindowsvistastyle.dll")
 

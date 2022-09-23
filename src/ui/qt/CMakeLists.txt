@@ -2,8 +2,7 @@
 set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4, 5, or 6")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5 6)
 
-set(
-    SRCS
+set(SRCS
 
     about.cpp
     action_chooser.cpp

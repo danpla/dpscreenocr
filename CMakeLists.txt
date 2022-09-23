@@ -15,8 +15,7 @@ set(APP_FILE_NAME "dpscreenocr")
 set(APP_VERSION_MAJOR "1")
 set(APP_VERSION_MINOR "2")
 set(APP_VERSION_PATCH "0")
-set(
-    APP_VERSION
+set(APP_VERSION
     "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_PATCH}")
 
 set(APP_DESCRIPTION "Program to recognize text on screen")

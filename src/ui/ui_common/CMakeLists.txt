@@ -1,6 +1,5 @@
 
-set(
-    SRCS
+set(SRCS
     cfg_default_values.cpp
     cfg_keys.cpp
     init_intl.cpp

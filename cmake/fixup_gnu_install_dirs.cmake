@@ -8,7 +8,6 @@
 
 if(UNIX AND NOT APPLE AND NOT CMAKE_INSTALL_DOCDIR)
     include(GNUInstallDirs)
-    set(
-        CMAKE_INSTALL_DOCDIR
+    set(CMAKE_INSTALL_DOCDIR
         "${CMAKE_INSTALL_DATADIR}/doc/${APP_FILE_NAME}")
 endif()
