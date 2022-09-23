@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 #include "key_types.h"
 
 
@@ -23,7 +25,7 @@ extern "C" {
  *
  * Hotkeys are disabled by default.
  */
-int dpsoGetHotkeysEnabled(void);
+bool dpsoGetHotkeysEnabled(void);
 
 
 /**
@@ -31,7 +33,7 @@ int dpsoGetHotkeysEnabled(void);
  *
  * \sa dpsoGetHotkeysEnabled()
  */
-void dpsoSetHotheysEnabled(int newHotkeysEnabled);
+void dpsoSetHotheysEnabled(bool newHotkeysEnabled);
 
 
 /**
@@ -54,13 +56,14 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void);
  *
  * If the hotkey is already bound, its action will be updated.
  *
- * Returns 0 if hotkey wasn't bound. Reasons include:
+ * Returns false if hotkey wasn't bound. Reasons include:
  *   * hotkey is null
  *   * hotkey->key is dpsoUnknownKey
  *   * hotkey->key is not supported by the backend
  *   * action is < 0
  */
-int dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action);
+bool dpsoBindHotkey(
+    const DpsoHotkey* hotkey, DpsoHotkeyAction action);
 
 
 /**

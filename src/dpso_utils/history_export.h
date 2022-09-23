@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 #include "history.h"
 
 
@@ -36,9 +38,10 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
 /**
  * Export history to a file.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false.
  */
-int dpsoHistoryExport(
+bool dpsoHistoryExport(
     const DpsoHistory* history,
     const char* filePath,
     DpsoHistoryExportFormat exportFormat);

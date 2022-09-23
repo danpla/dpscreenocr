@@ -8,13 +8,13 @@
 static dpso::backend::Selection* selection;
 
 
-int dpsoGetSelectionIsEnabled(void)
+bool dpsoGetSelectionIsEnabled(void)
 {
     return selection ? selection->getIsEnabled() : false;
 }
 
 
-void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled)
+void dpsoSetSelectionIsEnabled(bool newSelectionIsEnabled)
 {
     if (selection)
         selection->setIsEnabled(newSelectionIsEnabled);

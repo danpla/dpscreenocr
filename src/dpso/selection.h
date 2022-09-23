@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 #include "geometry_c.h"
 
 
@@ -17,26 +19,24 @@ extern "C" {
 /**
  * Get whether selection is enabled.
  *
- * Returns 1 if enabled, or 0 if disabled. The selection is disabled
- * by default.
+ * The selection is disabled by default.
  */
-int dpsoGetSelectionIsEnabled(void);
+bool dpsoGetSelectionIsEnabled(void);
 
 
 /**
  * Set whether selection is enabled.
  *
- * An active selection shows the user a rectangle between the pivot
+ * An active selection shows the user a rectangle between the anchor
  * point (the position at the moment the selection was enabled) and
  * the current mouse position. The appearance of the selection depends
  * on the platform and implementation.
  *
- * Non-zero newSelectionIsEnabled enables the selection, 0 disables
- * it. Enabling the already active selection will not reset the pivot
+ * Enabling the already active selection will not reset the anchor
  * point; to do this, you have to explicitly disable end enable it
  * back.
  */
-void dpsoSetSelectionIsEnabled(int newSelectionIsEnabled);
+void dpsoSetSelectionIsEnabled(bool newSelectionIsEnabled);
 
 
 /**

@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,13 +56,13 @@ int dpsoHistoryCount(const DpsoHistory* history);
  * Line feeds (\n) in the timestamp and form feeds (\f) in the text
  * will be replaced by spaces.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
- * Reasons include:
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false. Reasons include:
  *   * history or entry is null
  *   * IO error
  *   * History is in failure state
  */
-int dpsoHistoryAppend(
+bool dpsoHistoryAppend(
     DpsoHistory* history, const DpsoHistoryEntry* entry);
 
 
@@ -78,13 +80,13 @@ void dpsoHistoryGet(
 /**
  * Clear the history.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
- * Reasons include:
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false. Reasons include:
  *   * history is null
  *   * IO error
  *   * History is in failure state
  */
-int dpsoHistoryClear(DpsoHistory* history);
+bool dpsoHistoryClear(DpsoHistory* history);
 
 
 #ifdef __cplusplus

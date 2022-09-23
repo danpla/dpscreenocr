@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 #include "delay.h"
 #include "error.h"
 #include "hotkeys.h"
@@ -24,9 +26,10 @@ extern "C" {
 /**
  * Initialize dpso library.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false.
  */
-int dpsoInit(void);
+bool dpsoInit(void);
 
 
 /**

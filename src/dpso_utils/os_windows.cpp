@@ -44,7 +44,7 @@ int dpsoRemoveUtf8(const char* filePath)
 }
 
 
-int dpsoSyncFile(FILE* fp)
+bool dpsoSyncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);
     if (fd == -1) {
@@ -61,7 +61,7 @@ int dpsoSyncFile(FILE* fp)
 }
 
 
-int dpsoSyncFileDir(const char* filePath)
+bool dpsoSyncFileDir(const char* filePath)
 {
     (void)filePath;
     // Windows doesn't support directory synchronization.

@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include "geometry_c.h"
@@ -175,9 +176,9 @@ int dpsoOcrGetLangIdx(const DpsoOcr* ocr, const char* langCode);
 /**
  * Get whether the language is active.
  *
- * Returns 0 if langIdx is out of [0, dpsoOcrGetNumLangs()).
+ * Returns false if langIdx is out of [0, dpsoOcrGetNumLangs()).
  */
-int dpsoOcrGetLangIsActive(const DpsoOcr* ocr, int langIdx);
+bool dpsoOcrGetLangIsActive(const DpsoOcr* ocr, int langIdx);
 
 
 /**
@@ -186,7 +187,7 @@ int dpsoOcrGetLangIsActive(const DpsoOcr* ocr, int langIdx);
  * Does nothing if langIdx is out of [0, dpsoOcrGetNumLangs()).
  */
 void dpsoOcrSetLangIsActive(
-    DpsoOcr* ocr, int langIdx, int newIsActive);
+    DpsoOcr* ocr, int langIdx, bool newIsActive);
 
 
 /**
@@ -226,8 +227,8 @@ typedef struct DpsoOcrJobArgs {
  *
  * The function captures an image DpsoOcrJobArgs::screenRect from the
  * screen and queues it for OCR with the currently active languages.
- * On failure, sets an error message (dpsoGetError()) and returns 0.
- * Reasons include:
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false. Reasons include:
  *   * jobArgs is null
  *   * jobArgs::screenRect is empty or outside the screen bounds
  *   * No active languages
@@ -239,7 +240,7 @@ typedef struct DpsoOcrJobArgs {
  * dpsoOcrTerminateJobs(), or dpsoOcrFetchResults() when all jobs are
  * completed. Don't change the locale between these two points.
  */
-int dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs);
+bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs);
 
 
 typedef struct DpsoOcrProgress {
@@ -267,9 +268,9 @@ typedef struct DpsoOcrProgress {
 
 
 /**
- * Return 1 if two DpsoOcrProgress are equal, 0 otherwise.
+ * Check if two DpsoOcrProgress are equal.
  */
-int dpsoOcrProgressEqual(
+bool dpsoOcrProgressEqual(
     const DpsoOcrProgress* a, const DpsoOcrProgress* b);
 
 
@@ -286,11 +287,9 @@ void dpsoOcrGetProgress(
 /**
  * Check if there are pending jobs.
  *
- * The function returns 1 if there are pending jobs (that is, there
- * is an active or at least one queued job), 0 otherwise. This is
- * basically the same as testing DpsoOcrProgress::totalJobs.
+ * This is basically the same as testing DpsoOcrProgress::totalJobs.
  */
-int dpsoOcrGetJobsPending(const DpsoOcr* ocr);
+bool dpsoOcrGetJobsPending(const DpsoOcr* ocr);
 
 
 /**

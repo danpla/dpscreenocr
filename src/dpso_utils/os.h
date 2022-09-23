@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <stdbool.h>
 #include <stdio.h>
 
 
@@ -50,9 +51,10 @@ int dpsoRemoveUtf8(const char* filePath);
  * attributes) to the permanent storage device. It should normally be
  * preceded by fflush().
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false.
  */
-int dpsoSyncFile(FILE* fp);
+bool dpsoSyncFile(FILE* fp);
 
 
 /**
@@ -62,9 +64,10 @@ int dpsoSyncFile(FILE* fp);
  * it's usually called after creating a file to ensure that the new
  * directory entry has reached the storage device.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false.
  */
-int dpsoSyncFileDir(const char* filePath);
+bool dpsoSyncFileDir(const char* filePath);
 
 
 #ifdef __cplusplus

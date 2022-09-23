@@ -195,7 +195,7 @@ static void exportJson(const DpsoHistory* history, std::FILE* fp)
 }
 
 
-int dpsoHistoryExport(
+bool dpsoHistoryExport(
     const DpsoHistory* history,
     const char* filePath,
     DpsoHistoryExportFormat exportFormat)

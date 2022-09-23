@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,9 +12,10 @@ extern "C" {
 /**
  * Initialize directory paths.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false.
  */
-int uiInitDirs(const char* argv0);
+bool uiInitDirs(const char* argv0);
 
 
 typedef enum {

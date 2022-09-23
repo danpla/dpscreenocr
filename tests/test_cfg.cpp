@@ -27,12 +27,8 @@ struct BasicTypesTest {
     int intVal;
     int intValDefault;
 
-    // We use int instead of bool since this is what cfg functions
-    // accept and return. It should be possible to check that an
-    // arbitrary int is set as "true" or "false" and, when used as
-    // defaultVal in dpsoCfgGetBool(), is normalized to 0 or 1.
-    int boolVal;
-    int boolValDefault;
+    bool boolVal;
+    bool boolValDefault;
 };
 
 
@@ -93,20 +89,18 @@ static void testGetBool(
     const DpsoCfg* cfg,
     const char* key,
     bool expectedVal,
-    int defaultVal)
+    bool defaultVal)
 {
-    // Note that gotVal is int so that we can check that defaultVal
-    // is normalized to 0 or 1.
     const auto gotVal = dpsoCfgGetBool(cfg, key, defaultVal);
     if (gotVal == expectedVal)
         return;
 
     test::failure(
-        "dpsoGetBool(\"%s\", %i): expected %i, got %i\n",
+        "dpsoGetBool(\"%s\", %s): expected %s, got %s\n",
         key,
-        defaultVal,
-        expectedVal,
-        gotVal);
+        test::utils::boolToStr(defaultVal).c_str(),
+        test::utils::boolToStr(expectedVal).c_str(),
+        test::utils::boolToStr(gotVal).c_str());
 }
 
 
@@ -145,8 +139,6 @@ const std::initializer_list<BasicTypesTest> intTests{
 const std::initializer_list<BasicTypesTest> boolTests{
     {"bool_true", "true", "", 1, 0, true, false},
     {"bool_false", "false", "", 0, 1, false, true},
-    {"bool_true_set_as_10", "true", "", 1, 0, 10, false},
-    {"bool_true_set_as_minus_10", "true", "", 1, 0, -10, false},
 };
 
 
@@ -200,8 +192,6 @@ static void getBasicTypes(const DpsoCfg* cfg)
 
     testGetBool(cfg, nonexistentKey, false, false);
     testGetBool(cfg, nonexistentKey, true, true);
-    testGetBool(cfg, nonexistentKey, true, 5);
-    testGetBool(cfg, nonexistentKey, true, -5);
 
     getStrByteChars(cfg);
 

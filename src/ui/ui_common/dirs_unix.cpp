@@ -63,7 +63,7 @@ static std::string findExeInPath(const char* exeName)
 static std::string baseDirPath;
 
 
-int uiInitDirs(const char* argv0)
+bool uiInitDirs(const char* argv0)
 {
     std::string path;
 

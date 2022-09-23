@@ -45,7 +45,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         test_c_compilation
-        PRIVATE -std=c89 -Wall -Wextra -pedantic -Wstrict-prototypes)
+        PRIVATE -std=c99 -Wall -Wextra -pedantic -Wstrict-prototypes)
 endif()
 
 if(NOT TARGET dpso_intl)

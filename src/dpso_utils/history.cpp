@@ -193,7 +193,7 @@ const char* const failureStateErrorMsg =
     "History is in failure state and is read-only";
 
 
-int dpsoHistoryAppend(
+bool dpsoHistoryAppend(
     DpsoHistory* history, const DpsoHistoryEntry* entry)
 {
     if (!history) {
@@ -265,7 +265,7 @@ void dpsoHistoryGet(
 }
 
 
-int dpsoHistoryClear(DpsoHistory* history)
+bool dpsoHistoryClear(DpsoHistory* history)
 {
     if (!history) {
         dpsoSetError("history is null");

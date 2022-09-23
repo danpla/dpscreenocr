@@ -373,19 +373,18 @@ int dpsoOcrGetLangIdx(const DpsoOcr* ocr, const char* langCode)
 }
 
 
-int dpsoOcrGetLangIsActive(const DpsoOcr* ocr, int langIdx)
+bool dpsoOcrGetLangIsActive(const DpsoOcr* ocr, int langIdx)
 {
-    if (!ocr
-            || langIdx < 0
-            || static_cast<std::size_t>(langIdx) >= ocr->langs.size())
-        return false;
-
-    return ocr->langs[langIdx].isActive;
+    return
+        ocr
+        && langIdx >= 0
+        && static_cast<std::size_t>(langIdx) < ocr->langs.size()
+        && ocr->langs[langIdx].isActive;
 }
 
 
 void dpsoOcrSetLangIsActive(
-    DpsoOcr* ocr, int langIdx, int newIsActive)
+    DpsoOcr* ocr, int langIdx, bool newIsActive)
 {
     if (!ocr
             || langIdx < 0
@@ -619,7 +618,7 @@ static void threadLoop(DpsoOcr* ocr)
 }
 
 
-int dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
+bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
 {
     if (!backend) {
         dpsoSetError("Library is not initialized");
@@ -687,11 +686,12 @@ int dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
 }
 
 
-int dpsoOcrProgressEqual(
+bool dpsoOcrProgressEqual(
     const DpsoOcrProgress* a, const DpsoOcrProgress* b)
 {
     return
-        a && b
+        a
+        && b
         && a->curJobProgress == b->curJobProgress
         && a->curJob == b->curJob
         && a->totalJobs == b->totalJobs;
@@ -708,13 +708,10 @@ void dpsoOcrGetProgress(const DpsoOcr* ocr, DpsoOcrProgress* progress)
 }
 
 
-int dpsoOcrGetJobsPending(const DpsoOcr* ocr)
+bool dpsoOcrGetJobsPending(const DpsoOcr* ocr)
 {
-    if (!ocr)
-        return false;
-
     LINK_LOCK(ocr->link);
-    return ocr->link.jobsPending();
+    return ocr && ocr->link.jobsPending();
 }
 
 

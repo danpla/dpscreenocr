@@ -155,7 +155,7 @@ static bool getLine(std::FILE* fp, std::string& line)
 // endings on Windows to make Notepad users happy.
 
 
-int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
+bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
         dpsoSetError("cfg is null");
@@ -231,7 +231,7 @@ static void writeKeyValue(
 }
 
 
-int dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
+bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
         dpsoSetError("cfg is null");
@@ -266,7 +266,7 @@ void dpsoCfgClear(DpsoCfg* cfg)
 }
 
 
-int dpsoCfgKeyExists(const DpsoCfg* cfg, const char* key)
+bool dpsoCfgKeyExists(const DpsoCfg* cfg, const char* key)
 {
     return dpsoCfgGetStr(cfg, key, nullptr) != nullptr;
 }
@@ -369,14 +369,14 @@ void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val)
 }
 
 
-int dpsoCfgGetBool(
-    const DpsoCfg* cfg, const char* key, int defaultVal)
+bool dpsoCfgGetBool(
+    const DpsoCfg* cfg, const char* key, bool defaultVal)
 {
     return dpsoCfgGetInt(cfg, key, defaultVal) != 0;
 }
 
 
-void dpsoCfgSetBool(DpsoCfg* cfg, const char* key, int val)
+void dpsoCfgSetBool(DpsoCfg* cfg, const char* key, bool val)
 {
     dpsoCfgSetStr(cfg, key, boolToStr(val));
 }

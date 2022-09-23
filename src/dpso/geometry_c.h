@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,7 +20,7 @@ typedef struct DpsoRect {
 /**
  * Rect is empty if w or h is <= 0.
  */
-int dpsoRectIsEmpty(const DpsoRect* rect);
+bool dpsoRectIsEmpty(const DpsoRect* rect);
 
 
 #ifdef __cplusplus

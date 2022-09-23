@@ -28,7 +28,7 @@ int dpsoRemoveUtf8(const char* filePath)
 }
 
 
-int dpsoSyncFile(FILE* fp)
+bool dpsoSyncFile(FILE* fp)
 {
     const auto fd = fileno(fp);
     if (fd == -1) {
@@ -46,7 +46,7 @@ int dpsoSyncFile(FILE* fp)
 }
 
 
-int dpsoSyncFileDir(const char* filePath)
+bool dpsoSyncFileDir(const char* filePath)
 {
     std::string dirPath;
     if (const auto* sep = strrchr(filePath, '/'))

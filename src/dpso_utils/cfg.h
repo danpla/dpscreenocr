@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,20 +51,21 @@ void dpsoCfgDelete(DpsoCfg* cfg);
  *
  * The function clears the config and loads the filePath file.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
- * Nonexistent filePath is not considered an error.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false. Nonexistent filePath is not considered an error.
  */
-int dpsoCfgLoad(DpsoCfg* cfg, const char* filePath);
+bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath);
 
 
 /**
  * Save config file.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false.
  *
  * \sa dpsoLoadCfg()
  */
-int dpsoCfgSave(const DpsoCfg* cfg, const char* filePath);
+bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath);
 
 
 /**
@@ -74,11 +77,9 @@ void dpsoCfgClear(DpsoCfg* cfg);
 
 
 /**
- * Check whether the given key exists.
- *
- * Returns 1 if the key exists, 0 otherwise.
+ * Check if the given key exists.
  */
-int dpsoCfgKeyExists(const DpsoCfg* cfg, const char* key);
+bool dpsoCfgKeyExists(const DpsoCfg* cfg, const char* key);
 
 
 /**
@@ -114,14 +115,13 @@ void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val);
 /**
  * Get boolean.
  *
- * This function is the same as dpsoCfgGetInt(), except that it always
- * returns either 0 or 1.
+ * The function effectively returns dpsoCfgGetInt() != 0.
  *
  * \sa dpsoCfgGetInt()
  */
-int dpsoCfgGetBool(
-    const DpsoCfg* cfg, const char* key, int defaultVal);
-void dpsoCfgSetBool(DpsoCfg* cfg, const char* key, int val);
+bool dpsoCfgGetBool(
+    const DpsoCfg* cfg, const char* key, bool defaultVal);
+void dpsoCfgSetBool(DpsoCfg* cfg, const char* key, bool val);
 
 
 #ifdef __cplusplus

@@ -53,7 +53,7 @@ const Module modules[] = {
 const auto numModules = sizeof(modules) / sizeof(*modules);
 
 
-int dpsoInit(void)
+bool dpsoInit(void)
 {
     try {
         backend = dpso::backend::Backend::create();

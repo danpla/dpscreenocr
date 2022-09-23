@@ -45,7 +45,7 @@ static std::wstring getExeDir()
 static std::string baseDirPath;
 
 
-int uiInitDirs(const char* argv0)
+bool uiInitDirs(const char* argv0)
 {
     (void)argv0;
 

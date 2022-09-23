@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,9 +17,10 @@ extern "C" {
  * like setting up local user data, migrating files from previous
  * versions of the program, etc.
  *
- * On failure, sets an error message (dpsoGetError()) and returns 0.
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false.
  */
-int uiStartupSetup(void);
+bool uiStartupSetup(void);
 
 
 #ifdef __cplusplus

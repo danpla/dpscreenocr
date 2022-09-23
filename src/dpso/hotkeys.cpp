@@ -13,13 +13,13 @@
 static dpso::backend::KeyManager* keyManager;
 
 
-int dpsoGetHotkeysEnabled(void)
+bool dpsoGetHotkeysEnabled(void)
 {
     return keyManager ? keyManager->getHotkeysEnabled() : false;
 }
 
 
-void dpsoSetHotheysEnabled(int newHotkeysEnabled)
+void dpsoSetHotheysEnabled(bool newHotkeysEnabled)
 {
     if (keyManager)
         keyManager->setHotkeysEnabled(newHotkeysEnabled);
@@ -32,16 +32,15 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void)
 }
 
 
-int dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action)
+bool dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action)
 {
-    if (!keyManager
-            || !hotkey
-            || hotkey->key < 0
-            || hotkey->key >= dpsoNumKeys
-            || action < 0)
-        return false;
-
-    return keyManager->bindHotkey(*hotkey, action);
+    return
+        keyManager
+        && hotkey
+        && hotkey->key >= 0
+        && hotkey->key < dpsoNumKeys
+        && action >= 0
+        && keyManager->bindHotkey(*hotkey, action);
 }
 
 
