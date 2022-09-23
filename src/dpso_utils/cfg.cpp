@@ -289,14 +289,7 @@ const char* dpsoCfgGetStr(
 
 static bool isValidKey(const char* key)
 {
-    if (!*key)
-        return false;
-
-    for (const auto* s = key; *s; ++s)
-        if (std::isblank(*s) || *s == '\r' || *s == '\n')
-            return false;
-
-    return true;
+    return *key && !std::strpbrk(key, " \t\r\n");
 }
 
 

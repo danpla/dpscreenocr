@@ -464,7 +464,7 @@ static void testKeyValidity(DpsoCfg* cfg)
             continue;
 
         test::failure(
-            "testKeyValidity: \"%s\" key is expected to be %s and "
+            "testKeyValidity: Key \"%s\" is expected to be %s and "
             "%s be set\n",
             test::utils::escapeStr(test.key).c_str(),
             test.isValid ? "valid" : "invalid",
