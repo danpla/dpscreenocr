@@ -32,7 +32,7 @@ void NullSelection::setIsEnabled(bool newEnabled)
 
 Rect NullSelection::getGeometry() const
 {
-    return {0, 0, 16, 16};
+    return {0, 0, 1, 1};
 }
 
 

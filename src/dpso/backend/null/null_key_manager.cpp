@@ -42,8 +42,7 @@ DpsoHotkeyAction NullKeyManager::getLastHotkeyAction() const
 bool NullKeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
-    MSG(
-        "Bind hotkey %s; action %i\n",
+    MSG("Bind hotkey %s; action %i\n",
         dpsoHotkeyToString(&hotkey), action);
 
     for (auto& binding : bindings)
@@ -65,8 +64,7 @@ int NullKeyManager::getNumBindings() const
 
 HotkeyBinding NullKeyManager::getBinding(int idx) const
 {
-    MSG(
-        "Get binding %i (%s; action %i)\n",
+    MSG("Get binding %i (%s; action %i)\n",
         idx,
         dpsoHotkeyToString(&bindings[idx].hotkey),
         bindings[idx].action);
@@ -77,8 +75,7 @@ HotkeyBinding NullKeyManager::getBinding(int idx) const
 
 void NullKeyManager::removeBinding(int idx)
 {
-    MSG(
-        "Remove binding %i (%s; action %i)\n",
+    MSG("Remove binding %i (%s; action %i)\n",
         idx,
         dpsoHotkeyToString(&bindings[idx].hotkey),
         bindings[idx].action);
