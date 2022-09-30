@@ -92,12 +92,12 @@ void WindowsBackend::update()
     selection->update();
 
     MSG msg;
-    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+    while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE))
         if (msg.message == WM_HOTKEY)
             keyManager->handleWmHotkey(msg);
         else {
             TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            DispatchMessageW(&msg);
         }
 }
 

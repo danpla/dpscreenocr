@@ -152,7 +152,7 @@ static void throwLastError(const char* description)
 }
 
 
-const auto* const windowClassName = "DpsoSelectionWindow";
+const auto* const windowClassName = L"DpsoSelectionWindow";
 
 
 static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
@@ -161,7 +161,7 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
     if (registered)
         return;
 
-    WNDCLASSEXA wcx;
+    WNDCLASSEXW wcx;
     wcx.cbSize = sizeof(WNDCLASSEX);
     wcx.style = CS_VREDRAW | CS_HREDRAW;
     wcx.lpfnWndProc = wndProc;
@@ -175,7 +175,7 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
     wcx.lpszClassName = windowClassName;
     wcx.hIconSm = nullptr;
 
-    if (RegisterClassExA(&wcx) == 0)
+    if (RegisterClassExW(&wcx) == 0)
         throwLastError("Can't register selection window class");
 
     registered = true;
@@ -197,11 +197,11 @@ WindowsSelection::WindowsSelection(HINSTANCE instance)
 
     const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
-    window.reset(CreateWindowExA(
+    window.reset(CreateWindowExW(
         WS_EX_TOPMOST
             | WS_EX_TOOLWINDOW, // Hide from taskbar.
         windowClassName,
-        "Selection",
+        L"Selection",
         WS_POPUP,
         0,
         0,
@@ -215,7 +215,7 @@ WindowsSelection::WindowsSelection(HINSTANCE instance)
     if (!window)
         throwLastError("Can't create selection window");
 
-    if (!SetPropA(window.get(), "this", this))
+    if (!SetPropW(window.get(), L"this", this))
         throwLastError("Can't set window property");
 
     // WM_DPICHANGED is only sent when a window is moved to a display
@@ -302,11 +302,11 @@ LRESULT CALLBACK WindowsSelection::wndProc(
     HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     auto* windowsSelection = static_cast<WindowsSelection*>(
-        GetPropA(wnd, "this"));
+        GetPropW(wnd, L"this"));
     if (!windowsSelection)
         // The window is just created; we don't reach SetProp() call
         // yet.
-        return DefWindowProc(wnd, msg, wParam, lParam);
+        return DefWindowProcW(wnd, msg, wParam, lParam);
 
     return windowsSelection->processMessage(msg, wParam, lParam);
 }
@@ -354,7 +354,7 @@ LRESULT WindowsSelection::processMessage(
     }
     }
 
-    return DefWindowProc(window.get(), msg, wParam, lParam);
+    return DefWindowProcW(window.get(), msg, wParam, lParam);
 }
 
 
