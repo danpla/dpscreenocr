@@ -102,8 +102,6 @@ void uiTaskbarSetState(UiTaskbar* tb, UiTaskbarState newState)
 
 void uiTaskbarSetProgress(UiTaskbar* tb, int newProgress)
 {
-    if (!tb)
-        return;
-
-    tb->tbl->SetProgressValue(tb->hwnd, newProgress, 100);
+    if (tb)
+        tb->tbl->SetProgressValue(tb->hwnd, newProgress, 100);
 }

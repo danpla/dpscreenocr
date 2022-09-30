@@ -138,8 +138,7 @@ static bool setupEntry(
             (std::wstring{dstDir} + L'\\' + entryName).c_str()))
         return true;
 
-    const auto srcPath =
-        std::wstring{srcDir} + L'\\' + entryName;
+    const auto srcPath = std::wstring{srcDir} + L'\\' + entryName;
     if (!entryExists(srcPath.c_str()))
         return true;
 
@@ -189,8 +188,7 @@ static int setupUserData(const wchar_t* userDataDir)
 {
     std::wstring srcDataDir;
     try {
-        srcDataDir = dpso::windows::utf8ToUtf16(
-            uiGetDir(UiDirData));
+        srcDataDir = dpso::windows::utf8ToUtf16(uiGetDir(UiDirData));
     } catch (std::runtime_error& e) {
         dpsoSetError(
             "Can't convert UiDirData to UTF-16: %s", e.what());
