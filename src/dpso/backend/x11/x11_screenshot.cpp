@@ -136,9 +136,9 @@ static void getGrayscaleData16bpp(
     const auto gShift = img::getMaskRightShift(image.green_mask);
     const auto bShift = img::getMaskRightShift(image.blue_mask);
 
-    static const auto rBits = 5;
+    const auto rBits = 5;
     const auto gBits = image.depth == 16 ? 6 : 5;
-    static const auto bBits = 5;
+    const auto bBits = 5;
 
     for (int y = 0; y < image.height; ++y) {
         const auto* srcRow =
