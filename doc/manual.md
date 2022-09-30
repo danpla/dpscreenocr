@@ -367,11 +367,11 @@ contact the author by email; the link is at the bottom of the
 
 *   **Recognized text contains garbage**
 
-    Make sure that you use the minimal set of [languages] needed to
+    Make sure that you use the minimal set of languages needed to
     recognize the text. Don't enable languages just in case: this will
     dramatically reduce the accuracy of recognition.
 
-*   **Pressing the [hotkey] has no effect**
+*   **Pressing the hotkey has no effect**
 
     This hotkey is probably used by another program. Try to choose
     another key combination.
