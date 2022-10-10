@@ -285,7 +285,7 @@ void X11Selection::updateWindowShape()
 void X11Selection::setGeometry(const Rect& newGeom)
 {
     const auto newSize = newGeom.w != geom.w || newGeom.h != geom.h;
-    if (!newSize && newGeom.x == geom.x && newGeom.y != geom.y)
+    if (!newSize && newGeom.x == geom.x && newGeom.y == geom.y)
         return;
 
     geom = newGeom;
