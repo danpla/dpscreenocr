@@ -44,7 +44,7 @@ static int cmpKeys(const char* a, const char* b)
 }
 
 
-template <typename T>
+template<typename T>
 static auto keyValuesLowerBound(
     T& keyValues, const char* key) -> decltype(keyValues.begin())
 {

@@ -54,7 +54,7 @@ inline DcUPtr<DcDeleter> createCompatibleDc(HDC dc)
 }
 
 
-template <typename T>
+template<typename T>
 struct ObjectDeleter {
     using pointer = T;
 

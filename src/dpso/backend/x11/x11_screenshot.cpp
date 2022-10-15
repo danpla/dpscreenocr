@@ -79,7 +79,7 @@ int X11Screenshot::getHeight() const
 }
 
 
-template <typename CCTransformerT>
+template<typename CCTransformerT>
 static void getGrayscaleData32bpp(
     const XImage& image,
     std::uint8_t* buf,
