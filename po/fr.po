@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-07-12 22:18+0300\n"
+"POT-Creation-Date: 2022-10-18 01:11+0200\n"
 "PO-Revision-Date: 2022-07-17 03:21+0000\n"
 "Last-Translator: Mak Greg <makgreg@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -545,7 +545,7 @@ msgstr "Licence"
 msgid "Third-party licenses"
 msgstr "Licences tierces"
 
-#: src/ui/qt/about.cpp:124 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
 msgstr "Programme de reconnaissance de texte à l'écran"
 
@@ -680,7 +680,8 @@ msgid "Split text blocks"
 msgstr "Couper les blocs de texte"
 
 #: src/ui/qt/main_window.cpp:456
-msgid "Split independent text blocks, e.g. columns"
+#, fuzzy
+msgid "Split independent text blocks, such as columns"
 msgstr "Couper les blocs de texte indépendant, par ex. les colonnes"
 
 #: src/ui/qt/main_window.cpp:459

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-07-12 22:18+0300\n"
+"POT-Creation-Date: 2022-10-18 01:11+0200\n"
 "PO-Revision-Date: 2020-03-26 15:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -545,7 +545,7 @@ msgstr "Lisens"
 msgid "Third-party licenses"
 msgstr ""
 
-#: src/ui/qt/about.cpp:124 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
 msgstr "Program for gjenkjenning av tekst på skjermen"
 
@@ -682,7 +682,8 @@ msgid "Split text blocks"
 msgstr "Splitt tekstblokker"
 
 #: src/ui/qt/main_window.cpp:456
-msgid "Split independent text blocks, e.g. columns"
+#, fuzzy
+msgid "Split independent text blocks, such as columns"
 msgstr "Splitt uavhengige tekstblokker, f.eks. kolonner"
 
 #: src/ui/qt/main_window.cpp:459
