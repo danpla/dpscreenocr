@@ -45,16 +45,10 @@
 #define _(S) gettext(S)
 
 
-namespace {
-
-
-enum HotkeyAction {
+enum : DpsoHotkeyAction {
     hotkeyActionToggleSelection,
     hotkeyActionCancelSelection
 };
-
-
-}
 
 
 MainWindow::MainWindow()

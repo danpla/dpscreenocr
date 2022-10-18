@@ -8,17 +8,11 @@
 #include "ui_common/ui_common.h"
 
 
-namespace {
-
-
-enum ColumnIdx {
+enum : int {
     columnIdxCheckbox,
     columnIdxName,
     columnIdxCode
 };
-
-
-}
 
 
 LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
