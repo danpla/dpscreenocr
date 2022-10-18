@@ -61,7 +61,7 @@ History::History(const std::string& dirPath, QWidget* parent)
 History::DynamicStrings::DynamicStrings()
     : exportHistory{_("Export history")}
     , nameFilters{
-        QString{_("Plain text")} + " (*.txt);;"
+        QString(_("Plain text")) + " (*.txt);;"
         + "HTML (*.html *.htm);;"
         + "JSON (*.json);;"
         + _("All files") + " (*)"}
