@@ -40,19 +40,13 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     header()->setStretchLastSection(false);
 
     #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    header()->setSectionResizeMode(
-        columnIdxCheckbox, QHeaderView::ResizeToContents);
+    header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->setSectionResizeMode(
         columnIdxName, QHeaderView::Stretch);
-    header()->setSectionResizeMode(
-        columnIdxCode, QHeaderView::ResizeToContents);
     header()->setSectionsMovable(false);
     #else
-    header()->setResizeMode(
-        columnIdxCheckbox, QHeaderView::ResizeToContents);
+    header()->setResizeMode(QHeaderView::ResizeToContents);
     header()->setResizeMode(columnIdxName, QHeaderView::Stretch);
-    header()->setResizeMode(
-        columnIdxCode, QHeaderView::ResizeToContents);
     header()->setMovable(false);
     #endif
 
