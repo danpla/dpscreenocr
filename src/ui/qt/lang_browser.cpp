@@ -58,11 +58,31 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
 
     connect(
         this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
-        this, SLOT(toggleLang(QTreeWidgetItem*, int)));
+        this, SLOT(updateLangState(QTreeWidgetItem*, int)));
+
+    // When the user enters QTreeWidget via keyboard (e.g. by pressing
+    // Tab), the focus goes to the checkbox column, making it possible
+    // to toggle the checkbox by pressing Space.
+    //
+    // However, it's also possible to set the focus to other columns
+    // with a mouse click, and then pressing Space will have no effect
+    // (setAllColumnsShowFocus(true) will show a focus rectangle for
+    // the whole row, but will not prevent QTreeWidget to pick the
+    // right column under the hood). To make keyboard interaction
+    // consistent, we set the focus to the checkbox column each time
+    // the user selects a new row.
+    //
+    // Another alternative would be to toggle the checkbox in response
+    // to itemActivated(), but this signal is emitted on Enter rather
+    // than on Space.
+    connect(
+        this, SIGNAL(
+            currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
+        this, SLOT(selectCheckboxColumn(QTreeWidgetItem*)));
 }
 
 
-void LangBrowser::toggleLang(QTreeWidgetItem* item, int column)
+void LangBrowser::updateLangState(QTreeWidgetItem* item, int column)
 {
     if (column != columnIdxCheckbox)
         return;
@@ -71,6 +91,12 @@ void LangBrowser::toggleLang(QTreeWidgetItem* item, int column)
         ocr,
         item->data(columnIdxCheckbox, Qt::UserRole).toInt(),
         item->checkState(columnIdxCheckbox) == Qt::Checked);
+}
+
+
+void LangBrowser::selectCheckboxColumn(QTreeWidgetItem* current)
+{
+    setCurrentItem(current, columnIdxCheckbox);
 }
 
 

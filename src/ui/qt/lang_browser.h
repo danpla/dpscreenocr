@@ -19,7 +19,8 @@ public:
     void loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;
 private slots:
-    void toggleLang(QTreeWidgetItem* item, int column);
+    void updateLangState(QTreeWidgetItem* item, int column);
+    void selectCheckboxColumn(QTreeWidgetItem* item);
 private:
     DpsoOcr* ocr;
 };
