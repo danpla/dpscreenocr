@@ -20,7 +20,7 @@ public:
     void saveState(DpsoCfg* cfg) const;
 private slots:
     void updateLangState(QTreeWidgetItem* item, int column);
-    void selectCheckboxColumn(QTreeWidgetItem* item);
+    void selectCheckboxColumn(QTreeWidgetItem* current);
 private:
     DpsoOcr* ocr;
 };
