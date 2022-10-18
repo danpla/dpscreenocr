@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="16" width="16" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 4.2333332 4.2333332">
+ <rect style="color:#000000;paint-order:normal" height="4.233333" width="4.233333" y="0" x="0" fill="#fff"/>
+ <path style="color:#000000;paint-order:normal" d="m0.1322917 2.2817s0.9224747-0.82595 1.984375-0.82657 1.984375 0.82657 1.984375 0.82657v1.81925h-3.96875z" fill="#87deaa"/>
+ <path style="color:#000000;paint-order:normal" d="m0.1322917 0.1323h3.96875v2.11666s-0.9943913-0.79374-1.984375-0.79374c-0.9899838 0-1.984375 0.79374-1.984375 0.79374z" fill="#87aade"/>
+ <path style="color:#000000;paint-order:normal" stroke-width=".2645833" d="m0 0v4.233333h4.233333v-4.233333zm0.2645833 0.2645833h3.704167v3.704167h-3.704167z"/>
+ <circle style="color:#000000;paint-order:normal" cy="2.116601" cx="2.116667" r="1.190625" fill="#fff"/>
+ <path style="color:#000000;paint-order:normal" d="m2.116667 0.926c0.8265894 0 1.137708 0.79375 1.137708 0.79375-0.6085417-0.39687-1.666875-0.39687-2.275417 0 0 0 0.311119-0.79375 1.137708-0.79375z" fill="#d35f5f"/>
+ <circle stroke-linejoin="round" style="color:#000000;paint-order:normal" cx="2.116667" stroke="#000" cy="2.116601" r="1.190625" stroke-width=".2645833" fill="none"/>
+ <circle style="color:#000000;paint-order:normal" r=".4233417" cy="2.116601" cx="2.116667" stroke-width=".3200103"/>
+ <path d="m15.5 8.500001s-3.987206-3.05-7.500001-3.05-7.5 3.05-7.5 3.05" transform="scale(.2645833)" stroke="#000" fill="none"/>
+</svg>
