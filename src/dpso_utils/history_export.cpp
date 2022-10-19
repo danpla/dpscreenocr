@@ -121,7 +121,7 @@ static void exportHtml(const DpsoHistory* history, std::FILE* fp)
 
         std::fputs("  <p class=\"text\">\n", fp);
         writeEscapedHtml(fp, "    ", e.text);
-        std::fputs("  </p>\n", fp);
+        std::fputs("\n  </p>\n", fp);
     }
 
     std::fputs(
