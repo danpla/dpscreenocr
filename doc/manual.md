@@ -23,8 +23,7 @@ and can split independent text blocks, such as columns.
 The [dpScreenOCR website][] provides several options, including
 repositories for Debian, Ubuntu, and derivatives. If you don't find a
 suitable choice for your system, download the source code tarball,
-unpack it, and follow the instructions in the
-"doc/building-unix.txt" file.
+unpack it, and follow the instructions in "doc/building-unix.txt".
 
 
 ### Windows
@@ -71,7 +70,7 @@ than languages: "osd" (automatic script and orientation detection) and
 ### Windows
 
 dpScreenOCR for Windows comes with the English language pack. To
-install other languages, visit the [languages][Language packs] page,
+install other languages, visit the [languages page][Language packs],
 download ".traineddata" files you want, and place them in the
 `C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data`
 folder. To quickly navigate to this folder, press Windows + R to open
@@ -103,8 +102,8 @@ For the ZIP version, you need to manually copy languages from
 dpScreenOCR is simple to use:
 
 1.  Choose languages in the [Main tab].
-2.  Move the mouse pointer near the screen area containing text and
-    press the hotkey shown in the [Main tab] to start the selection.
+2.  Move the mouse pointer to the screen area containing text and
+    press the hotkey shown in the Main tab to start the selection.
 3.  Move the mouse so that the selection covers the text and press the
     hotkey again.
 
@@ -119,7 +118,7 @@ selected area and process it according to the actions from the
 ### Status
 
 The status describes the current state of dpScreenOCR. Green means the
-program is ready to use, and you can press the [Hotkey] to start the
+program is ready to use, and you can press the hotkey to start the
 selection. Yellow shows the progress of recognition. Red warns that
 the program needs some setup, and you will not be able to start the
 selection until the problem is fixed.
@@ -138,6 +137,9 @@ layout (A) recognized with (B) and without (C) the "Split text blocks"
 option:
 
 ![](manual-data/split.svg)
+
+Disabling this option will not prevent dpScreenOCR from detecting
+paragraphs.
 
 
 #### Languages
@@ -164,8 +166,8 @@ key combination.
 ## Actions tab
 
 The Actions tab lets you choose what to do with the recognized text:
-copy it to the clipboard, add it to the history (see the
-[History tab]), or pass it as an argument to an executable.
+copy it to the clipboard, add it to the [history][History tab], or
+pass it as an argument to an executable.
 
 
 ### Run executable
@@ -237,7 +239,7 @@ extension of the script file as an argument:
 If the script still receives only one argument (path to the script),
 this means that Windows actually use a different association for the
 given extension and ignores the one set with assoc/ftype. To fix
-that, open regedit and make sure the values of the following keys use
+this, open regedit and make sure the values of the following keys use
 the correct path to the Python executable and end with `%*`:
 
     HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command
@@ -246,42 +248,41 @@ the correct path to the Python executable and end with `%*`:
 A tip for Python users: note that in the examples above the
 association uses Python Launcher (py.exe) rather than a concrete
 Python executable (python.exe). This allows using [shebang][] lines to
-select the Python version on per-script basis. For more information,
-read [Using Python on Windows][].
+select the Python version for each script. For more information, read
+[Using Python on Windows][].
 
 [Using Python on Windows]: https://docs.python.org/3/using/windows.html
 
 
 ##### Hiding console window
 
-Most scripting language interpreters for Windows are shipped with a
-special version of the executable that doesn't show the console
-window. For example, it's pyw.exe for Python and wlua.exe for Lua.
+Most scripting language interpreters for Windows come with a special
+version of the executable that doesn't show the console window. For
+example, this is pyw.exe for Python.
 
-A special file association is usually added during installation of the
-interpreter, so you can hide the console window by simply changing the
-extension of the script. For example, Python scripts with the ".pyw"
-extension are associated with pyw.exe instead of py.exe. Other
-languages can have their own conventions, like ".wlua" for Lua
-(wlua.exe). If such an association does not exist, create it manually
-as described in the previous section.
+The interpreter installer usually adds a special file association that
+allows you to hide the console window by changing the script extension
+(for example, to ".pyw" for Python). If such an association does not
+exist, you can create it as described in the previous section.
 
 
 ## History tab
 
 The History tab shows the history of the recognized texts. A text is
 only added here if the corresponding action is enabled in the
-[Actions tab]. Each text has a timestamp taken at the moment you
-finish the selection.
+[Actions tab]. Each text has a timestamp taken when you finish the
+selection.
 
 
 # Tweaking
 
 This section describes how to change some settings that are not
-available in the dpScreenOCR's interface.
+available in the dpScreenOCR interface.
 
 dpScreenOCR saves settings in settings.cfg. Depending on the platform,
 you can find it in the following directories:
+
+*   Unix-like systems: `~/.config/dpscreenocr`
 
 *   Windows: `%LOCALAPPDATA%\dpscreenocr`
 
@@ -289,14 +290,11 @@ you can find it in the following directories:
     to open it. `%LOCALAPPDATA%` is an environment variable that
     usually expands to `C:\Users\(your name)\AppData\Local\`
 
-*   Unix-like systems: `~/.config/dpscreenocr`
-
 Each line in settings.cfg contains an option as a key-value pair. A
-value is a string, which, depending on the option, represents a
-boolean (`true` or `false`), number (like `10` or `-5`), file path,
-etc.
+value is a string that, depending on the option, represents a boolean
+(`true` or `false`), number (like `10` or `-5`), file path, etc.
 
-The value can contain the following escape sequences:
+Values can contain the following escape sequences:
 
 *   `\n` - line feed
 *   `\r` - carriage return
@@ -311,13 +309,13 @@ to reset all options, clear or delete the file. Be aware that
 dpScreenOCR rewrites settings on exit, so make sure you close the
 program before making changes.
 
-Here is the list of options that can only be changed by editing the
+Here is a list of options that can only be changed by editing the
 settings file:
 
 *   `action_copy_to_clipboard_text_separator` (`\n\n\n` by default)
-    the separator for multiple texts for the "Copy text to clipboard"
-    action. This option only has effect if `ocr_allow_queuing` is
-    enabled.
+    the separator to insert between recognized texts when the "Copy
+    text to clipboard" action gets several of them at once. This
+    option only has effect if `ocr_allow_queuing` is enabled.
 
 *   `history_wrap_words` (`true` by default) whether to break long
     lines of text in the history so that you don't have to scroll
@@ -326,23 +324,23 @@ settings file:
 *   `hotkey_cancel_selection` (`Escape` by default) hotkey to cancel
     selection.
 
-*   `ocr_allow_queuing` (`true` by default) allows to queue a new
+*   `ocr_allow_queuing` (`true` by default) allows you to queue a new
     selection for recognition without waiting for the previous one to
-    complete.
-
-    If this option is enabled, the "Copy text to clipboard" action may
-    receive several recognized text at once, in which case they will
-    be joined together using `action_copy_to_clipboard_text_separator`
-    as separator. If this option is disabled, pressing the hotkey will
+    complete. If this option is disabled, pressing the hotkey will
     have no effect until the recognition is done.
+
+    If this option is enabled, the "Copy text to clipboard" action can
+    get several recognized text at once, in which case they will be
+    joined using `action_copy_to_clipboard_text_separator` as a
+    separator.
 
 *   `selection_border_width` (`3` by default) width of the selection
     border.
 
-    Depending on the platform, the final width can be scaled
-    proportionally to DPI, which may be the physical DPI of the
-    display, the virtual DPI set via global GUI/font scale settings,
-    or a combination of both.
+    Depending on the platform, this width can be scaled proportionally
+    to DPI, which may be the physical DPI of the display, the virtual
+    DPI set via global interface/font scale settings, or a combination
+    of both.
 
 *   `ui_tray_icon_visible` (`true` by default) whether to show an icon
     in the notification area.
@@ -357,9 +355,9 @@ settings file:
 
 # Troubleshooting
 
-This section contains the list of possible issues and their solutions.
-If the solution doesn't help, or you have an issue that is not listed
-here, please report the problem on the [issue tracker][]. You can also
+This section contains a list of possible issues and their solutions.
+If the solution doesn't help, or you have a problem that is not listed
+here, please report the it on the [issue tracker][]. You can also
 contact the author by email; the link is at the bottom of the
 [dpScreenOCR website][].
 
@@ -390,8 +388,8 @@ contact the author by email; the link is at the bottom of the
       a proper [shebang][].
 
     * (Windows) Are you trying to use a batch file (".bat" or ".cmd")?
-      This is not allowed for safety reasons. Please use another
-      scripting language instead.
+      This is not allowed because there is no way to safely pass them
+      arbitrary text. Please use another scripting language instead.
 
 *   **(Unix) Recognition is very slow**
 
