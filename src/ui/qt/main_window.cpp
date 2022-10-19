@@ -57,6 +57,7 @@ MainWindow::MainWindow()
     , lastProgress{}
     , wasActiveLangs{}
     , statusValid{}
+    , lastStatus{}
     , cancelSelectionHotkey{}
     , clipboardTextPending{}
     , minimizeToTray{}
@@ -527,11 +528,16 @@ QWidget* MainWindow::createAboutTab()
 
 void MainWindow::createTrayIcon()
 {
+    trayIconNormal = getIcon(uiIconNameApp);
+    trayIconBusy = getIcon(uiIconNameAppBusy);
+    trayIconError = getIcon(uiIconNameAppError);
+
+    trayIcon = new QSystemTrayIcon(trayIconNormal, this);
+
     auto* menu = new QMenu(this);
     menu->addAction(visibilityAction);
     menu->addAction(quitAction);
 
-    trayIcon = new QSystemTrayIcon(getIcon(uiAppFileName), this);
     trayIcon->setContextMenu(menu);
 
     connect(
@@ -706,6 +712,18 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     statusLabel->setText(text);
 
     trayIcon->setToolTip(textWithAppName);
+    if (newStatus != lastStatus)
+        switch (newStatus) {
+        case Status::ok:
+            trayIcon->setIcon(trayIconNormal);
+            break;
+        case Status::busy:
+            trayIcon->setIcon(trayIconBusy);
+            break;
+        case Status::warning:
+            trayIcon->setIcon(trayIconError);
+            break;
+        }
 
     UiTaskbarState tbState{};
     switch (newStatus) {
@@ -721,6 +739,8 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     }
 
     uiTaskbarSetState(taskbar.get(), tbState);
+
+    lastStatus = newStatus;
 }
 
 

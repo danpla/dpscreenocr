@@ -6,7 +6,7 @@ set(SRCS
     ocr_data_dir_name.cpp)
 
 # Files for configure_file()
-set(IN_SRCS app_info.cpp file_names.cpp)
+set(IN_SRCS app_info.cpp file_names.cpp icon_names.cpp)
 
 if(UNIX AND NOT APPLE)
     list(APPEND SRCS startup_setup_null.cpp dirs_unix.cpp)

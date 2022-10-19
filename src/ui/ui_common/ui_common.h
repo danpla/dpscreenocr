@@ -6,6 +6,7 @@
 #include "cfg_keys.h"
 #include "dirs.h"
 #include "file_names.h"
+#include "icon_names.h"
 #include "init_intl.h"
 #include "ocr_data_dir_name.h"
 #include "startup_setup.h"

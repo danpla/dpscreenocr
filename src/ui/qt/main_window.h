@@ -76,6 +76,7 @@ private:
 
     QTabWidget* tabs;
 
+    Status lastStatus;
     StatusIndicator* statusIndicator;
     QLabel* statusLabel;
 
@@ -95,8 +96,11 @@ private:
     History* history;
 
     QSystemTrayIcon* trayIcon;
-    bool minimizeToTray;
+    QIcon trayIconNormal;
+    QIcon trayIconBusy;
+    QIcon trayIconError;
 
+    bool minimizeToTray;
     bool minimizeOnStart;
 
     ui::TaskbarUPtr taskbar;
