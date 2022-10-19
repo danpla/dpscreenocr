@@ -13,7 +13,7 @@
 #include "default_config.h"
 
 
-static QIcon loadIcon(const QString &name)
+QIcon getIcon(const QString &name)
 {
     QIcon icon;
 
@@ -32,7 +32,7 @@ static QIcon loadIcon(const QString &name)
 }
 
 
-QIcon getIcon(const QString &name)
+QIcon getThemeIcon(const QString &name)
 {
     #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
 
@@ -41,7 +41,7 @@ QIcon getIcon(const QString &name)
 
     #endif
 
-    return loadIcon(name);
+    return getIcon(name);
 }
 
 

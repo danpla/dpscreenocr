@@ -9,6 +9,12 @@ class QWidget;
 
 QIcon getIcon(const QString &name);
 
+
+// The function is the same as getIcon(), except that on Unix-like
+// systems it first tries to load the icon from the current theme.
+QIcon getThemeIcon(const QString &name);
+
+
 // Qt 4 has a nasty bug when QIcon::pixmap() for an icon loaded via
 // QIcon::fromTheme() returns a pixmap bigger than the requested size.
 // This function detects this case and scales the pixmap down.
