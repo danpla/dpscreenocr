@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-10-18 01:11+0200\n"
-"PO-Revision-Date: 2022-07-17 03:21+0000\n"
-"Last-Translator: Mak Greg <makgreg@gmail.com>\n"
+"PO-Revision-Date: 2022-10-20 13:03+0000\n"
+"Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/fr/>\n"
 "Language: fr\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.14-dev\n"
+"X-Generator: Weblate 4.14.2-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -680,9 +680,8 @@ msgid "Split text blocks"
 msgstr "Couper les blocs de texte"
 
 #: src/ui/qt/main_window.cpp:456
-#, fuzzy
 msgid "Split independent text blocks, such as columns"
-msgstr "Couper les blocs de texte indépendant, par ex. les colonnes"
+msgstr "Couper les blocs de texte indépendant, comme les colonnes"
 
 #: src/ui/qt/main_window.cpp:459
 msgid "Languages:"
