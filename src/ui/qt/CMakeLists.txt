@@ -95,10 +95,6 @@ if(UNIX
         AND NOT APPLE
         AND DPSO_QT_VERSION EQUAL 5
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
-    target_compile_definitions(
-        dpscreenocr_qt
-        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=1)
-
     find_package(Qt5X11Extras REQUIRED)
     target_link_libraries(dpscreenocr_qt Qt5::X11Extras)
 
@@ -106,8 +102,4 @@ if(UNIX
     target_include_directories(
         dpscreenocr_qt PRIVATE ${X11_INCLUDE_DIR})
     target_link_libraries(dpscreenocr_qt ${X11_LIBRARIES})
-else()
-    target_compile_definitions(
-        dpscreenocr_qt
-        PRIVATE DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND=0)
 endif()

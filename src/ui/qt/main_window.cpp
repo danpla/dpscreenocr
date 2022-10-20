@@ -17,18 +17,22 @@
 #include <QTabWidget>
 #include <QTimerEvent>
 #include <QVBoxLayout>
-
-#include "default_config.h"
+#include <QtGlobal>
 
 // Workaround for QTBUG-33775
-#if DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
-#include <QX11Info>
-#include <X11/Xlib.h>
-// We only need XFlush().
-// Undef X11 macros that clash with Qt and our names.
-#undef Bool
-#undef None
-#undef Status
+#if defined(Q_OS_UNIX) \
+        && !defined(Q_OS_DARWIN) \
+        && QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) \
+        && QT_VERSION < QT_VERSION_CHECK(5, 3, 2)
+    #define DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
+
+    #include <QX11Info>
+    #include <X11/Xlib.h>
+
+    // Undef X11 macros clashing with Qt and our names.
+    #undef Bool
+    #undef None
+    #undef Status
 #endif
 
 #include "dpso_intl/dpso_intl.h"
@@ -704,7 +708,7 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     setWindowTitle(
         newStatus == Status::ok ? uiAppName : textWithAppName);
 
-    #if DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
+    #ifdef DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
     XFlush(QX11Info::display());
     #endif
 

@@ -7,10 +7,9 @@
 #include <QFont>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QtGlobal>
 
 #include "ui_common/ui_common.h"
-
-#include "default_config.h"
 
 
 QIcon getIcon(const QString &name)

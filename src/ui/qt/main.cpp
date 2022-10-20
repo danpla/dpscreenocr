@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QLibraryInfo>
 #include <QLocale>
+#include <QtGlobal>
 #include <QMessageBox>
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QTextCodec>
@@ -13,10 +14,8 @@
 #include <QTranslator>
 
 #include "dpso/dpso.h"
-
 #include "ui_common/ui_common.h"
 
-#include "default_config.h"
 #include "main_window.h"
 
 
