@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstring>
+#include <initializer_list>
 #include <string>
 #include <utility>
 #include <vector>
@@ -198,9 +199,7 @@ bool TesseractOcr::initTess(const char* langs)
 
 static bool shouldIgnoreLang(const char* lang)
 {
-    static const char* const ignoredLangs[] = {"osd", "equ"};
-
-    for (const auto* ignoredLang : ignoredLangs)
+    for (const auto* ignoredLang : {"equ", "osd"})
         if (std::strcmp(lang, ignoredLang) == 0)
             return true;
 
