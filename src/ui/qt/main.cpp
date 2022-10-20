@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    if (!uiInitDirs(argv[0])) {
+    if (!uiInitAppDirs(argv[0])) {
         QMessageBox::critical(
             nullptr,
             uiAppName,

@@ -53,7 +53,7 @@ static QStringList createLinks()
     result.append(formatLink(_("Website"), QUrl(uiAppWebsite)));
 
     const auto docDirPath =
-        QDir::fromNativeSeparators(uiGetDir(UiDirDoc));
+        QDir::fromNativeSeparators(uiGetAppDir(UiAppDirDoc));
 
     for (const auto* ext : {".html", ".txt"})
         if (appendFileLink(

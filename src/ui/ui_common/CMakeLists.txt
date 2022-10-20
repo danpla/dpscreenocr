@@ -9,14 +9,14 @@ set(SRCS
 set(IN_SRCS app_info.cpp file_names.cpp icon_names.cpp)
 
 if(UNIX AND NOT APPLE)
-    list(APPEND SRCS startup_setup_null.cpp dirs_unix.cpp)
+    list(APPEND SRCS app_dirs_unix.cpp startup_setup_null.cpp)
 
     include(GNUInstallDirs)
-    list(APPEND IN_SRCS dirs_unix_cfg.h)
+    list(APPEND IN_SRCS app_dirs_unix_cfg.h)
 elseif(WIN32)
     list(
         APPEND SRCS
-        dirs_windows.cpp
+        app_dirs_windows.cpp
         startup_setup_windows.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")

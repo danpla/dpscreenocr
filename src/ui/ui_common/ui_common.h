@@ -1,10 +1,10 @@
 
 #pragma once
 
+#include "app_dirs.h"
 #include "app_info.h"
 #include "cfg_default_values.h"
 #include "cfg_keys.h"
-#include "dirs.h"
 #include "file_names.h"
 #include "icon_names.h"
 #include "init_intl.h"

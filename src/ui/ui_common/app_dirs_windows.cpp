@@ -1,5 +1,5 @@
 
-#include "dirs.h"
+#include "app_dirs.h"
 
 #include <string>
 
@@ -45,7 +45,7 @@ static std::wstring getExeDir()
 static std::string baseDirPath;
 
 
-bool uiInitDirs(const char* argv0)
+bool uiInitAppDirs(const char* argv0)
 {
     (void)argv0;
 
@@ -54,18 +54,18 @@ bool uiInitDirs(const char* argv0)
 }
 
 
-const char* uiGetDir(UiDir dir)
+const char* uiGetAppDir(UiAppDir dir)
 {
     static std::string result;
     result = baseDirPath;
 
     switch (dir) {
-    case UiDirData:
+    case UiAppDirData:
         break;
-    case UiDirDoc:
+    case UiAppDirDoc:
         result += "\\doc";
         break;
-    case UiDirLocale:
+    case UiAppDirLocale:
         result += "\\locale";
         break;
     }

@@ -12,7 +12,7 @@
 #include "dpso_utils/user_dirs.h"
 #include "dpso_utils/windows_utils.h"
 
-#include "dirs.h"
+#include "app_dirs.h"
 #include "file_names.h"
 #include "ocr_data_dir_name.h"
 
@@ -188,7 +188,8 @@ static int setupUserData(const wchar_t* userDataDir)
 {
     std::wstring srcDataDir;
     try {
-        srcDataDir = dpso::windows::utf8ToUtf16(uiGetDir(UiDirData));
+        srcDataDir = dpso::windows::utf8ToUtf16(
+            uiGetAppDir(UiAppDirData));
     } catch (std::runtime_error& e) {
         dpsoSetError(
             "Can't convert UiDirData to UTF-16: %s", e.what());
