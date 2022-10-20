@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         QMessageBox::critical(
             nullptr,
             uiAppName,
-            QString("uiInitDirs(): ") + dpsoGetError());
+            QString("uiInitAppDirs(): ") + dpsoGetError());
         std::exit(EXIT_FAILURE);
     }
 
