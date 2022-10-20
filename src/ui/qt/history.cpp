@@ -175,9 +175,12 @@ void History::appendToTextEdit(
     blockFormat.setLeftMargin(0);
     blockFormat.setRightMargin(0);
 
+    Q_ASSERT(textEdit->document());
     if (textEdit->document()->isEmpty()) {
-        // An empty document still has a block. Reuse it so it doesn't
-        // result in an empty line.
+        // An empty document still has a block. Reuse it so that it
+        // doesn't result in an empty line.
+        Q_ASSERT(textEdit->document()->blockCount() == 1);
+
         cursor.setBlockFormat(blockFormat);
         cursor.setBlockCharFormat(charFormat);
     } else {

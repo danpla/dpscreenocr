@@ -46,10 +46,14 @@ set_target_properties(
     OUTPUT_NAME "dpscreenocr"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
-if(WIN32 AND CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
-    # Hide console window.
-    set_target_properties(
-        dpscreenocr_qt PROPERTIES WIN32_EXECUTABLE TRUE)
+if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
+    target_compile_definitions(dpscreenocr_qt PRIVATE QT_NO_DEBUG=1)
+
+    if(WIN32)
+        # Hide console window.
+        set_target_properties(
+            dpscreenocr_qt PROPERTIES WIN32_EXECUTABLE TRUE)
+    endif()
 endif()
 
 if(NOT TARGET dpso)
