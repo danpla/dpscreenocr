@@ -25,7 +25,7 @@ static void installQtTranslations(QApplication& app)
         #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
         QLibraryInfo::location(QLibraryInfo::TranslationsPath);
         #else
-        QDir::fromNativeSeparators(uiGetDir(UiDirData))
+        QDir::fromNativeSeparators(uiGetAppDir(UiAppDirData))
             + "/translations";
         #endif
 
