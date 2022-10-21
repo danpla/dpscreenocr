@@ -57,7 +57,7 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
     if (!CreateDirectoryW(pathUtf16.c_str(), nullptr)
             && GetLastError() != ERROR_ALREADY_EXISTS) {
         dpsoSetError(
-            "CreateDirectoryW(\"%s\") failed: %s",
+            "CreateDirectoryW(\"%s\"): %s",
             path.c_str(),
             dpso::windows::getErrorMessage(GetLastError()).c_str());
         return nullptr;

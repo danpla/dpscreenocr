@@ -40,27 +40,25 @@ static bool loadData(const char* filePath, std::string& data)
             return true;
 
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"rb\") failed: %s",
-            std::strerror(errno));
+            "dpsoFopenUtf8(..., \"rb\"): %s", std::strerror(errno));
         return false;
     }
 
     if (std::fseek(fp.get(), 0, SEEK_END) != 0) {
         dpsoSetError(
-            "fseek(..., SEEK_END) failed: %s", std::strerror(errno));
+            "fseek(..., SEEK_END): %s", std::strerror(errno));
         return false;
     }
 
     const auto size = std::ftell(fp.get());
     if (size < 0) {
-        dpsoSetError("ftell() failed: %s", std::strerror(errno));
+        dpsoSetError("ftell(): %s", std::strerror(errno));
         return false;
     }
 
     if (std::fseek(fp.get(), 0, SEEK_SET) != 0) {
         dpsoSetError(
-            "fseek(..., 0, SEEK_SET) failed: %s",
-            std::strerror(errno));
+            "fseek(..., 0, SEEK_SET): %s", std::strerror(errno));
         return false;
     }
 
@@ -131,13 +129,12 @@ static dpso::StdFileUPtr openForAppending(const char* filePath)
     dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "ab")};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"ab\") failed: %s",
-            std::strerror(errno));
+            "dpsoFopenUtf8(..., \"ab\"): %s", std::strerror(errno));
         return nullptr;
     }
 
     if (!dpsoSyncFileDir(filePath)) {
-        dpsoSetError("dpsoSyncFileDir() failed: %s", dpsoGetError());
+        dpsoSetError("dpsoSyncFileDir(): %s", dpsoGetError());
         return nullptr;
     }
 
@@ -233,7 +230,7 @@ bool dpsoHistoryAppend(
     }
 
     if (!dpsoSyncFile(fp)) {
-        dpsoSetError("dpsoSyncFile() failed: %s", dpsoGetError());
+        dpsoSetError("dpsoSyncFile(): %s", dpsoGetError());
         history->fp.reset();
         return false;
     }
@@ -282,7 +279,7 @@ bool dpsoHistoryClear(DpsoHistory* history)
 
     if (dpsoRemoveUtf8(history->filePath.c_str()) != 0) {
         dpsoSetError(
-            "dpsoRemoveUtf8(\"%s\") failed: %s",
+            "dpsoRemoveUtf8(\"%s\"): %s",
             history->filePath.c_str(),
             std::strerror(errno));
         return false;

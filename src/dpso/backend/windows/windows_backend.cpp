@@ -46,7 +46,7 @@ WindowsBackend::WindowsBackend()
 {
     if (!instance)
         throw BackendError(
-            "GetModuleHandle() failed: "
+            "GetModuleHandle(): "
             + windows::getErrorMessage(GetLastError()));
 
     try {

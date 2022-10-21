@@ -211,8 +211,7 @@ bool dpsoHistoryExport(
     dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "w")};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"w\") failed: %s",
-            std::strerror(errno));
+            "dpsoFopenUtf8(..., \"w\"): %s", std::strerror(errno));
         return false;
     }
 

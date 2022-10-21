@@ -110,7 +110,7 @@ static bool shellCopy(
         srcSi.get(), dstDirSi.get(), nullptr, nullptr);
     if (FAILED(hresult)) {
         dpsoSetError(
-            "IFileOperation::CopyItem() failed: %s",
+            "IFileOperation::CopyItem(): %s",
             dpso::windows::getHresultMessage(hresult).c_str());
         return false;
     }
@@ -118,7 +118,7 @@ static bool shellCopy(
     hresult = fileOp->PerformOperations();
     if (FAILED(hresult)) {
         dpsoSetError(
-            "IFileOperation::PerformOperations() failed: %s",
+            "IFileOperation::PerformOperations(): %s",
             dpso::windows::getHresultMessage(hresult).c_str());
         return false;
     }

@@ -124,7 +124,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
                 screenDc.get(), captureRect.x, captureRect.y,
                 SRCCOPY))
             throw ScreenshotError(
-                "BitBlt() failed: "
+                "BitBlt(): "
                 + windows::getErrorMessage(GetLastError()));
     }
 
@@ -152,7 +152,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
             reinterpret_cast<BITMAPINFO*>(&bi),
             DIB_RGB_COLORS))
         throw ScreenshotError(
-            "GetDIBits() failed: "
+            "GetDIBits(): "
             + windows::getErrorMessage(GetLastError()));
 
     return std::unique_ptr<Screenshot>(new WindowsScreenshot(

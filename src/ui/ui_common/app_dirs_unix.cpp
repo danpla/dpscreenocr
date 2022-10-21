@@ -80,8 +80,7 @@ bool uiInitAppDirs(const char* argv0)
     auto* realPath = realpath(path.c_str(), nullptr);
     if (!realPath) {
         dpsoSetError(
-            "realpath(\"%s\") failed: %s",
-            path.c_str(), strerror(errno));
+            "realpath(\"%s\"): %s", path.c_str(), strerror(errno));
         return false;
     }
 

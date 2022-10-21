@@ -220,7 +220,7 @@ MainWindow::MainWindow()
     taskbar.reset(
         uiTaskbarCreateWin(reinterpret_cast<HWND>(winId())));
     if (!taskbar)
-        qWarning("uiTaskbarCreateWin() failed: %s", dpsoGetError());
+        qWarning("uiTaskbarCreateWin(): %s", dpsoGetError());
     #endif
 }
 

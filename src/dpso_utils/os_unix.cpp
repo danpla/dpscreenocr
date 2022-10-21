@@ -32,13 +32,13 @@ bool dpsoSyncFile(FILE* fp)
 {
     const auto fd = fileno(fp);
     if (fd == -1) {
-        dpsoSetError("fileno() failed: %s", strerror(errno));
+        dpsoSetError("fileno(): %s", strerror(errno));
         return false;
     }
 
     if (dpso::unix::fsync(fd) == -1) {
         dpsoSetError(
-            "unix::fsync() failed: %s", strerror(errno));
+            "unix::fsync(): %s", strerror(errno));
         return false;
     }
 

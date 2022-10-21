@@ -40,7 +40,7 @@ static const char* getDir(
 
     if (!dpso::unix::makeDirs(&path[0])) {
         dpsoSetError(
-            "makeDirs(\"%s\") failed: %s",
+            "makeDirs(\"%s\"): %s",
             path.c_str(), std::strerror(errno));
         return nullptr;
     }

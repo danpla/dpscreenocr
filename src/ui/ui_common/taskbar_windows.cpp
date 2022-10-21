@@ -56,7 +56,7 @@ UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
     hresult = tbl->HrInit();
     if (FAILED(hresult)) {
         dpsoSetError(
-            "HrInit() failed: %s",
+            "ITaskbarList3::HrInit(): %s",
             dpso::windows::getHresultMessage(hresult).c_str());
         return nullptr;
     }

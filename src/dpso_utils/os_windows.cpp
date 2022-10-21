@@ -48,12 +48,12 @@ bool dpsoSyncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);
     if (fd == -1) {
-        dpsoSetError("_fileno() failed: %s", std::strerror(errno));
+        dpsoSetError("_fileno(): %s", std::strerror(errno));
         return false;
     }
 
     if (_commit(fd) == -1) {
-        dpsoSetError("_commit() failed: %s", std::strerror(errno));
+        dpsoSetError("_commit(): %s", std::strerror(errno));
         return false;
     }
 
