@@ -15,6 +15,42 @@ enum : int {
 };
 
 
+// A custom item that allows sorting by the checkbox column.
+class LangBrowserItem : public QTreeWidgetItem {
+public:
+    using QTreeWidgetItem::QTreeWidgetItem;
+
+    bool operator<(const QTreeWidgetItem& other) const override
+    {
+        const auto* tw = treeWidget();
+        Q_ASSERT(tw);
+
+        if (tw->sortColumn() != columnIdxCheckbox)
+            return QTreeWidgetItem::operator<(other);
+
+        const auto thisCs = checkState(columnIdxCheckbox);
+        const auto otherCs = other.checkState(columnIdxCheckbox);
+
+        static_assert(Qt::Unchecked < Qt::PartiallyChecked, "");
+        static_assert(Qt::PartiallyChecked < Qt::Checked, "");
+        if (thisCs != otherCs)
+            // In ascending order, checked items come first.
+            return thisCs >= otherCs;
+
+        // Within checkbox groups, always sort by name in ascending
+        // order.
+
+        const auto nameOrder = text(columnIdxName).localeAwareCompare(
+            other.text(columnIdxName));
+
+        if (tw->header()->sortIndicatorOrder() == Qt::AscendingOrder)
+            return nameOrder < 0;
+
+        return nameOrder >= 0;
+    }
+};
+
+
 LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     : QTreeWidget{parent}
     , ocr{ocr}
@@ -103,7 +139,7 @@ void LangBrowser::loadState(const DpsoCfg* cfg)
     setSortingEnabled(false);
     blockSignals(true);
     for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i) {
-        auto* item = new QTreeWidgetItem(this);
+        auto* item = new LangBrowserItem(this);
 
         item->setData(columnIdxCheckbox, Qt::UserRole, i);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
@@ -123,7 +159,7 @@ void LangBrowser::loadState(const DpsoCfg* cfg)
     setSortingEnabled(true);
 
     const auto columnIdx = qBound<int>(
-        columnIdxName,
+        columnIdxCheckbox,
         dpsoCfgGetInt(
             cfg, cfgKeyUiLanguagesSortColumn, columnIdxName),
         columnIdxCode);
