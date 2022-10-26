@@ -67,16 +67,11 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     setAllColumnsShowFocus(true);
     setRootIsDecorated(false);
 
-    header()->setStretchLastSection(false);
-
     #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    header()->setSectionResizeMode(
-        columnIdxName, QHeaderView::Stretch);
     header()->setSectionsMovable(false);
     #else
     header()->setResizeMode(QHeaderView::ResizeToContents);
-    header()->setResizeMode(columnIdxName, QHeaderView::Stretch);
     header()->setMovable(false);
     #endif
 
