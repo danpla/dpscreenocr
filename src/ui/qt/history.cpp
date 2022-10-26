@@ -175,6 +175,14 @@ void History::appendToTextEdit(
     blockFormat.setLeftMargin(0);
     blockFormat.setRightMargin(0);
 
+    // QTextEdit uses the Unicode bidi algorithm rather than the
+    // widget's layout direction, so Qt::AlignRight basically means
+    // "the opposite of what bidi detects". However, we don't want our
+    // timestamp to be left-aligned in RTL layouts.
+    blockFormat.setAlignment(
+        (isRightToLeft() ? Qt::AlignRight : Qt::AlignLeft)
+        | Qt::AlignAbsolute);
+
     Q_ASSERT(textEdit->document());
     if (textEdit->document()->isEmpty()) {
         // An empty document still has a block. Reuse it so that it
@@ -198,6 +206,7 @@ void History::appendToTextEdit(
     charFormat.setFontWeight(QFont::Normal);
     blockFormat.setLeftMargin(blockMargin);
     blockFormat.setRightMargin(blockMargin);
+    blockFormat.setAlignment(Qt::AlignLeft);
     cursor.insertBlock(blockFormat, charFormat);
 
     // Although we no longer add a trailing newline to the recognized
