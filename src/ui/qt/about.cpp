@@ -78,24 +78,6 @@ static QStringList createLinks()
 }
 
 
-static QString joinInLayoutDirection(
-    const QString& separator, const QStringList& list)
-{
-    QString result;
-
-    const auto rtl = QApplication::isRightToLeft();
-    // Since Qt 6, size_type switched from int to qsizetype.
-    for (QStringList::size_type i = 0; i < list.size(); ++i) {
-        if (i > 0)
-            result.insert(rtl ? 0 : result.size(), separator);
-
-        result.insert(rtl ? 0 : result.size(), list[i]);
-    }
-
-    return result;
-}
-
-
 About::About(QWidget* parent)
     : QWidget{parent}
 {
@@ -115,13 +97,12 @@ About::About(QWidget* parent)
         | Qt::LinksAccessibleByKeyboard);
     infoTextLabel->setText(QString(
         "<p style=\"line-height: 140%;\">"
-        "<b>%1 %2</b><br>"
+        "<b>%1</b><br>"
+        "%2<br>"
         "%3<br>"
-        "%4<br>"
-        "%5</p>"
+        "%4</p>"
         ).arg(
-            uiAppName,
-            uiAppVersion,
+            joinInLayoutDirection(" ", {uiAppName, uiAppVersion}),
             _("Program to recognize text on screen"),
             // The proper way to add spacing around a piece of text is
             // to use <span> with the margin or padding CSS property,

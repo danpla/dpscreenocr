@@ -7,6 +7,10 @@
 class QWidget;
 
 
+QString joinInLayoutDirection(
+    const QString& separator, const QStringList& list);
+
+
 QIcon getIcon(const QString &name);
 
 

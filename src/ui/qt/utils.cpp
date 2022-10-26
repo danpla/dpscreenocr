@@ -1,7 +1,7 @@
 
 #include "utils.h"
 
-#include <QCoreApplication>
+#include <QApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QFont>
@@ -10,6 +10,24 @@
 #include <QtGlobal>
 
 #include "ui_common/ui_common.h"
+
+
+QString joinInLayoutDirection(
+    const QString& separator, const QStringList& list)
+{
+    QString result;
+
+    const auto rtl = QApplication::isRightToLeft();
+    // Since Qt 6, size_type switched from int to qsizetype.
+    for (QStringList::size_type i = 0; i < list.size(); ++i) {
+        if (i > 0)
+            result.insert(rtl ? 0 : result.size(), separator);
+
+        result.insert(rtl ? 0 : result.size(), list[i]);
+    }
+
+    return result;
+}
 
 
 QIcon getIcon(const QString &name)

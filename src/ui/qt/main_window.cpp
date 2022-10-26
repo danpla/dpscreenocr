@@ -703,7 +703,8 @@ void MainWindow::updateDpso()
 
 void MainWindow::setStatus(Status newStatus, const QString& text)
 {
-    const auto textWithAppName = text + " - " + uiAppName;
+    const auto textWithAppName = joinInLayoutDirection(
+        " - ", {text, uiAppName});
 
     setWindowTitle(
         newStatus == Status::ok ? uiAppName : textWithAppName);
