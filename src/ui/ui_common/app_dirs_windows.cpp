@@ -22,7 +22,7 @@ static std::wstring getExeDir()
 
         if (size == 0) {
             dpsoSetError(
-                "GetModuleFileNameW() failed: %s",
+                "GetModuleFileNameW(): %s",
                 dpso::windows::getErrorMessage(
                     GetLastError()).c_str());
             return {};
