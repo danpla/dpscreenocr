@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-10-18 01:11+0200\n"
-"PO-Revision-Date: 2021-05-03 20:32+0000\n"
-"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"PO-Revision-Date: 2022-10-31 10:06+0000\n"
+"Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/tr/>\n"
 "Language: tr\n"
@@ -14,11 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.14.2-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
-msgstr "Afrikaca"
+msgstr "Afrikanca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:35
 msgid "Amharic"
@@ -37,9 +37,8 @@ msgid "Azerbaijani"
 msgstr "Azerice"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:39
-#, fuzzy
 msgid "Azerbaijani (Cyrillic)"
-msgstr "Azerice-Kirilce"
+msgstr "Azerice (Kiril)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:40
 msgid "Belarusian"
@@ -59,7 +58,7 @@ msgstr "Boşnakça"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:44
 msgid "Breton"
-msgstr "Breton"
+msgstr "Bretonca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:45
 msgid "Bulgarian"
@@ -78,24 +77,20 @@ msgid "Czech"
 msgstr "Çekçe"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:49
-#, fuzzy
 msgid "Chinese (simplified)"
-msgstr "Çince - Basitleştirilmiş"
+msgstr "Çince (basitleştirilmiş)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:50
-#, fuzzy
 msgid "Chinese (simplified, vertical)"
-msgstr "Çince - Basitleştirilmiş (dikey)"
+msgstr "Çince (basitleştirilmiş, dikey)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:51
-#, fuzzy
 msgid "Chinese (traditional)"
-msgstr "Çince-Geleneksel"
+msgstr "Çince (geleneksel)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:52
-#, fuzzy
 msgid "Chinese (traditional, vertical)"
-msgstr "Çince - Geleneksel (dikey)"
+msgstr "Çince (geleneksel, dikey)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:53
 msgid "Cherokee"
@@ -107,16 +102,15 @@ msgstr "Korsikaca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:55
 msgid "Welsh"
-msgstr "Galice"
+msgstr "Galce"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:56
 msgid "Danish"
 msgstr "Danca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:57
-#, fuzzy
 msgid "Danish (Fraktur)"
-msgstr "Danca-Fraktür"
+msgstr "Danca (Fraktur)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:58
 msgid "German"
@@ -124,9 +118,8 @@ msgstr "Almanca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:59
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:73
-#, fuzzy
 msgid "German (Fraktur)"
-msgstr "Almanca-Fraktür"
+msgstr "Almanca (Fraktur)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:60
 msgid "Dhivehi; Divehi; Maldivian"
@@ -170,7 +163,7 @@ msgstr "Persce"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:70
 msgid "Filipino; Pilipino"
-msgstr "Filipinli; Filipin dili"
+msgstr "Filipince; Filipin dili"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:71
 msgid "Finnish"
@@ -181,19 +174,16 @@ msgid "French"
 msgstr "Fransızca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:74
-#, fuzzy
 msgid "French, Middle (ca. 1400-1600)"
-msgstr "Fransızca, Orta (CA.1400-1600)"
+msgstr "Fransızca, Orta (yaklaşık 1400-1600)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:75
-#, fuzzy
 msgid "Frisian, Western"
-msgstr "Batı Frizce"
+msgstr "Frizce, Batı"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:76
-#, fuzzy
 msgid "Gaelic, Scottish"
-msgstr "İskoç Galcesi; Gaelce"
+msgstr "Galce, İskoç"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:77
 msgid "Irish"
@@ -201,7 +191,7 @@ msgstr "İrlanda dili"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:78
 msgid "Galician"
-msgstr "Galiçya"
+msgstr "Galiçyaca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:79
 msgid "Greek, Ancient (to 1453)"
@@ -212,9 +202,8 @@ msgid "Gujarati"
 msgstr "Gucerat dili"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
-#, fuzzy
 msgid "Creole, Haitian"
-msgstr "Haiti; Haiti Creole"
+msgstr "Kreol, Haiti"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:82
 msgid "Hebrew"
@@ -253,9 +242,8 @@ msgid "Italian"
 msgstr "İtalyanca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:91
-#, fuzzy
 msgid "Italian (old)"
-msgstr "İtalyanca -Eski"
+msgstr "İtalyanca (eski)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:92
 msgid "Javanese"
@@ -278,27 +266,24 @@ msgid "Georgian"
 msgstr "Gürcüce"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:97
-#, fuzzy
 msgid "Georgian (old)"
-msgstr "Gürcüce - Eski"
+msgstr "Gürcüce (eski)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:98
 msgid "Kazakh"
 msgstr "Kazakça"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:99
-#, fuzzy
 msgid "Khmer, Central"
-msgstr "Merkezi khmer"
+msgstr "Kmerce, Orta"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:100
 msgid "Kirghiz; Kyrgyz"
 msgstr "Kırgızca; Kırgız"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:101
-#, fuzzy
 msgid "Kurdish, Northern"
-msgstr "Kurmanji (Kürtçe - Latince Script)"
+msgstr "Kürtçe, Kuzey"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:102
 msgid "Korean"
@@ -309,9 +294,8 @@ msgid "Korean (vertical)"
 msgstr "Korece (dikey)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:104
-#, fuzzy
 msgid "Kurdish"
-msgstr "Kürtçe (Arapça Script)"
+msgstr "Kürtçe"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:105
 msgid "Lao"
@@ -330,9 +314,8 @@ msgid "Lithuanian"
 msgstr "Litvanca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:109
-#, fuzzy
 msgid "Luxembourgish; Letzeburgesch"
-msgstr "Lüksemburgca"
+msgstr "Lüksemburgca; Letzeburgesch"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:110
 msgid "Malayalam"
@@ -344,7 +327,7 @@ msgstr "Marathi"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:112
 msgid "Macedonian"
-msgstr "Makedonya Dili"
+msgstr "Makedonca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:113
 msgid "Maltese"
@@ -408,7 +391,7 @@ msgstr "Keçuva dilleri"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:128
 msgid "Romanian; Moldavian; Moldovan"
-msgstr "Romence; Moldavyalı; Moldova"
+msgstr "Rumence; Moldavyaca; Moldovaca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:129
 msgid "Russian"
@@ -427,9 +410,8 @@ msgid "Slovak"
 msgstr "Slovakça"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:133
-#, fuzzy
 msgid "Slovak (Fraktur)"
-msgstr "Slovak - Fraktur"
+msgstr "Slovakça (Fraktur)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:134
 msgid "Slovenian"
@@ -444,9 +426,8 @@ msgid "Spanish; Castilian"
 msgstr "İspanyolca; Kastilya"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:137
-#, fuzzy
 msgid "Spanish; Castilian (old)"
-msgstr "İspanyolca; Kastilya - Eski"
+msgstr "İspanyolca; Kastilya (eski)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:138
 msgid "Albanian"
@@ -457,9 +438,8 @@ msgid "Serbian"
 msgstr "Sırpça"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:140
-#, fuzzy
 msgid "Serbian (Latin)"
-msgstr "Sırpça - Latince"
+msgstr "Sırpça (Latin)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:141
 msgid "Sundanese"
@@ -506,9 +486,8 @@ msgid "Tigrinya"
 msgstr "Tigrince"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:152
-#, fuzzy
 msgid "Tonga (Tonga Islands)"
-msgstr "Tonga"
+msgstr "Tonga dili (Tonga Adaları)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:153
 msgid "Turkish"
@@ -516,7 +495,7 @@ msgstr "Türkçe"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:154
 msgid "Uighur; Uyghur"
-msgstr "Uygur"
+msgstr "Uygurca"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:155
 msgid "Ukrainian"
@@ -531,9 +510,8 @@ msgid "Uzbek"
 msgstr "Özbekçe"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:158
-#, fuzzy
 msgid "Uzbek (Cyrillic)"
-msgstr "Özbek - Kiril"
+msgstr "Özbekçe (Kiril)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:159
 msgid "Vietnamese"
@@ -549,15 +527,15 @@ msgstr "Yorubaca"
 
 #: src/ui/qt/about.cpp:53
 msgid "Website"
-msgstr ""
+msgstr "Web sitesi"
 
 #: src/ui/qt/about.cpp:63
 msgid "User manual"
-msgstr ""
+msgstr "Kullanıcı kılavuzu"
 
 #: src/ui/qt/about.cpp:67
 msgid "Changelog"
-msgstr ""
+msgstr "Değişiklik günlüğü"
 
 #: src/ui/qt/about.cpp:69
 msgid "License"
@@ -565,7 +543,7 @@ msgstr "Lisans"
 
 #: src/ui/qt/about.cpp:75
 msgid "Third-party licenses"
-msgstr ""
+msgstr "Üçüncü taraf lisansları"
 
 #: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
@@ -573,30 +551,28 @@ msgstr "Ekrandaki metni tanıma programı"
 
 #: src/ui/qt/action_chooser.cpp:23
 msgid "Copy text to clipboard"
-msgstr "Metni Panoya Kopyala"
+msgstr "Metni panoya kopyala"
 
 #: src/ui/qt/action_chooser.cpp:24
 msgid "Add text to history"
-msgstr "Metni Geçmiş'e ekle"
+msgstr "Metni geçmişe ekle"
 
 #: src/ui/qt/action_chooser.cpp:26
 msgid "Run executable:"
-msgstr "Yürütülebilir dosyayı çalıştır:"
+msgstr "Programı çalıştır:"
 
 #: src/ui/qt/action_chooser.cpp:28
 msgid "Run an executable with the recognized text as the first argument"
 msgstr ""
-"İlk bağımsız değişken olarak tanınan metinle bir yürütülebilir dosyayı "
-"çalıştırın"
+"İlk bağımsız değişken tanınan metin olacak şekilde bir programı çalıştırın"
 
 #: src/ui/qt/action_chooser.cpp:72
 msgid "Choose an executable"
-msgstr "Bir yürütülebilir dosya seçin"
+msgstr "Bir program seçin"
 
 #: src/ui/qt/history.cpp:38
-#, fuzzy
 msgid "Export…"
-msgstr "Farklı kaydet…"
+msgstr "Dışa aktar…"
 
 #: src/ui/qt/history.cpp:41
 msgid "Clear…"
@@ -607,9 +583,8 @@ msgid "History"
 msgstr "Geçmiş"
 
 #: src/ui/qt/history.cpp:62
-#, fuzzy
 msgid "Export history"
-msgstr "Geçmişi kaydet"
+msgstr "Geçmişi dışa aktar"
 
 #: src/ui/qt/history.cpp:64
 msgid "Plain text"
@@ -621,7 +596,7 @@ msgstr "Tüm dosyalar"
 
 #: src/ui/qt/history.cpp:68
 msgid "Clear the history?"
-msgstr "Geçmişi temizleyelim mi?"
+msgstr "Geçmiş temizlensin mi?"
 
 #: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:247
 msgid "Cancel"
@@ -665,15 +640,15 @@ msgstr "{progress}% Tanındı ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp:238
 msgid "Please install languages"
-msgstr "Lütfen dilleri yükleyin"
+msgstr "Lütfen dilleri kurun"
 
 #: src/ui/qt/main_window.cpp:239
 msgid "Please select languages"
-msgstr "Lütfen dilleri seçiniz"
+msgstr "Lütfen dilleri seçin"
 
 #: src/ui/qt/main_window.cpp:241
 msgid "Please select actions in the “Actions” tab"
-msgstr "Lütfen \"Eylemler\" sekmesindeki eylemleri seçin"
+msgstr "Lütfen \"Eylemler\" sekmesinde eylemleri seçin"
 
 #. Translators: Program is ready for OCR
 #: src/ui/qt/main_window.cpp:244
@@ -683,7 +658,7 @@ msgstr "Hazır"
 
 #: src/ui/qt/main_window.cpp:246
 msgid "Recognition is not yet finished. Quit anyway?"
-msgstr "Tanıma henüz tamamlanmadı. Yine de bırakacak mısın?"
+msgstr "Tanıma henüz tamamlanmadı. Yine de çıkılsın mı?"
 
 #: src/ui/qt/main_window.cpp:248 src/ui/qt/main_window.cpp:433
 msgid "Quit"
@@ -707,7 +682,7 @@ msgstr "Bölünmüş metin blokları"
 
 #: src/ui/qt/main_window.cpp:456
 msgid "Split independent text blocks, such as columns"
-msgstr "Bağımsız metin bloklarını, örneğin sütunları bölme"
+msgstr "Sütunlar gibi bağımsız metin bloklarını böl"
 
 #: src/ui/qt/main_window.cpp:459
 msgid "Languages:"
