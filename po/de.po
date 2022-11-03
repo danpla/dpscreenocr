@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-10-18 01:11+0200\n"
-"PO-Revision-Date: 2022-05-22 22:25+0300\n"
-"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"PO-Revision-Date: 2022-11-04 16:06+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/de/>\n"
 "Language: de\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Weblate 4.14.2-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -245,9 +245,8 @@ msgid "Italian"
 msgstr "Italienisch"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:91
-#, fuzzy
 msgid "Italian (old)"
-msgstr "Italienisch, Alt-"
+msgstr "Italienisch (alt)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:92
 msgid "Javanese"
@@ -270,9 +269,8 @@ msgid "Georgian"
 msgstr "Georgisch"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:97
-#, fuzzy
 msgid "Georgian (old)"
-msgstr "Georgisch, Alt-"
+msgstr "Georgisch (alt)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:98
 msgid "Kazakh"
@@ -433,9 +431,8 @@ msgid "Spanish; Castilian"
 msgstr "Spanish; Kastilisch"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:137
-#, fuzzy
 msgid "Spanish; Castilian (old)"
-msgstr "Spanisch; Altkastilisch"
+msgstr "Spanisch; Kastilisch (alt)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:138
 msgid "Albanian"
@@ -536,15 +533,15 @@ msgstr "Yoruba"
 
 #: src/ui/qt/about.cpp:53
 msgid "Website"
-msgstr ""
+msgstr "Webseite"
 
 #: src/ui/qt/about.cpp:63
 msgid "User manual"
-msgstr ""
+msgstr "Benutzerhandbuch"
 
 #: src/ui/qt/about.cpp:67
 msgid "Changelog"
-msgstr ""
+msgstr "Änderungsprotokoll"
 
 #: src/ui/qt/about.cpp:69
 msgid "License"
@@ -552,7 +549,7 @@ msgstr "Lizenz"
 
 #: src/ui/qt/about.cpp:75
 msgid "Third-party licenses"
-msgstr ""
+msgstr "Drittanbieter-Lizenzen"
 
 #: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
@@ -581,9 +578,8 @@ msgid "Choose an executable"
 msgstr "Programm auswählen"
 
 #: src/ui/qt/history.cpp:38
-#, fuzzy
 msgid "Export…"
-msgstr "Speichern unter…"
+msgstr "Exportieren…"
 
 #: src/ui/qt/history.cpp:41
 msgid "Clear…"
@@ -594,9 +590,8 @@ msgid "History"
 msgstr "Verlauf"
 
 #: src/ui/qt/history.cpp:62
-#, fuzzy
 msgid "Export history"
-msgstr "Verlauf speichern"
+msgstr "Verlauf exportieren"
 
 #: src/ui/qt/history.cpp:64
 msgid "Plain text"
