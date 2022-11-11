@@ -127,7 +127,7 @@ void History::clear()
     if (!history)
         return;
 
-    if (!confirmation(
+    if (!confirmDestructiveAction(
             this,
             dynStr.clearQuestion, dynStr.cancel, dynStr.clear))
         return;

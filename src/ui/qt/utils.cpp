@@ -80,7 +80,7 @@ QPixmap getPixmap(
 }
 
 
-bool confirmation(
+bool confirmDestructiveAction(
     QWidget* parent,
     const QString& question,
     const QString& cancelText,
@@ -90,7 +90,7 @@ bool confirmation(
 
     confirmBox.setWindowTitle(uiAppName);
     confirmBox.setText(question);
-    confirmBox.setIcon(QMessageBox::Question);
+    confirmBox.setIcon(QMessageBox::Warning);
 
     auto* cancelButton = confirmBox.addButton(
         cancelText, QMessageBox::RejectRole);

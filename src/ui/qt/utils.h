@@ -29,7 +29,7 @@ QPixmap getPixmap(
     QIcon::State state = QIcon::Off);
 
 
-bool confirmation(
+bool confirmDestructiveAction(
     QWidget* parent,
     const QString& question,
     const QString& cancelText,

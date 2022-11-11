@@ -259,7 +259,7 @@ void MainWindow::timerEvent(QTimerEvent* event)
 void MainWindow::closeEvent(QCloseEvent* event)
 {
     if (dpsoOcrHasPendingJobs(ocr.get())
-            && !confirmation(
+            && !confirmDestructiveAction(
                 this,
                 dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
         event->ignore();
@@ -395,7 +395,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
     if (!noInteraction
             && sessionManager.allowsInteraction()
             && dpsoOcrHasPendingJobs(ocr.get())
-            && !confirmation(
+            && !confirmDestructiveAction(
                 this,
                 dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
         sessionManager.cancel();
