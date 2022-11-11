@@ -357,8 +357,8 @@ settings file:
 
 This section contains a list of possible issues and their solutions.
 If the solution doesn't help, or you have a problem that is not listed
-here, please report the it on the [issue tracker][]. You can also
-contact the author by email; the link is at the bottom of the
+here, please report it on the [issue tracker][]. You can also contact
+the author by email; the link is at the bottom of the
 [dpScreenOCR website][].
 
 [Issue tracker]: https://github.com/danpla/dpscreenocr/issues

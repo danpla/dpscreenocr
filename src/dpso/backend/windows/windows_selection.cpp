@@ -92,7 +92,7 @@ public:
         // than SetThreadDpiAwarenessContext() (added in Windows 10
         // 1607), so we use v1 to fill the gap. Fortunately, the
         // selection doesn't have non-client areas, so the v2
-        // improvements are irrelevant our case.
+        // improvements are irrelevant in our case.
         if (SetThreadDpiAwarenessContextFn)
             oldDpiContext = SetThreadDpiAwarenessContextFn(
                 DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
