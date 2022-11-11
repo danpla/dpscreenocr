@@ -61,8 +61,8 @@ private:
     DpsoHotkeyAction action;
     bool hideNoneKey;
 
+    QCheckBox* modChecks[dpsoNumKeyMods];
     QComboBox* keyCombo;
-    QCheckBox* modCheckBoxes[dpsoNumKeyMods];
 
     DpsoKey getCurrentKey() const;
 };

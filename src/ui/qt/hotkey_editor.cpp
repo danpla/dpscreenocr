@@ -15,17 +15,37 @@ HotkeyEditor::HotkeyEditor(
     : QWidget{parent}
     , action{action}
     , hideNoneKey{hideNoneKey}
+    , modChecks{}
     , keyCombo{}
-    , modCheckBoxes{}
 {
     auto* layout = new QHBoxLayout(this);
     layout->setContentsMargins({});
 
-    keyCombo = new QComboBox();
-    layout->addWidget(keyCombo, 1);
-
     DpsoHotkey hotkey;
     dpsoFindActionHotkey(action, &hotkey);
+
+    const auto keySelected = hotkey.key != dpsoUnknownKey;
+
+    for (int i = 0; i < dpsoNumKeyMods; ++i) {
+        const auto mod = dpsoGetKeyModAt(i);
+
+        const DpsoHotkey modHotkey{dpsoUnknownKey, mod};
+        auto* modCheck = new QCheckBox(
+            dpsoHotkeyToString(&modHotkey));
+        modChecks[i] = modCheck;
+
+        modCheck->setEnabled(keySelected);
+        modCheck->setChecked(keySelected && (hotkey.mods & mod));
+
+        connect(
+            modCheck, SIGNAL(stateChanged(int)),
+            this, SIGNAL(changed()));
+
+        layout->addWidget(modCheck);
+    }
+
+    keyCombo = new QComboBox();
+    layout->addWidget(keyCombo, 1);
 
     for (int i = dpsoUnknownKey; i < dpsoNumKeys; ++i) {
         const auto key = static_cast<DpsoKey>(i);
@@ -49,34 +69,14 @@ HotkeyEditor::HotkeyEditor(
     connect(
         keyCombo, SIGNAL(currentIndexChanged(int)),
         this, SLOT(keyChanged()));
-
-    const auto keySelected = getCurrentKey() != dpsoUnknownKey;
-
-    for (int i = 0; i < dpsoNumKeyMods; ++i) {
-        const auto mod = dpsoGetKeyModAt(i);
-
-        const DpsoHotkey modHotkey{dpsoUnknownKey, mod};
-        auto* modCheckBox = new QCheckBox(
-            dpsoHotkeyToString(&modHotkey));
-        modCheckBoxes[i] = modCheckBox;
-
-        modCheckBox->setEnabled(keySelected);
-        modCheckBox->setChecked(keySelected && (hotkey.mods & mod));
-
-        connect(
-            modCheckBox, SIGNAL(stateChanged(int)),
-            this, SIGNAL(changed()));
-
-        layout->addWidget(modCheckBox);
-    }
 }
 
 
 void HotkeyEditor::assignHotkey(bool emitChanged)
 {
     keyCombo->blockSignals(true);
-    for (auto* modCheckBox : modCheckBoxes)
-        modCheckBox->blockSignals(true);
+    for (auto* modCheck : modChecks)
+        modCheck->blockSignals(true);
 
     DpsoHotkey hotkey;
     dpsoFindActionHotkey(action, &hotkey);
@@ -92,20 +92,20 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
     for (int i = 0; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
-        auto* modCheckBox = modCheckBoxes[i];
+        auto* modCheck = modChecks[i];
 
-        modCheckBox->setEnabled(keySelected);
+        modCheck->setEnabled(keySelected);
 
         const auto newChecked = keySelected && (hotkey.mods & mod);
-        if (modCheckBox->isChecked() != newChecked) {
+        if (modCheck->isChecked() != newChecked) {
             hotkeyChanged = true;
-            modCheckBox->setChecked(newChecked);
+            modCheck->setChecked(newChecked);
         }
     }
 
     keyCombo->blockSignals(false);
-    for (auto* modCheckBox : modCheckBoxes)
-        modCheckBox->blockSignals(false);
+    for (auto* modCheck : modChecks)
+        modCheck->blockSignals(false);
 
     if (emitChanged && hotkeyChanged)
         emit changed();
@@ -117,7 +117,7 @@ void HotkeyEditor::bind()
     DpsoHotkey hotkey{getCurrentKey(), dpsoKeyModNone};
 
     for (int i = 0; i < dpsoNumKeyMods; ++i)
-        if (modCheckBoxes[i]->isChecked())
+        if (modChecks[i]->isChecked())
             hotkey.mods |= dpsoGetKeyModAt(i);
 
     dpsoUnbindAction(action);
@@ -131,14 +131,14 @@ void HotkeyEditor::keyChanged()
 
     // When the key is switched to dpsoUnknownKey, we need to uncheck
     // every modifier checkbox without emitting changed().
-    for (auto* modCheckBox : modCheckBoxes) {
-        modCheckBox->blockSignals(true);
+    for (auto* modCheck : modChecks) {
+        modCheck->blockSignals(true);
 
-        modCheckBox->setEnabled(keySelected);
+        modCheck->setEnabled(keySelected);
         if (!keySelected)
-            modCheckBox->setChecked(false);
+            modCheck->setChecked(false);
 
-        modCheckBox->blockSignals(false);
+        modCheck->blockSignals(false);
     }
 
     emit changed();
