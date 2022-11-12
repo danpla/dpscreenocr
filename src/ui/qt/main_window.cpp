@@ -1,7 +1,7 @@
 
 #include "main_window.h"
 
-#include <cstdio>
+#include <cstdlib>
 
 #include <QAction>
 #include <QApplication>
