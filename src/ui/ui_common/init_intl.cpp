@@ -1,8 +1,6 @@
 
 #include "init_intl.h"
 
-#include <string>
-
 // On Windows, libintl patches setlocale with a macro that expands to
 // libintl_setlocale. std::setlocale becomes std::libintl_setlocale,
 // so we must use <locale.h> rather than <clocale>.
