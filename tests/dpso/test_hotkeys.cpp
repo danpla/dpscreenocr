@@ -1,7 +1,7 @@
 
-#include "dpso/dpso.h"
-
 #include <string>
+
+#include "dpso/dpso.h"
 
 #include "flow.h"
 

@@ -1,9 +1,9 @@
 
+#include <cmath>
+
 #include "dpso/progress_tracker.h"
 
 #include "flow.h"
-
-#include <cmath>
 
 
 namespace {

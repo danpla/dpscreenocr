@@ -1,23 +1,23 @@
 
 set(PLATFORM_SRCS)
 if(WIN32)
-    list(APPEND PLATFORM_SRCS test_windows_utils.cpp)
+    list(APPEND PLATFORM_SRCS dpso_utils/test_windows_utils.cpp)
 endif()
 
 add_executable(
     tests
 
+    dpso/test_geometry.cpp
+    dpso/test_hotkeys.cpp
+    dpso/test_progress_tracker.cpp
+    dpso/test_str.cpp
+    dpso/test_tesseract_utils.cpp
+    dpso_utils/test_cfg.cpp
+    dpso_utils/test_history.cpp
+    dpso_utils/test_os.cpp
+    dpso_utils/test_str_format.cpp
     flow.cpp
     main.cpp
-    test_cfg.cpp
-    test_geometry.cpp
-    test_history.cpp
-    test_hotkeys.cpp
-    test_os.cpp
-    test_progress_tracker.cpp
-    test_str.cpp
-    test_str_format.cpp
-    test_tesseract_utils.cpp
     utils.cpp
 
     ${PLATFORM_SRCS})
@@ -27,6 +27,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     target_compile_options(
         tests PRIVATE -std=c++11 -Wall -Wextra -pedantic)
 endif()
+
+target_include_directories(tests PRIVATE .)
 
 if(NOT TARGET dpso)
     add_subdirectory(../src/dpso "${CMAKE_BINARY_DIR}/src/dpso")

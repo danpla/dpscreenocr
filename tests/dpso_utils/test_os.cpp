@@ -1,8 +1,8 @@
 
-#include "dpso_utils/os.h"
-
 #include <string>
 #include <vector>
+
+#include "dpso_utils/os.h"
 
 #include "flow.h"
 #include "utils.h"
