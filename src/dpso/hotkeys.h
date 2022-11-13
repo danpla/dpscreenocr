@@ -33,7 +33,7 @@ bool dpsoGetHotkeysEnabled(void);
  *
  * \sa dpsoGetHotkeysEnabled()
  */
-void dpsoSetHotheysEnabled(bool newHotkeysEnabled);
+void dpsoSetHotkeysEnabled(bool newHotkeysEnabled);
 
 
 /**

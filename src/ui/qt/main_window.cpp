@@ -167,7 +167,7 @@ MainWindow::MainWindow()
         std::exit(EXIT_FAILURE);
     }
 
-    dpsoSetHotheysEnabled(true);
+    dpsoSetHotkeysEnabled(true);
 
     createQActions();
 
@@ -282,7 +282,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
             QString("Can't save \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
 
-    dpsoSetHotheysEnabled(false);
+    dpsoSetHotkeysEnabled(false);
 
     event->accept();
     qApp->quit();

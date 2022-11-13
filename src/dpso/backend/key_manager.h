@@ -41,7 +41,7 @@ public:
     /**
      * Set whether hotkeys are enabled.
      *
-     * \sa dpsoSetHotheysEnabled()
+     * \sa dpsoSetHotkeysEnabled()
      */
     virtual void setHotkeysEnabled(bool newHotkeysEnabled) = 0;
 

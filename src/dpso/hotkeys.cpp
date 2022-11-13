@@ -19,7 +19,7 @@ bool dpsoGetHotkeysEnabled(void)
 }
 
 
-void dpsoSetHotheysEnabled(bool newHotkeysEnabled)
+void dpsoSetHotkeysEnabled(bool newHotkeysEnabled)
 {
     if (keyManager)
         keyManager->setHotkeysEnabled(newHotkeysEnabled);

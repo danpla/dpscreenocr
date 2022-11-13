@@ -41,7 +41,7 @@ static void setupHotkeys(void)
         dpsoKeyGrave, dpsoKeyModCtrl
     };
 
-    dpsoSetHotheysEnabled(true);
+    dpsoSetHotkeysEnabled(true);
 
     dpsoBindHotkey(
         &toggleSelectionHotkey, hotkeyActionToggleSelection);
