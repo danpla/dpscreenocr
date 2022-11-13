@@ -16,6 +16,9 @@ int main()
             "%4i/%i: %s\n",
             ++curRunnerNum, test::Runner::getNumRunners(),
             runner->getName());
+        // Flush to make sure that failure() messages (written to
+        // stderr) are nested under the test name.
+        std::fflush(stdout);
         runner->run();
     }
 
