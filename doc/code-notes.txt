@@ -10,9 +10,10 @@
   Support for CMake 2.8.12 is only required on Unix-like systems; many
   Windows-specific CMake files use features from version 3.
 
-* A C/CPP file should include headers in the following order:
+* A source file should include headers in the following order:
 
-  * The header of the current C/CPP file
+  * If the file is C/CPP (foo.cpp), the corresponding header of this
+    file (foo.h)
   * Standard C/C++ library headers. On Unix-like systems, OS API
     (POSIX) headers may also be in this group.
   * OS API headers.
