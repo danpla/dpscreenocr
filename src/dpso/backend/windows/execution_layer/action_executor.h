@@ -30,11 +30,11 @@ std::unique_ptr<ActionExecutor> createBgThreadActionExecutor();
 
 // Overload for callables that return nothing.
 template<typename CallableT>
-auto execute(ActionExecutor& executor, CallableT callable)
+auto execute(ActionExecutor& executor, const CallableT& callable)
     -> typename std::enable_if<std::is_void<decltype(callable())>::value>::type
 {
     struct CallableAction : Action {
-        explicit CallableAction(CallableT callable)
+        explicit CallableAction(const CallableT& callable)
             : callable{callable}
         {
         }
@@ -44,7 +44,7 @@ auto execute(ActionExecutor& executor, CallableT callable)
             callable();
         }
 
-        CallableT callable;
+        const CallableT& callable;
     } action(callable);
 
     executor.execute(action);
@@ -53,26 +53,36 @@ auto execute(ActionExecutor& executor, CallableT callable)
 
 // Overload for callables that return a value.
 template<typename CallableT>
-auto execute(ActionExecutor& executor, CallableT callable)
+auto execute(ActionExecutor& executor, const CallableT& callable)
     -> typename std::enable_if<!std::is_void<decltype(callable())>::value, decltype(callable())>::type
 {
     struct CallableAction : Action {
-        explicit CallableAction(CallableT callable)
+        using ResultT = decltype(callable());
+
+        explicit CallableAction(const CallableT& callable)
             : callable{callable}
+            , result{}
         {
+        }
+
+        ~CallableAction()
+        {
+            if (result)
+                result->~ResultT();
         }
 
         void action() override
         {
-            result = callable();
+            result = new(resultMem) ResultT{callable()};
         }
 
-        CallableT callable;
-        decltype(callable()) result;
+        const CallableT& callable;
+        alignas(ResultT) unsigned char resultMem[sizeof(ResultT)];
+        ResultT* result;
     } action(callable);
 
     executor.execute(action);
-    return std::move(action.result);
+    return std::move(*action.result);
 }
 
 
