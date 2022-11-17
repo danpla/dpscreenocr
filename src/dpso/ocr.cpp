@@ -2,7 +2,6 @@
 #include "ocr.h"
 
 #include <algorithm>
-#include <array>
 #include <cassert>
 #include <chrono>
 #include <clocale>
@@ -27,6 +26,7 @@
 #include "ocr_engine/ocr_engine.h"
 #include "ocr_engine/ocr_engine_creator.h"
 #include "progress_tracker.h"
+#include "strftime.h"
 #include "timing.h"
 
 
@@ -113,13 +113,13 @@ struct Job {
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     std::vector<int> langIndices;
     dpso::OcrFeatures ocrFeatures;
-    Timestamp timestamp;
+    std::string timestamp;
 };
 
 
 struct JobResult {
     dpso::OcrResult ocrResult;
-    Timestamp timestamp;
+    std::string timestamp;
 };
 
 
@@ -420,20 +420,13 @@ static std::vector<int> getActiveLangIndices(const DpsoOcr& ocr)
 }
 
 
-static Timestamp createTimestamp()
+static std::string createTimestamp()
 {
-    // We are still targeting old GCC versions, so double braces are
-    // needed to avoid -Wmissing-field-initializers.
-    Timestamp timestamp{{}};
-
     const auto time = std::time(nullptr);
     if (const auto* tm = std::localtime(&time))
-        if (std::strftime(
-                timestamp.data(), timestamp.size(),
-                "%Y-%m-%d %H:%M:%S", tm) == 0)
-            timestamp[0] = 0;
+        return dpso::strftime("%Y-%m-%d %H:%M:%S", tm);
 
-    return timestamp;
+    return {};
 }
 
 

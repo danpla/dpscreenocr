@@ -53,6 +53,7 @@ add_library(
     progress_tracker.cpp
     selection.cpp
     str.cpp
+    strftime.cpp
 
     ${BACKEND_SRCS})
 

@@ -11,6 +11,7 @@ add_executable(
     dpso/test_hotkeys.cpp
     dpso/test_progress_tracker.cpp
     dpso/test_str.cpp
+    dpso/test_strftime.cpp
     dpso/test_tesseract_utils.cpp
     dpso_utils/test_cfg.cpp
     dpso_utils/test_history.cpp
