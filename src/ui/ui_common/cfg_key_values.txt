@@ -1,24 +1,24 @@
-action_add_to_history                   | int               | true
-action_copy_to_clipboard                | int               | false
-action_copy_to_clipboard_text_separator | const char*       | "\n\n\n"
-action_run_executable                   | int               | false
+action_add_to_history                   | int         | true
+action_copy_to_clipboard                | int         | false
+action_copy_to_clipboard_text_separator | const char* | "\n\n\n"
+action_run_executable                   | int         | false
 action_run_executable_path
 history_export_dir
-history_wrap_words                      | int               | true
-hotkey_cancel_selection                 | DpsoHotkey        | {dpsoKeyEscape, dpsoKeyModNone}
-hotkey_toggle_selection                 | DpsoHotkey        | {dpsoKeyGrave, dpsoKeyModCtrl}
-ocr_allow_queuing                       | int               | true
+history_wrap_words                      | int         | true
+hotkey_cancel_selection                 | DpsoHotkey  | {dpsoKeyEscape, dpsoKeyModNone}
+hotkey_toggle_selection                 | DpsoHotkey  | {dpsoKeyGrave, dpsoKeyModCtrl}
+ocr_allow_queuing                       | int         | true
 ocr_languages
-ocr_split_text_blocks                   | int               | true
+ocr_split_text_blocks                   | int         | true
 selection_border_width
 ui_active_tab
 ui_languages_sort_column
 ui_languages_sort_descending
-ui_tray_icon_visible                    | int               | true
+ui_tray_icon_visible                    | int         | true
 ui_window_height
 ui_window_maximized
-ui_window_minimize_on_start             | int               | false
-ui_window_minimize_to_tray              | int               | false
+ui_window_minimize_on_start             | int         | false
+ui_window_minimize_to_tray              | int         | false
 ui_window_width
 ui_window_x
 ui_window_y
