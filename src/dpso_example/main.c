@@ -10,14 +10,13 @@
 
 static void setupLanguages(DpsoOcr* ocr)
 {
-    int langIdx;
-
     if (dpsoOcrGetNumLangs(ocr) == 0) {
         fprintf(stderr, "Please install language packs\n");
         exit(EXIT_FAILURE);
     }
 
-    langIdx = dpsoOcrGetLangIdx(ocr, dpsoOcrGetDefaultLangCode(ocr));
+    int langIdx =
+        dpsoOcrGetLangIdx(ocr, dpsoOcrGetDefaultLangCode(ocr));
     if (langIdx == -1) {
         printf(
             "Default language (%s) is not available; using %s\n",
@@ -56,8 +55,6 @@ static void reportProgress(
     const DpsoOcr* ocr, DpsoOcrProgress* lastProgress)
 {
     DpsoOcrProgress progress;
-    int totalProgress;
-
     dpsoOcrGetProgress(ocr, &progress);
 
     if (progress.totalJobs == 0
@@ -66,9 +63,8 @@ static void reportProgress(
 
     *lastProgress = progress;
 
-    if (progress.curJob == 0)
-        totalProgress = 0;
-    else
+    int totalProgress = 0;
+    if (progress.curJob > 0)
         totalProgress =
             ((progress.curJob - 1) * 100 + progress.curJobProgress)
             / progress.totalJobs;
@@ -82,11 +78,9 @@ static void reportProgress(
 static void checkResults(DpsoOcr* ocr)
 {
     DpsoOcrJobResults results;
-    int i;
-
     dpsoOcrFetchResults(ocr, &results);
 
-    for (i = 0; i < results.numItems; ++i) {
+    for (int i = 0; i < results.numItems; ++i) {
         const DpsoOcrJobResult* result = &results.items[i];
         printf(
             "=== %s ===\n%s\n",
@@ -98,25 +92,27 @@ static void checkResults(DpsoOcr* ocr)
 static void checkHotkeyActions(DpsoOcr* ocr)
 {
     const DpsoHotkeyAction hotkeyAction = dpsoGetLastHotkeyAction();
-    if (hotkeyAction == hotkeyActionToggleSelection) {
-        if (dpsoGetSelectionIsEnabled()) {
-            DpsoOcrJobArgs jobArgs;
+    if (hotkeyAction != hotkeyActionToggleSelection)
+        return;
 
-            dpsoSetSelectionIsEnabled(false);
-
-            dpsoGetSelectionGeometry(&jobArgs.screenRect);
-            if (dpsoRectIsEmpty(&jobArgs.screenRect))
-                return;
-
-            jobArgs.flags = dpsoOcrJobTextSegmentation;
-
-            if (!dpsoOcrQueueJob(ocr, &jobArgs))
-                fprintf(
-                    stderr,
-                    "dpsoQueueJob() error: %s\n", dpsoGetError());
-        } else
-            dpsoSetSelectionIsEnabled(true);
+    if (!dpsoGetSelectionIsEnabled()) {
+        dpsoSetSelectionIsEnabled(true);
+        return;
     }
+
+    dpsoSetSelectionIsEnabled(false);
+
+    DpsoOcrJobArgs jobArgs;
+    dpsoGetSelectionGeometry(&jobArgs.screenRect);
+    if (dpsoRectIsEmpty(&jobArgs.screenRect))
+        return;
+
+    jobArgs.flags = dpsoOcrJobTextSegmentation;
+
+    if (!dpsoOcrQueueJob(ocr, &jobArgs))
+        fprintf(
+            stderr,
+            "dpsoQueueJob() error: %s\n", dpsoGetError());
 }
 
 
@@ -132,11 +128,6 @@ static void sigintHandler(int signum)
 
 int main(void)
 {
-    DpsoOcrEngineInfo ocrEngineInfo;
-    DpsoOcrArgs ocrArgs = {0};
-    DpsoOcr* ocr;
-    DpsoOcrProgress lastProgress = {0};
-
     if (!dpsoInit()) {
         fprintf(
             stderr, "dpsoInit() error: %s\n", dpsoGetError());
@@ -149,9 +140,11 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
+    DpsoOcrArgs ocrArgs = {0};
+    DpsoOcrEngineInfo ocrEngineInfo;
     dpsoOcrGetEngineInfo(ocrArgs.engineIdx, &ocrEngineInfo);
 
-    ocr = dpsoOcrCreate(&ocrArgs);
+    DpsoOcr* ocr = dpsoOcrCreate(&ocrArgs);
     if (!ocr) {
         fprintf(
             stderr,
@@ -168,6 +161,8 @@ int main(void)
 
     setupLanguages(ocr);
     setupHotkeys();
+
+    DpsoOcrProgress lastProgress = {0};
 
     signal(SIGINT, sigintHandler);
     while (!interrupted) {
