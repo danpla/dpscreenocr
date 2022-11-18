@@ -63,15 +63,9 @@ static void reportProgress(
 
     *lastProgress = progress;
 
-    int totalProgress = 0;
-    if (progress.curJob > 0)
-        totalProgress =
-            ((progress.curJob - 1) * 100 + progress.curJobProgress)
-            / progress.totalJobs;
-
     printf(
-        "Recognition %2i%% (%i/%i)\n",
-        totalProgress, progress.curJob, progress.totalJobs);
+        "Job %i/%i progress: %2i%%\n",
+        progress.curJob, progress.totalJobs, progress.curJobProgress);
 }
 
 
