@@ -14,9 +14,12 @@
 // Returns an empty string on error.
 static std::wstring getExeDir()
 {
-    std::wstring result(32, 0);
+    std::wstring result;
 
     while (true) {
+        result.reserve(result.size() + 32);
+        result.resize(result.capacity());
+
         const auto size = GetModuleFileNameW(
             nullptr, &result[0], result.size());
 
@@ -28,10 +31,10 @@ static std::wstring getExeDir()
             return {};
         }
 
-        if (size < result.size())
+        if (size < result.size()) {
+            result.resize(size);
             break;
-
-        result.resize(result.size() * 2);
+        }
     }
 
     const auto slashPos = result.rfind(L'\\');

@@ -15,11 +15,10 @@ std::string strftime(const char* format, const std::tm* time)
     // the result before returning.
     const auto formatEx = std::string{format} + ' ';
 
-    const auto growStep = 8;
     std::string result;
 
     while (true) {
-        result.reserve(result.size() + growStep);
+        result.reserve(result.size() + 8);
         result.resize(result.capacity());
 
         const auto numWritten = std::strftime(
