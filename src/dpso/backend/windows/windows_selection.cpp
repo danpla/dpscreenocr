@@ -70,8 +70,8 @@ namespace dpso {
 namespace backend {
 
 
-static windows::ModuleUPtr user32Dll{LoadLibraryA("user32")};
-static windows::ModuleUPtr shcoreDll{LoadLibraryA("shcore")};
+static windows::ModuleUPtr user32Dll{LoadLibraryW(L"user32")};
+static windows::ModuleUPtr shcoreDll{LoadLibraryW(L"shcore")};
 
 static DPSO_WIN_DLL_FN(
     user32Dll.get(),

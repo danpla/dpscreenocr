@@ -40,7 +40,7 @@ private:
 
 
 WindowsBackend::WindowsBackend()
-    : instance{GetModuleHandleA(nullptr)}
+    : instance{GetModuleHandleW(nullptr)}
     , keyManager{}
     , selection{}
 {

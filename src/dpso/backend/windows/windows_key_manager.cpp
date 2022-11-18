@@ -59,32 +59,33 @@ static_assert(
     (1 << (modsBits + keyBits)) <= 0xFFFF - 0xC000 + 1, "");
 
 
-const char atomNamePrefix[] =
+const wchar_t atomNamePrefix[] =
     #if DPSO_DLL
-    "dpso"
+    L"dpso"
     #else
-    "#"
+    L"#"
     #endif
 ;
 
-const auto atomNamePrefixLen = sizeof(atomNamePrefix) - 1;
+const auto atomNamePrefixLen =
+    sizeof(atomNamePrefix) / sizeof(*atomNamePrefix) - 1;
 
 
-static std::string hotkeyToAtomName(const DpsoHotkey& hotkey)
+static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
 {
     const ATOM atom =
         sentinelBit | (hotkey.key << modsBits) | hotkey.mods;
 
-    return atomNamePrefix + std::to_string(atom);
+    return atomNamePrefix + std::to_wstring(atom);
 }
 
 
-static DpsoHotkey atomNameToHotkey(const char* name)
+static DpsoHotkey atomNameToHotkey(const wchar_t* name)
 {
-    if (std::strncmp(name, atomNamePrefix, atomNamePrefixLen) != 0)
+    if (std::wcsncmp(name, atomNamePrefix, atomNamePrefixLen) != 0)
         return {dpsoUnknownKey, dpsoKeyModNone};
 
-    const auto atom = std::atoi(name + atomNamePrefixLen);
+    const auto atom = _wtoi(name + atomNamePrefixLen);
     if (atom < 1)
         return {dpsoUnknownKey, dpsoKeyModNone};
 
@@ -102,7 +103,7 @@ static UINT dpsoModsToWinMods(unsigned mods);
 static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 {
     const auto atomName = hotkeyToAtomName(hotkey);
-    auto atom = GlobalFindAtomA(atomName.c_str());
+    auto atom = GlobalFindAtomW(atomName.c_str());
 
     if (!enabled) {
         if (atom == 0)
@@ -120,7 +121,7 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
     const auto winMods = dpsoModsToWinMods(hotkey.mods);
 
     if (atom == 0)
-        atom = GlobalAddAtomA(atomName.c_str());
+        atom = GlobalAddAtomW(atomName.c_str());
     if (atom == 0)
         return;
 
@@ -233,9 +234,12 @@ void WindowsKeyManager::handleWmHotkey(const MSG& msg)
         // System-defined hotkey.
         return;
 
-    // GlobalAddAtom() docs say that maximum atom name is 255 bytes.
-    static char atomName[256];
-    if (GlobalGetAtomNameA(id, atomName, sizeof(atomName)) == 0)
+    // GlobalAddAtom() docs say that the maximum atom name length is
+    // 255 bytes (not characters), but GlobalGetAtomName() expects
+    // the buffer length in characters.
+    static const auto atomNameBufLen = 255 / sizeof(wchar_t) + 1;
+    static wchar_t atomName[atomNameBufLen];
+    if (GlobalGetAtomNameW(id, atomName, atomNameBufLen) == 0)
         return;
 
     const auto hotkey = atomNameToHotkey(atomName);
@@ -372,7 +376,7 @@ static UINT dpsoKeyToWinKey(DpsoKey key)
 
 static UINT dpsoModsToWinMods(unsigned mods)
 {
-    UINT winMods = 0;
+    UINT winMods = MOD_NOREPEAT;
 
     if (mods & dpsoKeyModCtrl)
         winMods |= MOD_CONTROL;
@@ -383,7 +387,6 @@ static UINT dpsoModsToWinMods(unsigned mods)
     if (mods & dpsoKeyModWin)
         winMods |= MOD_WIN;
 
-    winMods |= MOD_NOREPEAT;
     return winMods;
 }
 
