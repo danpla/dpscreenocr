@@ -17,9 +17,9 @@
 //   * 16 (RGB 5-6-5)
 //   * 15 (RGB 5-5-5)
 //
-// My system also supports 1, 4, and 8, but with 8 most apps
-// don't display colors correctly, so it's safe to assume that
-// such depths are not common nowadays.
+// My system also supports 1, 4, and 8, but with 8 most apps don't
+// display colors correctly, so it's safe to assume that such depths
+// are not common nowadays.
 //
 // We don't use SHM, at least for now. It requires the fixed image
 // size, so it's necessary to read the whole screen to get an area
@@ -203,8 +203,7 @@ std::unique_ptr<Screenshot> takeX11Screenshot(
     };
     const auto captureRect = getIntersection(rect, screenRect);
     if (isEmpty(captureRect))
-        throw ScreenshotError(
-            "Rect is empty after clamping to screen bounds");
+        throw ScreenshotError("Rect is outside screen bounds");
 
     auto* image = XGetImage(
         display,

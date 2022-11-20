@@ -95,8 +95,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
 
     const auto captureRect = getIntersection(rect, virtualScreenRect);
     if (isEmpty(captureRect))
-        throw ScreenshotError(
-            "Rect is empty after clamping to screen bounds");
+        throw ScreenshotError("Rect is outside screen bounds");
 
     auto screenDc = windows::getDc(nullptr);
     if (!screenDc)
