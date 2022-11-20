@@ -34,6 +34,10 @@ namespace backend {
 namespace {
 
 
+// The pixel type implied by XImage::*_mask and XGetPixel().
+using XPixel = unsigned long;
+
+
 class X11Screenshot : public Screenshot {
 public:
     explicit X11Screenshot(XImage* image);
@@ -99,18 +103,18 @@ static void getGrayscaleData32bpp(
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < image.width; ++x) {
-            std::uint32_t px;
+            XPixel px;
             if (image.byte_order == LSBFirst)
                 px =
-                    static_cast<std::uint32_t>(srcRow[3]) << 24
-                    | static_cast<std::uint32_t>(srcRow[2]) << 16
-                    | static_cast<std::uint32_t>(srcRow[1]) << 8
+                    static_cast<XPixel>(srcRow[3]) << 24
+                    | static_cast<XPixel>(srcRow[2]) << 16
+                    | static_cast<XPixel>(srcRow[1]) << 8
                     | srcRow[0];
             else
                 px =
-                    static_cast<std::uint32_t>(srcRow[0]) << 24
-                    | static_cast<std::uint32_t>(srcRow[1]) << 16
-                    | static_cast<std::uint32_t>(srcRow[2]) << 8
+                    static_cast<XPixel>(srcRow[0]) << 24
+                    | static_cast<XPixel>(srcRow[1]) << 16
+                    | static_cast<XPixel>(srcRow[2]) << 8
                     | srcRow[3];
             srcRow += 4;
 
@@ -147,15 +151,11 @@ static void getGrayscaleData16bpp(
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < image.width; ++x) {
-            std::uint32_t px;
+            XPixel px;
             if (image.byte_order == LSBFirst)
-                px =
-                    static_cast<std::uint32_t>(srcRow[1]) << 8
-                    | srcRow[0];
+                px = static_cast<XPixel>(srcRow[1]) << 8 | srcRow[0];
             else
-                px =
-                    static_cast<std::uint32_t>(srcRow[0]) << 8
-                    | srcRow[1];
+                px = static_cast<XPixel>(srcRow[0]) << 8 | srcRow[1];
             srcRow += 2;
 
             const auto r = img::expandTo8Bit(
@@ -178,14 +178,14 @@ void X11Screenshot::getGrayscaleData(
         if (image->depth == 30)
             getGrayscaleData32bpp(
                 *image, buf, pitch,
-                [](std::uint32_t c)
+                [](XPixel c)
                 {
                     return c / 4;
                 });
         else
             getGrayscaleData32bpp(
                 *image, buf, pitch,
-                [](std::uint32_t c)
+                [](XPixel c)
                 {
                     return c;
                 });

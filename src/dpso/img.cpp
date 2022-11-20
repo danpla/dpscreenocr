@@ -15,19 +15,6 @@ namespace dpso {
 namespace img {
 
 
-unsigned getMaskRightShift(unsigned mask)
-{
-    if (mask == 0)
-        return 0;
-
-    unsigned shift = 0;
-    for (; !(mask & 1); mask >>= 1)
-        ++shift;
-
-    return shift;
-}
-
-
 static void resizeProgress(float progress, void* userData)
 {
     auto* progressTracker = static_cast<ProgressTracker*>(userData);
@@ -221,7 +208,7 @@ static void unsharp(
 //     so our kernel is always odd.
 //
 //     The formula for approximation and instructions on how to apply
-//     an even kernel come from W3C Filter Effects Module, which was
+//     an even kernel comes from W3C Filter Effects Module, which was
 //     previously part of the SVG specification:
 //
 //         https://www.w3.org/TR/filter-effects-1
