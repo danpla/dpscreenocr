@@ -173,7 +173,6 @@ MainWindow::MainWindow()
 
     tabs = new QTabWidget();
     tabs->addTab(createMainTab(), pgettext("ui.tab", "Main"));
-    tabs->addTab(createActionsTab(), _("Actions"));
     tabs->addTab(createHistoryTab(), _("History"));
     tabs->addTab(createAboutTab(), _("About"));
 
@@ -236,9 +235,7 @@ MainWindow::DynamicStrings::DynamicStrings()
         "Recognition {progress}% ({current_job}/{total_jobs})")}
     , installLangs{_("Please install languages")}
     , selectLangs{_("Please select languages")}
-    , selectActions{_(
-        "Please select actions in the "
-        "\342\200\234Actions\342\200\235 tab")}
+    , selectActions{_("Please select actions")}
     // Translators: Program is ready for OCR
     , ready{pgettext("ocr.status", "Ready")}
     , confirmQuitText{_(
@@ -459,6 +456,16 @@ QWidget* MainWindow::createMainTab()
     langBrowser = new LangBrowser(ocr.get());
     ocrGroupLayout->addWidget(langBrowser);
 
+    auto* actionsGroup = new QGroupBox(_("Actions"));
+    auto* actionsGroupLayout = new QVBoxLayout(actionsGroup);
+
+    actionChooser = new ActionChooser();
+    connect(
+        actionChooser, SIGNAL(actionsChanged()),
+        this, SLOT(invalidateStatus()));
+
+    actionsGroupLayout->addWidget(actionChooser);
+
     auto* hotkeyGroup = new QGroupBox(_("Hotkey"));
     auto* hotkeyGroupLayout = new QVBoxLayout(hotkeyGroup);
 
@@ -469,36 +476,19 @@ QWidget* MainWindow::createMainTab()
         hotkeyEditor, SLOT(bind()));
     hotkeyGroupLayout->addWidget(hotkeyEditor);
 
-    auto* tabLayout = new QVBoxLayout();
+    auto* tab = new QWidget();
+    auto* tabLayout = new QVBoxLayout(tab);
     tabLayout->addWidget(statusGroup);
     tabLayout->addWidget(ocrGroup);
+    tabLayout->addWidget(actionsGroup);
     tabLayout->addWidget(hotkeyGroup);
 
-    auto* tab = new QWidget();
-    tab->setLayout(tabLayout);
     return tab;
 }
 
 
 // The purpose of dummy tab widgets in create*Tab() methods is their
 // layouts that will add margins around wrapped widgets.
-
-
-QWidget* MainWindow::createActionsTab()
-{
-    actionChooser = new ActionChooser();
-    connect(
-        actionChooser, SIGNAL(actionsChanged()),
-        this, SLOT(invalidateStatus()));
-
-    auto* tabLayout = new QVBoxLayout();
-    tabLayout->addWidget(actionChooser);
-    tabLayout->addStretch();
-
-    actionsTab = new QWidget();
-    actionsTab->setLayout(tabLayout);
-    return actionsTab;
-}
 
 
 QWidget* MainWindow::createHistoryTab()
@@ -508,11 +498,10 @@ QWidget* MainWindow::createHistoryTab()
     // compatibility.
     history = new History(cfgDirPath);
 
-    auto* tabLayout = new QVBoxLayout();
+    auto* tab = new QWidget();
+    auto* tabLayout = new QVBoxLayout(tab);
     tabLayout->addWidget(history);
 
-    auto* tab = new QWidget();
-    tab->setLayout(tabLayout);
     return tab;
 }
 
@@ -521,11 +510,10 @@ QWidget* MainWindow::createAboutTab()
 {
     auto* about = new About();
 
-    auto* tabLayout = new QVBoxLayout();
+    auto* tab = new QWidget();
+    auto* tabLayout = new QVBoxLayout(tab);
     tabLayout->addWidget(about);
 
-    auto* tab = new QWidget();
-    tab->setLayout(tabLayout);
     return tab;
 }
 
@@ -754,7 +742,7 @@ void MainWindow::updateStatus()
     DpsoOcrProgress progress;
     dpsoOcrGetProgress(ocr.get(), &progress);
 
-    actionsTab->setEnabled(progress.totalJobs == 0);
+    actionChooser->setEnabled(progress.totalJobs == 0);
 
     if (progress.totalJobs > 0) {
         // Update status when the progress ends.

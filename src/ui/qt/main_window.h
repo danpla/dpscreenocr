@@ -83,11 +83,9 @@ private:
     QCheckBox* splitTextBlocksCheck;
 
     LangBrowser* langBrowser;
+    ActionChooser* actionChooser;
     HotkeyEditor* hotkeyEditor;
     DpsoHotkey cancelSelectionHotkey;
-
-    QWidget* actionsTab;
-    ActionChooser* actionChooser;
 
     QString clipboardText;
     bool clipboardTextPending;
