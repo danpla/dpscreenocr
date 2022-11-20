@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-11-20 11:36+0100\n"
-"PO-Revision-Date: 2022-10-31 10:06+0000\n"
+"PO-Revision-Date: 2022-11-21 15:48+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/tr/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.2-dev\n"
+"X-Generator: Weblate 4.15-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -643,7 +643,6 @@ msgid "Please select languages"
 msgstr "Lütfen dilleri seçin"
 
 #: src/ui/qt/main_window.cpp:238
-#, fuzzy
 msgid "Please select actions"
 msgstr "Lütfen eylemleri seçin"
 
