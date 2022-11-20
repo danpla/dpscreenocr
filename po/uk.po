@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-10-18 01:11+0200\n"
+"POT-Creation-Date: 2022-11-20 11:36+0100\n"
 "PO-Revision-Date: 2022-05-22 23:04+0300\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -546,7 +546,7 @@ msgstr "Ліцензія"
 msgid "Third-party licenses"
 msgstr "Ліцензії третіх сторін"
 
-#: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:106 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
 msgstr "Програма для розпізнавання тексту не екрані"
 
@@ -578,7 +578,7 @@ msgstr "Експортувати…"
 msgid "Clear…"
 msgstr "Очистити…"
 
-#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:178
+#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:176
 msgid "History"
 msgstr "Історія"
 
@@ -598,7 +598,7 @@ msgstr "Усі файли"
 msgid "Clear the history?"
 msgstr "Очистити історію?"
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:247
+#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:243
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -606,88 +606,88 @@ msgstr "Скасувати"
 msgid "Clear"
 msgstr "Очистити"
 
-#: src/ui/qt/hotkey_editor.cpp:37
+#: src/ui/qt/hotkey_editor.cpp:57
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Нічого"
 
-#: src/ui/qt/lang_browser.cpp:31
+#: src/ui/qt/lang_browser.cpp:61
 msgctxt "language"
 msgid "Name"
 msgstr "Назва"
 
-#: src/ui/qt/lang_browser.cpp:32
+#: src/ui/qt/lang_browser.cpp:62
 msgctxt "language"
 msgid "Code"
 msgstr "Код"
 
-#: src/ui/qt/main_window.cpp:176
+#: src/ui/qt/main_window.cpp:175
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Головне"
 
 #: src/ui/qt/main_window.cpp:177
-msgid "Actions"
-msgstr "Дії"
-
-#: src/ui/qt/main_window.cpp:179
 msgid "About"
 msgstr "Про програму"
 
-#: src/ui/qt/main_window.cpp:237
+#: src/ui/qt/main_window.cpp:235
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Розпізнавання {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:236
 msgid "Please install languages"
 msgstr "Будь ласка, встановіть мови"
 
-#: src/ui/qt/main_window.cpp:239
+#: src/ui/qt/main_window.cpp:237
 msgid "Please select languages"
 msgstr "Будь ласка, виберіть мови"
 
-#: src/ui/qt/main_window.cpp:241
-msgid "Please select actions in the “Actions” tab"
-msgstr "Будь ласка, виберіть дії у вкладці «Дії»"
+#: src/ui/qt/main_window.cpp:238
+msgid "Please select actions"
+msgstr "Будь ласка, виберіть дії"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:244
+#: src/ui/qt/main_window.cpp:240
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Готово"
 
-#: src/ui/qt/main_window.cpp:246
+#: src/ui/qt/main_window.cpp:242
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Розпізнавання ще не закінчено. Все одно вийти?"
 
-#: src/ui/qt/main_window.cpp:248 src/ui/qt/main_window.cpp:433
+#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:429
 msgid "Quit"
 msgstr "Вийти"
 
-#: src/ui/qt/main_window.cpp:425
+#: src/ui/qt/main_window.cpp:421
 msgid "Show {app_name}"
 msgstr "Показати {app_name}"
 
-#: src/ui/qt/main_window.cpp:440
+#: src/ui/qt/main_window.cpp:436
 msgid "Status"
 msgstr "Статус"
 
-#: src/ui/qt/main_window.cpp:450
+#: src/ui/qt/main_window.cpp:446
 msgid "Character recognition"
 msgstr "Розпізнавання символів"
 
-#: src/ui/qt/main_window.cpp:454
+#: src/ui/qt/main_window.cpp:450
 msgid "Split text blocks"
 msgstr "Розділити блоки тексту"
 
-#: src/ui/qt/main_window.cpp:456
+#: src/ui/qt/main_window.cpp:452
 msgid "Split independent text blocks, such as columns"
 msgstr "Розділити незалежні блоки тексту, такі як колонки"
 
-#: src/ui/qt/main_window.cpp:459
+#: src/ui/qt/main_window.cpp:455
 msgid "Languages:"
 msgstr "Мови:"
 
-#: src/ui/qt/main_window.cpp:463
+#: src/ui/qt/main_window.cpp:459
+msgid "Actions"
+msgstr "Дії"
+
+#: src/ui/qt/main_window.cpp:469
 msgid "Hotkey"
 msgstr "Гаряча клавіша"

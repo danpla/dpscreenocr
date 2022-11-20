@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-10-18 01:11+0200\n"
+"POT-Creation-Date: 2022-11-20 11:36+0100\n"
 "PO-Revision-Date: 2022-11-03 05:01+0000\n"
 "Last-Translator: bgo-eiu <huyaqoob+toolforge@gmail.com>\n"
 "Language-Team: Punjabi (Pakistan) <https://hosted.weblate.org/projects/"
@@ -545,7 +545,7 @@ msgstr "لائیسنس"
 msgid "Third-party licenses"
 msgstr ""
 
-#: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:106 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
 msgstr ""
 
@@ -577,7 +577,7 @@ msgstr "ایکسپورٹ کرو"
 msgid "Clear…"
 msgstr "ہٹاؤ"
 
-#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:178
+#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:176
 msgid "History"
 msgstr "تریخ"
 
@@ -597,7 +597,7 @@ msgstr "ساریاں فائلاں"
 msgid "Clear the history?"
 msgstr ""
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:247
+#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:243
 msgid "Cancel"
 msgstr "رد کرو"
 
@@ -605,88 +605,88 @@ msgstr "رد کرو"
 msgid "Clear"
 msgstr "ہٹاؤ"
 
-#: src/ui/qt/hotkey_editor.cpp:37
+#: src/ui/qt/hotkey_editor.cpp:57
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "کوئی نہیں"
 
-#: src/ui/qt/lang_browser.cpp:31
+#: src/ui/qt/lang_browser.cpp:61
 msgctxt "language"
 msgid "Name"
 msgstr "ناں"
 
-#: src/ui/qt/lang_browser.cpp:32
+#: src/ui/qt/lang_browser.cpp:62
 msgctxt "language"
 msgid "Code"
 msgstr "کوڈ"
 
-#: src/ui/qt/main_window.cpp:176
+#: src/ui/qt/main_window.cpp:175
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "مکھ"
 
 #: src/ui/qt/main_window.cpp:177
-msgid "Actions"
-msgstr "کاروائیاں"
-
-#: src/ui/qt/main_window.cpp:179
 msgid "About"
 msgstr "بارے"
 
-#: src/ui/qt/main_window.cpp:237
+#: src/ui/qt/main_window.cpp:235
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:236
 msgid "Please install languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:239
+#: src/ui/qt/main_window.cpp:237
 msgid "Please select languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:241
-msgid "Please select actions in the “Actions” tab"
+#: src/ui/qt/main_window.cpp:238
+msgid "Please select actions"
 msgstr ""
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:244
+#: src/ui/qt/main_window.cpp:240
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "تیار اے"
 
-#: src/ui/qt/main_window.cpp:246
+#: src/ui/qt/main_window.cpp:242
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:248 src/ui/qt/main_window.cpp:433
+#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:429
 msgid "Quit"
 msgstr "بند کرو"
 
-#: src/ui/qt/main_window.cpp:425
+#: src/ui/qt/main_window.cpp:421
 msgid "Show {app_name}"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:440
+#: src/ui/qt/main_window.cpp:436
 msgid "Status"
 msgstr "حالت"
 
-#: src/ui/qt/main_window.cpp:450
+#: src/ui/qt/main_window.cpp:446
 msgid "Character recognition"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:454
+#: src/ui/qt/main_window.cpp:450
 msgid "Split text blocks"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:456
+#: src/ui/qt/main_window.cpp:452
 msgid "Split independent text blocks, such as columns"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:459
+#: src/ui/qt/main_window.cpp:455
 msgid "Languages:"
 msgstr "بولیاں:"
 
-#: src/ui/qt/main_window.cpp:463
+#: src/ui/qt/main_window.cpp:459
+msgid "Actions"
+msgstr "کاروائیاں"
+
+#: src/ui/qt/main_window.cpp:469
 msgid "Hotkey"
 msgstr "کنجی"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-10-18 01:11+0200\n"
+"POT-Creation-Date: 2022-11-20 11:36+0100\n"
 "PO-Revision-Date: 2020-03-26 15:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -545,7 +545,7 @@ msgstr "Lisens"
 msgid "Third-party licenses"
 msgstr ""
 
-#: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:106 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
 msgstr "Program for gjenkjenning av tekst på skjermen"
 
@@ -578,7 +578,7 @@ msgstr "Lagre som…"
 msgid "Clear…"
 msgstr "Tøm…"
 
-#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:178
+#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:176
 msgid "History"
 msgstr "Historikk"
 
@@ -599,7 +599,7 @@ msgstr "Alle filer"
 msgid "Clear the history?"
 msgstr "Tøm historikken?"
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:247
+#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:243
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -607,89 +607,90 @@ msgstr "Avbryt"
 msgid "Clear"
 msgstr "Tøm"
 
-#: src/ui/qt/hotkey_editor.cpp:37
+#: src/ui/qt/hotkey_editor.cpp:57
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "Ingen"
 
-#: src/ui/qt/lang_browser.cpp:31
+#: src/ui/qt/lang_browser.cpp:61
 msgctxt "language"
 msgid "Name"
 msgstr "Navn"
 
-#: src/ui/qt/lang_browser.cpp:32
+#: src/ui/qt/lang_browser.cpp:62
 msgctxt "language"
 msgid "Code"
 msgstr "Kode"
 
-#: src/ui/qt/main_window.cpp:176
+#: src/ui/qt/main_window.cpp:175
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Grunnleggende"
 
 #: src/ui/qt/main_window.cpp:177
-msgid "Actions"
-msgstr "Handlinger"
-
-#: src/ui/qt/main_window.cpp:179
 msgid "About"
 msgstr "Om"
 
-#: src/ui/qt/main_window.cpp:237
+#: src/ui/qt/main_window.cpp:235
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Gjenkjenning {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:236
 msgid "Please install languages"
 msgstr "Installer språk"
 
-#: src/ui/qt/main_window.cpp:239
+#: src/ui/qt/main_window.cpp:237
 msgid "Please select languages"
 msgstr "Velg språk"
 
-#: src/ui/qt/main_window.cpp:241
-msgid "Please select actions in the “Actions” tab"
-msgstr "Velg handlinger i \"Handlinger\"-fanen"
+#: src/ui/qt/main_window.cpp:238
+#, fuzzy
+msgid "Please select actions"
+msgstr "Velg handlinge"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:244
+#: src/ui/qt/main_window.cpp:240
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Klar"
 
-#: src/ui/qt/main_window.cpp:246
+#: src/ui/qt/main_window.cpp:242
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Gjenkjenning er ikke fullført enda. Avslutt uansett?"
 
-#: src/ui/qt/main_window.cpp:248 src/ui/qt/main_window.cpp:433
+#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:429
 msgid "Quit"
 msgstr "Avslutt"
 
-#: src/ui/qt/main_window.cpp:425
+#: src/ui/qt/main_window.cpp:421
 msgid "Show {app_name}"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:440
+#: src/ui/qt/main_window.cpp:436
 msgid "Status"
 msgstr "Status"
 
-#: src/ui/qt/main_window.cpp:450
+#: src/ui/qt/main_window.cpp:446
 msgid "Character recognition"
 msgstr "Tegngjenkjenning"
 
-#: src/ui/qt/main_window.cpp:454
+#: src/ui/qt/main_window.cpp:450
 msgid "Split text blocks"
 msgstr "Splitt tekstblokker"
 
-#: src/ui/qt/main_window.cpp:456
+#: src/ui/qt/main_window.cpp:452
 #, fuzzy
 msgid "Split independent text blocks, such as columns"
 msgstr "Splitt uavhengige tekstblokker, f.eks. kolonner"
 
-#: src/ui/qt/main_window.cpp:459
+#: src/ui/qt/main_window.cpp:455
 msgid "Languages:"
 msgstr "Språk:"
 
-#: src/ui/qt/main_window.cpp:463
+#: src/ui/qt/main_window.cpp:459
+msgid "Actions"
+msgstr "Handlinger"
+
+#: src/ui/qt/main_window.cpp:469
 msgid "Hotkey"
 msgstr "Hurtigtast"

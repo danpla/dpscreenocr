@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-10-18 01:11+0200\n"
+"POT-Creation-Date: 2022-11-20 11:36+0100\n"
 "PO-Revision-Date: 2022-10-19 12:00+0000\n"
 "Last-Translator: Eric <lessonaeamazon@paranoid.email>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -545,7 +545,7 @@ msgstr "许可证"
 msgid "Third-party licenses"
 msgstr "第三方许可证"
 
-#: src/ui/qt/about.cpp:125 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:106 dpscreenocr.desktop.in.h:1
 msgid "Program to recognize text on screen"
 msgstr "用于识别屏幕上文字的软件"
 
@@ -577,7 +577,7 @@ msgstr "导出为…"
 msgid "Clear…"
 msgstr "清空…"
 
-#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:178
+#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:176
 msgid "History"
 msgstr "历史记录"
 
@@ -597,7 +597,7 @@ msgstr "所有文件"
 msgid "Clear the history?"
 msgstr "清空历史记录？"
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:247
+#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:243
 msgid "Cancel"
 msgstr "取消"
 
@@ -605,88 +605,89 @@ msgstr "取消"
 msgid "Clear"
 msgstr "清空"
 
-#: src/ui/qt/hotkey_editor.cpp:37
+#: src/ui/qt/hotkey_editor.cpp:57
 msgctxt "hotkey.key"
 msgid "None"
 msgstr "无"
 
-#: src/ui/qt/lang_browser.cpp:31
+#: src/ui/qt/lang_browser.cpp:61
 msgctxt "language"
 msgid "Name"
 msgstr "名称"
 
-#: src/ui/qt/lang_browser.cpp:32
+#: src/ui/qt/lang_browser.cpp:62
 msgctxt "language"
 msgid "Code"
 msgstr "代号"
 
-#: src/ui/qt/main_window.cpp:176
+#: src/ui/qt/main_window.cpp:175
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "主页"
 
 #: src/ui/qt/main_window.cpp:177
-msgid "Actions"
-msgstr "操作"
-
-#: src/ui/qt/main_window.cpp:179
 msgid "About"
 msgstr "关于软件"
 
-#: src/ui/qt/main_window.cpp:237
+#: src/ui/qt/main_window.cpp:235
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "已识别 {progress}%（{current_job} / {total_jobs}）"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:236
 msgid "Please install languages"
 msgstr "需安装语言"
 
-#: src/ui/qt/main_window.cpp:239
+#: src/ui/qt/main_window.cpp:237
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:241
-msgid "Please select actions in the “Actions” tab"
+#: src/ui/qt/main_window.cpp:238
+#, fuzzy
+msgid "Please select actions"
 msgstr "请在“操作”选项卡中选择操作"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:244
+#: src/ui/qt/main_window.cpp:240
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "准备就绪"
 
-#: src/ui/qt/main_window.cpp:246
+#: src/ui/qt/main_window.cpp:242
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "识别还没完成。真的要退出吗？"
 
-#: src/ui/qt/main_window.cpp:248 src/ui/qt/main_window.cpp:433
+#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:429
 msgid "Quit"
 msgstr "退出"
 
-#: src/ui/qt/main_window.cpp:425
+#: src/ui/qt/main_window.cpp:421
 msgid "Show {app_name}"
 msgstr "显示 {app_name}"
 
-#: src/ui/qt/main_window.cpp:440
+#: src/ui/qt/main_window.cpp:436
 msgid "Status"
 msgstr "状态"
 
-#: src/ui/qt/main_window.cpp:450
+#: src/ui/qt/main_window.cpp:446
 msgid "Character recognition"
 msgstr "字符识别"
 
-#: src/ui/qt/main_window.cpp:454
+#: src/ui/qt/main_window.cpp:450
 msgid "Split text blocks"
 msgstr "分块识别文本"
 
-#: src/ui/qt/main_window.cpp:456
+#: src/ui/qt/main_window.cpp:452
 msgid "Split independent text blocks, such as columns"
 msgstr "分割独立的文本块，比如分栏的文本"
 
-#: src/ui/qt/main_window.cpp:459
+#: src/ui/qt/main_window.cpp:455
 msgid "Languages:"
 msgstr "语言："
 
-#: src/ui/qt/main_window.cpp:463
+#: src/ui/qt/main_window.cpp:459
+msgid "Actions"
+msgstr "操作"
+
+#: src/ui/qt/main_window.cpp:469
 msgid "Hotkey"
 msgstr "快捷键"
