@@ -86,7 +86,7 @@ About::About(QWidget* parent)
     auto* iconLabel = new QLabel();
     iconLabel->setAlignment(Qt::AlignCenter);
     iconLabel->setPixmap(
-        getPixmap(QApplication::windowIcon(), fontHeight * 5));
+        getPixmap(getIcon(uiAppFileName), fontHeight * 5));
 
     auto* infoTextLabel = new QLabel();
     infoTextLabel->setAlignment(Qt::AlignCenter);
