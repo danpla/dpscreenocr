@@ -31,6 +31,12 @@ else()
     list(APPEND SRCS taskbar_null.cpp)
 endif()
 
+if(UNIX AND NOT APPLE)
+    list(APPEND SRCS single_instance_guard_unix.cpp)
+else()
+    list(APPEND SRCS single_instance_guard_null.cpp)
+endif()
+
 foreach(IN_SRC ${IN_SRCS})
     configure_file("${IN_SRC}.in" "${IN_SRC}" @ONLY)
 

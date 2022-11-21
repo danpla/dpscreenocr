@@ -82,12 +82,31 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    const ui::SingleInstanceGuardUPtr singleInstanceGuard{
+        uiSingleInstanceGuardCreate(uiAppFileName)};
+    if (!singleInstanceGuard) {
+        QMessageBox::critical(
+            nullptr,
+            uiAppName,
+            QString("uiSingleInstanceGuardCreate(): ")
+                + dpsoGetError());
+        return EXIT_FAILURE;
+    }
+
+    if (!uiSingleInstanceGuardIsPrimary(singleInstanceGuard.get())) {
+        QMessageBox::information(
+            nullptr,
+            uiAppName,
+            QString(uiAppName) + " is already running");
+        return EXIT_SUCCESS;
+    }
+
     if (!uiInitAppDirs(argv[0])) {
         QMessageBox::critical(
             nullptr,
             uiAppName,
             QString("uiInitAppDirs(): ") + dpsoGetError());
-        std::exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     uiInitIntl();

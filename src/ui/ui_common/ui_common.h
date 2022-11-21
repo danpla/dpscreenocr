@@ -9,5 +9,6 @@
 #include "icon_names.h"
 #include "init_intl.h"
 #include "ocr_data_dir_name.h"
+#include "single_instance_guard.h"
 #include "startup_setup.h"
 #include "taskbar.h"
