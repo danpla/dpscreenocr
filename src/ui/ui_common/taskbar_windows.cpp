@@ -1,12 +1,12 @@
 
 #include "taskbar.h"
 
+#include <utility>
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <shobjidl.h>
 #include <versionhelpers.h>
-
-#include <utility>
 
 #include "dpso/backend/windows/utils/com.h"
 #include "dpso/backend/windows/utils/error.h"
