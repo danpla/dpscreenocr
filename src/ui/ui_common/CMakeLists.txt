@@ -33,6 +33,8 @@ endif()
 
 if(UNIX AND NOT APPLE)
     list(APPEND SRCS single_instance_guard_unix.cpp)
+elseif(WIN32)
+    list(APPEND SRCS single_instance_guard_windows.cpp)
 else()
     list(APPEND SRCS single_instance_guard_null.cpp)
 endif()
