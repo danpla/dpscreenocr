@@ -69,7 +69,6 @@ MainWindow::MainWindow()
     , selectionBorderWidth{}
 {
     setWindowTitle(uiAppName);
-    QApplication::setWindowIcon(getThemeIcon(uiAppFileName));
 
     if (!dpsoInit()) {
         QMessageBox::critical(nullptr, uiAppName, dpsoGetError());

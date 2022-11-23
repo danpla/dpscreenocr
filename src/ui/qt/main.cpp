@@ -17,6 +17,7 @@
 #include "ui_common/ui_common.h"
 
 #include "main_window.h"
+#include "utils.h"
 
 
 static void installQtTranslations(QApplication& app)
@@ -82,6 +83,20 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    // We want the message boxes below to use the proper application
+    // icon. On platforms that don't use icons themes, getThemeIcon()
+    // falls back to the application data dir, so we need to
+    // initialize app dirs before anything else.
+    if (!uiInitAppDirs(argv[0])) {
+        QMessageBox::critical(
+            nullptr,
+            uiAppName,
+            QString("uiInitAppDirs(): ") + dpsoGetError());
+        return EXIT_FAILURE;
+    }
+
+    app.setWindowIcon(getThemeIcon(uiAppFileName));
+
     const ui::SingleInstanceGuardUPtr singleInstanceGuard{
         uiSingleInstanceGuardCreate(uiAppFileName)};
     if (!singleInstanceGuard) {
@@ -99,14 +114,6 @@ int main(int argc, char *argv[])
             uiAppName,
             QString(uiAppName) + " is already running");
         return EXIT_SUCCESS;
-    }
-
-    if (!uiInitAppDirs(argv[0])) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("uiInitAppDirs(): ") + dpsoGetError());
-        return EXIT_FAILURE;
     }
 
     uiInitIntl();
