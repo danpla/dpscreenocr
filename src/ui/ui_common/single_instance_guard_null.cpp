@@ -15,8 +15,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
 
 void uiSingleInstanceGuardDelete(UiSingleInstanceGuard* guard)
 {
-    if (guard)
-        delete guard;
+    delete guard;
 }
 
 
