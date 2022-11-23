@@ -853,50 +853,56 @@ void MainWindow::checkResults()
 
 void MainWindow::checkHotkeyActions()
 {
-    const auto hotkeyAction = dpsoGetLastHotkeyAction();
+    switch(dpsoGetLastHotkeyAction()) {
+    case hotkeyActionToggleSelection: {
+        if (!dpsoGetSelectionIsEnabled()) {
+            if (!canStartSelection())
+                break;
 
-    if (dpsoGetSelectionIsEnabled()) {
-        if (hotkeyAction != hotkeyActionToggleSelection
-                && hotkeyAction != hotkeyActionCancelSelection)
-            return;
+            DpsoHotkey toggleSelectionHotkey;
+            dpsoFindActionHotkey(
+                hotkeyActionToggleSelection, &toggleSelectionHotkey);
+
+            if (cancelSelectionHotkey != toggleSelectionHotkey)
+                dpsoBindHotkey(
+                    &cancelSelectionHotkey,
+                    hotkeyActionCancelSelection);
+
+            dpsoSetSelectionIsEnabled(true);
+            break;
+        }
 
         dpsoSetSelectionIsEnabled(false);
         dpsoUnbindAction(hotkeyActionCancelSelection);
 
-        if (hotkeyAction == hotkeyActionToggleSelection
-                // The selection doesn't block mouse interaction, so
-                // make sure that adding a new job really makes sense.
-                // Perhaps it would be better to disable the selection
-                // automatically when the last language or action is
-                // unchecked.
-                && canStartSelection()) {
-            DpsoOcrJobArgs jobArgs;
+        // The selection doesn't block mouse interaction, so make sure
+        // that adding a new job really makes sense. Perhaps it would
+        // be better to disable the selection automatically when the
+        // last language or action is unchecked.
+        if (!canStartSelection())
+            break;
 
-            dpsoGetSelectionGeometry(&jobArgs.screenRect);
-            if (dpsoRectIsEmpty(&jobArgs.screenRect))
-                return;
+        DpsoOcrJobArgs jobArgs;
 
-            jobArgs.flags = 0;
-            if (splitTextBlocksCheck->isChecked())
-                jobArgs.flags |= dpsoOcrJobTextSegmentation;
+        dpsoGetSelectionGeometry(&jobArgs.screenRect);
+        if (dpsoRectIsEmpty(&jobArgs.screenRect))
+            break;
 
-            if (!dpsoOcrQueueJob(ocr.get(), &jobArgs))
-                QMessageBox::warning(
-                    this,
-                    uiAppName,
-                    QString("Can't queue OCR job: ")
-                        + dpsoGetError());
-        }
-    } else if (hotkeyAction == hotkeyActionToggleSelection
-            && canStartSelection()) {
-        dpsoSetSelectionIsEnabled(true);
+        jobArgs.flags = 0;
+        if (splitTextBlocksCheck->isChecked())
+            jobArgs.flags |= dpsoOcrJobTextSegmentation;
 
-        DpsoHotkey toggleSelectionHotkey;
-        dpsoFindActionHotkey(
-            hotkeyActionToggleSelection, &toggleSelectionHotkey);
+        if (!dpsoOcrQueueJob(ocr.get(), &jobArgs))
+            QMessageBox::warning(
+                this,
+                uiAppName,
+                QString("Can't queue OCR job: ") + dpsoGetError());
 
-        if (cancelSelectionHotkey != toggleSelectionHotkey)
-            dpsoBindHotkey(
-                &cancelSelectionHotkey, hotkeyActionCancelSelection);
+        break;
+    }
+    case hotkeyActionCancelSelection:
+        dpsoSetSelectionIsEnabled(false);
+        dpsoUnbindAction(hotkeyActionCancelSelection);
+        break;
     }
 }
