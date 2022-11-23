@@ -249,7 +249,17 @@ MainWindow::DynamicStrings::DynamicStrings()
 void MainWindow::timerEvent(QTimerEvent* event)
 {
     (void)event;
-    updateDpso();
+
+    dpsoUpdate();
+
+    // The selection doesn't block keyboard and mouse interaction, so
+    // disable it once it no longer makes sense.
+    if (dpsoGetSelectionIsEnabled() && !canStartSelection())
+        setSelectionIsEnabled(false);
+
+    updateStatus();
+    checkResults();
+    checkHotkeyActions();
 }
 
 
@@ -679,13 +689,24 @@ bool MainWindow::canStartSelection() const
 }
 
 
-void MainWindow::updateDpso()
+// Calls dpsoSetSelectionIsEnabled() and also manages
+// hotkeyActionCancelSelection.
+void MainWindow::setSelectionIsEnabled(bool isEnabled)
 {
-    dpsoUpdate();
+    dpsoSetSelectionIsEnabled(isEnabled);
 
-    updateStatus();
-    checkResults();
-    checkHotkeyActions();
+    if (!isEnabled) {
+        dpsoUnbindAction(hotkeyActionCancelSelection);
+        return;
+    }
+
+    DpsoHotkey toggleSelectionHotkey;
+    dpsoFindActionHotkey(
+        hotkeyActionToggleSelection, &toggleSelectionHotkey);
+
+    if (cancelSelectionHotkey != toggleSelectionHotkey)
+        dpsoBindHotkey(
+            &cancelSelectionHotkey, hotkeyActionCancelSelection);
 }
 
 
@@ -856,31 +877,13 @@ void MainWindow::checkHotkeyActions()
     switch(dpsoGetLastHotkeyAction()) {
     case hotkeyActionToggleSelection: {
         if (!dpsoGetSelectionIsEnabled()) {
-            if (!canStartSelection())
-                break;
+            if (canStartSelection())
+                setSelectionIsEnabled(true);
 
-            DpsoHotkey toggleSelectionHotkey;
-            dpsoFindActionHotkey(
-                hotkeyActionToggleSelection, &toggleSelectionHotkey);
-
-            if (cancelSelectionHotkey != toggleSelectionHotkey)
-                dpsoBindHotkey(
-                    &cancelSelectionHotkey,
-                    hotkeyActionCancelSelection);
-
-            dpsoSetSelectionIsEnabled(true);
             break;
         }
 
-        dpsoSetSelectionIsEnabled(false);
-        dpsoUnbindAction(hotkeyActionCancelSelection);
-
-        // The selection doesn't block mouse interaction, so make sure
-        // that adding a new job really makes sense. Perhaps it would
-        // be better to disable the selection automatically when the
-        // last language or action is unchecked.
-        if (!canStartSelection())
-            break;
+        setSelectionIsEnabled(false);
 
         DpsoOcrJobArgs jobArgs;
 
@@ -901,8 +904,7 @@ void MainWindow::checkHotkeyActions()
         break;
     }
     case hotkeyActionCancelSelection:
-        dpsoSetSelectionIsEnabled(false);
-        dpsoUnbindAction(hotkeyActionCancelSelection);
+        setSelectionIsEnabled(false);
         break;
     }
 }

@@ -118,8 +118,8 @@ private:
     void saveState(DpsoCfg* cfg) const;
 
     bool canStartSelection() const;
+    void setSelectionIsEnabled(bool isEnabled);
 
-    void updateDpso();
     void setStatus(Status newStatus, const QString& text);
     void updateStatus();
     void checkResults();
