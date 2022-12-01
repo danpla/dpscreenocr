@@ -775,8 +775,8 @@ void dpsoOcrWaitJobsToComplete(
     ocr->link.waitingForResults = false;
 
     if (ocr->link.terminateJobs) {
-        // dpsoOcrTerminateJobs() was called from the status callback
-        // during waiting.
+        // dpsoOcrTerminateJobs() was called from the progress
+        // callback.
         ocr->link.results.clear();
 
         ocr->link.terminateJobs = false;
