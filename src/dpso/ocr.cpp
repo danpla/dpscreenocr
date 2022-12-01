@@ -517,7 +517,8 @@ static bool ocrProgressCallback(int progress, void* userData)
     }
 
     if (waitingForResults && link.waitingProgressCallback)
-        link.waitingProgressCallback(link.waitingUserData);
+        link.waitingProgressCallback(
+            &data->ocr, link.waitingUserData);
 
     LINK_LOCK(link);
     return !link.terminateJobs;

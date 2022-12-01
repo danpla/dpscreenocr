@@ -347,7 +347,7 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results);
  * actual progress, and dpsoOcrTerminateJobs() to terminate jobs
  * prematurely.
  */
-typedef void (*DpsoOcrProgressCallback)(void* userData);
+typedef void (*DpsoOcrProgressCallback)(DpsoOcr* ocr, void* userData);
 
 
 /**
