@@ -19,7 +19,7 @@ Optional:
     a part of GNU C library and doesn't need to be installed
     separately. DPSO_ENABLE_NLS CMake option.
 
-  * gettext utilities (msgfmt is needed to compile gettext message
+  * gettext tools >= 0.19 (msgfmt is needed to compile gettext message
     catalogs). DPSO_ENABLE_NLS CMake option.
 
   * pandoc to generate HTML manual. DPSO_GEN_HTML_MANUAL CMake

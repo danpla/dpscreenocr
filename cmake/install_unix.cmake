@@ -4,8 +4,11 @@ include(GNUInstallDirs)
 install(
     PROGRAMS "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}"
     DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
+include(gen_desktop_entry)
+gen_desktop_entry("${CMAKE_BINARY_DIR}" ${DPSO_ENABLE_NLS})
 install(
-    FILES "${CMAKE_SOURCE_DIR}/data/${APP_FILE_NAME}.desktop"
+    FILES "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}.desktop"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
 
 include(build_icons)
