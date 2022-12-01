@@ -58,10 +58,6 @@
 
       "\xC2\xA9" "2018" (gives ©2018)
 
-* You can implicitly create QStrings from UTF-8 data. Qt 5 and newer
-  uses fromUtf8() in this case. For Qt 4, which uses fromAscii(), we
-  have setCodecForCStrings() in main.cpp.
-
 * Tesseract versions before 4.1.0 require "C" locale during OCR,
   forcing gettext to return English. As a workaround, we cache
   translatable strings that are set while OCR is active, and group

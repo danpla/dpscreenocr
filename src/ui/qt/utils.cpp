@@ -63,23 +63,6 @@ QIcon getThemeIcon(const QString &name)
 }
 
 
-QPixmap getPixmap(
-    const QIcon& icon, int size, QIcon::Mode mode, QIcon::State state)
-{
-    auto pixmap = icon.pixmap(size, mode, state);
-
-    #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-
-    if (pixmap.height() > size)
-        pixmap = pixmap.scaledToHeight(
-            size, Qt::SmoothTransformation);
-
-    #endif
-
-    return pixmap;
-}
-
-
 bool confirmDestructiveAction(
     QWidget* parent,
     const QString& question,

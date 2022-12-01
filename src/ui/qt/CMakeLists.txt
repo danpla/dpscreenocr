@@ -1,6 +1,6 @@
 
-set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 4, 5, or 6")
-set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 4 5 6)
+set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 5 or 6")
+set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 5 6)
 
 set(SRCS
 
@@ -78,12 +78,17 @@ endif()
 target_link_libraries(
     dpscreenocr_qt dpso dpso_intl dpso_utils ui_common)
 
-if(DPSO_QT_VERSION EQUAL 4)
-    find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
-    target_link_libraries(dpscreenocr_qt Qt4::QtCore Qt4::QtGui)
-elseif(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
+if(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
     find_package(
         Qt${DPSO_QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets)
+
+    # Qt 5 < 5.3.2 is affected by a window title bug:
+    # https://bugreports.qt.io/browse/QTBUG-33775
+    if (DPSO_QT_VERSION EQUAL 5
+            AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
+        message(FATAL_ERROR "Qt 5 >= 5.3.2 is required")
+    endif()
+
     target_link_libraries(
         dpscreenocr_qt
         Qt${DPSO_QT_VERSION}::Core
@@ -91,19 +96,4 @@ elseif(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
         Qt${DPSO_QT_VERSION}::Widgets)
 else()
     message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
-endif()
-
-# See https://bugreports.qt.io/browse/QTBUG-33775. This bug only
-# affects Qt 5 < 5.3.2.
-if(UNIX
-        AND NOT APPLE
-        AND DPSO_QT_VERSION EQUAL 5
-        AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
-    find_package(Qt5X11Extras REQUIRED)
-    target_link_libraries(dpscreenocr_qt Qt5::X11Extras)
-
-    find_package(X11 REQUIRED)
-    target_include_directories(
-        dpscreenocr_qt PRIVATE ${X11_INCLUDE_DIR})
-    target_link_libraries(dpscreenocr_qt ${X11_LIBRARIES})
 endif()

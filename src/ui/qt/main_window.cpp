@@ -19,22 +19,6 @@
 #include <QVBoxLayout>
 #include <QtGlobal>
 
-// Workaround for QTBUG-33775
-#if defined(Q_OS_UNIX) \
-        && !defined(Q_OS_DARWIN) \
-        && QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) \
-        && QT_VERSION < QT_VERSION_CHECK(5, 3, 2)
-    #define DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
-
-    #include <QX11Info>
-    #include <X11/Xlib.h>
-
-    // Undef X11 macros clashing with Qt and our names.
-    #undef Bool
-    #undef None
-    #undef Status
-#endif
-
 #include "dpso_intl/dpso_intl.h"
 
 #include "about.h"
@@ -361,9 +345,8 @@ void MainWindow::commitData(QSessionManager& sessionManager)
     // 1. Qt 4 always uses the fallback management. There is no sense
     //    to use commitData(); we don't want to show the confirmation
     //    dialog for the second time from closeEvent().
-    #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    return;
-    #endif
+    //
+    //    We no longer support Qt 4, so this case is not relevant.
 
     bool noInteraction{};
     // 2. Qt version 5.2.1 (and probably all Qt 5 versions before 5.6,
@@ -716,10 +699,6 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
 
     setWindowTitle(
         newStatus == Status::ok ? uiAppName : textWithAppName);
-
-    #ifdef DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND
-    XFlush(QX11Info::display());
-    #endif
 
     statusIndicator->setStatus(newStatus);
     statusLabel->setText(text);

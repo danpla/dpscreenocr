@@ -40,7 +40,7 @@ Required:
     copying of DLLs. A particular version of Qt may require a newer
     version of CMake.
   * Make
-  * Qt 4-6. DPSO_QT_VERSION CMake option.
+  * Qt 5.3.2-6. DPSO_QT_VERSION CMake option.
   * tesseract
   * dos2unix
 

@@ -67,13 +67,8 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     setAllColumnsShowFocus(true);
     setRootIsDecorated(false);
 
-    #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->setSectionsMovable(false);
-    #else
-    header()->setResizeMode(QHeaderView::ResizeToContents);
-    header()->setMovable(false);
-    #endif
 
     connect(
         this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),

@@ -8,9 +8,6 @@
 #include <QLocale>
 #include <QtGlobal>
 #include <QMessageBox>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <QTextCodec>
-#endif
 #include <QTranslator>
 
 #include "dpso/dpso.h"
@@ -32,12 +29,7 @@ static void installQtTranslations(QApplication& app)
 
     const auto qtLocaleName = QLocale::system().name();
 
-    const QString translations[] = {
-        "qt",
-        #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-        "qtbase",
-        #endif
-    };
+    const QString translations[] = {"qt", "qtbase"};
     static const auto numTranslations =
         sizeof(translations) / sizeof(*translations);
 
@@ -56,15 +48,6 @@ static void installQtTranslations(QApplication& app)
 
 int main(int argc, char *argv[])
 {
-    // Setting UTF-8 is only necessary in Qt 4, where
-    // QString(const char *) constructor uses fromAscii(). In Qt 5 and
-    // newer, it uses fromUtf8(), and there is no from/toAscii() and
-    // setCodecForCStrings().
-    #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTextCodec::setCodecForCStrings(
-        QTextCodec::codecForName("UTF-8"));
-    #endif
-
     // High DPI support is enabled by default in Qt 6.
     #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0) \
         && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
