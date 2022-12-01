@@ -105,10 +105,6 @@ struct Lang {
 };
 
 
-// 19 characters for ISO 8601 (YYYY-MM-DD HH:MM:SS) + null.
-using Timestamp = std::array<char, 20>;
-
-
 struct Job {
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     std::vector<int> langIndices;
