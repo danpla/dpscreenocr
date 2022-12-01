@@ -1,8 +1,8 @@
 
 #include "backend/windows/execution_layer/backend_executor.h"
 
+#include "backend/backend_error.h"
 #include "backend/screenshot.h"
-#include "backend/windows/execution_layer/action_executor.h"
 #include "backend/windows/execution_layer/key_manager_executor.h"
 #include "backend/windows/execution_layer/selection_executor.h"
 
@@ -15,7 +15,9 @@ namespace {
 class BackendExecutor : public Backend {
 public:
 
-    explicit BackendExecutor(BackendCreatorFn creatorFn);
+    BackendExecutor(
+        std::unique_ptr<ActionExecutor> actionExecutor,
+        BackendCreatorFn creatorFn);
     ~BackendExecutor();
 
     KeyManager& getKeyManager() override;
@@ -37,20 +39,22 @@ private:
 }
 
 
-BackendExecutor::BackendExecutor(BackendCreatorFn creatorFn)
-    : actionExecutor{createBgThreadActionExecutor()}
-    , backend{execute(*actionExecutor, creatorFn)}
-    , keyManagerExecutor{backend->getKeyManager(), *actionExecutor}
-    , selectionExecutor{backend->getSelection(), *actionExecutor}
+BackendExecutor::BackendExecutor(
+        std::unique_ptr<ActionExecutor> actionExecutor,
+        BackendCreatorFn creatorFn)
+    : actionExecutor{std::move(actionExecutor)}
+    , backend{execute(*this->actionExecutor, creatorFn)}
+    , keyManagerExecutor{
+        backend->getKeyManager(), *this->actionExecutor}
+    , selectionExecutor{
+        backend->getSelection(), *this->actionExecutor}
 {
 }
 
 
 BackendExecutor::~BackendExecutor()
 {
-    execute(*actionExecutor, [this](){
-        backend.reset();
-    });
+    execute(*actionExecutor, [this](){ backend.reset(); });
 }
 
 
@@ -82,9 +86,14 @@ void BackendExecutor::update()
 
 
 std::unique_ptr<Backend> createBackendExecutor(
+    std::unique_ptr<ActionExecutor> actionExecutor,
     BackendCreatorFn creatorFn)
 {
-    return std::unique_ptr<Backend>(new BackendExecutor(creatorFn));
+    if (!actionExecutor)
+        throw BackendError("actionExecutor is null");
+
+    return std::make_unique<BackendExecutor>(
+        std::move(actionExecutor), creatorFn);
 }
 
 

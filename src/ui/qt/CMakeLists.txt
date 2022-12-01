@@ -27,7 +27,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     if(DPSO_QT_VERSION EQUAL 6)
         set(CPP_STANDARD 17)
     else()
-        set(CPP_STANDARD 11)
+        set(CPP_STANDARD 14)
     endif()
 
     target_compile_options(

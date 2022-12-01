@@ -98,8 +98,7 @@ void BgThreadActionExecutor::threadLoop()
 
 std::unique_ptr<ActionExecutor> createBgThreadActionExecutor()
 {
-    return std::unique_ptr<ActionExecutor>(
-        new BgThreadActionExecutor());
+    return std::make_unique<BgThreadActionExecutor>();
 }
 
 

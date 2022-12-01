@@ -34,8 +34,7 @@ private:
 
 std::unique_ptr<OcrResultText> OcrResultText::create(const char* text)
 {
-    return std::unique_ptr<OcrResultText>(
-        new SimpleOcrResultText(text));
+    return std::make_unique<SimpleOcrResultText>(text);
 }
 
 

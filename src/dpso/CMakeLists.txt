@@ -66,7 +66,7 @@ target_compile_definitions(
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpso PRIVATE -std=c++11 -Wall -Wextra -pedantic)
+        dpso PRIVATE -std=c++14 -Wall -Wextra -pedantic)
 endif()
 
 set_target_properties(

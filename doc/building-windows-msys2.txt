@@ -35,7 +35,7 @@ You will need the following tools and libraries to build dpScreenOCR:
 
 Required:
 
-  * C++ compiler with C++11 support (or C++17 when using Qt 6)
+  * C++ compiler with C++14 support (or C++17 when using Qt 6)
   * CMake >= 2.8.12. At least 3.16 is recommended for automatic
     copying of DLLs. A particular version of Qt may require a newer
     version of CMake.

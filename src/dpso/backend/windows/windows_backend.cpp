@@ -50,14 +50,14 @@ WindowsBackend::WindowsBackend()
             + windows::getErrorMessage(GetLastError()));
 
     try {
-        keyManager.reset(new WindowsKeyManager());
+        keyManager = std::make_unique<WindowsKeyManager>();
     } catch (BackendError& e) {
         throw BackendError(
             std::string("Can't create key manager: ") + e.what());
     }
 
     try {
-        selection.reset(new WindowsSelection(instance));
+        selection = std::make_unique<WindowsSelection>(instance);
     } catch (BackendError& e) {
         throw BackendError(
             std::string("Can't create selection: ") + e.what());
@@ -108,9 +108,10 @@ std::unique_ptr<Backend> Backend::create()
     // may be consumed by a GUI framework. BackendExecutor will do the
     // job of calling the backend in the background thread.
     return createBackendExecutor(
-        *[]()
+        createBgThreadActionExecutor(),
+        *[]() -> std::unique_ptr<Backend>
         {
-            return std::unique_ptr<Backend>(new WindowsBackend());
+            return std::make_unique<WindowsBackend>();
         });
 }
 

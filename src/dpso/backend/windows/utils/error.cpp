@@ -10,7 +10,7 @@ namespace windows {
 
 std::string getErrorMessage(DWORD error)
 {
-    char* messageBuf = nullptr;
+    char* messageBuf{};
     auto size = FormatMessageA(
         FORMAT_MESSAGE_ALLOCATE_BUFFER
             | FORMAT_MESSAGE_FROM_SYSTEM

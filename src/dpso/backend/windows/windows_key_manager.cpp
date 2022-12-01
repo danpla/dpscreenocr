@@ -45,12 +45,18 @@ namespace backend {
 //    making string atom functions to return a string atom.
 
 
-const auto modsMask = 0xf;
+static constexpr unsigned createMask(unsigned numBits)
+{
+    return ~(~0u << numBits);
+}
+
+
 const auto modsBits = 4;
+const auto modsMask = createMask(modsBits);
 static_assert(dpsoNumKeyMods <= modsBits, "");
 
-const auto keyMask = 0x3ff << modsBits;
 const auto keyBits = 10;
+const auto keyMask = createMask(keyBits) << modsBits;
 static_assert(dpsoNumKeys <= 1 << keyBits, "");
 
 const auto sentinelBit = 1 << (modsBits + keyBits);

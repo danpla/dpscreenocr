@@ -142,7 +142,8 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
 
     // Pitch is called "stride" in Microsoft docs.
     const auto pitch = (captureRect.w * bi.biBitCount + 31) / 32 * 4;
-    DataUPtr data(new std::uint8_t[pitch * captureRect.h]);
+    auto data = std::make_unique<std::uint8_t[]>(
+        pitch * captureRect.h);
 
     if (!GetDIBits(
             imageDc.get(), imageBitmap.get(),
@@ -154,8 +155,8 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
             "GetDIBits(): "
             + windows::getErrorMessage(GetLastError()));
 
-    return std::unique_ptr<Screenshot>(new WindowsScreenshot(
-        std::move(data), captureRect.w, captureRect.h, pitch));
+    return std::make_unique<WindowsScreenshot>(
+        std::move(data), captureRect.w, captureRect.h, pitch);
 }
 
 

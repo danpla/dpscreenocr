@@ -49,8 +49,8 @@ X11Backend::X11Backend()
             std::string("Can't connect to X display ")
             + XDisplayName(nullptr));
 
-    keyManager.reset(new X11KeyManager(display.get()));
-    selection.reset(new X11Selection(display.get()));
+    keyManager = std::make_unique<X11KeyManager>(display.get());
+    selection = std::make_unique<X11Selection>(display.get());
 
     components[0] = keyManager.get();
     components[1] = selection.get();
@@ -69,7 +69,8 @@ Selection& X11Backend::getSelection()
 }
 
 
-std::unique_ptr<Screenshot> X11Backend::takeScreenshot(const Rect& rect)
+std::unique_ptr<Screenshot> X11Backend::takeScreenshot(
+    const Rect& rect)
 {
     return takeX11Screenshot(display.get(), rect);
 }
@@ -108,10 +109,10 @@ std::unique_ptr<Backend> Backend::create()
     const auto* xdgSessionType = std::getenv("XDG_SESSION_TYPE");
     if (xdgSessionType && std::strcmp(xdgSessionType, "wayland") == 0)
         throw BackendError(
-            "Wayland is not supported. Switch to X11 session, "
-            "if possible.");
+            "Wayland is not supported. Please switch to X11 "
+            "session.");
 
-    return std::unique_ptr<Backend>(new X11Backend());
+    return std::make_unique<X11Backend>();
 }
 
 

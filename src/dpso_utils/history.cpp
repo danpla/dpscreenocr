@@ -144,7 +144,7 @@ static dpso::StdFileUPtr openForAppending(const char* filePath)
 
 DpsoHistory* dpsoHistoryOpen(const char* filePath)
 {
-    dpso::HistoryUPtr history{new DpsoHistory{}};
+    auto history = std::make_unique<DpsoHistory>();
     history->filePath = filePath;
 
     std::string data;

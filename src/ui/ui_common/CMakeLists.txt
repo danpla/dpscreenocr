@@ -53,7 +53,7 @@ add_library(ui_common STATIC ${SRCS})
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        ui_common PRIVATE -std=c++11 -Wall -Wextra -pedantic)
+        ui_common PRIVATE -std=c++14 -Wall -Wextra -pedantic)
 endif()
 
 target_include_directories(

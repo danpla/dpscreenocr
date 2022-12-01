@@ -218,7 +218,7 @@ std::unique_ptr<Screenshot> takeX11Screenshot(
     if (!image)
         throw ScreenshotError("XGetImage() failed");
 
-    return std::unique_ptr<Screenshot>(new X11Screenshot(image));
+    return std::make_unique<X11Screenshot>(image);
 }
 
 

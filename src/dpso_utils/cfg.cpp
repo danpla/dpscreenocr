@@ -45,8 +45,7 @@ static int cmpKeys(const char* a, const char* b)
 
 
 template<typename T>
-static auto keyValuesLowerBound(
-    T& keyValues, const char* key) -> decltype(keyValues.begin())
+static auto keyValuesLowerBound(T& keyValues, const char* key)
 {
     return std::lower_bound(
         keyValues.begin(), keyValues.end(), key,

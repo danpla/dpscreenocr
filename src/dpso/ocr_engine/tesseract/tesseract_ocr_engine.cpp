@@ -185,8 +185,8 @@ OcrResult TesseractOcr::recognize(
 
     return {
         OcrResult::Status::success,
-        std::unique_ptr<OcrResultText>(
-            new TesseractOcrResultText(std::move(text), textLen))};
+        std::make_unique<TesseractOcrResultText>(
+            std::move(text), textLen)};
 }
 
 
@@ -278,7 +278,7 @@ void TesseractOcr::fillTessLangsStr(
 std::unique_ptr<OcrEngine> createTesseractOcrEngine(
     const OcrEngineArgs& args)
 {
-    return std::unique_ptr<OcrEngine>(new TesseractOcr{args});
+    return std::make_unique<TesseractOcr>(args);
 }
 
 

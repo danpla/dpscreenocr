@@ -47,9 +47,6 @@ static bool localeChanged;
 
 
 static auto localeRefHoldersLowerBound(const void* refHolder)
-    // In GCC 4.8, vectors' insert(), erase(), etc. only accept
-    // non-const iterators.
-    -> std::vector<const void*>::iterator
 {
     return std::lower_bound(
         localeRefHolders.begin(), localeRefHolders.end(), refHolder);
@@ -139,7 +136,7 @@ struct Link {
 
     void reset()
     {
-        clearJobQueue();
+        jobQueue = {};
         jobActive = false;
 
         waitingForResults = false;
@@ -150,14 +147,6 @@ struct Link {
 
         terminateJobs = false;
         terminateThread = false;
-    }
-
-    void clearJobQueue()
-    {
-        // We don't use = {} with std::queue for compatibility
-        // with older GCC versions where explicit default
-        // constructors are not fixed. See P0935R0.
-        jobQueue = std::queue<Job>();
     }
 
     bool jobsPending() const
@@ -272,7 +261,7 @@ DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
 
     // We don't use OcrUPtr here because dpsoOcrDelete() expects
     // a joinable thread.
-    std::unique_ptr<DpsoOcr> ocr{new DpsoOcr{}};
+    auto ocr = std::make_unique<DpsoOcr>();
 
     setCLocale(ocr.get());
     try {
@@ -431,7 +420,7 @@ static dpso::OcrImage prepareScreenshot(
     const dpso::backend::Screenshot& screenshot,
     dpso::ProgressTracker& progressTracker)
 {
-    const int imageScale = 4;
+    const auto imageScale = 4;
     const auto bufferW = screenshot.getWidth() * imageScale;
     const auto bufferH = screenshot.getHeight() * imageScale;
     const auto bufferPitch = bufferW;
@@ -463,7 +452,7 @@ static dpso::OcrImage prepareScreenshot(
         bufferW, bufferH,
         imageScale);
 
-    const int unsharpMaskRadius = 10;
+    const auto unsharpMaskRadius = 10;
 
     localProgressTracker.advanceJob();
     START_TIMING(unsharpMasking);
@@ -536,7 +525,7 @@ static void processJob(DpsoOcr& ocr, const Job& job)
     assert(job.screenshot);
     assert(!job.langIndices.empty());
 
-    dpso::ProgressTracker progressTracker(2, progressTrackerFn, &ocr);
+    dpso::ProgressTracker progressTracker{2, progressTrackerFn, &ocr};
 
     progressTracker.advanceJob();
     const auto ocrImage = prepareScreenshot(
@@ -775,7 +764,6 @@ void dpsoOcrWaitJobsToComplete(
         // dpsoOcrTerminateJobs() was called from the progress
         // callback.
         ocr->link.results.clear();
-
         ocr->link.terminateJobs = false;
     }
 
@@ -791,7 +779,7 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
     {
         LINK_LOCK(ocr->link);
 
-        ocr->link.clearJobQueue();
+        ocr->link.jobQueue = {};
         ocr->link.terminateJobs = true;
 
         if (ocr->link.waitingForResults)
