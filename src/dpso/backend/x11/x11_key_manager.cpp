@@ -9,8 +9,8 @@ namespace backend {
 
 
 static KeyCode keyToKeyCode(Display* display, DpsoKey key);
-static unsigned x11ModsToDpsoMods(unsigned x11Mods);
-static unsigned dpsoModsToX11Mods(unsigned dpsoMods);
+static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods);
+static unsigned dpsoModsToX11Mods(DpsoKeyMods dpsoMods);
 
 
 static void changeBindingGrab(
@@ -284,9 +284,9 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
 // Mod5Mask - ???
 
 
-static unsigned x11ModsToDpsoMods(unsigned x11Mods)
+static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods)
 {
-    unsigned dpsoMods = dpsoKeyModNone;
+    DpsoKeyMods dpsoMods = dpsoKeyModNone;
 
     if (x11Mods & ShiftMask)
         dpsoMods |= dpsoKeyModShift;
@@ -301,7 +301,7 @@ static unsigned x11ModsToDpsoMods(unsigned x11Mods)
 }
 
 
-static unsigned dpsoModsToX11Mods(unsigned dpsoMods)
+static unsigned dpsoModsToX11Mods(DpsoKeyMods dpsoMods)
 {
     unsigned x11Mods = 0;
 

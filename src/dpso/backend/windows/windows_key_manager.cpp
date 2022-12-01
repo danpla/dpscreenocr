@@ -91,13 +91,13 @@ static DpsoHotkey atomNameToHotkey(const wchar_t* name)
 
     return {
         static_cast<DpsoKey>((atom & keyMask) >> modsBits),
-        static_cast<unsigned>(atom & modsMask)
+        static_cast<DpsoKeyMods>(atom & modsMask)
     };
 }
 
 
 static UINT dpsoKeyToWinKey(DpsoKey key);
-static UINT dpsoModsToWinMods(unsigned mods);
+static UINT dpsoModsToWinMods(DpsoKeyMods mods);
 
 
 static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
@@ -374,7 +374,7 @@ static UINT dpsoKeyToWinKey(DpsoKey key)
 }
 
 
-static UINT dpsoModsToWinMods(unsigned mods)
+static UINT dpsoModsToWinMods(DpsoKeyMods mods)
 {
     UINT winMods = MOD_NOREPEAT;
 
