@@ -41,6 +41,8 @@ enum : DpsoHotkeyAction {
 
 MainWindow::MainWindow()
     : QWidget{}
+    , progressStatusFmt{_(
+        "Recognition {progress}% ({current_job}/{total_jobs})")}
     , ocrAllowQueuing{}
     , lastProgress{}
     , wasActiveLangs{}
@@ -213,22 +215,6 @@ MainWindow::~MainWindow()
 }
 
 
-MainWindow::DynamicStrings::DynamicStrings()
-    : progress{_(
-        "Recognition {progress}% ({current_job}/{total_jobs})")}
-    , installLangs{_("Please install languages")}
-    , selectLangs{_("Please select languages")}
-    , selectActions{_("Please select actions")}
-    // Translators: Program is ready for OCR
-    , ready{pgettext("ocr.status", "Ready")}
-    , confirmQuitText{_(
-        "Recognition is not yet finished. Quit anyway?")}
-    , cancel{_("Cancel")}
-    , quit{_("Quit")}
-{
-}
-
-
 void MainWindow::timerEvent(QTimerEvent* event)
 {
     (void)event;
@@ -246,12 +232,20 @@ void MainWindow::timerEvent(QTimerEvent* event)
 }
 
 
+static bool confirmQuitWhileOcrIsActive(QWidget* parent)
+{
+    return confirmDestructiveAction(
+        parent,
+        _("Recognition is not yet finished. Quit anyway?"),
+        _("Cancel"),
+        _("Quit"));
+}
+
+
 void MainWindow::closeEvent(QCloseEvent* event)
 {
     if (dpsoOcrHasPendingJobs(ocr.get())
-            && !confirmDestructiveAction(
-                this,
-                dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
+            && !confirmQuitWhileOcrIsActive(this)) {
         event->ignore();
         return;
     }
@@ -384,9 +378,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
     if (!noInteraction
             && sessionManager.allowsInteraction()
             && dpsoOcrHasPendingJobs(ocr.get())
-            && !confirmDestructiveAction(
-                this,
-                dynStr.confirmQuitText, dynStr.cancel, dynStr.quit)) {
+            && !confirmQuitWhileOcrIsActive(this)) {
         sessionManager.cancel();
         return;
     }
@@ -764,7 +756,7 @@ void MainWindow::updateStatus()
         setStatus(
             Status::busy,
             dpsoStrNamedFormat(
-                dynStr.progress.c_str(),
+                progressStatusFmt.c_str(),
                 {{"progress",
                         std::to_string(totalProgress).c_str()},
                     {"current_job",
@@ -791,13 +783,14 @@ void MainWindow::updateStatus()
     if (statusValid)
         return;
     if (dpsoOcrGetNumLangs(ocr.get()) == 0)
-        setStatus(Status::warning, dynStr.installLangs);
+        setStatus(Status::warning, _("Please install languages"));
     else if (dpsoOcrGetNumActiveLangs(ocr.get()) == 0)
-        setStatus(Status::warning, dynStr.selectLangs);
+        setStatus(Status::warning, _("Please select languages"));
     else if (!actionChooser->getSelectedActions())
-        setStatus(Status::warning, dynStr.selectActions);
+        setStatus(Status::warning, _("Please select actions"));
     else
-        setStatus(Status::ok, dynStr.ready);
+        // Translators: Program is ready for OCR
+        setStatus(Status::ok, pgettext("ocr.status", "Ready"));
 
     statusValid = true;
 }

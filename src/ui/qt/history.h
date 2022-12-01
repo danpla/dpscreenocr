@@ -29,17 +29,6 @@ private slots:
     void doExport();
     void clear();
 private:
-    struct DynamicStrings {
-        QString exportHistory;
-        QString nameFilters;
-
-        QString clearQuestion;
-        QString cancel;
-        QString clear;
-
-        DynamicStrings();
-    } dynStr;
-
     std::string historyFilePath;
     dpso::HistoryUPtr history;
 

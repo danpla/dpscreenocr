@@ -58,11 +58,6 @@
 
       "\xC2\xA9" "2018" (gives ©2018)
 
-* Tesseract versions before 4.1.0 require "C" locale during OCR,
-  forcing gettext to return English. As a workaround, we cache
-  translatable strings that are set while OCR is active, and group
-  them in structs named DynamicStrings.
-
 * Use underscores instead of hyphens in CMake target names.
 
 * All global configuration macros and CMake options have DPSO_ prefix.

@@ -68,12 +68,6 @@ ActionChooser::ActionChooser(QWidget* parent)
 }
 
 
-ActionChooser::DynamicStrings::DynamicStrings()
-    : chooseExeDialogTitle{_("Choose an executable")}
-{
-}
-
-
 ActionChooser::Actions ActionChooser::getSelectedActions() const
 {
     Actions actions = Action::none;
@@ -153,7 +147,7 @@ void ActionChooser::chooseExe()
         exeDir = QDir::homePath();
 
     exePath = QFileDialog::getOpenFileName(
-        this, dynStr.chooseExeDialogTitle, exeDir);
+        this, _("Choose an executable"), exeDir);
     if (exePath.isEmpty())
         return;
 

@@ -10,8 +10,17 @@
 #include <vector>
 
 #include "tesseract/baseapi.h"
+// We no longer support Tesseract versions prior to 4.1.0 since they
+// depend on the "C" locale.
+#if !defined(TESSERACT_MAJOR_VERSION) \
+        || TESSERACT_MAJOR_VERSION < 4 \
+        || (TESSERACT_MAJOR_VERSION == 4 \
+            && TESSERACT_MINOR_VERSION < 1)
+    #error "Tesseract >= 4.1.0 is required"
+#endif
+
 #include "tesseract/ocrclass.h"
-#if !defined(TESSERACT_MAJOR_VERSION) || TESSERACT_MAJOR_VERSION < 5
+#if TESSERACT_MAJOR_VERSION < 5
 #include "tesseract/genericvector.h"
 #include "tesseract/strngs.h"
 #endif
@@ -101,8 +110,7 @@ namespace {
 
 
 struct CancelData {
-    #if defined(TESSERACT_MAJOR_VERSION) \
-        && TESSERACT_MAJOR_VERSION >= 5
+    #if TESSERACT_MAJOR_VERSION >= 5
     tesseract::ETEXT_DESC
     #else
     ETEXT_DESC
@@ -230,8 +238,7 @@ void TesseractOcr::cacheLangs()
     // GetDatapath(), which also requires the same dummy Init() call.
     initTess(nullptr);
 
-    #if defined(TESSERACT_MAJOR_VERSION) \
-        && TESSERACT_MAJOR_VERSION >= 5
+    #if TESSERACT_MAJOR_VERSION >= 5
 
     tess.GetAvailableLanguagesAsVector(&langCodes);
 

@@ -233,12 +233,6 @@ typedef struct DpsoOcrJobArgs {
  *   * jobArgs::screenRect is empty or outside the screen bounds
  *   * No active languages
  *   * Error when taking a screenshot
- *
- * Tesseract versions before 4.1.0 only work with "C" locale. This
- * locale is automatically set on a successful dpsoOcrQueueJob() call,
- * and restored after dpsoOcrWaitJobsToComplete(),
- * dpsoOcrTerminateJobs(), or dpsoOcrFetchResults() when all jobs are
- * completed. Don't change the locale between these two points.
  */
 bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs);
 

@@ -58,20 +58,6 @@ History::History(const std::string& dirPath, QWidget* parent)
 }
 
 
-History::DynamicStrings::DynamicStrings()
-    : exportHistory{_("Export history")}
-    , nameFilters{
-        QString(_("Plain text")) + " (*.txt);;"
-        + "HTML (*.html *.htm);;"
-        + "JSON (*.json);;"
-        + _("All files") + " (*)"}
-    , clearQuestion{_("Clear the history?")}
-    , cancel{_("Cancel")}
-    , clear{_("Clear")}
-{
-}
-
-
 void History::setButtonsEnabled(bool enabled)
 {
     clearButton->setEnabled(enabled);
@@ -93,9 +79,12 @@ void History::doExport()
     const auto filePath = QDir::toNativeSeparators(
         QFileDialog::getSaveFileName(
             this,
-            dynStr.exportHistory,
+            _("Export history"),
             QDir(dirPath).filePath(lastFileName),
-            dynStr.nameFilters,
+            QString(_("Plain text")) + " (*.txt);;"
+                + "HTML (*.html *.htm);;"
+                + "JSON (*.json);;"
+                + _("All files") + " (*)",
             &selectedNameFilter));
     if (filePath.isEmpty())
         return;
@@ -129,7 +118,7 @@ void History::clear()
 
     if (!confirmDestructiveAction(
             this,
-            dynStr.clearQuestion, dynStr.cancel, dynStr.clear))
+            _("Clear the history?"), _("Cancel"), _("Clear")))
         return;
 
     if (!dpsoHistoryClear(history.get())) {

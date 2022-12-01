@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cassert>
 #include <chrono>
-#include <clocale>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -31,62 +30,6 @@
 
 
 static dpso::backend::Backend* backend;
-
-
-// Tesseract versions before 4.1.0 only work with "C" locale. Since we
-// run Tesseract in a separate thread, it's possible neither to call
-// setlocale() from the background thread nor let the user to change
-// the locale while OCR is active.
-//
-// See the dpsoOcrQueueJob() documentation for when locale is set
-// and restored.
-
-static std::vector<const void*> localeRefHolders;
-static std::string lastLocale;
-static bool localeChanged;
-
-
-static auto localeRefHoldersLowerBound(const void* refHolder)
-{
-    return std::lower_bound(
-        localeRefHolders.begin(), localeRefHolders.end(), refHolder);
-}
-
-
-static void setCLocale(const void* refHolder)
-{
-    const auto iter = localeRefHoldersLowerBound(refHolder);
-    if (iter != localeRefHolders.end() && *iter == refHolder)
-        return;
-
-    localeRefHolders.insert(iter, refHolder);
-
-    if (localeRefHolders.size() > 1)
-        return;
-
-    assert(!localeChanged);
-    if (const auto* locale = std::setlocale(LC_ALL, nullptr)) {
-        lastLocale = locale;
-        std::setlocale(LC_ALL, "C");
-        localeChanged = true;
-    }
-}
-
-
-static void restoreLocale(const void* refHolder)
-{
-    const auto iter = localeRefHoldersLowerBound(refHolder);
-    if (iter == localeRefHolders.end() || *iter != refHolder)
-        return;
-
-    localeRefHolders.erase(iter);
-
-    if (!localeRefHolders.empty() || !localeChanged)
-        return;
-
-    std::setlocale(LC_ALL, lastLocale.c_str());
-    localeChanged = false;
-}
 
 
 namespace {
@@ -263,15 +206,12 @@ DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
     // a joinable thread.
     auto ocr = std::make_unique<DpsoOcr>();
 
-    setCLocale(ocr.get());
     try {
         ocr->engine = ocrEngineCreator.create({ocrArgs->dataDir});
     } catch (dpso::OcrEngineError& e) {
         dpsoSetError("Can't create OCR engine: %s", e.what());
-        restoreLocale(ocr.get());
         return nullptr;
     }
-    restoreLocale(ocr.get());
 
     cacheLangs(*ocr);
 
@@ -654,8 +594,6 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         createTimestamp()
     };
 
-    setCLocale(ocr);
-
     LINK_LOCK(ocr->link);
 
     ocr->link.jobQueue.push(std::move(job));
@@ -707,9 +645,6 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
 
         ocr->fetchedResults.clear();
         ocr->fetchedResults.swap(ocr->link.results);
-
-        if (!ocr->link.jobsPending())
-            restoreLocale(ocr);
     }
 
     ocr->returnedResults.clear();
@@ -766,8 +701,6 @@ void dpsoOcrWaitJobsToComplete(
         ocr->link.results.clear();
         ocr->link.terminateJobs = false;
     }
-
-    restoreLocale(ocr);
 }
 
 
@@ -794,8 +727,6 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 
     ocr->link.results.clear();
     ocr->link.terminateJobs = false;
-
-    restoreLocale(ocr);
 }
 
 

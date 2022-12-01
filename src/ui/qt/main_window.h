@@ -43,18 +43,7 @@ private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void commitData(QSessionManager& sessionManager);
 private:
-    struct DynamicStrings {
-        std::string progress;
-        QString installLangs;
-        QString selectLangs;
-        QString selectActions;
-        QString ready;
-        QString confirmQuitText;
-        QString cancel;
-        QString quit;
-
-        DynamicStrings();
-    } dynStr;
+    std::string progressStatusFmt;
 
     dpso::OcrUPtr ocr;
 

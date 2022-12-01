@@ -36,12 +36,6 @@ signals:
 private slots:
     void chooseExe();
 private:
-    struct DynamicStrings {
-        QString chooseExeDialogTitle;
-
-        DynamicStrings();
-    } dynStr;
-
     QCheckBox* copyToClipboardCheck;
     QCheckBox* addToHistoryCheck;
     QCheckBox* runExeCheck;

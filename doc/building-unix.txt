@@ -8,15 +8,12 @@ Required:
     version of CMake.
   * Make
   * Qt 5.3.2-6. DPSO_QT_VERSION CMake option.
-  * libtesseract
+  * libtesseract >= 4.1.0
+  * pkg-config to find libtesseract
   * libx11
   * libxext - for X11 Nonrectangular Window Shape Extension
 
 Optional:
-
-  * pkg-config to find Tesseract. If pkg-config is not installed, or
-    if you have an old Tesseract version that comes without a .pc file
-    for pkg-config, CMake will try to find Tesseract on its own.
 
   * libintl for translated user interface. On some systems libintl is
     a part of GNU C library and doesn't need to be installed

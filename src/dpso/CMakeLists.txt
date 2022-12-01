@@ -97,63 +97,23 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(dpso ${X11_LIBRARIES} ${X11_Xext_LIB})
 endif()
 
-find_package(PkgConfig)
+find_package(PkgConfig REQUIRED)
 if(PKG_CONFIG_FOUND)
-    pkg_search_module(TESSERACT tesseract)
-
-    if(TESSERACT_FOUND)
-        string(FIND "${TESSERACT_VERSION}" "." DOT_POS)
-        string(
-            SUBSTRING
-            "${TESSERACT_VERSION}"
-            0 ${DOT_POS}
-            TESSERACT_VERSION_MAJOR)
-    endif()
+    pkg_search_module(TESSERACT REQUIRED QUIET tesseract>=4.1.0)
 endif()
 
 # TODO: If Tesseract was installed via CMake, we can also try to use
-# find_package(Tesseract).
-if(NOT TESSERACT_FOUND)
-    # No pkg-config or an old Tesseract version that doesn't provide
-    # a .pc file.
-    find_path(
-        TESSERACT_INCLUDE_DIRS baseapi.h PATH_SUFFIXES tesseract)
-    if(NOT TESSERACT_INCLUDE_DIRS)
-        message(SEND_ERROR "Can't find tesseract include dir")
-    endif()
+# find_package(Tesseract). For now, we only build on various Linux
+# distributions and MSYS2, all of which use pkg-config.
 
-    find_library(TESSERACT_LIBRARIES tesseract)
-    if(NOT TESSERACT_INCLUDE_DIRS)
-        message(SEND_ERROR "Can't find tesseract library")
-    endif()
-
-    # Try to extract the major version from the header.
-    find_file(
-        TESSERACT_VERSION_SOURCE_H
-        NAMES
-        version.h # v5
-        tess_version.h # v4
-        baseapi.h # v3
-        PATHS "${TESSERACT_INCLUDE_DIRS}"
-        NO_DEFAULT_PATH)
-    if(TESSERACT_VERSION_SOURCE_H)
-        file(READ "${TESSERACT_VERSION_SOURCE_H}" VERSION_SOURCE_DATA)
-        string(
-            REGEX MATCH
-            # Tesseract has TESSERACT_MAJOR_VERSION since version 4.
-            # We use TESSERACT_VERSION_STR instead to support v3 as
-            # well.
-            "#define TESSERACT_VERSION_STR \"([0-9]*)."
-            _
-            "${VERSION_SOURCE_DATA}")
-        set(TESSERACT_VERSION_MAJOR "${CMAKE_MATCH_1}")
-    endif()
-
-    mark_as_advanced(
-        TESSERACT_INCLUDE_DIRS
-        TESSERACT_LIBRARIES
-        TESSERACT_VERSION_SOURCE_H)
-endif()
+string(FIND "${TESSERACT_VERSION}" "." DOT_POS)
+string(
+    SUBSTRING
+    "${TESSERACT_VERSION}"
+    0
+    ${DOT_POS}
+    TESSERACT_VERSION_MAJOR)
+unset(DOT_POS)
 
 set(DPSO_TESSERACT_VERSION_MAJOR
     "${TESSERACT_VERSION_MAJOR}"
@@ -162,6 +122,7 @@ set(DPSO_TESSERACT_VERSION_MAJOR
     "Major version of the found Tesseract library"
     FORCE)
 mark_as_advanced(DPSO_TESSERACT_VERSION_MAJOR)
+unset(TESSERACT_VERSION_MAJOR)
 
 target_include_directories(dpso PRIVATE ${TESSERACT_INCLUDE_DIRS})
 target_link_libraries(dpso ${TESSERACT_LIBRARIES})

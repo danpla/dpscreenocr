@@ -4,9 +4,9 @@
   <application>
     <windowsSettings>
       <!--
-      We enable UTF-8 code page as a workaround for Tesseract (and any
-      other thirdparty library), which uses ANSI variants of Windows
-      API function and therefore is unable to load data from paths
+      We enable UTF-8 code page as a workaround for Tesseract and
+      other third-party libraries that use ANSI variants of Windows
+      API function and therefore are unable to load data from paths
       containing characters outside the current code page. Our own
       code doesn't need this.
 
