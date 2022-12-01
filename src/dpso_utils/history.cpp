@@ -249,8 +249,8 @@ void dpsoHistoryGet(
 
     if (!history
             || idx < 0
-            || (static_cast<std::size_t>(idx)
-                >= history->entries.size())) {
+            || static_cast<std::size_t>(idx)
+                >= history->entries.size()) {
         entry->timestamp = "";
         entry->text = "";
         return;
