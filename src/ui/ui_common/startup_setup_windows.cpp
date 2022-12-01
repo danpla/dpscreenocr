@@ -23,6 +23,10 @@
 static void registerApplicationRestart()
 {
     const auto* cmdLine = GetCommandLineW();
+    // The command line is actually never empty, but check anyway for
+    // the code below.
+    if (!*cmdLine)
+        return;
 
     // RegisterApplicationRestart() doesn't need the path to the
     // executable, so skip it. It may be in double quotes if it
