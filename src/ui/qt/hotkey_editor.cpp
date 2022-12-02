@@ -52,13 +52,8 @@ HotkeyEditor::HotkeyEditor(
         if (key == dpsoUnknownKey && hideNoneKey)
             continue;
 
-        const char* keyName;
-        if (key == dpsoUnknownKey)
-            keyName = pgettext("hotkey.key", "None");
-        else {
-            const DpsoHotkey keyHotkey{key, dpsoKeyModNone};
-            keyName = dpsoHotkeyToString(&keyHotkey);
-        }
+        const DpsoHotkey keyHotkey{key, dpsoKeyModNone};
+        const auto* keyName = dpsoHotkeyToString(&keyHotkey);
 
         keyCombo->addItem(keyName, key);
 
