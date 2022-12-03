@@ -56,8 +56,7 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     , ocr{ocr}
 {
     setHeaderLabels({
-        // Checkbox
-        "",
+        "",  // Checkbox
         pgettext("language", "Name"),
         pgettext("language", "Code")});
 

@@ -8,7 +8,7 @@ BUGS_ADDRESS='https://github.com/danpla/dpscreenocr/issues'
 
 xgettext --files-from=POTFILES.in \
     --from-code=UTF-8 \
-    --add-comments \
+    --add-comments="Translators:" \
     --package-name=$APP_NAME \
     --msgid-bugs-address=$BUGS_ADDRESS \
     --directory=.. \
