@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
-"Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-11-20 11:36+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-03 01:55+0100\n"
 "PO-Revision-Date: 2022-11-21 15:48+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -545,7 +545,7 @@ msgstr "Lisans"
 msgid "Third-party licenses"
 msgstr "Üçüncü taraf lisansları"
 
-#: src/ui/qt/about.cpp:106 dpscreenocr.desktop.in.h:1
+#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Ekrandaki metni tanıma programı"
 
@@ -566,7 +566,7 @@ msgid "Run an executable with the recognized text as the first argument"
 msgstr ""
 "İlk bağımsız değişken tanınan metin olacak şekilde bir programı çalıştırın"
 
-#: src/ui/qt/action_chooser.cpp:72
+#: src/ui/qt/action_chooser.cpp:150
 msgid "Choose an executable"
 msgstr "Bir program seçin"
 
@@ -578,116 +578,111 @@ msgstr "Dışa aktar…"
 msgid "Clear…"
 msgstr "Temizle…"
 
-#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:176
+#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:161
 msgid "History"
 msgstr "Geçmiş"
 
-#: src/ui/qt/history.cpp:62
+#: src/ui/qt/history.cpp:82
 msgid "Export history"
 msgstr "Geçmişi dışa aktar"
 
-#: src/ui/qt/history.cpp:64
+#: src/ui/qt/history.cpp:84
 msgid "Plain text"
 msgstr "Düz metin"
 
-#: src/ui/qt/history.cpp:67
+#: src/ui/qt/history.cpp:87
 msgid "All files"
 msgstr "Tüm dosyalar"
 
-#: src/ui/qt/history.cpp:68
+#: src/ui/qt/history.cpp:121
 msgid "Clear the history?"
 msgstr "Geçmiş temizlensin mi?"
 
-#: src/ui/qt/history.cpp:69 src/ui/qt/main_window.cpp:243
+#: src/ui/qt/history.cpp:121 src/ui/qt/main_window.cpp:240
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/ui/qt/history.cpp:70
+#: src/ui/qt/history.cpp:121
 msgid "Clear"
 msgstr "Temizle"
 
-#: src/ui/qt/hotkey_editor.cpp:57
-msgctxt "hotkey.key"
-msgid "None"
-msgstr "Yok"
-
-#: src/ui/qt/lang_browser.cpp:61
+#: src/ui/qt/lang_browser.cpp:60
 msgctxt "language"
 msgid "Name"
 msgstr "İsim"
 
-#: src/ui/qt/lang_browser.cpp:62
+#: src/ui/qt/lang_browser.cpp:61
 msgctxt "language"
 msgid "Code"
 msgstr "Kod"
 
-#: src/ui/qt/main_window.cpp:175
+#: src/ui/qt/main_window.cpp:45
+msgid "Recognition {progress}% ({current_job}/{total_jobs})"
+msgstr "{progress}% Tanındı ({current_job}/{total_jobs})"
+
+#: src/ui/qt/main_window.cpp:160
 msgctxt "ui.tab"
 msgid "Main"
 msgstr "Temel"
 
-#: src/ui/qt/main_window.cpp:177
+#: src/ui/qt/main_window.cpp:162
 msgid "About"
 msgstr "Hakkında"
 
-#: src/ui/qt/main_window.cpp:235
-msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr "{progress}% Tanındı ({current_job}/{total_jobs})"
+#: src/ui/qt/main_window.cpp:239
+msgid "Recognition is not yet finished. Quit anyway?"
+msgstr "Tanıma henüz tamamlanmadı. Yine de çıkılsın mı?"
 
-#: src/ui/qt/main_window.cpp:236
+#: src/ui/qt/main_window.cpp:241 src/ui/qt/main_window.cpp:413
+msgid "Quit"
+msgstr "Çıkış"
+
+#: src/ui/qt/main_window.cpp:405
+msgid "Show {app_name}"
+msgstr "Göster {app_name}"
+
+#: src/ui/qt/main_window.cpp:420
+msgid "Status"
+msgstr "Durumlar"
+
+#: src/ui/qt/main_window.cpp:430
+msgid "Character recognition"
+msgstr "Karakter tanıma"
+
+#: src/ui/qt/main_window.cpp:434
+msgid "Split text blocks"
+msgstr "Bölünmüş metin blokları"
+
+#: src/ui/qt/main_window.cpp:436
+msgid "Split independent text blocks, such as columns"
+msgstr "Sütunlar gibi bağımsız metin bloklarını böl"
+
+#: src/ui/qt/main_window.cpp:439
+msgid "Languages:"
+msgstr "Diller:"
+
+#: src/ui/qt/main_window.cpp:443
+msgid "Actions"
+msgstr "Eylemler"
+
+#: src/ui/qt/main_window.cpp:453
+msgid "Hotkey"
+msgstr "Kısayol"
+
+#: src/ui/qt/main_window.cpp:786
 msgid "Please install languages"
 msgstr "Lütfen dilleri kurun"
 
-#: src/ui/qt/main_window.cpp:237
+#: src/ui/qt/main_window.cpp:788
 msgid "Please select languages"
 msgstr "Lütfen dilleri seçin"
 
-#: src/ui/qt/main_window.cpp:238
+#: src/ui/qt/main_window.cpp:790
 msgid "Please select actions"
 msgstr "Lütfen eylemleri seçin"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:240
+#: src/ui/qt/main_window.cpp:793
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Hazır"
-
-#: src/ui/qt/main_window.cpp:242
-msgid "Recognition is not yet finished. Quit anyway?"
-msgstr "Tanıma henüz tamamlanmadı. Yine de çıkılsın mı?"
-
-#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:429
-msgid "Quit"
-msgstr "Çıkış"
-
-#: src/ui/qt/main_window.cpp:421
-msgid "Show {app_name}"
-msgstr "Göster {app_name}"
-
-#: src/ui/qt/main_window.cpp:436
-msgid "Status"
-msgstr "Durumlar"
-
-#: src/ui/qt/main_window.cpp:446
-msgid "Character recognition"
-msgstr "Karakter tanıma"
-
-#: src/ui/qt/main_window.cpp:450
-msgid "Split text blocks"
-msgstr "Bölünmüş metin blokları"
-
-#: src/ui/qt/main_window.cpp:452
-msgid "Split independent text blocks, such as columns"
-msgstr "Sütunlar gibi bağımsız metin bloklarını böl"
-
-#: src/ui/qt/main_window.cpp:455
-msgid "Languages:"
-msgstr "Diller:"
-
-#: src/ui/qt/main_window.cpp:459
-msgid "Actions"
-msgstr "Eylemler"
-
-#: src/ui/qt/main_window.cpp:469
-msgid "Hotkey"
-msgstr "Kısayol"
