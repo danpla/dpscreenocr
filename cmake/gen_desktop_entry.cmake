@@ -1,7 +1,7 @@
 
 # Generates a desktop entry "${APP_FILE_NAME}.desktop" in dst_dir. If
 # translate is TRUE, the entry will be translated using msgfmt based
-# on based on po/ files.
+# on files from the po/ directory.
 function(gen_desktop_entry dst_dir translate)
     set(ENTRY_NAME "${APP_FILE_NAME}.desktop")
     set(SRC_ENTRY_PATH "${CMAKE_SOURCE_DIR}/data/${ENTRY_NAME}")
