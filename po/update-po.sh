@@ -19,6 +19,7 @@ xgettext --files-from=POTFILES.in \
 # of including it in POTFILES.in. This way we can disable the default
 # keyword list, which includes "Name" that should not be translated.
 xgettext --from-code=UTF-8 \
+    --omit-header \
     --join-existing \
     --directory=.. \
     --output=$APP_FILE_NAME.pot \
