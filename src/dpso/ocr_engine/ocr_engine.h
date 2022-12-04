@@ -3,9 +3,8 @@
 
 #include <cstdint>
 #include <stdexcept>
+#include <string>
 #include <vector>
-
-#include "ocr_engine/ocr_result.h"
 
 
 namespace dpso {
@@ -62,6 +61,35 @@ using OcrFeatures = unsigned;
  * \return true to continue OCR, false to terminate.
  */
 using OcrProgressCallback = bool (*)(int progress, void* userData);
+
+
+struct OcrResult {
+    enum class Status {
+        /**
+         * OCR was successful.
+         *
+         * The text field holds the recognized text.
+         */
+        success,
+
+        /**
+         * OCR was terminated from the progress callback.
+         *
+         * The text is empty.
+         */
+        terminated,
+
+        /**
+         * OCR error.
+         *
+         * The text holds an error message.
+         */
+        error
+    };
+
+    Status status;
+    std::string text;
+};
 
 
 class OcrEngine {

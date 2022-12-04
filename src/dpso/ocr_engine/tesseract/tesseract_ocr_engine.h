@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "ocr_engine/ocr_engine.h"
 
 

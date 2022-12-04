@@ -651,8 +651,8 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
     ocr->returnedResults.reserve(ocr->fetchedResults.size());
     for (const auto& result : ocr->fetchedResults)
         ocr->returnedResults.push_back(
-            {result.ocrResult.getText(),
-                result.ocrResult.getTextLen(),
+            {result.ocrResult.text.c_str(),
+                result.ocrResult.text.size(),
                 result.timestamp.data()});
 
     results->items = ocr->returnedResults.data();

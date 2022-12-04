@@ -26,7 +26,6 @@
 #endif
 
 #include "ocr_engine/tesseract/lang_names.h"
-#include "ocr_engine/tesseract/tesseract_result_text.h"
 #include "ocr_engine/tesseract/utils.h"
 
 
@@ -191,10 +190,7 @@ OcrResult TesseractOcr::recognize(
 
     const auto textLen = prettifyTesseractText(text.get());
 
-    return {
-        OcrResult::Status::success,
-        std::make_unique<TesseractOcrResultText>(
-            std::move(text), textLen)};
+    return {OcrResult::Status::success, {text.get(), textLen}};
 }
 
 
