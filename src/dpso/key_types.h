@@ -140,20 +140,14 @@ enum {
 };
 
 
+/**
+ * Combination of DpsoKeyMod flags.
+ */
 typedef unsigned DpsoKeyMods;
 
 
 typedef struct DpsoHotkey {
-    /**
-     * Key.
-     */
     DpsoKey key;
-
-    /**
-     * Key modifiers.
-     *
-     * A combination of DpsoKeyMod flags.
-     */
     DpsoKeyMods mods;
 } DpsoHotkey;
 
