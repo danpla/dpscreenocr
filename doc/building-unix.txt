@@ -4,7 +4,7 @@ Dependencies
 Required:
 
   * C++ compiler with C++14 support (or C++17 when using Qt 6)
-  * CMake >= 2.8.12. A particular version of Qt may require a newer
+  * CMake >= 3.16. A particular version of Qt may require a newer
     version of CMake.
   * Make
   * Qt 5.3.2-6. DPSO_QT_VERSION CMake option.
