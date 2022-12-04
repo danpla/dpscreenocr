@@ -19,7 +19,7 @@ if(WIN32)
     add_subdirectory(
         ../windows_rc "${CMAKE_BINARY_DIR}/src/ui/windows_rc")
     target_sources(
-        dpscreenocr_qt PRIVATE SRCS $<TARGET_OBJECTS:windows_rc>)
+        dpscreenocr_qt PRIVATE $<TARGET_OBJECTS:windows_rc>)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
