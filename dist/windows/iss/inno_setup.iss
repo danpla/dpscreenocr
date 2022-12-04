@@ -33,7 +33,8 @@ OutputDir=.
 #define OUTPUT_SUFFIX 32
 #endif
 
-OutputBaseFilename={#APP_FILE_NAME}-{#APP_VERSION}-win{#OUTPUT_SUFFIX}
+; We use APP_NAME instead of APP_FILE_NAME to match CPack output.
+OutputBaseFilename={#APP_NAME}-{#APP_VERSION}-win{#OUTPUT_SUFFIX}
 
 DefaultDirName={autopf}\{#APP_NAME}
 DisableProgramGroupPage=yes
