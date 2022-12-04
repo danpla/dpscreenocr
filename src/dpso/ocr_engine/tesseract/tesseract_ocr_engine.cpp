@@ -181,7 +181,7 @@ OcrResult TesseractOcr::recognize(
     tess.Recognize(&cancelData.textDesc);
 
     if (cancelData.cancelled)
-        return {OcrResult::Status::terminated, nullptr};
+        return {OcrResult::Status::terminated, ""};
 
     std::unique_ptr<char[]> text{tess.GetUTF8Text()};
     if (!text)
