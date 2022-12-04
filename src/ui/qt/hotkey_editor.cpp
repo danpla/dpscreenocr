@@ -53,9 +53,7 @@ HotkeyEditor::HotkeyEditor(
             continue;
 
         const DpsoHotkey keyHotkey{key, dpsoKeyModNone};
-        const auto* keyName = dpsoHotkeyToString(&keyHotkey);
-
-        keyCombo->addItem(keyName, key);
+        keyCombo->addItem(dpsoHotkeyToString(&keyHotkey), key);
 
         if (key == hotkey.key)
             keyCombo->setCurrentIndex(keyCombo->count() - 1);
