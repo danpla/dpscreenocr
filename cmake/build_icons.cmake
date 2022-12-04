@@ -29,7 +29,12 @@ function(build_icons dst_dir)
 
     set(SIZES)
     if(INCLUDE_ALL_SIZES)
-        file(GLOB SIZE_DIRS RELATIVE "${SRC_DIR}" "${SRC_DIR}/*")
+        file(
+            GLOB
+            SIZE_DIRS
+            RELATIVE "${SRC_DIR}"
+            CONFIGURE_DEPENDS
+            "${SRC_DIR}/*")
         foreach(DIR ${SIZE_DIRS})
             string(REGEX MATCH "^([0-9]+)$" _ "${DIR}")
             if (CMAKE_MATCH_1)
@@ -48,11 +53,13 @@ function(build_icons dst_dir)
         return()
     endif()
 
-    set(TARGET_DEPENDENCIES)
-
     list(SORT SIZES)
+
+    set(DST_FILES)
     foreach(SIZE ${SIZES})
-        file(GLOB SRC_FILES "${SRC_DIR}/${SIZE}/*")
+        file(GLOB SRC_FILES CONFIGURE_DEPENDS "${SRC_DIR}/${SIZE}/*")
+        list(SORT SRC_FILES)
+
         foreach(SRC_FILE ${SRC_FILES})
             get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
             set(DST_FILE "${dst_dir}/${SIZE}/${SRC_FILE_NAME}")
@@ -65,9 +72,9 @@ function(build_icons dst_dir)
                 DEPENDS "${SRC_FILE}"
                 VERBATIM)
 
-            list(APPEND TARGET_DEPENDENCIES "${DST_FILE}")
+            list(APPEND DST_FILES "${DST_FILE}")
         endforeach()
     endforeach()
 
-    add_custom_target(icons ALL DEPENDS ${TARGET_DEPENDENCIES})
+    add_custom_target(icons ALL DEPENDS ${DST_FILES})
 endfunction()

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.16)
 
 project(dpso)
 
@@ -6,30 +6,7 @@ option(
     DPSO_FORCE_TIMING
     "Force code timing (dpso::CodeTimer) even in release mode"
     NO)
-
-set(BACKEND_SRCS)
-if(UNIX AND NOT APPLE)
-    list(
-        APPEND BACKEND_SRCS
-        backend/x11/x11_backend.cpp
-        backend/x11/x11_key_manager.cpp
-        backend/x11/x11_screenshot.cpp
-        backend/x11/x11_selection.cpp)
-elseif(WIN32)
-    list(
-        APPEND BACKEND_SRCS
-        backend/windows/execution_layer/action_executor.cpp
-        backend/windows/execution_layer/backend_executor.cpp
-        backend/windows/execution_layer/key_manager_executor.cpp
-        backend/windows/execution_layer/selection_executor.cpp
-        backend/windows/utils/error.cpp
-        backend/windows/windows_backend.cpp
-        backend/windows/windows_key_manager.cpp
-        backend/windows/windows_screenshot.cpp
-        backend/windows/windows_selection.cpp)
-else()
-    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
-endif()
+mark_as_advanced(DPSO_FORCE_TIMING)
 
 add_library(
     dpso
@@ -53,9 +30,32 @@ add_library(
     progress_tracker.cpp
     selection.cpp
     str.cpp
-    strftime.cpp
+    strftime.cpp)
 
-    ${BACKEND_SRCS})
+if(UNIX AND NOT APPLE)
+    target_sources(
+        dpso
+        PRIVATE
+        backend/x11/x11_backend.cpp
+        backend/x11/x11_key_manager.cpp
+        backend/x11/x11_screenshot.cpp
+        backend/x11/x11_selection.cpp)
+elseif(WIN32)
+    target_sources(
+        dpso
+        PRIVATE
+        backend/windows/execution_layer/action_executor.cpp
+        backend/windows/execution_layer/backend_executor.cpp
+        backend/windows/execution_layer/key_manager_executor.cpp
+        backend/windows/execution_layer/selection_executor.cpp
+        backend/windows/utils/error.cpp
+        backend/windows/windows_backend.cpp
+        backend/windows/windows_key_manager.cpp
+        backend/windows/windows_screenshot.cpp
+        backend/windows/windows_selection.cpp)
+else()
+    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
+endif()
 
 target_compile_definitions(
     dpso
@@ -77,14 +77,10 @@ target_include_directories(dpso PRIVATE . PUBLIC ..)
 add_subdirectory(
     ../thirdparty/stb_image_resize
     "${CMAKE_CURRENT_BINARY_DIR}/src/thirdparty/stb_image_resize")
-target_link_libraries(dpso stb_image_resize)
+target_link_libraries(dpso PRIVATE stb_image_resize)
 
-set(CMAKE_THREAD_PREFER_PTHREAD True)
 find_package(Threads REQUIRED)
-if(CMAKE_USE_PTHREADS_INIT)
-    target_compile_options(dpso PRIVATE -pthread)
-endif()
-target_link_libraries(dpso ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(dpso PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)
@@ -94,35 +90,35 @@ if(UNIX AND NOT APPLE)
 
     target_include_directories(
         dpso PRIVATE ${X11_INCLUDE_DIR} ${X11_Xshape_INCLUDE_PATH})
-    target_link_libraries(dpso ${X11_LIBRARIES} ${X11_Xext_LIB})
+    target_link_libraries(dpso PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
 endif()
 
 find_package(PkgConfig REQUIRED)
 if(PKG_CONFIG_FOUND)
-    pkg_search_module(TESSERACT REQUIRED QUIET tesseract>=4.1.0)
+    pkg_search_module(TESSERACT REQUIRED tesseract>=4.1.0)
 endif()
 
 # TODO: If Tesseract was installed via CMake, we can also try to use
 # find_package(Tesseract). For now, we only build on various Linux
 # distributions and MSYS2, all of which use pkg-config.
 
-string(FIND "${TESSERACT_VERSION}" "." DOT_POS)
+string(FIND "${TESSERACT_VERSION}" "." TMP_DOT_POS)
 string(
     SUBSTRING
     "${TESSERACT_VERSION}"
     0
-    ${DOT_POS}
-    TESSERACT_VERSION_MAJOR)
-unset(DOT_POS)
+    ${TMP_DOT_POS}
+    TMP_TESSERACT_VERSION_MAJOR)
+unset(TMP_DOT_POS)
 
 set(DPSO_TESSERACT_VERSION_MAJOR
-    "${TESSERACT_VERSION_MAJOR}"
+    "${TMP_TESSERACT_VERSION_MAJOR}"
     CACHE
     STRING
     "Major version of the found Tesseract library"
     FORCE)
 mark_as_advanced(DPSO_TESSERACT_VERSION_MAJOR)
-unset(TESSERACT_VERSION_MAJOR)
+unset(TMP_TESSERACT_VERSION_MAJOR)
 
 target_include_directories(dpso PRIVATE ${TESSERACT_INCLUDE_DIRS})
-target_link_libraries(dpso ${TESSERACT_LIBRARIES})
+target_link_libraries(dpso PRIVATE ${TESSERACT_LIBRARIES})

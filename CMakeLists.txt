@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 2.8.12)
+# 3.16 is the version available in Ubuntu 20.04. By coincidence, this
+# is also the minimum version we need on Windows for file(
+# GET_RUNTIME_DEPENDENCIES).
+cmake_minimum_required(VERSION 3.16)
 
 project(dpScreenOCR)
 

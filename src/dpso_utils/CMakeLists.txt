@@ -1,31 +1,6 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.16)
 
 project(dpso_utils)
-
-set(PLATFORM_SRCS)
-
-if(UNIX)
-    list(
-        APPEND PLATFORM_SRCS
-        exec_posix.cpp
-        os_unix.cpp
-        unix_utils.cpp)
-endif()
-
-if(UNIX AND NOT APPLE)
-    list(
-        APPEND PLATFORM_SRCS
-        user_dirs_unix_xdg.cpp)
-elseif(WIN32)
-    list(
-        APPEND PLATFORM_SRCS
-        exec_windows.cpp
-        os_windows.cpp
-        user_dirs_windows.cpp
-        windows_utils.cpp)
-else()
-    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
-endif()
 
 add_library(
     dpso_utils
@@ -35,9 +10,33 @@ add_library(
     history.cpp
     history_export.cpp
     os.cpp
-    str_format.cpp
+    str_format.cpp)
 
-    ${PLATFORM_SRCS})
+if(UNIX)
+    target_sources(
+        dpso_utils
+        PRIVATE
+        exec_posix.cpp
+        os_unix.cpp
+        unix_utils.cpp)
+endif()
+
+if(UNIX AND NOT APPLE)
+    target_sources(
+        dpso_utils
+        PRIVATE
+        user_dirs_unix_xdg.cpp)
+elseif(WIN32)
+    target_sources(
+        dpso_utils
+        PRIVATE
+        exec_windows.cpp
+        os_windows.cpp
+        user_dirs_windows.cpp
+        windows_utils.cpp)
+else()
+    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
+endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -54,4 +53,4 @@ target_include_directories(dpso_utils PRIVATE . PUBLIC ..)
 if(NOT TARGET dpso)
     add_subdirectory(../dpso "${CMAKE_BINARY_DIR}/src/dpso")
 endif()
-target_link_libraries(dpso_utils dpso)
+target_link_libraries(dpso_utils PUBLIC dpso)

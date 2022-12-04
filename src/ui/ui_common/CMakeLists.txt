@@ -1,5 +1,7 @@
 
-set(SRCS
+add_library(
+    ui_common STATIC
+
     cfg_default_values.cpp
     cfg_keys.cpp
     init_intl.cpp
@@ -9,13 +11,15 @@ set(SRCS
 set(IN_SRCS app_info.cpp file_names.cpp icon_names.cpp)
 
 if(UNIX AND NOT APPLE)
-    list(APPEND SRCS app_dirs_unix.cpp startup_setup_null.cpp)
+    target_sources(
+        ui_common PRIVATE app_dirs_unix.cpp startup_setup_null.cpp)
 
     include(GNUInstallDirs)
     list(APPEND IN_SRCS app_dirs_unix_cfg.h)
 elseif(WIN32)
-    list(
-        APPEND SRCS
+    target_sources(
+        ui_common
+        PRIVATE
         app_dirs_windows.cpp
         startup_setup_windows.cpp)
 else()
@@ -25,18 +29,19 @@ endif()
 list(APPEND IN_SRCS taskbar_config.h)
 if(WIN32)
     set(UI_TASKBAR_WIN 1)
-    list(APPEND SRCS taskbar_windows.cpp)
+    target_sources(ui_common PRIVATE taskbar_windows.cpp)
 else()
     set(UI_TASKBAR_NULL 1)
-    list(APPEND SRCS taskbar_null.cpp)
+    target_sources(ui_common PRIVATE taskbar_null.cpp)
 endif()
 
 if(UNIX AND NOT APPLE)
-    list(APPEND SRCS single_instance_guard_unix.cpp)
+    target_sources(ui_common PRIVATE single_instance_guard_unix.cpp)
 elseif(WIN32)
-    list(APPEND SRCS single_instance_guard_windows.cpp)
+    target_sources(
+        ui_common PRIVATE single_instance_guard_windows.cpp)
 else()
-    list(APPEND SRCS single_instance_guard_null.cpp)
+    target_sources(ui_common PRIVATE single_instance_guard_null.cpp)
 endif()
 
 foreach(IN_SRC ${IN_SRCS})
@@ -44,11 +49,10 @@ foreach(IN_SRC ${IN_SRCS})
 
     get_filename_component(IN_SRC_EXT "${IN_SRC}" EXT)
     if(NOT IN_SRC_EXT STREQUAL ".h")
-        list(APPEND SRCS "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}")
+        target_sources(
+            ui_common PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}")
     endif()
 endforeach()
-
-add_library(ui_common STATIC ${SRCS})
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -75,4 +79,4 @@ if(NOT TARGET dpso_utils)
         ../../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(ui_common dpso dpso_intl dpso_utils)
+target_link_libraries(ui_common PUBLIC dpso dpso_intl dpso_utils)

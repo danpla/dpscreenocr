@@ -37,9 +37,11 @@ function(gen_html_manual dst_dir)
     file(
         GLOB
         SRC_DATA_FILES
+        CONFIGURE_DEPENDS
         "${DOC_DIR}/manual-data/*.png"
         "${DOC_DIR}/manual-data/*.svg"
         "${DOC_DIR}/manual-data/*.css")
+    list(SORT SRC_DATA_FILES)
 
     set(DST_DATA_FILES)
     foreach(SRC_FILE ${SRC_DATA_FILES})

@@ -28,7 +28,7 @@ endfunction()
 function(copy_tessdata src_dir dst_dir)
     cmake_parse_arguments(ARG "OPTIONAL" "" "LANGUAGES" ${ARGN})
 
-    set(TARGET_DEPENDENCIES)
+    set(DST_FILES)
 
     foreach(LANG ${ARG_LANGUAGES})
         set(TRAINEDDATA_NAME "${LANG}.traineddata")
@@ -51,8 +51,8 @@ function(copy_tessdata src_dir dst_dir)
             DEPENDS "${SRC_FILE}"
             VERBATIM)
 
-        list(APPEND TARGET_DEPENDENCIES "${DST_FILE}")
+        list(APPEND DST_FILES "${DST_FILE}")
     endforeach()
 
-    add_custom_target(tessdata_dir ALL DEPENDS ${TARGET_DEPENDENCIES})
+    add_custom_target(tessdata_dir ALL DEPENDS ${DST_FILES})
 endfunction()

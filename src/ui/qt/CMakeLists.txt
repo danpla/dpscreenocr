@@ -2,7 +2,8 @@
 set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 5 or 6")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 5 6)
 
-set(SRCS
+add_executable(
+    dpscreenocr_qt
 
     about.cpp
     action_chooser.cpp
@@ -17,10 +18,9 @@ set(SRCS
 if(WIN32)
     add_subdirectory(
         ../windows_rc "${CMAKE_BINARY_DIR}/src/ui/windows_rc")
-    list(APPEND SRCS $<TARGET_OBJECTS:windows_rc>)
+    target_sources(
+        dpscreenocr_qt PRIVATE SRCS $<TARGET_OBJECTS:windows_rc>)
 endif()
-
-add_executable(dpscreenocr_qt ${SRCS})
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")

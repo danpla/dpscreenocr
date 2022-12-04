@@ -36,6 +36,7 @@
 
 set(ICONS_DIR "@CMAKE_BINARY_DIR@/icons")
 file(GLOB SIZES RELATIVE "${ICONS_DIR}" "${ICONS_DIR}/*")
+list(SORT SIZES)
 
 foreach(SIZE ${SIZES})
     set(DST_SIZE_DIR)

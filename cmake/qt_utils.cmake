@@ -41,7 +41,7 @@ function(copy_qt_windows_plugins src_dir dst_dir)
         "platforms/qwindows.dll"
         "styles/qwindowsvistastyle.dll")
 
-    set(TARGET_DEPENDENCIES)
+    set(DST_FILES)
 
     foreach(PLUGIN ${PLUGINS})
         set(SRC_FILE "${src_dir}/${PLUGIN}")
@@ -53,9 +53,9 @@ function(copy_qt_windows_plugins src_dir dst_dir)
                 "${CMAKE_COMMAND}" -E copy "${SRC_FILE}" "${DST_FILE}"
             DEPENDS "${SRC_FILE}"
             VERBATIM)
-        list(APPEND TARGET_DEPENDENCIES "${DST_FILE}")
+        list(APPEND DST_FILES "${DST_FILE}")
     endforeach()
 
     add_custom_target(
-        qt_windows_plugins ALL DEPENDS ${TARGET_DEPENDENCIES})
+        qt_windows_plugins ALL DEPENDS ${DST_FILES})
 endfunction()

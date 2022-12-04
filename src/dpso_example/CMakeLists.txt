@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.16)
 
 project(dpso-example)
 
@@ -7,8 +7,7 @@ add_executable(dpso_example main.c)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpso_example
-        PRIVATE -std=c99 -Wall -Wextra -pedantic -Wstrict-prototypes)
+        dpso_example PRIVATE -std=c99 -Wall -Wextra -pedantic)
 endif()
 
 set_target_properties(
