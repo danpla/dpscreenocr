@@ -80,21 +80,6 @@ struct Link {
     bool terminateJobs;
     bool terminateThread;
 
-    void reset()
-    {
-        jobQueue = {};
-        jobActive = false;
-
-        waitingForResults = false;
-
-        progress = {};
-
-        results.clear();
-
-        terminateJobs = false;
-        terminateThread = false;
-    }
-
     bool jobsPending() const
     {
         return !jobQueue.empty() || jobActive;
@@ -655,7 +640,7 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
         ocr->returnedResults.push_back(
             {result.ocrResult.text.c_str(),
                 result.ocrResult.text.size(),
-                result.timestamp.data()});
+                result.timestamp.c_str()});
 
     results->items = ocr->returnedResults.data();
     results->numItems = ocr->returnedResults.size();
