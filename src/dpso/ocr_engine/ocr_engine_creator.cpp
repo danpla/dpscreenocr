@@ -5,6 +5,7 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 static const OcrEngineCreator* const creators[] = {
@@ -24,4 +25,5 @@ std::size_t OcrEngineCreator::getCount()
 }
 
 
+}
 }

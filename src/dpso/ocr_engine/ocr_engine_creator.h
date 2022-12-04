@@ -7,6 +7,7 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 class OcrEngine;
@@ -91,4 +92,5 @@ public:
 };
 
 
+}
 }

@@ -5,6 +5,7 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 /**
@@ -21,4 +22,5 @@ namespace dpso {
 std::size_t prettifyTesseractText(char* text);
 
 
+}
 }

@@ -10,6 +10,7 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 // Note that we use TessBaseAPI::Version() instead of macros
@@ -63,4 +64,5 @@ const OcrEngineCreator& getTesseractOcrEngineCreator()
 }
 
 
+}
 }

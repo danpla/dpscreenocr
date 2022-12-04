@@ -33,7 +33,7 @@ static void testPrettifyText()
 
     for (const auto& test : tests) {
         std::string str = test.original;
-        const auto strLen = dpso::prettifyTesseractText(&str[0]);
+        const auto strLen = dpso::ocr::prettifyTesseractText(&str[0]);
 
         if (std::strcmp(str.c_str(), test.prettified) != 0)
             test::failure(

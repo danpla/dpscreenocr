@@ -7,10 +7,12 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 std::unique_ptr<OcrEngine> createTesseractOcrEngine(
     const OcrEngineArgs& args);
 
 
+}
 }

@@ -7,6 +7,7 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 std::size_t prettifyTesseractText(char* text)
@@ -78,4 +79,5 @@ std::size_t prettifyTesseractText(char* text)
 }
 
 
+}
 }

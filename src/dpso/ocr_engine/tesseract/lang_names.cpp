@@ -7,6 +7,7 @@
 
 
 namespace dpso {
+namespace ocr {
 namespace {
 
 
@@ -179,4 +180,5 @@ const char* getTesseractLangName(const char* langCode)
 }
 
 
+}
 }

@@ -8,6 +8,7 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 /**
@@ -156,4 +157,5 @@ public:
 };
 
 
+}
 }

@@ -48,13 +48,13 @@ struct Lang {
 struct Job {
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     std::vector<int> langIndices;
-    dpso::OcrFeatures ocrFeatures;
+    dpso::ocr::OcrFeatures ocrFeatures;
     std::string timestamp;
 };
 
 
 struct JobResult {
-    dpso::OcrResult ocrResult;
+    dpso::ocr::OcrResult ocrResult;
     std::string timestamp;
 };
 
@@ -107,7 +107,7 @@ struct Link {
 
 int dpsoOcrGetNumEngines(void)
 {
-    return dpso::OcrEngineCreator::getCount();
+    return dpso::ocr::OcrEngineCreator::getCount();
 }
 
 
@@ -115,23 +115,23 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
 {
     if (idx < 0
             || static_cast<std::size_t>(idx)
-                >= dpso::OcrEngineCreator::getCount()
+                >= dpso::ocr::OcrEngineCreator::getCount()
             || !info)
         return;
 
-    const auto& internalInfo = dpso::OcrEngineCreator::get(
+    const auto& internalInfo = dpso::ocr::OcrEngineCreator::get(
         idx).getInfo();
 
     DpsoOcrEngineDataDirPreference dataDirPreference{};
     switch (internalInfo.dataDirPreference) {
-    case dpso::OcrEngineInfo::DataDirPreference::noDataDir:
+    case dpso::ocr::OcrEngineInfo::DataDirPreference::noDataDir:
         dataDirPreference = DpsoOcrEngineDataDirPreferenceNoDataDir;
         break;
-    case dpso::OcrEngineInfo::DataDirPreference::preferDefault:
+    case dpso::ocr::OcrEngineInfo::DataDirPreference::preferDefault:
         dataDirPreference =
             DpsoOcrEngineDataDirPreferencePreferDefault;
         break;
-    case dpso::OcrEngineInfo::DataDirPreference::preferExplicit:
+    case dpso::ocr::OcrEngineInfo::DataDirPreference::preferExplicit:
         dataDirPreference =
             DpsoOcrEngineDataDirPreferencePreferExplicit;
         break;
@@ -147,7 +147,7 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
 
 
 struct DpsoOcr {
-    std::unique_ptr<dpso::OcrEngine> engine;
+    std::unique_ptr<dpso::ocr::OcrEngine> engine;
 
     std::vector<Lang> langs;
     int numActiveLangs;
@@ -194,12 +194,12 @@ DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
 
     if (ocrArgs->engineIdx < 0
             || static_cast<std::size_t>(ocrArgs->engineIdx)
-                >= dpso::OcrEngineCreator::getCount()) {
+                >= dpso::ocr::OcrEngineCreator::getCount()) {
         dpsoSetError("ocrArgs->engineIdx is out of bounds");
         return nullptr;
     }
 
-    const auto& ocrEngineCreator = dpso::OcrEngineCreator::get(
+    const auto& ocrEngineCreator = dpso::ocr::OcrEngineCreator::get(
         ocrArgs->engineIdx);
 
     // We don't use OcrUPtr here because dpsoOcrDelete() expects
@@ -208,7 +208,7 @@ DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
 
     try {
         ocr->engine = ocrEngineCreator.create({ocrArgs->dataDir});
-    } catch (dpso::OcrEngineError& e) {
+    } catch (dpso::ocr::OcrEngineError& e) {
         dpsoSetError("Can't create OCR engine: %s", e.what());
         return nullptr;
     }
@@ -355,7 +355,7 @@ static std::string createTimestamp()
 }
 
 
-static dpso::OcrImage prepareScreenshot(
+static dpso::ocr::OcrImage prepareScreenshot(
     DpsoOcr& ocr,
     const dpso::backend::Screenshot& screenshot,
     dpso::ProgressTracker& progressTracker)
@@ -583,9 +583,9 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         screenshot->getWidth(),
         screenshot->getHeight());
 
-    dpso::OcrFeatures ocrFeatures{};
+    dpso::ocr::OcrFeatures ocrFeatures{};
     if (jobArgs->flags & dpsoOcrJobTextSegmentation)
-        ocrFeatures |= dpso::ocrFeatureTextSegmentation;
+        ocrFeatures |= dpso::ocr::ocrFeatureTextSegmentation;
 
     Job job{
         std::move(screenshot),

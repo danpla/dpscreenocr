@@ -3,6 +3,7 @@
 
 
 namespace dpso {
+namespace ocr {
 
 
 class OcrEngineCreator;
@@ -11,4 +12,5 @@ class OcrEngineCreator;
 const OcrEngineCreator& getTesseractOcrEngineCreator();
 
 
+}
 }

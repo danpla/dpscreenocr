@@ -30,6 +30,7 @@
 
 
 namespace dpso {
+namespace ocr {
 namespace {
 
 
@@ -285,4 +286,5 @@ std::unique_ptr<OcrEngine> createTesseractOcrEngine(
 }
 
 
+}
 }
