@@ -32,6 +32,9 @@
 static dpso::backend::Backend* backend;
 
 
+const auto threadIdleTime = std::chrono::milliseconds(10);
+
+
 namespace {
 
 
@@ -512,9 +515,9 @@ static void threadLoop(DpsoOcr* ocr)
 
                 ocr->link.jobActive = true;
 
-                // Although processJob() will reset result to zero,
+                // Although processJob() will reset progress to zero,
                 // this should also be done before incrementing
-                // curJob so we don't return the progress of the
+                // curJob so that we don't return the progress of the
                 // previous job from dpsoOcrGetProgress() before
                 // the new one starts.
                 ocr->link.progress.curJobProgress = 0;
@@ -527,8 +530,7 @@ static void threadLoop(DpsoOcr* ocr)
         }
 
         if (!job.screenshot) {
-            std::this_thread::sleep_for(
-                std::chrono::milliseconds(1000 / 60));
+            std::this_thread::sleep_for(threadIdleTime);
             continue;
         }
 
@@ -669,8 +671,7 @@ static void waitJobsToFinish(const DpsoOcr& ocr)
                 break;
         }
 
-        std::this_thread::sleep_for(
-            std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(threadIdleTime);
     }
 }
 
