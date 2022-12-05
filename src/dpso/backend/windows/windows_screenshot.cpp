@@ -128,7 +128,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
     }
 
     BITMAPINFOHEADER bi;
-    bi.biSize = sizeof(BITMAPINFOHEADER);
+    bi.biSize = sizeof(bi);
     bi.biWidth = captureRect.w;
     bi.biHeight = -captureRect.h;  // Invert for top-down rows order.
     bi.biPlanes = 1;

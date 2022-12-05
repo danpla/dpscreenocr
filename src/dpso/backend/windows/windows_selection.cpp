@@ -162,7 +162,7 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
         return;
 
     WNDCLASSEXW wcx;
-    wcx.cbSize = sizeof(WNDCLASSEX);
+    wcx.cbSize = sizeof(wcx);
     wcx.style = CS_VREDRAW | CS_HREDRAW;
     wcx.lpfnWndProc = wndProc;
     wcx.cbClsExtra = 0;
