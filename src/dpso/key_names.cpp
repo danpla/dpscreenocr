@@ -1,13 +1,14 @@
 
 #include "key_names.h"
 
+#include "array_utils.h"
 #include "str.h"
 
 
 namespace dpso {
 
 
-const char* const keyNames[dpsoNumKeys] = {
+const auto keyNames = makeArray<const char*, dpsoNumKeys>({
     "F1",
     "F2",
     "F3",
@@ -110,7 +111,7 @@ const char* const keyNames[dpsoNumKeys] = {
     "Keypad 9",
     "Keypad 0",
     "Keypad .",
-};
+});
 
 
 const char* keyToString(DpsoKey key)
@@ -157,12 +158,13 @@ const auto nativeKeyModWinName =
     #endif
 
 
-const char* const keyModWinNames[numKeyModWinNames + 1] = {
+const auto keyModWinNames
+= makeArray<const char*, numKeyModWinNames + 1>({
     "Windows",
     "Command",
     "Super",
     nullptr
-};
+});
 
 
 enum KeyModAltName {
@@ -180,11 +182,12 @@ const auto nativeKeyModAltName =
     #endif
 
 
-const char* const keyModAltNames[numKeyModAltNames + 1] = {
+const auto keyModAltNames
+= makeArray<const char*, numKeyModAltNames + 1>({
     "Alt",
     "Option",
     nullptr
-};
+});
 
 
 const char* const keyModCtrlNames[] = {"Ctrl", nullptr};
@@ -200,9 +203,9 @@ struct ModName {
 
 const ModName modNames[] = {
     {keyModCtrlNames, 0, dpsoKeyModCtrl},
-    {keyModAltNames, nativeKeyModAltName, dpsoKeyModAlt},
+    {keyModAltNames.data(), nativeKeyModAltName, dpsoKeyModAlt},
     {keyModShiftNames, 0, dpsoKeyModShift},
-    {keyModWinNames, nativeKeyModWinName, dpsoKeyModWin}
+    {keyModWinNames.data(), nativeKeyModWinName, dpsoKeyModWin}
 };
 
 

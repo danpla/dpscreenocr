@@ -388,8 +388,7 @@ void WindowsSelection::updatePens()
 
     pens[1].reset(ExtCreatePen(
         commonStyle | PS_USERSTYLE, borderWidth, &lb,
-        sizeof(dashPenPattern) / sizeof(*dashPenPattern),
-        dashPenPattern));
+        2, dashPenPattern));
 }
 
 

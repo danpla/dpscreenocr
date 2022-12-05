@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 
+#include "dpso/array_utils.h"
 #include "dpso/error.h"
 #include "dpso_utils/history.h"
 
@@ -82,7 +83,7 @@ static void testIO(bool append)
         },
     };
 
-    static const auto numTests = sizeof(tests) / sizeof(*tests);
+    const auto numTests = dpso::getSize(tests);
 
     dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
     if (!history) {

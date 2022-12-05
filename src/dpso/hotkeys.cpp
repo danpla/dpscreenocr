@@ -4,6 +4,7 @@
 #include <cctype>
 #include <string>
 
+#include "array_utils.h"
 #include "backend/backend.h"
 #include "backend/key_manager.h"
 #include "key_names.h"
@@ -107,7 +108,8 @@ DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey)
 
 DpsoKeyMod dpsoGetKeyModAt(int idx)
 {
-    static const DpsoKeyMod keyModsOrder[dpsoNumKeyMods] = {
+    static const auto keyModsOrder
+    = dpso::makeArray<DpsoKeyMod, dpsoNumKeyMods>({
         // Apple order (Control, Option, Shift, Command) matches
         // our enum:
         // https://developer.apple.com/design/human-interface-guidelines/macos/user-interaction/keyboard/
@@ -115,7 +117,7 @@ DpsoKeyMod dpsoGetKeyModAt(int idx)
         // Design guides for other platforms and desktop environments
         // don't seem to mention the order of modifiers.
         dpsoKeyModCtrl, dpsoKeyModAlt, dpsoKeyModShift, dpsoKeyModWin
-    };
+    });
 
     if (idx < 0 || idx >= dpsoNumKeyMods)
         return dpsoKeyModNone;

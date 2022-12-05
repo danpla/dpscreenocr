@@ -1,6 +1,7 @@
 
 #include "ocr_engine/ocr_engine_creator.h"
 
+#include "array_utils.h"
 #include "ocr_engine/tesseract/tesseract_ocr_engine_creator.h"
 
 
@@ -21,7 +22,7 @@ const OcrEngineCreator& OcrEngineCreator::get(std::size_t idx)
 
 std::size_t OcrEngineCreator::getCount()
 {
-    return sizeof(creators) / sizeof(*creators);
+    return getSize(creators);
 }
 
 

@@ -3,6 +3,8 @@
 
 #include <X11/keysym.h>
 
+#include "array_utils.h"
+
 
 namespace dpso {
 namespace backend {
@@ -162,7 +164,7 @@ void X11KeyManager::handleEvent(const XEvent& event)
 }
 
 
-const KeySym keyToKeySym[dpsoNumKeys] = {
+const auto keyToKeySym = makeArray<KeySym, dpsoNumKeys>({
     XK_F1,
     XK_F2,
     XK_F3,
@@ -265,7 +267,7 @@ const KeySym keyToKeySym[dpsoNumKeys] = {
     XK_KP_Prior,
     XK_KP_Insert,
     XK_KP_Delete,
-};
+});
 
 
 static KeyCode keyToKeyCode(Display* display, DpsoKey key)

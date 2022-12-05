@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <stdexcept>
 
+#include "array_utils.h"
 #include "backend/backend.h"
 #include "backend/backend_error.h"
 
@@ -50,7 +51,7 @@ const Module modules[] = {
 #undef MODULE
 
 
-const auto numModules = sizeof(modules) / sizeof(*modules);
+const auto numModules = dpso::getSize(modules);
 
 
 bool dpsoInit(void)

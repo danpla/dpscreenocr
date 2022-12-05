@@ -6,6 +6,8 @@
 #include <cstring>
 #include <string>
 
+#include "array_utils.h"
+
 
 namespace dpso {
 namespace backend {
@@ -73,8 +75,7 @@ const wchar_t atomNamePrefix[] =
     #endif
 ;
 
-const auto atomNamePrefixLen =
-    sizeof(atomNamePrefix) / sizeof(*atomNamePrefix) - 1;
+const auto atomNamePrefixLen = getSize(atomNamePrefix) - 1;
 
 
 static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
@@ -265,7 +266,7 @@ HotkeyBinding* WindowsKeyManager::findBinding(
 }
 
 
-const UINT keyToVk[dpsoNumKeys] = {
+const auto keyToVk = makeArray<UINT, dpsoNumKeys>({
     VK_F1,
     VK_F2,
     VK_F3,
@@ -368,7 +369,7 @@ const UINT keyToVk[dpsoNumKeys] = {
     VK_NUMPAD9,
     VK_NUMPAD0,
     VK_DELETE,
-};
+});
 
 
 static UINT dpsoKeyToWinKey(DpsoKey key)
