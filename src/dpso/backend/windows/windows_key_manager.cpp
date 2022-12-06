@@ -90,11 +90,11 @@ static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
 static DpsoHotkey atomNameToHotkey(const wchar_t* name)
 {
     if (std::wcsncmp(name, atomNamePrefix, atomNamePrefixLen) != 0)
-        return {dpsoUnknownKey, dpsoKeyModNone};
+        return dpsoEmptyHotkey;
 
     const auto atom = _wtoi(name + atomNamePrefixLen);
     if (atom < 1)
-        return {dpsoUnknownKey, dpsoKeyModNone};
+        return dpsoEmptyHotkey;
 
     return {
         static_cast<DpsoKey>((atom & keyMask) >> modsBits),

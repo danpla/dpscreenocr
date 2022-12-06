@@ -16,9 +16,9 @@ add_library(
     error.cpp
     geometry.cpp
     geometry_c.cpp
-    hotkeys.cpp
     img.cpp
-    key_names.cpp
+    key_manager.cpp
+    keys.cpp
     ocr.cpp
     ocr_engine/ocr_engine_creator.cpp
     ocr_engine/tesseract/lang_names.cpp

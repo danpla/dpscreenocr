@@ -92,10 +92,8 @@ void dpsoCfgGetHotkey(
 
     if (const auto* hotkeyStr = dpsoCfgGetStr(cfg, key, nullptr))
         dpsoHotkeyFromString(hotkeyStr, hotkey);
-    else {
-        const DpsoHotkey noneHotkey{dpsoUnknownKey, dpsoKeyModNone};
-        *hotkey = defaultHotkey ? *defaultHotkey : noneHotkey;
-    }
+    else
+        *hotkey = defaultHotkey ? *defaultHotkey : dpsoEmptyHotkey;
 }
 
 

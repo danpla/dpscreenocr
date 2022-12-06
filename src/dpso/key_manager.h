@@ -1,14 +1,14 @@
 
 /**
  * \file
- * Hotkeys management
+ * Hotkey management
  */
 
 #pragma once
 
 #include <stdbool.h>
 
-#include "key_types.h"
+#include "keys.h"
 
 
 #ifdef __cplusplus
@@ -82,7 +82,7 @@ void dpsoUnbindAction(DpsoHotkeyAction action);
  * Find hotkey bound to action.
  *
  * If no hotkey is bound to the action, the function returns
- * {dpsoUnknownKey, dpsoKeyModNone}.
+ * {dpsoUnknownKey, dpsoKeyModNone} (dpsoEmptyHotkey).
  *
  * If multiple hotkeys are bound to the same action, which one is
  * returned depends on the implementation.
@@ -97,53 +97,6 @@ void dpsoFindActionHotkey(
  * Returns -1 if the hotkey is not bound.
  */
 DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey);
-
-
-/**
- * Get key modifiers in platform-specific order.
- *
- * Iterating from 0 to dpsoNumKeyMods will give you all key modifiers
- * in a platforms-specific order. Using an index outside the range
- * will result in dpsoKeyModNone.
- */
-DpsoKeyMod dpsoGetKeyModAt(int idx);
-
-
-/**
- * Convert hotkey to string.
- *
- * The function returns the string containing modifiers followed by
- * the key separated by " + ", for example, "Ctrl + Shift + F1". If
- * you need to query the name of a single modifier key, set key to
- * dpsoUnknownKey. Using dpsoUnknownKey with dpsoKeyModNone will give
- * an empty string.
- *
- * Some names depend on the platform. The name of the Windows key is
- * "Windows" on Windows, "Command" on macOS, and "Super" on Unix-like
- * systems. Alt key is "Option" on macOS. This function always
- * returns the platform-specific name, while dpsoHotkeyFromString()
- * accepts all the mentioned alternatives regardless of the current
- * platform.
- */
-const char* dpsoHotkeyToString(const DpsoHotkey* hotkey);
-
-
-/**
- * Convert string to hotkey.
- *
- * dpsoHotkeyFromString() accepts strings in the format created by
- * dpsoHotkeyToString(). The function ignores letter case, ignores
- * whitespace (leading, trailing, or around "+" separator), allows
- * any order of modifiers, and accepts all known platform-specific
- * modifier names regardless of the current platform (see
- * dpsoHotkeyToString()). The only requirement is that a key name
- * (if any) should always be after the modifiers.
- *
- * Keep in mind that a space within a key name is not ignored. For
- * example "Page Up" is a valid key name, but "PageUp" or "Page   Up"
- * is not.
- */
-void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey);
 
 
 #ifdef __cplusplus

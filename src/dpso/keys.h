@@ -1,7 +1,10 @@
 
-/* This header is a part of the C interface. */
-
 #pragma once
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 /**
@@ -146,13 +149,82 @@ enum {
 typedef unsigned DpsoKeyMods;
 
 
+/**
+ * Get key modifiers in platform-specific order.
+ *
+ * Iterating from 0 to dpsoNumKeyMods will give you all key modifiers
+ * in a platforms-specific order. Using an index outside the range
+ * will result in dpsoKeyModNone.
+ */
+DpsoKeyMod dpsoGetKeyModAt(int idx);
+
+
 typedef struct DpsoHotkey {
     DpsoKey key;
     DpsoKeyMods mods;
 } DpsoHotkey;
 
 
+/**
+ * DpsoHotkey{dpsoUnknownKey, dpsoKeyModNone}
+ */
+extern const DpsoHotkey dpsoEmptyHotkey;
+
+
+/**
+ * Convert hotkey to string.
+ *
+ * The function returns the string containing modifiers followed by
+ * the key separated by " + ", for example, "Ctrl + Shift + F1". If
+ * you need to query the name of a single modifier key, set key to
+ * dpsoUnknownKey. Using dpsoUnknownKey with dpsoKeyModNone will give
+ * an empty string.
+ *
+ * Some names depend on the platform. The name of the Windows key is
+ * "Windows" on Windows, "Command" on macOS, and "Super" on Unix-like
+ * systems. Alt key is "Option" on macOS. This function always
+ * returns the platform-specific name, while dpsoHotkeyFromString()
+ * accepts all the mentioned alternatives regardless of the current
+ * platform.
+ */
+const char* dpsoHotkeyToString(const DpsoHotkey* hotkey);
+
+
+/**
+ * Convert string to hotkey.
+ *
+ * dpsoHotkeyFromString() accepts strings in the format created by
+ * dpsoHotkeyToString(). The function ignores letter case, ignores
+ * whitespace (leading, trailing, or around "+" separator), allows
+ * any order of modifiers, and accepts all known platform-specific
+ * modifier names regardless of the current platform. The only
+ * requirement is that a key name (if any) should always be after the
+ * modifiers.
+ *
+ * Keep in mind that whitespace within key names is not ignored. For
+ * example "Page Up" is a valid key name, but "PageUp" or "Page   Up"
+ * is not.
+ */
+void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey);
+
+
+/**
+ * Hotkey action.
+ *
+ * Hotkey action is an integral action id you associate with a hotkey
+ * on dpsoBindHotkey() call. Actions >= 0 are for the user. -1 is
+ * used to report various conditions, like "no hotkey was pressed"
+ * for dpsoGetLastHotkeyAction(), or "hotkey is not bound" for
+ * dpsoFindHotkeyAction().
+ *
+ * Routines that take DpsoHotkeyAction will do nothing if the action
+ * is < 0.
+ */
+typedef int DpsoHotkeyAction;
+
+
 #ifdef __cplusplus
+}
 
 
 inline bool operator==(const DpsoHotkey& a, const DpsoHotkey& b)
@@ -169,17 +241,3 @@ inline bool operator!=(const DpsoHotkey& a, const DpsoHotkey& b)
 
 #endif
 
-
-/**
- * Hotkey action.
- *
- * Hotkey action is an integral action id you associate with a hotkey
- * on dpsoBindHotkey() call. Actions >= 0 are for the user. -1 is
- * used to report various conditions, like "no hotkey was pressed"
- * for dpsoGetLastHotkeyAction(), or "hotkey is not bound" for
- * dpsoFindHotkeyAction().
- *
- * Routines that take DpsoHotkeyAction will do nothing if the action
- * is < 0.
- */
-typedef int DpsoHotkeyAction;

@@ -270,7 +270,6 @@ static void getHotkey(const DpsoCfg* cfg)
     const DpsoHotkey defaultHotkey{dpsoKeyF1, dpsoKeyModWin};
 
     testGetHotkey(cfg, nonexistentKey, defaultHotkey, defaultHotkey);
-
     for (const auto& test : hotkeyTests)
         testGetHotkey(cfg, test.key, test.hotkey, defaultHotkey);
 }
