@@ -390,37 +390,6 @@ the author by email; the link is at the bottom of the
       This is not allowed because there is no way to safely pass them
       arbitrary text. Please use another scripting language instead.
 
-*   **(Unix) Recognition is very slow**
-
-    On some hardware, OpenMP multithreading in Tesseract 4 and 5
-    results in dramatically slow recognition. The solution is to
-    set the `OMP_THREAD_LIMIT` environment variable to `1` before
-    running dpScreenOCR.
-
-    It is not recommended to set `OMP_THREAD_LIMIT` globally because
-    this  will affect other programs using OpenMP. Instead, create a
-    helper script that sets the variable and then runs dpScreenOCR,
-    e.g. via `env OMP_THREAD_LIMIT=1 dpscreenocr`. An even more
-    convenient solution is to add an item to the applications menu by
-    making a desktop entry that will either execute the helper script
-    or will set `OMP_THREAD_LIMIT` itself:
-
-    1.  Copy `dpscreenocr.desktop` from `/usr/share/applications/`
-        or `/usr/local/share/applications/` to
-        `~/.local/share/applications/` and rename it to
-        `dpscreenocr-no-openmp.desktop`.
-
-    2.  Open `dpscreenocr-no-openmp.desktop` in a text editor and
-        change `Name=dpScreenOCR` to `Name=dpScreenOCR (No OpenMP)`
-        and `Exec=dpscreenocr` to
-        `Exec=env OMP_THREAD_LIMIT=1 dpscreenocr`. You can also tell
-        `Exec` to launch a helper script instead, e.g.
-        `Exec=/home/your_name/your_script.sh`.
-
-    4.  If the entry does not appear in the applications menu, run
-        `update-desktop-database ~/.local/share/applications` or
-        re-login.
-
 *   **(Unix) No languages**
 
     Make sure that the TESSDATA_PREFIX environment variable is either

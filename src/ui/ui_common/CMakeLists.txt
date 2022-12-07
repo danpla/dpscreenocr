@@ -44,6 +44,12 @@ else()
     target_sources(ui_common PRIVATE single_instance_guard_null.cpp)
 endif()
 
+if(UNIX AND NOT APPLE)
+    target_sources(ui_common PRIVATE prepare_environment_unix.cpp)
+else()
+    target_sources(ui_common PRIVATE prepare_environment_null.cpp)
+endif()
+
 foreach(IN_SRC ${IN_SRCS})
     configure_file("${IN_SRC}.in" "${IN_SRC}" @ONLY)
 
