@@ -208,10 +208,10 @@ bool dpsoHistoryExport(
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "w")};
+    dpso::StdFileUPtr fp{dpsoFopen(filePath, "w")};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"w\"): %s", std::strerror(errno));
+            "dpsoFopen(..., \"w\"): %s", std::strerror(errno));
         return false;
     }
 

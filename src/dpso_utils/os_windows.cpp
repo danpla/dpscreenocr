@@ -12,7 +12,7 @@
 const char* const dpsoDirSeparators = "\\/";
 
 
-FILE* dpsoFopenUtf8(const char* filePath, const char* mode)
+FILE* dpsoFopen(const char* filePath, const char* mode)
 {
     std::wstring filePathUtf16;
     std::wstring modeUtf16;

@@ -163,13 +163,13 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
     cfg->keyValues.clear();
 
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "rb")};
+    dpso::StdFileUPtr fp{dpsoFopen(filePath, "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"rb\"): %s", std::strerror(errno));
+            "dpsoFopen(..., \"rb\"): %s", std::strerror(errno));
         return false;
     }
 
@@ -236,10 +236,10 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
         return false;
     }
 
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "wb")};
+    dpso::StdFileUPtr fp{dpsoFopen(filePath, "wb")};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"wb\"): %s", std::strerror(errno));
+            "dpsoFopen(..., \"wb\"): %s", std::strerror(errno));
         return false;
     }
 

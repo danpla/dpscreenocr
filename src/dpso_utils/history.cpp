@@ -34,13 +34,13 @@ static bool loadData(const char* filePath, std::string& data)
 {
     data.clear();
 
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "rb")};
+    dpso::StdFileUPtr fp{dpsoFopen(filePath, "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"rb\"): %s", std::strerror(errno));
+            "dpsoFopen(..., \"rb\"): %s", std::strerror(errno));
         return false;
     }
 
@@ -126,10 +126,10 @@ static bool createEntries(
 
 static dpso::StdFileUPtr openForAppending(const char* filePath)
 {
-    dpso::StdFileUPtr fp{dpsoFopenUtf8(filePath, "ab")};
+    dpso::StdFileUPtr fp{dpsoFopen(filePath, "ab")};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopenUtf8(..., \"ab\"): %s", std::strerror(errno));
+            "dpsoFopen(..., \"ab\"): %s", std::strerror(errno));
         return nullptr;
     }
 
