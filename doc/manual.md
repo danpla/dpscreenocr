@@ -110,11 +110,11 @@ dpScreenOCR is simple to use:
 After these steps, dpScreenOCR will recognize the text from the
 selected area and process it according to the chosen actions.
 
+The rest of this chapter will describe the various settings that you
+can find in the Main tab.
 
-## Main tab
 
-
-### Status
+## Status
 
 The status describes the current state of dpScreenOCR. Green means the
 program is ready to use, and you can press the hotkey to start the
@@ -123,10 +123,10 @@ the program needs some setup, and you will not be able to start the
 selection until the problem is fixed.
 
 
-### Character recognition
+## Character recognition
 
 
-#### Split text blocks
+### Split text blocks
 
 If this option is enabled, dpScreenOCR will try to detect and split
 independent text blocks, such as columns. Otherwise, everything is
@@ -141,7 +141,7 @@ Disabling this option will not prevent dpScreenOCR from detecting
 paragraphs.
 
 
-#### Languages
+### Languages
 
 This is the list of languages that dpScreenOCR can use to recognize
 text. You can choose more than one, but be aware that this may slow
@@ -151,14 +151,14 @@ Read the "[Installing languages]" section on how to install language
 packs.
 
 
-### Actions
+## Actions
 
 The Actions group lets you choose what to do with the recognized text:
-copy it to the clipboard, add it to the [history][History tab], or
-pass it as an argument to an executable.
+copy it to the clipboard, add it to the history (located in the
+corresponding tab), or pass it as an argument to an executable.
 
 
-#### Run executable
+### Run executable
 
 The "Run executable" action will run an executable with the recognized
 text as the first argument. The entry expects either an absolute path
@@ -166,7 +166,7 @@ to the executable, or just its name in case it's located in one of the
 paths listed in your PATH environment variable.
 
 
-##### Running scripts on Unix-like systems
+#### Running scripts on Unix-like systems
 
 Before using your script, make sure it starts with a proper
 [shebang][] and you have the execute permission (run
@@ -184,17 +184,17 @@ the translation as a desktop notification.
 [Translate Shell]: https://www.soimort.org/translate-shell/
 
 
-##### Running scripts on Windows
+#### Running scripts on Windows
 
 
-###### Batch files
+##### Batch files
 
 dpScreenOCR doesn't run batch files (".bat" or ".cmd") because there's
 no way to safely pass them arbitrary text. Please use another
 scripting language instead.
 
 
-###### Creating file associations
+##### Creating file associations
 
 Before using a script, make sure that the file association is
 configured correctly so that you can launch the script just by its
@@ -242,7 +242,7 @@ select the Python version for each script. For more information, read
 [Using Python on Windows]: https://docs.python.org/3/using/windows.html
 
 
-###### Hiding console window
+##### Hiding console window
 
 Most scripting language interpreters for Windows come with a special
 version of the executable that doesn't show the console window. For
@@ -254,7 +254,7 @@ allows you to hide the console window by changing the script extension
 exist, you can create it as described in the previous section.
 
 
-### Hotkey
+## Hotkey
 
 The hotkey starts and ends the on-screen selection. To cancel the
 selection, press Escape.
@@ -263,14 +263,6 @@ The hotkey is global: it works even if the dpScreenOCR's window is
 minimized. If pressing the hotkey has no effect, it probably means
 that another program is already using it. In this case, try another
 key combination.
-
-
-## History tab
-
-The History tab shows the history of the recognized texts. A text is
-only added here if the corresponding action is enabled in the
-[Main tab]. Each text has a timestamp taken when you finish the
-selection.
 
 
 # Tweaking
