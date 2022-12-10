@@ -133,13 +133,12 @@ MainWindow::MainWindow()
     dpsoOcrGetEngineInfo(0, &ocrEngineInfo);
 
     std::string ocrDataDirPath;
-    if (const char* dataDirName = uiGetOcrDataDirName(&ocrEngineInfo))
+    const char* dataDirName = uiGetOcrDataDirName(&ocrEngineInfo);
+    if (*dataDirName)
         ocrDataDirPath =
             std::string{dataPath} + *dpsoDirSeparators + dataDirName;
 
-    const DpsoOcrArgs ocrArgs{
-        0, ocrDataDirPath.empty() ? nullptr : ocrDataDirPath.c_str()
-    };
+    const DpsoOcrArgs ocrArgs{0, ocrDataDirPath.c_str()};
     ocr.reset(dpsoOcrCreate(&ocrArgs));
     if (!ocr) {
         QMessageBox::critical(

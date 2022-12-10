@@ -100,7 +100,7 @@ typedef struct DpsoOcrArgs {
     /**
      * Path to OCR engine data directory.
      *
-     * May be null to use the default directory, which is mostly
+     * May be empty to use the default directory, which is mostly
      * useful on Unix-like systems where this path is hardcoded when
      * the OCR library is built. See DpsoOcrEngineDataDirPreference
      * for the details.

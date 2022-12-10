@@ -67,7 +67,7 @@ private:
 
 
 TesseractOcr::TesseractOcr(const OcrEngineArgs& args)
-    : dataDir{args.dataDir ? args.dataDir : ""}
+    : dataDir{args.dataDir}
     , tess{}
     , langCodes{}
     , tessLangsStr{}

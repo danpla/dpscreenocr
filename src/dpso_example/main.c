@@ -133,7 +133,7 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    DpsoOcrArgs ocrArgs = {0};
+    DpsoOcrArgs ocrArgs = {0, ""};
     DpsoOcrEngineInfo ocrEngineInfo;
     dpsoOcrGetEngineInfo(ocrArgs.engineIdx, &ocrEngineInfo);
 

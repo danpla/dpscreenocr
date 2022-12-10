@@ -8,7 +8,7 @@ const char* uiGetOcrDataDirName(
     const DpsoOcrEngineInfo* ocrEngineInfo)
 {
     if (!ocrEngineInfo)
-        return nullptr;
+        return "";
 
     static std::string result;
     result.clear();
@@ -23,5 +23,5 @@ const char* uiGetOcrDataDirName(
         break;
     }
 
-    return result.empty() ? nullptr : result.c_str();
+    return result.c_str();
 }

@@ -20,7 +20,7 @@ struct OcrEngineArgs {
     /**
      * Path to OCR engine data directory.
      *
-     * May be null to use the default path, or if the engine doesn't
+     * May be empty to use the default path, or if the engine doesn't
      * use external data. See OcrEngineInfo::DataDirPreference for the
      * details.
      */

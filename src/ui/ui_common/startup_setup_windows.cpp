@@ -173,11 +173,11 @@ static bool setupOcrData(
         dpsoOcrGetEngineInfo(i, &ocrEngineInfo);
 
         std::wstring dirName;
-        if (const auto* name = uiGetOcrDataDirName(&ocrEngineInfo))
-            try {
-                dirName = dpso::windows::utf8ToUtf16(name);
-            } catch (std::runtime_error& e) {
-            }
+        try {
+            dirName = dpso::windows::utf8ToUtf16(
+                uiGetOcrDataDirName(&ocrEngineInfo));
+        } catch (std::runtime_error& e) {
+        }
 
         if (!dirName.empty() &&
                 !setupEntry(dirName.c_str(), srcDataDir, userDataDir))

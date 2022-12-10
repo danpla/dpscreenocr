@@ -14,7 +14,8 @@ extern "C" {
  *
  * If DpsoOcrEngineInfo::dataDirPreference is
  * DpsoOcrEngineDataDirPreferencePreferExplicit, returns
- * DpsoOcrEngineInfo::id followed by "_data". Otherwise, returns null.
+ * DpsoOcrEngineInfo::id followed by "_data". Otherwise, returns an
+ * empty string.
  */
 const char* uiGetOcrDataDirName(
     const DpsoOcrEngineInfo* ocrEngineInfo);
