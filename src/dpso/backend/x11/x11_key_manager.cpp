@@ -55,7 +55,7 @@ X11KeyManager::X11KeyManager(Display* display)
     : display{display}
     , x11bindings{}
     , hotkeysEnabled{}
-    , hotkeyAction{-1}
+    , hotkeyAction{dpsoNoHotkeyAction}
 {
 }
 
@@ -81,7 +81,7 @@ void X11KeyManager::setHotkeysEnabled(bool newHotkeysEnabled)
     hotkeysEnabled = newHotkeysEnabled;
 
     if (!hotkeysEnabled)
-        hotkeyAction = -1;
+        hotkeyAction = dpsoNoHotkeyAction;
 
     for (const auto& x11binding : x11bindings)
         changeBindingGrab(display, x11binding, hotkeysEnabled);
@@ -142,7 +142,7 @@ void X11KeyManager::removeBinding(int idx)
 
 void X11KeyManager::updateStart()
 {
-    hotkeyAction = -1;
+    hotkeyAction = dpsoNoHotkeyAction;
 }
 
 
@@ -288,7 +288,7 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
 
 static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods)
 {
-    DpsoKeyMods dpsoMods = dpsoKeyModNone;
+    DpsoKeyMods dpsoMods = dpsoNoKeyMods;
 
     if (x11Mods & ShiftMask)
         dpsoMods |= dpsoKeyModShift;

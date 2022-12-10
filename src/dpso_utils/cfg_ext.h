@@ -36,7 +36,7 @@ void dpsoCfgSaveActiveLangs(
  * dpsoHotkeyFromString().
  *
  * If the key does not exist, defaultHotkey is returned. If
- * defaultHotkey is null, {dpsoUnknownKey, dpsoKeyModNone} is used.
+ * defaultHotkey is null, {dpsoNoKey, dpsoNoKeyMods} is used.
  */
 void dpsoCfgGetHotkey(
     const DpsoCfg* cfg,

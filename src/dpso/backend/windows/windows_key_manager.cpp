@@ -139,7 +139,7 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 WindowsKeyManager::WindowsKeyManager()
     : bindings{}
     , hotkeysEnabled{}
-    , hotkeyAction{-1}
+    , hotkeyAction{dpsoNoHotkeyAction}
 {
 }
 
@@ -165,7 +165,7 @@ void WindowsKeyManager::setHotkeysEnabled(bool newHotkeysEnabled)
     hotkeysEnabled = newHotkeysEnabled;
 
     if (!hotkeysEnabled)
-        hotkeyAction = -1;
+        hotkeyAction = dpsoNoHotkeyAction;
 
     for (const auto& binding : bindings)
         changeHotkeyState(binding.hotkey, hotkeysEnabled);
@@ -225,7 +225,7 @@ void WindowsKeyManager::removeBinding(int idx)
 
 void WindowsKeyManager::clearLastHotkeyAction()
 {
-    hotkeyAction = -1;
+    hotkeyAction = dpsoNoHotkeyAction;
 }
 
 

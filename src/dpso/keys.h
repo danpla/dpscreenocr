@@ -14,7 +14,7 @@ extern "C" {
  * and Lock keys (Scroll, Num, and Caps).
  */
 typedef enum {
-    dpsoUnknownKey = -1,
+    dpsoNoKey = -1,
 
     dpsoKeyF1,
     dpsoKeyF2,
@@ -127,7 +127,8 @@ typedef enum {
  * Key modifiers.
  */
 typedef enum {
-    dpsoKeyModNone = 0,
+    dpsoNoKeyMods = 0,
+
     dpsoKeyModCtrl = 1 << 0,
     dpsoKeyModAlt = 1 << 1,
     dpsoKeyModShift = 1 << 2,
@@ -154,7 +155,7 @@ typedef unsigned DpsoKeyMods;
  *
  * Iterating from 0 to dpsoNumKeyMods will give you all key modifiers
  * in a platforms-specific order. Using an index outside the range
- * will result in dpsoKeyModNone.
+ * will result in dpsoNoKeyMods.
  */
 DpsoKeyMod dpsoGetKeyModAt(int idx);
 
@@ -166,7 +167,7 @@ typedef struct DpsoHotkey {
 
 
 /**
- * DpsoHotkey{dpsoUnknownKey, dpsoKeyModNone}
+ * DpsoHotkey{dpsoNoKey, dpsoNoKeyMods}
  */
 extern const DpsoHotkey dpsoEmptyHotkey;
 
@@ -177,8 +178,8 @@ extern const DpsoHotkey dpsoEmptyHotkey;
  * The function returns the string containing modifiers followed by
  * the key separated by " + ", for example, "Ctrl + Shift + F1". If
  * you need to query the name of a single modifier key, set key to
- * dpsoUnknownKey. Using dpsoUnknownKey with dpsoKeyModNone will give
- * an empty string.
+ * dpsoNoKey. Using dpsoNoKey with dpsoNoKeyMods will give an empty
+ * string.
  *
  * Some names depend on the platform. The name of the Windows key is
  * "Windows" on Windows, "Command" on macOS, and "Super" on Unix-like
@@ -212,15 +213,21 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey);
  * Hotkey action.
  *
  * Hotkey action is an integral action id you associate with a hotkey
- * on dpsoBindHotkey() call. Actions >= 0 are for the user. -1 is
- * used to report various conditions, like "no hotkey was pressed"
- * for dpsoGetLastHotkeyAction(), or "hotkey is not bound" for
- * dpsoFindHotkeyAction().
+ * on dpsoBindHotkey() call. Actions >= 0 are for the user. -1
+ * (dpsoNoHotkeyAction) is used to report various conditions, like
+ * "no hotkey was pressed" for dpsoGetLastHotkeyAction(), or "hotkey
+ * is not bound" for dpsoFindHotkeyAction().
  *
  * Routines that take DpsoHotkeyAction will do nothing if the action
  * is < 0.
  */
 typedef int DpsoHotkeyAction;
+
+
+/**
+ * DpsoHotkeyAction with value -1.
+ */
+extern const DpsoHotkeyAction dpsoNoHotkeyAction;
 
 
 #ifdef __cplusplus

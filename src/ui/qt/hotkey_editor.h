@@ -25,12 +25,12 @@ public:
      *
      * \param action Hotkey action. HotkeyEditor doesn't treat actions
      *     < 0 especially.
-     * \param hideNoneKey Hide the "None" key (dpsoUnknownKey) from
-     *     the key combo box.
+     * \param hideNoKey Hide dpsoNoKey from the key combo box so that
+     *     the user cannot explicitly disable the hotkey.
      */
     explicit HotkeyEditor(
         DpsoHotkeyAction action,
-        bool hideNoneKey = true,
+        bool hideNoKey = true,
         QWidget* parent = nullptr);
 signals:
     /**
@@ -59,8 +59,6 @@ private slots:
     void keyChanged();
 private:
     DpsoHotkeyAction action;
-    bool hideNoneKey;
-
     QCheckBox* modChecks[dpsoNumKeyMods];
     QComboBox* keyCombo;
 

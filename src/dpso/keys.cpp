@@ -10,7 +10,7 @@
 #include "str.h"
 
 
-const DpsoHotkey dpsoEmptyHotkey{dpsoUnknownKey, dpsoKeyModNone};
+const DpsoHotkey dpsoEmptyHotkey{dpsoNoKey, dpsoNoKeyMods};
 
 
 DpsoKeyMod dpsoGetKeyModAt(int idx)
@@ -27,7 +27,7 @@ DpsoKeyMod dpsoGetKeyModAt(int idx)
     });
 
     if (idx < 0 || idx >= dpsoNumKeyMods)
-        return dpsoKeyModNone;
+        return dpsoNoKeyMods;
 
     return keyModsOrder[idx];
 }
@@ -151,7 +151,7 @@ static const char* keyToString(DpsoKey key)
 static DpsoKey keyFromString(const char* str, std::size_t strLen)
 {
     if (strLen == 0)
-        return dpsoUnknownKey;
+        return dpsoNoKey;
 
     for (int i = 0; i < dpsoNumKeys; ++i)
         if (dpso::str::cmpSubStr(
@@ -161,7 +161,7 @@ static DpsoKey keyFromString(const char* str, std::size_t strLen)
                 dpso::str::cmpIgnoreCase) == 0)
             return static_cast<DpsoKey>(i);
 
-    return dpsoUnknownKey;
+    return dpsoNoKey;
 }
 
 
@@ -225,7 +225,7 @@ const auto modNameInfos
 
 static const char* modToString(DpsoKeyMod mod)
 {
-    if (mod == dpsoKeyModNone)
+    if (mod == dpsoNoKeyMods)
         return "";
 
     for (const auto& modNameInfo : modNameInfos) {
@@ -246,7 +246,7 @@ static const char* modToString(DpsoKeyMod mod)
 static DpsoKeyMod modFromString(const char* str, std::size_t strLen)
 {
     if (strLen == 0)
-        return dpsoKeyModNone;
+        return dpsoNoKeyMods;
 
     for (const auto& modNameInfo : modNameInfos) {
         if (dpso::str::cmpSubStr(
@@ -265,7 +265,7 @@ static DpsoKeyMod modFromString(const char* str, std::size_t strLen)
                 return modNameInfo.mod;
     }
 
-    return dpsoKeyModNone;
+    return dpsoNoKeyMods;
 }
 
 
@@ -321,7 +321,7 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
 
         const auto mod = modFromString(
             nameBegin, nameEnd - nameBegin);
-        if (mod != dpsoKeyModNone
+        if (mod != dpsoNoKeyMods
                 && !(hotkey->mods & mod)) {
             hotkey->mods |= mod;
 
@@ -341,9 +341,12 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
 
         hotkey->key = keyFromString(nameBegin, nameEnd - nameBegin);
 
-        if (hotkey->key == dpsoUnknownKey)
-            hotkey->mods = dpsoKeyModNone;
+        if (hotkey->key == dpsoNoKey)
+            hotkey->mods = dpsoNoKeyMods;
 
         break;
     }
 }
+
+
+const DpsoHotkeyAction dpsoNoHotkeyAction = -1;

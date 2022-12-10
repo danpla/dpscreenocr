@@ -35,7 +35,7 @@ void NullKeyManager::setHotkeysEnabled(bool newHotkeysEnabled)
 
 DpsoHotkeyAction NullKeyManager::getLastHotkeyAction() const
 {
-    return -1;
+    return dpsoNoHotkeyAction;
 }
 
 

@@ -15,7 +15,7 @@ int const cfgDefaultValueActionRunExecutable =
 int const cfgDefaultValueHistoryWrapWords =
     true;
 DpsoHotkey const cfgDefaultValueHotkeyCancelSelection =
-    {dpsoKeyEscape, dpsoKeyModNone};
+    {dpsoKeyEscape, dpsoNoKeyMods};
 DpsoHotkey const cfgDefaultValueHotkeyToggleSelection =
     {dpsoKeyGrave, dpsoKeyModCtrl};
 int const cfgDefaultValueOcrAllowQueuing =

@@ -248,12 +248,12 @@ struct HotkeyTest {
 
 
 const HotkeyTest hotkeyTests[] = {
-    {"hotkey_none", {dpsoUnknownKey, dpsoKeyModNone}},
+    {"hotkey_none", {dpsoNoKey, dpsoNoKeyMods}},
     {
         "hotkey_mods_only",
-        {dpsoUnknownKey, dpsoKeyModShift | dpsoKeyModCtrl}
+        {dpsoNoKey, dpsoKeyModShift | dpsoKeyModCtrl}
     },
-    {"hotkey_key_only", {dpsoKeyA, dpsoKeyModNone}},
+    {"hotkey_key_only", {dpsoKeyA, dpsoNoKeyMods}},
     {"hotkey", {dpsoKeyA, dpsoKeyModShift | dpsoKeyModCtrl}},
 };
 

@@ -16,8 +16,8 @@ const auto allMods =
 static void testHotkeyToString()
 {
     const DpsoHotkey hotkeys[] = {
-        {dpsoUnknownKey, dpsoKeyModCtrl},
-        {dpsoKeyY, dpsoKeyModNone},
+        {dpsoNoKey, dpsoKeyModCtrl},
+        {dpsoKeyY, dpsoNoKeyMods},
         {dpsoKeyY, allMods},
     };
 
@@ -59,13 +59,13 @@ static void testHotkeyFromString()
         {"Ctrl + ", dpsoEmptyHotkey},
         {"Ctrl + + ", dpsoEmptyHotkey},
         {"+ Ctrl", dpsoEmptyHotkey},
-        {"A", {dpsoKeyA, dpsoKeyModNone}},
-        {"Ctrl", {dpsoUnknownKey, dpsoKeyModCtrl}},
+        {"A", {dpsoKeyA, dpsoNoKeyMods}},
+        {"Ctrl", {dpsoNoKey, dpsoKeyModCtrl}},
         {"Ctrl + A", {dpsoKeyA, dpsoKeyModCtrl}},
         {"Ctrl A", dpsoEmptyHotkey},
         {"A + Ctrl", dpsoEmptyHotkey},
         {"Ctrl + Ctrl + A", dpsoEmptyHotkey},
-        {"Keypad +", {dpsoKeyKpPlus, dpsoKeyModNone}},
+        {"Keypad +", {dpsoKeyKpPlus, dpsoNoKeyMods}},
         {"Keypad  +", dpsoEmptyHotkey},
 
         {"Ctrl + Alt + Shift + Windows + A", {dpsoKeyA, allMods}},
@@ -77,12 +77,12 @@ static void testHotkeyFromString()
         },
         {"Ctrl+Alt+Shift+Windows+Keypad +", {dpsoKeyKpPlus, allMods}},
 
-        {"Windows", {dpsoUnknownKey, dpsoKeyModWin}},
-        {"Command", {dpsoUnknownKey, dpsoKeyModWin}},
-        {"Super", {dpsoUnknownKey, dpsoKeyModWin}},
+        {"Windows", {dpsoNoKey, dpsoKeyModWin}},
+        {"Command", {dpsoNoKey, dpsoKeyModWin}},
+        {"Super", {dpsoNoKey, dpsoKeyModWin}},
 
-        {"Alt", {dpsoUnknownKey, dpsoKeyModAlt}},
-        {"Option", {dpsoUnknownKey, dpsoKeyModAlt}},
+        {"Alt", {dpsoNoKey, dpsoKeyModAlt}},
+        {"Option", {dpsoNoKey, dpsoKeyModAlt}},
     };
 
     for (const auto& test : tests) {

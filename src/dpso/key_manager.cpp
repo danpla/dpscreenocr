@@ -23,7 +23,8 @@ void dpsoSetHotkeysEnabled(bool newHotkeysEnabled)
 
 DpsoHotkeyAction dpsoGetLastHotkeyAction(void)
 {
-    return keyManager ? keyManager->getLastHotkeyAction() : -1;
+    return keyManager
+        ? keyManager->getLastHotkeyAction() : dpsoNoHotkeyAction;
 }
 
 
@@ -88,7 +89,7 @@ void dpsoFindActionHotkey(DpsoHotkeyAction action, DpsoHotkey* hotkey)
 DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey)
 {
     if (!keyManager || !hotkey)
-        return -1;
+        return dpsoNoHotkeyAction;
 
     for (int i = 0; i < keyManager->getNumBindings(); ++i) {
         const auto& binding = keyManager->getBinding(i);
@@ -96,7 +97,7 @@ DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey)
             return binding.action;
     }
 
-    return -1;
+    return dpsoNoHotkeyAction;
 }
 
 

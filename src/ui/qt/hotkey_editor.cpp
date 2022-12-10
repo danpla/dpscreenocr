@@ -10,11 +10,10 @@
 
 HotkeyEditor::HotkeyEditor(
         DpsoHotkeyAction action,
-        bool hideNoneKey,
+        bool hideNoKey,
         QWidget* parent)
     : QWidget{parent}
     , action{action}
-    , hideNoneKey{hideNoneKey}
     , modChecks{}
     , keyCombo{}
 {
@@ -24,12 +23,12 @@ HotkeyEditor::HotkeyEditor(
     DpsoHotkey hotkey;
     dpsoFindActionHotkey(action, &hotkey);
 
-    const auto keySelected = hotkey.key != dpsoUnknownKey;
+    const auto keySelected = hotkey.key != dpsoNoKey;
 
     for (int i = 0; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
 
-        const DpsoHotkey modHotkey{dpsoUnknownKey, mod};
+        const DpsoHotkey modHotkey{dpsoNoKey, mod};
         auto* modCheck = new QCheckBox(
             dpsoHotkeyToString(&modHotkey));
         modChecks[i] = modCheck;
@@ -47,12 +46,12 @@ HotkeyEditor::HotkeyEditor(
     keyCombo = new QComboBox();
     layout->addWidget(keyCombo, 1);
 
-    for (int i = dpsoUnknownKey; i < dpsoNumKeys; ++i) {
+    for (int i = dpsoNoKey; i < dpsoNumKeys; ++i) {
         const auto key = static_cast<DpsoKey>(i);
-        if (key == dpsoUnknownKey && hideNoneKey)
+        if (key == dpsoNoKey && hideNoKey)
             continue;
 
-        const DpsoHotkey keyHotkey{key, dpsoKeyModNone};
+        const DpsoHotkey keyHotkey{key, dpsoNoKeyMods};
         keyCombo->addItem(dpsoHotkeyToString(&keyHotkey), key);
 
         if (key == hotkey.key)
@@ -81,7 +80,7 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
         hotkeyChanged = true;
     }
 
-    const auto keySelected = getCurrentKey() != dpsoUnknownKey;
+    const auto keySelected = getCurrentKey() != dpsoNoKey;
 
     for (int i = 0; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
@@ -107,7 +106,7 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
 void HotkeyEditor::bind()
 {
-    DpsoHotkey hotkey{getCurrentKey(), dpsoKeyModNone};
+    DpsoHotkey hotkey{getCurrentKey(), dpsoNoKeyMods};
 
     for (int i = 0; i < dpsoNumKeyMods; ++i)
         if (modChecks[i]->isChecked())
@@ -120,9 +119,9 @@ void HotkeyEditor::bind()
 
 void HotkeyEditor::keyChanged()
 {
-    const auto keySelected = getCurrentKey() != dpsoUnknownKey;
+    const auto keySelected = getCurrentKey() != dpsoNoKey;
 
-    // When the key is switched to dpsoUnknownKey, we need to uncheck
+    // When the key is switched to dpsoNoKey, we need to uncheck
     // every modifier checkbox without emitting changed().
     for (auto* modCheck : modChecks) {
         modCheck->blockSignals(true);
@@ -142,7 +141,7 @@ DpsoKey HotkeyEditor::getCurrentKey() const
 {
     const auto curIdx = keyCombo->currentIndex();
     if (curIdx < 0)
-        return dpsoUnknownKey;
+        return dpsoNoKey;
 
     return static_cast<DpsoKey>(keyCombo->itemData(curIdx).toInt());
 }

@@ -5,7 +5,7 @@ action_run_executable                   | int         | false
 action_run_executable_path
 history_export_dir
 history_wrap_words                      | int         | true
-hotkey_cancel_selection                 | DpsoHotkey  | {dpsoKeyEscape, dpsoKeyModNone}
+hotkey_cancel_selection                 | DpsoHotkey  | {dpsoKeyEscape, dpsoNoKeyMods}
 hotkey_toggle_selection                 | DpsoHotkey  | {dpsoKeyGrave, dpsoKeyModCtrl}
 ocr_allow_queuing                       | int         | true
 ocr_languages
