@@ -16,20 +16,14 @@ namespace windows {
 std::wstring utf8ToUtf16(const char* utf8Str)
 {
     const auto sizeWithNull = MultiByteToWideChar(
-        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str,
-        // Tell that the string is null-terminated; the returned size
-        // will also include the null.
-        -1,
-        nullptr, 0);
+        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1, nullptr, 0);
     if (sizeWithNull <= 0)
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
-    // The C++ standard allows to overwrite string[size()] with 0.
     std::wstring result(sizeWithNull - 1, 0);
 
     if (!MultiByteToWideChar(
-            CP_UTF8, MB_ERR_INVALID_CHARS,
-            utf8Str, -1,
+            CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1,
             &result[0], sizeWithNull))
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
@@ -41,15 +35,12 @@ std::string utf16ToUtf8(const wchar_t* utf16Str)
 {
     const auto sizeWithNull = WideCharToMultiByte(
         CP_UTF8, WC_ERR_INVALID_CHARS,
-        utf16Str,
-        // Tell that the string is null-terminated; the returned size
-        // will also include the null.
-        -1,
-        nullptr, 0, nullptr, nullptr);
+        utf16Str, -1,
+        nullptr, 0,
+        nullptr, nullptr);
     if (sizeWithNull <= 0)
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
-    // The C++ standard allows to overwrite string[size()] with 0.
     std::string result(sizeWithNull - 1, 0);
 
     if (!WideCharToMultiByte(

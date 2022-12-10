@@ -18,20 +18,14 @@
 static std::wstring utf8ToUtf16(const char* utf8Str)
 {
     const auto sizeWithNull = MultiByteToWideChar(
-        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str,
-        // Tell that the string is null-terminated; the returned size
-        // will also include the null.
-        -1,
-        nullptr, 0);
+        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1, nullptr, 0);
     if (sizeWithNull <= 0)
         return {};
 
-    // The C++ standard allows to overwrite string[size()] with 0.
     std::wstring result(sizeWithNull - 1, 0);
 
     if (!MultiByteToWideChar(
-            CP_UTF8, MB_ERR_INVALID_CHARS,
-            utf8Str, -1,
+            CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1,
             &result[0], sizeWithNull))
         return {};
 
