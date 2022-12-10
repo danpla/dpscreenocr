@@ -35,7 +35,7 @@ struct OcrEngineInfo {
      *
      * If the OCR engine library is linked dynamically, this should
      * be the runtime version, if possible. May be empty if the engine
-     * doesn't provide any version information.
+     * doesn't provide version information.
      */
     std::string version;
 

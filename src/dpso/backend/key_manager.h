@@ -17,45 +17,35 @@ struct HotkeyBinding {
 /**
  * Key manager.
  *
- * See hotkeys.h for more information.
+ * See hotkeys.h for more information. Preconditions:
  *
- * Preconditions:
- *
- *   * bindHotkey():
- *       * hotkey.key >= 0 and < dpsoNumKeys
- *       * action >= 0
- *   * getBinding(), removeBinding():
- *       * idx >= 0 and < getNumBindings()
+ * * bindHotkey():
+ *     * hotkey.key >= 0 and < dpsoNumKeys
+ *     * action >= 0
+ * * getBinding(), removeBinding():
+ *     * idx >= 0 and < getNumBindings()
  */
 class KeyManager {
 public:
     virtual ~KeyManager() = default;
 
     /**
-     * Get whether hotkeys are enabled.
-     *
-     * \sa dpsoGetHotkeysEnabled()
+     * See dpsoGetHotkeysEnabled()
      */
     virtual bool getHotkeysEnabled() const = 0;
 
     /**
-     * Set whether hotkeys are enabled.
-     *
-     * \sa dpsoSetHotkeysEnabled()
+     * See dpsoSetHotkeysEnabled()
      */
     virtual void setHotkeysEnabled(bool newHotkeysEnabled) = 0;
 
     /**
-     * Get action of the pressed hotkey.
-     *
-     * \sa dpsoGetLastHotkeyAction()
+     * See dpsoGetLastHotkeyAction()
      */
     virtual DpsoHotkeyAction getLastHotkeyAction() const = 0;
 
     /**
-     * Bind hotkey to action.
-     *
-     * \sa dpsoBindHotkey()
+     * See dpsoBindHotkey()
      */
     virtual bool bindHotkey(
         const DpsoHotkey& hotkey, DpsoHotkeyAction action) = 0;

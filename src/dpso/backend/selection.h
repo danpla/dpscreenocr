@@ -32,32 +32,24 @@ public:
     virtual ~Selection() = default;
 
     /**
-     * Get whether selection is enabled.
-     *
-     * \sa dpsoGetSelectionIsEnabled()
+     * See dpsoGetSelectionIsEnabled()
      */
     virtual bool getIsEnabled() const = 0;
 
     /**
-     * Set whether selection is enabled.
-     *
-     * \sa dpsoSetSelectionIsEnabled()
+     * See dpsoSetSelectionIsEnabled()
      */
     virtual void setIsEnabled(bool newIsEnabled) = 0;
 
     /**
-     * Set selection border width.
+     * See dpsoSetSelectionBorderWidth()
      *
      * The method is always called with newBorderWidth > 0.
-     *
-     * \sa dpsoSetSelectionBorderWidth()
      */
     virtual void setBorderWidth(int newBorderWidth) = 0;
 
     /**
-     * Get selection geometry.
-     *
-     * \sa dpsoGetSelectionGeometry()
+     * See dpsoGetSelectionGeometry()
      */
     virtual Rect getGeometry() const = 0;
 };

@@ -11,9 +11,6 @@ namespace dpso {
 namespace ocr {
 
 
-/**
- * OCR engine error.
- */
 class OcrEngineError : public std::runtime_error {
     using runtime_error::runtime_error;
 };
@@ -97,9 +94,6 @@ class OcrEngine {
 public:
     virtual ~OcrEngine() = default;
 
-    /**
-     * Get OCR features supported by engine.
-     */
     virtual OcrFeatures getFeatures() const = 0;
 
     virtual int getNumLangs() const = 0;
