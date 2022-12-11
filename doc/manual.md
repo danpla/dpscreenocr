@@ -101,7 +101,7 @@ For the ZIP version, you need to manually copy languages from
 
 dpScreenOCR is simple to use:
 
-1.  Choose languages and actions in the [Main tab].
+1.  Choose languages and actions in the Main tab.
 2.  Move the mouse pointer to the screen area containing text and
     press the hotkey shown in the Main tab to start the selection.
 3.  Move the mouse so that the selection covers the text and press the
