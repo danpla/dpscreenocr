@@ -22,29 +22,23 @@
 <h2 id="toc-title">Table of contents</h2>
 <ul>
 <li><a href="#about"><span class="toc-section-number">1</span> About</a></li>
-<li><a href="#installation"><span class="toc-section-number">2</span> Installation</a>
-<ul>
-<li><a href="#installing-dpscreenocr"><span class="toc-section-number">2.1</span> Installing dpScreenOCR</a>
-<ul>
+<li><a href="#installation"><span class="toc-section-number">2</span> Installation</a><ul>
+<li><a href="#installing-dpscreenocr"><span class="toc-section-number">2.1</span> Installing dpScreenOCR</a><ul>
 <li><a href="#unix-like-systems"><span class="toc-section-number">2.1.1</span> Unix-like systems</a></li>
 <li><a href="#windows"><span class="toc-section-number">2.1.2</span> Windows</a></li>
 </ul></li>
-<li><a href="#installing-languages"><span class="toc-section-number">2.2</span> Installing languages</a>
-<ul>
+<li><a href="#installing-languages"><span class="toc-section-number">2.2</span> Installing languages</a><ul>
 <li><a href="#unix-like-systems-1"><span class="toc-section-number">2.2.1</span> Unix-like systems</a></li>
 <li><a href="#windows-1"><span class="toc-section-number">2.2.2</span> Windows</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#usage"><span class="toc-section-number">3</span> Usage</a>
-<ul>
+<li><a href="#usage"><span class="toc-section-number">3</span> Usage</a><ul>
 <li><a href="#status"><span class="toc-section-number">3.1</span> Status</a></li>
-<li><a href="#character-recognition"><span class="toc-section-number">3.2</span> Character recognition</a>
-<ul>
+<li><a href="#character-recognition"><span class="toc-section-number">3.2</span> Character recognition</a><ul>
 <li><a href="#split-text-blocks"><span class="toc-section-number">3.2.1</span> Split text blocks</a></li>
 <li><a href="#languages"><span class="toc-section-number">3.2.2</span> Languages</a></li>
 </ul></li>
-<li><a href="#actions"><span class="toc-section-number">3.3</span> Actions</a>
-<ul>
+<li><a href="#actions"><span class="toc-section-number">3.3</span> Actions</a><ul>
 <li><a href="#run-executable"><span class="toc-section-number">3.3.1</span> Run executable</a></li>
 </ul></li>
 <li><a href="#hotkey"><span class="toc-section-number">3.4</span> Hotkey</a></li>
@@ -53,16 +47,16 @@
 <li><a href="#troubleshooting"><span class="toc-section-number">5</span> Troubleshooting</a></li>
 </ul>
 </nav>
-<h1 data-number="1" id="about"><span class="header-section-number">1</span> About</h1>
+<h1 id="about"><span class="header-section-number">1</span> About</h1>
 <p>dpScreenOCR is a free and open-source program to recognize text on the screen. Powered by <a href="https://en.wikipedia.org/wiki/Tesseract_(software)">Tesseract</a>, it supports more than 100 languages and can split independent text blocks, such as columns.</p>
-<h1 data-number="2" id="installation"><span class="header-section-number">2</span> Installation</h1>
-<h2 data-number="2.1" id="installing-dpscreenocr"><span class="header-section-number">2.1</span> Installing dpScreenOCR</h2>
-<h3 data-number="2.1.1" id="unix-like-systems"><span class="header-section-number">2.1.1</span> Unix-like systems</h3>
+<h1 id="installation"><span class="header-section-number">2</span> Installation</h1>
+<h2 id="installing-dpscreenocr"><span class="header-section-number">2.1</span> Installing dpScreenOCR</h2>
+<h3 id="unix-like-systems"><span class="header-section-number">2.1.1</span> Unix-like systems</h3>
 <p>The <a href="https://danpla.github.io/dpscreenocr">dpScreenOCR website</a> provides several options, including repositories for Debian, Ubuntu, and derivatives. If you don’t find a suitable choice for your system, download the source code tarball, unpack it, and follow the instructions in “doc/building-unix.txt”.</p>
-<h3 data-number="2.1.2" id="windows"><span class="header-section-number">2.1.2</span> Windows</h3>
+<h3 id="windows"><span class="header-section-number">2.1.2</span> Windows</h3>
 <p>The <a href="https://danpla.github.io/dpscreenocr">dpScreenOCR website</a> provides an installer and a ZIP archive. The latter doesn’t need installation: unpack it anywhere and run dpscreenocr.exe.</p>
-<h2 data-number="2.2" id="installing-languages"><span class="header-section-number">2.2</span> Installing languages</h2>
-<h3 data-number="2.2.1" id="unix-like-systems-1"><span class="header-section-number">2.2.1</span> Unix-like systems</h3>
+<h2 id="installing-languages"><span class="header-section-number">2.2</span> Installing languages</h2>
+<h3 id="unix-like-systems-1"><span class="header-section-number">2.2.1</span> Unix-like systems</h3>
 <p>Use your package manager to install languages for Tesseract. Package names may vary across systems, but they usually start with “tesseract” and end with a language code or name. For example, the package for German has the following names:</p>
 <ul>
 <li>“tesseract-ocr-deu” on Debian, Ubuntu, and derivatives</li>
@@ -72,45 +66,45 @@
 </ul>
 <p>When searching for a language, be aware that some codes are not from <a href="https://en.wikipedia.org/wiki/ISO_639-3">ISO 639-3</a>. In particular, “frk” is German Fraktur rather than Frankish. The Tesseract developers are aware of this and will probably fix the code in the future (see issues <a href="https://github.com/tesseract-ocr/tessdata_best/issues/68">68</a>, <a href="https://github.com/tesseract-ocr/tessdata/issues/49">49</a>, and <a href="https://github.com/tesseract-ocr/langdata/issues/61">61</a>); meanwhile, if “frk” is described as “Frankish” in your package manager, you can report the problem to the package maintainer.</p>
 <p>There are also two special packs that provide extra features rather than languages: “osd” (automatic script and orientation detection) and “equ” (math and equation detection). dpScreenOCR doesn’t use them.</p>
-<h3 data-number="2.2.2" id="windows-1"><span class="header-section-number">2.2.2</span> Windows</h3>
+<h3 id="windows-1"><span class="header-section-number">2.2.2</span> Windows</h3>
 <p>dpScreenOCR for Windows comes with the English language pack. To install other languages, visit the <a href="https://danpla.github.io/dpscreenocr/languages">languages page</a>, download “.traineddata” files you want, and place them in the <code>C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data</code> folder. To quickly navigate to this folder, press Windows + R to open “Run” and paste <code>%LOCALAPPDATA%\dpscreenocr\tesseract_5_data</code>. You can also paste this path to the folder address bar of File Explorer.</p>
 <p>If the “tesseract_5_data” folder does not exist in <code>%LOCALAPPDATA%\dpscreenocr</code> when you start dpScreenOCR, the program will copy it from the directory if the EXE file.</p>
-<h4 data-number="2.2.2.1" id="migrating-from-version-1.0"><span class="header-section-number">2.2.2.1</span> Migrating from version 1.0</h4>
+<h4 id="migrating-from-version-1.0"><span class="header-section-number">2.2.2.1</span> Migrating from version 1.0</h4>
 <p>When upgrading from version 1.0, the installer will automatically migrate languages from the old location, which was the “tessdata” folder in the directory of the EXE file. To be more specific, the contents of “tessdata” are copied to the “tesseract_5_data” folder in the directory of the EXE file, and then each user launching dpScreenOCR gets their own copy of “tesseract_5_data” in <code>%LOCALAPPDATA%\dpscreenocr</code>.</p>
 <p>For the ZIP version, you need to manually copy languages from “tessdata” to <code>%LOCALAPPDATA%\dpscreenocr\tesseract_5_data</code>.</p>
-<h1 data-number="3" id="usage"><span class="header-section-number">3</span> Usage</h1>
+<h1 id="usage"><span class="header-section-number">3</span> Usage</h1>
 <p>dpScreenOCR is simple to use:</p>
 <ol type="1">
-<li>Choose languages and actions in the [Main tab].</li>
+<li>Choose languages and actions in the Main tab.</li>
 <li>Move the mouse pointer to the screen area containing text and press the hotkey shown in the Main tab to start the selection.</li>
 <li>Move the mouse so that the selection covers the text and press the hotkey again.</li>
 </ol>
 <p>After these steps, dpScreenOCR will recognize the text from the selected area and process it according to the chosen actions.</p>
 <p>The rest of this chapter will describe the various settings that you can find in the Main tab.</p>
-<h2 data-number="3.1" id="status"><span class="header-section-number">3.1</span> Status</h2>
+<h2 id="status"><span class="header-section-number">3.1</span> Status</h2>
 <p>The status describes the current state of dpScreenOCR. Green means the program is ready to use, and you can press the hotkey to start the selection. Yellow shows the progress of recognition. Red warns that the program needs some setup, and you will not be able to start the selection until the problem is fixed.</p>
-<h2 data-number="3.2" id="character-recognition"><span class="header-section-number">3.2</span> Character recognition</h2>
-<h3 data-number="3.2.1" id="split-text-blocks"><span class="header-section-number">3.2.1</span> Split text blocks</h3>
+<h2 id="character-recognition"><span class="header-section-number">3.2</span> Character recognition</h2>
+<h3 id="split-text-blocks"><span class="header-section-number">3.2.1</span> Split text blocks</h3>
 <p>If this option is enabled, dpScreenOCR will try to detect and split independent text blocks, such as columns. Otherwise, everything is treated as a contiguous block of text. This behavior is best described by the following picture, which shows a two-column text layout (A) recognized with (B) and without (C) the “Split text blocks” option:</p>
 <p><img src="manual-data/split.svg" /></p>
 <p>Disabling this option will not prevent dpScreenOCR from detecting paragraphs.</p>
-<h3 data-number="3.2.2" id="languages"><span class="header-section-number">3.2.2</span> Languages</h3>
+<h3 id="languages"><span class="header-section-number">3.2.2</span> Languages</h3>
 <p>This is the list of languages that dpScreenOCR can use to recognize text. You can choose more than one, but be aware that this may slow down recognition and reduce its accuracy.</p>
 <p>Read the “<a href="#installing-languages">Installing languages</a>” section on how to install language packs.</p>
-<h2 data-number="3.3" id="actions"><span class="header-section-number">3.3</span> Actions</h2>
+<h2 id="actions"><span class="header-section-number">3.3</span> Actions</h2>
 <p>The Actions group lets you choose what to do with the recognized text: copy it to the clipboard, add it to the history (located in the corresponding tab), or pass it as an argument to an executable.</p>
-<h3 data-number="3.3.1" id="run-executable"><span class="header-section-number">3.3.1</span> Run executable</h3>
+<h3 id="run-executable"><span class="header-section-number">3.3.1</span> Run executable</h3>
 <p>The “Run executable” action will run an executable with the recognized text as the first argument. The entry expects either an absolute path to the executable, or just its name in case it’s located in one of the paths listed in your PATH environment variable.</p>
-<h4 data-number="3.3.1.1" id="running-scripts-on-unix-like-systems"><span class="header-section-number">3.3.1.1</span> Running scripts on Unix-like systems</h4>
+<h4 id="running-scripts-on-unix-like-systems"><span class="header-section-number">3.3.1.1</span> Running scripts on Unix-like systems</h4>
 <p>Before using your script, make sure it starts with a proper <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> and you have the execute permission (run <code>chmod u+x your_script</code>).</p>
 <p>Here is an example Unix shell script that translates the recognized text to your native language using <a href="https://www.soimort.org/translate-shell/">Translate Shell</a> and displays the translation as a desktop notification.</p>
 <pre><code>#!/bin/sh
 
 notify-send &quot;Translation&quot; $(trans -b &quot;$1&quot;)</code></pre>
-<h4 data-number="3.3.1.2" id="running-scripts-on-windows"><span class="header-section-number">3.3.1.2</span> Running scripts on Windows</h4>
-<h5 data-number="3.3.1.2.1" id="batch-files"><span class="header-section-number">3.3.1.2.1</span> Batch files</h5>
+<h4 id="running-scripts-on-windows"><span class="header-section-number">3.3.1.2</span> Running scripts on Windows</h4>
+<h5 id="batch-files"><span class="header-section-number">3.3.1.2.1</span> Batch files</h5>
 <p>dpScreenOCR doesn’t run batch files (“.bat” or “.cmd”) because there’s no way to safely pass them arbitrary text. Please use another scripting language instead.</p>
-<h5 data-number="3.3.1.2.2" id="creating-file-associations"><span class="header-section-number">3.3.1.2.2</span> Creating file associations</h5>
+<h5 id="creating-file-associations"><span class="header-section-number">3.3.1.2.2</span> Creating file associations</h5>
 <p>Before using a script, make sure that the file association is configured correctly so that you can launch the script just by its file name, without mentioning the interpreter explicitly. The simplest way to test this is to type the name of the script with some arguments in cmd.exe. If the script runs and receives all arguments, you can skip this section.</p>
 <p>We will use Python as an example, but for other languages the process is similar. Open cmd.exe as administrator and run asscoc with the extension of the script file as an argument:</p>
 <pre><code>&gt; assoc .py</code></pre>
@@ -128,13 +122,13 @@ Python.File=&quot;C:\Windows\py.exe&quot; &quot;%L&quot; %*</code></pre>
 <pre><code>HKEY_CLASSES_ROOT\Applications\python.exe\shell\open\command
 HKEY_CLASSES_ROOT\py_auto_file\shell\open\command</code></pre>
 <p>A tip for Python users: note that in the examples above the association uses Python Launcher (py.exe) rather than a concrete Python executable (python.exe). This allows using <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> lines to select the Python version for each script. For more information, read <a href="https://docs.python.org/3/using/windows.html">Using Python on Windows</a>.</p>
-<h5 data-number="3.3.1.2.3" id="hiding-console-window"><span class="header-section-number">3.3.1.2.3</span> Hiding console window</h5>
+<h5 id="hiding-console-window"><span class="header-section-number">3.3.1.2.3</span> Hiding console window</h5>
 <p>Most scripting language interpreters for Windows come with a special version of the executable that doesn’t show the console window. For example, this is pyw.exe for Python.</p>
 <p>The interpreter installer usually adds a special file association that allows you to hide the console window by changing the script extension (for example, to “.pyw” for Python). If such an association does not exist, you can create it as described in the previous section.</p>
-<h2 data-number="3.4" id="hotkey"><span class="header-section-number">3.4</span> Hotkey</h2>
+<h2 id="hotkey"><span class="header-section-number">3.4</span> Hotkey</h2>
 <p>The hotkey starts and ends the on-screen selection. To cancel the selection, press Escape.</p>
 <p>The hotkey is global: it works even if the dpScreenOCR’s window is minimized. If pressing the hotkey has no effect, it probably means that another program is already using it. In this case, try another key combination.</p>
-<h1 data-number="4" id="tweaking"><span class="header-section-number">4</span> Tweaking</h1>
+<h1 id="tweaking"><span class="header-section-number">4</span> Tweaking</h1>
 <p>This section describes how to change some settings that are not available in the dpScreenOCR interface.</p>
 <p>dpScreenOCR saves settings in settings.cfg. Depending on the platform, you can find it in the following directories:</p>
 <ul>
@@ -164,7 +158,7 @@ HKEY_CLASSES_ROOT\py_auto_file\shell\open\command</code></pre>
 <li><p><code>ui_window_minimize_on_start</code> (<code>false</code> by default) minimize window on start.</p></li>
 <li><p><code>ui_window_minimize_to_tray</code> (<code>false</code> by default) hide window to the notification area on minimizing. This option only has effect if <code>ui_tray_icon_visible</code> is enabled.</p></li>
 </ul>
-<h1 data-number="5" id="troubleshooting"><span class="header-section-number">5</span> Troubleshooting</h1>
+<h1 id="troubleshooting"><span class="header-section-number">5</span> Troubleshooting</h1>
 <p>This section contains a list of possible issues and their solutions. If the solution doesn’t help, or you have a problem that is not listed here, please report it on the <a href="https://github.com/danpla/dpscreenocr/issues">issue tracker</a>. You can also contact the author by email; the link is at the bottom of the <a href="https://danpla.github.io/dpscreenocr">dpScreenOCR website</a>.</p>
 <ul>
 <li><p><strong>Recognized text contains garbage</strong></p>
