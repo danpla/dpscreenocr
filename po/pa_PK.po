@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-12-10 19:04+0100\n"
-"PO-Revision-Date: 2022-11-03 05:01+0000\n"
+"PO-Revision-Date: 2022-12-16 23:49+0000\n"
 "Last-Translator: bgo-eiu <huyaqoob+toolforge@gmail.com>\n"
 "Language-Team: Punjabi (Pakistan) <https://hosted.weblate.org/projects/"
 "dpscreenocr/dpscreenocr/pa_PK/>\n"
@@ -14,11 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.14.2-dev\n"
+"X-Generator: Weblate 4.15\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:35
 msgid "Afrikaans"
-msgstr ""
+msgstr "افریکی"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:36
 msgid "Amharic"
