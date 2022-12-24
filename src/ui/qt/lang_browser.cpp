@@ -70,8 +70,8 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     header()->setSectionsMovable(false);
 
     connect(
-        this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
-        this, SLOT(updateLangState(QTreeWidgetItem*, int)));
+        this, &LangBrowser::itemChanged,
+        this, &LangBrowser::updateLangState);
 
     // When the user enters QTreeWidget via keyboard (e.g. by pressing
     // Tab), the focus goes to the checkbox column, making it possible
@@ -89,9 +89,8 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
     // to itemActivated(), but this signal is emitted on Enter rather
     // than on Space.
     connect(
-        this, SIGNAL(
-            currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-        this, SLOT(selectCheckboxColumn(QTreeWidgetItem*)));
+        this, &LangBrowser::currentItemChanged,
+        this, &LangBrowser::selectCheckboxColumn);
 }
 
 

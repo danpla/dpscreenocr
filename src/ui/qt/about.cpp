@@ -117,11 +117,11 @@ About::About(QWidget* parent)
             uiAppCopyright));
 
     connect(
-        infoTextLabel, SIGNAL(linkActivated(const QString&)),
-        this, SLOT(handleLinkActivation(const QString&)));
+        infoTextLabel, &QLabel::linkActivated,
+        this, &About::handleLinkActivation);
     connect(
-        infoTextLabel, SIGNAL(linkHovered(const QString&)),
-        this, SLOT(handleLinkHover(const QString&)));
+        infoTextLabel, &QLabel::linkHovered,
+        this, &About::handleLinkHover);
 
     textEdit = new QTextEdit();
     textEdit->setReadOnly(true);

@@ -37,8 +37,8 @@ HotkeyEditor::HotkeyEditor(
         modCheck->setChecked(keySelected && (hotkey.mods & mod));
 
         connect(
-            modCheck, SIGNAL(stateChanged(int)),
-            this, SIGNAL(changed()));
+            modCheck, &QCheckBox::stateChanged,
+            this, &HotkeyEditor::changed);
 
         layout->addWidget(modCheck);
     }
@@ -59,8 +59,8 @@ HotkeyEditor::HotkeyEditor(
     }
 
     connect(
-        keyCombo, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(keyChanged()));
+        keyCombo, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &HotkeyEditor::keyChanged);
 }
 
 

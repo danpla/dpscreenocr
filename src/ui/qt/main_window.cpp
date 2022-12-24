@@ -195,8 +195,8 @@ MainWindow::MainWindow()
     #endif
 
     connect(
-        qApp, SIGNAL(commitDataRequest(QSessionManager&)),
-        this, SLOT(commitData(QSessionManager&)),
+        qApp, &QGuiApplication::commitDataRequest,
+        this, &MainWindow::commitData,
         Qt::DirectConnection);
 
     #if UI_TASKBAR_WIN
@@ -406,11 +406,12 @@ void MainWindow::createQActions()
     visibilityAction->setCheckable(true);
     visibilityAction->setChecked(true);
     connect(
-        visibilityAction, SIGNAL(toggled(bool)),
-        this, SLOT(setVisibility(bool)));
+        visibilityAction, &QAction::toggled,
+        this, &MainWindow::setVisibility);
 
     quitAction = new QAction(_("Quit"), this);
-    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(
+        quitAction, &QAction::triggered, this, &MainWindow::close);
 }
 
 
@@ -444,8 +445,8 @@ QWidget* MainWindow::createMainTab()
 
     actionChooser = new ActionChooser();
     connect(
-        actionChooser, SIGNAL(actionsChanged()),
-        this, SLOT(invalidateStatus()));
+        actionChooser, &ActionChooser::actionsChanged,
+        this, &MainWindow::invalidateStatus);
 
     actionsGroupLayout->addWidget(actionChooser);
 
@@ -455,8 +456,8 @@ QWidget* MainWindow::createMainTab()
     hotkeyEditor = new HotkeyEditor(
         hotkeyActionToggleSelection, true);
     connect(
-        hotkeyEditor, SIGNAL(changed()),
-        hotkeyEditor, SLOT(bind()));
+        hotkeyEditor, &HotkeyEditor::changed,
+        hotkeyEditor, &HotkeyEditor::bind);
     hotkeyGroupLayout->addWidget(hotkeyEditor);
 
     auto* tab = new QWidget();
@@ -516,10 +517,8 @@ void MainWindow::createTrayIcon()
     trayIcon->setContextMenu(menu);
 
     connect(
-        trayIcon,
-        SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-        this,
-        SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+        trayIcon, &QSystemTrayIcon::activated,
+        this, &MainWindow::trayIconActivated);
 }
 
 

@@ -36,10 +36,13 @@ History::History(const std::string& dirPath, QWidget* parent)
     blockMargin = QFontMetrics(charFormat.font()).height();
 
     exportButton = new QPushButton(_("Export\342\200\246"));
-    connect(exportButton, SIGNAL(clicked()), this, SLOT(doExport()));
+    connect(
+        exportButton, &QPushButton::clicked,
+        this, &History::doExport);
 
     clearButton = new QPushButton(_("Clear\342\200\246"));
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+    connect(
+        clearButton, &QPushButton::clicked, this, &History::clear);
 
     setButtonsEnabled(false);
 

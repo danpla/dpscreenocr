@@ -34,25 +34,25 @@ ActionChooser::ActionChooser(QWidget* parent)
     selectExeButton->setText("\342\200\246");
     selectExeButton->setEnabled(false);
     connect(
-        selectExeButton, SIGNAL(clicked()),
-        this, SLOT(chooseExe()));
+        selectExeButton, &QToolButton::clicked,
+        this, &ActionChooser::chooseExe);
 
     connect(
-        runExeCheck, SIGNAL(toggled(bool)),
-        exeLineEdit, SLOT(setEnabled(bool)));
+        runExeCheck, &QCheckBox::toggled,
+        exeLineEdit, &QLineEdit::setEnabled);
     connect(
-        runExeCheck, SIGNAL(toggled(bool)),
-        selectExeButton, SLOT(setEnabled(bool)));
+        runExeCheck, &QCheckBox::toggled,
+        selectExeButton, &QToolButton::setEnabled);
 
     connect(
-        copyToClipboardCheck, SIGNAL(toggled(bool)),
-        this, SIGNAL(actionsChanged()));
+        copyToClipboardCheck, &QCheckBox::toggled,
+        this, &ActionChooser::actionsChanged);
     connect(
-        addToHistoryCheck, SIGNAL(toggled(bool)),
-        this, SIGNAL(actionsChanged()));
+        addToHistoryCheck, &QCheckBox::toggled,
+        this, &ActionChooser::actionsChanged);
     connect(
-        runExeCheck, SIGNAL(toggled(bool)),
-        this, SIGNAL(actionsChanged()));
+        runExeCheck, &QCheckBox::toggled,
+        this, &ActionChooser::actionsChanged);
 
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins({});
