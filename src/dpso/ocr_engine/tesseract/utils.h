@@ -4,8 +4,7 @@
 #include <cstddef>
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 /**
@@ -22,5 +21,4 @@ namespace ocr {
 std::size_t prettifyTesseractText(char* text);
 
 
-}
 }

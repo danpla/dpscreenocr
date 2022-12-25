@@ -9,8 +9,7 @@
 #include "backend/windows/utils/window.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class WindowsSelection : public Selection {
@@ -51,5 +50,4 @@ private:
 };
 
 
-}
 }

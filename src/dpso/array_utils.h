@@ -9,14 +9,6 @@
 namespace dpso {
 
 
-// Can be replaced with std::size() in C++17.
-template<typename T, std::size_t N>
-constexpr std::size_t getSize(const T (&)[N])
-{
-    return N;
-}
-
-
 template <class T, std::size_t N, std::size_t... I>
 constexpr std::array<T, N>
     makeArrayHelper(T (&&a)[N], std::index_sequence<I...>)

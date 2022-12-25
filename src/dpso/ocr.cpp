@@ -87,7 +87,7 @@ struct Link {
 };
 
 
-#define LINK_LOCK(L) std::lock_guard<std::mutex> guard(L.lock)
+#define LINK_LOCK(L) std::lock_guard linkLockGuard{L.lock}
 
 
 }
@@ -716,8 +716,7 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 }
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 void init(dpso::backend::Backend& backend)
@@ -732,5 +731,4 @@ void shutdown()
 }
 
 
-}
 }

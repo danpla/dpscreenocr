@@ -6,8 +6,7 @@
 #include <cstring>
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 std::size_t prettifyTesseractText(char* text)
@@ -79,5 +78,4 @@ std::size_t prettifyTesseractText(char* text)
 }
 
 
-}
 }

@@ -9,8 +9,7 @@
 #include "backend/x11/x11_backend_component.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 struct X11HotkeyBinding {
@@ -45,5 +44,4 @@ private:
 };
 
 
-}
 }

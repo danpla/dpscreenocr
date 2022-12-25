@@ -5,8 +5,7 @@
 #include "geometry.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class NullScreenshot : public Screenshot {
@@ -23,5 +22,4 @@ private:
 };
 
 
-}
 }

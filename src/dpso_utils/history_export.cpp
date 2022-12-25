@@ -134,9 +134,7 @@ static void exportHtml(const DpsoHistory* history, std::FILE* fp)
 static void writeEscapedJson(std::FILE* fp, const char* text)
 {
     for (const auto* s = text; *s;) {
-        const auto c = *s++;
-
-        switch (c) {
+        switch (const auto c = *s++) {
         case '\b':
             std::fputs("\\b", fp);
             break;

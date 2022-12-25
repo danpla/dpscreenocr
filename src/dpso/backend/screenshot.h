@@ -4,8 +4,7 @@
 #include <cstdint>
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class Screenshot {
@@ -20,5 +19,4 @@ public:
 };
 
 
-}
 }

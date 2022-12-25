@@ -7,8 +7,7 @@
 #include <windows.h>
 
 
-namespace dpso {
-namespace windows {
+namespace dpso::windows {
 
 
 struct LibraryFreer {
@@ -30,6 +29,5 @@ using ModuleUPtr = std::unique_ptr<HMODULE, LibraryFreer>;
     auto NAME ## Fn = (SIGN)(void*)GetProcAddress(MODULE, #NAME)
 
 
-}
 }
 

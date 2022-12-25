@@ -5,8 +5,7 @@
 #include "ocr_engine/tesseract/tesseract_ocr_engine_creator.h"
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 static const OcrEngineCreator* const creators[] = {
@@ -22,9 +21,8 @@ const OcrEngineCreator& OcrEngineCreator::get(std::size_t idx)
 
 std::size_t OcrEngineCreator::getCount()
 {
-    return getSize(creators);
+    return std::size(creators);
 }
 
 
-}
 }

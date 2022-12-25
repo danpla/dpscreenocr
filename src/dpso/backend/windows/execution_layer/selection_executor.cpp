@@ -4,8 +4,7 @@
 #include "backend/windows/execution_layer/action_executor.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 #define EXECUTE(CALL) \
@@ -44,5 +43,4 @@ Rect SelectionExecutor::getGeometry() const
 }
 
 
-}
 }

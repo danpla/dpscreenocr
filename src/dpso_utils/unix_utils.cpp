@@ -10,8 +10,7 @@
 #include <unistd.h>
 
 
-namespace dpso {
-namespace unix {
+namespace dpso::unix {
 
 
 bool makeDirs(char* path, mode_t mode)
@@ -78,5 +77,4 @@ int fsync(int fd)
 }
 
 
-}
 }

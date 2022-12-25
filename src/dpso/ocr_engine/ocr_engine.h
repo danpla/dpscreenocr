@@ -7,8 +7,7 @@
 #include <vector>
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 class OcrEngineError : public std::runtime_error {
@@ -151,5 +150,4 @@ public:
 };
 
 
-}
 }

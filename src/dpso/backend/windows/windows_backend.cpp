@@ -13,8 +13,7 @@
 #include "backend/windows/windows_selection.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 namespace {
 
 
@@ -115,5 +114,5 @@ std::unique_ptr<Backend> Backend::create()
         });
 }
 
-}
+
 }

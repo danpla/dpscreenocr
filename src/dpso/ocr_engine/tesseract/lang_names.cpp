@@ -6,8 +6,7 @@
 #include <iterator>
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 namespace {
 
 
@@ -180,5 +179,4 @@ const char* getTesseractLangName(const char* langCode)
 }
 
 
-}
 }

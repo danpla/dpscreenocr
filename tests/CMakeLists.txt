@@ -26,7 +26,7 @@ add_executable(
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        tests PRIVATE -std=c++14 -Wall -Wextra -pedantic)
+        tests PRIVATE -std=c++17 -Wall -Wextra -pedantic)
 endif()
 
 target_include_directories(tests PRIVATE .)

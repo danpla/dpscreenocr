@@ -13,8 +13,8 @@ void uiPrepareEnvironment(char* argv[])
     const auto* ompThreadLimit = "OMP_THREAD_LIMIT";
     const auto* ompThreadLimitRequiredVal = "1";
 
-    const auto* ompThreadLimitEnvVar = getenv(ompThreadLimit);
-    if (ompThreadLimitEnvVar
+    if (const auto* ompThreadLimitEnvVar = getenv(ompThreadLimit);
+            ompThreadLimitEnvVar
             && strcmp(
                 ompThreadLimitEnvVar,
                 ompThreadLimitRequiredVal) == 0)

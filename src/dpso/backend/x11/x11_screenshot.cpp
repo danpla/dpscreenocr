@@ -29,8 +29,7 @@
 // capturing small areas, which is more common in our case.
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 namespace {
 
 
@@ -222,5 +221,4 @@ std::unique_ptr<Screenshot> takeX11Screenshot(
 }
 
 
-}
 }

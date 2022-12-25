@@ -7,8 +7,7 @@
 #include "backend/windows/execution_layer/selection_executor.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 namespace {
 
 
@@ -97,5 +96,4 @@ std::unique_ptr<Backend> createBackendExecutor(
 }
 
 
-}
 }

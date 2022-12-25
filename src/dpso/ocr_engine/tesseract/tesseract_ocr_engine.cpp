@@ -29,8 +29,7 @@
 #include "ocr_engine/tesseract/utils.h"
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 namespace {
 
 
@@ -286,5 +285,4 @@ std::unique_ptr<OcrEngine> createTesseractOcrEngine(
 }
 
 
-}
 }

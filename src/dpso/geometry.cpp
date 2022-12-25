@@ -11,8 +11,8 @@ Side Side::betweenPoints(int a, int b)
 {
     if (a < b)
         return {a, b - a};
-    else
-        return {b, a - b};
+
+    return {b, a - b};
 }
 
 

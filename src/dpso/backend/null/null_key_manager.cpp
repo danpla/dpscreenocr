@@ -6,8 +6,7 @@
 #include "hotkeys.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 #define MSG(...) std::printf("NullKeyManager: " __VA_ARGS__)
@@ -87,5 +86,4 @@ void NullKeyManager::removeBinding(int idx)
 }
 
 
-}
 }

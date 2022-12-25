@@ -101,8 +101,7 @@ DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey)
 }
 
 
-namespace dpso {
-namespace hotkeys {
+namespace dpso::key_manager {
 
 
 void init(dpso::backend::Backend& backend)
@@ -117,5 +116,4 @@ void shutdown()
 }
 
 
-}
 }

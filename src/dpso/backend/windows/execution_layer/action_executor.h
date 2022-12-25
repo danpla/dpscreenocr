@@ -6,8 +6,7 @@
 #include <utility>
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 struct Action {
@@ -31,7 +30,7 @@ std::unique_ptr<ActionExecutor> createBgThreadActionExecutor();
 // Overload for callables that return nothing.
 template<typename CallableT>
 auto execute(ActionExecutor& executor, const CallableT& callable)
-    -> std::enable_if_t<std::is_void<decltype(callable())>::value>
+    -> std::enable_if_t<std::is_void_v<decltype(callable())>>
 {
     struct CallableAction : Action {
         explicit CallableAction(const CallableT& callable)
@@ -55,8 +54,7 @@ auto execute(ActionExecutor& executor, const CallableT& callable)
 template<typename CallableT>
 auto execute(ActionExecutor& executor, const CallableT& callable)
     -> std::enable_if_t<
-        !std::is_void<decltype(callable())>::value,
-        decltype(callable())>
+        !std::is_void_v<decltype(callable())>, decltype(callable())>
 {
     struct CallableAction : Action {
         using ResultT = decltype(callable());
@@ -88,5 +86,4 @@ auto execute(ActionExecutor& executor, const CallableT& callable)
 }
 
 
-}
 }

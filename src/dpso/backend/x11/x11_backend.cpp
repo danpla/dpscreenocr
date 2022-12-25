@@ -11,10 +11,7 @@
 #include "backend/x11/x11_selection.h"
 
 
-namespace dpso {
-namespace backend {
-
-
+namespace dpso::backend {
 namespace {
 
 
@@ -116,5 +113,4 @@ std::unique_ptr<Backend> Backend::create()
 }
 
 
-}
 }

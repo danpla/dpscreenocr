@@ -17,7 +17,7 @@ namespace dpso {
 
 
 std::string strftime(
-    const char* format, const std::tm* time) DPSO_STRFTIME_FN(1);
+    const char* fmt, const std::tm* time) DPSO_STRFTIME_FN(1);
 
 
 }

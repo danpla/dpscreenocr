@@ -14,8 +14,7 @@
 // either switch to windowed mode or minimize their windows.
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 static Point getMousePosition(Display* display)
@@ -310,5 +309,4 @@ void X11Selection::draw()
 }
 
 
-}
 }

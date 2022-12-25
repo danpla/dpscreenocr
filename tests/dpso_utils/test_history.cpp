@@ -2,8 +2,8 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <iterator>
 
-#include "dpso/array_utils.h"
 #include "dpso/error.h"
 #include "dpso_utils/history.h"
 
@@ -83,7 +83,7 @@ static void testIO(bool append)
         },
     };
 
-    const auto numTests = dpso::getSize(tests);
+    const auto numTests = std::size(tests);
 
     dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
     if (!history) {

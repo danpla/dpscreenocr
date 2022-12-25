@@ -6,8 +6,7 @@
 #include <string>
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 class OcrEngine;
@@ -92,5 +91,4 @@ public:
 };
 
 
-}
 }

@@ -97,8 +97,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
         if (s == blanksEnd)
             kv.value.append(blanksBegin, blanksEnd - blanksBegin);
 
-        const auto c = *s++;
-        if (c != '\\') {
+        if (const auto c = *s++; c != '\\') {
             kv.value += c;
             continue;
         }
@@ -106,8 +105,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
         if (!*s)
             break;
 
-        const auto e = *s++;
-        switch (e) {
+        switch (const auto e = *s++) {
         case 'n':
             kv.value += '\n';
             break;
@@ -194,9 +192,7 @@ static void writeKeyValue(
         std::fputc('\\', fp);
 
     for (const auto* s = kv.value.c_str(); *s;) {
-        const auto c = *s++;
-
-        switch (c) {
+        switch (const auto c = *s++) {
         case '\n':
             std::fputs("\\n", fp);
             break;

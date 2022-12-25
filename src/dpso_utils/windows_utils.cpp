@@ -9,8 +9,7 @@
 #include "dpso/backend/windows/utils/error.h"
 
 
-namespace dpso {
-namespace windows {
+namespace dpso::windows {
 
 
 std::wstring utf8ToUtf16(const char* utf8Str)
@@ -135,5 +134,4 @@ std::string createCmdLine(
 }
 
 
-}
 }

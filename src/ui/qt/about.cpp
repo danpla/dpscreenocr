@@ -149,14 +149,12 @@ static QString getTextForLink(const QString& link)
     if (link == aboutLicenseUrl)
         return uiAppLicense;
 
-    const QUrl url(link);
-
-    if (url.isLocalFile()
-            && QFileInfo(url.toLocalFile()).suffix() == "txt") {
-        QFile file(url.toLocalFile());
-        if (file.open(QFile::ReadOnly | QFile::Text))
+    if (const QUrl url(link);
+            url.isLocalFile()
+            && QFileInfo(url.toLocalFile()).suffix() == "txt")
+        if (QFile file(url.toLocalFile());
+                file.open(QFile::ReadOnly | QFile::Text))
             return file.readAll();
-    }
 
     return {};
 }
@@ -169,8 +167,7 @@ void About::handleLinkActivation(const QString& link)
         return;
     }
 
-    const auto text = getTextForLink(link);
-    if (!text.isEmpty()) {
+    if (const auto text = getTextForLink(link); !text.isEmpty()) {
         textEdit->setPlainText(text);
         textEdit->show();
         currentTextLink = link;

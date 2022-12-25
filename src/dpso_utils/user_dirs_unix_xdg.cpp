@@ -19,10 +19,10 @@ static const char* getDir(
     static std::string path;
     path.clear();
 
-    const auto* xdgHome = std::getenv(xdgHomeEnv);
-    // According to the specification, we should treat empty
-    // XDG_*_HOME as unset.
-    if (xdgHome && *xdgHome)
+    if (const auto* xdgHome = std::getenv(xdgHomeEnv);
+            // According to the specification, we should treat empty
+            // XDG_*_HOME as unset.
+            xdgHome && *xdgHome)
         path += xdgHome;
     else if (const auto* home = std::getenv("HOME")) {
         path += home;

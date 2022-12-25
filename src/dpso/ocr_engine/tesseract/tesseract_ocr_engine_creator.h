@@ -2,8 +2,7 @@
 #pragma once
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 class OcrEngineCreator;
@@ -12,5 +11,4 @@ class OcrEngineCreator;
 const OcrEngineCreator& getTesseractOcrEngineCreator();
 
 
-}
 }

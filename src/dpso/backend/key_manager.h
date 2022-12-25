@@ -4,8 +4,7 @@
 #include "keys.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 struct HotkeyBinding {
@@ -56,5 +55,4 @@ public:
 };
 
 
-}
 }

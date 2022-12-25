@@ -4,8 +4,7 @@
 #include <cstdio>
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 #define MSG(...) std::printf("NullScreenshot: " __VA_ARGS__)
@@ -39,5 +38,4 @@ void NullScreenshot::getGrayscaleData(
 }
 
 
-}
 }

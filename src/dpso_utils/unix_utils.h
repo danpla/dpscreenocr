@@ -4,8 +4,7 @@
 #include <sys/types.h>
 
 
-namespace dpso {
-namespace unix {
+namespace dpso::unix {
 
 
 /**
@@ -29,5 +28,4 @@ bool makeDirs(const char* path, mode_t mode = 0777);
 int fsync(int fd);
 
 
-}
 }

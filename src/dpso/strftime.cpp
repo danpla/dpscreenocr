@@ -5,7 +5,7 @@
 namespace dpso {
 
 
-std::string strftime(const char* format, const std::tm* time)
+std::string strftime(const char* fmt, const std::tm* time)
 {
     // strftime() does not set errno if the destination buffer is too
     // small, making it impossible to distinguish this error from
@@ -13,7 +13,7 @@ std::string strftime(const char* format, const std::tm* time)
     // an empty string in many locales). As a workaround, we append an
     // extra character to the format string, and then remove it from
     // the result before returning.
-    const auto formatEx = std::string{format} + ' ';
+    const auto fmtEx = std::string{fmt} + ' ';
 
     std::string result;
 
@@ -22,7 +22,7 @@ std::string strftime(const char* format, const std::tm* time)
         result.resize(result.capacity());
 
         const auto numWritten = std::strftime(
-            &result[0], result.size(), formatEx.c_str(), time);
+            &result[0], result.size(), fmtEx.c_str(), time);
         if (numWritten == 0)
             continue;
 

@@ -130,7 +130,7 @@ static void testInvalidUtf16()
 static std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 {
     int argc;
-    wchar_t** argv = CommandLineToArgvW(
+    auto** argv = CommandLineToArgvW(
         dpso::windows::utf8ToUtf16(cmdLine).c_str(), &argc);
 
     if (!argv)

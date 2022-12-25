@@ -6,8 +6,7 @@
 #include "array_utils.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 static KeyCode keyToKeyCode(Display* display, DpsoKey key);
@@ -320,5 +319,4 @@ static unsigned dpsoModsToX11Mods(DpsoKeyMods dpsoMods)
 }
 
 
-}
 }

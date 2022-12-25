@@ -7,8 +7,7 @@
 #include <utility>
 
 
-namespace dpso {
-namespace windows {
+namespace dpso::windows {
 
 
 // Check result of CoInitializeEx() for success.
@@ -103,5 +102,4 @@ HRESULT coCreateInstance(
 }
 
 
-}
 }

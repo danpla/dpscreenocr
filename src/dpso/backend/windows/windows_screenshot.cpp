@@ -14,8 +14,7 @@
 #include "img.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 namespace {
 
 
@@ -160,5 +159,4 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
 }
 
 
-}
 }

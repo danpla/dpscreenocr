@@ -49,8 +49,7 @@ void dpsoGetSelectionGeometry(DpsoRect* rect)
 }
 
 
-namespace dpso {
-namespace selection {
+namespace dpso::selection {
 
 
 void init(dpso::backend::Backend& backend)
@@ -65,5 +64,4 @@ void shutdown()
 }
 
 
-}
 }

@@ -2,9 +2,9 @@
 #include "dpso.h"
 
 #include <cstddef>
+#include <iterator>
 #include <stdexcept>
 
-#include "array_utils.h"
 #include "backend/backend.h"
 #include "backend/backend_error.h"
 
@@ -19,7 +19,7 @@ void shutdown(); \
 }
 
 namespace dpso {
-DECL_MODULE_FUNCTIONS(hotkeys)
+DECL_MODULE_FUNCTIONS(key_manager)
 DECL_MODULE_FUNCTIONS(ocr)
 DECL_MODULE_FUNCTIONS(selection)
 }
@@ -43,7 +43,7 @@ struct Module {
 #define MODULE(NAME) {#NAME, dpso::NAME::init, dpso::NAME::shutdown}
 
 const Module modules[] = {
-    MODULE(hotkeys),
+    MODULE(key_manager),
     MODULE(ocr),
     MODULE(selection),
 };
@@ -51,7 +51,7 @@ const Module modules[] = {
 #undef MODULE
 
 
-const auto numModules = dpso::getSize(modules);
+const auto numModules = std::size(modules);
 
 
 bool dpsoInit(void)

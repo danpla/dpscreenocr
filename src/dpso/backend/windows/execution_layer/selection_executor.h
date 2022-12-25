@@ -4,8 +4,7 @@
 #include "backend/selection.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class ActionExecutor;
@@ -28,5 +27,4 @@ private:
 };
 
 
-}
 }

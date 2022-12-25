@@ -11,8 +11,7 @@
 #include "progress_tracker.h"
 
 
-namespace dpso {
-namespace img {
+namespace dpso::img {
 
 
 static void resizeProgress(float progress, void* userData)
@@ -180,13 +179,8 @@ static void unsharp(
 
         for (int x = 0; x < w; ++x) {
             const auto diff = srcRow[x] - blurredRow[x];
-            auto value = srcRow[x] + static_cast<int>(diff * amount);
-            if (value < 0)
-                value = 0;
-            else if (value > 255)
-                value = 255;
-
-            dstRow[x] = value;
+            dstRow[x] = std::clamp(
+                srcRow[x] + static_cast<int>(diff * amount), 0, 255);
         }
 
         localProgressTracker.update(static_cast<float>(y) / h);
@@ -270,5 +264,4 @@ void savePgm(
 }
 
 
-}
 }

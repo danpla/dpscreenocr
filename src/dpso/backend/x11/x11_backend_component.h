@@ -4,8 +4,7 @@
 #include <X11/Xlib.h>
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class X11BackendComponent {
@@ -18,5 +17,4 @@ public:
 };
 
 
-}
 }

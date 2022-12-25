@@ -8,8 +8,7 @@
 #include "printf_fn.h"
 
 
-namespace dpso {
-namespace str {
+namespace dpso::str {
 
 
 enum CmpOption {
@@ -51,5 +50,4 @@ std::string vprintf(const char* fmt, std::va_list args);
 std::string printf(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
 
-}
 }

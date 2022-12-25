@@ -4,8 +4,7 @@
 #include "backend/selection.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class NullSelection : public Selection {
@@ -21,5 +20,4 @@ private:
 };
 
 
-}
 }

@@ -4,8 +4,7 @@
 #include "backend/backend_error.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class ScreenshotError : public BackendError {
@@ -13,5 +12,4 @@ class ScreenshotError : public BackendError {
 };
 
 
-}
 }

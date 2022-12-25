@@ -9,8 +9,7 @@
 #include "backend/key_manager.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class WindowsKeyManager : public KeyManager {
@@ -40,5 +39,4 @@ private:
 };
 
 
-}
 }

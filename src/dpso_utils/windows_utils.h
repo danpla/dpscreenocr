@@ -7,8 +7,7 @@
 #include <string>
 
 
-namespace dpso {
-namespace windows {
+namespace dpso::windows {
 
 
 /**
@@ -49,5 +48,4 @@ inline std::string createCmdLine(
 }
 
 
-}
 }

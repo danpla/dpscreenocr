@@ -24,17 +24,8 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    if(DPSO_QT_VERSION EQUAL 6)
-        set(CPP_STANDARD 17)
-    else()
-        set(CPP_STANDARD 14)
-    endif()
-
     target_compile_options(
-        dpscreenocr_qt
-        PRIVATE -std=c++${CPP_STANDARD} -Wall -Wextra -pedantic)
-
-    unset(CPP_STANDARD)
+        dpscreenocr_qt PRIVATE -std=c++17 -Wall -Wextra -pedantic)
 endif()
 
 target_include_directories(dpscreenocr_qt PRIVATE .)

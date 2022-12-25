@@ -9,8 +9,7 @@
 #include "ocr_engine/tesseract/tesseract_ocr_engine.h"
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 // Note that we use TessBaseAPI::Version() instead of macros
@@ -64,5 +63,4 @@ const OcrEngineCreator& getTesseractOcrEngineCreator()
 }
 
 
-}
 }

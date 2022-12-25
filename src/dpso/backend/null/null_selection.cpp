@@ -4,8 +4,7 @@
 #include <cstdio>
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 #define MSG(...) std::printf("NullSelection: " __VA_ARGS__)
@@ -36,5 +35,4 @@ Rect NullSelection::getGeometry() const
 }
 
 
-}
 }

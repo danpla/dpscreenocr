@@ -9,8 +9,7 @@
 #include "array_utils.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 // The RegisterHotKey() documentation says that an application must
@@ -55,16 +54,15 @@ static constexpr unsigned createMask(unsigned numBits)
 
 const auto modsBits = 4;
 const auto modsMask = createMask(modsBits);
-static_assert(dpsoNumKeyMods <= modsBits, "");
+static_assert(dpsoNumKeyMods <= modsBits);
 
 const auto keyBits = 10;
 const auto keyMask = createMask(keyBits) << modsBits;
-static_assert(dpsoNumKeys <= 1 << keyBits, "");
+static_assert(dpsoNumKeys <= 1 << keyBits);
 
 const auto sentinelBit = 1 << (modsBits + keyBits);
 
-static_assert(
-    (1 << (modsBits + keyBits)) <= 0xFFFF - 0xC000 + 1, "");
+static_assert((1 << (modsBits + keyBits)) <= 0xFFFF - 0xC000 + 1);
 
 
 const wchar_t atomNamePrefix[] =
@@ -75,7 +73,7 @@ const wchar_t atomNamePrefix[] =
     #endif
 ;
 
-const auto atomNamePrefixLen = getSize(atomNamePrefix) - 1;
+const auto atomNamePrefixLen = std::size(atomNamePrefix) - 1;
 
 
 static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
@@ -398,5 +396,4 @@ static UINT dpsoModsToWinMods(DpsoKeyMods mods)
 }
 
 
-}
 }

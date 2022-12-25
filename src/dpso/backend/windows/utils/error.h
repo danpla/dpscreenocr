@@ -7,13 +7,11 @@
 #include <windows.h>
 
 
-namespace dpso {
-namespace windows {
+namespace dpso::windows {
 
 
 std::string getErrorMessage(DWORD error);
 std::string getHresultMessage(HRESULT hresult);
 
 
-}
 }

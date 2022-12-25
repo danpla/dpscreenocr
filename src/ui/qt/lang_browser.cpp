@@ -31,8 +31,8 @@ public:
         const auto thisCs = checkState(columnIdxCheckbox);
         const auto otherCs = other.checkState(columnIdxCheckbox);
 
-        static_assert(Qt::Unchecked < Qt::PartiallyChecked, "");
-        static_assert(Qt::PartiallyChecked < Qt::Checked, "");
+        static_assert(Qt::Unchecked < Qt::PartiallyChecked);
+        static_assert(Qt::PartiallyChecked < Qt::Checked);
         if (thisCs != otherCs)
             // In ascending order, checked items come first.
             return thisCs >= otherCs;

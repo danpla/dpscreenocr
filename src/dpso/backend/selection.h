@@ -4,8 +4,7 @@
 #include "geometry.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 /**
@@ -55,5 +54,4 @@ public:
 };
 
 
-}
 }

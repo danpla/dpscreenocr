@@ -7,8 +7,7 @@
 #include <windows.h>
 
 
-namespace dpso {
-namespace windows {
+namespace dpso::windows {
 
 
 struct DcReleaser {
@@ -94,5 +93,4 @@ private:
 };
 
 
-}
 }

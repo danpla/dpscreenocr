@@ -66,8 +66,7 @@
 // that use DPI virtualization.
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 static windows::ModuleUPtr user32Dll{LoadLibraryW(L"user32")};
@@ -460,5 +459,4 @@ void WindowsSelection::draw(HDC dc)
 }
 
 
-}
 }

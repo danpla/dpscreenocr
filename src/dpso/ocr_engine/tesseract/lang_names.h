@@ -2,12 +2,10 @@
 #pragma once
 
 
-namespace dpso {
-namespace ocr {
+namespace dpso::ocr {
 
 
 const char* getTesseractLangName(const char* langCode);
 
 
-}
 }

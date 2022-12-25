@@ -4,8 +4,7 @@
 #include <stdexcept>
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class BackendError : public std::runtime_error {
@@ -13,5 +12,4 @@ class BackendError : public std::runtime_error {
 };
 
 
-}
 }

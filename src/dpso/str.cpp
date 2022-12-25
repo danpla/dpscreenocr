@@ -5,8 +5,7 @@
 #include <cstdio>
 
 
-namespace dpso {
-namespace str {
+namespace dpso::str {
 
 
 int cmpSubStr(
@@ -61,5 +60,4 @@ std::string printf(const char* fmt, ...)
 }
 
 
-}
 }

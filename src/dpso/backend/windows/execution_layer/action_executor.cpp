@@ -7,8 +7,7 @@
 #include <thread>
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 namespace {
 
 
@@ -55,7 +54,7 @@ BgThreadActionExecutor::~BgThreadActionExecutor()
 void BgThreadActionExecutor::execute(Action& action)
 {
     {
-        std::lock_guard<std::mutex> guard(mutex);
+        std::lock_guard guard{mutex};
         actionException = nullptr;
         currentAction = &action;
     }
@@ -63,7 +62,7 @@ void BgThreadActionExecutor::execute(Action& action)
     condVar.notify_one();
 
     {
-        std::unique_lock<std::mutex> lock(mutex);
+        std::unique_lock lock{mutex};
         while (currentAction)
             condVar.wait(lock);
     }
@@ -76,7 +75,7 @@ void BgThreadActionExecutor::execute(Action& action)
 void BgThreadActionExecutor::threadLoop()
 {
     while (!terminate) {
-        std::unique_lock<std::mutex> lock(mutex);
+        std::unique_lock lock{mutex};
         while (!currentAction)
             condVar.wait(lock);
 
@@ -102,5 +101,4 @@ std::unique_ptr<ActionExecutor> createBgThreadActionExecutor()
 }
 
 
-}
 }

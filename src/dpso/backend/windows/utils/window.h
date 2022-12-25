@@ -7,8 +7,7 @@
 #include <windows.h>
 
 
-namespace dpso {
-namespace windows {
+namespace dpso::windows {
 
 
 struct WindowDestroyer {
@@ -24,5 +23,4 @@ struct WindowDestroyer {
 using WindowUPtr = std::unique_ptr<HWND, WindowDestroyer>;
 
 
-}
 }

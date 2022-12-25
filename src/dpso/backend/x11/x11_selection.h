@@ -7,8 +7,7 @@
 #include "backend/x11/x11_backend_component.h"
 
 
-namespace dpso {
-namespace backend {
+namespace dpso::backend {
 
 
 class X11Selection : public Selection, public X11BackendComponent {
@@ -44,5 +43,4 @@ private:
 };
 
 
-}
 }
