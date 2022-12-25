@@ -63,7 +63,7 @@ constexpr std::array<T, N> makeArray(T (&&a)[N])
     // // Ok, compiler knows there's no narrowing:
     // unsigned array1[1] = {1};
     // // Narrowing conversion from int to unsigned:
-    // auto array2 = makeArray<int, 1>(1);
+    // auto array2 = makeArray<unsigned, 1>(1);
     //
     // The narrowing conversion warnings is a good thing in general,
     // we are certainly not going to cast std::forward to T as this
