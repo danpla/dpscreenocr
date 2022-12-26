@@ -29,7 +29,7 @@ FILE* dpsoFopen(const char* filePath, const char* mode)
 }
 
 
-int dpsoRemoveUtf8(const char* filePath)
+int dpsoRemove(const char* filePath)
 {
     std::wstring filePathUtf16;
 

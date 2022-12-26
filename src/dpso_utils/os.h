@@ -41,7 +41,7 @@ FILE* dpsoFopen(const char* filePath, const char* mode);
 /**
  * remove() that accepts filePath in UTF-8.
  */
-int dpsoRemoveUtf8(const char* filePath);
+int dpsoRemove(const char* filePath);
 
 
 /**
