@@ -1,4 +1,6 @@
 
+#include <cerrno>
+#include <cstring>
 #include <string>
 #include <vector>
 
@@ -63,9 +65,46 @@ static void testGetFileExt()
 }
 
 
+const auto* const testUnicodeFileName =
+    // 汉语.txt
+    "\346\261\211\350\257\255.txt";
+
+
+void testFopen()
+{
+    dpso::StdFileUPtr fp{dpsoFopen(testUnicodeFileName, "wb")};
+    if (!fp)
+        test::failure(
+            "dpsoFopen(\"%s\"): %s\n",
+            testUnicodeFileName,
+            std::strerror(errno));
+}
+
+
+void testRemove()
+{
+    {
+        dpso::StdFileUPtr fp{dpsoFopen(testUnicodeFileName, "wb")};
+        if (!fp)
+            test::fatalError(
+                "testRemove: dpsoFopen(\"%s\"): %s\n",
+                testUnicodeFileName,
+                std::strerror(errno));
+    }
+
+    if (dpsoRemove(testUnicodeFileName) != 0)
+        test::failure(
+            "dpsoRemove(\"%s\"): %s\n",
+            testUnicodeFileName,
+            std::strerror(errno));
+}
+
+
 static void testOs()
 {
     testGetFileExt();
+    testFopen();
+    testRemove();
 }
 
 
