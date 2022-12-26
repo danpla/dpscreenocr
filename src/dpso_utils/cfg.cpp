@@ -319,31 +319,20 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
     const auto result = std::strtol(str, &end, 10);
     if (end != str) {
         // Don't treat string as an integer if it has any trailing
-        // non-digit characters except whitespace. We intentionally
-        // ignore floats (like "1.2"), as we currently don't have
-        // Get/SetFloat() routines.
-        //
-        // Note that since we have at least one decimal digit in the
-        // string, the test for boolean strings below is not needed.
+        // non-digit characters except whitespace.
         for (; *end; ++end)
             if (!std::isspace(*end))
                 return defaultVal;
 
-        if (result >= INT_MAX)
-            return INT_MAX;
-
-        if (result <= INT_MIN)
-            return INT_MIN;
-
-        return result;
+        return std::clamp<long>(result, INT_MIN, INT_MAX);
     }
 
-    for (int boolInt = 0; boolInt < 2; ++boolInt)
+    for (int i = 0; i < 2; ++i)
         if (dpso::str::cmp(
                 str,
-                boolToStr(boolInt),
+                boolToStr(i),
                 dpso::str::cmpIgnoreCase) == 0)
-            return boolInt;
+            return i;
 
     return defaultVal;
 }
