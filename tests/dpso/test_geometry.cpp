@@ -20,19 +20,6 @@ static void testEqual(const Point& a, const Point& b, int lineNum)
 }
 
 
-static void testEqual(const Side& a, const Side& b, int lineNum)
-{
-    if (a.start == b.start && a.size == b.size)
-        return;
-
-    test::failure(
-        "line %i: Size(%i, %i) != Size(%i, %i)\n",
-        lineNum,
-        a.start, a.size,
-        b.start, b.size);
-}
-
-
 static void testEqual(const Rect& a, const Rect& b, int lineNum)
 {
     #define CMP(N) a.N == b.N
@@ -73,27 +60,6 @@ static void testPoint()
 }
 
 
-static void testSide()
-{
-    TEST_EQUAL(Side(), Side(0, 0));
-
-    TEST_EQUAL(Side::betweenPoints(0, 1), Side(0, 1));
-    TEST_EQUAL(Side::betweenPoints(1, 0), Side(0, 1));
-    TEST_EQUAL(Side::betweenPoints(-1, 1), Side(-1, 2));
-    TEST_EQUAL(Side::betweenPoints(1, -1), Side(-1, 2));
-
-    const Side s(0, 2);
-    TEST_EQUAL(getIntersection(s, s), s);
-    TEST_EQUAL(getIntersection(s, {}), Side(0, 0));
-    TEST_EQUAL(getIntersection(s, {1, 2}), Side(1, 1));
-    TEST_EQUAL(getIntersection(s, {2, 2}), Side(2, 0));
-    TEST_EQUAL(getIntersection(s, {3, 2}), Side(3, 0));
-    TEST_EQUAL(getIntersection(s, {-1, 2}), Side(0, 1));
-    TEST_EQUAL(getIntersection(s, {-2, 2}), Side(0, 0));
-    TEST_EQUAL(getIntersection(s, {-3, 2}), Side(0, 0));
-}
-
-
 static void testRect()
 {
     TEST_EQUAL(Rect(), Rect(0, 0, 0, 0));
@@ -130,7 +96,6 @@ static void testRect()
 static void testGeometry()
 {
     testPoint();
-    testSide();
     testRect();
 }
 

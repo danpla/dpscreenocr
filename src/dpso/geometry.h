@@ -24,28 +24,6 @@ struct Point {
 };
 
 
-struct Side {
-    int start;
-    int size;
-
-    Side()
-        : Side{0, 0}
-    {
-    }
-
-    Side(int start, int size)
-        : start{start}
-        , size{size}
-    {
-    }
-
-    static Side betweenPoints(int a, int b);
-};
-
-
-Side getIntersection(const Side& a, const Side& b);
-
-
 struct Rect {
     int x;
     int y;
@@ -62,11 +40,6 @@ struct Rect {
         , y{y}
         , w{w}
         , h{h}
-    {
-    }
-
-    Rect(const Side& x, const Side& y)
-        : Rect{x.start, y.start, x.size, y.size}
     {
     }
 
