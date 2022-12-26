@@ -4,9 +4,8 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+#include <iterator>
 #include <string>
-
-#include "array_utils.h"
 
 
 namespace dpso::backend {
@@ -264,7 +263,7 @@ HotkeyBinding* WindowsKeyManager::findBinding(
 }
 
 
-const auto keyToVk = makeArray<UINT, dpsoNumKeys>({
+const UINT keyToVk[] = {
     VK_F1,
     VK_F2,
     VK_F3,
@@ -367,7 +366,8 @@ const auto keyToVk = makeArray<UINT, dpsoNumKeys>({
     VK_NUMPAD9,
     VK_NUMPAD0,
     VK_DELETE,
-});
+};
+static_assert(std::size(keyToVk) == dpsoNumKeys);
 
 
 static UINT dpsoKeyToWinKey(DpsoKey key)

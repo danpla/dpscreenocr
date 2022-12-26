@@ -1,7 +1,8 @@
 
 #include "ocr_engine/ocr_engine_creator.h"
 
-#include "array_utils.h"
+#include <iterator>
+
 #include "ocr_engine/tesseract/tesseract_ocr_engine_creator.h"
 
 

@@ -46,6 +46,18 @@
 
       "\xC2\xA9" "2018" (gives ©2018)
 
+* In genral, arrays should be defined without an explicit size. When
+  the number of elements in the array must match some constant, it
+  should be enforced with a static_assert() following the array
+  definition.
+
+  The reason is that specifying an array size (both for plain and
+  std::array) when using aggregate initialization is broken by design:
+  it allows you to provide fewer values than specified by the array
+  type, and compilers don't even warn about this. This is especially
+  dangerous when the size comes from a constant that one day may
+  become N times larger.
+
 * Use underscores instead of hyphens in CMake target names.
 
 * All global configuration macros and CMake options have DPSO_ prefix.

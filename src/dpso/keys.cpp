@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 
-#include "array_utils.h"
 #include "str.h"
 
 
@@ -15,8 +14,7 @@ const DpsoHotkey dpsoEmptyHotkey{dpsoNoKey, dpsoNoKeyMods};
 
 DpsoKeyMod dpsoGetKeyModAt(int idx)
 {
-    static const auto keyModsOrder
-    = dpso::makeArray<DpsoKeyMod, dpsoNumKeyMods>({
+    static const DpsoKeyMod keyModsOrder[] = {
         // Apple order (Control, Option, Shift, Command) matches
         // our enum:
         // https://developer.apple.com/design/human-interface-guidelines/macos/user-interaction/keyboard/
@@ -24,7 +22,8 @@ DpsoKeyMod dpsoGetKeyModAt(int idx)
         // Design guides for other platforms and desktop environments
         // don't seem to mention the order of modifiers.
         dpsoKeyModCtrl, dpsoKeyModAlt, dpsoKeyModShift, dpsoKeyModWin
-    });
+    };
+    static_assert(std::size(keyModsOrder) == dpsoNumKeyMods);
 
     if (idx < 0 || idx >= dpsoNumKeyMods)
         return dpsoNoKeyMods;
@@ -33,7 +32,7 @@ DpsoKeyMod dpsoGetKeyModAt(int idx)
 }
 
 
-const auto keyNames = dpso::makeArray<const char*, dpsoNumKeys>({
+const char* const keyNames[] = {
     "F1",
     "F2",
     "F3",
@@ -136,7 +135,8 @@ const auto keyNames = dpso::makeArray<const char*, dpsoNumKeys>({
     "Keypad 9",
     "Keypad 0",
     "Keypad .",
-});
+};
+static_assert(std::size(keyNames) == dpsoNumKeys);
 
 
 static const char* keyToString(DpsoKey key)
@@ -205,8 +205,7 @@ struct ModNameInfo {
 }
 
 
-const auto modNameInfos
-= dpso::makeArray<ModNameInfo, dpsoNumKeyMods>({
+const ModNameInfo modNameInfos[] = {
     {dpsoKeyModCtrl, "Ctrl", {}},
     {dpsoKeyModAlt, "Alt",
         {
@@ -220,7 +219,8 @@ const auto modNameInfos
             {KeyPlatformId::unix, "Super"},
         }
     },
-});
+};
+static_assert(std::size(modNameInfos) == dpsoNumKeyMods);
 
 
 static const char* modToString(DpsoKeyMod mod)
