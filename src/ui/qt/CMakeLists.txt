@@ -22,10 +22,11 @@ if(WIN32)
         dpscreenocr_qt PRIVATE $<TARGET_OBJECTS:windows_rc>)
 endif()
 
+target_compile_features(dpscreenocr_qt PRIVATE cxx_std_17)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpscreenocr_qt PRIVATE -std=c++17 -Wall -Wextra -pedantic)
+        dpscreenocr_qt PRIVATE -Wall -Wextra -pedantic)
 endif()
 
 target_include_directories(dpscreenocr_qt PRIVATE .)

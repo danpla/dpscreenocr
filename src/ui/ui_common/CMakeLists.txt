@@ -60,10 +60,10 @@ foreach(IN_SRC ${IN_SRCS})
     endif()
 endforeach()
 
+target_compile_features(ui_common PRIVATE cxx_std_17)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(
-        ui_common PRIVATE -std=c++17 -Wall -Wextra -pedantic)
+    target_compile_options(ui_common PRIVATE -Wall -Wextra -pedantic)
 endif()
 
 target_include_directories(

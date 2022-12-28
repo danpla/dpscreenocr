@@ -61,10 +61,10 @@ target_compile_definitions(
     DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
     DPSO_DLL=$<BOOL:${BUILD_SHARED_LIBS}>)
 
+target_compile_features(dpso PRIVATE cxx_std_17)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(
-        dpso PRIVATE -std=c++17 -Wall -Wextra -pedantic)
+    target_compile_options(dpso PRIVATE -Wall -Wextra -pedantic)
 endif()
 
 set_target_properties(

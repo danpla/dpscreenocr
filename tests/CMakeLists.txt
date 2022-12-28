@@ -23,10 +23,10 @@ add_executable(
 
     ${PLATFORM_SRCS})
 
+target_compile_features(tests PRIVATE cxx_std_17)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(
-        tests PRIVATE -std=c++17 -Wall -Wextra -pedantic)
+    target_compile_options(tests PRIVATE -Wall -Wextra -pedantic)
 endif()
 
 target_include_directories(tests PRIVATE .)
@@ -44,11 +44,12 @@ target_link_libraries(tests dpso dpso_utils)
 
 add_executable(test_c_compilation test_c_compilation.c)
 
+target_compile_features(test_c_compilation PRIVATE c_std_99)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         test_c_compilation
-        PRIVATE -std=c99 -Wall -Wextra -pedantic -Wstrict-prototypes)
+        PRIVATE -Wall -Wextra -pedantic -Wstrict-prototypes)
 endif()
 
 if(NOT TARGET dpso_intl)
