@@ -15,12 +15,22 @@
 
 #else
 
-#define gettext(msgId) msgId
-#define ngettext(msgId1, msgId2, N) N == 1 ? msgId1 : msgId2
-#define textdomain(domainName) ((const char*)domainName)
-#define bindtextdomain(domainName, dirName) ((const char*)dirName)
-#define bind_textdomain_codeset(domainName, codeset) \
-    ((const char*)codeset)
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+const char* gettext(const char* msgId);
+const char* ngettext(
+    const char* msgId1, const char* msgId2, unsigned long n);
+const char* textdomain(const char* domainName);
+const char* bind_textdomain_codeset(
+    const char* domainName, const char* codeset);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

@@ -35,6 +35,8 @@ static std::wstring utf8ToUtf16(const char* utf8Str)
 
 void bindtextdomainUtf8(const char* domainName, const char* dirName)
 {
+    // dirName can be null to return the previously set directory. Our
+    // UTF-8 wrapper returns nothing, so skip this case.
     if (!dirName)
         return;
 

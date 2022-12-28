@@ -11,6 +11,12 @@ add_library(
 target_compile_definitions(
     dpso_intl PUBLIC ENABLE_NLS=$<BOOL:${DPSO_ENABLE_NLS}>)
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+        OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(
+        dpso_intl PRIVATE -std=c++11 -Wall -Wextra -pedantic)
+endif()
+
 target_include_directories(dpso_intl PRIVATE . PUBLIC ..)
 
 if(DPSO_ENABLE_NLS)
