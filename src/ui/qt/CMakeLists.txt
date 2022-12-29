@@ -23,6 +23,7 @@ if(WIN32)
 endif()
 
 target_compile_features(dpscreenocr_qt PRIVATE cxx_std_17)
+set_target_properties(dpscreenocr_qt PROPERTIES CXX_EXTENSIONS NO)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(

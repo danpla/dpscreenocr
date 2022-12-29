@@ -5,6 +5,7 @@ project(dpso-example)
 add_executable(dpso_example main.c)
 
 target_compile_features(dpso_example PRIVATE c_std_99)
+set_target_properties(dpso_example PROPERTIES C_EXTENSIONS NO)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(

@@ -24,6 +24,7 @@ add_executable(
     ${PLATFORM_SRCS})
 
 target_compile_features(tests PRIVATE cxx_std_17)
+set_target_properties(tests PROPERTIES CXX_EXTENSIONS NO)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(tests PRIVATE -Wall -Wextra -pedantic)
@@ -45,6 +46,7 @@ target_link_libraries(tests dpso dpso_utils)
 add_executable(test_c_compilation test_c_compilation.c)
 
 target_compile_features(test_c_compilation PRIVATE c_std_99)
+set_target_properties(test_c_compilation PROPERTIES C_EXTENSIONS NO)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
