@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2022-12-10 19:04+0100\n"
-"PO-Revision-Date: 2022-10-01 02:24+0000\n"
-"Last-Translator: Eduardo Malaspina <vaio0@swismail.com>\n"
+"PO-Revision-Date: 2022-12-31 17:47+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/es/>\n"
 "Language: es\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.15.1-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:35
 msgid "Afrikaans"
@@ -37,9 +37,8 @@ msgid "Azerbaijani"
 msgstr "Azerí"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:40
-#, fuzzy
 msgid "Azerbaijani (Cyrillic)"
-msgstr "Azerí, cirílico"
+msgstr "Azerbaiyano (alfabeto cirílico)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:41
 msgid "Belarusian"
@@ -78,24 +77,20 @@ msgid "Czech"
 msgstr "Checo"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:50
-#, fuzzy
 msgid "Chinese (simplified)"
-msgstr "Chino, simplificado"
+msgstr "Chino (simplificado)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:51
-#, fuzzy
 msgid "Chinese (simplified, vertical)"
-msgstr "Chino, simplificado, vertical"
+msgstr "Chino (simplificado, vertical)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:52
-#, fuzzy
 msgid "Chinese (traditional)"
-msgstr "Chino, tradicional"
+msgstr "Chino (tradicional)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:53
-#, fuzzy
 msgid "Chinese (traditional, vertical)"
-msgstr "Chino, tradicional, vertical"
+msgstr "Chino (tradicional, vertical)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:54
 msgid "Cherokee"
@@ -114,9 +109,8 @@ msgid "Danish"
 msgstr "Danés"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:58
-#, fuzzy
 msgid "Danish (Fraktur)"
-msgstr "Danés, «fraktur»"
+msgstr "Danés (Fraktur)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:59
 msgid "German"
@@ -124,9 +118,8 @@ msgstr "Alemán"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:60
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:74
-#, fuzzy
 msgid "German (Fraktur)"
-msgstr "Alemán, «fraktur»"
+msgstr "Alemán (Fraktur)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:61
 msgid "Dhivehi; Divehi; Maldivian"
@@ -181,19 +174,16 @@ msgid "French"
 msgstr "Francés"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:75
-#, fuzzy
 msgid "French, Middle (ca. 1400-1600)"
-msgstr "Francés medio (ca. 1400-1600)"
+msgstr "Francés Medio (ca. 1400-1600)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:76
-#, fuzzy
 msgid "Frisian, Western"
-msgstr "Frisón occidental"
+msgstr "Frisón, occidental"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:77
-#, fuzzy
 msgid "Gaelic, Scottish"
-msgstr "Gaélico escocés"
+msgstr "Gaélico, Escocés"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:78
 msgid "Irish"
@@ -212,9 +202,8 @@ msgid "Gujarati"
 msgstr "Guyaratí"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:82
-#, fuzzy
 msgid "Creole, Haitian"
-msgstr "Haitiano"
+msgstr "criollo, haitiano"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:83
 msgid "Hebrew"
@@ -253,9 +242,8 @@ msgid "Italian"
 msgstr "Italiano"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:92
-#, fuzzy
 msgid "Italian (old)"
-msgstr "Italiano antiguo"
+msgstr "Italiano (antiguo)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:93
 msgid "Javanese"
@@ -278,27 +266,24 @@ msgid "Georgian"
 msgstr "Georgiano"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:98
-#, fuzzy
 msgid "Georgian (old)"
-msgstr "Georgiano antiguo"
+msgstr "Georgiano (antiguo)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:99
 msgid "Kazakh"
 msgstr "Kazajo"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:100
-#, fuzzy
 msgid "Khmer, Central"
-msgstr "Camboyano"
+msgstr "Jemer, Centro"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:101
 msgid "Kirghiz; Kyrgyz"
 msgstr "Kirguís"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:102
-#, fuzzy
 msgid "Kurdish, Northern"
-msgstr "Kurdo del norte, latino"
+msgstr "Kurdo, del norte"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:103
 msgid "Korean"
@@ -309,9 +294,8 @@ msgid "Korean (vertical)"
 msgstr "Coreano, vertical"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:105
-#, fuzzy
 msgid "Kurdish"
-msgstr "Kurdo, árabe"
+msgstr "Kurdo"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:106
 msgid "Lao"
@@ -330,7 +314,6 @@ msgid "Lithuanian"
 msgstr "Lituano"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:110
-#, fuzzy
 msgid "Luxembourgish; Letzeburgesch"
 msgstr "Luxemburgués"
 
@@ -427,9 +410,8 @@ msgid "Slovak"
 msgstr "Eslovaco"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:134
-#, fuzzy
 msgid "Slovak (Fraktur)"
-msgstr "Eslovaco, «fraktur»"
+msgstr "Eslovaco (Fraktur)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:135
 msgid "Slovenian"
@@ -444,9 +426,8 @@ msgid "Spanish; Castilian"
 msgstr "Español/castellano"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:138
-#, fuzzy
 msgid "Spanish; Castilian (old)"
-msgstr "Español antiguo"
+msgstr "Español; Castellano (Antiguo)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:139
 msgid "Albanian"
@@ -457,9 +438,8 @@ msgid "Serbian"
 msgstr "Serbio"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:141
-#, fuzzy
 msgid "Serbian (Latin)"
-msgstr "Serbio, latino"
+msgstr "Serbio (alfabeto latino)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:142
 msgid "Sundanese"
@@ -506,9 +486,8 @@ msgid "Tigrinya"
 msgstr "Tigriña"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:153
-#, fuzzy
 msgid "Tonga (Tonga Islands)"
-msgstr "Tongano"
+msgstr "Tonga (Islas de Tonga)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:154
 msgid "Turkish"
@@ -531,9 +510,8 @@ msgid "Uzbek"
 msgstr "Uzbeko"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:159
-#, fuzzy
 msgid "Uzbek (Cyrillic)"
-msgstr "Uzbeko, cirílico"
+msgstr "Uzbeko (alfabeto cirílico)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:160
 msgid "Vietnamese"
@@ -592,9 +570,8 @@ msgid "Choose an executable"
 msgstr "Elija un ejecutable"
 
 #: src/ui/qt/history.cpp:38
-#, fuzzy
 msgid "Export…"
-msgstr "Guardar como…"
+msgstr "Exportar…"
 
 #: src/ui/qt/history.cpp:41
 msgid "Clear…"
@@ -605,9 +582,8 @@ msgid "History"
 msgstr "Historial"
 
 #: src/ui/qt/history.cpp:82
-#, fuzzy
 msgid "Export history"
-msgstr "Guardar historial"
+msgstr "Exportar el historial"
 
 #: src/ui/qt/history.cpp:84
 msgid "Plain text"
@@ -677,9 +653,8 @@ msgid "Split text blocks"
 msgstr "Dividir bloques de texto"
 
 #: src/ui/qt/main_window.cpp:435
-#, fuzzy
 msgid "Split independent text blocks, such as columns"
-msgstr "Dividir bloques de texto independientes; p. ej., las columnas"
+msgstr "Dividir en bloques independientes de texto, por ejemplo, columnas"
 
 #: src/ui/qt/main_window.cpp:438
 msgid "Languages:"
@@ -702,9 +677,8 @@ msgid "Please select languages"
 msgstr "Seleccione idiomas"
 
 #: src/ui/qt/main_window.cpp:789
-#, fuzzy
 msgid "Please select actions"
-msgstr "Seleccione acciones"
+msgstr "Por favor, elige una acción"
 
 #. Translators: Program is ready for OCR
 #: src/ui/qt/main_window.cpp:792
