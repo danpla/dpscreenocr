@@ -1,4 +1,4 @@
-* A source file should include headers in the following order:
+* Source files should include headers in the following order:
 
   * If the file is C/CPP (foo.cpp), the corresponding header of this
     file (foo.h)
@@ -8,12 +8,12 @@
   * Other third-party headers, including src/thirdparty.
   * Our headers from src/.
 
-  These #include groups should be separated by an empty line.
+  Separate these #include groups by an empty line.
 
-* When a CPP file implements a function from a C header, the signature
-  should be copied verbatim to the CPP file. This includes the case
-  when a C type from the signature is available in CPP in the std::
-  namespace, e.g. size_t (<stddef.h>) vs std::size_t (<cstddef>).
+* When a CPP file implements a function from a C header, copy the
+  signature verbatim to the CPP file. This includes the case when a C
+  type from the signature is available in the std:: namespace, e.g.
+  size_t (<stddef.h>) vs std::size_t (<cstddef>).
 
 * In both C and C++ code, a pointer is not expected to be null (unless
   the opposite is explicitly stated in the documentation) in case it
@@ -23,15 +23,14 @@
 
   * C: A function from a public C API should expect a pointer argument
     to be null. If null is an invalid value, the routine should either
-    report an error or (if there's no way to report an error) do
-    nothing.
+    report an error or (if there's no way to do that) do nothing.
 
   * C++: In C++ code, raw pointers are only used to express optional
     references and thus always expected to be null. Exceptions to
     this rule should be revised to use references (or
     reference_wrapper), or at least be explicitly documented.
 
-    In case of errors, a function returning a created an object via a
+    In case of errors, a function returning a created object via a
     smart pointer should either throw an exception and never return
     null (this is the preferred way), or never throw and return null
     to signal an error.
@@ -46,16 +45,15 @@
 
       "\xC2\xA9" "2018" (gives ©2018)
 
-* In genral, arrays should be defined without an explicit size. When
-  the number of elements in the array must match some constant, it
-  should be enforced with a static_assert() following the array
-  definition.
+* In genral, define arrays without an explicit size. When the number
+  of elements in the array must match some constant, it should be
+  enforced with a static_assert() following the array definition.
 
   The reason is that specifying an array size (both for plain and
   std::array) when using aggregate initialization is broken by design:
   it allows you to provide fewer values than specified by the array
   type, and compilers don't even warn about this. This is especially
-  dangerous when the size comes from a constant that one day may
+  dangerous when the size comes from a constant that may one day
   become N times larger.
 
 * Use underscores instead of hyphens in CMake target names.
@@ -66,7 +64,6 @@
   undefined macro may be set to a default value in the source code,
   and that default may not match the CMake option.
 
-* ENABLE_NLS=1 macro should be defined to enable gettext. If you use
-  dpso_utils/intl.h, this can be done with DPSO_ENABLE_NLS CMake
-  option (enabled by default). If you use your own gettext.h, set
-  ENABLE_NLS manually.
+* Define ENABLE_NLS=1 to enable gettext. If you use dpso_utils/intl.h,
+  this can be done with the DPSO_ENABLE_NLS CMake option (enabled by
+  default). If you use your own gettext.h, set ENABLE_NLS manually.
