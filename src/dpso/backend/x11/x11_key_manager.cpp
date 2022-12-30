@@ -9,6 +9,13 @@
 namespace dpso::backend {
 
 
+// Mod1Mask - Alt
+// Mod2Mask - Num Lock
+// Mod3Mask - Scroll Lock
+// Mod4Mask - Super
+// Mod5Mask - ???
+
+
 static KeyCode keyToKeyCode(Display* display, DpsoKey key);
 static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods);
 static unsigned dpsoModsToX11Mods(DpsoKeyMods dpsoMods);
@@ -20,6 +27,11 @@ static void changeBindingGrab(
     const auto x11Mods = dpsoModsToX11Mods(
         x11binding.binding.hotkey.mods);
 
+    // X11 treats lock keys as modifiers, so we need to register not
+    // only the given hotkey, but also its variants with all possible
+    // combinations of the lock keys. Since x11ModsToDpsoMods() will
+    // skip the lock keys, all the additional helper hotkeys will map
+    // to the original one.
     for (int i = 0; i < 16; ++i) {
         unsigned ignoredX11Mods = 0;
         if (i & 1)
@@ -277,13 +289,6 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
 
     return XKeysymToKeycode(display, keyToKeySym[key]);
 }
-
-
-// Mod1Mask - Alt
-// Mod2Mask - Num Lock
-// Mod3Mask - Scroll Lock
-// Mod4Mask - Super
-// Mod5Mask - ???
 
 
 static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods)
