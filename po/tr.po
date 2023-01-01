@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2022-12-10 19:04+0100\n"
+"POT-Creation-Date: 2023-01-01 15:19+0100\n"
 "PO-Revision-Date: 2022-11-21 15:48+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -16,512 +16,512 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.15-dev\n"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:35
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
 msgstr "Afrikanca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:36
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:35
 msgid "Amharic"
 msgstr "Amharca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:37
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:36
 msgid "Arabic"
 msgstr "Arapça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:38
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:37
 msgid "Assamese"
 msgstr "Assamca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:39
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:38
 msgid "Azerbaijani"
 msgstr "Azerice"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:40
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:39
 msgid "Azerbaijani (Cyrillic)"
 msgstr "Azerice (Kiril)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:41
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:40
 msgid "Belarusian"
 msgstr "Belarusça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:42
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:41
 msgid "Bengali"
 msgstr "Bengalce"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:43
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:42
 msgid "Tibetan"
 msgstr "Tibetçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:44
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:43
 msgid "Bosnian"
 msgstr "Boşnakça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:45
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:44
 msgid "Breton"
 msgstr "Bretonca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:46
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:45
 msgid "Bulgarian"
 msgstr "Bulgarca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:47
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:46
 msgid "Catalan; Valencian"
 msgstr "Katalanca; Valensiyan"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:48
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:47
 msgid "Cebuano"
 msgstr "Cebuano"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:49
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:48
 msgid "Czech"
 msgstr "Çekçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:50
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:49
 msgid "Chinese (simplified)"
 msgstr "Çince (basitleştirilmiş)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:51
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:50
 msgid "Chinese (simplified, vertical)"
 msgstr "Çince (basitleştirilmiş, dikey)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:52
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:51
 msgid "Chinese (traditional)"
 msgstr "Çince (geleneksel)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:53
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:52
 msgid "Chinese (traditional, vertical)"
 msgstr "Çince (geleneksel, dikey)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:54
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:53
 msgid "Cherokee"
 msgstr "Çeroki"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:55
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:54
 msgid "Corsican"
 msgstr "Korsikaca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:56
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:55
 msgid "Welsh"
 msgstr "Galce"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:57
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:56
 msgid "Danish"
 msgstr "Danca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:58
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:57
 msgid "Danish (Fraktur)"
 msgstr "Danca (Fraktur)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:59
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:58
 msgid "German"
 msgstr "Almanca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:60
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:74
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:59
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:73
 msgid "German (Fraktur)"
 msgstr "Almanca (Fraktur)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:61
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:60
 msgid "Dhivehi; Divehi; Maldivian"
 msgstr "Dhivehi; Divehi; Maldiv"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:62
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:61
 msgid "Dzongkha"
 msgstr "Dzongkha"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:63
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:62
 msgid "Greek, Modern (1453-)"
 msgstr "Yunanca, modern (1453-)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:64
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:63
 msgid "English"
 msgstr "İngilizce"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:65
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:64
 msgid "English, Middle (1100-1500)"
 msgstr "İngilizce, Orta (1100-1500)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:66
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:65
 msgid "Esperanto"
 msgstr "Esperanto"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:67
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:66
 msgid "Estonian"
 msgstr "Estonca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:68
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:67
 msgid "Basque"
 msgstr "Bask Dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:69
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:68
 msgid "Faroese"
 msgstr "Faroe dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:70
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:69
 msgid "Persian"
 msgstr "Persce"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:71
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:70
 msgid "Filipino; Pilipino"
 msgstr "Filipince; Filipin dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:72
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:71
 msgid "Finnish"
 msgstr "Fince"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:73
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:72
 msgid "French"
 msgstr "Fransızca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:75
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:74
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Fransızca, Orta (yaklaşık 1400-1600)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:76
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:75
 msgid "Frisian, Western"
 msgstr "Frizce, Batı"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:77
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:76
 msgid "Gaelic, Scottish"
 msgstr "Galce, İskoç"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:78
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:77
 msgid "Irish"
 msgstr "İrlanda dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:79
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:78
 msgid "Galician"
 msgstr "Galiçyaca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:80
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:79
 msgid "Greek, Ancient (to 1453)"
 msgstr "Yunanca, Antik (1453'e kadar)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:80
 msgid "Gujarati"
 msgstr "Gucerat dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:82
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
 msgid "Creole, Haitian"
 msgstr "Kreol, Haiti"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:83
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:82
 msgid "Hebrew"
 msgstr "İbranice"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:84
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:83
 msgid "Hindi"
 msgstr "Hintçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:85
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:84
 msgid "Croatian"
 msgstr "Hırvatça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:86
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:85
 msgid "Hungarian"
 msgstr "Macarca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:87
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:86
 msgid "Armenian"
 msgstr "Ermenice"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:88
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:87
 msgid "Inuktitut"
 msgstr "İnuktitut"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:89
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:88
 msgid "Indonesian"
 msgstr "Endonezyaca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:90
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:89
 msgid "Icelandic"
 msgstr "İzlandaca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:91
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:90
 msgid "Italian"
 msgstr "İtalyanca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:92
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:91
 msgid "Italian (old)"
 msgstr "İtalyanca (eski)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:93
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:92
 msgid "Javanese"
 msgstr "Cava"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:94
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:93
 msgid "Japanese"
 msgstr "Japonca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:95
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:94
 msgid "Japanese (vertical)"
 msgstr "Japonca (dikey)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:96
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:95
 msgid "Kannada"
 msgstr "Kannada dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:97
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:96
 msgid "Georgian"
 msgstr "Gürcüce"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:98
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:97
 msgid "Georgian (old)"
 msgstr "Gürcüce (eski)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:99
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:98
 msgid "Kazakh"
 msgstr "Kazakça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:100
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:99
 msgid "Khmer, Central"
 msgstr "Kmerce, Orta"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:101
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:100
 msgid "Kirghiz; Kyrgyz"
 msgstr "Kırgızca; Kırgız"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:102
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:101
 msgid "Kurdish, Northern"
 msgstr "Kürtçe, Kuzey"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:103
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:102
 msgid "Korean"
 msgstr "Korece"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:104
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:103
 msgid "Korean (vertical)"
 msgstr "Korece (dikey)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:105
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:104
 msgid "Kurdish"
 msgstr "Kürtçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:106
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:105
 msgid "Lao"
 msgstr "Lao"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:107
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:106
 msgid "Latin"
 msgstr "Latince"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:108
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:107
 msgid "Latvian"
 msgstr "Letonca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:109
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:108
 msgid "Lithuanian"
 msgstr "Litvanca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:110
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:109
 msgid "Luxembourgish; Letzeburgesch"
 msgstr "Lüksemburgca; Letzeburgesch"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:111
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:110
 msgid "Malayalam"
 msgstr "Malayalam dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:112
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:111
 msgid "Marathi"
 msgstr "Marathi"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:113
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:112
 msgid "Macedonian"
 msgstr "Makedonca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:114
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:113
 msgid "Maltese"
 msgstr "Malta Dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:115
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:114
 msgid "Mongolian"
 msgstr "Moğolca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:116
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:115
 msgid "Maori"
 msgstr "Maorice"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:117
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:116
 msgid "Malay"
 msgstr "Malayca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:118
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:117
 msgid "Burmese"
 msgstr "Birmanyaca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:119
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:118
 msgid "Nepali"
 msgstr "Nepalce"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:120
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:119
 msgid "Dutch; Flemish"
 msgstr "Felemenkçe; Flaman"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:121
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:120
 msgid "Norwegian"
 msgstr "Norveççe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:122
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:121
 msgid "Occitan (post 1500)"
 msgstr "Oksitanca (1500 sonrası)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:123
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:122
 msgid "Oriya"
 msgstr "Oriya"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:124
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:123
 msgid "Panjabi; Punjabi"
 msgstr "Panjabi; Pencap dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:125
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:124
 msgid "Polish"
 msgstr "Lehçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:126
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:125
 msgid "Portuguese"
 msgstr "Portekizce"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:127
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:126
 msgid "Pushto; Pashto"
 msgstr "Pushto; Peştuca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:128
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:127
 msgid "Quechua"
 msgstr "Keçuva dilleri"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:129
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:128
 msgid "Romanian; Moldavian; Moldovan"
 msgstr "Rumence; Moldavyaca; Moldovaca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:130
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:129
 msgid "Russian"
 msgstr "Rusça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:131
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:130
 msgid "Sanskrit"
 msgstr "Sanskritçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:132
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:131
 msgid "Sinhala; Sinhalese"
 msgstr "Sinhala; Sinhalese"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:133
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:132
 msgid "Slovak"
 msgstr "Slovakça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:134
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:133
 msgid "Slovak (Fraktur)"
 msgstr "Slovakça (Fraktur)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:135
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:134
 msgid "Slovenian"
 msgstr "Slovence"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:136
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:135
 msgid "Sindhi"
 msgstr "Sindice"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:137
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:136
 msgid "Spanish; Castilian"
 msgstr "İspanyolca; Kastilya"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:138
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:137
 msgid "Spanish; Castilian (old)"
 msgstr "İspanyolca; Kastilya (eski)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:139
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:138
 msgid "Albanian"
 msgstr "Arnavutça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:140
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:139
 msgid "Serbian"
 msgstr "Sırpça"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:141
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:140
 msgid "Serbian (Latin)"
 msgstr "Sırpça (Latin)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:142
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:141
 msgid "Sundanese"
 msgstr "Sunda dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:143
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:142
 msgid "Swahili"
 msgstr "Svahili dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:144
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:143
 msgid "Swedish"
 msgstr "İsveççe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:145
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:144
 msgid "Syriac"
 msgstr "Süryanice"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:146
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:145
 msgid "Tamil"
 msgstr "Tamil dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:147
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:146
 msgid "Tatar"
 msgstr "Tatarca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:148
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:147
 msgid "Telugu"
 msgstr "Telugu dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:149
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:148
 msgid "Tajik"
 msgstr "Tacikçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:150
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:149
 msgid "Tagalog"
 msgstr "Tagalogca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:151
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:150
 msgid "Thai"
 msgstr "Tay dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:152
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:151
 msgid "Tigrinya"
 msgstr "Tigrince"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:153
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:152
 msgid "Tonga (Tonga Islands)"
 msgstr "Tonga dili (Tonga Adaları)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:154
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:153
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:155
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:154
 msgid "Uighur; Uyghur"
 msgstr "Uygurca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:156
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:155
 msgid "Ukrainian"
 msgstr "Ukraynaca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:157
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:156
 msgid "Urdu"
 msgstr "Urduca"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:158
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:157
 msgid "Uzbek"
 msgstr "Özbekçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:159
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:158
 msgid "Uzbek (Cyrillic)"
 msgstr "Özbekçe (Kiril)"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:160
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:159
 msgid "Vietnamese"
 msgstr "Vietnam dili"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:161
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:160
 msgid "Yiddish"
 msgstr "Yadişçe"
 
-#: src/dpso/ocr_engine/tesseract/lang_names.cpp:162
+#: src/dpso/ocr_engine/tesseract/lang_names.cpp:161
 msgid "Yoruba"
 msgstr "Yorubaca"
 
@@ -574,35 +574,35 @@ msgstr "Bir program seçin"
 msgid "Export…"
 msgstr "Dışa aktar…"
 
-#: src/ui/qt/history.cpp:41
+#: src/ui/qt/history.cpp:43
 msgid "Clear…"
 msgstr "Temizle…"
 
-#: src/ui/qt/history.cpp:57 src/ui/qt/main_window.cpp:160
+#: src/ui/qt/history.cpp:60 src/ui/qt/main_window.cpp:160
 msgid "History"
 msgstr "Geçmiş"
 
-#: src/ui/qt/history.cpp:82
+#: src/ui/qt/history.cpp:85
 msgid "Export history"
 msgstr "Geçmişi dışa aktar"
 
-#: src/ui/qt/history.cpp:84
+#: src/ui/qt/history.cpp:87
 msgid "Plain text"
 msgstr "Düz metin"
 
-#: src/ui/qt/history.cpp:87
+#: src/ui/qt/history.cpp:90
 msgid "All files"
 msgstr "Tüm dosyalar"
 
-#: src/ui/qt/history.cpp:121
+#: src/ui/qt/history.cpp:124
 msgid "Clear the history?"
 msgstr "Geçmiş temizlensin mi?"
 
-#: src/ui/qt/history.cpp:121 src/ui/qt/main_window.cpp:239
+#: src/ui/qt/history.cpp:124 src/ui/qt/main_window.cpp:239
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/ui/qt/history.cpp:121
+#: src/ui/qt/history.cpp:124
 msgid "Clear"
 msgstr "Temizle"
 
@@ -641,48 +641,48 @@ msgstr "Çıkış"
 msgid "Show {app_name}"
 msgstr "Göster {app_name}"
 
-#: src/ui/qt/main_window.cpp:419
+#: src/ui/qt/main_window.cpp:420
 msgid "Status"
 msgstr "Durumlar"
 
-#: src/ui/qt/main_window.cpp:429
+#: src/ui/qt/main_window.cpp:430
 msgid "Character recognition"
 msgstr "Karakter tanıma"
 
-#: src/ui/qt/main_window.cpp:433
+#: src/ui/qt/main_window.cpp:434
 msgid "Split text blocks"
 msgstr "Bölünmüş metin blokları"
 
-#: src/ui/qt/main_window.cpp:435
+#: src/ui/qt/main_window.cpp:436
 msgid "Split independent text blocks, such as columns"
 msgstr "Sütunlar gibi bağımsız metin bloklarını böl"
 
-#: src/ui/qt/main_window.cpp:438
+#: src/ui/qt/main_window.cpp:439
 msgid "Languages:"
 msgstr "Diller:"
 
-#: src/ui/qt/main_window.cpp:442
+#: src/ui/qt/main_window.cpp:443
 msgid "Actions"
 msgstr "Eylemler"
 
-#: src/ui/qt/main_window.cpp:452
+#: src/ui/qt/main_window.cpp:453
 msgid "Hotkey"
 msgstr "Kısayol"
 
-#: src/ui/qt/main_window.cpp:785
+#: src/ui/qt/main_window.cpp:784
 msgid "Please install languages"
 msgstr "Lütfen dilleri kurun"
 
-#: src/ui/qt/main_window.cpp:787
+#: src/ui/qt/main_window.cpp:786
 msgid "Please select languages"
 msgstr "Lütfen dilleri seçin"
 
-#: src/ui/qt/main_window.cpp:789
+#: src/ui/qt/main_window.cpp:788
 msgid "Please select actions"
 msgstr "Lütfen eylemleri seçin"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:792
+#: src/ui/qt/main_window.cpp:791
 msgctxt "ocr.status"
 msgid "Ready"
 msgstr "Hazır"
