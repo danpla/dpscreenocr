@@ -16,7 +16,7 @@ if(UNIX)
     target_sources(
         dpso_utils
         PRIVATE
-        exec_posix.cpp
+        exec_unix.cpp
         os_unix.cpp
         unix_utils.cpp)
 endif()
