@@ -73,9 +73,11 @@ set_target_properties(
 
 target_include_directories(dpso PRIVATE . PUBLIC ..)
 
-add_subdirectory(
-    ../thirdparty/stb_image_resize
-    "${CMAKE_CURRENT_BINARY_DIR}/src/thirdparty/stb_image_resize")
+if(NOT TARGET stb_image_resize)
+    add_subdirectory(
+        ../thirdparty/stb_image_resize
+        "${CMAKE_BINARY_DIR}/src/thirdparty/stb_image_resize")
+endif()
 target_link_libraries(dpso PRIVATE stb_image_resize)
 
 find_package(Threads REQUIRED)
