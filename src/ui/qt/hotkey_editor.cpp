@@ -5,8 +5,6 @@
 #include <QComboBox>
 #include <QHBoxLayout>
 
-#include "dpso_intl/dpso_intl.h"
-
 
 HotkeyEditor::HotkeyEditor(
         DpsoHotkeyAction action,
