@@ -15,6 +15,7 @@ add_executable(
     dpso/test_tesseract_utils.cpp
     dpso_utils/test_cfg.cpp
     dpso_utils/test_history.cpp
+    dpso_utils/test_history_export.cpp
     dpso_utils/test_os.cpp
     dpso_utils/test_str_format.cpp
     flow.cpp

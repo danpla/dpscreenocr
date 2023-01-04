@@ -62,11 +62,11 @@ static void writeEscapedHtml(
 
             switch (c) {
             case '\n':
-                // Trailing <br> has no effect; it doesn't add
-                // an empty line when rendering in browsers.
-                if (*s)
-                    std::fputs("<br>", fp);
-                std::putc('\n', fp);
+                // Although a trailing <br> has no effect (it doesn't
+                // add an empty line when rendered in browsers), we
+                // still add it so that we can restore the original
+                // text from the resulting HTML.
+                std::fputs("<br>", fp);
                 break;
             case '<':
                 std::fputs("&lt;", fp);
@@ -82,8 +82,10 @@ static void writeEscapedHtml(
                 break;
             }
 
-            if (c == '\n')
+            if (c == '\n') {
+                std::putc(c, fp);
                 break;
+            }
         }
     }
 }
