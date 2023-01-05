@@ -165,19 +165,19 @@ OcrResult TesseractOcr::recognize(
         return {
             OcrResult::Status::error, "TessBaseAPI::Init() failed"};
 
-    tesseract::PageSegMode pageSegMode;
-    if (ocrFeatures & ocrFeatureTextSegmentation)
-        pageSegMode = tesseract::PSM_AUTO;
-    else
-        pageSegMode = tesseract::PSM_SINGLE_BLOCK;
-    tess.SetPageSegMode(pageSegMode);
+    tess.SetPageSegMode(
+        (ocrFeatures & ocrFeatureTextSegmentation)
+            ? tesseract::PSM_AUTO : tesseract::PSM_SINGLE_BLOCK);
 
     tess.SetImage(
         image.data, image.width, image.height, 1, image.pitch);
 
     CancelData cancelData(
         progressCallback, progressCallbackUserData);
-    tess.Recognize(&cancelData.textDesc);
+    if (tess.Recognize(&cancelData.textDesc) != 0)
+        return {
+            OcrResult::Status::error,
+            "TessBaseAPI::Recognize() failed"};
 
     if (cancelData.cancelled)
         return {OcrResult::Status::terminated, ""};
