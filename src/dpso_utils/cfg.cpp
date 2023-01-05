@@ -105,7 +105,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
         if (!*s)
             break;
 
-        switch (const auto e = *s++) {
+        switch (const auto c = *s++) {
         case 'n':
             kv.value += '\n';
             break;
@@ -116,7 +116,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
             kv.value += '\t';
             break;
         default:
-            kv.value += e;
+            kv.value += c;
             break;
         }
     }
@@ -191,8 +191,8 @@ static void writeKeyValue(
     if (!kv.value.empty() && kv.value.front() == ' ')
         std::fputc('\\', fp);
 
-    for (const auto* s = kv.value.c_str(); *s;) {
-        switch (const auto c = *s++) {
+    for (const auto* s = kv.value.c_str(); *s; ++s) {
+        switch (const auto c = *s) {
         case '\n':
             std::fputs("\\n", fp);
             break;
