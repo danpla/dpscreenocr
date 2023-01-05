@@ -4,11 +4,17 @@
 #include "flow.h"
 
 
+namespace {
+
+
 enum class Order {
     less,
     equal,
     greater
 };
+
+
+}
 
 
 static Order getOrder(int cmpResult)

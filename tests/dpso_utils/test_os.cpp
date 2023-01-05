@@ -78,6 +78,8 @@ void testFopen()
             "dpsoFopen(\"%s\"): %s\n",
             testUnicodeFileName,
             std::strerror(errno));
+
+    dpsoRemove(testUnicodeFileName);
 }
 
 

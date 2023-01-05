@@ -397,18 +397,19 @@ static void testExport()
                     exportedFileName.c_str(),
                     exportFormatToStr(exportFormat).c_str());
 
-            const auto& data = test.*exportFormatData[exportFormat];
-            const auto gotData = test::utils::loadFileText(
+            const auto& expectedData =
+                test.*exportFormatData[exportFormat];
+            const auto gotData = test::utils::loadText(
                 "testExport()", exportedFileName.c_str());
 
-            if (gotData != data) {
+            if (gotData != expectedData) {
                 test::failure(
                     "testExport(): Unexpected exported %s data "
                     "for the \"%s\" case\n",
                     exportFormatToStr(exportFormat).c_str(),
                     test.description);
                 test::utils::printFirstDifference(
-                    data.c_str(), gotData.c_str());
+                    expectedData.c_str(), gotData.c_str());
             }
 
             std::remove(exportedFileName.c_str());

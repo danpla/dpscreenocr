@@ -1,5 +1,4 @@
 
-#include <cerrno>
 #include <cstdio>
 #include <cstring>
 #include <iterator>
@@ -61,7 +60,7 @@ static void testCount(
     testCount(history, expected, __LINE__)
 
 
-const char* const historyFileName = "test_history.txt";
+const auto* const historyFileName = "test_history.txt";
 
 
 static void testIO(bool append)
@@ -145,16 +144,7 @@ void testInvalidData()
     };
 
     for (const auto& test : tests) {
-        auto* fp = std::fopen(historyFileName, "wb");
-        if (!fp)
-            test::fatalError(
-                "loadInvalidData(): "
-                "fopen(\"%s\", \"wb\") failed: %s\n",
-                historyFileName,
-                std::strerror(errno));
-
-        std::fputs(test.data, fp);
-        std::fclose(fp);
+        test::utils::saveText("testInvalidData()", historyFileName, test.data);
 
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
         const auto opened = history != nullptr;
@@ -165,8 +155,8 @@ void testInvalidData()
             continue;
 
         test::failure(
-            "loadInvalidData(): dpsoHistoryOpen() doesn't fail in "
-            "\"%s\" case\n",
+            "testInvalidData(): dpsoHistoryOpen() doesn't fail in "
+            "the \"%s\" case\n",
             test.description);
     }
 }

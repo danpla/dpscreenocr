@@ -204,7 +204,7 @@ static void testArgv(std::initializer_list<const char*> argv)
 
 static void testCreateCmdLine()
 {
-    const char* programName = "program name";
+    const auto* programName = "program name";
     const std::initializer_list<const char*> argvs[] = {
         {programName, "a\\\\b", "de fg", "h"},
         {programName, "a\\\"b", "c", "d"},

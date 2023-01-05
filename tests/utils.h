@@ -23,8 +23,13 @@ std::string lfToNativeNewline(const char* str);
 
 // In failure, calls tests::fatalError() using contextInfo as a part
 // of the error message.
-std::string loadFileText(
-    const char* contextInfo, const char* filePath);
+void saveText(
+    const char* contextInfo, const char* filePath, const char* text);
+
+
+// In failure, calls tests::fatalError() using contextInfo as a part
+// of the error message.
+std::string loadText(const char* contextInfo, const char* filePath);
 
 
 // Print the first difference between two possibly multiline texts.

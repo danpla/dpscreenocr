@@ -1,5 +1,4 @@
 
-#include <cerrno>
 #include <climits>
 #include <cstdio>
 #include <cstring>
@@ -275,7 +274,7 @@ static void getHotkey(const DpsoCfg* cfg)
 }
 
 
-const char* const cfgFileName = "test_cfg_file.cfg";
+const auto* const cfgFileName = "test_cfg_file.cfg";
 
 
 static void reload(DpsoCfg* cfg)
@@ -299,15 +298,7 @@ static void reload(DpsoCfg* cfg)
 
 static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 {
-    auto* fp = std::fopen(cfgFileName, "wb");
-    if (!fp)
-        test::fatalError(
-            "loadCfgData(): fopen(\"%s\", \"wb\") failed: %s\n",
-            cfgFileName,
-            std::strerror(errno));
-
-    std::fputs(cfgData, fp);
-    std::fclose(fp);
+    test::utils::saveText("loadCfgData()", cfgFileName, cfgData);
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     std::remove(cfgFileName);

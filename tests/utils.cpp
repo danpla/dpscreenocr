@@ -86,13 +86,31 @@ std::string lfToNativeNewline(const char* str)
 }
 
 
-std::string loadFileText(
-    const char* contextInfo, const char* filePath)
+void saveText(
+    const char* contextInfo, const char* filePath, const char* text)
+{
+    dpso::StdFileUPtr fp{dpsoFopen(filePath, "wb")};
+    if (!fp)
+        test::fatalError(
+            "%s: saveText(): dpsoFopen(\"%s\", \"wb\"): %s\n",
+            contextInfo,
+            filePath,
+            std::strerror(errno));
+
+    if (std::fputs(text, fp.get()) == EOF)
+        test::fatalError(
+            "%s: saveText(): fputs() to \"%s\" failed\n",
+            contextInfo,
+            filePath);
+}
+
+
+std::string loadText(const char* contextInfo, const char* filePath)
 {
     dpso::StdFileUPtr fp{dpsoFopen(filePath, "rb")};
     if (!fp)
         test::fatalError(
-            "%s: dpsoFopen(\"%s\", \"rb\"): %s\n",
+            "%s: loadText(): dpsoFopen(\"%s\", \"rb\"): %s\n",
             contextInfo,
             filePath,
             std::strerror(errno));
@@ -103,8 +121,15 @@ std::string loadFileText(
     while (true) {
         const auto numRead = std::fread(
             buf, 1, sizeof(buf), fp.get());
-        if (numRead == 0)
+        if (numRead == 0) {
+            if (std::ferror(fp.get()))
+                test::fatalError(
+                    "%s: loadText(): fread() from \"%s\" failed\n",
+                    contextInfo,
+                    filePath);
+
             break;
+        }
 
         result.append(buf, numRead);
     }
