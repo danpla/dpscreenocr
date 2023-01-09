@@ -1,5 +1,5 @@
 
-#include "dpso_bindtextdomain_utf8.h"
+#include "bindtextdomain_utf8.h"
 
 
 #if ENABLE_NLS

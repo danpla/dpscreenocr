@@ -6,7 +6,6 @@
 // so we must use <locale.h> rather than <clocale>.
 #include <locale.h>
 
-#include "dpso_intl/dpso_bindtextdomain_utf8.h"
 #include "dpso_intl/dpso_intl.h"
 
 #include "app_dirs.h"
