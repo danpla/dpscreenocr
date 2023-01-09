@@ -88,8 +88,7 @@ static void testIO(bool append)
     if (!history) {
         dpsoRemove(historyFileName);
         test::fatalError(
-            "testlIO(%sappend): "
-            "dpsoHistoryOpen(\"%s\") failed: %s\n",
+            "testlIO(%sappend): dpsoHistoryOpen(\"%s\"): %s\n",
             append ? "" : "!",
             historyFileName,
             dpsoGetError());
@@ -106,8 +105,7 @@ static void testIO(bool append)
                 dpsoRemove(historyFileName);
 
                 test::fatalError(
-                    "testIO(%sappend): "
-                    "dpsoHistoryAppend() failed: %s\n",
+                    "testIO(%sappend): dpsoHistoryAppend(): %s\n",
                     append ? "" : "!",
                     dpsoGetError());
             }

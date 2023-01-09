@@ -21,7 +21,7 @@ static void testUtfConversion(const char* utf8Str)
         utf16Str = utf8ToUtf16(utf8Str);
     } catch (std::runtime_error& e) {
         test::failure(
-            "utf8ToUtf16(\"%s\") failed: %s\n",
+            "utf8ToUtf16(\"%s\"): %s\n",
             test::utils::escapeStr(utf8Str).c_str(), e.what());
         return;
     }

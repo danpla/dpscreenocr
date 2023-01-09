@@ -281,7 +281,7 @@ static void reload(DpsoCfg* cfg)
 {
     if (!dpsoCfgSave(cfg, cfgFileName))
         test::fatalError(
-            "reload(): dpsoCfgSave(cfg, \"%s\") failed: %s\n",
+            "reload(): dpsoCfgSave(cfg, \"%s\"): %s\n",
             cfgFileName,
             dpsoGetError());
 
@@ -290,7 +290,7 @@ static void reload(DpsoCfg* cfg)
 
     if (!loaded)
         test::fatalError(
-            "reload(): dpsoCfgLoad(cfg, \"%s\") failed: %s\n",
+            "reload(): dpsoCfgLoad(cfg, \"%s\"): %s\n",
             cfgFileName,
             dpsoGetError());
 }
@@ -305,7 +305,7 @@ static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 
     if (!loaded)
         test::fatalError(
-            "loadCfgData(): dpsoCfgLoad(cfg, \"%s\") failed: %s\n",
+            "loadCfgData(): dpsoCfgLoad(cfg, \"%s\"): %s\n",
             cfgFileName,
             dpsoGetError());
 }
@@ -474,8 +474,7 @@ static void testCfg()
 {
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
-        test::fatalError(
-            "dpsoCfgCreate() failed: %s\n", dpsoGetError());
+        test::fatalError("dpsoCfgCreate(): %s\n", dpsoGetError());
 
     setBasicTypes(cfg.get());
     setHotkey(cfg.get());
