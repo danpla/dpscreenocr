@@ -1,6 +1,5 @@
 
 #include <climits>
-#include <cstdio>
 #include <cstring>
 #include <initializer_list>
 #include <string>
@@ -9,6 +8,7 @@
 #include "dpso/str.h"
 #include "dpso_utils/cfg.h"
 #include "dpso_utils/cfg_ext.h"
+#include "dpso_utils/os.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -286,7 +286,7 @@ static void reload(DpsoCfg* cfg)
             dpsoGetError());
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
-    std::remove(cfgFileName);
+    dpsoRemove(cfgFileName);
 
     if (!loaded)
         test::fatalError(
@@ -301,7 +301,7 @@ static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
     test::utils::saveText("loadCfgData()", cfgFileName, cfgData);
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
-    std::remove(cfgFileName);
+    dpsoRemove(cfgFileName);
 
     if (!loaded)
         test::fatalError(

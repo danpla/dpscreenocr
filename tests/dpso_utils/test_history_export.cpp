@@ -1,7 +1,4 @@
 
-#include <cerrno>
-#include <cstdio>
-#include <cstring>
 #include <initializer_list>
 #include <string>
 #include <vector>
@@ -9,6 +6,7 @@
 #include "dpso/error.h"
 #include "dpso_utils/history.h"
 #include "dpso_utils/history_export.h"
+#include "dpso_utils/os.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -412,11 +410,11 @@ static void testExport()
                     expectedData.c_str(), gotData.c_str());
             }
 
-            std::remove(exportedFileName.c_str());
+            dpsoRemove(exportedFileName.c_str());
         }
     }
 
-    std::remove(historyFileName);
+    dpsoRemove(historyFileName);
 }
 
 

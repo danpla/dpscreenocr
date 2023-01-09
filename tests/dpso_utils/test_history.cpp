@@ -1,10 +1,10 @@
 
-#include <cstdio>
 #include <cstring>
 #include <iterator>
 
 #include "dpso/error.h"
 #include "dpso_utils/history.h"
+#include "dpso_utils/os.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -86,7 +86,7 @@ static void testIO(bool append)
 
     dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
     if (!history) {
-        std::remove(historyFileName);
+        dpsoRemove(historyFileName);
         test::fatalError(
             "testlIO(%sappend): "
             "dpsoHistoryOpen(\"%s\") failed: %s\n",
@@ -103,7 +103,7 @@ static void testIO(bool append)
         if (append) {
             if (!dpsoHistoryAppend(history.get(), &test.inEntry)) {
                 history.reset();
-                std::remove(historyFileName);
+                dpsoRemove(historyFileName);
 
                 test::fatalError(
                     "testIO(%sappend): "
@@ -144,12 +144,13 @@ void testInvalidData()
     };
 
     for (const auto& test : tests) {
-        test::utils::saveText("testInvalidData()", historyFileName, test.data);
+        test::utils::saveText(
+            "testInvalidData()", historyFileName, test.data);
 
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
         const auto opened = history != nullptr;
         history.reset();
-        std::remove(historyFileName);
+        dpsoRemove(historyFileName);
 
         if (!opened)
             continue;
