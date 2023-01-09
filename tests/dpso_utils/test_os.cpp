@@ -102,11 +102,47 @@ void testRemove()
 }
 
 
+void testSyncFile()
+{
+    const auto* fileName = "test_sync_file.txt";
+
+    dpso::StdFileUPtr fp{dpsoFopen(fileName, "wb")};
+    if (!fp)
+        test::fatalError(
+            "testSyncFile: dpsoFopen(\"%s\"): %s\n",
+            fileName,
+            std::strerror(errno));
+
+    if (!dpsoSyncFile(fp.get()))
+        test::failure(
+            "testSyncFile: dpsoSyncFile(): %s\n",
+            std::strerror(errno));
+}
+
+
+void testSyncFileDir()
+{
+    const auto* fileName = "test_sync_file.txt";
+
+    test::utils::saveText("testSyncFileDir", fileName, "");
+
+    if (!dpsoSyncFileDir(fileName))
+        test::fatalError(
+            "testSyncFileDir: dpsoSyncFileDir(\"%s\"): %s\n",
+            fileName,
+            std::strerror(errno));
+
+    dpsoRemove(fileName);
+}
+
+
 static void testOs()
 {
     testGetFileExt();
     testFopen();
     testRemove();
+    testSyncFile();
+    testSyncFileDir();
 }
 
 
