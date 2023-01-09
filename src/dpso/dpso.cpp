@@ -19,7 +19,7 @@ void shutdown(); \
 }
 
 namespace dpso {
-DECL_MODULE_FUNCTIONS(key_manager)
+DECL_MODULE_FUNCTIONS(keyManager)
 DECL_MODULE_FUNCTIONS(ocr)
 DECL_MODULE_FUNCTIONS(selection)
 }
@@ -43,7 +43,7 @@ struct Module {
 #define MODULE(NAME) {#NAME, dpso::NAME::init, dpso::NAME::shutdown}
 
 const Module modules[] = {
-    MODULE(key_manager),
+    MODULE(keyManager),
     MODULE(ocr),
     MODULE(selection),
 };

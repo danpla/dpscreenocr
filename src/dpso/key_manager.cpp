@@ -101,18 +101,18 @@ DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey)
 }
 
 
-namespace dpso::key_manager {
+namespace dpso::keyManager {
 
 
 void init(dpso::backend::Backend& backend)
 {
-    keyManager = &backend.getKeyManager();
+    ::keyManager = &backend.getKeyManager();
 }
 
 
 void shutdown()
 {
-    keyManager = nullptr;
+    ::keyManager = nullptr;
 }
 
 
