@@ -58,6 +58,15 @@
 
 * Use underscores instead of hyphens in CMake target names.
 
+* When specifying the language standard in CMake, use *_STANDARD and
+  *_STANDARD_REQUIRED properties instead of target_compile_features().
+
+  The reason is a bug in versions before 3.22: when the standard set
+  by target_compile_features() is less than or equal to the compiler
+  default, CMake ignores the disabled *_EXTENSIONS property and does
+  not add the necessary flag to disable language extensions (e.g. an
+  explicit -std=c++* instead of the implied -std=gnu++* in GCC).
+
 * All global configuration macros and CMake options have DPSO_ prefix.
   A CMakeLists file should explicitly set the macro value in
   target_compile_definitions() rather than leaving it undefined; an
