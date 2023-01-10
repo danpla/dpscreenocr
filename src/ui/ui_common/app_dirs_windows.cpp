@@ -21,7 +21,7 @@ static std::wstring getExeDir()
         result.resize(result.capacity());
 
         const auto size = GetModuleFileNameW(
-            nullptr, &result[0], result.size());
+            nullptr, result.data(), result.size());
 
         if (size == 0) {
             dpsoSetError(

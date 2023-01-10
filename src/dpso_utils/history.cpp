@@ -63,7 +63,7 @@ static bool loadData(const char* filePath, std::string& data)
     }
 
     data.resize(size);
-    if (std::fread(&data[0], 1, size, fp.get())
+    if (std::fread(data.data(), 1, size, fp.get())
             != static_cast<std::size_t>(size)) {
         dpsoSetError("fread() failed");
         return false;

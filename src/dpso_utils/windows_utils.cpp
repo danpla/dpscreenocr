@@ -23,7 +23,7 @@ std::wstring utf8ToUtf16(const char* utf8Str)
 
     if (!MultiByteToWideChar(
             CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1,
-            &result[0], sizeWithNull))
+            result.data(), sizeWithNull))
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
     return result;
@@ -45,7 +45,7 @@ std::string utf16ToUtf8(const wchar_t* utf16Str)
     if (!WideCharToMultiByte(
             CP_UTF8, WC_ERR_INVALID_CHARS,
             utf16Str, -1,
-            &result[0], sizeWithNull,
+            result.data(), sizeWithNull,
             nullptr, nullptr))
         throw std::runtime_error(getErrorMessage(GetLastError()));
 

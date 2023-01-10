@@ -55,8 +55,8 @@ bool makeDirs(char* path, mode_t mode)
 
 bool makeDirs(const char* path, mode_t mode)
 {
-    std::string pathCopy = path;
-    return makeDirs(&pathCopy[0], mode);
+    std::string pathCopy{path};
+    return makeDirs(pathCopy.data(), mode);
 }
 
 

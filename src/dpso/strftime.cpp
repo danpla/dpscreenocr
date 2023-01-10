@@ -22,7 +22,7 @@ std::string strftime(const char* fmt, const std::tm* time)
         result.resize(result.capacity());
 
         const auto numWritten = std::strftime(
-            &result[0], result.size(), fmtEx.c_str(), time);
+            result.data(), result.size(), fmtEx.c_str(), time);
         if (numWritten == 0)
             continue;
 

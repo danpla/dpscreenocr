@@ -38,7 +38,7 @@ static const char* getDir(
     path += '/';
     path += appName;
 
-    if (!dpso::unix::makeDirs(&path[0])) {
+    if (!dpso::unix::makeDirs(path.data())) {
         dpsoSetError(
             "makeDirs(\"%s\"): %s",
             path.c_str(), std::strerror(errno));

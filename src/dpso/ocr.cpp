@@ -357,7 +357,8 @@ static dpso::ocr::OcrImage prepareScreenshot(
         buffer.resize(bufferH * bufferPitch);
 
     START_TIMING(screenshotGetData);
-    screenshot.getGrayscaleData(&ocr.imgBuffers[0][0], bufferPitch);
+    screenshot.getGrayscaleData(
+        ocr.imgBuffers[0].data(), bufferPitch);
     END_TIMING(
         screenshotGetData,
         "screenshot.getGrayscaleData (%ix%i px)",
@@ -368,9 +369,9 @@ static dpso::ocr::OcrImage prepareScreenshot(
     localProgressTracker.advanceJob();
     START_TIMING(imageResizing);
     dpso::img::resize(
-        &ocr.imgBuffers[0][0],
+        ocr.imgBuffers[0].data(),
         screenshot.getWidth(), screenshot.getHeight(), bufferPitch,
-        &ocr.imgBuffers[1][0],
+        ocr.imgBuffers[1].data(),
         bufferW, bufferH, bufferPitch,
         &localProgressTracker);
     END_TIMING(
@@ -385,9 +386,9 @@ static dpso::ocr::OcrImage prepareScreenshot(
     localProgressTracker.advanceJob();
     START_TIMING(unsharpMasking);
     dpso::img::unsharpMask(
-        &ocr.imgBuffers[1][0], bufferPitch,
-        &ocr.imgBuffers[0][0], bufferPitch,
-        &ocr.imgBuffers[2][0], bufferPitch,
+        ocr.imgBuffers[1].data(), bufferPitch,
+        ocr.imgBuffers[0].data(), bufferPitch,
+        ocr.imgBuffers[2].data(), bufferPitch,
         bufferW, bufferH,
         unsharpMaskRadius,
         1.0f,
@@ -399,7 +400,7 @@ static dpso::ocr::OcrImage prepareScreenshot(
 
     localProgressTracker.finish();
 
-    return {&ocr.imgBuffers[0][0], bufferW, bufferH, bufferPitch};
+    return {ocr.imgBuffers[0].data(), bufferW, bufferH, bufferPitch};
 }
 
 

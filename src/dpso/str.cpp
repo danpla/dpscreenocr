@@ -43,7 +43,7 @@ std::string vprintf(const char* fmt, std::va_list args)
 
     std::string result(size, 0);
     // C++ standard allows to overwrite string[size()] with 0.
-    std::vsnprintf(&result[0], size + 1, fmt, args);
+    std::vsnprintf(result.data(), size + 1, fmt, args);
 
     return result;
 }
