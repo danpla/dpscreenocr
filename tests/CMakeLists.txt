@@ -1,9 +1,4 @@
 
-set(PLATFORM_SRCS)
-if(WIN32)
-    list(APPEND PLATFORM_SRCS dpso_utils/test_windows_utils.cpp)
-endif()
-
 add_executable(
     tests
 
@@ -20,9 +15,15 @@ add_executable(
     dpso_utils/test_str_format.cpp
     flow.cpp
     main.cpp
-    utils.cpp
+    utils.cpp)
 
-    ${PLATFORM_SRCS})
+if(WIN32)
+    target_sources(
+        tests
+        PRIVATE
+        dpso/test_windows_utils_utf.cpp
+        dpso_utils/test_windows_utils.cpp)
+endif()
 
 set_target_properties(
     tests PROPERTIES

@@ -7,10 +7,10 @@
 
 #include "dpso/backend/windows/utils/com.h"
 #include "dpso/backend/windows/utils/error.h"
+#include "dpso/backend/windows/utils/utf.h"
 #include "dpso/error.h"
 #include "dpso/ocr.h"
 #include "dpso_utils/user_dirs.h"
-#include "dpso_utils/windows_utils.h"
 
 #include "app_dirs.h"
 #include "file_names.h"

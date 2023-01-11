@@ -7,8 +7,8 @@
 #include <windows.h>
 
 #include "dpso/backend/windows/utils/error.h"
+#include "dpso/backend/windows/utils/utf.h"
 #include "dpso/error.h"
-#include "dpso_utils/windows_utils.h"
 
 
 struct UiSingleInstanceGuard {

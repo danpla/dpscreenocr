@@ -8,8 +8,8 @@
 #include <windows.h>
 
 #include "dpso/backend/windows/utils/error.h"
+#include "dpso/backend/windows/utils/utf.h"
 #include "dpso/error.h"
-#include "windows_utils.h"
 
 
 const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)

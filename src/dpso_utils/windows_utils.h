@@ -3,27 +3,10 @@
 
 #include <cstddef>
 #include <initializer_list>
-#include <stdexcept>
 #include <string>
 
 
 namespace dpso::windows {
-
-
-/**
- * Convert UTF-8 to UTF-16.
- *
- * \throws std::runtime_error
- */
-std::wstring utf8ToUtf16(const char* utf8Str);
-
-
-/**
- * Convert UTF-16 to UTF-8.
- *
- * \throws std::runtime_error
- */
-std::string utf16ToUtf8(const wchar_t* utf16Str);
 
 
 /**

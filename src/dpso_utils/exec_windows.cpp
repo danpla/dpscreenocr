@@ -9,6 +9,7 @@
 #include <shellapi.h>
 
 #include "dpso/backend/windows/utils/com.h"
+#include "dpso/backend/windows/utils/utf.h"
 #include "dpso/str.h"
 #include "os.h"
 #include "windows_utils.h"
@@ -72,26 +73,26 @@
 //
 // Maybe I missed something and everything written above is completely
 // wrong, but for now it seems like batch files are broken by design
-// and therefore we just can't allow users to execute them.
+// and therefore we can't allow users to execute them.
 //
-// Note: The examples above can be tested:
+// You can test the above examples:
 //
-//   * By typing them directly in cmd.exe
+// * By typing them directly in cmd.exe.
 //
-//   * By using them with lpCommandLine argument of CreateProcess(),
-//     with or without "cmd.exe /c" prefix like:
+// * By using them with lpCommandLine argument of CreateProcess(),
+//   with or without "cmd.exe /c" prefix like:
 //
-//       * "cmd.exe /c batch.bat ^"arg\^"^&whoami^""
-//       * "batch.bat ^"arg\^"^&whoami^""
+//   * "cmd.exe /c batch.bat ^"arg\^"^&whoami^""
+//   * "batch.bat ^"arg\^"^&whoami^""
 //
-//     In the last case, cmd.exe is called implicitly (at least on
-//     Windows 7).
+//   In the last case, cmd.exe is called implicitly (at least on
+//   Windows 7).
 //
-//   * By using ShellExecute, which acts like a wrapper around
-//     CreateProcess() in this particular case. Two ways:
+// * By using ShellExecute, which acts like a wrapper around
+//   CreateProcess() in this particular case. Two ways:
 //
-//       * lpFile: path to BAT; lpParameters: "^"arg\^"^&whoami^""
-//       * lpFile: "cmd"; lpParameters: "/c ^"arg\^"^&whoami^""
+//   * lpFile: path to BAT; lpParameters: "^"arg\^"^&whoami^""
+//   * lpFile: "cmd"; lpParameters: "/c ^"arg\^"^&whoami^""
 //
 // [1] https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/
 
@@ -134,7 +135,7 @@ void dpsoExec(const char* exePath, const char* arg)
     if (!allowExecute(exePath))
         return;
 
-    dpso::windows::CoInitializer coInitializer{
+    const dpso::windows::CoInitializer coInitializer{
         COINIT_APARTMENTTHREADED};
 
     const auto cmdLine = dpso::windows::createCmdLine("", {arg});
