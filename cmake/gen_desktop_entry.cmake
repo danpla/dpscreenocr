@@ -4,6 +4,13 @@
 # on files from the po/ directory.
 function(gen_desktop_entry dst_dir translate)
     set(ENTRY_NAME "${APP_FILE_NAME}.desktop")
+
+    set(DST_DEP_VARS_FILE_PATH "${dst_dir}/${ENTRY_NAME}.dep_vars")
+    configure_file(
+        "${CMAKE_CURRENT_LIST_DIR}/gen_desktop_entry.dep_vars.in"
+        "${DST_DEP_VARS_FILE_PATH}"
+        @ONLY)
+
     set(SRC_ENTRY_PATH "${CMAKE_SOURCE_DIR}/data/${ENTRY_NAME}")
     set(DST_ENTRY_PATH "${dst_dir}/${ENTRY_NAME}")
 
@@ -35,7 +42,7 @@ function(gen_desktop_entry dst_dir translate)
             --template=${SRC_ENTRY_PATH}
             -d ${CMAKE_SOURCE_DIR}/po
             -o ${DST_ENTRY_PATH}
-        DEPENDS "${SRC_ENTRY_PATH}"
+        DEPENDS "${SRC_ENTRY_PATH}" "${DST_DEP_VARS_FILE_PATH}"
         VERBATIM)
 
     add_custom_target(desktop_entry ALL DEPENDS "${DST_ENTRY_PATH}")
