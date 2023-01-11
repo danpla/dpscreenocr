@@ -26,7 +26,7 @@ static std::wstring utf8ToUtf16(const char* utf8Str)
 
     if (!MultiByteToWideChar(
             CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1,
-            result.data(), sizeWithNull))
+            &result[0], sizeWithNull))
         return {};
 
     return result;
