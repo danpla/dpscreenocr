@@ -2,9 +2,6 @@
 /**
  * \file
  * Main header + library initialization, shutdown, and update
- *
- * You should always include dpso/dpso.h rather than individual
- * headers.
  */
 
 #pragma once

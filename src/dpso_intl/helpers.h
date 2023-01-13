@@ -1,6 +1,7 @@
 
 /**
- * \file Helpers for libintl.
+ * \file
+ * Helpers for libintl.
  *
  * This file provides implementations of functions from gettext.h,
  * but only those we actually use.

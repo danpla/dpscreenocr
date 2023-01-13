@@ -1,6 +1,7 @@
 
 /**
- * \file No-op variants of functions from libintl.h to be used when
+ * \file
+ * No-op variants of functions from libintl.h to be used when
  * ENABLE_NLS is disabled.
  */
 

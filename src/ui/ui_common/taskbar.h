@@ -1,6 +1,19 @@
 
+#pragma once
+
+#include "taskbar_config.h"
+
+#if UI_TASKBAR_WIN
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /**
- * \file
  * Taskbar handler.
  *
  * The taskbar handler allows to show a progress or error indicator on
@@ -18,21 +31,6 @@
  * platforms on which the taskbar handler is not implemented: it's
  * supposed that UiTaskbar is explicitly set to null in this case.
  */
-
-#pragma once
-
-#include "taskbar_config.h"
-
-#if UI_TASKBAR_WIN
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
 typedef struct UiTaskbar UiTaskbar;
 
 
