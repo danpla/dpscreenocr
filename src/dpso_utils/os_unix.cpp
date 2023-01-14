@@ -9,8 +9,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "dpso/error.h"
-#include "unix_utils.h"
+#include "error.h"
+#include "unix/fsync.h"
 
 
 const char* const dpsoDirSeparators = "/";

@@ -5,12 +5,12 @@
 #include <windows.h>
 #include <shobjidl.h>
 
-#include "dpso/backend/windows/utils/com.h"
-#include "dpso/backend/windows/utils/error.h"
-#include "dpso/backend/windows/utils/utf.h"
-#include "dpso/error.h"
+#include "dpso_ext/user_dirs.h"
 #include "dpso/ocr.h"
-#include "dpso_utils/user_dirs.h"
+#include "dpso_utils/error.h"
+#include "dpso_utils/windows/com.h"
+#include "dpso_utils/windows/error.h"
+#include "dpso_utils/windows/utf.h"
 
 #include "app_dirs.h"
 #include "file_names.h"

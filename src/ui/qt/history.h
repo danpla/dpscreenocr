@@ -7,7 +7,7 @@
 #include <QTextCharFormat>
 #include <QWidget>
 
-#include "dpso_utils/dpso_utils.h"
+#include "dpso_ext/dpso_ext.h"
 
 
 class QPushButton;

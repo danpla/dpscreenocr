@@ -15,18 +15,19 @@
 #include <utility>
 #include <vector>
 
+#include "dpso_utils/error.h"
+#include "dpso_utils/progress_tracker.h"
+#include "dpso_utils/strftime.h"
+#include "dpso_utils/timing.h"
+
 #include "backend/backend.h"
-#include "backend/screenshot.h"
 #include "backend/screenshot_error.h"
-#include "error.h"
-#include "geometry.h"
+#include "backend/screenshot.h"
 #include "geometry_c.h"
+#include "geometry.h"
 #include "img.h"
-#include "ocr_engine/ocr_engine.h"
 #include "ocr_engine/ocr_engine_creator.h"
-#include "progress_tracker.h"
-#include "strftime.h"
-#include "timing.h"
+#include "ocr_engine/ocr_engine.h"
 
 
 static dpso::backend::Backend* backend;

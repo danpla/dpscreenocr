@@ -9,7 +9,7 @@
 #include <shellapi.h>
 
 #include "dpso/backend/windows/utils/utf.h"
-#include "dpso_utils/windows_utils.h"
+#include "dpso_ext/windows_utils.h"
 
 #include "flow.h"
 

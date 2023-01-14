@@ -8,8 +8,6 @@
 
 #include <stdbool.h>
 
-#include "delay.h"
-#include "error.h"
 #include "key_manager.h"
 #include "ocr.h"
 #include "selection.h"

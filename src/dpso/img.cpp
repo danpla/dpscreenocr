@@ -8,7 +8,7 @@
 #include "stb_image_resize.h"
 #include "stb_image_resize_progress.h"
 
-#include "progress_tracker.h"
+#include "dpso_utils/progress_tracker.h"
 
 
 namespace dpso::img {

@@ -8,7 +8,8 @@ set_target_properties(
     dpso_example PROPERTIES
     C_STANDARD 99
     C_STANDARD_REQUIRED YES
-    C_EXTENSIONS NO)
+    C_EXTENSIONS NO
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
@@ -16,11 +17,13 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         PRIVATE -Wall -Wextra -pedantic -Wstrict-prototypes)
 endif()
 
-set_target_properties(
-    dpso_example
-    PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-
 if(NOT TARGET dpso)
     add_subdirectory(../dpso "${CMAKE_BINARY_DIR}/src/dpso")
 endif()
-target_link_libraries(dpso_example dpso)
+
+if(NOT TARGET dpso_utils)
+    add_subdirectory(
+        ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
+endif()
+
+target_link_libraries(dpso_example dpso dpso_utils)

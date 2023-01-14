@@ -9,8 +9,8 @@
 #include <utility>
 #include <vector>
 
-#include "dpso/error.h"
-#include "os.h"
+#include "dpso_utils/error.h"
+#include "dpso_utils/os.h"
 
 
 // Each entry in a history file consists of a timestamp, two line

@@ -5,7 +5,7 @@
 #include <cstring>
 #include <string>
 
-#include "dpso/str.h"
+#include "dpso_utils/str.h"
 
 
 static void disableAllLangs(DpsoOcr* ocr)

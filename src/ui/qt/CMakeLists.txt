@@ -26,7 +26,10 @@ set_target_properties(
     dpscreenocr_qt PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
-    CXX_EXTENSIONS NO)
+    CXX_EXTENSIONS NO
+    AUTOMOC ON
+    OUTPUT_NAME "dpscreenocr"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
@@ -34,13 +37,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
 endif()
 
 target_include_directories(dpscreenocr_qt PRIVATE .)
-
-set_target_properties(
-    dpscreenocr_qt
-    PROPERTIES
-    AUTOMOC ON
-    OUTPUT_NAME "dpscreenocr"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     target_compile_definitions(dpscreenocr_qt PRIVATE QT_NO_DEBUG=1)
@@ -54,6 +50,11 @@ endif()
 
 if(NOT TARGET dpso)
     add_subdirectory(../../dpso "${CMAKE_BINARY_DIR}/src/dpso")
+endif()
+
+if(NOT TARGET dpso_ext)
+    add_subdirectory(
+        ../../dpso_ext "${CMAKE_BINARY_DIR}/src/dpso_ext")
 endif()
 
 if(NOT TARGET dpso_intl)
@@ -72,7 +73,7 @@ if(NOT TARGET ui_common)
 endif()
 
 target_link_libraries(
-    dpscreenocr_qt dpso dpso_intl dpso_utils ui_common)
+    dpscreenocr_qt dpso dpso_ext dpso_intl dpso_utils ui_common)
 
 if(DPSO_QT_VERSION EQUAL 5 OR DPSO_QT_VERSION EQUAL 6)
     find_package(

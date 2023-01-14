@@ -5,8 +5,8 @@
 #include <cstring>
 #include <io.h>
 
-#include "dpso/backend/windows/utils/utf.h"
-#include "dpso/error.h"
+#include "error.h"
+#include "windows/utf.h"
 
 
 const char* const dpsoDirSeparators = "\\/";

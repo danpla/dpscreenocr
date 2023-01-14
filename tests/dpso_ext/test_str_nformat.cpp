@@ -3,13 +3,13 @@
 #include <initializer_list>
 #include <string>
 
-#include "dpso_utils/str_format.h"
+#include "dpso_ext/str_nformat.h"
 
 #include "flow.h"
 
 
 static std::string argsToStr(
-    std::initializer_list<DpsoFormatArg> args)
+    std::initializer_list<DpsoStrNFormatArg> args)
 {
     std::string result;
 
@@ -23,11 +23,11 @@ static std::string argsToStr(
 }
 
 
-static void testStrFormat()
+static void testStrNFormat()
 {
     struct Test {
         const char* str;
-        std::initializer_list<DpsoFormatArg> args;
+        std::initializer_list<DpsoStrNFormatArg> args;
         const char* expected;
     };
 
@@ -89,12 +89,12 @@ static void testStrFormat()
     };
 
     for (const auto& test : tests) {
-        const auto* got = dpsoStrNamedFormat(test.str, test.args);
+        const auto* got = dpsoStrNFormat(test.str, test.args);
         if (std::strcmp(got, test.expected) == 0)
             continue;
 
         test::failure(
-            "dpsoStrNamedFormat(\"%s\", %s): "
+            "dpsoStrNFormat(\"%s\", %s): "
             "expected \"%s\", got \"%s\"\n",
             test.str,
             argsToStr(test.args).c_str(),
@@ -104,4 +104,4 @@ static void testStrFormat()
 }
 
 
-REGISTER_TEST(testStrFormat);
+REGISTER_TEST(testStrNFormat);

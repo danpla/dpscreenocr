@@ -20,6 +20,7 @@
 #include <QtGlobal>
 
 #include "dpso_intl/dpso_intl.h"
+#include "dpso_utils/dpso_utils.h"
 
 #include "about.h"
 #include "action_chooser.h"
@@ -400,7 +401,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
 void MainWindow::createQActions()
 {
     visibilityAction = new QAction(
-        dpsoStrNamedFormat(
+        dpsoStrNFormat(
             _("Show {app_name}"), {{"app_name", uiAppName}}),
         this);
     visibilityAction->setCheckable(true);
@@ -753,7 +754,7 @@ void MainWindow::updateStatus()
 
         setStatus(
             Status::busy,
-            dpsoStrNamedFormat(
+            dpsoStrNFormat(
                 progressStatusFmt.c_str(),
                 {{"progress",
                         std::to_string(totalProgress).c_str()},

@@ -1,9 +1,10 @@
 
 #include "backend/windows/windows_selection.h"
 
+#include "dpso_utils/windows/error.h"
+#include "dpso_utils/windows/module.h"
+
 #include "backend/backend_error.h"
-#include "backend/windows/utils/error.h"
-#include "backend/windows/utils/module.h"
 
 
 // Transparent window areas

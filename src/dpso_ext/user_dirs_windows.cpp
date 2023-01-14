@@ -7,9 +7,9 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "dpso/backend/windows/utils/error.h"
-#include "dpso/backend/windows/utils/utf.h"
-#include "dpso/error.h"
+#include "dpso_utils/error.h"
+#include "dpso_utils/windows/error.h"
+#include "dpso_utils/windows/utf.h"
 
 
 const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)

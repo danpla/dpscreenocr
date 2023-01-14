@@ -1,5 +1,5 @@
 
-#include "dpso/backend/windows/utils/utf.h"
+#include "dpso_utils/windows/utf.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -120,7 +120,7 @@ static void testInvalidUtf16()
 }
 
 
-static void testWindowsUtilsUtf()
+static void testWindowsUtf()
 {
     testUtfConversions();
     testInvalidUtf8();
@@ -128,4 +128,4 @@ static void testWindowsUtilsUtf()
 }
 
 
-REGISTER_TEST(testWindowsUtilsUtf);
+REGISTER_TEST(testWindowsUtf);

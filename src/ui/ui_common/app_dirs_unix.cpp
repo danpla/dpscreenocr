@@ -20,8 +20,9 @@
 #include <string>
 #include <unistd.h>
 
+#include "dpso_utils/error.h"
+
 #include "app_dirs_unix_cfg.h"
-#include "dpso/error.h"
 
 
 static std::string findExeInPath(const char* exeName)

@@ -11,9 +11,9 @@
 #include <string>
 #include <vector>
 
-#include "dpso/error.h"
-#include "dpso/str.h"
-#include "os.h"
+#include "dpso_utils/error.h"
+#include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
 
 
 struct DpsoCfg {

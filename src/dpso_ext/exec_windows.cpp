@@ -8,10 +8,11 @@
 #include <windows.h>
 #include <shellapi.h>
 
-#include "dpso/backend/windows/utils/com.h"
-#include "dpso/backend/windows/utils/utf.h"
-#include "dpso/str.h"
-#include "os.h"
+#include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
+#include "dpso_utils/windows/com.h"
+#include "dpso_utils/windows/utf.h"
+
 #include "windows_utils.h"
 
 

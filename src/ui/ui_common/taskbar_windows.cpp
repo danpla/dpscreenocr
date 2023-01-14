@@ -8,9 +8,9 @@
 #include <shobjidl.h>
 #include <versionhelpers.h>
 
-#include "dpso/backend/windows/utils/com.h"
-#include "dpso/backend/windows/utils/error.h"
-#include "dpso/error.h"
+#include "dpso_utils/error.h"
+#include "dpso_utils/windows/com.h"
+#include "dpso_utils/windows/error.h"
 
 
 struct UiTaskbar {

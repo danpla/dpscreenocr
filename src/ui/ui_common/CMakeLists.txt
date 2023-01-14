@@ -89,4 +89,7 @@ if(NOT TARGET dpso_utils)
         ../../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(ui_common PUBLIC dpso dpso_intl dpso_utils)
+target_link_libraries(
+    ui_common
+    PUBLIC dpso
+    PRIVATE dpso_intl dpso_utils)

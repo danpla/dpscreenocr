@@ -4,10 +4,11 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "backend/backend.h"
+#include "dpso_utils/windows/error.h"
+
 #include "backend/backend_error.h"
+#include "backend/backend.h"
 #include "backend/windows/execution_layer/backend_executor.h"
-#include "backend/windows/utils/error.h"
 #include "backend/windows/windows_key_manager.h"
 #include "backend/windows/windows_screenshot.h"
 #include "backend/windows/windows_selection.h"

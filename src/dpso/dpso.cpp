@@ -5,6 +5,8 @@
 #include <iterator>
 #include <stdexcept>
 
+#include "dpso_utils/error.h"
+
 #include "backend/backend.h"
 #include "backend/backend_error.h"
 

@@ -2,8 +2,8 @@
 #include <cstring>
 #include <iterator>
 
-#include "dpso/error.h"
-#include "dpso_utils/history.h"
+#include "dpso_ext/history.h"
+#include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 
 #include "flow.h"

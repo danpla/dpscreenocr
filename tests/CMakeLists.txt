@@ -2,27 +2,28 @@
 add_executable(
     tests
 
-    dpso/test_geometry.cpp
-    dpso/test_hotkeys.cpp
-    dpso/test_progress_tracker.cpp
-    dpso/test_str.cpp
-    dpso/test_strftime.cpp
-    dpso/test_tesseract_utils.cpp
-    dpso_utils/test_cfg.cpp
-    dpso_utils/test_history.cpp
-    dpso_utils/test_history_export.cpp
-    dpso_utils/test_os.cpp
-    dpso_utils/test_str_format.cpp
     flow.cpp
     main.cpp
-    utils.cpp)
+    utils.cpp
+
+    dpso_ext/test_cfg.cpp
+    dpso_ext/test_history.cpp
+    dpso_ext/test_history_export.cpp
+    dpso_ext/test_str_nformat.cpp
+    dpso/test_geometry.cpp
+    dpso/test_hotkeys.cpp
+    dpso/test_tesseract_utils.cpp
+    dpso_utils/test_os.cpp
+    dpso_utils/test_progress_tracker.cpp
+    dpso_utils/test_str.cpp
+    dpso_utils/test_strftime.cpp)
 
 if(WIN32)
     target_sources(
         tests
         PRIVATE
-        dpso/test_windows_utils_utf.cpp
-        dpso_utils/test_windows_utils.cpp)
+        dpso_ext/test_windows_utils.cpp
+        dpso_utils/test_windows_utf.cpp)
 endif()
 
 set_target_properties(
@@ -41,12 +42,17 @@ if(NOT TARGET dpso)
     add_subdirectory(../src/dpso "${CMAKE_BINARY_DIR}/src/dpso")
 endif()
 
+if(NOT TARGET dpso_ext)
+    add_subdirectory(
+        ../src/dpso_ext "${CMAKE_BINARY_DIR}/src/dpso_ext")
+endif()
+
 if(NOT TARGET dpso_utils)
     add_subdirectory(
         ../src/dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(tests dpso dpso_utils)
+target_link_libraries(tests dpso dpso_ext dpso_utils)
 
 add_executable(test_c_compilation test_c_compilation.c)
 
@@ -73,4 +79,4 @@ if(NOT TARGET ui_common)
 endif()
 
 target_link_libraries(
-    test_c_compilation dpso dpso_intl dpso_utils ui_common)
+    test_c_compilation dpso dpso_intl dpso_ext dpso_utils ui_common)

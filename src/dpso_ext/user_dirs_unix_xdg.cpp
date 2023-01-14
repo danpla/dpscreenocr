@@ -6,8 +6,8 @@
 #include <cstring>
 #include <string>
 
-#include "dpso/error.h"
-#include "unix_utils.h"
+#include "dpso_utils/error.h"
+#include "dpso_utils/unix/make_dirs.h"
 
 
 // https://specifications.freedesktop.org/basedir-spec/latest/

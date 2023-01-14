@@ -5,9 +5,10 @@
 #include <string>
 
 #include "dpso/dpso.h"
-#include "dpso/str.h"
-#include "dpso_utils/cfg.h"
-#include "dpso_utils/cfg_ext.h"
+#include "dpso_utils/error.h"
+#include "dpso_utils/str.h"
+#include "dpso_ext/cfg.h"
+#include "dpso_ext/cfg_ext.h"
 #include "dpso_utils/os.h"
 
 #include "flow.h"

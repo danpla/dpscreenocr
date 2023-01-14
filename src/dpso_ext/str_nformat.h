@@ -15,12 +15,12 @@ extern "C" {
 
 
 /**
- * Argument for dpsoStrNamedFormat().
+ * Argument for dpsoStrNFormat().
  */
-typedef struct DpsoFormatArg {
+typedef struct DpsoStrNFormatArg {
     const char* name;
     const char* str;
-} DpsoFormatArg;
+} DpsoStrNFormatArg;
 
 
 /**
@@ -36,8 +36,8 @@ typedef struct DpsoFormatArg {
  * strings to provide reorderable and human-readable arguments instead
  * of printf-like magic numbers.
  */
-const char* dpsoStrNamedFormat(
-    const char* str, const DpsoFormatArg* args, size_t numArgs);
+const char* dpsoStrNFormat(
+    const char* str, const DpsoStrNFormatArg* args, size_t numArgs);
 
 
 #ifdef __cplusplus
@@ -47,11 +47,11 @@ const char* dpsoStrNamedFormat(
 #include <initializer_list>
 
 
-inline const char* dpsoStrNamedFormat(
+inline const char* dpsoStrNFormat(
     const char* str,
-    std::initializer_list<DpsoFormatArg> args)
+    std::initializer_list<DpsoStrNFormatArg> args)
 {
-    return dpsoStrNamedFormat(str, args.begin(), args.size());
+    return dpsoStrNFormat(str, args.begin(), args.size());
 }
 
 

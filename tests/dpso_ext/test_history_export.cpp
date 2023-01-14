@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include "dpso/error.h"
-#include "dpso_utils/history.h"
-#include "dpso_utils/history_export.h"
+#include "dpso_ext/history.h"
+#include "dpso_ext/history_export.h"
+#include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 
 #include "flow.h"

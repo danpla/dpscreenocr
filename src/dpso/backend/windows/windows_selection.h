@@ -5,8 +5,8 @@
 #include <windows.h>
 
 #include "backend/selection.h"
-#include "backend/windows/utils/gdi.h"
-#include "backend/windows/utils/window.h"
+#include "dpso_utils/windows/gdi.h"
+#include "dpso_utils/windows/window.h"
 
 
 namespace dpso::backend {

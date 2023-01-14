@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include "dpso/error.h"
+#include "dpso_utils/error.h"
 
 
 struct UiSingleInstanceGuard {

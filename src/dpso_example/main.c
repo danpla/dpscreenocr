@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "dpso/dpso.h"
+#include "dpso_utils/dpso_utils.h"
 
 
 static void setupLanguages(DpsoOcr* ocr)

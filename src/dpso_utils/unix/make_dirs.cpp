@@ -1,13 +1,9 @@
 
-#include "unix_utils.h"
+#include "unix/make_dirs.h"
 
 #include <string>
 
-#ifdef __APPLE__
-#include <fcntl.h>
-#endif
 #include <sys/stat.h>
-#include <unistd.h>
 
 
 namespace dpso::unix {
@@ -57,23 +53,6 @@ bool makeDirs(const char* path, mode_t mode)
 {
     std::string pathCopy{path};
     return makeDirs(pathCopy.data(), mode);
-}
-
-
-int fsync(int fd)
-{
-    #ifdef __APPLE__
-    // See:
-    // * "man fsync" on macOS
-    // * https://lists.apple.com/archives/darwin-dev/2005/Feb/msg00072.html
-    if (fcntl(fd, F_FULLFSYNC) != -1)
-        return 0;
-    // F_FULLFSYNC failure indicates that it's not supported for the
-    // current file system (see "man fcntl" for the list of supported
-    // file systems). Fall back to fsync().
-    #endif
-
-    return ::fsync(fd);
 }
 
 

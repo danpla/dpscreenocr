@@ -7,9 +7,10 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#include "dpso_utils/windows/error.h"
+#include "dpso_utils/windows/gdi.h"
+
 #include "backend/screenshot_error.h"
-#include "backend/windows/utils/error.h"
-#include "backend/windows/utils/gdi.h"
 #include "geometry.h"
 #include "img.h"
 

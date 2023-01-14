@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "str.h"
+#include "dpso_utils/str.h"
 
 
 const DpsoHotkey dpsoEmptyHotkey{dpsoNoKey, dpsoNoKeyMods};

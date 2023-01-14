@@ -2,18 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 
 project(dpso)
 
-option(
-    DPSO_FORCE_TIMING
-    "Force code timing (dpso::CodeTimer) even in release mode"
-    NO)
-mark_as_advanced(DPSO_FORCE_TIMING)
-
 add_library(
     dpso
 
-    delay.cpp
     dpso.cpp
-    error.cpp
     geometry.cpp
     geometry_c.cpp
     img.cpp
@@ -25,10 +17,7 @@ add_library(
     ocr_engine/tesseract/tesseract_ocr_engine.cpp
     ocr_engine/tesseract/tesseract_ocr_engine_creator.cpp
     ocr_engine/tesseract/utils.cpp
-    progress_tracker.cpp
-    selection.cpp
-    str.cpp
-    strftime.cpp)
+    selection.cpp)
 
 if(UNIX AND NOT APPLE)
     target_sources(
@@ -46,8 +35,6 @@ elseif(WIN32)
         backend/windows/execution_layer/backend_executor.cpp
         backend/windows/execution_layer/key_manager_executor.cpp
         backend/windows/execution_layer/selection_executor.cpp
-        backend/windows/utils/error.cpp
-        backend/windows/utils/utf.cpp
         backend/windows/windows_backend.cpp
         backend/windows/windows_key_manager.cpp
         backend/windows/windows_screenshot.cpp
@@ -57,25 +44,26 @@ else()
 endif()
 
 target_compile_definitions(
-    dpso
-    PRIVATE
-    DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>
-    DPSO_DLL=$<BOOL:${BUILD_SHARED_LIBS}>)
+    dpso PRIVATE DPSO_DLL=$<BOOL:${BUILD_SHARED_LIBS}>)
 
 set_target_properties(
     dpso PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
-    CXX_EXTENSIONS NO)
+    CXX_EXTENSIONS NO
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(dpso PRIVATE -Wall -Wextra -pedantic)
 endif()
 
-set_target_properties(
-    dpso PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-
 target_include_directories(dpso PRIVATE . PUBLIC ..)
+
+if(NOT TARGET dpso_utils)
+    add_subdirectory(
+        ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
+endif()
+target_link_libraries(dpso PRIVATE dpso_utils)
 
 if(NOT TARGET stb_image_resize)
     add_subdirectory(
