@@ -8,8 +8,8 @@
 #include <windows.h>
 #include <shellapi.h>
 
-#include "dpso/backend/windows/utils/utf.h"
 #include "dpso_ext/windows_utils.h"
+#include "dpso_utils/windows/utf.h"
 
 #include "flow.h"
 

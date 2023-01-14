@@ -1,10 +1,10 @@
 
-#include "backend/windows/utils/utf.h"
+#include "windows/utf.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "backend/windows/utils/error.h"
+#include "windows/error.h"
 
 
 namespace dpso::windows {
