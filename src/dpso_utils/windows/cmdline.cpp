@@ -1,9 +1,9 @@
 
-#include "windows_utils.h"
+#include "windows/cmdline.h"
 
 #include <cstring>
 
-#include "dpso_utils/windows/error.h"
+#include "windows/error.h"
 
 
 namespace dpso::windows {

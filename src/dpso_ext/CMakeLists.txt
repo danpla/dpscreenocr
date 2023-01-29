@@ -28,8 +28,7 @@ elseif(WIN32)
         dpso_ext
         PRIVATE
         exec_windows.cpp
-        user_dirs_windows.cpp
-        windows_utils.cpp)
+        user_dirs_windows.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()

@@ -30,6 +30,7 @@ elseif(WIN32)
         dpso_utils
         PRIVATE
         os_windows.cpp
+        windows/cmdline.cpp
         windows/error.cpp
         windows/utf.cpp)
 else()

@@ -10,10 +10,9 @@
 
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
+#include "dpso_utils/windows/cmdline.h"
 #include "dpso_utils/windows/com.h"
 #include "dpso_utils/windows/utf.h"
-
-#include "windows_utils.h"
 
 
 // It seems that it's just impossible to securely pass random text as
@@ -98,9 +97,9 @@
 // [1] https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/
 
 
-static bool allowExecute(const char* exePath)
+static bool canExecute(const char* exePath)
 {
-    // Don't execute an empty string since ShellExecute() opens
+    // Don't execute an empty string since ShellExecute() opens the
     // current working directory in Explorer in this case.
     while (std::isspace(*exePath))
         ++exePath;
@@ -133,7 +132,7 @@ static bool allowExecute(const char* exePath)
 
 void dpsoExec(const char* exePath, const char* arg)
 {
-    if (!allowExecute(exePath))
+    if (!canExecute(exePath))
         return;
 
     const dpso::windows::CoInitializer coInitializer{

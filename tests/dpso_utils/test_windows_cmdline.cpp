@@ -8,7 +8,7 @@
 #include <windows.h>
 #include <shellapi.h>
 
-#include "dpso_ext/windows_utils.h"
+#include "dpso_utils/windows/cmdline.h"
 #include "dpso_utils/windows/utf.h"
 
 #include "flow.h"
@@ -97,6 +97,7 @@ static void testCreateCmdLine()
         {programName, "a\\\\b", "de fg", "h"},
         {programName, "a\\\"b", "c", "d"},
         {programName, "a\\\\b c", "d", "e"},
+        {programName, "", "a"},
     };
 
     for (const auto& argv : argvs)

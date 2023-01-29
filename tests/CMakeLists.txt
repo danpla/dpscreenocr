@@ -22,7 +22,7 @@ if(WIN32)
     target_sources(
         tests
         PRIVATE
-        dpso_ext/test_windows_utils.cpp
+        dpso_utils/test_windows_cmdline.cpp
         dpso_utils/test_windows_utf.cpp)
 endif()
 
