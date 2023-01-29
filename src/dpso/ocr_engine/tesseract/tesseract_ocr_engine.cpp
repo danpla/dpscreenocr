@@ -54,11 +54,9 @@ private:
     std::string dataDir;
     tesseract::TessBaseAPI tess;
     std::vector<std::string> langCodes;
-    std::string tessLangsStr;
 
     bool initTess(const char* langs);
     void cacheLangs();
-    void fillTessLangsStr(const std::vector<int>& langIndices);
 };
 
 
@@ -69,7 +67,6 @@ TesseractOcr::TesseractOcr(const OcrEngineArgs& args)
     : dataDir{args.dataDir}
     , tess{}
     , langCodes{}
-    , tessLangsStr{}
 {
     cacheLangs();
 }
@@ -153,6 +150,13 @@ struct CancelData {
 }
 
 
+static bool isVertical(const char* langCode)
+{
+    const auto* s = std::strrchr(langCode, '_');
+    return s && std::strcmp(s + 1, "vert") == 0;
+}
+
+
 OcrResult TesseractOcr::recognize(
     const OcrImage& image,
     const std::vector<int>& langIndices,
@@ -160,14 +164,44 @@ OcrResult TesseractOcr::recognize(
     OcrProgressCallback progressCallback,
     void* progressCallbackUserData)
 {
-    fillTessLangsStr(langIndices);
+    std::string tessLangsStr;
+    std::size_t numVerticalLangs{};
+
+    for (const auto langIdx : langIndices) {
+        const auto& langCode = langCodes[langIdx];
+
+        if (isVertical(langCode.c_str()))
+            ++numVerticalLangs;
+
+        if (!tessLangsStr.empty())
+            tessLangsStr += '+';
+
+        tessLangsStr += langCode;
+    }
+
     if (!initTess(tessLangsStr.c_str()) != 0)
         return {
             OcrResult::Status::error, "TessBaseAPI::Init() failed"};
 
-    tess.SetPageSegMode(
-        (ocrFeatures & ocrFeatureTextSegmentation)
-            ? tesseract::PSM_AUTO : tesseract::PSM_SINGLE_BLOCK);
+    tesseract::PageSegMode pageSegMode{tesseract::PSM_AUTO};
+
+    if (!(ocrFeatures & ocrFeatureTextSegmentation)) {
+        if (numVerticalLangs == 0)
+            // PSM_SINGLE_BLOCK implies horizontal text.
+            pageSegMode = tesseract::PSM_SINGLE_BLOCK;
+        else if (numVerticalLangs == langIndices.size())
+            pageSegMode = tesseract::PSM_SINGLE_BLOCK_VERT_TEXT;
+        else
+            // When we have both vertical and horizontal languages,
+            // forcing segmentation is the best we can do: at least
+            // Tesseract will be able to pick the right language based
+            // on the actual orientation of the text in each block.
+            // Using a specific PSM_SINGLE_BLOCK_* instead will 100%
+            // break OCR of text with the opposite orientation.
+            pageSegMode = tesseract::PSM_AUTO;
+    }
+
+    tess.SetPageSegMode(pageSegMode);
 
     tess.SetImage(
         image.data, image.width, image.height, 1, image.pitch);
@@ -261,20 +295,6 @@ void TesseractOcr::cacheLangs()
     }
 
     #endif
-}
-
-
-void TesseractOcr::fillTessLangsStr(
-    const std::vector<int>& langIndices)
-{
-    tessLangsStr.clear();
-
-    for (const auto langIdx : langIndices) {
-        if (!tessLangsStr.empty())
-            tessLangsStr += '+';
-
-        tessLangsStr += langCodes[langIdx];
-    }
 }
 
 
