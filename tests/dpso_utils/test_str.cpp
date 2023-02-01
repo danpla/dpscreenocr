@@ -48,15 +48,13 @@ static void testCmpSubStr()
 {
     using namespace dpso::str;
 
-    struct Test {
+    const struct Test {
         const char* str;
         const char* subStr;
         std::size_t subStrLen;
         unsigned cmpOptions;
         Order expectedOrder;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {"", "", 0, cmpNormal, Order::equal},
         {"", "", 1, cmpNormal, Order::equal},
         {"", "", 2, cmpNormal, Order::equal},

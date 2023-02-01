@@ -46,12 +46,10 @@ static std::string hotkeyToStr(const DpsoHotkey& hotkey)
 
 static void testHotkeyFromString()
 {
-    struct Test {
+    const struct Test {
         const char* str;
         DpsoHotkey expectedHotkey;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {"", dpsoEmptyHotkey},
         {"???", dpsoEmptyHotkey},
         {"Ctrl + ???", dpsoEmptyHotkey},

@@ -12,6 +12,7 @@
 #include "dpso_utils/windows/utf.h"
 
 #include "flow.h"
+#include "utils.h"
 
 
 // Wrapper around CommandLineToArgvW()
@@ -42,14 +43,15 @@ std::string rangeToString(T begin, T end)
 {
     std::string result = "[";
 
-    for (; begin != end; ++begin) {
-        if (result.size() > 1)
+    for (auto iter = begin; iter != end; ++iter) {
+        if (iter != begin)
             result += ", ";
 
-        result += *begin;
+        result += '"' + test::utils::escapeStr(*iter) + '"';
     }
 
     result += ']';
+
     return result;
 }
 

@@ -10,12 +10,10 @@
 
 static void testPrettifyText()
 {
-    struct Test {
+    const struct Test {
         const char* original;
         const char* prettified;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         // Trim whitespace
         {" \n\t\r", ""},
         {" \n\t\ra", "a"},
@@ -33,7 +31,7 @@ static void testPrettifyText()
 
     for (const auto& test : tests) {
         std::string str = test.original;
-        const auto strLen = dpso::ocr::prettifyTesseractText(&str[0]);
+        const auto strLen = dpso::ocr::prettifyTesseractText(str.data());
 
         if (std::strcmp(str.c_str(), test.prettified) != 0)
             test::failure(

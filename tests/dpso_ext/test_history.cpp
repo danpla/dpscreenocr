@@ -17,8 +17,7 @@ static void cmpFields(
         return;
 
     test::failure(
-        "line %i: DpsoHistoryEntry::%s don't match: "
-        "\"%s\" != \"%s\"\n",
+        "line %i: DpsoHistoryEntry::%s: \"%s\" != \"%s\"\n",
         lineNum,
         name,
         test::utils::escapeStr(a).c_str(),
@@ -65,12 +64,10 @@ const auto* const historyFileName = "test_history.txt";
 
 static void testIO(bool append)
 {
-    struct Test {
+    const struct Test {
         DpsoHistoryEntry inEntry;
         DpsoHistoryEntry outEntry;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {{"ts1", "text1 \n\t\r line \n\t\r line \n\t\r "}, {}},
         {{"", ""}, {}},
         {{"", "text2"}, {}},
@@ -128,12 +125,10 @@ static void testIO(bool append)
 
 void testInvalidData()
 {
-    struct Test {
+    const struct Test {
         const char* description;
         const char* data;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {"No timestamp terminator", "a"},
         {"Invalid timestamp terminator", "a\nb"},
         {"Truncated entry separator", "a\n\nb\f"},

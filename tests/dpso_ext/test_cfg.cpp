@@ -104,7 +104,7 @@ static void testGetBool(
 }
 
 
-const char* const nonexistentKey = "nonexistent_key";
+const auto* const nonexistentKey = "nonexistent_key";
 
 
 const std::initializer_list<BasicTypesTest> strTests{
@@ -161,8 +161,7 @@ static void getStrByteChars(const DpsoCfg* cfg)
 {
     for (int c = 1; c < 256; ++c) {
         const char val[2] = {static_cast<char>(c), 0};
-        testGetStr(
-            cfg, makeCfgKeyForChar(c).c_str(), val, "");
+        testGetStr(cfg, makeCfgKeyForChar(c).c_str(), val, "");
     }
 }
 
@@ -323,13 +322,11 @@ static void testValueOverridingOnLoad(DpsoCfg* cfg)
 
 static void testStrValueParsing(DpsoCfg* cfg)
 {
-    struct Test {
+    const struct Test {
         const char* key;
         const char* valInFile;
         const char* expectedVal;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {"space", " ", ""},
         {"line_feed", "\n", ""},
         {"carriage_return", "\r", ""},
@@ -375,14 +372,12 @@ static void testStrValueParsing(DpsoCfg* cfg)
 
 static void testIntValueParsing(DpsoCfg* cfg)
 {
-    struct Test {
+    const struct Test {
         const char* key;
         const char* valInFile;
         int expectedVal;
         int defaultVal;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {"int_minus_0", "-0", 0, 1},
         {"int_123", "123", 123, 0},
         {"int_minus_123", "-123", -123, 0},
@@ -403,14 +398,12 @@ static void testIntValueParsing(DpsoCfg* cfg)
 
 static void testBoolValueParsing(DpsoCfg* cfg)
 {
-    struct Test {
+    const struct Test {
         const char* key;
         const char* valInFile;
         bool expectedVal;
         bool defaultVal;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {"bool_True", "True", true, false},
         {"bool_TRUE", "TRUE", true, false},
         {"bool_TRUE_x", "TRUE x", false, false},
@@ -429,12 +422,10 @@ static void testBoolValueParsing(DpsoCfg* cfg)
 
 static void testKeyValidity(DpsoCfg* cfg)
 {
-    struct Test {
+    const struct Test {
         const char* key;
         bool isValid;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {"", false},
         {" ", false},
         {" a", false},

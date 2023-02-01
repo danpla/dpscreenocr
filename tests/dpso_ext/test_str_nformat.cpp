@@ -4,6 +4,7 @@
 #include <string>
 
 #include "dpso_ext/str_nformat.h"
+#include "dpso_utils/str.h"
 
 #include "flow.h"
 
@@ -11,13 +12,19 @@
 static std::string argsToStr(
     std::initializer_list<DpsoStrNFormatArg> args)
 {
-    std::string result;
+    std::string result = "{";
 
-    for (const auto& arg : args) {
-        if (!result.empty())
+    auto firstArg{true};
+    for (const auto& arg: args) {
+        if (!firstArg)
             result += ", ";
-        result += std::string("{") + arg.name + ": " + arg.str + '}';
+
+        result += dpso::str::printf("{%s: %s}", arg.name, arg.str);
+
+        firstArg = false;
     }
+
+    result += '}';
 
     return result;
 }
@@ -25,13 +32,11 @@ static std::string argsToStr(
 
 static void testStrNFormat()
 {
-    struct Test {
+    const struct Test {
         const char* str;
         std::initializer_list<DpsoStrNFormatArg> args;
         const char* expected;
-    };
-
-    const Test tests[] = {
+    } tests[] = {
         {
             // Normal
             "1: {a1}, 2: {a2}",
