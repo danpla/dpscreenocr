@@ -8,22 +8,13 @@
 namespace dpso {
 
 
-static void nullProgressFn(float progress, void* userData)
-{
-    (void)progress;
-    (void)userData;
-}
-
-
 ProgressTracker::ProgressTracker(
         int numJobs,
-        ProgressFn progressFn,
-        void* userData,
+        ProgressHandler& progressHandler,
         float sensitivity)
     : ProgressTracker{numJobs}
 {
-    this->progressFn = progressFn ? progressFn : nullProgressFn;
-    this->userData = userData;
+    this->progressHandler = &progressHandler;
     this->sensitivity = sensitivity;
 }
 
@@ -39,8 +30,7 @@ ProgressTracker::ProgressTracker(
 
 ProgressTracker::ProgressTracker(int numJobs)
     : numJobs{numJobs > 0 ? numJobs : 1}
-    , progressFn{nullProgressFn}
-    , userData{}
+    , progressHandler{}
     , parent{}
     , sensitivity{}
     , curJobNum{}
@@ -83,14 +73,16 @@ void ProgressTracker::report(float progress)
         progress = std::floor(progress / sensitivity) * sensitivity;
 
     // Even if sensitivity is 0, we still check the values to avoid
-    // invoking the callback when update() is called several times in
+    // invoking the handler when update() is called several times in
     // a row with the same progress, e.g. when a hierarchy of trackers
     // call advanceJob() for the first time, or when the child's
     // finish() is followed by the parent's advanceJob().
     if (progress <= lastProgress)
         return;
 
-    progressFn(progress, userData);
+    if (progressHandler)
+        (*progressHandler)(progress);
+
     lastProgress = progress;
 }
 

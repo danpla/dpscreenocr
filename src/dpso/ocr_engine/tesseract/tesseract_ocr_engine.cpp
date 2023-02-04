@@ -48,8 +48,7 @@ public:
         const OcrImage& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
-        OcrProgressCallback progressCallback,
-        void* progressCallbackUserData) override;
+        OcrProgressHandler* progressHandler) override;
 private:
     std::string dataDir;
     tesseract::TessBaseAPI tess;
@@ -112,17 +111,13 @@ struct CancelData {
     ETEXT_DESC
     #endif
         textDesc;
-    OcrProgressCallback progressCallback;
-    void* progressCallbackUserData;
-    bool cancelled;
+    OcrProgressHandler* progressHandler;
+    bool canceled;
 
-    CancelData(
-            OcrProgressCallback progressCallback,
-            void* progressCallbackUserData)
+    explicit CancelData(OcrProgressHandler* progressHandler)
         : textDesc{}
-        , progressCallback{progressCallback}
-        , progressCallbackUserData{progressCallbackUserData}
-        , cancelled{}
+        , progressHandler{progressHandler}
+        , canceled{}
     {
         textDesc.cancel = cancelFunc;
         textDesc.cancel_this = this;
@@ -135,14 +130,13 @@ struct CancelData {
         auto* cancelData = static_cast<CancelData*>(data);
         assert(cancelData);
 
-        if (!cancelData->progressCallback)
+        if (!cancelData->progressHandler)
             return false;
 
-        cancelData->cancelled = !cancelData->progressCallback(
-            cancelData->textDesc.progress,
-            cancelData->progressCallbackUserData);
+        cancelData->canceled = !(*cancelData->progressHandler)(
+            cancelData->textDesc.progress);
 
-        return cancelData->cancelled;
+        return cancelData->canceled;
     }
 };
 
@@ -161,8 +155,7 @@ OcrResult TesseractOcr::recognize(
     const OcrImage& image,
     const std::vector<int>& langIndices,
     OcrFeatures ocrFeatures,
-    OcrProgressCallback progressCallback,
-    void* progressCallbackUserData)
+    OcrProgressHandler* progressHandler)
 {
     std::string tessLangsStr;
     std::size_t numVerticalLangs{};
@@ -206,14 +199,13 @@ OcrResult TesseractOcr::recognize(
     tess.SetImage(
         image.data, image.width, image.height, 1, image.pitch);
 
-    CancelData cancelData(
-        progressCallback, progressCallbackUserData);
+    CancelData cancelData{progressHandler};
     if (tess.Recognize(&cancelData.textDesc) != 0)
         return {
             OcrResult::Status::error,
             "TessBaseAPI::Recognize() failed"};
 
-    if (cancelData.cancelled)
+    if (cancelData.canceled)
         return {OcrResult::Status::terminated, ""};
 
     std::unique_ptr<char[]> text{tess.GetUTF8Text()};

@@ -49,15 +49,18 @@ enum OcrFeature {
 using OcrFeatures = unsigned;
 
 
-/**
- * Progress callback.
- *
- * \param progress OCR progress in percents from 0 to 100.
- * \param progress User data.
- *
- * \return true to continue OCR, false to terminate.
- */
-using OcrProgressCallback = bool (*)(int progress, void* userData);
+class OcrProgressHandler {
+public:
+    virtual ~OcrProgressHandler() = default;
+
+    /**
+     * Progress update.
+     *
+     * The progress is in percents from 0 to 100. Returns true to
+     * continue OCR, or false to terminate.
+     */
+    virtual bool operator()(int progress) = 0;
+};
 
 
 struct OcrResult {
@@ -145,8 +148,7 @@ public:
         const OcrImage& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
-        OcrProgressCallback progressCallback,
-        void* progressCallbackUserData) = 0;
+        OcrProgressHandler* progressHandler) = 0;
 };
 
 

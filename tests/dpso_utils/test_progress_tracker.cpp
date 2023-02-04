@@ -9,7 +9,19 @@
 namespace {
 
 
-struct ProgressInfo {
+struct ProgressHandler : dpso::ProgressTracker::ProgressHandler {
+    ProgressHandler()
+        : numCalls{}
+        , progress{-1.0f}
+    {
+    }
+
+    void operator()(float progress) override
+    {
+        ++numCalls;
+        this->progress = progress;
+    }
+
     int numCalls;
     float progress;
 };
@@ -18,44 +30,37 @@ struct ProgressInfo {
 }
 
 
-static void updateProgressInfo(float progress, void* userData)
+static void checkProgressInfo(
+    const ProgressHandler& ph,
+    int numCalls,
+    float progress,
+    int lineNum)
 {
-    auto& pt = *static_cast<ProgressInfo*>(userData);
-    ++pt.numCalls;
-    pt.progress = progress;
-}
-
-
-static void cmpProgressInfo(
-    const ProgressInfo& a, const ProgressInfo& b, int lineNum)
-{
-    if (a.numCalls != b.numCalls)
+    if (ph.numCalls != numCalls)
         test::failure(
-            "line %i: ProgressInfo::numCalls don't match: %i != %i\n",
+            "line %i: ProgressHandler::numCalls{%i} != %i\n",
             lineNum,
-            a.numCalls,
-            b.numCalls);
+            ph.numCalls,
+            numCalls);
 
-    if (std::abs(a.progress - b.progress) > 0.00001f)
+    if (std::abs(ph.progress - progress) > 0.00001f)
         test::failure(
-            "line %i: ProgressInfo::progress don't match: %f != %f\n",
+            "line %i: ProgressHandler::progress{%f} != %f\n",
             lineNum,
-            a.progress,
-            b.progress);
+            ph.progress,
+            progress);
 }
 
 
 #define CHECK_PROGRESS_INFO(NUM_CALLS, PROGRESS) \
-    cmpProgressInfo( \
-        progressInfo, ProgressInfo{NUM_CALLS, PROGRESS}, __LINE__)
+    checkProgressInfo(progressHandler, NUM_CALLS, PROGRESS, __LINE__)
 
 
 static void testHierarchy()
 {
-    ProgressInfo progressInfo{0, -1.0f};
+    ProgressHandler progressHandler;
 
-    dpso::ProgressTracker toplevelPt{
-        2, updateProgressInfo, &progressInfo, 0.0f};
+    dpso::ProgressTracker toplevelPt{2, progressHandler, 0.0f};
     dpso::ProgressTracker childPt{2, &toplevelPt};
     dpso::ProgressTracker grandChildPt{2, &childPt};
 
@@ -96,10 +101,9 @@ static void testHierarchy()
 
 static void testSensitivity()
 {
-    ProgressInfo progressInfo{0, -1.0f};
+    ProgressHandler progressHandler;
 
-    dpso::ProgressTracker toplevelPt{
-        2, updateProgressInfo, &progressInfo};
+    dpso::ProgressTracker toplevelPt{2, progressHandler};
     dpso::ProgressTracker childPt{2, &toplevelPt};
 
     CHECK_PROGRESS_INFO(0, -1.0f);

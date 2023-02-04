@@ -408,45 +408,55 @@ static dpso::ocr::OcrImage prepareScreenshot(
 namespace {
 
 
-struct OcrProgressCallbackData {
+struct OcrProgressHandler : dpso::ocr::OcrProgressHandler {
+    OcrProgressHandler(
+            DpsoOcr& ocr,
+            dpso::ProgressTracker& progressTracker)
+        : ocr{ocr}
+        , progressTracker{progressTracker}
+    {
+    }
+
+    bool operator()(int progress) override
+    {
+        progressTracker.update(progress / 100.0f);
+
+        auto& link = ocr.link;
+
+        bool waitingForResults;
+        {
+            LINK_LOCK(link);
+            waitingForResults = link.waitingForResults;
+        }
+
+        if (waitingForResults && link.waitingProgressCallback)
+            link.waitingProgressCallback(&ocr, link.waitingUserData);
+
+        LINK_LOCK(link);
+        return !link.terminateJobs;
+    }
+
     DpsoOcr& ocr;
     dpso::ProgressTracker& progressTracker;
 };
 
 
-}
-
-
-static bool ocrProgressCallback(int progress, void* userData)
-{
-    auto* data = static_cast<OcrProgressCallbackData*>(userData);
-    assert(data);
-    data->progressTracker.update(progress / 100.0f);
-
-    auto& link = data->ocr.link;
-
-    bool waitingForResults;
+struct ProgressHandler : dpso::ProgressTracker::ProgressHandler {
+    explicit ProgressHandler(DpsoOcr& ocr)
+        : ocr{ocr}
     {
-        LINK_LOCK(link);
-        waitingForResults = link.waitingForResults;
     }
 
-    if (waitingForResults && link.waitingProgressCallback)
-        link.waitingProgressCallback(
-            &data->ocr, link.waitingUserData);
+    void operator()(float progress) override
+    {
+        LINK_LOCK(ocr.link);
+        ocr.link.progress.curJobProgress = progress * 100;
+    }
 
-    LINK_LOCK(link);
-    return !link.terminateJobs;
-}
+    DpsoOcr& ocr;
+};
 
 
-static void progressTrackerFn(float progress, void* userData)
-{
-    auto* ocr = static_cast<DpsoOcr*>(userData);
-    assert(ocr);
-
-    LINK_LOCK(ocr->link);
-    ocr->link.progress.curJobProgress = progress * 100;
 }
 
 
@@ -455,7 +465,8 @@ static void processJob(DpsoOcr& ocr, const Job& job)
     assert(job.screenshot);
     assert(!job.langIndices.empty());
 
-    dpso::ProgressTracker progressTracker{2, progressTrackerFn, &ocr};
+    ProgressHandler progressHandler{ocr};
+    dpso::ProgressTracker progressTracker{2, progressHandler};
 
     progressTracker.advanceJob();
     const auto ocrImage = prepareScreenshot(
@@ -469,10 +480,12 @@ static void processJob(DpsoOcr& ocr, const Job& job)
 
     progressTracker.advanceJob();
 
-    OcrProgressCallbackData callbackData{ocr, progressTracker};
+    OcrProgressHandler ocrProgressHandler{ocr, progressTracker};
     auto ocrResult = ocr.engine->recognize(
-        ocrImage, job.langIndices, job.ocrFeatures,
-        ocrProgressCallback, &callbackData);
+        ocrImage,
+        job.langIndices,
+        job.ocrFeatures,
+        &ocrProgressHandler);
 
     progressTracker.finish();
 
