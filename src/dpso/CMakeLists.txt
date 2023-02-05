@@ -86,14 +86,11 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(dpso PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
 endif()
 
-find_package(PkgConfig REQUIRED)
-if(PKG_CONFIG_FOUND)
-    pkg_search_module(TESSERACT REQUIRED tesseract>=4.1.0)
-endif()
-
 # TODO: If Tesseract was installed via CMake, we can also try to use
 # find_package(Tesseract). For now, we only build on various Linux
 # distributions and MSYS2, all of which use pkg-config.
+find_package(PkgConfig REQUIRED)
+pkg_search_module(TESSERACT REQUIRED tesseract>=4.1.0)
 
 string(FIND "${TESSERACT_VERSION}" "." TMP_DOT_POS)
 string(
