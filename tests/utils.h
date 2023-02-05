@@ -8,9 +8,6 @@ namespace test {
 namespace utils {
 
 
-std::string boolToStr(bool b);
-
-
 // Escape non-printable characters with C-style sequences.
 std::string escapeStr(const char* str);
 
@@ -21,6 +18,10 @@ std::string escapeStr(const char* str);
 // format a range of values, but can also be used individually. You
 // can provide your own overloads of toStr() for custom types so that
 // the range-based toStr() accepts them.
+
+
+// Returns "true" or "false".
+std::string toStr(bool b);
 
 
 // toStr() overloads for C string and std::string format a string as a

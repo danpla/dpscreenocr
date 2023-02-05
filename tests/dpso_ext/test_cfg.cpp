@@ -89,9 +89,9 @@ static void testGetBool(
     test::failure(
         "dpsoGetBool(\"%s\", %s): expected %s, got %s\n",
         key,
-        test::utils::boolToStr(defaultVal).c_str(),
-        test::utils::boolToStr(expectedVal).c_str(),
-        test::utils::boolToStr(gotVal).c_str());
+        test::utils::toStr(defaultVal).c_str(),
+        test::utils::toStr(expectedVal).c_str(),
+        test::utils::toStr(gotVal).c_str());
 }
 
 
