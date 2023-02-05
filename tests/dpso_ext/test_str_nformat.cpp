@@ -7,26 +7,12 @@
 #include "dpso_utils/str.h"
 
 #include "flow.h"
+#include "utils.h"
 
 
-static std::string argsToStr(
-    std::initializer_list<DpsoStrNFormatArg> args)
+static std::string toStr(const DpsoStrNFormatArg& arg)
 {
-    std::string result = "{";
-
-    auto firstArg{true};
-    for (const auto& arg: args) {
-        if (!firstArg)
-            result += ", ";
-
-        result += dpso::str::printf("{%s: %s}", arg.name, arg.str);
-
-        firstArg = false;
-    }
-
-    result += '}';
-
-    return result;
+    return dpso::str::printf("{\"%s\": \"%s\"}", arg.name, arg.str);
 }
 
 
@@ -102,7 +88,8 @@ static void testStrNFormat()
             "dpsoStrNFormat(\"%s\", %s): "
             "expected \"%s\", got \"%s\"\n",
             test.str,
-            argsToStr(test.args).c_str(),
+            test::utils::toStr(
+                test.args.begin(), test.args.end()).c_str(),
             test.expected,
             got);
     }

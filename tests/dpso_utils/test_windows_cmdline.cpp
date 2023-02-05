@@ -38,24 +38,6 @@ static std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 }
 
 
-template<typename T>
-std::string rangeToString(T begin, T end)
-{
-    std::string result = "[";
-
-    for (auto iter = begin; iter != end; ++iter) {
-        if (iter != begin)
-            result += ", ";
-
-        result += '"' + test::utils::escapeStr(*iter) + '"';
-    }
-
-    result += ']';
-
-    return result;
-}
-
-
 static void testArgv(std::initializer_list<const char*> argv)
 {
     using namespace dpso::windows;
@@ -72,7 +54,8 @@ static void testArgv(std::initializer_list<const char*> argv)
             "Returned array:\n"
             "  %s\n",
             cmdLine.c_str(), gotArgv.size(), argv.size(),
-            rangeToString(gotArgv.begin(), gotArgv.end()).c_str());
+            test::utils::toStr(
+                gotArgv.begin(), gotArgv.end()).c_str());
         return;
     }
 
@@ -87,8 +70,9 @@ static void testArgv(std::initializer_list<const char*> argv)
             "  CommandLineTogotArgvW() from createCmdLine() string:\n"
             "    %s\n",
             cmdLine.c_str(),
-            rangeToString(argv.begin(), argv.end()).c_str(),
-            rangeToString(gotArgv.begin(), gotArgv.end()).c_str());
+            test::utils::toStr(argv.begin(), argv.end()).c_str(),
+            test::utils::toStr(
+                gotArgv.begin(), gotArgv.end()).c_str());
 }
 
 

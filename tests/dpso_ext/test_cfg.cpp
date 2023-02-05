@@ -35,15 +35,6 @@ struct BasicTypesTest {
 }
 
 
-static std::string formatPossiblyNullStr(const char* str)
-{
-    if (!str)
-        return "nullptr";
-
-    return '"' + test::utils::escapeStr(str) + '"';
-}
-
-
 static void testGetStr(
     const DpsoCfg* cfg,
     const char* key,
@@ -60,9 +51,9 @@ static void testGetStr(
     test::failure(
         "dpsoGetStr(\"%s\", %s): expected %s, got %s\n",
         key,
-        formatPossiblyNullStr(defaultVal).c_str(),
-        formatPossiblyNullStr(expectedVal).c_str(),
-        formatPossiblyNullStr(gotVal).c_str());
+        test::utils::toStr(defaultVal).c_str(),
+        test::utils::toStr(expectedVal).c_str(),
+        test::utils::toStr(gotVal).c_str());
 }
 
 

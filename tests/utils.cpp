@@ -65,6 +65,21 @@ std::string escapeStr(const char* str)
 }
 
 
+std::string toStr(const char* str)
+{
+    if (!str)
+        return "nullptr";
+
+    return '"' + escapeStr(str) + '"';
+}
+
+
+std::string toStr(const std::string& str)
+{
+    return toStr(str.c_str());
+}
+
+
 std::string lfToNativeNewline(const char* str)
 {
     const auto* nativeNewline =
