@@ -3,8 +3,6 @@
 
 #include <cstring>
 
-#include "windows/error.h"
-
 
 namespace dpso::windows {
 

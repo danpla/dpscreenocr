@@ -12,37 +12,32 @@ namespace dpso::backend {
 
 
 // The RegisterHotKey() documentation says that an application must
-// specify an id value in the range 0x0000 through 0xBFFF, and a
-// DLL must specify a value in the range 0xC000 through 0xFFFF (the
-// range returned by the GlobalAddAtom()). In other words, only a DLL
-// can use string atoms; a static lib must use integer ones.
+// specify an id value in the range 0x0000 through 0xBFFF, and a DLL
+// must specify a value in the range 0xC000 through 0xFFFF (the range
+// returned by the GlobalAddAtom()). In other words, only a DLL can
+// use string atoms; a static lib must use integer ones.
 //
 // Fortunately, string atom functions (GlobalAddAtom() and related)
 // can transparently work with integer atoms: if the atom name starts
-// with # followed by the decimal number, that number is returned as
+// with # followed by a decimal number, that number is returned as
 // atom. The only thing too keep in mind that an integer atom has the
 // range 0x0001 - 0xBFFF; 0x0000 is not a valid value.
 //
-// It thus possible to make our life simpler if we ever need to use
-// this library as a DLL:
+// It thus possible to avoid two separate code paths for a static
+// library and a DLL:
 //
 // 1. First, we make an integer atom by packing a hotkey to the first
-//    15 bits of an integer:
+//    15 bits of an integer: 4 bits for modifiers, 10 bits for the
+//    key, and 1 sentinel bit to avoid 0x0000, which is not a valid
+//    value for an integer atom. Excluding the sentinel bit, 14 bits
+//    give us up to 16384 key bindings, which is exactly the number of
+//    possible string atoms (range 0xC000 - 0xFFFF).
 //
-//       * 4 bits for modifiers.
-//       * 10 bits for the key. Actually, 9 is more than enough.
-//       * 1 bit for the sentinel to avoid 0x0000, which is not a
-//         valid value for an integer atom.
-//
-//    Excluding the sentinel bit, 14 bits give us up to 16384 key
-//    bindings, which is exactly the number of possible string atoms
-//    (range 0xC000 - 0xFFFF).
-//
-// 2. Then we convert the integer atom to a string with a prefix to be
-//    used as an atom name. For a static lib, the prefix is #, so
-//    string atom functions will return the original integer. For a
-//    dynamic lib, the prefix can be any string (even empty one),
-//    making string atom functions to return a string atom.
+// 2. Then we create an atom name by converting the integer atom to a
+//    string and adding a prefix. For a static lib, the prefix is #,
+//    so string atom functions will return the original integer. For a
+//    DLL, the prefix can be any string (even empty one), making
+//    string atom functions to return a string atom.
 
 
 static constexpr unsigned createMask(unsigned numBits)
@@ -77,10 +72,8 @@ const auto atomNamePrefixLen = std::size(atomNamePrefix) - 1;
 
 static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
 {
-    const ATOM atom =
-        sentinelBit | (hotkey.key << modsBits) | hotkey.mods;
-
-    return atomNamePrefix + std::to_wstring(atom);
+    return atomNamePrefix + std::to_wstring(
+        sentinelBit | (hotkey.key << modsBits) | hotkey.mods);
 }
 
 
@@ -112,7 +105,7 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
     if (!enabled) {
         if (atom == 0)
             // The hotkey was not registered because GlobalAddAtom()
-            // failed. See below.
+            // below failed.
             return;
 
         UnregisterHotKey(nullptr, atom);
@@ -121,7 +114,7 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
     }
 
     const auto winKey = dpsoKeyToWinKey(hotkey.key);
-    assert(winKey != 0);  // We have checked this in bindHotkey().
+    assert(winKey != 0);  // We already checked this in bindHotkey().
     const auto winMods = dpsoModsToWinMods(hotkey.mods);
 
     if (atom == 0)
@@ -237,6 +230,9 @@ void WindowsKeyManager::handleWmHotkey(const MSG& msg)
     if (id < 0)
         // System-defined hotkey.
         return;
+
+    // Note that instead of using atomNameToHotkey() we could also
+    // extract the hotkey from lParam of the WM_HOTKEY message.
 
     // GlobalAddAtom() docs say that the maximum atom name length is
     // 255 bytes (not characters), but GlobalGetAtomName() expects

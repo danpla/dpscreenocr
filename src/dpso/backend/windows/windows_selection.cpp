@@ -402,7 +402,6 @@ void WindowsSelection::updateWindowGeometry()
 }
 
 
-
 void WindowsSelection::updateWindowRegion()
 {
     windows::ObjectUPtr<HRGN> region{CreateRectRgn(
