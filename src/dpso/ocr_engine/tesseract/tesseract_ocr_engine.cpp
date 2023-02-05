@@ -40,9 +40,9 @@ public:
     OcrFeatures getFeatures() const override;
 
     int getNumLangs() const override;
-    const char* getLangCode(int langIdx) const override;
-    const char* getDefaultLangCode() const override;
-    const char* getLangName(const char* langCode) const override;
+    std::string getLangCode(int langIdx) const override;
+    std::string getDefaultLangCode() const override;
+    std::string getLangName(int langIdx) const override;
 
     OcrResult recognize(
         const OcrImage& image,
@@ -83,21 +83,23 @@ int TesseractOcr::getNumLangs() const
 }
 
 
-const char* TesseractOcr::getLangCode(int langIdx) const
+std::string TesseractOcr::getLangCode(int langIdx) const
 {
-    return langCodes[langIdx].c_str();
+    return langCodes[langIdx];
 }
 
 
-const char* TesseractOcr::getDefaultLangCode() const
+std::string TesseractOcr::getDefaultLangCode() const
 {
     return "eng";
 }
 
 
-const char* TesseractOcr::getLangName(const char* langCode) const
+std::string TesseractOcr::getLangName(int langIdx) const
 {
-    return getTesseractLangName(langCode);
+    const auto* name = getTesseractLangName(
+        langCodes[langIdx].c_str());
+    return name ? name : "";
 }
 
 

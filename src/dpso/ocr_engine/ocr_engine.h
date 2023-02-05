@@ -106,13 +106,8 @@ public:
      * A language code is a string that uniquely identify a language,
      * like an ISO 639 code. It may contain ASCII alphanumeric
      * characters, hyphens, and underscores.
-     *
-     * The returned pointer should remain valid for the lifetime of
-     * the engine.
-     *
-     * The codes are not required to be sorted.
      */
-    virtual const char* getLangCode(int langIdx) const = 0;
+    virtual std::string getLangCode(int langIdx) const = 0;
 
     /**
      * Get default language code.
@@ -129,20 +124,16 @@ public:
      * empty string if the OCR engine has no meaningful default
      * language.
      */
-    virtual const char* getDefaultLangCode() const = 0;
+    virtual std::string getDefaultLangCode() const = 0;
 
     /**
      * Get language name.
      *
-     * Returns the language name for the given code, or null if the
-     * code is not known. The method should not depend on whether the
-     * corresponding language pack is currently available. If
-     * possible, the name should be in English.
-     *
-     * The returned pointer should remain valid for the lifetime of
-     * the engine.
+     * Returns the language name, or an empty string if the language
+     * has no associated name. If possible, the name should be in
+     * English.
      */
-    virtual const char* getLangName(const char* langCode) const = 0;
+    virtual std::string getLangName(int langIdx) const = 0;
 
     virtual OcrResult recognize(
         const OcrImage& image,

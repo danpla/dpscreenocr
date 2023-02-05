@@ -137,7 +137,7 @@ void LangBrowser::loadState(const DpsoCfg* cfg)
                 ? Qt::Checked : Qt::Unchecked);
 
         const auto* langCode = dpsoOcrGetLangCode(ocr, i);
-        const auto* langName = dpsoOcrGetLangName(ocr, langCode);
+        const auto* langName = dpsoOcrGetLangName(ocr, i);
         item->setText(
             columnIdxName,
             langName ? gettext(langName) : langCode);

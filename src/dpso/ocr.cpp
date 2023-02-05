@@ -30,21 +30,33 @@
 #include "ocr_engine/ocr_engine.h"
 
 
+// A note on concurrency
+//
+// Since we don't require any thread safety guarantees from OcrEngine,
+// we never use it from multiple threads. Only OcrEngine::recognize()
+// is called after DpsoOcr is created; everything else is cached. An
+// alternative would be to protect OcrEngine access with a mutex, but
+// it's impractical for functions like dpsoOcrGetLangCode() to block
+// during OCR since it takes significant time.
+
+
 static dpso::backend::Backend* backend;
 
 
-const auto threadIdleTime = std::chrono::milliseconds(10);
+const std::chrono::milliseconds threadIdleTime{10};
 
 
 namespace {
 
 
-// The public API gives a sorted list of language codes, while in
-// OcrEngine they may be in arbitrary order. A Lang at the language
-// index from public API refers to the state of the engine's language
-// at Lang::langIdx.
 struct Lang {
-    int langIdx;
+    std::string code;
+    std::string name;
+    // The public API gives languages sorted by codes, while in
+    // OcrEngine they may be in arbitrary order. A Lang at the index
+    // from the public API refers to the OcrEngine language at
+    // Lang::idx.
+    int idx;
     bool isActive;
 };
 
@@ -138,6 +150,7 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
 struct DpsoOcr {
     std::unique_ptr<dpso::ocr::OcrEngine> engine;
 
+    std::string defaultLangCode;
     std::vector<Lang> langs;
     int numActiveLangs;
 
@@ -158,15 +171,19 @@ static void cacheLangs(DpsoOcr& ocr)
     ocr.langs.reserve(ocr.engine->getNumLangs());
 
     for (int i = 0; i < ocr.engine->getNumLangs(); ++i)
-        ocr.langs.push_back({i, false});
+        ocr.langs.push_back(
+            {
+                ocr.engine->getLangCode(i),
+                ocr.engine->getLangName(i),
+                i,
+                false
+            });
 
     std::sort(
         ocr.langs.begin(), ocr.langs.end(),
         [&](const Lang& a, const Lang& b)
         {
-            return std::strcmp(
-                ocr.engine->getLangCode(a.langIdx),
-                ocr.engine->getLangCode(b.langIdx)) < 0;
+            return a.code < b.code;
         });
 }
 
@@ -202,6 +219,7 @@ DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs)
         return nullptr;
     }
 
+    ocr->defaultLangCode = ocr->engine->getDefaultLangCode();
     cacheLangs(*ocr);
 
     ocr->thread = std::thread(threadLoop, ocr.get());
@@ -247,20 +265,25 @@ const char* dpsoOcrGetLangCode(const DpsoOcr* ocr, int langIdx)
             || static_cast<std::size_t>(langIdx) >= ocr->langs.size())
         return "";
 
-    return ocr->engine->getLangCode(ocr->langs[langIdx].langIdx);
+    return ocr->langs[langIdx].code.c_str();
 }
 
 
 const char* dpsoOcrGetDefaultLangCode(const DpsoOcr* ocr)
 {
-    return ocr ? ocr->engine->getDefaultLangCode() : "";
+    return ocr ? ocr->defaultLangCode.c_str() : "";
 }
 
 
-const char* dpsoOcrGetLangName(
-    const DpsoOcr* ocr, const char* langCode)
+const char* dpsoOcrGetLangName(const DpsoOcr* ocr, int langIdx)
 {
-    return ocr ? ocr->engine->getLangName(langCode) : nullptr;
+    if (!ocr
+            || langIdx < 0
+            || static_cast<std::size_t>(langIdx) >= ocr->langs.size()
+            || ocr->langs[langIdx].name.empty())
+        return nullptr;
+
+    return ocr->langs[langIdx].name.c_str();
 }
 
 
@@ -273,14 +296,10 @@ int dpsoOcrGetLangIdx(const DpsoOcr* ocr, const char* langCode)
         ocr->langs.begin(), ocr->langs.end(), langCode,
         [&](const Lang& lang, const char* langCode)
         {
-            return std::strcmp(
-                ocr->engine->getLangCode(lang.langIdx), langCode) < 0;
+            return lang.code < langCode;
         });
 
-    if (iter != ocr->langs.end()
-            && std::strcmp(
-                ocr->engine->getLangCode(iter->langIdx),
-                langCode) == 0)
+    if (iter != ocr->langs.end() && iter->code == langCode)
         return iter - ocr->langs.begin();
 
     return -1;
@@ -328,7 +347,7 @@ static std::vector<int> getActiveLangIndices(const DpsoOcr& ocr)
 
     for (const auto& lang : ocr.langs)
         if (lang.isActive)
-            result.push_back(lang.langIdx);
+            result.push_back(lang.idx);
 
     return result;
 }
