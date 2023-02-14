@@ -133,7 +133,7 @@ const std::initializer_list<BasicTypesTest> boolTests{
 };
 
 
-const std::string makeCfgKeyForChar(char c)
+static const std::string makeCfgKeyForChar(char c)
 {
     return dpso::str::printf("str_char_%02hhx", c);
 }

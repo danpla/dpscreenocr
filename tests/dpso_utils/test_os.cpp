@@ -70,7 +70,7 @@ const auto* const testUnicodeFileName =
     "\346\261\211\350\257\255.txt";
 
 
-void testFopen()
+static void testFopen()
 {
     dpso::StdFileUPtr fp{dpsoFopen(testUnicodeFileName, "wb")};
     if (!fp)
@@ -83,7 +83,7 @@ void testFopen()
 }
 
 
-void testRemove()
+static void testRemove()
 {
     {
         dpso::StdFileUPtr fp{dpsoFopen(testUnicodeFileName, "wb")};
@@ -102,7 +102,7 @@ void testRemove()
 }
 
 
-void testSyncFile()
+static void testSyncFile()
 {
     const auto* fileName = "test_sync_file.txt";
 

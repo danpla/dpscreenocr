@@ -102,8 +102,7 @@ static void testIO(bool append)
                 dpsoRemove(historyFileName);
 
                 test::fatalError(
-                    "testIO(%sappend): dpsoHistoryAppend(): %s\n",
-                    append ? "" : "!",
+                    "testIO(true): dpsoHistoryAppend(): %s\n",
                     dpsoGetError());
             }
 
@@ -123,7 +122,7 @@ static void testIO(bool append)
 }
 
 
-void testInvalidData()
+static void testInvalidData()
 {
     const struct Test {
         const char* description;
