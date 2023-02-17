@@ -99,37 +99,37 @@ const auto* const nonexistentKey = "nonexistent_key";
 
 
 const std::initializer_list<BasicTypesTest> strTests{
-    {"str_empty", "", "a", 5, 5, true, true},
-    {"str_leading_space", " a", "", 5, 5, true, true},
-    {"str_trailing_space", "a ", "", 5, 5, true, true},
-    {"str_single_space", " ", "", 5, 5, true, true},
-    {"str_control_chars", "\b\f\n\r\t", "", 5, 5, true, true},
-    {"str_escapes", R"(\b\f\n\r\t\\ \z)", "", 5, 5, true, true},
-    {"str_normal", "foo", "", 5, 5, true, true},
-    {"str_int_0", "0", "", 0, 1, false, true},
-    {"str_int_5", "5", "", 5, 0, true, false},
-    {"str_int_minus_5", "-5", "", -5, 0, true, false},
-    {"str_int_leading_space", " 5", "", 5, 0, true, false},
-    {"str_int_trailing_space", "5 ", "", 5, 0, true, false},
-    {"str_int_trailing_char", "5a", "", 0, 0, true, true},
-    {"str_int_trailing_space_and_char", "5 a", "", 0, 0, true, true},
+    {"str_empty", "", "a", 5, 5, false, false},
+    {"str_leading_space", " a", "", 5, 5, false, false},
+    {"str_trailing_space", "a ", "", 5, 5, false, false},
+    {"str_single_space", " ", "", 5, 5, false, false},
+    {"str_control_chars", "\b\f\n\r\t", "", 5, 5, false, false},
+    {"str_escapes", R"(\b\f\n\r\t\\ \z)", "", 5, 5, false, false},
+    {"str_normal", "foo", "", 5, 5, false, false},
+    {"str_int_0", "0", "", 0, 1, true, true},
+    {"str_int_5", "5", "", 5, 0, false, false},
+    {"str_int_minus_5", "-5", "", -5, 0, false, false},
+    {"str_int_leading_space", " 5", "", 5, 0, false, false},
+    {"str_int_trailing_space", "5 ", "", 5, 0, false, false},
+    {"str_int_leading_char", "a5", "", 0, 0, false, false},
+    {"str_int_trailing_char", "5a", "", 0, 0, false, false},
     {"str_float_period", "5.5", "", 0, 0, true, true},
     {"str_float_comma", "5,5", "", 0, 0, true, true},
-    {"str_bool_true", "FaLsE", "", 0, 1, false, true},
-    {"str_bool_false", "TrUe", "", 1, 0, true, false},
+    {"str_bool_true", "TrUe", "", 5, 5, true, false},
+    {"str_bool_false", "FaLsE", "", 5, 5, false, true},
 };
 
 
 const std::initializer_list<BasicTypesTest> intTests{
-    {"int_0", "0", "", 0, 5, false, true},
-    {"int_5", "5", "", 5, 0, true, false},
-    {"int_minus_5", "-5", "", -5, 0, true, false},
+    {"int_0", "0", "", 0, 5, true, true},
+    {"int_5", "5", "", 5, 0, false, false},
+    {"int_minus_5", "-5", "", -5, 0, false, false},
 };
 
 
 const std::initializer_list<BasicTypesTest> boolTests{
-    {"bool_true", "true", "", 1, 0, true, false},
-    {"bool_false", "false", "", 0, 1, false, true},
+    {"bool_true", "true", "", 5, 5, true, false},
+    {"bool_false", "false", "", 5, 5, false, true},
 };
 
 
@@ -406,7 +406,7 @@ static void testBoolValueParsing(DpsoCfg* cfg)
         loadCfgData(
             cfg,
             (std::string{test.key} + " " + test.valInFile).c_str());
-        testGetInt(cfg, test.key, test.expectedVal, test.defaultVal);
+        testGetBool(cfg, test.key, test.expectedVal, test.defaultVal);
     }
 }
 

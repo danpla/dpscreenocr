@@ -102,10 +102,8 @@ void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val);
 /**
  * Get integer.
  *
- * The function returns the value of the config field key as int. If
- * the string represents is a valid integer, it's value is returned.
- * If the string is "true" or "false" (ignoring case), 1 or 0 is
- * returned respectively. Otherwise, defaultVal is returned.
+ * The function returns the value of the key parsed as int. If the
+ * value does not represent a decimal number, defaultVal is returned.
  */
 int dpsoCfgGetInt(
     const DpsoCfg* cfg, const char* key, int defaultVal);
@@ -115,9 +113,9 @@ void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val);
 /**
  * Get boolean.
  *
- * The function effectively returns dpsoCfgGetInt() != 0.
- *
- * \sa dpsoCfgGetInt()
+ * The function returns bool depending on whether the value of the key
+ * is "true" or "false", ignoring case. For other values, defaultVal
+ * is returned.
  */
 bool dpsoCfgGetBool(
     const DpsoCfg* cfg, const char* key, bool defaultVal);

@@ -303,12 +303,6 @@ void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
 }
 
 
-static const char* boolToStr(bool b)
-{
-    return b ? "true" : "false";
-}
-
-
 int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
 {
     const auto* str = dpsoCfgGetStr(cfg, key, nullptr);
@@ -317,24 +311,16 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
 
     char* end;
     const auto result = std::strtol(str, &end, 10);
-    if (end != str) {
-        // Don't treat string as an integer if it has any trailing
-        // non-digit characters except whitespace.
-        for (; *end; ++end)
-            if (!std::isspace(*end))
-                return defaultVal;
+    if (end == str)
+        return defaultVal;
 
-        return std::clamp<long>(result, INT_MIN, INT_MAX);
-    }
+    // Don't treat string as an integer if it has any trailing
+    // non-digit characters except whitespace.
+    for (; *end; ++end)
+        if (!std::isspace(*end))
+            return defaultVal;
 
-    for (int i = 0; i < 2; ++i)
-        if (dpso::str::cmp(
-                str,
-                boolToStr(i),
-                dpso::str::cmpIgnoreCase) == 0)
-            return i;
-
-    return defaultVal;
+    return std::clamp<long>(result, INT_MIN, INT_MAX);
 }
 
 
@@ -344,10 +330,27 @@ void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val)
 }
 
 
+static const char* boolToStr(bool b)
+{
+    return b ? "true" : "false";
+}
+
+
 bool dpsoCfgGetBool(
     const DpsoCfg* cfg, const char* key, bool defaultVal)
 {
-    return dpsoCfgGetInt(cfg, key, defaultVal) != 0;
+    const auto* str = dpsoCfgGetStr(cfg, key, nullptr);
+    if (!str)
+        return defaultVal;
+
+    for (int i = 0; i < 2; ++i)
+        if (dpso::str::cmp(
+                str,
+                boolToStr(i),
+                dpso::str::cmpIgnoreCase) == 0)
+            return i;
+
+    return defaultVal;
 }
 
 
