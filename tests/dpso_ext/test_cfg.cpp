@@ -349,7 +349,6 @@ static void testStrValueParsing(DpsoCfg* cfg)
         {"a_space_backslash", "a \\", "a "},
         {"backslash_space_a_space_backslash", "\\ a \\", " a "},
         {"backslash_space_tab_space_backslash", "\\ \t \\", " \t "},
-
     };
 
     for (const auto& test : tests) {
@@ -428,6 +427,7 @@ static void testKeyValidity(DpsoCfg* cfg)
         {"\f", true},
         {"\v", true},
         {"\x01", true},
+        {"\xff", true},
     };
 
     for (const auto& test : tests) {
@@ -453,6 +453,61 @@ static void testKeyCaseInsensitivity(DpsoCfg* cfg)
 }
 
 
+static void testSavedValueFormat()
+{
+    static const auto* key = "key";
+
+    const struct Test {
+        const char* val;
+        std::string expectedData;
+        Test(const char* val, const char* expectedValData)
+            : val{val}
+            , expectedData{
+                "key "
+                + test::utils::lfToNativeNewline(expectedValData)
+                + '\n'}
+        {
+        }
+    } tests[] = {
+        {"", ""},
+        {" ", "\\ \\"},
+        {" a", "\\ a"},
+        {"a ", "a \\"},
+        {" a ", "\\ a \\"},
+        {"\n\r\t\\", "\\n\\r\\t\\\\"},
+        {"\b\f\v\x01\xff", "\b\f\v\x01\xff"},
+    };
+
+    dpso::CfgUPtr cfg{dpsoCfgCreate()};
+    if (!cfg)
+        test::fatalError(
+            "testSavedValueFormat(): dpsoCfgCreate(): %s\n",
+            dpsoGetError());
+
+    for (const auto& test : tests) {
+        dpsoCfgSetStr(cfg.get(), key, test.val);
+        if (!dpsoCfgSave(cfg.get(), cfgFileName))
+            test::fatalError(
+                "testSavedValueFormat(): dpsoCfgSave(cfg, \"%s\"): "
+                "%s\n",
+                cfgFileName,
+                dpsoGetError());
+
+        const auto gotData = test::utils::loadText(
+                "testSavedValueFormat()", cfgFileName);
+        if (gotData == test.expectedData)
+            continue;
+
+        test::failure(
+            "testSavedValueFormat(): Unexpected value format\n");
+        test::utils::printFirstDifference(
+            test.expectedData.c_str(), gotData.c_str());
+    }
+
+    dpsoRemove(cfgFileName);
+}
+
+
 static void testCfg()
 {
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
@@ -474,6 +529,8 @@ static void testCfg()
 
     testKeyValidity(cfg.get());
     testKeyCaseInsensitivity(cfg.get());
+
+    testSavedValueFormat();
 }
 
 
