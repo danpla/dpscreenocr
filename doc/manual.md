@@ -293,7 +293,7 @@ Values can contain the following escape sequences:
 
 Any other character preceded by `\` is kept as is. To preserve leading
 spaces, escape the first one with `\`; to preserve trailing spaces,
-either escape the last one or put `\` after it at the end of the line.
+put `\` at the end of the line.
 
 To reset an option to the default value, remove it from settings.cfg;
 to reset all options, clear or delete the file. Be aware that
@@ -321,7 +321,7 @@ settings file:
     have no effect until the recognition is done.
 
     If this option is enabled, the "Copy text to clipboard" action can
-    get several recognized text at once, in which case they will be
+    get several recognized texts at once, in which case they will be
     joined using `action_copy_to_clipboard_text_separator` as a
     separator.
 
