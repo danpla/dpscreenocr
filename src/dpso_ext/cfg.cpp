@@ -59,7 +59,7 @@ static auto keyValuesLowerBound(T& keyValues, const char* key)
 // Note that we use isblank() rather than isspace() because we only
 // care about spaces and tabs. With isspace(), we would also need to
 // handle \f and \v especially, either by adding the corresponding
-// escape sequences, or by wrapping a value in double quotes when it
+// escape sequences, or by wrapping a value in slashes when it
 // begins or ends with such a character.
 static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 {
