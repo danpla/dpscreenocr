@@ -65,6 +65,8 @@ static void testHotkeyFromString()
         {"Ctrl + Ctrl + A", dpsoEmptyHotkey},
         {"Keypad +", {dpsoKeyKpPlus, dpsoNoKeyMods}},
         {"Keypad  +", dpsoEmptyHotkey},
+        {"Keypad\n+", dpsoEmptyHotkey},
+        {"Keypad\t+", dpsoEmptyHotkey},
 
         {"Ctrl + Alt + Shift + Windows + A", {dpsoKeyA, allMods}},
         {"Alt + Shift + Ctrl + Windows + A", {dpsoKeyA, allMods}},
@@ -74,6 +76,11 @@ static void testHotkeyFromString()
             {dpsoKeyA, allMods}
         },
         {"Ctrl+Alt+Shift+Windows+Keypad +", {dpsoKeyKpPlus, allMods}},
+
+        {"\t Ctrl\t +\t A\t ", {dpsoKeyA, dpsoKeyModCtrl}},
+        {"\nA", dpsoEmptyHotkey},
+        {"A\n", dpsoEmptyHotkey},
+        {"Ctrl\n+\nA", dpsoEmptyHotkey},
 
         {"Windows", {dpsoNoKey, dpsoKeyModWin}},
         {"Command", {dpsoNoKey, dpsoKeyModWin}},

@@ -196,15 +196,15 @@ const char* dpsoHotkeyToString(const DpsoHotkey* hotkey);
  *
  * dpsoHotkeyFromString() accepts strings in the format created by
  * dpsoHotkeyToString(). The function ignores letter case, ignores
- * whitespace (leading, trailing, or around "+" separator), allows
- * any order of modifiers, and accepts all known platform-specific
- * modifier names regardless of the current platform. The only
- * requirement is that a key name (if any) should always be after the
- * modifiers.
+ * spaces and tabs (leading, trailing, or around "+" separator),
+ * allows any order of modifiers, and accepts all known
+ * platform-specific modifier names regardless of the current
+ * platform. The only requirement is that a key name (if any) should
+ * always be after the modifiers.
  *
- * Keep in mind that whitespace within key names is not ignored. For
- * example "Page Up" is a valid key name, but "PageUp" or "Page   Up"
- * is not.
+ * Keep in mind that multi-word key names use a single space as a word
+ * separator. For example "Page Up" is a valid key name, but "PageUp"
+ * or "Page   Up" is not.
  */
 void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey);
 

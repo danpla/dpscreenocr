@@ -310,13 +310,13 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
     // should clear modifiers in case of an empty name after the last
     // +, e.g. "Ctrl +".
     for (const auto* s = str; true;) {
-        while (std::isspace(*s))
+        while (std::isblank(*s))
             ++s;
 
         const auto* nameBegin = s;
         const auto* nameEnd = s;
         for (; *s && *s != '+'; ++s)
-            if (!std::isspace(*s))
+            if (!std::isblank(*s))
                 nameEnd = s + 1;
 
         const auto mod = modFromString(
@@ -336,7 +336,7 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
         // The current substring is either an invalid or duplicate
         // modifier, so consume the rest and assume it's a key.
         for (; *s; ++s)
-            if (!std::isspace(*s))
+            if (!std::isblank(*s))
                 nameEnd = s + 1;
 
         hotkey->key = keyFromString(nameBegin, nameEnd - nameBegin);
