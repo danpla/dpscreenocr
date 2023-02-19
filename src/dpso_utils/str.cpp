@@ -1,7 +1,6 @@
 
 #include "str.h"
 
-#include <cctype>
 #include <cstdio>
 #include <cstring>
 
@@ -21,6 +20,15 @@ bool isSpace(unsigned char c)
 }
 
 
+static unsigned char toLower(unsigned char c)
+{
+    if (c < 'A' || c > 'Z')
+        return c;
+
+    return c + ('a' - 'A');
+}
+
+
 int cmpSubStr(
     const char* str,
     const char* subStr, std::size_t subStrLen,
@@ -31,8 +39,8 @@ int cmpSubStr(
         unsigned char c2 = subStr[i];
 
         if (options & cmpIgnoreCase) {
-            c1 = std::tolower(c1);
-            c2 = std::tolower(c2);
+            c1 = toLower(c1);
+            c2 = toLower(c2);
         }
 
         const auto diff = c1 - c2;
