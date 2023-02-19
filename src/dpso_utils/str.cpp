@@ -3,9 +3,22 @@
 
 #include <cctype>
 #include <cstdio>
+#include <cstring>
 
 
 namespace dpso::str {
+
+
+bool isBlank(unsigned char c)
+{
+    return c == '\t' || c == ' ';
+}
+
+
+bool isSpace(unsigned char c)
+{
+    return c && std::strchr(" \f\n\r\t\v", c);
+}
 
 
 int cmpSubStr(

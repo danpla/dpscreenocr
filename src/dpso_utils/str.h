@@ -11,6 +11,18 @@
 namespace dpso::str {
 
 
+// is*() functions are replacements for routines from ctype.h. Unlike
+// the ctype counterparts, they are locale-independent and prevent you
+// from getting undefined behavior by forgetting to add a cast from
+// char to unsigned char (the behavior of ctype routines is undefined
+// if the passed value is neither equal to EOF nor presentable as
+// unsigned char).
+
+
+bool isBlank(unsigned char c);
+bool isSpace(unsigned char c);
+
+
 enum CmpOption {
     cmpNormal = 0,
     cmpIgnoreCase = 1 << 0,

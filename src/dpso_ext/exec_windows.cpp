@@ -1,7 +1,6 @@
 
 #include "exec.h"
 
-#include <cctype>
 #include <initializer_list>
 
 #define WIN32_LEAN_AND_MEAN
@@ -101,7 +100,7 @@ static bool canExecute(const char* exePath)
 {
     // Don't execute an empty string since ShellExecute() opens the
     // current working directory in Explorer in this case.
-    while (std::isspace(*exePath))
+    while (dpso::str::isSpace(*exePath))
         ++exePath;
     if (!*exePath)
         return false;
@@ -115,7 +114,7 @@ static bool canExecute(const char* exePath)
     // stripped by ShellExecute().
     const auto* extEnd = ext;
     for (const auto* s = ext; *s; ++s)
-        if (!std::isspace(*s))
+        if (!dpso::str::isSpace(*s))
             extEnd = s + 1;
 
     for (const auto* batchExt : {".bat", ".cmd"})

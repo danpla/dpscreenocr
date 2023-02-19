@@ -2,7 +2,6 @@
 #include "cfg.h"
 
 #include <algorithm>
-#include <cctype>
 #include <cerrno>
 #include <climits>
 #include <cstdio>
@@ -56,25 +55,20 @@ static auto keyValuesLowerBound(T& keyValues, const char* key)
 }
 
 
-// Note that we use isblank() rather than isspace() because we only
-// care about spaces and tabs. With isspace(), we would also need to
-// handle \f and \v especially, either by adding the corresponding
-// escape sequences, or by wrapping a value in slashes when it
-// begins or ends with such a character.
 static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 {
     const auto* keyBegin = str;
-    while (std::isblank(*keyBegin))
+    while (dpso::str::isBlank(*keyBegin))
         ++keyBegin;
 
     const auto* keyEnd = keyBegin;
-    while (*keyEnd && !std::isblank(*keyEnd))
+    while (*keyEnd && !dpso::str::isBlank(*keyEnd))
         ++keyEnd;
 
     kv.key.assign(keyBegin, keyEnd - keyBegin);
 
     const auto* valueBegin = keyEnd;
-    while (std::isblank(*valueBegin))
+    while (dpso::str::isBlank(*valueBegin))
         ++valueBegin;
 
     kv.value.clear();
@@ -86,7 +80,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
     const auto* blanksEnd = blanksBegin;
 
     for (const auto* s = valueBegin; *s;) {
-        if (std::isblank(*s)) {
+        if (dpso::str::isBlank(*s)) {
             if (s != blanksEnd)
                 blanksBegin = s;
 
@@ -309,6 +303,11 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
     if (!str)
         return defaultVal;
 
+    // Skip whitespace manually since strtol() uses locale-dependent
+    // isspace() under the hood.
+    while (dpso::str::isSpace(*str))
+        ++str;
+
     char* end;
     const auto result = std::strtol(str, &end, 10);
     if (end == str)
@@ -317,7 +316,7 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
     // Don't treat string as an integer if it has any trailing
     // non-digit characters except whitespace.
     for (; *end; ++end)
-        if (!std::isspace(*end))
+        if (!dpso::str::isSpace(*end))
             return defaultVal;
 
     return std::clamp<long>(result, INT_MIN, INT_MAX);

@@ -43,7 +43,7 @@ std::string escapeStr(const char* str)
             result += "\\\\";
             break;
         default: {
-            if (std::isprint(c))
+            if (std::isprint(static_cast<unsigned char>(c)))
                 result += c;
             else {
                 char buf[5];

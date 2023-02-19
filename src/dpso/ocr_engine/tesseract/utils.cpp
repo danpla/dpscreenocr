@@ -2,8 +2,9 @@
 #include "ocr_engine/tesseract/utils.h"
 
 #include <cassert>
-#include <cctype>
 #include <cstring>
+
+#include "dpso_utils/str.h"
 
 
 namespace dpso::ocr {
@@ -45,7 +46,7 @@ std::size_t prettifyTesseractText(char* text)
     const auto* src = text;
     auto* dst = text;
 
-    while (std::isspace(*src))
+    while (dpso::str::isSpace(*src))
         ++src;
 
     while (*src) {
@@ -69,7 +70,7 @@ std::size_t prettifyTesseractText(char* text)
             *dst++ = *src++;
     }
 
-    while (dst > text && std::isspace(dst[-1]))
+    while (dst > text && dpso::str::isSpace(dst[-1]))
         --dst;
 
     *dst = 0;

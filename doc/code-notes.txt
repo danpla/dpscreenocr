@@ -45,7 +45,7 @@
 
       "\xC2\xA9" "2018" (gives ©2018)
 
-* In genral, define arrays without an explicit size. When the number
+* In general, define arrays without an explicit size. When the number
   of elements in the array must match some constant, it should be
   enforced with a static_assert() following the array definition.
 
@@ -55,6 +55,15 @@
   type, and compilers don't even warn about this. This is especially
   dangerous when the size comes from a constant that may one day
   become N times larger.
+
+* Don't use routines from <ctype.h>.
+
+  The behavior of <ctype.h> routines is undefined if the argument is
+  neither equal to EOF nor presentable as unsigned char. Although you
+  can cast "char" to "unsigned char" as a workaround, it's easy to
+  forget to do so.
+
+  Another reason is that <ctype.h> routines are locale-dependent.
 
 * Use underscores instead of hyphens in CMake target names.
 
