@@ -33,9 +33,9 @@ namespace dpso::ocr {
 namespace {
 
 
-class TesseractOcr : public OcrEngine {
+class TesseractOcrEngine : public OcrEngine {
 public:
-    explicit TesseractOcr(const OcrEngineArgs& args);
+    explicit TesseractOcrEngine(const OcrEngineArgs& args);
 
     OcrFeatures getFeatures() const override;
 
@@ -62,7 +62,7 @@ private:
 }
 
 
-TesseractOcr::TesseractOcr(const OcrEngineArgs& args)
+TesseractOcrEngine::TesseractOcrEngine(const OcrEngineArgs& args)
     : dataDir{args.dataDir}
     , tess{}
     , langCodes{}
@@ -71,31 +71,31 @@ TesseractOcr::TesseractOcr(const OcrEngineArgs& args)
 }
 
 
-OcrFeatures TesseractOcr::getFeatures() const
+OcrFeatures TesseractOcrEngine::getFeatures() const
 {
     return ocrFeatureTextSegmentation;
 }
 
 
-int TesseractOcr::getNumLangs() const
+int TesseractOcrEngine::getNumLangs() const
 {
     return langCodes.size();
 }
 
 
-std::string TesseractOcr::getLangCode(int langIdx) const
+std::string TesseractOcrEngine::getLangCode(int langIdx) const
 {
     return langCodes[langIdx];
 }
 
 
-std::string TesseractOcr::getDefaultLangCode() const
+std::string TesseractOcrEngine::getDefaultLangCode() const
 {
     return "eng";
 }
 
 
-std::string TesseractOcr::getLangName(int langIdx) const
+std::string TesseractOcrEngine::getLangName(int langIdx) const
 {
     const auto* name = getTesseractLangName(
         langCodes[langIdx].c_str());
@@ -153,7 +153,7 @@ static bool isVertical(const char* langCode)
 }
 
 
-OcrResult TesseractOcr::recognize(
+OcrResult TesseractOcrEngine::recognize(
     const OcrImage& image,
     const std::vector<int>& langIndices,
     OcrFeatures ocrFeatures,
@@ -222,7 +222,7 @@ OcrResult TesseractOcr::recognize(
 }
 
 
-bool TesseractOcr::initTess(const char* langs)
+bool TesseractOcrEngine::initTess(const char* langs)
 {
     return tess.Init(
         dataDir.empty() ? nullptr : dataDir.c_str(), langs) == 0;
@@ -239,7 +239,7 @@ static bool shouldIgnoreLang(const char* lang)
 }
 
 
-void TesseractOcr::cacheLangs()
+void TesseractOcrEngine::cacheLangs()
 {
     // GetAvailableLanguagesAsVector() is broken by design: it uses
     // a data path from the last Init(), while Init() itself requires
@@ -295,7 +295,7 @@ void TesseractOcr::cacheLangs()
 std::unique_ptr<OcrEngine> createTesseractOcrEngine(
     const OcrEngineArgs& args)
 {
-    return std::make_unique<TesseractOcr>(args);
+    return std::make_unique<TesseractOcrEngine>(args);
 }
 
 
