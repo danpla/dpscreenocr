@@ -63,7 +63,9 @@
   can cast "char" to "unsigned char" as a workaround, it's easy to
   forget to do so.
 
-  Another reason is that <ctype.h> routines are locale-dependent.
+  Another reason is that <ctype.h> routines are locale-dependent,
+  while our code assumes UTF-8 and needs such character routines to
+  work only with the ASCII subset.
 
 * Use underscores instead of hyphens in CMake target names.
 
