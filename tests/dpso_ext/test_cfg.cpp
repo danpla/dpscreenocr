@@ -463,9 +463,10 @@ static void testSavedValueFormat()
         Test(const char* val, const char* expectedValData)
             : val{val}
             , expectedData{
-                "key "
-                + test::utils::lfToNativeNewline(expectedValData)
-                + '\n'}
+                test::utils::lfToNativeNewline(
+                    (std::string{"key "}
+                        + expectedValData
+                        + '\n').c_str())}
         {
         }
     } tests[] = {
