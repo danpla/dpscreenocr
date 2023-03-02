@@ -385,8 +385,7 @@ the author by email; the link is at the bottom of the
 *   **(Unix) No languages**
 
     Make sure that the TESSDATA_PREFIX environment variable is either
-    not set or points to the parent directory of your "tessdata"
-    folder.
+    not set or points to the directory with ".traineddata" files.
 
 *   **(Windows) "Run executable" opens the script in a text editor**
 
