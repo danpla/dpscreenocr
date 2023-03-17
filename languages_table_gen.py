@@ -61,8 +61,8 @@ def load_infos(fine_path, repo_name, repo_tag):
 
 COLUMN_NAMES = {
     'name': 'Name',
-    'iso_639_3': 'ISO 693-3',
-    'iso_639_1': 'ISO 693-1',
+    'iso_639_3': 'ISO 639-3',
+    'iso_639_1': 'ISO 639-1',
     'data_link': 'Download',
 }
 
