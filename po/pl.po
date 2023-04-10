@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-01-01 15:19+0100\n"
-"PO-Revision-Date: 2022-05-22 22:34+0300\n"
-"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"PO-Revision-Date: 2023-04-11 18:48+0000\n"
+"Last-Translator: Eryk Michalak <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/pl/>\n"
 "Language: pl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -38,7 +38,6 @@ msgid "Azerbaijani"
 msgstr "Azerski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:39
-#, fuzzy
 msgid "Azerbaijani (Cyrillic)"
 msgstr "Azerbejdżański (cyrylica)"
 
@@ -111,7 +110,6 @@ msgid "Danish"
 msgstr "Duński"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:57
-#, fuzzy
 msgid "Danish (Fraktur)"
 msgstr "Duński (fraktura)"
 
@@ -121,7 +119,6 @@ msgstr "Niemiecki"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:59
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:73
-#, fuzzy
 msgid "German (Fraktur)"
 msgstr "Niemiecki (fraktura)"
 
@@ -178,17 +175,14 @@ msgid "French"
 msgstr "Francuski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:74
-#, fuzzy
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Francuski średniowieczny (ok. 1400-1600)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:75
-#, fuzzy
 msgid "Frisian, Western"
 msgstr "Zachodniofryzyjski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:76
-#, fuzzy
 msgid "Gaelic, Scottish"
 msgstr "Szkocki Gaelicki"
 
@@ -209,7 +203,6 @@ msgid "Gujarati"
 msgstr "Gudźarati"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:81
-#, fuzzy
 msgid "Creole, Haitian"
 msgstr "Kreolski haitański"
 
@@ -282,7 +275,6 @@ msgid "Kazakh"
 msgstr "Kazachski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:99
-#, fuzzy
 msgid "Khmer, Central"
 msgstr "Środkowokhmerski"
 
@@ -291,9 +283,8 @@ msgid "Kirghiz; Kyrgyz"
 msgstr "Kirgiz; Kirgiski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:101
-#, fuzzy
 msgid "Kurdish, Northern"
-msgstr "Kurmanji (kurdyjski - skrypt łaciński)"
+msgstr "Kurdyjski, północny"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:102
 msgid "Korean"
@@ -304,9 +295,8 @@ msgid "Korean (vertical)"
 msgstr "Koreański (pionowy)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:104
-#, fuzzy
 msgid "Kurdish"
-msgstr "Kurdyjski (skrypt arabski)"
+msgstr "Kurdyjski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:105
 msgid "Lao"
@@ -421,7 +411,6 @@ msgid "Slovak"
 msgstr "Słowacki"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:133
-#, fuzzy
 msgid "Slovak (Fraktur)"
 msgstr "Słowacki (fraktura)"
 
@@ -450,7 +439,6 @@ msgid "Serbian"
 msgstr "Serbski"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:140
-#, fuzzy
 msgid "Serbian (Latin)"
 msgstr "Serbski (łaciński)"
 
@@ -499,9 +487,8 @@ msgid "Tigrinya"
 msgstr "Tigrinia"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:152
-#, fuzzy
 msgid "Tonga (Tonga Islands)"
-msgstr "Tonga"
+msgstr "Tonga (Wyspy Tonga)"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:153
 msgid "Turkish"
@@ -524,7 +511,6 @@ msgid "Uzbek"
 msgstr "Uzbecki"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:158
-#, fuzzy
 msgid "Uzbek (Cyrillic)"
 msgstr "Uzbecki (cyrylica)"
 
@@ -542,15 +528,15 @@ msgstr "Joruba"
 
 #: src/ui/qt/about.cpp:53
 msgid "Website"
-msgstr ""
+msgstr "Strona internetowa"
 
 #: src/ui/qt/about.cpp:63
 msgid "User manual"
-msgstr ""
+msgstr "Instrukcja obsługi"
 
 #: src/ui/qt/about.cpp:67
 msgid "Changelog"
-msgstr ""
+msgstr "Dziennik zmian"
 
 #: src/ui/qt/about.cpp:69
 msgid "License"
@@ -558,7 +544,7 @@ msgstr "Licencja"
 
 #: src/ui/qt/about.cpp:75
 msgid "Third-party licenses"
-msgstr ""
+msgstr "Licencje stron trzecich"
 
 #: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
@@ -586,9 +572,8 @@ msgid "Choose an executable"
 msgstr "Wybierz plik wykonywalny"
 
 #: src/ui/qt/history.cpp:38
-#, fuzzy
 msgid "Export…"
-msgstr "Zapisz jako…"
+msgstr "Eksportuj…"
 
 #: src/ui/qt/history.cpp:43
 msgid "Clear…"
@@ -599,9 +584,8 @@ msgid "History"
 msgstr "Historia"
 
 #: src/ui/qt/history.cpp:85
-#, fuzzy
 msgid "Export history"
-msgstr "Zapisz historię"
+msgstr "Eksportuj historię"
 
 #: src/ui/qt/history.cpp:87
 msgid "Plain text"
@@ -671,9 +655,8 @@ msgid "Split text blocks"
 msgstr "Podziel bloki tekstu"
 
 #: src/ui/qt/main_window.cpp:436
-#, fuzzy
 msgid "Split independent text blocks, such as columns"
-msgstr "Podziel niezależne bloki tekstu, np. kolumny"
+msgstr "Podziel niezależne bloki tekstu, np. na kolumny"
 
 #: src/ui/qt/main_window.cpp:439
 msgid "Languages:"
@@ -696,9 +679,8 @@ msgid "Please select languages"
 msgstr "Wybierz języki"
 
 #: src/ui/qt/main_window.cpp:788
-#, fuzzy
 msgid "Please select actions"
-msgstr "Wybierz czynności"
+msgstr "Proszę wybrać czynności"
 
 #. Translators: Program is ready for OCR
 #: src/ui/qt/main_window.cpp:791
