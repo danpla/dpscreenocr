@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-01-01 15:19+0100\n"
-"PO-Revision-Date: 2022-11-04 16:06+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"PO-Revision-Date: 2023-04-15 13:47+0000\n"
+"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/de/>\n"
 "Language: de\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.2-dev\n"
+"X-Generator: Weblate 4.17-dev\n"
 
 #: src/dpso/ocr_engine/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -621,7 +621,7 @@ msgstr "Sprache"
 #: src/ui/qt/lang_browser.cpp:61
 msgctxt "language"
 msgid "Code"
-msgstr "ISO-Code"
+msgstr "Code"
 
 #: src/ui/qt/main_window.cpp:45
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
