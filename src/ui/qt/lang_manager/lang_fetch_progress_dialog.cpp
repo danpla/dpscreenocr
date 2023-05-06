@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QLabel>
 #include <QProgressBar>
-#include <QVboxLayout>
+#include <QVBoxLayout>
 
 #include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"

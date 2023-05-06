@@ -10,7 +10,7 @@
 #include <QPainter>
 #include <QProgressBar>
 #include <QPushButton>
-#include <QVboxLayout>
+#include <QVBoxLayout>
 
 #include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"

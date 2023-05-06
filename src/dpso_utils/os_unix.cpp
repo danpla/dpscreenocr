@@ -19,7 +19,7 @@ const char* const dpsoDirSeparators = "/";
 int64_t dpsoGetFileSize(const char* filePath)
 {
     struct stat st;
-    if (stat(path.c_str(), &st) != 0) {
+    if (stat(filePath, &st) != 0) {
         dpsoSetError("stat(): %s", strerror(errno));
         return -1;
     }

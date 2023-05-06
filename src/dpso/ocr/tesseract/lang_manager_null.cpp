@@ -10,7 +10,7 @@
 namespace dpso::ocr::tesseract {
 
 
-bool hasLangmanager()
+bool hasLangManager()
 {
     return false;
 }
