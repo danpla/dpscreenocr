@@ -1,7 +1,14 @@
-src/dpso/ocr_engine/tesseract/lang_names.cpp
+src/dpso/ocr/tesseract/lang_names.cpp
 src/ui/qt/about.cpp
 src/ui/qt/action_chooser.cpp
 src/ui/qt/history.cpp
 src/ui/qt/hotkey_editor.cpp
 src/ui/qt/lang_browser.cpp
+src/ui/qt/lang_manager/install_progress_dialog.cpp
+src/ui/qt/lang_manager/lang_fetch_progress_dialog.cpp
+src/ui/qt/lang_manager/lang_list.cpp
+src/ui/qt/lang_manager/lang_manager.cpp
+src/ui/qt/lang_manager/lang_manager_page.cpp
+src/ui/qt/lang_manager/lang_op_status_error.cpp
 src/ui/qt/main_window.cpp
+src/ui/qt/utils.cpp
