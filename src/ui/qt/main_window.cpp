@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QSessionManager>
 #include <QTabWidget>
 #include <QTimerEvent>
@@ -27,6 +28,7 @@
 #include "history.h"
 #include "hotkey_editor.h"
 #include "lang_browser.h"
+#include "lang_manager/lang_manager.h"
 #include "status_indicator.h"
 #include "utils.h"
 
@@ -38,6 +40,10 @@ enum : DpsoHotkeyAction {
     hotkeyActionToggleSelection,
     hotkeyActionCancelSelection
 };
+
+
+// Our GUI currently doesn't allow to select an OCR engine.
+const auto ocrEngineIdx = 0;
 
 
 MainWindow::MainWindow()
@@ -129,18 +135,15 @@ MainWindow::MainWindow()
         std::exit(EXIT_FAILURE);
     }
 
-    // Our GUI currently doesn't allow to select an engine.
     DpsoOcrEngineInfo ocrEngineInfo;
-    dpsoOcrGetEngineInfo(0, &ocrEngineInfo);
+    dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
 
-    std::string ocrDataDirPath;
-    const char* dataDirName = uiGetOcrDataDirName(&ocrEngineInfo);
-    if (*dataDirName)
+    if (const char* dirName = uiGetOcrDataDirName(&ocrEngineInfo);
+            *dirName)
         ocrDataDirPath =
-            std::string{dataPath} + *dpsoDirSeparators + dataDirName;
+            std::string{dataPath} + *dpsoDirSeparators + dirName;
 
-    const DpsoOcrArgs ocrArgs{0, ocrDataDirPath.c_str()};
-    ocr.reset(dpsoOcrCreate(&ocrArgs));
+    ocr.reset(dpsoOcrCreate(ocrEngineIdx, ocrDataDirPath.c_str()));
     if (!ocr) {
         QMessageBox::critical(
             nullptr,
@@ -287,6 +290,22 @@ void MainWindow::changeEvent(QEvent* event)
         visibilityAction->setChecked(false);
 
     QWidget::changeEvent(event);
+}
+
+
+void MainWindow::openLangManager()
+{
+    setSelectionIsEnabled(false);
+    dpsoSetHotkeysEnabled(false);
+
+    langManager::runLangManager(ocrEngineIdx, ocrDataDirPath, this);
+    langBrowser->reloadLangs();
+
+    // Refresh status in case we installed the first (or removed the
+    // last) language.
+    statusValid = false;
+
+    dpsoSetHotkeysEnabled(true);
 }
 
 
@@ -441,6 +460,19 @@ QWidget* MainWindow::createMainTab()
     langBrowser = new LangBrowser(ocr.get());
     ocrGroupLayout->addWidget(langBrowser);
 
+    langManagerButton = new QPushButton(_("Language manager"));
+    langManagerButton->setToolTip(
+        _("Install, update, and remove languages"));
+
+    DpsoOcrEngineInfo ocrEngineInfo;
+    dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
+    langManagerButton->setVisible(ocrEngineInfo.hasLangManager);
+
+    connect(
+        langManagerButton, &QPushButton::clicked,
+        this, &MainWindow::openLangManager);
+    ocrGroupLayout->addWidget(langManagerButton);
+
     auto* actionsGroup = new QGroupBox(_("Actions"));
     auto* actionsGroupLayout = new QVBoxLayout(actionsGroup);
 
@@ -493,11 +525,9 @@ QWidget* MainWindow::createHistoryTab()
 
 QWidget* MainWindow::createAboutTab()
 {
-    auto* about = new About();
-
     auto* tab = new QWidget();
     auto* tabLayout = new QVBoxLayout(tab);
-    tabLayout->addWidget(about);
+    tabLayout->addWidget(new About());
 
     return tab;
 }
@@ -733,6 +763,7 @@ void MainWindow::updateStatus()
     dpsoOcrGetProgress(ocr.get(), &progress);
 
     actionChooser->setEnabled(progress.totalJobs == 0);
+    langManagerButton->setEnabled(progress.totalJobs == 0);
 
     if (progress.totalJobs > 0) {
         // Update status when the progress ends.

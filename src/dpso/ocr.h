@@ -17,108 +17,20 @@ extern "C" {
 #endif
 
 
-/**
- * Get the number of available OCR engines.
- */
-int dpsoOcrGetNumEngines(void);
-
-
-/**
- * What DpsoOcrArgs::dataDir the OCR engine prefers.
- */
-typedef enum {
-    /**
-     * Engine doesn't use external data.
-     *
-     * DpsoOcrArgs::dataDir is ignored.
-     */
-    DpsoOcrEngineDataDirPreferenceNoDataDir,
-
-    /**
-     * Engine prefers the default data directory.
-     *
-     * Usually this means that on the current platform, the data is
-     * installed in a system-wide path that is hardcoded into the OCR
-     * library at build time.
-     */
-    DpsoOcrEngineDataDirPreferencePreferDefault,
-
-    /**
-     * Engine prefers an explicit path to data directory.
-     *
-     * This is normally the default mode for non-Unix platforms, where
-     * the data is usually installed in the application-specific
-     * directory.
-     */
-    DpsoOcrEngineDataDirPreferencePreferExplicit
-} DpsoOcrEngineDataDirPreference;
-
-
-typedef struct DpsoOcrEngineInfo {
-    /**
-     * Unique engine id.
-     *
-     * An id consists of lower-case ASCII alphabetical letters,
-     * numbers, and uses underscore to separate words.
-     */
-    const char* id;
-
-    /**
-     * Engine name.
-     *
-     * This is normal, readable engine name, which, unlike id, doesn't
-     * have any restrictions.
-     */
-    const char* name;
-
-    /**
-     * Engine version.
-     *
-     * If the OCR engine library is linked dynamically, this will
-     * normally be the runtime version.
-     */
-    const char* version;
-
-    DpsoOcrEngineDataDirPreference dataDirPreference;
-} DpsoOcrEngineInfo;
-
-
-/**
- * Get OCR engine info.
- *
- * Does nothing if the index is out of [0, dpsoOcrGetNumEngines()).
- */
-void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info);
-
-
-typedef struct DpsoOcrArgs {
-    /**
-     * Engine index [0, dpsoOcrGetNumEngines()).
-     */
-    int engineIdx;
-
-    /**
-     * Path to OCR engine data directory.
-     *
-     * May be empty to use the default directory, which is mostly
-     * useful on Unix-like systems where this path is hardcoded when
-     * the OCR library is built. See DpsoOcrEngineDataDirPreference
-     * for the details.
-     */
-    const char* dataDir;
-} DpsoOcrArgs;
-
-
 typedef struct DpsoOcr DpsoOcr;
 
 
 /**
  * Create OCR.
  *
+ * engineIdx is in the [0, dpsoOcrGetNumEngines()) range. dataDir may
+ * be empty to use the default path, or if the engine doesn't use
+ * external data. See DpsoOcrEngineDataDirPreference for the details.
+ *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null.
  */
-DpsoOcr* dpsoOcrCreate(const DpsoOcrArgs* ocrArgs);
+DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir);
 
 
 void dpsoOcrDelete(DpsoOcr* ocr);
@@ -133,6 +45,10 @@ int dpsoOcrGetNumLangs(const DpsoOcr* ocr);
 /**
  * Get language code.
  *
+ * A language code is a string that uniquely identify a language,
+ * like an ISO 639 code. It contains only ASCII alphanumeric
+ * characters, hyphens, and underscores.
+ *
  * The languages are sorted alphabetically by their codes. If you need
  * to find a language index by its code, use dpsoOcrGetLangIdx()
  * instead of linear search.
@@ -146,8 +62,12 @@ const char* dpsoOcrGetLangCode(const DpsoOcr* ocr, int langIdx);
 /**
  * Get default language code.
  *
- * The main purpose of the default language code is to select
- * a language when a program starts for the first time.
+ * The main purpose of default language code is to be used in GUI to
+ * select a language when a program starts for the first time.
+ *
+ * The default language is normally English, but may be different
+ * in case the OCR engine is designed for a specific group of
+ * languages.
  *
  * Returns an empty string if the OCR engine has no meaningful default
  * language.
@@ -232,6 +152,7 @@ typedef struct DpsoOcrJobArgs {
  *   * jobArgs is null
  *   * jobArgs::screenRect is empty or outside the screen bounds
  *   * No active languages
+ *   * A language manager for the same engine and data dir is active
  *   * Error when taking a screenshot
  */
 bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs);

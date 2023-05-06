@@ -16,7 +16,8 @@ add_executable(
     dpso_utils/test_os.cpp
     dpso_utils/test_progress_tracker.cpp
     dpso_utils/test_str.cpp
-    dpso_utils/test_strftime.cpp)
+    dpso_utils/test_strftime.cpp
+    dpso_utils/test_version_cmp.cpp)
 
 if(WIN32)
     target_sources(

@@ -41,8 +41,8 @@ Required:
   * Make
   * Qt 5.3.2 - 6. DPSO_QT_VERSION CMake option.
   * tesseract >= 4.1.0
-  * pkg-config to find tesseract (recent MSYS2 uses a compatible
-    pkgconf tool).
+  * jansson
+  * pkg-config (recent MSYS2 uses a compatible pkgconf tool)
   * dos2unix
 
 Optional:
@@ -59,12 +59,13 @@ To install all dependencies except Pandoc, run in a MinGW shell:
         make \
         $MINGW_PACKAGE_PREFIX-cmake \
         $MINGW_PACKAGE_PREFIX-gcc \
+        $MINGW_PACKAGE_PREFIX-gettext \
+        $MINGW_PACKAGE_PREFIX-jansson \
+        $MINGW_PACKAGE_PREFIX-pkgconf \
         $MINGW_PACKAGE_PREFIX-qt5-base \
         $MINGW_PACKAGE_PREFIX-qt5-translations \
-        $MINGW_PACKAGE_PREFIX-pkgconf \
-        $MINGW_PACKAGE_PREFIX-tesseract-ocr \
         $MINGW_PACKAGE_PREFIX-tesseract-data-eng \
-        $MINGW_PACKAGE_PREFIX-gettext
+        $MINGW_PACKAGE_PREFIX-tesseract-ocr
 
 Note that Tesseact data files don't depend on the architecture, so
 there is no need to install "tesseract-data-eng" and other languages

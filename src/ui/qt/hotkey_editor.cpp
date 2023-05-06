@@ -4,6 +4,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QHBoxLayout>
+#include <QSignalBlocker>
 
 
 HotkeyEditor::HotkeyEditor(
@@ -64,16 +65,13 @@ HotkeyEditor::HotkeyEditor(
 
 void HotkeyEditor::assignHotkey(bool emitChanged)
 {
-    keyCombo->blockSignals(true);
-    for (auto* modCheck : modChecks)
-        modCheck->blockSignals(true);
-
     DpsoHotkey hotkey;
     dpsoFindActionHotkey(action, &hotkey);
 
     auto hotkeyChanged = false;
 
     if (hotkey.key != getCurrentKey()) {
+        const QSignalBlocker signalBlocker(keyCombo);
         keyCombo->setCurrentIndex(keyCombo->findData(hotkey.key));
         hotkeyChanged = true;
     }
@@ -88,14 +86,11 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
         const auto newChecked = keySelected && (hotkey.mods & mod);
         if (modCheck->isChecked() != newChecked) {
-            hotkeyChanged = true;
+            const QSignalBlocker signalBlocker(modCheck);
             modCheck->setChecked(newChecked);
+            hotkeyChanged = true;
         }
     }
-
-    keyCombo->blockSignals(false);
-    for (auto* modCheck : modChecks)
-        modCheck->blockSignals(false);
 
     if (emitChanged && hotkeyChanged)
         emit changed();
@@ -120,15 +115,14 @@ void HotkeyEditor::keyChanged()
     const auto keySelected = getCurrentKey() != dpsoNoKey;
 
     // When the key is switched to dpsoNoKey, we need to uncheck
-    // every modifier checkbox without emitting changed().
+    // all modifier checkboxes without emitting changed().
     for (auto* modCheck : modChecks) {
-        modCheck->blockSignals(true);
-
         modCheck->setEnabled(keySelected);
-        if (!keySelected)
-            modCheck->setChecked(false);
 
-        modCheck->blockSignals(false);
+        if (!keySelected) {
+            const QSignalBlocker signalBlocker(modCheck);
+            modCheck->setChecked(false);
+        }
     }
 
     emit changed();

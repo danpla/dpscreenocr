@@ -9,7 +9,11 @@
 #include <QPushButton>
 #include <QtGlobal>
 
+#include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"
+
+
+#define _(S) gettext(S)
 
 
 QString joinInLayoutDirection(
@@ -69,21 +73,42 @@ bool confirmDestructiveAction(
     const QString& cancelText,
     const QString& okText)
 {
-    QMessageBox confirmBox(parent);
+    QMessageBox messageBox(parent);
 
-    confirmBox.setWindowTitle(uiAppName);
-    confirmBox.setText(question);
-    confirmBox.setIcon(QMessageBox::Warning);
+    messageBox.setWindowTitle(uiAppName);
+    messageBox.setText(question);
+    messageBox.setIcon(QMessageBox::Warning);
 
-    auto* cancelButton = confirmBox.addButton(
+    auto* cancelButton = messageBox.addButton(
         cancelText, QMessageBox::RejectRole);
-    confirmBox.setDefaultButton(cancelButton);
-    auto* okButton = confirmBox.addButton(
+    messageBox.setDefaultButton(cancelButton);
+    auto* okButton = messageBox.addButton(
         okText, QMessageBox::AcceptRole);
 
-    confirmBox.exec();
+    messageBox.exec();
 
-    return confirmBox.clickedButton() == okButton;
+    return messageBox.clickedButton() == okButton;
+}
+
+
+void showError(
+    QWidget* parent,
+    const QString& text,
+    const QString& informativeText,
+    const QString& detailedText)
+{
+    QMessageBox messageBox(parent);
+
+    messageBox.setWindowTitle(uiAppName);
+    messageBox.setIcon(QMessageBox::Warning);
+
+    messageBox.setText(text);
+    messageBox.setInformativeText(informativeText);
+    messageBox.setDetailedText(detailedText);
+
+    messageBox.addButton(_("Close"), QMessageBox::RejectRole);
+
+    messageBox.exec();
 }
 
 

@@ -18,7 +18,10 @@ enum : int {
 // A custom item that allows sorting by the checkbox column.
 class LangBrowserItem : public QTreeWidgetItem {
 public:
-    using QTreeWidgetItem::QTreeWidgetItem;
+    LangBrowserItem()
+        : QTreeWidgetItem{UserType}
+    {
+    }
 
     bool operator<(const QTreeWidgetItem& other) const override
     {
@@ -94,6 +97,47 @@ LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
 }
 
 
+void LangBrowser::reloadLangs()
+{
+    auto currentLangIdx = -1;
+    if (const auto* item = currentItem())
+        currentLangIdx = dpsoOcrGetLangIdx(
+            ocr, item->text(columnIdxCode).toUtf8().data());
+
+    clear();
+
+    setSortingEnabled(false);
+    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i) {
+        // We will add the item once it fully built, so that we don't
+        // trigger the itemChanged() signal on each change.
+        auto* item = new LangBrowserItem();
+
+        item->setData(columnIdxCheckbox, Qt::UserRole, i);
+        item->setFlags(
+            item->flags()
+            | Qt::ItemIsUserCheckable
+            | Qt::ItemNeverHasChildren);
+        item->setCheckState(
+            columnIdxCheckbox,
+            dpsoOcrGetLangIsActive(ocr, i)
+                ? Qt::Checked : Qt::Unchecked);
+
+        const auto* langCode = dpsoOcrGetLangCode(ocr, i);
+        const auto* langName = dpsoOcrGetLangName(ocr, i);
+        item->setText(
+            columnIdxName,
+            langName ? gettext(langName) : langCode);
+        item->setText(columnIdxCode, langCode);
+
+        addTopLevelItem(item);
+
+        if (i == currentLangIdx)
+            setCurrentItem(item, columnIdxCheckbox);
+    }
+    setSortingEnabled(true);
+}
+
+
 void LangBrowser::updateLangState(QTreeWidgetItem* item, int column)
 {
     if (column != columnIdxCheckbox)
@@ -123,28 +167,7 @@ void LangBrowser::loadState(const DpsoCfg* cfg)
     dpsoCfgLoadActiveLangs(
         cfg, cfgKeyOcrLanguages, ocr, fallbackLangCode);
 
-    clear();
-    setSortingEnabled(false);
-    blockSignals(true);
-    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i) {
-        auto* item = new LangBrowserItem(this);
-
-        item->setData(columnIdxCheckbox, Qt::UserRole, i);
-        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-        item->setCheckState(
-            columnIdxCheckbox,
-            dpsoOcrGetLangIsActive(ocr, i)
-                ? Qt::Checked : Qt::Unchecked);
-
-        const auto* langCode = dpsoOcrGetLangCode(ocr, i);
-        const auto* langName = dpsoOcrGetLangName(ocr, i);
-        item->setText(
-            columnIdxName,
-            langName ? gettext(langName) : langCode);
-        item->setText(columnIdxCode, langCode);
-    }
-    blockSignals(false);
-    setSortingEnabled(true);
+    reloadLangs();
 
     const auto columnIdx = qBound<int>(
         columnIdxCheckbox,

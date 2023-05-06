@@ -7,14 +7,15 @@
 namespace dpso::windows {
 
 
-std::string getErrorMessage(DWORD error)
+std::string getErrorMessage(DWORD error, HMODULE module)
 {
     char* messageBuf{};
     auto size = FormatMessageA(
         FORMAT_MESSAGE_ALLOCATE_BUFFER
+            | FORMAT_MESSAGE_FROM_HMODULE
             | FORMAT_MESSAGE_FROM_SYSTEM
             | FORMAT_MESSAGE_IGNORE_INSERTS,
-        nullptr,
+        module,
         error,
         MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
         reinterpret_cast<char*>(&messageBuf),

@@ -13,7 +13,6 @@ class QLineEdit;
 
 class ActionChooser : public QWidget {
     Q_OBJECT
-
 public:
     enum Action {
         none = 0,

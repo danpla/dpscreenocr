@@ -7,6 +7,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 
@@ -33,6 +34,16 @@ const char* dpsoGetFileExt(const char* filePath);
 
 
 /**
+ * Get file size.
+ *
+ * The behavior is platform-specific if the filePath points to
+ * anything other than a regular file. On failure, sets an error
+ * message (dpsoGetError()) and returns -1.
+ */
+int64_t dpsoGetFileSize(const char* filePath);
+
+
+/**
  * fopen() that accepts filePath in UTF-8.
  */
 FILE* dpsoFopen(const char* filePath, const char* mode);
@@ -42,6 +53,16 @@ FILE* dpsoFopen(const char* filePath, const char* mode);
  * remove() that accepts filePath in UTF-8.
  */
 int dpsoRemove(const char* filePath);
+
+
+/**
+ * Rename a file or directory, replacing destination.
+ *
+ * Unlike std::rename(), this function silently replaces an existing
+ * dst on all platforms. On failure, sets an error message
+ * (dpsoGetError()) and returns false.
+ */
+bool dpsoReplace(const char* src, const char* dst);
 
 
 /**

@@ -134,11 +134,13 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    DpsoOcrArgs ocrArgs = {0, ""};
-    DpsoOcrEngineInfo ocrEngineInfo;
-    dpsoOcrGetEngineInfo(ocrArgs.engineIdx, &ocrEngineInfo);
+    const int engineIdx = 0;
+    const char* dataDir = "";
 
-    DpsoOcr* ocr = dpsoOcrCreate(&ocrArgs);
+    DpsoOcrEngineInfo ocrEngineInfo;
+    dpsoOcrGetEngineInfo(engineIdx, &ocrEngineInfo);
+
+    DpsoOcr* ocr = dpsoOcrCreate(engineIdx, dataDir);
     if (!ocr) {
         fprintf(
             stderr,

@@ -16,7 +16,6 @@ class QTextEdit;
 
 class History : public QWidget {
     Q_OBJECT
-
 public:
     explicit History(
         const std::string& dirPath, QWidget* parent = nullptr);

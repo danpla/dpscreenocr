@@ -1,5 +1,5 @@
 
-#include "ocr_engine/tesseract/utils.h"
+#include "ocr/tesseract/utils.h"
 
 #include <cassert>
 #include <cstring>
@@ -7,10 +7,10 @@
 #include "dpso_utils/str.h"
 
 
-namespace dpso::ocr {
+namespace dpso::ocr::tesseract {
 
 
-std::size_t prettifyTesseractText(char* text)
+std::size_t prettifyText(char* text)
 {
     struct Replacement {
         const char* from;

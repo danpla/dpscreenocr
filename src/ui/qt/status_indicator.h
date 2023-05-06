@@ -8,7 +8,6 @@
 
 class StatusIndicator: public QWidget {
     Q_OBJECT
-
 public:
     explicit StatusIndicator(QWidget* parent = nullptr);
 

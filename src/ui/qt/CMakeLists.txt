@@ -10,6 +10,13 @@ add_executable(
     history.cpp
     hotkey_editor.cpp
     lang_browser.cpp
+    lang_manager/install_progress_dialog.cpp
+    lang_manager/lang_fetch_progress_dialog.cpp
+    lang_manager/lang_list.cpp
+    lang_manager/lang_list_sort_filter_proxy.cpp
+    lang_manager/lang_manager.cpp
+    lang_manager/lang_manager_page.cpp
+    lang_manager/lang_op_status_error.cpp
     main.cpp
     main_window.cpp
     status_indicator.cpp

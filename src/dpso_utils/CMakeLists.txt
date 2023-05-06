@@ -16,7 +16,8 @@ add_library(
     os.cpp
     progress_tracker.cpp
     str.cpp
-    strftime.cpp)
+    strftime.cpp
+    version_cmp.cpp)
 
 if(UNIX)
     target_sources(

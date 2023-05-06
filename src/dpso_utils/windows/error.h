@@ -10,7 +10,7 @@
 namespace dpso::windows {
 
 
-std::string getErrorMessage(DWORD error);
+std::string getErrorMessage(DWORD error, HMODULE module = {});
 std::string getHresultMessage(HRESULT hresult);
 
 

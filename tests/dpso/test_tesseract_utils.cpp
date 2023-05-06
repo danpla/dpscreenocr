@@ -2,7 +2,7 @@
 #include <cstring>
 #include <string>
 
-#include "dpso/ocr_engine/tesseract/utils.h"
+#include "dpso/ocr/tesseract/utils.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -31,11 +31,12 @@ static void testPrettifyText()
 
     for (const auto& test : tests) {
         std::string str = test.original;
-        const auto strLen = dpso::ocr::prettifyTesseractText(str.data());
+        const auto strLen = dpso::ocr::tesseract::prettifyText(
+            str.data());
 
         if (std::strcmp(str.c_str(), test.prettified) != 0)
             test::failure(
-                "prettifyTesseractText(\"%s\"): "
+                "tesseract::prettifyText(\"%s\"): "
                 "expected \"%s\", got \"%s\"\n",
                 test::utils::escapeStr(test.original).c_str(),
                 test::utils::escapeStr(test.prettified).c_str(),
@@ -43,7 +44,7 @@ static void testPrettifyText()
 
         if (strLen != std::strlen(str.c_str()))
             test::failure(
-                "prettifyTesseractText(\"%s\"): "
+                "tesseract::prettifyText(\"%s\"): "
                 "expected string length %zu, got %zu\n",
                 test::utils::escapeStr(test.original).c_str(),
                 std::strlen(str.c_str()),

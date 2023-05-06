@@ -18,7 +18,6 @@ class QComboBox;
  */
 class HotkeyEditor : public QWidget {
     Q_OBJECT
-
 public:
     /**
      * HtokeyEditor

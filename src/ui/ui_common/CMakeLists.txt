@@ -5,7 +5,8 @@ add_library(
     cfg_default_values.cpp
     cfg_keys.cpp
     init_intl.cpp
-    ocr_data_dir_name.cpp)
+    ocr_data_dir_name.cpp
+    user_agent.cpp)
 
 # Files for configure_file()
 set(IN_SRCS app_info.cpp file_names.cpp icon_names.cpp)

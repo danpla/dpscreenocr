@@ -10,6 +10,8 @@
 
 #include "key_manager.h"
 #include "ocr.h"
+#include "ocr_engine.h"
+#include "ocr_lang_manager.h"
 #include "selection.h"
 
 

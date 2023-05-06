@@ -12,9 +12,10 @@ class QTreeWidgetItem;
 
 class LangBrowser : public QTreeWidget {
     Q_OBJECT
-
 public:
     explicit LangBrowser(DpsoOcr* ocr, QWidget* parent = nullptr);
+
+    void reloadLangs();
 
     void loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;

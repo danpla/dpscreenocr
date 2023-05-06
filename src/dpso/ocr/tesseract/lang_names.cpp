@@ -1,12 +1,12 @@
 
-#include "ocr_engine/tesseract/lang_names.h"
+#include "ocr/tesseract/lang_names.h"
 
 #include <algorithm>
 #include <cstring>
 #include <iterator>
 
 
-namespace dpso::ocr {
+namespace dpso::ocr::tesseract {
 namespace {
 
 
@@ -162,7 +162,7 @@ const LangName names[] = {
 };
 
 
-const char* getTesseractLangName(const char* langCode)
+const char* getLangName(const char* langCode)
 {
     const auto iter = std::lower_bound(
         std::begin(names), std::end(names), langCode,

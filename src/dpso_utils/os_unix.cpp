@@ -16,6 +16,18 @@
 const char* const dpsoDirSeparators = "/";
 
 
+int64_t dpsoGetFileSize(const char* filePath)
+{
+    struct stat st;
+    if (stat(path.c_str(), &st) != 0) {
+        dpsoSetError("stat(): %s", strerror(errno));
+        return -1;
+    }
+
+    return st.st_size;
+}
+
+
 FILE* dpsoFopen(const char* filePath, const char* mode)
 {
     return fopen(filePath, mode);
@@ -25,6 +37,17 @@ FILE* dpsoFopen(const char* filePath, const char* mode)
 int dpsoRemove(const char* filePath)
 {
     return remove(filePath);
+}
+
+
+bool dpsoReplace(const char* src, const char* dst)
+{
+    if (rename(src, dst) == -1) {
+        dpsoSetError("rename(): %s", strerror(errno));
+        return false;
+    }
+
+    return true;
 }
 
 

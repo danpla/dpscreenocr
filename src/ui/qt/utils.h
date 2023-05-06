@@ -26,6 +26,13 @@ bool confirmDestructiveAction(
     const QString& okText);
 
 
+void showError(
+    QWidget* parent,
+    const QString& text,
+    const QString& informativeText = {},
+    const QString& detailedText = {});
+
+
 class QFont;
 
 

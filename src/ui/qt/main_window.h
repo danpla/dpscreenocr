@@ -16,6 +16,7 @@
 class QAction;
 class QCheckBox;
 class QLabel;
+class QPushButton;
 class QSessionManager;
 class QSystemTrayIcon;
 class QTabWidget;
@@ -29,7 +30,6 @@ class StatusIndicator;
 
 class MainWindow : public QWidget {
     Q_OBJECT
-
 public:
     MainWindow();
     ~MainWindow();
@@ -38,6 +38,7 @@ protected:
     void closeEvent(QCloseEvent* event) override;
     void changeEvent(QEvent* event) override;
 private slots:
+    void openLangManager();
     void invalidateStatus();
     void setVisibility(bool vilible);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
@@ -51,6 +52,8 @@ private:
     std::string cfgFilePath;
 
     dpso::CfgUPtr cfg;
+
+    std::string ocrDataDirPath;
 
     int updateTimerId;
 
@@ -72,6 +75,7 @@ private:
     QCheckBox* splitTextBlocksCheck;
 
     LangBrowser* langBrowser;
+    QPushButton* langManagerButton;
     ActionChooser* actionChooser;
     HotkeyEditor* hotkeyEditor;
     DpsoHotkey cancelSelectionHotkey;
