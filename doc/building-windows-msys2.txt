@@ -110,13 +110,8 @@ To create packages, run "cpack -G <generators>", where <generators>
 is a semicolon-separated list of generator names you can find in
 "cpack --help".
 
-The WIX generator creates an MSI installer. Download WIX from
-https://wixtoolset.org/ and tell CPack the path to its binaries either
-with CPACK_WIX_ROOT CPack variable (cpack -D CPACK_WIX_ROOT="...") or
-with the WIX environment variable (export WIX="...").
-
-The NSIS and NSIS64 generators are no longer supported. Use Inno Setup
-instead.
+The NSIS, NSIS64, and WIX generators are no longer supported. Use Inno
+Setup instead.
 
 
 3.2 Inno Setup

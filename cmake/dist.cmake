@@ -13,10 +13,6 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
 
 if(WIN32)
     include(dist_windows_iss)
-    include(dist_windows_wix)
 endif()
-
-set(CPACK_PROJECT_CONFIG_FILE
-    "${CMAKE_CURRENT_LIST_DIR}/cpack_config.cmake")
 
 include(CPack)
