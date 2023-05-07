@@ -138,24 +138,24 @@ end;
 // "tessdata" directory located in the installation path.
 //
 // Since version 1.1.0 (which uses Inno Setup), "tessdata" was renamed
-// to "tesseractN_data", where N is the major Tesseract version.
-// Instead of using data directly from "tesseractN_data", the
+// to "tesseract_N_data", where N is the major Tesseract version.
+// Instead of using data directly from "tesseract_N_data", the
 // application now just copies this directory to the user's local app
 // data path on the first start.
 //
 // When updating from an old NSIS-based version, we need to migrate
 // all custom user data from "tessdata" of the old installation to
-// "tesseractN_data" of the new one. The old version used Tesseract 4,
-// so we only do migration if our current Tesseract version is either
-// 4 or 5 (both use the same data format).
+// "tesseract_N_data" of the new one. The old version used Tesseract
+// 4, so we only do migration if our current Tesseract version is
+// either 4 or 5 (both use the same data format).
 //
 // Although it's possible to just copy the data before uninstalling
 // the old version, we instead take a different approach based on a
 // [Files] entry with an "external" flag. The main advantage is that
-// the uninstaller will remove copied data from "tesseractN_data".
+// the uninstaller will remove copied data from "tesseract_N_data".
 // This is more robust than using [UninstallDelete], which will wipe
 // not only files that were copied from "tessdata", but also those
-// that were in "tesseractN_data" before installation. We also don't
+// that were in "tesseract_N_data" before installation. We also don't
 // have to write a routine to copy a directory (Inno Setup does not
 // provide one as of version 6.2).
 //
