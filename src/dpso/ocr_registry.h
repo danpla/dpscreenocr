@@ -16,20 +16,22 @@ namespace dpso::ocr {
 // objects and a language manager created for the same engine and data
 // directory. It solves the following problems:
 //
-// * All DpsoOcr objects should be notified when the data manager is
+// * All DpsoOcr objects should be notified when ocr::LangManager is
 //   created so that they can finish recognition. This is done via
 //   langManagerCreated().
 //
-// * All DpsoOcr objects should also know when the data manager is
+// * All DpsoOcr objects should also know when ocr::LangManager is
 //   deleted so that they can refresh the cached language lists. This
 //   is done via langManagerDeleted().
 //
-// * An DpsoOcr object should be able to check if the data manager is
-//   active in order to reject queuing new OCR jobs. This is done via
+// * An DpsoOcr object should be able to check if ocr::LangManager is
+//   active in order to reject queuing new OCR jobs and avoid the
+//   case when both ocr::Recognizer and ocr::LangManager are accessed
+//   concurrently from different threads. This is done via
 //   getLangManagerIsActive().
 //
 // * All of the above should work regardless of whether DpsoOcr is
-//   created before the language manager or vice versa.
+//   created before ocr::LangManager or vice versa.
 class OcrRegistry {
 public:
     static std::shared_ptr<OcrRegistry> get(

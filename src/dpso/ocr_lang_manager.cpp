@@ -376,6 +376,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
     impl->dataDir = dataDir;
     impl->ocrRegistry = dpso::ocr::OcrRegistry::get(
         engineId.c_str(), dataDir);
+    impl->ocrRegistry->langManagerCreated();
 
     try {
         impl->langManager = ocrEngine.createLangManager(dataDir);
@@ -388,8 +389,6 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
 
     impl->langOpExecutor = std::make_unique<LangOpExecutor>(
         *impl->langManager);
-
-    impl->ocrRegistry->langManagerCreated();
 
     implCache.push_back(impl);
 
@@ -416,6 +415,12 @@ void dpsoOcrLangManagerDelete(DpsoOcrLangManager* langManager)
             implCache.erase(iter);
             break;
         }
+
+    // LangManager can currently be used by an active operation from
+    // LangOpExecutor, so we should make sure that the executor is
+    // done before we call langManagerDeleted().
+    // TODO: Make a more robust, RAII-based solution.
+    impl.langOpExecutor.reset();
 
     impl.ocrRegistry->langManagerDeleted();
 
