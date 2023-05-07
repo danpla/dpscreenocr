@@ -47,9 +47,7 @@ Required:
 
 Optional:
 
-  * gettext >= 0.21 (msgfmt is needed to compile message
-    catalogs). DPSO_ENABLE_NLS CMake option.
-
+  * gettext >= 0.21. DPSO_ENABLE_NLS CMake option.
   * pandoc to generate HTML manual. DPSO_GEN_HTML_MANUAL CMake option.
 
 To install all dependencies except Pandoc, run in a MinGW shell:
