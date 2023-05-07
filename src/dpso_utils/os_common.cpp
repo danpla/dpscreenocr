@@ -1,7 +1,16 @@
 
 #include "os.h"
 
+#include <chrono>
 #include <cstring>
+#include <thread>
+
+
+void dpsoSleep(int milliseconds)
+{
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds{milliseconds});
+}
 
 
 const char* dpsoGetFileExt(const char* filePath)

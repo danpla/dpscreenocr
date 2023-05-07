@@ -11,9 +11,8 @@ mark_as_advanced(DPSO_FORCE_TIMING)
 add_library(
     dpso_utils
 
-    delay.cpp
     error.cpp
-    os.cpp
+    os_common.cpp
     progress_tracker.cpp
     str.cpp
     strftime.cpp

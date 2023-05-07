@@ -168,7 +168,7 @@ int main(void)
         checkResults(ocr);
         checkHotkeyActions(ocr);
 
-        dpsoDelay(1000 / 60);
+        dpsoSleep(1000 / 60);
     }
 
     dpsoOcrDelete(ocr);

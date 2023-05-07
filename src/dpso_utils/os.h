@@ -17,6 +17,12 @@ extern "C" {
 
 
 /**
+ * Block the current thread for the given number of milliseconds.
+ */
+void dpsoSleep(int milliseconds);
+
+
+/**
  * Directory separators for the current platform.
  *
  * The primary separator is first in the list.
