@@ -233,7 +233,7 @@ bool LangManagerPageRemove::performAction(
             langManager, langCode);
         const auto* name = dpsoOcrLangManagerGetLangName(
             langManager, langIdx);
-        langName = name ? gettext(name) : langCode;
+        langName = *name ? gettext(name) : langCode;
     }
 
     if (!confirmDestructiveAction(

@@ -78,8 +78,8 @@ const char* dpsoOcrGetDefaultLangCode(const DpsoOcr* ocr);
 /**
  * Get language name.
  *
- * Returns null if the language has no name, or if langIdx is out of
- * [0, dpsoOcrGetNumLangs()).
+ * Returns an empty string if the language has no name, or if langIdx
+ * is out of [0, dpsoOcrGetNumLangs()).
  */
 const char* dpsoOcrGetLangName(const DpsoOcr* ocr, int langIdx);
 

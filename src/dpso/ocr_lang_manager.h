@@ -105,8 +105,8 @@ const char* dpsoOcrLangManagerGetLangCode(
 /**
  * Get language name.
  *
- * Returns null if the language has no name, or if langIdx is out of
- * [0, dpsoOcrLangManagerGetNumLangs()).
+ * Returns an empty string if the language has no name, or if langIdx
+ * is out of [0, dpsoOcrLangManagerGetNumLangs()).
  */
 const char* dpsoOcrLangManagerGetLangName(
     const DpsoOcrLangManager* langManager, int langIdx);

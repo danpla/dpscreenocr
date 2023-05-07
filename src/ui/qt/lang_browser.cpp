@@ -126,7 +126,7 @@ void LangBrowser::reloadLangs()
         const auto* langName = dpsoOcrGetLangName(ocr, i);
         item->setText(
             columnIdxName,
-            langName ? gettext(langName) : langCode);
+            *langName ? gettext(langName) : langCode);
         item->setText(columnIdxCode, langCode);
 
         addTopLevelItem(item);

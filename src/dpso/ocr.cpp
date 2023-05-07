@@ -257,9 +257,8 @@ const char* dpsoOcrGetLangName(const DpsoOcr* ocr, int langIdx)
 {
     if (!ocr
             || langIdx < 0
-            || static_cast<std::size_t>(langIdx) >= ocr->langs.size()
-            || ocr->langs[langIdx].name.empty())
-        return nullptr;
+            || static_cast<std::size_t>(langIdx) >= ocr->langs.size())
+        return "";
 
     return ocr->langs[langIdx].name.c_str();
 }

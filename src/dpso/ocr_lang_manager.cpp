@@ -474,8 +474,7 @@ const char* dpsoOcrLangManagerGetLangName(
     const DpsoOcrLangManager* langManager, int langIdx)
 {
     const auto* lang = getLang(langManager, langIdx);
-    return (lang && !lang->getName().empty())
-        ? lang->getName().c_str() : nullptr;
+    return lang ? lang->getName().c_str() : "";
 }
 
 

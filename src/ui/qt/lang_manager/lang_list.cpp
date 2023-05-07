@@ -40,7 +40,7 @@ void LangList::reloadLangs()
             dpsoOcrLangManagerGetLangName(langManager, i);
 
         langInfos.append({
-            langName ? gettext(langName) : langCode,
+            *langName ? gettext(langName) : langCode,
             langCode,
             dpsoOcrLangManagerGetLangState(langManager, i)
         });

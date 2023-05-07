@@ -185,7 +185,7 @@ void InstallProgressDialog::timerEvent(QTimerEvent* event)
             : _("Updating \342\200\234{name}\342\200\235 "
                 "({current}/{total})"),
         {
-            {"name", langName ? gettext(langName) : langCode},
+            {"name", *langName ? gettext(langName) : langCode},
             {"current", std::to_string(progress.curLangNum).c_str()},
             {"total", std::to_string(progress.totalLangs).c_str()},
         }));
