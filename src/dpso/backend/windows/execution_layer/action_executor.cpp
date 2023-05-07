@@ -54,7 +54,7 @@ BgThreadActionExecutor::~BgThreadActionExecutor()
 void BgThreadActionExecutor::execute(Action& action)
 {
     {
-        std::lock_guard guard{mutex};
+        const std::lock_guard guard{mutex};
         actionException = nullptr;
         currentAction = &action;
     }
@@ -63,8 +63,7 @@ void BgThreadActionExecutor::execute(Action& action)
 
     {
         std::unique_lock lock{mutex};
-        while (currentAction)
-            condVar.wait(lock);
+        condVar.wait(lock, [&]{ return !currentAction; });
     }
 
     if (actionException)
@@ -76,8 +75,7 @@ void BgThreadActionExecutor::threadLoop()
 {
     while (!terminate) {
         std::unique_lock lock{mutex};
-        while (!currentAction)
-            condVar.wait(lock);
+        condVar.wait(lock, [&]{ return currentAction; });
 
         try {
             currentAction->action();
