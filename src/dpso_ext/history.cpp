@@ -1,7 +1,6 @@
 
 #include "history.h"
 
-#include <cassert>
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
@@ -124,12 +123,13 @@ static bool createEntries(
 }
 
 
-static dpso::StdFileUPtr openForAppending(const char* filePath)
+static dpso::StdFileUPtr openSync(
+    const char* filePath, const char* mode)
 {
-    dpso::StdFileUPtr fp{dpsoFopen(filePath, "ab")};
+    dpso::StdFileUPtr fp{dpsoFopen(filePath, mode)};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopen(..., \"ab\"): %s", std::strerror(errno));
+            "dpsoFopen(..., \"%s\"): %s", mode, std::strerror(errno));
         return nullptr;
     }
 
@@ -152,7 +152,7 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
             || !createEntries(data.c_str(), history->entries))
         return nullptr;
 
-    history->fp = openForAppending(filePath);
+    history->fp = openSync(filePath, "ab");
     if (!history->fp)
         return nullptr;
 
@@ -186,7 +186,7 @@ static std::string replaceReservedChar(
 }
 
 
-const char* const failureStateErrorMsg =
+const auto* const failureStateErrorMsg =
     "History is in failure state and is read-only";
 
 
@@ -277,14 +277,6 @@ bool dpsoHistoryClear(DpsoHistory* history)
     history->entries.clear();
     history->fp.reset();
 
-    if (dpsoRemove(history->filePath.c_str()) != 0) {
-        dpsoSetError(
-            "dpsoRemove(\"%s\"): %s",
-            history->filePath.c_str(),
-            std::strerror(errno));
-        return false;
-    }
-
-    history->fp = openForAppending(history->filePath.c_str());
+    history->fp = openSync(history->filePath.c_str(), "wb");
     return history->fp != nullptr;
 }
