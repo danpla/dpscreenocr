@@ -46,7 +46,7 @@ public:
     /**
      * See dpsoBindHotkey()
      */
-    virtual bool bindHotkey(
+    virtual void bindHotkey(
         const DpsoHotkey& hotkey, DpsoHotkeyAction action) = 0;
 
     virtual int getNumBindings() const = 0;

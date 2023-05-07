@@ -105,25 +105,23 @@ DpsoHotkeyAction X11KeyManager::getLastHotkeyAction() const
 }
 
 
-bool X11KeyManager::bindHotkey(
+void X11KeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
     for (auto& x11binding : x11bindings)
         if (x11binding.binding.hotkey == hotkey) {
             x11binding.binding.action = action;
-            return true;
+            return;
         }
 
     const auto keyCode = keyToKeyCode(display, hotkey.key);
     if (keyCode == 0)
-        return false;
+        return;
 
     x11bindings.push_back({{hotkey, action}, keyCode});
 
     if (hotkeysEnabled)
         changeBindingGrab(display, x11bindings.back(), true);
-
-    return true;
 }
 
 

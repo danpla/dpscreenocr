@@ -17,7 +17,7 @@ public:
     void setHotkeysEnabled(bool newHotkeysEnabled) override;
     DpsoHotkeyAction getLastHotkeyAction() const override;
 
-    bool bindHotkey(
+    void bindHotkey(
         const DpsoHotkey& hotkey, DpsoHotkeyAction action) override;
 
     int getNumBindings() const override;

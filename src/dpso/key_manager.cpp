@@ -28,15 +28,14 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void)
 }
 
 
-bool dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action)
+void dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action)
 {
-    return
-        keyManager
-        && hotkey
-        && hotkey->key >= 0
-        && hotkey->key < dpsoNumKeys
-        && action >= 0
-        && keyManager->bindHotkey(*hotkey, action);
+    if (keyManager
+            && hotkey
+            && hotkey->key >= 0
+            && hotkey->key < dpsoNumKeys
+            && action >= 0)
+        keyManager->bindHotkey(*hotkey, action);
 }
 
 

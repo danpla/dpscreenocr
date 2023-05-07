@@ -168,24 +168,22 @@ DpsoHotkeyAction WindowsKeyManager::getLastHotkeyAction() const
 }
 
 
-bool WindowsKeyManager::bindHotkey(
+void WindowsKeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
     if (auto* existingBinding = findBinding(hotkey)) {
         existingBinding->action = action;
-        return true;
+        return;
     }
 
     if (dpsoKeyToWinKey(hotkey.key) == 0)
         // There is no virtual key for the given DpsoKey.
-        return false;
+        return;
 
     bindings.push_back({hotkey, action});
 
     if (hotkeysEnabled)
         changeHotkeyState(hotkey, true);
-
-    return true;
 }
 
 

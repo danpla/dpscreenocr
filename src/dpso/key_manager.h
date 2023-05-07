@@ -55,14 +55,8 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void);
  * Bind hotkey to action.
  *
  * If the hotkey is already bound, its action will be updated.
- *
- * Returns false if hotkey wasn't bound. Reasons include:
- *   * hotkey is null
- *   * hotkey->key is dpsoNoKey
- *   * hotkey->key is not supported by the backend
- *   * action is < 0
  */
-bool dpsoBindHotkey(
+void dpsoBindHotkey(
     const DpsoHotkey* hotkey, DpsoHotkeyAction action);
 
 

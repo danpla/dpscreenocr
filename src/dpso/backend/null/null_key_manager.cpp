@@ -38,7 +38,7 @@ DpsoHotkeyAction NullKeyManager::getLastHotkeyAction() const
 }
 
 
-bool NullKeyManager::bindHotkey(
+void NullKeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
     MSG("Bind hotkey %s; action %i\n",
@@ -47,11 +47,10 @@ bool NullKeyManager::bindHotkey(
     for (auto& binding : bindings)
         if (binding.hotkey == hotkey) {
             binding.action = action;
-            return true;
+            return;
         }
 
     bindings.push_back({hotkey, action});
-    return true;
 }
 
 

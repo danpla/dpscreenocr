@@ -37,10 +37,10 @@ DpsoHotkeyAction KeyManagerExecutor::getLastHotkeyAction() const
 }
 
 
-bool KeyManagerExecutor::bindHotkey(
+void KeyManagerExecutor::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
-    return EXECUTE(bindHotkey(hotkey, action));
+    EXECUTE(bindHotkey(hotkey, action));
 }
 
 
