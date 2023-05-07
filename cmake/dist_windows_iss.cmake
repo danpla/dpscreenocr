@@ -71,6 +71,10 @@ function(gen_inno_setup_language_list)
     foreach(LANG ${LANGS})
         if(NOT ISL_${LANG})
             list(APPEND UNDEFINED_ISLS "${LANG}")
+            file(
+                APPEND
+                "${OUT_FILE}"
+                "; Name: \"${LANG}\"; MessagesFile: Not found\n")
         elseif(NOT ISL_${LANG} STREQUAL "-")
             file(
                 APPEND
