@@ -18,16 +18,16 @@ function(gen_html_manual dst_dir)
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${dst_dir}"
         COMMAND
             "${PANDOC_EXE}"
-            "--from=markdown"
-            "--to=html5"
-            "--standalone"
-            "--css=manual-data/manual.css"
-            "--template=${DOC_DIR}/manual-data/template.html"
-            "--output=${DST_HTML}"
-            "--toc"
-            "--number-sections"
-            "${CMAKE_BINARY_DIR}/manual-metadata.yaml"
-            "${DOC_DIR}/manual.md"
+            --from=markdown
+            --to=html5
+            --standalone
+            --css=manual-data/manual.css
+            --template=${DOC_DIR}/manual-data/template.html
+            --output=${DST_HTML}
+            --toc
+            --number-sections
+            ${CMAKE_BINARY_DIR}/manual-metadata.yaml
+            ${DOC_DIR}/manual.md
         DEPENDS
             "${DOC_DIR}/manual.md"
             "${CMAKE_BINARY_DIR}/manual-metadata.yaml"
