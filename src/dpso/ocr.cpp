@@ -87,10 +87,6 @@ struct Link {
     std::queue<Job> jobQueue;
     bool jobActive;
 
-    bool waitingForResults;
-    DpsoOcrProgressCallback waitingProgressCallback;
-    void* waitingUserData;
-
     DpsoOcrProgress progress;
 
     std::vector<JobResult> results;
@@ -451,20 +447,8 @@ static void processJob(DpsoOcr& ocr, const Job& job)
         {
             progressTracker.update(progress / 100.0f);
 
-            auto& link = ocr.link;
-
-            bool waitingForResults;
-            {
-                LINK_LOCK(link);
-                waitingForResults = link.waitingForResults;
-            }
-
-            if (waitingForResults && link.waitingProgressCallback)
-                link.waitingProgressCallback(
-                    &ocr, link.waitingUserData);
-
-            LINK_LOCK(link);
-            return !link.terminateJobs;
+            LINK_LOCK(ocr.link);
+            return !ocr.link.terminateJobs;
         });
 
     progressTracker.finish();
@@ -659,35 +643,6 @@ static void waitJobsToFinish(const DpsoOcr& ocr)
 }
 
 
-void dpsoOcrWaitJobsToComplete(
-    DpsoOcr* ocr,
-    DpsoOcrProgressCallback progressCallback,
-    void* userData)
-{
-    if (!ocr)
-        return;
-
-    {
-        LINK_LOCK(ocr->link);
-        ocr->link.waitingForResults = true;
-        ocr->link.waitingProgressCallback = progressCallback;
-        ocr->link.waitingUserData = userData;
-    }
-
-    waitJobsToFinish(*ocr);
-
-    LINK_LOCK(ocr->link);
-    ocr->link.waitingForResults = false;
-
-    if (ocr->link.terminateJobs) {
-        // dpsoOcrTerminateJobs() was called from the progress
-        // callback.
-        ocr->link.results.clear();
-        ocr->link.terminateJobs = false;
-    }
-}
-
-
 void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 {
     if (!ocr)
@@ -698,11 +653,6 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 
         ocr->link.jobQueue = {};
         ocr->link.terminateJobs = true;
-
-        if (ocr->link.waitingForResults)
-            // dpsoOcrWaitJobsToComplete() will set terminateJobs to
-            // false.
-            return;
     }
 
     waitJobsToFinish(*ocr);
@@ -719,7 +669,7 @@ namespace dpso::ocr {
 
 void onLangManagerCreated(DpsoOcr& ocr)
 {
-    dpsoOcrWaitJobsToComplete(&ocr, nullptr, nullptr);
+    waitJobsToFinish(ocr);
 }
 
 

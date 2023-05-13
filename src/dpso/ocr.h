@@ -256,28 +256,6 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results);
 
 
 /**
- * Progress callback for dpsoOcrWaitJobsToComplete().
- *
- * You can use dpsoOcrGetProgress() inside the callback to get the
- * actual progress, and dpsoOcrTerminateJobs() to terminate jobs
- * prematurely.
- */
-typedef void (*DpsoOcrProgressCallback)(DpsoOcr* ocr, void* userData);
-
-
-/**
- * Block the current thread till all jobs are completed.
- *
- * The progress callback (may be null) is called every time the
- * progress changes.
- */
-void dpsoOcrWaitJobsToComplete(
-    DpsoOcr* ocr,
-    DpsoOcrProgressCallback progressCallback,
-    void* userData);
-
-
-/**
  * Terminate jobs.
  *
  * This function terminates the active job, clears the job queue, and
