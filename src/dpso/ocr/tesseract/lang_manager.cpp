@@ -156,6 +156,40 @@ std::string TesseractLangManager::getFilePath(int langIdx) const
 }
 
 
+static net::DownloadProgressHandler makeDownloadProgressHandler(
+    const LangManager::ProgressHandler& progressHandler,
+    bool& canceled)
+{
+    return [&, lastProgress = -1](
+        std::uint64_t curSize,
+        std::optional<std::uint64_t> totalSize) mutable
+    {
+        if (!progressHandler)
+            return true;
+
+        auto progress = -1;
+
+        if (totalSize) {
+            if (*totalSize == 0)
+                progress = 100;
+            else
+                progress =
+                    static_cast<float>(curSize)
+                    / *totalSize
+                    * 100;
+
+            if (progress == lastProgress)
+                return true;
+
+            lastProgress = progress;
+        }
+
+        canceled = !progressHandler(progress);
+        return !canceled;
+    };
+}
+
+
 void TesseractLangManager::installLang(
     int langIdx, const ProgressHandler& progressHandler)
 {
@@ -167,41 +201,15 @@ void TesseractLangManager::installLang(
     const auto filePath = getFilePath(langIdx);
     const auto& url = langInfos[langIdx].url;
 
-    auto canceled = false;
+    bool canceled{};
 
     try {
         net::downloadFile(
             url.c_str(),
             userAgent.c_str(),
             filePath.c_str(),
-            [&, lastProgress = -1](
-                std::uint64_t curSize,
-                std::optional<std::uint64_t> totalSize) mutable
-            {
-                if (!progressHandler)
-                    return true;
-
-                auto progress = -1;
-
-                if (totalSize) {
-                    if (*totalSize == 0)
-                        progress = 100;
-                    else
-                        progress =
-                            static_cast<float>(curSize)
-                            / *totalSize
-                            * 100;
-
-                    if (progress == lastProgress)
-                        return true;
-
-                    lastProgress = progress;
-                }
-
-                canceled = !progressHandler(progress);
-
-                return !canceled;
-            });
+            makeDownloadProgressHandler(
+                progressHandler, canceled));
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::printf(
             "Can't download \"%s\" to \"%s\": %s",
