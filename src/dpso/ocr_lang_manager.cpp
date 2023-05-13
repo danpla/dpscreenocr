@@ -62,12 +62,12 @@ public:
 
     LangState getState() const
     {
-        return *state.lock();
+        return state.lock().get();
     }
 
     void setState(LangState newState)
     {
-        *state.lock() = newState;
+        state.lock().get() = newState;
     }
 
     bool getInstallMark() const
@@ -198,7 +198,7 @@ public:
         void requestCancel()
         {
             if (cancelFlag)
-                *cancelFlag->lock() = true;
+                cancelFlag->lock().get() = true;
         }
 
         void waitToFinish()
@@ -220,7 +220,7 @@ public:
     ~LangOpExecutor()
     {
         if (cancelFlag)
-            *cancelFlag->lock() = true;
+            cancelFlag->lock().get() = true;
 
         if (future.valid())
             future.wait();
@@ -228,7 +228,7 @@ public:
 
     void setUserAgent(const char* newUserAgent)
     {
-        *userAgent.lock() = newUserAgent;
+        userAgent.lock().get() = newUserAgent;
     }
 
     Control getControl() const
@@ -242,7 +242,7 @@ public:
         if (future.valid())
             future.wait();
 
-        langManager.setUserAgent(userAgent.lock()->c_str());
+        langManager.setUserAgent(userAgent.lock().get().c_str());
 
         cancelFlag = std::make_shared<dpso::Synchronized<bool>>();
 
@@ -669,7 +669,7 @@ public:
 
     void setProgress(const DpsoOcrLangInstallProgress& newProgress)
     {
-        *progress.lock() = newProgress;
+        progress.lock().get() = newProgress;
     }
 private:
     Langs& langs;
@@ -691,7 +691,7 @@ void installLangs(
     } progressGuard{context};
 
     for (std::size_t i = 0; i < installList.size(); ++i) {
-        if (*cancelRequested.lock())
+        if (cancelRequested.lock().get())
             throw LangOpCanceled{};
 
         const auto langIdx = installList[i];
@@ -711,7 +711,7 @@ void installLangs(
                         static_cast<int>(installList.size())
                     });
 
-                return !*cancelRequested.lock();
+                return !cancelRequested.lock().get();
             });
 
         context.setLangState(
@@ -755,7 +755,7 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
         return false;
     }
 
-    *impl.installProgress.lock() = {
+    impl.installProgress.lock().get() = {
         installList[0], 0, 1, static_cast<int>(installList.size())
     };
 
@@ -782,7 +782,8 @@ void dpsoOcrLangManagerGetInstallProgress(
     DpsoOcrLangInstallProgress* progress)
 {
     if (langManager && progress)
-        *progress = *langManager->getImpl().installProgress.lock();
+        *progress =
+            langManager->getImpl().installProgress.lock().get();
 }
 
 

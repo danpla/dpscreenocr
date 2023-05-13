@@ -9,38 +9,20 @@ namespace dpso {
 
 
 template<typename T>
-class LockPtr {
+class LockedRef {
 public:
-    LockPtr(T& v, std::mutex& mutex)
+    LockedRef(T& v, std::mutex& mutex)
         : v{v}
         , lock{mutex}
     {
     }
 
-    ~LockPtr() = default;
-
-    LockPtr(const LockPtr& other) = delete;
-    LockPtr& operator=(const LockPtr& other) = delete;
-
-    LockPtr(LockPtr&& other) noexcept = default;
-    LockPtr& operator=(LockPtr&& other) noexcept = default;
-
-    const T* operator->() const
-    {
-        return &v;
-    }
-
-    T* operator->()
-    {
-        return &v;
-    }
-
-    const T& operator*() const
+    const T& get() const
     {
         return v;
     }
 
-    T& operator*()
+    T& get()
     {
         return v;
     }
@@ -125,14 +107,14 @@ public:
         return *this;
     }
 
-    LockPtr<const T> lock() const
+    LockedRef<const T> lock() const
     {
-        return LockPtr{v, mutex};
+        return LockedRef{v, mutex};
     }
 
-    LockPtr<T> lock()
+    LockedRef<T> lock()
     {
-        return LockPtr{v, mutex};
+        return LockedRef{v, mutex};
     }
 private:
     T v;
