@@ -74,7 +74,7 @@ public:
         const OcrImage& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
-        ProgressHandler progressHandler) = 0;
+        const ProgressHandler& progressHandler) = 0;
 };
 
 

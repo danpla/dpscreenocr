@@ -64,7 +64,7 @@ public:
     void fetchExternalLangs() override;
 
     void installLang(
-        int langIdx, ProgressHandler progressHandler) override;
+        int langIdx, const ProgressHandler& progressHandler) override;
 
     void removeLang(int langIdx) override;
 private:
@@ -156,52 +156,8 @@ std::string TesseractLangManager::getFilePath(int langIdx) const
 }
 
 
-struct DownloadProgressHandler {
-    explicit DownloadProgressHandler(
-            LangManager::ProgressHandler& progressHandler)
-        : progressHandler{progressHandler}
-        , lastProgress{-1}
-        , canceled{}
-    {
-    }
-
-    bool operator()(
-        std::uint64_t curSize,
-        std::optional<std::uint64_t> totalSize)
-    {
-        if (!progressHandler)
-            return true;
-
-        auto progress = -1;
-
-        if (totalSize) {
-            if (*totalSize == 0)
-                progress = 100;
-            else
-                progress =
-                    static_cast<float>(curSize)
-                    / *totalSize
-                    * 100;
-
-            if (progress == lastProgress)
-                return true;
-
-            lastProgress = progress;
-        }
-
-        canceled = !progressHandler(progress);
-
-        return !canceled;
-    }
-
-    LangManager::ProgressHandler& progressHandler;
-    int lastProgress;
-    bool canceled;
-};
-
-
 void TesseractLangManager::installLang(
-    int langIdx, ProgressHandler progressHandler)
+    int langIdx, const ProgressHandler& progressHandler)
 {
     if (langInfos[langIdx].state == LangState::installed)
         return;
@@ -210,14 +166,42 @@ void TesseractLangManager::installLang(
 
     const auto filePath = getFilePath(langIdx);
     const auto& url = langInfos[langIdx].url;
-    DownloadProgressHandler downloadProgressHandler{progressHandler};
+
+    auto canceled = false;
 
     try {
         net::downloadFile(
             url.c_str(),
             userAgent.c_str(),
             filePath.c_str(),
-            downloadProgressHandler);
+            [&, lastProgress = -1](
+                std::uint64_t curSize,
+                std::optional<std::uint64_t> totalSize) mutable
+            {
+                if (!progressHandler)
+                    return true;
+
+                auto progress = -1;
+
+                if (totalSize) {
+                    if (*totalSize == 0)
+                        progress = 100;
+                    else
+                        progress =
+                            static_cast<float>(curSize)
+                            / *totalSize
+                            * 100;
+
+                    if (progress == lastProgress)
+                        return true;
+
+                    lastProgress = progress;
+                }
+
+                canceled = !progressHandler(progress);
+
+                return !canceled;
+            });
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::printf(
             "Can't download \"%s\" to \"%s\": %s",
@@ -226,7 +210,7 @@ void TesseractLangManager::installLang(
             e.what()).c_str());
     }
 
-    if (!downloadProgressHandler.canceled)
+    if (!canceled)
         langInfos[langIdx].state = LangState::installed;
 }
 

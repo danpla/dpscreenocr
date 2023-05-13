@@ -38,7 +38,7 @@ public:
     virtual void fetchExternalLangs() = 0;
 
     virtual void installLang(
-        int langIdx, ProgressHandler progressHandler) = 0;
+        int langIdx, const ProgressHandler& progressHandler) = 0;
 
     virtual void removeLang(int langIdx) = 0;
 };

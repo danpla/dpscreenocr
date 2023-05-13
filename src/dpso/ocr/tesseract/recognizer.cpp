@@ -63,7 +63,7 @@ public:
         const OcrImage& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
-        ProgressHandler progressHandler) override;
+        const ProgressHandler& progressHandler) override;
 private:
     std::string dataDir;
     ::tesseract::TessBaseAPI tess;
@@ -78,10 +78,11 @@ struct CancelData {
     ETEXT_DESC
     #endif
         textDesc;
-    Recognizer::ProgressHandler& progressHandler;
+    const Recognizer::ProgressHandler& progressHandler;
     bool canceled;
 
-    explicit CancelData(Recognizer::ProgressHandler& progressHandler)
+    explicit CancelData(
+            const Recognizer::ProgressHandler& progressHandler)
         : textDesc{}
         , progressHandler{progressHandler}
         , canceled{}
@@ -119,7 +120,7 @@ OcrResult TesseractRecognizer::recognize(
     const OcrImage& image,
     const std::vector<int>& langIndices,
     OcrFeatures ocrFeatures,
-    ProgressHandler progressHandler)
+    const ProgressHandler& progressHandler)
 {
     std::string tessLangsStr;
     std::size_t numVerticalLangs{};

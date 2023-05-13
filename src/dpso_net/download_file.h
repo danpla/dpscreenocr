@@ -31,7 +31,7 @@ void downloadFile(
     const char* url,
     const char* userAgent,
     const char* filePath,
-    DownloadProgressHandler progressHandler);
+    const DownloadProgressHandler& progressHandler);
 
 
 }
