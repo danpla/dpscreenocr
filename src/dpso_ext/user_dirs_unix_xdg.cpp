@@ -20,9 +20,10 @@ static const char* getDir(
     path.clear();
 
     if (const auto* xdgHome = std::getenv(xdgHomeEnv);
-            // According to the specification, we should treat empty
-            // XDG_*_HOME as unset.
-            xdgHome && *xdgHome)
+            // According to the specification, a XDG_*_HOME variable:
+            // * Should be treated as unset if empty
+            // * Invalid if contains a relative path
+            xdgHome && *xdgHome == '/')
         path += xdgHome;
     else if (const auto* home = std::getenv("HOME")) {
         path += home;
