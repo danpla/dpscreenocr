@@ -397,35 +397,18 @@ static dpso::ocr::OcrImage prepareScreenshot(
 }
 
 
-namespace {
-
-
-struct ProgressHandler : dpso::ProgressTracker::ProgressHandler {
-    explicit ProgressHandler(DpsoOcr& ocr)
-        : ocr{ocr}
-    {
-    }
-
-    void operator()(float progress) override
-    {
-        LINK_LOCK(ocr.link);
-        ocr.link.progress.curJobProgress = progress * 100;
-    }
-
-    DpsoOcr& ocr;
-};
-
-
-}
-
-
 static void processJob(DpsoOcr& ocr, const Job& job)
 {
     assert(job.screenshot);
     assert(!job.langIndices.empty());
 
-    ProgressHandler progressHandler{ocr};
-    dpso::ProgressTracker progressTracker{2, progressHandler};
+    dpso::ProgressTracker progressTracker{
+        2,
+        [&](float progress)
+        {
+            LINK_LOCK(ocr.link);
+            ocr.link.progress.curJobProgress = progress * 100;
+        }};
 
     progressTracker.advanceJob();
     const auto ocrImage = prepareScreenshot(

@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <functional>
+
 
 namespace dpso {
 
@@ -32,16 +34,12 @@ namespace dpso {
  */
 class ProgressTracker {
 public:
-    struct ProgressHandler {
-        virtual ~ProgressHandler() = default;
-
-        /**
-         * Progress update.
-         *
-         * The progress is in range 0.0 - 1.0.
-         */
-        virtual void operator()(float progress) = 0;
-    };
+    /**
+     * Progress update.
+     *
+     * The progress is in range 0.0 - 1.0.
+     */
+    using ProgressHandler = std::function<void(float progress)>;
 
     /**
      * Create top-level tracker.
@@ -55,7 +53,7 @@ public:
      */
     ProgressTracker(
         int numJobs,
-        ProgressHandler& progressHandler,
+        ProgressHandler progressHandler,
         float sensitivity = 0.01);
 
     /**
@@ -102,7 +100,7 @@ public:
     void finish();
 private:
     int numJobs;
-    ProgressHandler* progressHandler;
+    ProgressHandler progressHandler;
     ProgressTracker* parent;
     float sensitivity;
 

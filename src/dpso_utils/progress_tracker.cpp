@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <utility>
 
 
 namespace dpso {
@@ -10,11 +11,11 @@ namespace dpso {
 
 ProgressTracker::ProgressTracker(
         int numJobs,
-        ProgressHandler& progressHandler,
+        ProgressHandler progressHandler,
         float sensitivity)
     : ProgressTracker{numJobs}
 {
-    this->progressHandler = &progressHandler;
+    this->progressHandler = std::move(progressHandler);
     this->sensitivity = sensitivity;
 }
 
@@ -81,7 +82,7 @@ void ProgressTracker::report(float progress)
         return;
 
     if (progressHandler)
-        (*progressHandler)(progress);
+        progressHandler(progress);
 
     lastProgress = progress;
 }
