@@ -27,15 +27,13 @@ void downloadFile(
     const char* filePath,
     DownloadProgressHandler progressHandler)
 {
-    const auto downloadPartPath = std::string{filePath} + ".part";
+    const auto partPath = std::string{filePath} + ".part";
 
-    StdFileUPtr downloadPart{
-        dpsoFopen(downloadPartPath.c_str(), "wb")};
-    if (!downloadPart)
+    StdFileUPtr partFp{dpsoFopen(partPath.c_str(), "wb")};
+    if (!partFp)
         throw Error{str::printf(
             "Can't open \"%s\": %s",
-            downloadPartPath.c_str(),
-            std::strerror(errno))};
+            partPath.c_str(), std::strerror(errno))};
 
     auto response = makeGetRequest(url, userAgent);
 
@@ -54,48 +52,45 @@ void downloadFile(
         if (numRead == 0)
             break;
 
-        if (std::fwrite(buf, 1, numRead, downloadPart.get())
-                != numRead)
+        if (std::fwrite(buf, 1, numRead, partFp.get()) != numRead)
             throw Error{str::printf(
-                "fwrite() to \"%s\" failed",
-                downloadPartPath.c_str())};
+                "fwrite() to \"%s\" failed", partPath.c_str())};
 
         if (!progressHandler)
             continue;
 
         const auto curTime = Clock::now();
-        if (curTime - lastProgressReportTime < progressReportInterval)
+        if (lastProgressReportTime != Clock::time_point{}
+                && curTime - lastProgressReportTime
+                    < progressReportInterval)
             continue;
 
         lastProgressReportTime = curTime;
 
-        const auto curSize = std::ftell(downloadPart.get());
+        const auto curSize = std::ftell(partFp.get());
 
         if (!progressHandler(curSize, fileSize)) {
-            downloadPart.reset();
-            dpsoRemove(downloadPartPath.c_str());  // Ignore errors
+            partFp.reset();
+            dpsoRemove(partPath.c_str());  // Ignore errors
             return;
         }
     }
 
-    if (std::fflush(downloadPart.get()) == EOF)
+    if (std::fflush(partFp.get()) == EOF)
         throw Error{str::printf(
-            "fflush() for \"%s\" failed", downloadPartPath.c_str())};
+            "fflush() for \"%s\" failed", partPath.c_str())};
 
-    if (!dpsoSyncFile(downloadPart.get()))
+    if (!dpsoSyncFile(partFp.get()))
         throw Error{str::printf(
             "dpsoSyncFile() for \"%s\": %s",
-            downloadPartPath.c_str(),
-            dpsoGetError())};
+            partPath.c_str(), dpsoGetError())};
 
-    downloadPart.reset();
+    partFp.reset();
 
-    if (!dpsoReplace(downloadPartPath.c_str(), filePath))
+    if (!dpsoReplace(partPath.c_str(), filePath))
         throw Error{str::printf(
             "dpsoReplace(\"%s\", \"%s\"): %s",
-            downloadPartPath.c_str(),
-            filePath,
-            dpsoGetError())};
+            partPath.c_str(), filePath, dpsoGetError())};
 }
 
 
