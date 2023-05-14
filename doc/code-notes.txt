@@ -43,7 +43,19 @@
   hex characters as possible. The only exception is when they are
   separated from the rest of the string by literal concatenation:
 
-      "\xC2\xA9" "2018" (gives ©2018)
+    "Copyright" "\xC2\xA9" "2018" (gives "Copyright ©2018")
+
+  When used in translatable strings, such escape sequences cannot be
+  assigned to macros for readability, since the xgettext tool does not
+  understand macros. That is, the following will not work as expected:
+
+    #define COPYRIGHT_SIGN "\302\251"
+    ... = gettext("Copyright " COPYRIGHT_SIGN "2018");
+
+  Instead, the escape sequence should be put inline (here we separate
+  it from the rest of the string for better readability):
+
+    ... = gettext("Copyright " "\302\251" "2018");
 
 * In general, define arrays without an explicit size. When the number
   of elements in the array must match some constant, it should be
