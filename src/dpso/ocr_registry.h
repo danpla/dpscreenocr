@@ -17,18 +17,15 @@ namespace dpso::ocr {
 // directory. It solves the following problems:
 //
 // * All DpsoOcr objects should be notified when ocr::LangManager is
-//   created so that they can finish recognition. This is done via
-//   langManagerCreated().
+//   about to be created so that they can finish recognition.
 //
 // * All DpsoOcr objects should also know when ocr::LangManager is
-//   deleted so that they can refresh the cached language lists. This
-//   is done via langManagerDeleted().
+//   deleted so that they can refresh the cached language lists.
 //
 // * An DpsoOcr object should be able to check if ocr::LangManager is
 //   active in order to reject queuing new OCR jobs and avoid the
 //   case when both ocr::Recognizer and ocr::LangManager are accessed
-//   concurrently from different threads. This is done via
-//   getLangManagerIsActive().
+//   concurrently from different threads.
 //
 // * All of the above should work regardless of whether DpsoOcr is
 //   created before ocr::LangManager or vice versa.
@@ -40,7 +37,7 @@ public:
     void add(DpsoOcr& ocr);
     void remove(DpsoOcr& ocr);
 
-    void langManagerCreated();
+    void langManagerAboutToBeCreated();
     void langManagerDeleted();
 
     bool getLangManagerIsActive() const;

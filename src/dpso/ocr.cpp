@@ -639,13 +639,13 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 namespace dpso::ocr {
 
 
-void onLangManagerCreated(DpsoOcr& ocr)
+void beforeLangManagerCreated(DpsoOcr& ocr)
 {
     waitJobsToFinish(ocr);
 }
 
 
-void onLangManagerDeleted(DpsoOcr& ocr)
+void afterLangManagerDeleted(DpsoOcr& ocr)
 {
     ocr.recognizer->reloadLangs();
     reloadLangs(ocr);

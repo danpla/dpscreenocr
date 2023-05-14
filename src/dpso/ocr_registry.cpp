@@ -7,8 +7,8 @@
 namespace dpso::ocr {
 
 
-void onLangManagerCreated(DpsoOcr& ocr);
-void onLangManagerDeleted(DpsoOcr& ocr);
+void beforeLangManagerCreated(DpsoOcr& ocr);
+void afterLangManagerDeleted(DpsoOcr& ocr);
 
 
 static std::vector<std::weak_ptr<OcrRegistry>> cache;
@@ -79,12 +79,12 @@ void OcrRegistry::remove(DpsoOcr& ocr)
 }
 
 
-void OcrRegistry::langManagerCreated()
+void OcrRegistry::langManagerAboutToBeCreated()
 {
     langManagerIsActive = true;
 
     for (auto* ocr : ocrs)
-        onLangManagerCreated(*ocr);
+        beforeLangManagerCreated(*ocr);
 }
 
 
@@ -93,7 +93,7 @@ void OcrRegistry::langManagerDeleted()
     langManagerIsActive = false;
 
     for (auto* ocr : ocrs)
-        onLangManagerDeleted(*ocr);
+        afterLangManagerDeleted(*ocr);
 }
 
 

@@ -376,7 +376,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
     impl->dataDir = dataDir;
     impl->ocrRegistry = dpso::ocr::OcrRegistry::get(
         engineId.c_str(), dataDir);
-    impl->ocrRegistry->langManagerCreated();
+    impl->ocrRegistry->langManagerAboutToBeCreated();
 
     try {
         impl->langManager = ocrEngine.createLangManager(dataDir);
