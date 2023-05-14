@@ -787,14 +787,14 @@ void MainWindow::updateStatus()
             Status::busy,
             dpsoStrNFormat(
                 progressStatusFmt.c_str(),
-                {{"progress",
+                {
+                    {"progress",
                         std::to_string(totalProgress).c_str()},
                     {"current_job",
-                        std::to_string(
-                            progress.curJob).c_str()},
+                        std::to_string(progress.curJob).c_str()},
                     {"total_jobs",
-                        std::to_string(
-                            progress.totalJobs).c_str()}}));
+                        std::to_string(progress.totalJobs).c_str()}
+                }));
 
         uiTaskbarSetProgress(taskbar.get(), totalProgress);
 

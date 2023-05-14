@@ -100,9 +100,9 @@ void runLangManager(
         buttonBox, &QDialogButtonBox::rejected,
         &dialog, &QDialog::reject);
 
-    auto* button = buttonBox->addButton(
+    auto* closeButton = buttonBox->addButton(
         _("Close"), QDialogButtonBox::RejectRole);
-    button->setDefault(true);
+    closeButton->setDefault(true);
 
     auto* layout = new QVBoxLayout(&dialog);
     layout->addWidget(tabs);

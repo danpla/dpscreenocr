@@ -90,9 +90,6 @@ LangManagerPage::LangManagerPage(
 
     treeView->setModel(sortFilterProxyModel);
 
-    //for (int i = 0; i < sortFilterProxyModel->columnCount(); ++i)
-    //    treeView->resizeColumnToContents(i);
-
     actionButton = new QPushButton(actionName);
     actionButton->setAutoDefault(false);
     actionButton->setEnabled(false);
@@ -243,8 +240,11 @@ bool LangManagerPageRemove::performAction(
                     "Remove \342\200\234{name}\342\200\235?",
                     "Remove {count} selected languages?",
                     langCodes.size()),
-                {{"count", std::to_string(langCodes.size()).c_str()},
-                    {"name", langName.c_str()}}),
+                {
+                    {"count",
+                        std::to_string(langCodes.size()).c_str()},
+                    {"name", langName.c_str()}
+                }),
             _("Cancel"),
             _("Remove")))
         return false;
