@@ -53,7 +53,7 @@ BackendExecutor::BackendExecutor(
 
 BackendExecutor::~BackendExecutor()
 {
-    execute(*actionExecutor, [this](){ backend.reset(); });
+    execute(*actionExecutor, [&]{ backend.reset(); });
 }
 
 
@@ -72,7 +72,7 @@ Selection& BackendExecutor::getSelection()
 std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
     const Rect& rect)
 {
-    return execute(*actionExecutor, [&](){
+    return execute(*actionExecutor, [&]{
         return backend->takeScreenshot(rect);
     });
 }
@@ -80,7 +80,7 @@ std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
 
 void BackendExecutor::update()
 {
-    execute(*actionExecutor, [this](){ backend->update(); });
+    execute(*actionExecutor, [&]{ backend->update(); });
 }
 
 

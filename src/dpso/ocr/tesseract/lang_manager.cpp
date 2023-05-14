@@ -208,14 +208,11 @@ void TesseractLangManager::installLang(
             url.c_str(),
             userAgent.c_str(),
             filePath.c_str(),
-            makeDownloadProgressHandler(
-                progressHandler, canceled));
+            makeDownloadProgressHandler(progressHandler, canceled));
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::printf(
             "Can't download \"%s\" to \"%s\": %s",
-            url.c_str(),
-            filePath.c_str(),
-            e.what()).c_str());
+            url.c_str(), filePath.c_str(), e.what()).c_str());
     }
 
     if (!canceled)
@@ -233,8 +230,7 @@ void TesseractLangManager::removeLang(int langIdx)
     if (dpsoRemove(filePath.c_str()) != 0)
         throw LangManagerError{str::printf(
             "Can't remove \"%s\": %s",
-            filePath.c_str(),
-            std::strerror(errno))};
+            filePath.c_str(), std::strerror(errno))};
 
     if (!langInfos[langIdx].url.empty())
         langInfos[langIdx].state = LangState::notInstalled;

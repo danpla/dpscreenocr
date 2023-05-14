@@ -8,7 +8,7 @@ namespace dpso::backend {
 
 
 #define EXECUTE(CALL) \
-    execute(actionExecutor, [&](){ return keyManager.CALL; })
+    execute(actionExecutor, [&]{ return keyManager.CALL; })
 
 
 KeyManagerExecutor::KeyManagerExecutor(

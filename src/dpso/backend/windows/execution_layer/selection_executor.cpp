@@ -8,7 +8,7 @@ namespace dpso::backend {
 
 
 #define EXECUTE(CALL) \
-    execute(actionExecutor, [&](){ return selection.CALL; })
+    execute(actionExecutor, [&]{ return selection.CALL; })
 
 
 SelectionExecutor::SelectionExecutor(

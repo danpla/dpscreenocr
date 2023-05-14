@@ -19,7 +19,8 @@ public:
     void execute(Action& action) override;
 private:
     std::thread thread;
-    std::condition_variable condVar;
+    std::condition_variable actionSetCondVar;
+    std::condition_variable actionDoneCondVar;
     std::mutex mutex;
 
     bool terminate;
@@ -34,7 +35,8 @@ private:
 
 BgThreadActionExecutor::BgThreadActionExecutor()
     : thread{}
-    , condVar{}
+    , actionSetCondVar{}
+    , actionDoneCondVar{}
     , mutex{}
     , terminate{}
     , currentAction{}
@@ -46,7 +48,7 @@ BgThreadActionExecutor::BgThreadActionExecutor()
 
 BgThreadActionExecutor::~BgThreadActionExecutor()
 {
-    dpso::backend::execute(*this, [this](){ terminate = true; });
+    backend::execute(*this, [&]{ terminate = true; });
     thread.join();
 }
 
@@ -55,19 +57,20 @@ void BgThreadActionExecutor::execute(Action& action)
 {
     {
         const std::lock_guard guard{mutex};
-        actionException = nullptr;
         currentAction = &action;
     }
 
-    condVar.notify_one();
+    actionSetCondVar.notify_one();
 
     {
         std::unique_lock lock{mutex};
-        condVar.wait(lock, [&]{ return !currentAction; });
+        actionDoneCondVar.wait(lock, [&]{ return !currentAction; });
     }
 
-    if (actionException)
+    if (actionException) {
         std::rethrow_exception(actionException);
+        actionException = nullptr;
+    }
 }
 
 
@@ -75,7 +78,7 @@ void BgThreadActionExecutor::threadLoop()
 {
     while (!terminate) {
         std::unique_lock lock{mutex};
-        condVar.wait(lock, [&]{ return currentAction; });
+        actionSetCondVar.wait(lock, [&]{ return currentAction; });
 
         try {
             currentAction->action();
@@ -88,7 +91,7 @@ void BgThreadActionExecutor::threadLoop()
         // Unlock manually to avoid waking up the caller's thread only
         // to block again.
         lock.unlock();
-        condVar.notify_one();
+        actionDoneCondVar.notify_one();
     }
 }
 
