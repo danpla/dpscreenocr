@@ -160,7 +160,7 @@ MainWindow::MainWindow()
     createQActions();
 
     tabs = new QTabWidget();
-    tabs->addTab(createMainTab(), pgettext("ui.tab", "Main"));
+    tabs->addTab(createMainTab(), pgettext("ui_tab", "Main"));
     tabs->addTab(createHistoryTab(), _("History"));
     tabs->addTab(createAboutTab(), _("About"));
 
@@ -819,7 +819,7 @@ void MainWindow::updateStatus()
         setStatus(Status::warning, _("Please select actions"));
     else
         // Translators: Program is ready for OCR
-        setStatus(Status::ok, pgettext("ocr.status", "Ready"));
+        setStatus(Status::ok, pgettext("ocr_status", "Ready"));
 
     statusValid = true;
 }

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-05-06 20:25+0200\n"
+"POT-Creation-Date: 2023-05-20 22:24+0200\n"
 "PO-Revision-Date: 2023-04-11 18:48+0000\n"
 "Last-Translator: Eryk Michalak <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -662,17 +662,17 @@ msgstr ""
 msgid "An error occurred while fetching the list of languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:463
+#: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:462
 msgid "Language manager"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:94
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:157
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:154
 msgid "Install"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:95
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:157
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:154
 msgid "Update"
 msgstr ""
 
@@ -689,19 +689,19 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:199
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:196
 msgid "An error occurred while installing languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:200
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:197
 msgid "An error occurred while updating languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:214
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:211
 msgid "Remove…"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:243
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:240
 msgid "Remove “{name}”?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] ""
@@ -721,7 +721,7 @@ msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Rozpoznano {progress}% ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp:163
-msgctxt "ui.tab"
+msgctxt "ui_tab"
 msgid "Main"
 msgstr "Główny"
 
@@ -733,60 +733,60 @@ msgstr "O programie"
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Rozpoznawanie jeszcze się nie zakończyło. Chcesz zrezygnować?"
 
-#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:432
+#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:431
 msgid "Quit"
 msgstr "Wyjdź"
 
-#: src/ui/qt/main_window.cpp:424
+#: src/ui/qt/main_window.cpp:423
 msgid "Show {app_name}"
 msgstr "Pokaż {app_name}"
 
-#: src/ui/qt/main_window.cpp:440
+#: src/ui/qt/main_window.cpp:439
 msgid "Status"
 msgstr "Stan"
 
-#: src/ui/qt/main_window.cpp:450
+#: src/ui/qt/main_window.cpp:449
 msgid "Character recognition"
 msgstr "Rozpoznawanie znaków"
 
-#: src/ui/qt/main_window.cpp:454
+#: src/ui/qt/main_window.cpp:453
 msgid "Split text blocks"
 msgstr "Podziel bloki tekstu"
 
-#: src/ui/qt/main_window.cpp:456
+#: src/ui/qt/main_window.cpp:455
 msgid "Split independent text blocks, such as columns"
 msgstr "Podziel niezależne bloki tekstu, np. na kolumny"
 
-#: src/ui/qt/main_window.cpp:459
+#: src/ui/qt/main_window.cpp:458
 msgid "Languages:"
 msgstr "Języki:"
 
-#: src/ui/qt/main_window.cpp:465
+#: src/ui/qt/main_window.cpp:464
 msgid "Install, update, and remove languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:476
+#: src/ui/qt/main_window.cpp:475
 msgid "Actions"
 msgstr "Akcje"
 
-#: src/ui/qt/main_window.cpp:486
+#: src/ui/qt/main_window.cpp:485
 msgid "Hotkey"
 msgstr "Skróty klawiszowe"
 
-#: src/ui/qt/main_window.cpp:816
+#: src/ui/qt/main_window.cpp:815
 msgid "Please install languages"
 msgstr "Zainstaluj języki"
 
-#: src/ui/qt/main_window.cpp:818
+#: src/ui/qt/main_window.cpp:817
 msgid "Please select languages"
 msgstr "Wybierz języki"
 
-#: src/ui/qt/main_window.cpp:820
+#: src/ui/qt/main_window.cpp:819
 msgid "Please select actions"
 msgstr "Proszę wybrać czynności"
 
 #. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:823
-msgctxt "ocr.status"
+#: src/ui/qt/main_window.cpp:822
+msgctxt "ocr_status"
 msgid "Ready"
 msgstr "Gotowe"
