@@ -109,12 +109,12 @@ public:
 
     LockedRef<const T> lock() const
     {
-        return LockedRef{v, mutex};
+        return {v, mutex};
     }
 
     LockedRef<T> lock()
     {
-        return LockedRef{v, mutex};
+        return {v, mutex};
     }
 private:
     T v;

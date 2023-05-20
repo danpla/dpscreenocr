@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "dpso_utils/error.h"
+#include "dpso_utils/scope_exit.h"
 #include "dpso_utils/synchronized.h"
 
 #include "ocr/engine.h"
@@ -37,116 +38,55 @@ DpsoOcrLangOpStatus toPublic(const LangOpStatus& status)
 }
 
 
-class Lang {
-public:
-    Lang(
-            const std::string& code,
-            const std::string& name,
-            LangState state)
-        : code{code}
-        , name{name}
-        , state{state}
-        , installMark{}
-    {
-    }
-
-    const std::string& getName() const
-    {
-        return name;
-    }
-
-    const std::string& getCode() const
-    {
-        return code;
-    }
-
-    LangState getState() const
-    {
-        return state.lock().get();
-    }
-
-    void setState(LangState newState)
-    {
-        state.lock().get() = newState;
-    }
-
-    bool getInstallMark() const
-    {
-        return installMark;
-    }
-
-    void setInstallMark(bool newInstallMark)
-    {
-        installMark = newInstallMark;
-    }
-private:
+struct Lang {
     std::string code;
     std::string name;
+    // State is the only field that can be changed from the background
+    // thread (during installation).
     dpso::Synchronized<LangState> state;
     bool installMark;
 };
 
 
-class Langs {
-public:
-    void reload(const dpso::ocr::LangManager& langManager)
-    {
-        langs.clear();
+void reloadLangs(
+    std::vector<Lang>& langs,
+    const dpso::ocr::LangManager& langManager)
+{
+    langs.clear();
 
-        langs.reserve(langManager.getNumLangs());
-        for (auto i = 0; i < langManager.getNumLangs(); ++i)
-            langs.push_back(
-                {
-                    langManager.getLangCode(i),
-                    langManager.getLangName(i),
-                    langManager.getLangState(i)
-                });
-
-        std::sort(
-            langs.begin(), langs.end(),
-            [](const Lang& a, const Lang& b)
+    langs.reserve(langManager.getNumLangs());
+    for (auto i = 0; i < langManager.getNumLangs(); ++i)
+        langs.push_back(
             {
-                return a.getCode() < b.getCode();
-            });
-    }
-
-    int getCount() const
-    {
-        return langs.size();
-    }
-
-    std::optional<int> getIdx(const char* langCode) const
-    {
-        const auto iter = std::lower_bound(
-            langs.begin(), langs.end(), langCode,
-            [&](const Lang& lang, const char* langCode)
-            {
-                return lang.getCode() < langCode;
+                langManager.getLangCode(i),
+                langManager.getLangName(i),
+                langManager.getLangState(i),
+                false
             });
 
-        if (iter != langs.end() && iter->getCode() == langCode)
-            return iter - langs.begin();
+    std::sort(
+        langs.begin(), langs.end(),
+        [](const Lang& a, const Lang& b)
+        {
+            return a.code < b.code;
+        });
+}
 
-        return {};
-    }
 
-    const Lang& get(int idx) const
-    {
-        return langs[idx];
-    }
+void clearExternalLangs(std::vector<Lang>& langs)
+{
+    for (auto iter = langs.begin(); iter < langs.end();) {
+        if (iter->state.lock().get() == LangState::notInstalled) {
+            iter = langs.erase(iter);
+            continue;
+        }
 
-    Lang& get(int idx)
-    {
-        return langs[idx];
-    }
+        iter->installMark = false;
+        iter->state = LangState::installed;
 
-    void remove(int idx)
-    {
-        langs.erase(langs.begin() + idx);
+        ++iter;
     }
-private:
-    std::vector<Lang> langs;
-};
+}
 
 
 class LangOpCanceled : public std::runtime_error {
@@ -198,7 +138,7 @@ public:
         void requestCancel()
         {
             if (cancelFlag)
-                cancelFlag->lock().get() = true;
+                *cancelFlag = true;
         }
 
         void waitToFinish()
@@ -220,7 +160,7 @@ public:
     ~LangOpExecutor()
     {
         if (cancelFlag)
-            cancelFlag->lock().get() = true;
+            *cancelFlag = true;
 
         if (future.valid())
             future.wait();
@@ -228,7 +168,7 @@ public:
 
     void setUserAgent(const char* newUserAgent)
     {
-        userAgent.lock().get() = newUserAgent;
+        userAgent = newUserAgent;
     }
 
     Control getControl() const
@@ -293,7 +233,7 @@ struct Impl {
 
     std::shared_ptr<dpso::ocr::OcrRegistry> ocrRegistry;
 
-    Langs langs;
+    std::vector<Lang> langs;
 
     std::unique_ptr<dpso::ocr::LangManager> langManager;
 
@@ -385,7 +325,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
         return nullptr;
     }
 
-    impl->langs.reload(*impl->langManager);
+    reloadLangs(impl->langs, *impl->langManager);
 
     impl->langOpExecutor = std::make_unique<LangOpExecutor>(
         *impl->langManager);
@@ -440,7 +380,7 @@ void dpsoOcrLangManagerSetUserAgent(
 int dpsoOcrLangManagerGetNumLangs(
     const DpsoOcrLangManager* langManager)
 {
-    return langManager ? langManager->getImpl().langs.getCount() : 0;
+    return langManager ? langManager->getImpl().langs.size() : 0;
 }
 
 
@@ -450,20 +390,33 @@ int dpsoOcrLangManagerGetLangIdx(
     if (!langManager)
         return -1;
 
-    return langManager->getImpl().langs.getIdx(langCode).value_or(-1);
+    const auto& langs = langManager->getImpl().langs;
+
+    const auto iter = std::lower_bound(
+        langs.begin(), langs.end(), langCode,
+        [&](const Lang& lang, const char* langCode)
+        {
+            return lang.code < langCode;
+        });
+
+    if (iter != langs.end() && iter->code == langCode)
+        return iter - langs.begin();
+
+    return -1;
 }
 
 
 template<typename T>
 static auto getLang(T* langManager, int langIdx)
-    -> decltype(&langManager->getImpl().langs.get(0))
+    -> decltype(&langManager->getImpl().langs[0])
 {
     if (!langManager
             || langIdx < 0
-            || langIdx >= langManager->getImpl().langs.getCount())
+            || static_cast<std::size_t>(langIdx)
+                >= langManager->getImpl().langs.size())
         return {};
 
-    return &langManager->getImpl().langs.get(langIdx);
+    return &langManager->getImpl().langs[langIdx];
 }
 
 
@@ -471,7 +424,7 @@ const char* dpsoOcrLangManagerGetLangCode(
     const DpsoOcrLangManager* langManager, int langIdx)
 {
     const auto* lang = getLang(langManager, langIdx);
-    return lang ? lang->getCode().c_str() : "";
+    return lang ? lang->code.c_str() : "";
 }
 
 
@@ -479,7 +432,7 @@ const char* dpsoOcrLangManagerGetLangName(
     const DpsoOcrLangManager* langManager, int langIdx)
 {
     const auto* lang = getLang(langManager, langIdx);
-    return lang ? lang->getName().c_str() : "";
+    return lang ? lang->name.c_str() : "";
 }
 
 
@@ -490,7 +443,7 @@ DpsoOcrLangState dpsoOcrLangManagerGetLangState(
     if (!lang)
         return {};
 
-    switch (lang->getState()) {
+    switch (lang->state.lock().get()) {
     case LangState::notInstalled:
         return DpsoOcrLangStateNotInstalled;
     case LangState::installed:
@@ -507,24 +460,6 @@ DpsoOcrLangState dpsoOcrLangManagerGetLangState(
 bool dpsoOcrLangOpStatusIsError(DpsoOcrLangOpStatusCode code)
 {
     return code >= DpsoOcrLangOpStatusCodeGenericError;
-}
-
-
-static void clearExternalLangs(Langs& langs)
-{
-    for (int i = 0; i < langs.getCount();) {
-        auto& lang = langs.get(i);
-
-        if (lang.getState() == LangState::notInstalled) {
-            langs.remove(i);
-            continue;
-        }
-
-        lang.setInstallMark(false);
-        lang.setState(LangState::installed);
-
-        ++i;
-    }
 }
 
 
@@ -552,12 +487,13 @@ bool dpsoOcrLangManagerStartFetchExternalLangs(
 
     clearExternalLangs(impl.langs);
 
-    impl.fetchControl = impl.langOpExecutor->execute([](
-        dpso::ocr::LangManager& langManager,
-        const dpso::Synchronized<bool>& /* cancelRequested */)
-    {
-        langManager.fetchExternalLangs();
-    });
+    impl.fetchControl = impl.langOpExecutor->execute(
+        [](
+            dpso::ocr::LangManager& langManager,
+            const dpso::Synchronized<bool>& /* cancelRequested */)
+        {
+            langManager.fetchExternalLangs();
+        });
 
     return true;
 }
@@ -610,7 +546,7 @@ bool dpsoOcrLangManagerLoadFetchedExternalLangs(
 
     assert(fetchStatus.code == DpsoOcrLangOpStatusCodeSuccess);
 
-    impl.langs.reload(*impl.langManager);
+    reloadLangs(impl.langs, *impl.langManager);
 
     return true;
 }
@@ -620,7 +556,7 @@ bool dpsoOcrLangManagerGetInstallMark(
     const DpsoOcrLangManager* langManager, int langIdx)
 {
     const auto* lang = getLang(langManager, langIdx);
-    return lang && lang->getInstallMark();
+    return lang && lang->installMark;
 }
 
 
@@ -628,15 +564,12 @@ void dpsoOcrLangManagerSetInstallMark(
     DpsoOcrLangManager* langManager, int langIdx, bool installMark)
 {
     auto* lang = getLang(langManager, langIdx);
-    if (lang && lang->getState() != LangState::installed)
-        lang->setInstallMark(installMark);
+    if (lang && lang->state.lock().get() != LangState::installed)
+        lang->installMark = installMark;
 }
 
 
-namespace {
-
-
-std::optional<int> getLangIdx(
+static std::optional<int> getLangIdx(
     const dpso::ocr::LangManager& langManager, const char* langCode)
 {
     for (int i = 0; i < langManager.getNumLangs(); ++i)
@@ -647,79 +580,40 @@ std::optional<int> getLangIdx(
 }
 
 
-class InstallContext {
-public:
-    InstallContext(
-            Langs& langs,
-            dpso::Synchronized<DpsoOcrLangInstallProgress>& progress)
-        : langs{langs}
-        , progress{progress}
-    {
-    }
-
-    const std::string& getLangCode(int langIdx) const
-    {
-        return langs.get(langIdx).getCode();
-    }
-
-    void setLangState(int langIdx, LangState newState)
-    {
-        langs.get(langIdx).setState(newState);
-    }
-
-    void setProgress(const DpsoOcrLangInstallProgress& newProgress)
-    {
-        progress.lock().get() = newProgress;
-    }
-private:
-    Langs& langs;
-    dpso::Synchronized<DpsoOcrLangInstallProgress>& progress;
-};
-
-
-void installLangs(
+static void installLangs(
     dpso::ocr::LangManager& langManager,
     const dpso::Synchronized<bool>& cancelRequested,
-    InstallContext& context,
-    const std::vector<int> installList)
+    const std::vector<int> installList,
+    std::vector<Lang>& langs,
+    dpso::Synchronized<DpsoOcrLangInstallProgress>& installProgress)
 {
-    const struct ProgressReset {
-        ProgressReset(InstallContext& context) : context{context} {}
-        ~ProgressReset() { context.setProgress({-1, 0, 0, 0}); }
-
-        InstallContext& context;
-    } progressGuard{context};
-
     for (std::size_t i = 0; i < installList.size(); ++i) {
         if (cancelRequested.lock().get())
             throw LangOpCanceled{};
 
         const auto langIdx = installList[i];
+        auto& lang = langs[langIdx];
+
         const auto baseLangIdx = getLangIdx(
-            langManager, context.getLangCode(langIdx).c_str());
+            langManager, lang.code.c_str());
         assert(baseLangIdx);
 
         langManager.installLang(
             *baseLangIdx,
             [&](int progress)
             {
-                context.setProgress(
-                    {
-                        langIdx,
-                        progress,
-                        static_cast<int>(i + 1),
-                        static_cast<int>(installList.size())
-                    });
+                installProgress = {
+                    langIdx,
+                    progress,
+                    static_cast<int>(i + 1),
+                    static_cast<int>(installList.size())
+                };
 
                 return !cancelRequested.lock().get();
             });
 
-        context.setLangState(
-            langIdx, langManager.getLangState(*baseLangIdx));
+        lang.state = langManager.getLangState(*baseLangIdx);
     }
-}
-
-
 }
 
 
@@ -740,14 +634,13 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
 
     std::vector<int> installList;
 
-    installList.reserve(impl.langs.getCount());
-    for (int i = 0; i < impl.langs.getCount(); ++i) {
-        if (!impl.langs.get(i).getInstallMark())
+    for (std::size_t i = 0; i < impl.langs.size(); ++i) {
+        if (!impl.langs[i].installMark)
             continue;
 
         installList.push_back(i);
 
-        impl.langs.get(i).setInstallMark(false);
+        impl.langs[i].installMark = false;
     }
 
     if (installList.empty()) {
@@ -755,7 +648,7 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
         return false;
     }
 
-    impl.installProgress.lock().get() = {
+    impl.installProgress = {
         installList[0], 0, 1, static_cast<int>(installList.size())
     };
 
@@ -764,13 +657,18 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
             dpso::ocr::LangManager& langManager,
             const dpso::Synchronized<bool>& cancelRequested)
         {
-            InstallContext installContext{
-                impl.langs, impl.installProgress};
+            const dpso::ScopeExit resetProgress{
+                [&]
+                {
+                    impl.installProgress = {-1, 0, 0, 0};
+                }};
+
             installLangs(
                 langManager,
                 cancelRequested,
-                installContext,
-                installList);
+                installList,
+                impl.langs,
+                impl.installProgress);
         });
 
     return true;
@@ -834,12 +732,12 @@ bool dpsoOcrLangManagerRemoveLang(
         return false;
     }
 
-    if (lang->getState() == LangState::notInstalled)
+    if (lang->state.lock().get() == LangState::notInstalled)
         return true;
 
 
     const auto baseLangIdx = getLangIdx(
-        *impl.langManager, lang->getCode().c_str());
+        *impl.langManager, lang->code.c_str());
 
     // Fetching external languages cannot implicitly "remove" locally
     // available ones from LangManager. Since we rejected the language
@@ -863,9 +761,9 @@ bool dpsoOcrLangManagerRemoveLang(
     }
 
     if (impl.langManager->getNumLangs() == numLangsBefore)
-        lang->setState(impl.langManager->getLangState(*baseLangIdx));
+        lang->state = impl.langManager->getLangState(*baseLangIdx);
     else
-        impl.langs.remove(langIdx);
+        impl.langs.erase(impl.langs.begin() + langIdx);
 
     return true;
 }
