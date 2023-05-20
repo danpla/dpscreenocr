@@ -367,8 +367,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
     //    a bug: it doesn't call closeEvent(), but instead hides the
     //    window even after QSessionManager::cancel(). The best we can
     //    do here is to disable interaction.
-    #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) \
-            && QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
+    #if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
     noInteraction = true;
     #endif
 

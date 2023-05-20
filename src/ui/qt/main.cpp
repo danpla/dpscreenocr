@@ -52,8 +52,7 @@ int main(int argc, char *argv[])
     uiPrepareEnvironment(argv);
 
     // High DPI support is enabled by default in Qt 6.
-    #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0) \
-        && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
