@@ -22,7 +22,7 @@ def check_min_version(tool_path, min_version):
 
     if any(not s.isdigit() for s in version.split('.')):
         sys.exit(
-            'Unexpected {} version string format \"{}\"'.format(
+            'Unexpected {} version info string format \"{}\"'.format(
                 tool_path, version_info))
 
     if version < min_version:
