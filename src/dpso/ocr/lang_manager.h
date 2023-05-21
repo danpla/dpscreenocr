@@ -11,7 +11,7 @@ namespace dpso::ocr {
 class LangManager {
 public:
     // The progress is in percents from 0 to 100. If the file size is
-    // unknown, the method will be called at fixed intervals with -1
+    // unknown, the function is called at fixed intervals with -1
     // progress value.
     //
     // Returns false to terminate installation.
