@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <chrono>
 #include <future>
 #include <memory>
 #include <optional>
@@ -125,7 +126,7 @@ public:
         {
             if (status.code == DpsoOcrLangOpStatusCodeProgress
                     && future.valid()
-                    && future.wait_for(std::chrono::seconds{0})
+                    && future.wait_for(std::chrono::seconds{})
                         == std::future_status::ready) {
                 status = future.get();
                 assert(
@@ -173,7 +174,7 @@ public:
 
     Control getControl() const
     {
-        return Control{future, cancelFlag};
+        return {future, cancelFlag};
     }
 
     template<typename Fn>
