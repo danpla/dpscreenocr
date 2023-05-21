@@ -20,6 +20,7 @@ function(gen_html_manual dst_dir)
             "${PANDOC_EXE}"
             --from=markdown
             --to=html5
+            --eol=lf
             --standalone
             --css=manual-data/manual.css
             --template=${DOC_DIR}/manual-data/template.html
