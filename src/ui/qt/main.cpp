@@ -11,11 +11,15 @@
 #include <QTranslator>
 
 #include "dpso/dpso.h"
+#include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
 #include "ui_common/ui_common.h"
 
 #include "main_window.h"
 #include "utils.h"
+
+
+#define _(S) gettext(S)
 
 
 static void installQtTranslations(QApplication& app)
@@ -82,6 +86,8 @@ int main(int argc, char *argv[])
 
     app.setWindowIcon(getThemeIcon(uiAppFileName));
 
+    uiInitIntl();
+
     const ui::SingleInstanceGuardUPtr singleInstanceGuard{
         uiSingleInstanceGuardCreate(uiAppFileName)};
     if (!singleInstanceGuard) {
@@ -97,11 +103,12 @@ int main(int argc, char *argv[])
         QMessageBox::information(
             nullptr,
             uiAppName,
-            QString(uiAppName) + " is already running");
+            dpsoStrNFormat(
+                _("{app_name} is already running"),
+                {{"app_name", uiAppName}}));
         return EXIT_SUCCESS;
     }
 
-    uiInitIntl();
     installQtTranslations(app);
 
     MainWindow mainWindow;

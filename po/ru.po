@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-05-20 22:24+0200\n"
+"POT-Creation-Date: 2023-05-21 13:42+0200\n"
 "PO-Revision-Date: 2023-05-06 19:05+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -717,6 +717,10 @@ msgstr "Некоторые языки не были удалены"
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp:33
 msgid "Check your network connection and try again."
 msgstr "Проверьте ваше сетевое соединение и попробуйте снова."
+
+#: src/ui/qt/main.cpp:107
+msgid "{app_name} is already running"
+msgstr ""
 
 #: src/ui/qt/main_window.cpp:52
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"

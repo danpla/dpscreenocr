@@ -10,5 +10,6 @@ src/ui/qt/lang_manager/lang_list.cpp
 src/ui/qt/lang_manager/lang_manager.cpp
 src/ui/qt/lang_manager/lang_manager_page.cpp
 src/ui/qt/lang_manager/lang_op_status_error.cpp
+src/ui/qt/main.cpp
 src/ui/qt/main_window.cpp
 src/ui/qt/utils.cpp

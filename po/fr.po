@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-05-20 22:24+0200\n"
+"POT-Creation-Date: 2023-05-21 13:42+0200\n"
 "PO-Revision-Date: 2023-01-13 10:56+0000\n"
 "Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -711,6 +711,10 @@ msgstr ""
 
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp:33
 msgid "Check your network connection and try again."
+msgstr ""
+
+#: src/ui/qt/main.cpp:107
+msgid "{app_name} is already running"
 msgstr ""
 
 #: src/ui/qt/main_window.cpp:52
