@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-05-21 13:42+0200\n"
-"PO-Revision-Date: 2022-11-21 15:48+0000\n"
+"PO-Revision-Date: 2023-05-22 17:51+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/hr/>\n"
@@ -13,9 +13,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.18-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -619,105 +619,105 @@ msgstr "Kȏd"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:115
 msgid "Cancel…"
-msgstr ""
+msgstr "Odustani …"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Are you sure you want to cancel the installation?"
-msgstr ""
+msgstr "Stvarno želiš prekinuti instalaciju?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
 msgid "Continue installation"
-msgstr ""
+msgstr "Nastavi instalaciju"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
 msgid "Cancel installation"
-msgstr ""
+msgstr "Prekini instalaciju"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
 msgid "Are you sure you want to cancel the update?"
-msgstr ""
+msgstr "Stvarno želiš prekinuti aktualiziranje?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:139
 msgid "Continue updating"
-msgstr ""
+msgstr "Nastavi aktualiziranje"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:140
 msgid "Cancel update"
-msgstr ""
+msgstr "Prekini aktualiziranje"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
 msgid "Installing “{name}” ({current}/{total})"
-msgstr ""
+msgstr "Instalira se „{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:185
 msgid "Updating “{name}” ({current}/{total})"
-msgstr ""
+msgstr "Aktualizira se „{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/lang_fetch_progress_dialog.cpp:48
 msgid "Fetching the language list…"
-msgstr ""
+msgstr "Dohvaćanje popisa jezika …"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:49
 msgid "An error occurred while fetching the list of languages"
-msgstr ""
+msgstr "Dogodila se greška tijekom dohvaćanje popisa jezika"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:462
 msgid "Language manager"
-msgstr ""
+msgstr "Upravljač jezika"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:94
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:154
 msgid "Install"
-msgstr ""
+msgstr "Instaliraj"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:95
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:154
 msgid "Update"
-msgstr ""
+msgstr "Aktualiziraj"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:96
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:249
 msgid "Remove"
-msgstr ""
+msgstr "Ukloni"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:104 src/ui/qt/utils.cpp:109
 msgid "Close"
-msgstr ""
+msgstr "Zatvori"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:65
 msgid "Filter"
-msgstr ""
+msgstr "Filtar"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:196
 msgid "An error occurred while installing languages"
-msgstr ""
+msgstr "Dogodila se greška tijekom instaliranja jezika"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:197
 msgid "An error occurred while updating languages"
-msgstr ""
+msgstr "Dogodila se greška tijekom aktualiziranja jezika"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:211
 msgid "Remove…"
-msgstr ""
+msgstr "Ukloni …"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:240
 msgid "Remove “{name}”?"
 msgid_plural "Remove {count} selected languages?"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Ukloniti „{name}”?"
+msgstr[1] "Ukloniti {count} odabrana jezika?"
+msgstr[2] "Ukloniti {count} odabranih jezika?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:268
 msgid "Some languages were not removed"
-msgstr ""
+msgstr "Neki jezici nisu uklonjeni"
 
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp:33
 msgid "Check your network connection and try again."
-msgstr ""
+msgstr "Provjeri mrežnu vezu i pokušaj ponovo."
 
 #: src/ui/qt/main.cpp:107
 msgid "{app_name} is already running"
-msgstr ""
+msgstr "Program {app_name} je već pokrenut"
 
 #: src/ui/qt/main_window.cpp:52
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
@@ -766,7 +766,7 @@ msgstr "Jezici:"
 
 #: src/ui/qt/main_window.cpp:464
 msgid "Install, update, and remove languages"
-msgstr ""
+msgstr "Instaliraj, aktualiziraj i ukloni jezike"
 
 #: src/ui/qt/main_window.cpp:475
 msgid "Actions"
