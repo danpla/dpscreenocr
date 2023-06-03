@@ -28,7 +28,8 @@ typedef struct DpsoOcr DpsoOcr;
  * external data. See DpsoOcrEngineDataDirPreference for the details.
  *
  * On failure, sets an error message (dpsoGetError()) and returns
- * null.
+ * null. In particular, the function will fail if a language manager
+ * for the same engine and data dir is active.
  */
 DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir);
 

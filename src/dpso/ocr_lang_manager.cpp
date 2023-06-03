@@ -18,7 +18,7 @@
 #include "ocr/engine.h"
 #include "ocr/lang_manager.h"
 #include "ocr/lang_manager_error.h"
-#include "ocr_registry.h"
+#include "ocr_data_lock.h"
 
 
 namespace {
@@ -232,7 +232,7 @@ struct Impl {
     std::string engineId;
     std::string dataDir;
 
-    std::shared_ptr<dpso::ocr::OcrRegistry> ocrRegistry;
+    std::shared_ptr<dpso::ocr::DataLock> dataLock;
 
     std::vector<Lang> langs;
 
@@ -315,9 +315,8 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
     auto impl = std::make_shared<Impl>();
     impl->engineId = engineId;
     impl->dataDir = dataDir;
-    impl->ocrRegistry = dpso::ocr::OcrRegistry::get(
+    impl->dataLock = dpso::ocr::DataLock::get(
         engineId.c_str(), dataDir);
-    impl->ocrRegistry->langManagerAboutToBeCreated();
 
     try {
         impl->langManager = ocrEngine.createLangManager(dataDir);
@@ -356,14 +355,6 @@ void dpsoOcrLangManagerDelete(DpsoOcrLangManager* langManager)
             implCache.erase(iter);
             break;
         }
-
-    // LangManager can currently be used by an active operation from
-    // LangOpExecutor, so we should make sure that the executor is
-    // done before we call langManagerDeleted().
-    // TODO: Make a more robust, RAII-based solution.
-    impl.langOpExecutor.reset();
-
-    impl.ocrRegistry->langManagerDeleted();
 
     delete langManager;
 }

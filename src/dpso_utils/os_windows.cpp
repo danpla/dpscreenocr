@@ -26,8 +26,7 @@ int64_t dpsoGetFileSize(const char* filePath)
 
     WIN32_FILE_ATTRIBUTE_DATA attrs;
     if (!GetFileAttributesExW(
-            filePathUtf16.c_str(), GetFileExInfoStandard, &attrs))
-    {
+            filePathUtf16.c_str(), GetFileExInfoStandard, &attrs)) {
         dpsoSetError(
             "GetFileAttributesExW(): %s",
             dpso::windows::getErrorMessage(GetLastError()).c_str());

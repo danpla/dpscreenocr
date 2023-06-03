@@ -18,9 +18,9 @@ add_library(
     ocr/tesseract/lang_utils.cpp
     ocr/tesseract/recognizer.cpp
     ocr/tesseract/utils.cpp
+    ocr_data_lock.cpp
     ocr_engine.cpp
     ocr_lang_manager.cpp
-    ocr_registry.cpp
     selection.cpp)
 
 # Backend

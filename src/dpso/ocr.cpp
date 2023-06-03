@@ -30,7 +30,7 @@
 #include "ocr/engine.h"
 #include "ocr/recognizer.h"
 #include "ocr/recognizer_error.h"
-#include "ocr_registry.h"
+#include "ocr_data_lock.h"
 
 
 // A note on parallelism
@@ -104,9 +104,9 @@ struct Link {
 
 
 struct DpsoOcr {
-    std::unique_ptr<dpso::ocr::Recognizer> recognizer;
+    dpso::ocr::DataLockObserver dataLockObserver;
 
-    std::shared_ptr<dpso::ocr::OcrRegistry> registry;
+    std::unique_ptr<dpso::ocr::Recognizer> recognizer;
 
     std::string defaultLangCode;
     std::vector<Lang> langs;
@@ -158,6 +158,14 @@ static void reloadLangs(DpsoOcr& ocr)
 }
 
 
+static void waitJobsToFinish(DpsoOcr& ocr)
+{
+    std::unique_lock lock{ocr.link.mutex};
+    ocr.link.jobsDoneCondVar.wait(
+        lock, [&]{ return !ocr.link.jobsPending(); });
+}
+
+
 static void threadLoop(DpsoOcr& ocr);
 
 
@@ -176,16 +184,31 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
     // a joinable thread.
     auto ocr = std::make_unique<DpsoOcr>();
 
+    ocr->dataLockObserver = dpso::ocr::DataLockObserver{
+        ocrEngine.getInfo().id.c_str(),
+        dataDir,
+        [&ocr = *ocr]
+        {
+            waitJobsToFinish(ocr);
+        },
+        [&ocr = *ocr]
+        {
+            ocr.recognizer->reloadLangs();
+            reloadLangs(ocr);
+        }
+    };
+
+    if (ocr->dataLockObserver.getIsDataLocked()) {
+        dpsoSetError("OCR data is locked");
+        return nullptr;
+    }
+
     try {
         ocr->recognizer = ocrEngine.createRecognizer(dataDir);
     } catch (dpso::ocr::RecognizerError& e) {
         dpsoSetError("Can't create recognizer: %s", e.what());
         return nullptr;
     }
-
-    ocr->registry = dpso::ocr::OcrRegistry::get(
-        ocrEngine.getInfo().id.c_str(), dataDir);
-    ocr->registry->add(*ocr);
 
     ocr->defaultLangCode = ocr->recognizer->getDefaultLangCode();
     reloadLangs(*ocr);
@@ -215,8 +238,6 @@ void dpsoOcrDelete(DpsoOcr* ocr)
         ocr->link.threadActionCondVar.notify_one();
     }
     ocr->thread.join();
-
-    ocr->registry->remove(*ocr);
 
     delete ocr;
 }
@@ -504,8 +525,8 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         return false;
     }
 
-    if (ocr->registry->getLangManagerIsActive()) {
-        dpsoSetError("Language manager is active");
+    if (ocr->dataLockObserver.getIsDataLocked()) {
+        dpsoSetError("OCR data is locked");
         return false;
     }
 
@@ -607,14 +628,6 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
 }
 
 
-static void waitJobsToFinish(DpsoOcr& ocr)
-{
-    std::unique_lock lock{ocr.link.mutex};
-    ocr.link.jobsDoneCondVar.wait(
-        lock, [&]{ return !ocr.link.jobsPending(); });
-}
-
-
 void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 {
     if (!ocr)
@@ -637,19 +650,6 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 
 
 namespace dpso::ocr {
-
-
-void beforeLangManagerCreated(DpsoOcr& ocr)
-{
-    waitJobsToFinish(ocr);
-}
-
-
-void afterLangManagerDeleted(DpsoOcr& ocr)
-{
-    ocr.recognizer->reloadLangs();
-    reloadLangs(ocr);
-}
 
 
 void init(dpso::backend::Backend& backend)
