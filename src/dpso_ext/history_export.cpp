@@ -48,6 +48,8 @@ static void exportPlainText(const DpsoHistory* history, std::FILE* fp)
         std::fprintf(fp, "=== %s ===\n\n", e.timestamp);
         std::fputs(e.text, fp);
     }
+
+    std::fputs("\n", fp);
 }
 
 
