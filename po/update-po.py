@@ -7,9 +7,9 @@ import subprocess
 import sys
 
 
-APP_NAME='dpScreenOCR'
-APP_FILE_NAME='dpscreenocr'
-BUGS_ADDRESS='https://github.com/danpla/dpscreenocr/issues'
+APP_NAME = 'dpScreenOCR'
+APP_FILE_NAME = 'dpscreenocr'
+BUGS_ADDRESS = 'https://github.com/danpla/dpscreenocr/issues'
 
 
 def check_min_version(tool_path, min_version):
@@ -66,7 +66,7 @@ def main():
         '--join-existing',
         '--directory=..',
         '--output=' + APP_FILE_NAME + '.pot',
-        '-k',
+        '-k',  # Disable default keywords
         '-kComment',
         os.path.join('data', APP_FILE_NAME + '.desktop')))
 
