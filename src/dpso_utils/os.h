@@ -1,9 +1,4 @@
 
-/**
- * \file
- * OS routines
- */
-
 #pragma once
 
 #include <stdbool.h>

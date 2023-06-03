@@ -1,9 +1,4 @@
 
-/**
- * \file
- * String formatting
- */
-
 #pragma once
 
 #include <stddef.h>

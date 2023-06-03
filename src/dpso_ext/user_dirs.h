@@ -1,9 +1,4 @@
 
-/**
- * \file
- * Access to platform-specific user directories
- */
-
 #pragma once
 
 

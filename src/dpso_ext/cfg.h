@@ -1,9 +1,4 @@
 
-/**
- * \file
- * Configuration management
- */
-
 #pragma once
 
 #include <stdbool.h>

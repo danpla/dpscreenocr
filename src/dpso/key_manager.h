@@ -1,9 +1,4 @@
 
-/**
- * \file
- * Hotkey management
- */
-
 #pragma once
 
 #include <stdbool.h>

@@ -1,9 +1,4 @@
 
-/**
- * \file
- * History handling
- */
-
 #pragma once
 
 #include <stdbool.h>

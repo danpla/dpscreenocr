@@ -1,9 +1,4 @@
 
-/**
- * \file
- * OCR routines
- */
-
 #pragma once
 
 #include <stdbool.h>

@@ -1,9 +1,4 @@
 
-/**
- * \file
- * History export
- */
-
 #pragma once
 
 #include <stdbool.h>

@@ -1,9 +1,4 @@
 
-/**
- * \file
- * Interactive on-screen selection
- */
-
 #pragma once
 
 #include <stdbool.h>
