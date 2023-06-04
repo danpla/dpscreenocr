@@ -70,8 +70,12 @@ than languages: "osd" (automatic script and orientation detection) and
 ### Windows
 
 dpScreenOCR for Windows comes with the English language pack. To
-install other languages, visit the [languages page][Language packs],
-download ".traineddata" files you want, and place them in the
+install other languages, use the language manager as described in the
+"[Language manager]" section.
+
+Alternatively, you can install languages manually: download the needed
+Tesseract language files (for example, from the
+[languages page][Language packs]), and place them in the
 `C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data`
 folder. To quickly navigate to this folder, press Windows + R to open
 "Run" and paste `%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`. You can
@@ -97,7 +101,6 @@ For the ZIP version, you need to manually copy languages from
 
 
 # Usage
-
 
 dpScreenOCR is simple to use:
 
@@ -147,8 +150,24 @@ This is the list of languages that dpScreenOCR can use to recognize
 text. You can choose more than one, but be aware that this may slow
 down recognition and reduce its accuracy.
 
-Read the "[Installing languages]" section on how to install language
-packs.
+
+### Language manager
+
+The language manager allows you to install, update, and remove
+languages. It is not available on Unix-like systems, where you can
+handle languages via the system package manager as described in the
+"[Installing languages]" section.
+
+When you open the language manager, it will try to fetch the list of
+available languages from the Internet. If it fails (e.g., if there is
+no network connection), you can still remove languages in the
+corresponding tab.
+
+To install, update, or remove languages, switch to the appropriate
+tab, select one or more languages, and press the action button below
+the language list. You can also use the filter entry to quickly find
+the languages you need; filtering is case-insensitive and applies to
+all columns.
 
 
 ## Actions
