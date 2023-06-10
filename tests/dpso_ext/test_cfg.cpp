@@ -311,7 +311,7 @@ static void testValueOverridingOnLoad(DpsoCfg* cfg)
 }
 
 
-static void testStrValueParsing(DpsoCfg* cfg)
+static void testStrParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -360,7 +360,7 @@ static void testStrValueParsing(DpsoCfg* cfg)
 }
 
 
-static void testIntValueParsing(DpsoCfg* cfg)
+static void testIntParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -386,7 +386,7 @@ static void testIntValueParsing(DpsoCfg* cfg)
 }
 
 
-static void testBoolValueParsing(DpsoCfg* cfg)
+static void testBoolParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -406,6 +406,134 @@ static void testBoolValueParsing(DpsoCfg* cfg)
             cfg,
             (std::string{test.key} + " " + test.valInFile).c_str());
         testGetBool(cfg, test.key, test.expectedVal, test.defaultVal);
+    }
+}
+
+
+static void testHotkeyParsing(DpsoCfg* cfg)
+{
+    const struct Test {
+        const char* key;
+        const char* valInFile;
+        DpsoHotkey expectedVal;
+        DpsoHotkey defaultVal;
+    } tests[] = {
+        {
+            "hotkey_empty",
+            "",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoNoKeyMods}
+        },
+        {
+            "hotkey_a_upper",
+            "A",
+            {dpsoKeyA, dpsoNoKeyMods},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_a_lower",
+            "a",
+            {dpsoKeyA, dpsoNoKeyMods},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_ctrl_a",
+            "ctRL+A",
+            {dpsoKeyA, dpsoKeyModCtrl},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_ctrl_a_a",
+            "Ctrl+A+A",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoKeyModCtrl}
+        },
+        {
+            "hotkey_ctrl_ctrl_a",
+            "Ctrl+Ctrl+A",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoKeyModCtrl}
+        },
+        {
+            "hotkey_a_ctrl",
+            "A+Ctrl",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoKeyModCtrl}
+        },
+        {
+            "hotkey_with_blanks",
+            " \t Ctrl \t + \t A \t ",
+            {dpsoKeyA, dpsoKeyModCtrl},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_with_cr",
+            "\rA",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoNoKeyMods}
+        },
+        {
+            "hotkey_with_lf",
+            "\nA",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoNoKeyMods}
+        },
+        {
+            "hotkey_leading_plus",
+            "+A",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoNoKeyMods}
+        },
+        {
+            "hotkey_trailing_plus",
+            "A+",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoNoKeyMods}
+        },
+        {
+            "hotkey_extra_plus_inside",
+            "Ctrl++A",
+            dpsoEmptyHotkey,
+            {dpsoKeyA, dpsoKeyModCtrl}
+        },
+        {
+            "hotkey_keypad_plus",
+            "Keypad +",
+            {dpsoKeyKpPlus, dpsoNoKeyMods},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_ctrl",
+            "Ctrl",
+            {dpsoNoKey, dpsoKeyModCtrl},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_option",
+            "Option",
+            {dpsoNoKey, dpsoKeyModAlt},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_command",
+            "Command",
+            {dpsoNoKey, dpsoKeyModWin},
+            dpsoEmptyHotkey
+        },
+        {
+            "hotkey_super",
+            "Super",
+            {dpsoNoKey, dpsoKeyModWin},
+            dpsoEmptyHotkey
+        },
+    };
+
+    for (const auto& test : tests) {
+        loadCfgData(
+            cfg,
+            (std::string{test.key} + " " + test.valInFile).c_str());
+        testGetHotkey(
+            cfg, test.key, test.expectedVal, test.defaultVal);
     }
 }
 
@@ -524,9 +652,10 @@ static void testCfg()
     getHotkey(cfg.get());
 
     testValueOverridingOnLoad(cfg.get());
-    testStrValueParsing(cfg.get());
-    testIntValueParsing(cfg.get());
-    testBoolValueParsing(cfg.get());
+    testStrParsing(cfg.get());
+    testIntParsing(cfg.get());
+    testBoolParsing(cfg.get());
+    testHotkeyParsing(cfg.get());
 
     testKeyValidity(cfg.get());
     testKeyCaseInsensitivity(cfg.get());
