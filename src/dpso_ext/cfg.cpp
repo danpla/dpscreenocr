@@ -2,6 +2,7 @@
 #include "cfg.h"
 
 #include <algorithm>
+#include <cctype>
 #include <cerrno>
 #include <climits>
 #include <cstdio>
@@ -303,21 +304,20 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
     if (!str)
         return defaultVal;
 
-    // Skip whitespace manually since strtol() uses locale-dependent
-    // isspace() under the hood.
-    while (dpso::str::isSpace(*str))
-        ++str;
+    // There's no sense to allow leading or trailing whitespace around
+    // numbers, since it can only occur when explicitly included,
+    // implying that the user probably really wanted a string.
+    //
+    // Since strtol() uses locale-dependent isspace() to skip leading
+    // whitespace, we must also use this function instead of our
+    // ASCII-only variant.
+    if (std::isspace(static_cast<unsigned char>(*str)))
+        return defaultVal;
 
     char* end;
     const auto result = std::strtol(str, &end, 10);
-    if (end == str)
+    if (end == str || *end)
         return defaultVal;
-
-    // Don't treat string as an integer if it has any trailing
-    // non-digit characters except whitespace.
-    for (; *end; ++end)
-        if (!dpso::str::isSpace(*end))
-            return defaultVal;
 
     return std::clamp<long>(result, INT_MIN, INT_MAX);
 }
