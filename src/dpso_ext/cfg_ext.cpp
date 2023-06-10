@@ -41,7 +41,7 @@ void dpsoCfgLoadActiveLangs(
 
     std::string langCode;
     while (*s) {
-        if (dpso::str::isSpace(*s) || *s == langSeparator) {
+        if (dpso::str::isBlank(*s) || *s == langSeparator) {
             ++s;
             continue;
         }
@@ -50,7 +50,7 @@ void dpsoCfgLoadActiveLangs(
         const auto* langCodeEnd = s;
 
         for (; *s && *s != langSeparator; ++s)
-            if (!dpso::str::isSpace(*s))
+            if (!dpso::str::isBlank(*s))
                 langCodeEnd = s + 1;
 
         langCode.assign(langCodeBegin, langCodeEnd - langCodeBegin);
