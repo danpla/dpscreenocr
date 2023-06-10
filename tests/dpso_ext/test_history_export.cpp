@@ -138,7 +138,7 @@ static void testExport()
             "No entries",
             {},
 
-            ""
+            "\n"
             ,
             ""
             ,
@@ -151,6 +151,7 @@ static void testExport()
             {{"", ""}},
 
             "===  ===\n\n"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b></b></p>\n"
@@ -174,6 +175,7 @@ static void testExport()
             "===  ===\n\n"
             "\n\n\n"
             "===  ===\n\n"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b></b></p>\n"
@@ -206,6 +208,7 @@ static void testExport()
 
             "=== ts ===\n\n"
             "text"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b>ts</b></p>\n"
@@ -231,6 +234,7 @@ static void testExport()
             "\n\n\n"
             "=== ts 2 ===\n\n"
             "text 2"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b>ts 1</b></p>\n"
@@ -263,6 +267,7 @@ static void testExport()
             "=== ts line 1 ts line 2 ===\n\n"
             "text line 1\n"
             "text line 2"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b>ts line 1 ts line 2</b></p>\n"
@@ -286,6 +291,7 @@ static void testExport()
 
             "=== ts ===\n\n"
             "text\n"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b>ts</b></p>\n"
@@ -309,6 +315,7 @@ static void testExport()
 
             "=== '\"<>& ===\n\n"
             "'\"<>&"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b>'\"&lt;&gt;&amp;</b></p>\n"
@@ -332,6 +339,7 @@ static void testExport()
 
             "=== \b\f \r\t\320\264 ===\n\n"
             "\b \n\r\t\320\264"
+            "\n"
             ,
 
             "  <p class=\"timestamp\"><b>\b\f \r\t\320\264</b></p>\n"
