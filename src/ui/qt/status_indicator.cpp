@@ -4,6 +4,9 @@
 #include <QPainter>
 
 
+namespace ui::qt {
+
+
 StatusIndicator::StatusIndicator(QWidget* parent)
     : QWidget{parent}
     , status{}
@@ -74,4 +77,7 @@ void StatusIndicator::paintEvent(QPaintEvent* event)
     painter.setPen(QPen(color.darker(), strokeWidth));
     painter.setBrush(color);
     painter.drawEllipse(rect);
+}
+
+
 }

@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 // The installation and update are the same in terms of the language

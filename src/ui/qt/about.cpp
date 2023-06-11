@@ -16,11 +16,16 @@
 #include <QVBoxLayout>
 
 #include "dpso_intl/dpso_intl.h"
-#define _(S) gettext(S)
 
 #include "ui_common/ui_common.h"
 
 #include "utils.h"
+
+
+#define _(S) gettext(S)
+
+
+namespace ui::qt {
 
 
 const auto* const aboutLicenseUrl = "about:license";
@@ -191,4 +196,7 @@ void About::handleLinkHover(const QString &link)
         tooltip = link;
 
     QToolTip::showText(QCursor::pos(), tooltip);
+}
+
+
 }

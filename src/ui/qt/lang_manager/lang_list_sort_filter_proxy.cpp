@@ -7,7 +7,7 @@
 #include "dpso/dpso.h"
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 LangListSortFilterProxy::LangListSortFilterProxy(

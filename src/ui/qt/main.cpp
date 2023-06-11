@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    app.setWindowIcon(getThemeIcon(uiAppFileName));
+    app.setWindowIcon(ui::qt::getThemeIcon(uiAppFileName));
 
     uiInitIntl();
 
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 
     installQtTranslations(app);
 
-    MainWindow mainWindow;
+    ui::qt::MainWindow mainWindow;
 
     return app.exec();
 }

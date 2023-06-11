@@ -8,7 +8,7 @@ class QString;
 class QWidget;
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 // Does nothing if the status code is not an error.

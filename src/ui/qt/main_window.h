@@ -21,6 +21,10 @@ class QSessionManager;
 class QSystemTrayIcon;
 class QTabWidget;
 
+
+namespace ui::qt {
+
+
 class ActionChooser;
 class History;
 class HotkeyEditor;
@@ -118,3 +122,6 @@ private:
     void checkResults();
     void checkHotkeyActions();
 };
+
+
+}

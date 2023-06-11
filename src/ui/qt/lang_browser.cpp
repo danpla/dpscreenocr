@@ -8,6 +8,9 @@
 #include "ui_common/ui_common.h"
 
 
+namespace ui::qt {
+
+
 enum : int {
     columnIdxCheckbox,
     columnIdxName,
@@ -197,4 +200,7 @@ void LangBrowser::saveState(DpsoCfg* cfg) const
         header()->sortIndicatorOrder() == Qt::DescendingOrder);
 
     dpsoCfgSaveActiveLangs(cfg, cfgKeyOcrLanguages, ocr);
+}
+
+
 }

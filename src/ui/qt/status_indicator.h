@@ -6,6 +6,9 @@
 #include "status.h"
 
 
+namespace ui::qt {
+
+
 class StatusIndicator: public QWidget {
     Q_OBJECT
 public:
@@ -20,3 +23,6 @@ protected:
 private:
     Status status;
 };
+
+
+}

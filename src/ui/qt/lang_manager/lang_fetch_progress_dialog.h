@@ -7,7 +7,7 @@
 class QWidget;
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 void runFetchLangsProgressDialog(

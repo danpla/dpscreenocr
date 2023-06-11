@@ -10,6 +10,9 @@ class QCheckBox;
 class QComboBox;
 
 
+namespace ui::qt {
+
+
 /**
  * Hotkey editor.
  *
@@ -63,3 +66,6 @@ private:
 
     DpsoKey getCurrentKey() const;
 };
+
+
+}

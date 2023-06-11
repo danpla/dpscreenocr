@@ -11,6 +11,9 @@ class QCheckBox;
 class QLineEdit;
 
 
+namespace ui::qt {
+
+
 class ActionChooser : public QWidget {
     Q_OBJECT
 public:
@@ -42,3 +45,6 @@ private:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ActionChooser::Actions)
+
+
+}

@@ -7,6 +7,9 @@
 class QTextEdit;
 
 
+namespace ui::qt {
+
+
 class About : public QWidget {
     Q_OBJECT
 public:
@@ -18,3 +21,6 @@ private:
     QString currentTextLink;
     QTextEdit* textEdit;
 };
+
+
+}

@@ -7,7 +7,7 @@
 #include "dpso/dpso.h"
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 class LangList : public QAbstractTableModel {

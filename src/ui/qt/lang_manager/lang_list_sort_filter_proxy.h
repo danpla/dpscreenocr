@@ -4,7 +4,7 @@
 #include <QSortFilterProxyModel>
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 class LangListSortFilterProxy : public QSortFilterProxyModel {

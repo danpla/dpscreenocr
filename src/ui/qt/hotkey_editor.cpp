@@ -7,6 +7,9 @@
 #include <QSignalBlocker>
 
 
+namespace ui::qt {
+
+
 HotkeyEditor::HotkeyEditor(
         DpsoHotkeyAction action,
         bool hideNoKey,
@@ -136,4 +139,7 @@ DpsoKey HotkeyEditor::getCurrentKey() const
         return dpsoNoKey;
 
     return static_cast<DpsoKey>(keyCombo->itemData(curIdx).toInt());
+}
+
+
 }

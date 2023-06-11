@@ -6,7 +6,7 @@
 #include "lang_manager/metatypes.h"
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 LangList::LangList(

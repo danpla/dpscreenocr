@@ -17,6 +17,9 @@
 #define _(S) gettext(S)
 
 
+namespace ui::qt {
+
+
 ActionChooser::ActionChooser(QWidget* parent)
     : QWidget{parent}
 {
@@ -152,4 +155,7 @@ void ActionChooser::chooseExe()
         return;
 
     exeLineEdit->setText(QDir::toNativeSeparators(exePath));
+}
+
+
 }

@@ -16,6 +16,9 @@
 #define _(S) gettext(S)
 
 
+namespace ui::qt {
+
+
 QString joinInLayoutDirection(
     const QString& separator, const QStringList& list)
 {
@@ -120,4 +123,7 @@ void setMonospace(QFont& font)
     font.setFamily("monospace");
     #endif
     font.setStyleHint(QFont::Monospace);
+}
+
+
 }

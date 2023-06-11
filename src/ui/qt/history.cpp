@@ -20,6 +20,9 @@
 #define _(S) gettext(S)
 
 
+namespace ui::qt {
+
+
 History::History(const std::string& dirPath, QWidget* parent)
     : QWidget{parent}
     , wrapWords{true}
@@ -253,4 +256,7 @@ void History::saveState(DpsoCfg* cfg) const
     dpsoCfgSetBool(cfg, cfgKeyHistoryWrapWords, wrapWords);
     dpsoCfgSetStr(
         cfg, cfgKeyHistoryExportDir, lastDirPath.toUtf8().data());
+}
+
+
 }

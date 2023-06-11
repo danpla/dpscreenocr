@@ -14,6 +14,9 @@ class QPushButton;
 class QTextEdit;
 
 
+namespace ui::qt {
+
+
 class History : public QWidget {
     Q_OBJECT
 public:
@@ -48,3 +51,6 @@ private:
     void setButtonsEnabled(bool enabled);
     void appendToTextEdit(const char* timestamp, const char* text);
 };
+
+
+}

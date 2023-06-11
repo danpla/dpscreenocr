@@ -25,7 +25,7 @@
 #define _(S) gettext(S)
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 namespace {
 
 

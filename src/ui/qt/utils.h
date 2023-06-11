@@ -4,7 +4,11 @@
 #include <QIcon>
 
 
+class QFont;
 class QWidget;
+
+
+namespace ui::qt {
 
 
 QString joinInLayoutDirection(
@@ -33,7 +37,7 @@ void showError(
     const QString& detailedText = {});
 
 
-class QFont;
-
-
 void setMonospace(QFont& font);
+
+
+}

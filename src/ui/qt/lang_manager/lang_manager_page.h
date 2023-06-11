@@ -5,7 +5,7 @@
 class QWidget;
 
 
-namespace langManager {
+namespace ui::qt::langManager {
 
 
 class LangList;

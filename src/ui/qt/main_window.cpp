@@ -19,6 +19,7 @@
 #include <QTimerEvent>
 #include <QVBoxLayout>
 #include <QtGlobal>
+#include <QtGlobal>
 
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
@@ -34,6 +35,9 @@
 
 
 #define _(S) gettext(S)
+
+
+namespace ui::qt {
 
 
 enum : DpsoHotkeyAction {
@@ -907,4 +911,7 @@ void MainWindow::checkHotkeyActions()
         setSelectionIsEnabled(false);
         break;
     }
+}
+
+
 }

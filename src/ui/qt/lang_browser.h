@@ -10,6 +10,9 @@
 class QTreeWidgetItem;
 
 
+namespace ui::qt {
+
+
 class LangBrowser : public QTreeWidget {
     Q_OBJECT
 public:
@@ -25,3 +28,6 @@ private slots:
 private:
     DpsoOcr* ocr;
 };
+
+
+}
