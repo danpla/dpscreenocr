@@ -259,8 +259,7 @@ struct Impl {
 
 // We hide impl under getImpl() methods to propagate constness of
 // the DpsoOcrLangManager pointer is to impl.
-class DpsoOcrLangManager {
-public:
+struct DpsoOcrLangManager {
     explicit DpsoOcrLangManager(const std::shared_ptr<Impl>& impl)
         : impl{impl}
     {
