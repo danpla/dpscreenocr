@@ -257,12 +257,10 @@ struct Impl {
 }
 
 
-static std::vector<std::weak_ptr<Impl>> implCache;
-
-
-// We hide impl under getImpl() methods to make sure that constness of
-// the DpsoOcrLangManager pointer is propagated to impl.
-struct DpsoOcrLangManager {
+// We hide impl under getImpl() methods to propagate constness of
+// the DpsoOcrLangManager pointer is to impl.
+class DpsoOcrLangManager {
+public:
     explicit DpsoOcrLangManager(const std::shared_ptr<Impl>& impl)
         : impl{impl}
     {
@@ -276,11 +274,6 @@ struct DpsoOcrLangManager {
     Impl& getImpl()
     {
         return *impl;
-    }
-
-    bool isLast() const
-    {
-        return impl.use_count() == 1;
     }
 private:
     std::shared_ptr<Impl> impl;
@@ -301,18 +294,31 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
 
     const auto& engineId = ocrEngine.getInfo().id;
 
+    static std::vector<std::weak_ptr<Impl>> implCache;
+
     for (const auto& implWPtr : implCache) {
         auto impl = implWPtr.lock();
-
-        // dpsoOcrLangManagerDelete() should remove expired entries
-        // from the cache.
         assert(impl);
 
         if (impl->engineId == engineId && impl->dataDir == dataDir)
             return new DpsoOcrLangManager{impl};
     }
 
-    auto impl = std::make_shared<Impl>();
+    std::shared_ptr<Impl> impl{
+        new Impl{},
+        [](Impl* impl)
+        {
+            for (auto iter = implCache.begin();
+                    iter < implCache.end();
+                    ++iter)
+                if (iter->lock().get() == impl) {
+                    implCache.erase(iter);
+                    break;
+                }
+
+            delete impl;
+        }};
+
     impl->engineId = engineId;
     impl->dataDir = dataDir;
     impl->dataLock = dpso::ocr::DataLock::get(
@@ -338,24 +344,6 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
 
 void dpsoOcrLangManagerDelete(DpsoOcrLangManager* langManager)
 {
-    if (!langManager)
-        return;
-
-    if (!langManager->isLast()) {
-        delete langManager;
-        return;
-    }
-
-    auto& impl = langManager->getImpl();
-
-    for (auto iter = implCache.begin();
-            iter < implCache.end();
-            ++iter)
-        if (iter->lock().get() == &impl) {
-            implCache.erase(iter);
-            break;
-        }
-
     delete langManager;
 }
 
