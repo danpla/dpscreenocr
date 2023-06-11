@@ -25,7 +25,7 @@ public:
 
     void append(const char* timestamp, const char* text);
 
-    bool loadState(const DpsoCfg* cfg);
+    void loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;
 private slots:
     void doExport();

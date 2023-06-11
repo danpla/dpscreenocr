@@ -1,8 +1,6 @@
 
 #include "main_window.h"
 
-#include <cstdlib>
-
 #include <QAction>
 #include <QApplication>
 #include <QCheckBox>
@@ -26,6 +24,7 @@
 
 #include "about.h"
 #include "action_chooser.h"
+#include "error.h"
 #include "history.h"
 #include "hotkey_editor.h"
 #include "lang_browser.h"
@@ -67,77 +66,44 @@ MainWindow::MainWindow()
 {
     setWindowTitle(uiAppName);
 
-    if (!dpsoInit()) {
-        QMessageBox::critical(nullptr, uiAppName, dpsoGetError());
-        std::exit(EXIT_FAILURE);
-    }
+    dpsoInitializer  = dpso::DpsoInitializer::init();
+    if (!dpsoInitializer)
+        throw Error(dpsoGetError());
 
-    if (!uiStartupSetup()) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("Startup setup failed: ") + dpsoGetError());
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
+    if (!uiStartupSetup())
+        throw Error(
+            std::string("Startup setup failed: ") + dpsoGetError());
 
     const auto* cfgPath = dpsoGetUserDir(
         DpsoUserDirConfig, uiAppFileName);
-    if (!cfgPath) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("Can't get configuration path: ")
-                + dpsoGetError());
-
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
+    if (!cfgPath)
+        throw Error(
+            std::string("Can't get configuration path: ")
+            + dpsoGetError());
 
     cfgDirPath = cfgPath;
     cfgFilePath = cfgDirPath + *dpsoDirSeparators + uiCfgFileName;
 
     cfg.reset(dpsoCfgCreate());
-    if (!cfg) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("Can't create Cfg: ") + dpsoGetError());
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
+    if (!cfg)
+        throw Error(
+            std::string("Can't create Cfg: ") + dpsoGetError());
 
-    if (!dpsoCfgLoad(cfg.get(), cfgFilePath.c_str())) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("Can't load \"%1\": %2").arg(
-                cfgFilePath.c_str(), dpsoGetError()));
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
+    if (!dpsoCfgLoad(cfg.get(), cfgFilePath.c_str()))
+        throw Error(
+            std::string("Can't load \"")
+            + cfgFilePath
+            + "\": "
+            + dpsoGetError());
 
     const auto* dataPath = dpsoGetUserDir(
         DpsoUserDirData, uiAppFileName);
-    if (!dataPath) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("Can't get data path: ") + dpsoGetError());
+    if (!dataPath)
+        throw Error(
+            std::string("Can't get data path: ") + dpsoGetError());
 
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
-
-    if (dpsoOcrGetNumEngines() == 0) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("No OCR engines are available"));
-
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
+    if (dpsoOcrGetNumEngines() == 0)
+        throw Error("No OCR engines are available");
 
     DpsoOcrEngineInfo ocrEngineInfo;
     dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
@@ -148,16 +114,12 @@ MainWindow::MainWindow()
             std::string{dataPath} + *dpsoDirSeparators + dirName;
 
     ocr.reset(dpsoOcrCreate(ocrEngineIdx, ocrDataDirPath.c_str()));
-    if (!ocr) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("Can't create OCR with \"%1\" engine: %2").arg(
-                ocrEngineInfo.id,
-                dpsoGetError()));
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
+    if (!ocr)
+        throw Error(
+            std::string("Can't create OCR with \"")
+            + ocrEngineInfo.id
+            + "\" engine: "
+            + dpsoGetError());
 
     dpsoSetHotkeysEnabled(true);
 
@@ -181,10 +143,7 @@ MainWindow::MainWindow()
 
     createTrayIcon();
 
-    if (!loadState(cfg.get())) {
-        dpsoShutdown();
-        std::exit(EXIT_FAILURE);
-    }
+    loadState(cfg.get());
 
     if (minimizeOnStart) {
         if (trayIcon->isVisible() && minimizeToTray)
@@ -213,12 +172,6 @@ MainWindow::MainWindow()
     if (!taskbar)
         qWarning("uiTaskbarCreateWin(): %s", dpsoGetError());
     #endif
-}
-
-
-MainWindow::~MainWindow()
-{
-    dpsoShutdown();
 }
 
 
@@ -556,7 +509,7 @@ void MainWindow::createTrayIcon()
 }
 
 
-bool MainWindow::loadState(const DpsoCfg* cfg)
+void MainWindow::loadState(const DpsoCfg* cfg)
 {
     ocrAllowQueuing = dpsoCfgGetBool(
         cfg, cfgKeyOcrAllowQueuing, cfgDefaultValueOcrAllowQueuing);
@@ -608,8 +561,7 @@ bool MainWindow::loadState(const DpsoCfg* cfg)
 
     langBrowser->loadState(cfg);
     actionChooser->loadState(cfg);
-    if (!history->loadState(cfg))
-        return false;
+    history->loadState(cfg);
 
     trayIcon->setVisible(
         dpsoCfgGetBool(
@@ -631,8 +583,6 @@ bool MainWindow::loadState(const DpsoCfg* cfg)
         cfgKeySelectionBorderWidth,
         dpsoGetSelectionDefaultBorderWidth());
     dpsoSetSelectionBorderWidth(selectionBorderWidth);
-
-    return true;
 }
 
 

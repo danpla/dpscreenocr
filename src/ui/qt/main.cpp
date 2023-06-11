@@ -1,6 +1,7 @@
 
 #include <cstddef>
 #include <cstdlib>
+#include <memory>
 
 #include <QApplication>
 #include <QDir>
@@ -15,6 +16,7 @@
 #include "dpso_utils/dpso_utils.h"
 #include "ui_common/ui_common.h"
 
+#include "error.h"
 #include "main_window.h"
 #include "utils.h"
 
@@ -111,7 +113,14 @@ int main(int argc, char *argv[])
 
     installQtTranslations(app);
 
-    ui::qt::MainWindow mainWindow;
+    std::unique_ptr<ui::qt::MainWindow> mainWindow;
+
+    try {
+        mainWindow = std::make_unique<ui::qt::MainWindow>();
+    } catch (ui::qt::Error& e) {
+        QMessageBox::critical(nullptr, uiAppName, e.what());
+        return EXIT_FAILURE;
+    }
 
     return app.exec();
 }

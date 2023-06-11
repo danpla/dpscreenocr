@@ -36,7 +36,6 @@ class MainWindow : public QWidget {
     Q_OBJECT
 public:
     MainWindow();
-    ~MainWindow();
 protected:
     void timerEvent(QTimerEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
@@ -48,6 +47,8 @@ private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void commitData(QSessionManager& sessionManager);
 private:
+    dpso::DpsoInitializer dpsoInitializer;
+
     std::string progressStatusFmt;
 
     dpso::OcrUPtr ocr;
@@ -111,7 +112,7 @@ private:
 
     void createTrayIcon();
 
-    bool loadState(const DpsoCfg* cfg);
+    void loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;
 
     bool canStartSelection() const;

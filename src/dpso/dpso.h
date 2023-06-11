@@ -48,4 +48,45 @@ void dpsoUpdate(void);
 
 #ifdef __cplusplus
 }
+
+
+#include <memory>
+
+
+namespace dpso {
+
+
+/**
+ * RAII for dpsoInit/Shutdown().
+ *
+ * DpsoInitializer::init() calls dpsoInit(). If the initialization
+ * succeeds, the bool operator of DpsoInitializer returns true and its
+ * destructor calls dpsoSutdown() once object goes out of scope. If
+ * dpsoInit() fails, the bool operator returns false, and the
+ * destructor does nothing.
+ */
+class DpsoInitializer {
+public:
+    static DpsoInitializer init();
+
+    DpsoInitializer();
+    ~DpsoInitializer();
+
+    DpsoInitializer(const DpsoInitializer& other) = delete;
+    DpsoInitializer& operator=(const DpsoInitializer& other) = delete;
+
+    DpsoInitializer(DpsoInitializer&& other) noexcept;
+    DpsoInitializer& operator=(DpsoInitializer&& other) noexcept;
+
+    explicit operator bool() const;
+private:
+    explicit DpsoInitializer(bool isActive);
+
+    bool isActive;
+};
+
+
+}
+
+
 #endif

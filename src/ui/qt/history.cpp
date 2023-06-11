@@ -14,6 +14,7 @@
 #include "dpso_utils/dpso_utils.h"
 #include "ui_common/ui_common.h"
 
+#include "error.h"
 #include "utils.h"
 
 
@@ -219,17 +220,15 @@ void History::appendToTextEdit(
 }
 
 
-bool History::loadState(const DpsoCfg* cfg)
+void History::loadState(const DpsoCfg* cfg)
 {
     history.reset(dpsoHistoryOpen(historyFilePath.c_str()));
-    if (!history) {
-        QMessageBox::critical(
-            nullptr,
-            uiAppName,
-            QString("Can't open \"%1\": %2").arg(
-                historyFilePath.c_str(), dpsoGetError()));
-        return false;
-    }
+    if (!history)
+        throw Error(
+            std::string("Can't open \"")
+            + historyFilePath
+            + "\": "
+            + dpsoGetError());
 
     textEdit->clear();
     for (int i = 0; i < dpsoHistoryCount(history.get()); ++i) {
@@ -246,8 +245,6 @@ bool History::loadState(const DpsoCfg* cfg)
     setButtonsEnabled(dpsoHistoryCount(history.get()) > 0);
 
     lastDirPath = dpsoCfgGetStr(cfg, cfgKeyHistoryExportDir, "");
-
-    return true;
 }
 
 

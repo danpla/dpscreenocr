@@ -97,3 +97,62 @@ void dpsoUpdate(void)
     if (backend)
         backend->update();
 }
+
+
+namespace dpso {
+
+
+DpsoInitializer DpsoInitializer::init()
+{
+    return DpsoInitializer{dpsoInit()};
+}
+
+
+DpsoInitializer::DpsoInitializer()
+    : DpsoInitializer{false}
+{
+}
+
+
+DpsoInitializer::DpsoInitializer(bool isActive)
+    : isActive{isActive}
+{
+}
+
+
+DpsoInitializer::~DpsoInitializer()
+{
+    if (isActive)
+        dpsoShutdown();
+}
+
+
+DpsoInitializer::DpsoInitializer(DpsoInitializer&& other) noexcept
+    : DpsoInitializer{}
+{
+    *this = std::move(other);
+}
+
+
+DpsoInitializer& DpsoInitializer::operator=(
+    DpsoInitializer&& other) noexcept
+{
+    if (this != &other) {
+        if (isActive)
+            dpsoShutdown();
+
+        isActive = other.isActive;
+        other.isActive = false;
+    }
+
+    return *this;
+}
+
+
+DpsoInitializer::operator bool() const
+{
+    return isActive;
+}
+
+
+}
