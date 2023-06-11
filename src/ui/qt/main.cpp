@@ -26,7 +26,7 @@
 
 static void installQtTranslations(QApplication& app)
 {
-    const auto qtTranslationsPath =
+    const auto translationsPath =
         #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
         QLibraryInfo::location(QLibraryInfo::TranslationsPath);
         #else
@@ -34,21 +34,15 @@ static void installQtTranslations(QApplication& app)
             + "/translations";
         #endif
 
-    const auto qtLocaleName = QLocale::system().name();
+    const auto localeName = QLocale::system().name();
 
     const QString translations[] = {"qt", "qtbase"};
-    static const auto numTranslations =
-        sizeof(translations) / sizeof(*translations);
 
-    static QTranslator translators[numTranslations];
-
-    for (std::size_t i = 0; i < numTranslations; ++i) {
-        const auto& translation = translations[i];
-        auto& translator = translators[i];
-
-        if (translator.load(
-                translation + "_" + qtLocaleName, qtTranslationsPath))
-            app.installTranslator(&translator);
+    for (const auto& translation : translations) {
+        auto* translator = new QTranslator(&app);
+        if (translator->load(
+                translation + "_" + localeName, translationsPath))
+            app.installTranslator(translator);
     }
 }
 
@@ -89,6 +83,7 @@ int main(int argc, char *argv[])
     app.setWindowIcon(ui::qt::getThemeIcon(uiAppFileName));
 
     uiInitIntl();
+    installQtTranslations(app);
 
     const ui::SingleInstanceGuardUPtr singleInstanceGuard{
         uiSingleInstanceGuardCreate(uiAppFileName)};
@@ -110,8 +105,6 @@ int main(int argc, char *argv[])
                 {{"app_name", uiAppName}}));
         return EXIT_SUCCESS;
     }
-
-    installQtTranslations(app);
 
     std::unique_ptr<ui::qt::MainWindow> mainWindow;
 
