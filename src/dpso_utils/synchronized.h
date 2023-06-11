@@ -9,9 +9,9 @@ namespace dpso {
 
 
 template<typename T>
-class LockedRef {
+class RefLock {
 public:
-    LockedRef(T& v, std::mutex& mutex)
+    RefLock(T& v, std::mutex& mutex)
         : v{v}
         , lock{mutex}
     {
@@ -107,12 +107,12 @@ public:
         return *this;
     }
 
-    LockedRef<const T> lock() const
+    RefLock<const T> getLock() const
     {
         return {v, mutex};
     }
 
-    LockedRef<T> lock()
+    RefLock<T> getLock()
     {
         return {v, mutex};
     }

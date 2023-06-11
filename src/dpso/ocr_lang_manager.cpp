@@ -77,7 +77,7 @@ void reloadLangs(
 void clearExternalLangs(std::vector<Lang>& langs)
 {
     for (auto iter = langs.begin(); iter < langs.end();) {
-        if (iter->state.lock().get() == LangState::notInstalled) {
+        if (iter->state.getLock().get() == LangState::notInstalled) {
             iter = langs.erase(iter);
             continue;
         }
@@ -183,7 +183,7 @@ public:
         if (future.valid())
             future.wait();
 
-        langManager.setUserAgent(userAgent.lock().get().c_str());
+        langManager.setUserAgent(userAgent.getLock().get().c_str());
 
         cancelFlag = std::make_shared<dpso::Synchronized<bool>>();
 
@@ -435,7 +435,7 @@ DpsoOcrLangState dpsoOcrLangManagerGetLangState(
     if (!lang)
         return {};
 
-    switch (lang->state.lock().get()) {
+    switch (lang->state.getLock().get()) {
     case LangState::notInstalled:
         return DpsoOcrLangStateNotInstalled;
     case LangState::installed:
@@ -556,7 +556,7 @@ void dpsoOcrLangManagerSetInstallMark(
     DpsoOcrLangManager* langManager, int langIdx, bool installMark)
 {
     auto* lang = getLang(langManager, langIdx);
-    if (lang && lang->state.lock().get() != LangState::installed)
+    if (lang && lang->state.getLock().get() != LangState::installed)
         lang->installMark = installMark;
 }
 
@@ -580,7 +580,7 @@ static void installLangs(
     dpso::Synchronized<DpsoOcrLangInstallProgress>& installProgress)
 {
     for (std::size_t i = 0; i < installList.size(); ++i) {
-        if (cancelRequested.lock().get())
+        if (cancelRequested.getLock().get())
             throw LangOpCanceled{};
 
         const auto langIdx = installList[i];
@@ -601,7 +601,7 @@ static void installLangs(
                     static_cast<int>(installList.size())
                 };
 
-                return !cancelRequested.lock().get();
+                return !cancelRequested.getLock().get();
             });
 
         lang.state = langManager.getLangState(*baseLangIdx);
@@ -673,7 +673,7 @@ void dpsoOcrLangManagerGetInstallProgress(
 {
     if (langManager && progress)
         *progress =
-            langManager->getImpl().installProgress.lock().get();
+            langManager->getImpl().installProgress.getLock().get();
 }
 
 
@@ -724,7 +724,7 @@ bool dpsoOcrLangManagerRemoveLang(
         return false;
     }
 
-    if (lang->state.lock().get() == LangState::notInstalled)
+    if (lang->state.getLock().get() == LangState::notInstalled)
         return true;
 
 
