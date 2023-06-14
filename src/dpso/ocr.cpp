@@ -207,6 +207,7 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
         "DPSO_DUMP_DEBUG_IMAGE");
     ocr->dumpDebugImage =
         dumpDebugImageEnvVar
+        && *dumpDebugImageEnvVar
         && std::strcmp(dumpDebugImageEnvVar, "0") != 0;
 
     return ocr.release();
