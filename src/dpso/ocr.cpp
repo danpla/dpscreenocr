@@ -343,21 +343,21 @@ static std::string createTimestamp()
 
 
 static dpso::ocr::OcrImage prepareScreenshot(
-    DpsoOcr& ocr,
     const dpso::backend::Screenshot& screenshot,
+    std::vector<std::uint8_t> (&imgBuffers)[3],
     dpso::ProgressTracker& progressTracker)
 {
-    const auto imageScale = 4;
-    const auto bufferW = screenshot.getWidth() * imageScale;
-    const auto bufferH = screenshot.getHeight() * imageScale;
+    const auto scale = 4;
+    const auto bufferW = screenshot.getWidth() * scale;
+    const auto bufferH = screenshot.getHeight() * scale;
     const auto bufferPitch = bufferW;
 
-    for (auto& buffer : ocr.imgBuffers)
+    for (auto& buffer : imgBuffers)
         buffer.resize(bufferH * bufferPitch);
 
     START_TIMING(screenshotGetData);
     screenshot.getGrayscaleData(
-        ocr.imgBuffers[0].data(), bufferPitch);
+        imgBuffers[0].data(), bufferPitch);
     END_TIMING(
         screenshotGetData,
         "screenshot.getGrayscaleData (%ix%i px)",
@@ -368,9 +368,9 @@ static dpso::ocr::OcrImage prepareScreenshot(
     localProgressTracker.advanceJob();
     START_TIMING(imageResizing);
     dpso::img::resize(
-        ocr.imgBuffers[0].data(),
+        imgBuffers[0].data(),
         screenshot.getWidth(), screenshot.getHeight(), bufferPitch,
-        ocr.imgBuffers[1].data(),
+        imgBuffers[1].data(),
         bufferW, bufferH, bufferPitch,
         &localProgressTracker);
     END_TIMING(
@@ -378,19 +378,20 @@ static dpso::ocr::OcrImage prepareScreenshot(
         "Image resizing (%ix%i px -> %ix%i px, x%i)",
         screenshot.getWidth(), screenshot.getHeight(),
         bufferW, bufferH,
-        imageScale);
+        scale);
 
     const auto unsharpMaskRadius = 10;
+    const auto unsharpMaskAmount = 1.0f;
 
     localProgressTracker.advanceJob();
     START_TIMING(unsharpMasking);
     dpso::img::unsharpMask(
-        ocr.imgBuffers[1].data(), bufferPitch,
-        ocr.imgBuffers[0].data(), bufferPitch,
-        ocr.imgBuffers[2].data(), bufferPitch,
+        imgBuffers[1].data(), bufferPitch,
+        imgBuffers[0].data(), bufferPitch,
+        imgBuffers[2].data(), bufferPitch,
         bufferW, bufferH,
         unsharpMaskRadius,
-        1.0f,
+        unsharpMaskAmount,
         &localProgressTracker);
     END_TIMING(
         unsharpMasking,
@@ -399,7 +400,7 @@ static dpso::ocr::OcrImage prepareScreenshot(
 
     localProgressTracker.finish();
 
-    return {ocr.imgBuffers[0].data(), bufferW, bufferH, bufferPitch};
+    return {imgBuffers[0].data(), bufferW, bufferH, bufferPitch};
 }
 
 
@@ -415,7 +416,7 @@ static void processJob(DpsoOcr& ocr, const Job& job)
 
     progressTracker.advanceJob();
     const auto ocrImage = prepareScreenshot(
-        ocr, *job.screenshot, progressTracker);
+        *job.screenshot, ocr.imgBuffers, progressTracker);
 
     if (ocr.dumpDebugImage)
         dpso::img::savePgm(
