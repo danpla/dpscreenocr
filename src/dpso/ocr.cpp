@@ -9,7 +9,6 @@
 #include <cstring>
 #include <ctime>
 #include <functional>
-#include <mutex>
 #include <queue>
 #include <string>
 #include <thread>
@@ -19,6 +18,7 @@
 #include "dpso_utils/error.h"
 #include "dpso_utils/progress_tracker.h"
 #include "dpso_utils/strftime.h"
+#include "dpso_utils/synchronized.h"
 #include "dpso_utils/timing.h"
 
 #include "backend/backend.h"
@@ -31,17 +31,6 @@
 #include "ocr/recognizer.h"
 #include "ocr/recognizer_error.h"
 #include "ocr_data_lock.h"
-
-
-// A note on parallelism
-//
-// Since we don't require any thread safety guarantees from
-// ocr::Recognizer, we never use it from multiple threads. Only
-// ocr::Recognizer::recognize() is called after DpsoOcr is created;
-// everything else is cached. An alternative would be to protect
-// ocr::Recognizer access with a mutex, but it's impractical for
-// functions like dpsoOcrGetLangCode() to block during OCR since it
-// takes significant time.
 
 
 static dpso::backend::Backend* backend;
@@ -78,8 +67,6 @@ struct JobResult {
 
 // Link between main and background threads.
 struct Link {
-    mutable std::mutex mutex;
-
     std::condition_variable threadActionCondVar;
     std::condition_variable jobsDoneCondVar;
 
@@ -112,7 +99,7 @@ struct DpsoOcr {
     std::vector<Lang> langs;
     int numActiveLangs;
 
-    Link link;
+    dpso::Synchronized<Link> link;
     std::thread thread;
 
     std::vector<std::uint8_t> imgBuffers[3];
@@ -160,9 +147,10 @@ static void reloadLangs(DpsoOcr& ocr)
 
 static void waitJobsToFinish(DpsoOcr& ocr)
 {
-    std::unique_lock lock{ocr.link.mutex};
-    ocr.link.jobsDoneCondVar.wait(
-        lock, [&]{ return !ocr.link.jobsPending(); });
+    auto link = ocr.link.getLock();
+    link.wait(
+        link.get().jobsDoneCondVar,
+        [&]{ return !link.get().jobsPending(); });
 }
 
 
@@ -233,9 +221,9 @@ void dpsoOcrDelete(DpsoOcr* ocr)
     dpsoOcrTerminateJobs(ocr);
 
     {
-        const std::lock_guard lockGuard{ocr->link.mutex};
-        ocr->link.terminateThread = true;
-        ocr->link.threadActionCondVar.notify_one();
+        auto link = ocr->link.getLock();
+        link.get().terminateThread = true;
+        link.get().threadActionCondVar.notify_one();
     }
     ocr->thread.join();
 
@@ -420,8 +408,8 @@ static void processJob(DpsoOcr& ocr, const Job& job)
         2,
         [&](float progress)
         {
-            const std::lock_guard lockGuard{ocr.link.mutex};
-            ocr.link.progress.curJobProgress = progress * 100;
+            ocr.link.getLock().get().progress.curJobProgress =
+                progress * 100;
         }};
 
     progressTracker.advanceJob();
@@ -443,56 +431,56 @@ static void processJob(DpsoOcr& ocr, const Job& job)
         [&](int progress)
         {
             progressTracker.update(progress / 100.0f);
-
-            const std::lock_guard lockGuard{ocr.link.mutex};
-            return !ocr.link.terminateJobs;
+            return !ocr.link.getLock().get().terminateJobs;
         });
 
     progressTracker.finish();
 
-    const std::lock_guard lockGuard{ocr.link.mutex};
-    if (ocr.link.terminateJobs)
-        return;
-
-    ocr.link.results.push_back({std::move(ocrResult), job.timestamp});
+    ocr.link.getLock().get().results.push_back(
+        {std::move(ocrResult), job.timestamp});
 }
 
 
 static void threadLoop(DpsoOcr& ocr)
 {
     while (true) {
-        std::unique_lock lock{ocr.link.mutex};
-        ocr.link.threadActionCondVar.wait(
-            lock,
-            [&]{
-                return
-                    ocr.link.terminateThread
-                    || !ocr.link.jobQueue.empty();
-            });
+        Job job;
 
-        if (ocr.link.terminateThread)
-            break;
+        {
+            auto link = ocr.link.getLock();
+            link.wait(
+                link.get().threadActionCondVar,
+                [&]
+                {
+                    return
+                        link.get().terminateThread
+                        || !link.get().jobQueue.empty();
+                });
 
-        auto job = std::move(ocr.link.jobQueue.front());
-        ocr.link.jobQueue.pop();
+            if (link.get().terminateThread)
+                break;
 
-        ocr.link.jobActive = true;
+            job = std::move(link.get().jobQueue.front());
+            link.get().jobQueue.pop();
 
-        // Although processJob() will reset progress to zero, this
-        // should also be done before incrementing curJob so that
-        // we don't return the progress of the previous job from
-        // dpsoOcrGetProgress() before the new one starts.
-        ocr.link.progress.curJobProgress = 0;
-        ++ocr.link.progress.curJob;
+            link.get().jobActive = true;
 
-        lock.unlock();
+            // Although processJob() will reset progress to zero, this
+            // should also be done before incrementing curJob so that
+            // we don't return the progress of the previous job from
+            // dpsoOcrGetProgress() before the new one starts.
+            link.get().progress.curJobProgress = 0;
+            ++link.get().progress.curJob;
+        }
+
         processJob(ocr, job);
-        lock.lock();
 
-        ocr.link.jobActive = false;
-        if (ocr.link.jobQueue.empty()) {
-            ocr.link.progress = {};
-            ocr.link.jobsDoneCondVar.notify_one();
+        auto link = ocr.link.getLock();
+
+        link.get().jobActive = false;
+        if (link.get().jobQueue.empty()) {
+            link.get().progress = {};
+            link.get().jobsDoneCondVar.notify_one();
         }
     }
 }
@@ -558,11 +546,11 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         createTimestamp()
     };
 
-    const std::lock_guard lockGuard{ocr->link.mutex};
+    auto link = ocr->link.getLock();
 
-    ocr->link.jobQueue.push(std::move(job));
-    ++ocr->link.progress.totalJobs;
-    ocr->link.threadActionCondVar.notify_one();
+    link.get().jobQueue.push(std::move(job));
+    ++link.get().progress.totalJobs;
+    link.get().threadActionCondVar.notify_one();
 
     return true;
 }
@@ -582,21 +570,14 @@ bool dpsoOcrProgressEqual(
 
 void dpsoOcrGetProgress(const DpsoOcr* ocr, DpsoOcrProgress* progress)
 {
-    if (!ocr || !progress)
-        return;
-
-    const std::lock_guard lockGuard{ocr->link.mutex};
-    *progress = ocr->link.progress;
+    if (ocr && progress)
+        *progress = ocr->link.getLock().get().progress;
 }
 
 
 bool dpsoOcrHasPendingJobs(const DpsoOcr* ocr)
 {
-    if (!ocr)
-        return false;
-
-    const std::lock_guard lockGuard{ocr->link.mutex};
-    return ocr->link.jobsPending();
+    return ocr && ocr->link.getLock().get().jobsPending();
 }
 
 
@@ -605,12 +586,8 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
     if (!ocr || !results)
         return;
 
-    {
-        const std::lock_guard lockGuard{ocr->link.mutex};
-
-        ocr->fetchedResults.clear();
-        ocr->fetchedResults.swap(ocr->link.results);
-    }
+    ocr->fetchedResults.clear();
+    ocr->fetchedResults.swap(ocr->link.getLock().get().results);
 
     ocr->returnedResults.clear();
     ocr->returnedResults.reserve(ocr->fetchedResults.size());
@@ -634,18 +611,16 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
         return;
 
     {
-        const std::lock_guard lockGuard{ocr->link.mutex};
-
-        ocr->link.jobQueue = {};
-        ocr->link.terminateJobs = true;
+        auto link = ocr->link.getLock();
+        link.get().jobQueue = {};
+        link.get().terminateJobs = true;
     }
 
     waitJobsToFinish(*ocr);
 
-    const std::lock_guard lockGuard{ocr->link.mutex};
-
-    ocr->link.results.clear();
-    ocr->link.terminateJobs = false;
+    auto link = ocr->link.getLock();
+    link.get().results.clear();
+    link.get().terminateJobs = false;
 }
 
 

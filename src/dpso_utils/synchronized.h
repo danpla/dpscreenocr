@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <condition_variable>
 #include <mutex>
 #include <utility>
 
@@ -25,6 +26,12 @@ public:
     T& get()
     {
         return v;
+    }
+
+    template<typename Predicate>
+    void wait(std::condition_variable& cv, Predicate stopWaiting)
+    {
+        cv.wait(lock, std::move(stopWaiting));
     }
 private:
     T& v;
