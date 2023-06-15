@@ -8,9 +8,14 @@
 namespace dpso {
 
 
-#ifdef __GNUC__
-    #define DPSO_STRFTIME_FN(N) \
-        __attribute__((format(strftime, N, 0)))
+#if defined(__GNUC__) || defined(__clang__)
+    #ifdef __MINGW32__
+        #define DPSO_STRFTIME_FN(N) \
+            __attribute__((format(__MINGW_STRFTIME_FORMAT, N, 0)))
+    #else
+        #define DPSO_STRFTIME_FN(N) \
+            __attribute__((format(strftime, N, 0)))
+    #endif
 #else
     #define DPSO_STRFTIME_FN(N)
 #endif

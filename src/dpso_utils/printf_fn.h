@@ -10,7 +10,7 @@
 #pragma once
 
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__clang__)
     #ifdef __MINGW32__
         #include <stdio.h>
         #define DPSO_PRINTF_FN(N) \
