@@ -18,6 +18,12 @@ std::string strftime(const char* fmt, const std::tm* time)
     std::string result;
 
     while (true) {
+        // Try to detect the case when strftime() on the current
+        // system always returns 0 for the given format string, e.g.
+        // due to unsupported format specifiers.
+        if (result.size() > fmtEx.size() * 100)
+            return fmt;
+
         result.reserve(result.size() + 8);
         result.resize(result.capacity());
 

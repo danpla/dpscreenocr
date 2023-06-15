@@ -336,7 +336,7 @@ static std::string createTimestamp()
 {
     const auto time = std::time(nullptr);
     if (const auto* tm = std::localtime(&time))
-        return dpso::strftime("%F %T", tm);
+        return dpso::strftime("%Y-%m-%d %H:%M:%S", tm);
 
     return {};
 }

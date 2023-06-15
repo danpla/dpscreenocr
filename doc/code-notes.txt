@@ -79,6 +79,10 @@
   while our code assumes UTF-8 and needs such character routines to
   work only with the ASCII subset.
 
+* Don't use C99/C++11 strftime() format specifiers in cross-platform
+  code. They are not supported by old MSVCRT versions, and MinGW
+  doesn't provide replacements as it does for pritnf() functions.
+
 * Use underscores instead of hyphens in CMake target names.
 
 * When specifying the language standard in CMake, use *_STANDARD and
