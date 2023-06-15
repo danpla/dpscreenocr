@@ -48,7 +48,7 @@ bool LangListSortFilterProxy::filterAcceptsRow(
 
     const auto langStateData = sm->data(
         sm->index(
-            sourceRow, LangList::columnIdxName, sourceParent),
+            sourceRow, LangList::columnIdxState, sourceParent),
         Qt::UserRole);
     Q_ASSERT(langStateData.canConvert<DpsoOcrLangState>());
 
@@ -59,7 +59,11 @@ bool LangListSortFilterProxy::filterAcceptsRow(
     if (filterText.isEmpty())
         return true;
 
-    for (int i = 0; i < sm->columnCount(); ++i)
+    static const int filterableColumnIndices[] = {
+        LangList::columnIdxName, LangList::columnIdxCode
+    };
+
+    for (auto i : filterableColumnIndices)
         if (sm->data(sm->index(sourceRow, i, sourceParent)).
                 toString().contains(
                     filterText, Qt::CaseInsensitive))

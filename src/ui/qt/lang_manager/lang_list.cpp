@@ -64,11 +64,15 @@ QVariant LangList::data(const QModelIndex& index, int role) const
             return langInfo.name;
         case columnIdxCode:
             return langInfo.code;
+        case columnIdxState:
+            // This column is not shown to the user, so we don't care
+            // how it's displayed.
+            return static_cast<int>(langInfo.state);
         }
 
         Q_ASSERT(false);
         return {};
-    } else if (role == Qt::UserRole && col == columnIdxName)
+    } else if (role == Qt::UserRole && col == columnIdxState)
         return QVariant::fromValue(langInfo.state);
 
     return {};
@@ -86,6 +90,10 @@ QVariant LangList::headerData(
         return pgettext("language", "Name");
     case columnIdxCode:
         return pgettext("language", "Code");
+    case columnIdxState:
+        // This column is not shown to the user, so don't bother with
+        // translation.
+        return "State";
     }
 
     Q_ASSERT(false);
@@ -103,7 +111,7 @@ int LangList::rowCount(const QModelIndex& parent) const
 int LangList::columnCount(const QModelIndex& parent) const
 {
     (void)parent;
-    return 2;
+    return 3;
 }
 
 

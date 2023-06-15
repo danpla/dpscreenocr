@@ -90,6 +90,8 @@ LangManagerPage::LangManagerPage(
 
     treeView->setModel(sortFilterProxyModel);
 
+    treeView->hideColumn(LangList::columnIdxState);
+
     actionButton = new QPushButton(actionName);
     actionButton->setAutoDefault(false);
     actionButton->setEnabled(false);

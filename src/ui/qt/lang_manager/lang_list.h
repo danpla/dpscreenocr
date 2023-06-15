@@ -16,6 +16,7 @@ public:
     enum {
         columnIdxName,
         columnIdxCode,
+        columnIdxState,
     };
 
     explicit LangList(
