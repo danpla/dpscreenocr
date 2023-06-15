@@ -229,9 +229,6 @@ private:
 
 
 struct Impl {
-    std::string engineId;
-    std::string dataDir;
-
     std::shared_ptr<dpso::ocr::DataLock> dataLock;
 
     std::vector<Lang> langs;
@@ -293,24 +290,34 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
 
     const auto& engineId = ocrEngine.getInfo().id;
 
-    static std::vector<std::weak_ptr<Impl>> implCache;
+    struct ImplCacheEntry {
+        std::string engineId;
+        std::string dataDir;
+        std::weak_ptr<Impl> impl;
+    };
 
-    for (const auto& implWPtr : implCache) {
-        auto impl = implWPtr.lock();
-        assert(impl);
+    static std::vector<ImplCacheEntry> implCache;
 
-        if (impl->engineId == engineId && impl->dataDir == dataDir)
+    for (const auto& entry : implCache) {
+        if (entry.engineId != engineId || entry.dataDir != dataDir)
+            continue;
+
+        if (auto impl = entry.impl.lock())
             return new DpsoOcrLangManager{impl};
+
+        assert(false);
     }
 
     std::shared_ptr<Impl> impl{
         new Impl{},
-        [](Impl* impl)
+        [engineId, dataDir = std::string{dataDir}]
+        (Impl* impl)
         {
             for (auto iter = implCache.begin();
                     iter < implCache.end();
                     ++iter)
-                if (iter->lock().get() == impl) {
+                if (iter->engineId == engineId
+                        && iter->dataDir == dataDir) {
                     implCache.erase(iter);
                     break;
                 }
@@ -318,8 +325,6 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
             delete impl;
         }};
 
-    impl->engineId = engineId;
-    impl->dataDir = dataDir;
     impl->dataLock = dpso::ocr::DataLock::get(
         engineId.c_str(), dataDir);
 
@@ -335,7 +340,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
     impl->langOpExecutor = std::make_unique<LangOpExecutor>(
         *impl->langManager);
 
-    implCache.push_back(impl);
+    implCache.push_back({engineId, dataDir, impl});
 
     return new DpsoOcrLangManager{impl};
 }
@@ -632,7 +637,8 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
     };
 
     impl.installControl = impl.langOpExecutor->execute(
-        [&, installList = std::move(installList)] (
+        [&, installList = std::move(installList)]
+        (
             dpso::ocr::LangManager& langManager,
             const dpso::Synchronized<bool>& cancelRequested)
         {

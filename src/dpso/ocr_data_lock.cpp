@@ -17,35 +17,43 @@ struct ObserverData {
 
 
 struct SharedData {
-    std::string engineId;
-    std::string dataDir;
-
     std::weak_ptr<DataLock> dataLock;
     std::vector<ObserverData*> observerDatas;
 
     static std::shared_ptr<SharedData> get(
         const char* engineId, const char* dataDir)
     {
-        static std::vector<std::weak_ptr<SharedData>> cache;
+        struct CacheEntry {
+            std::string engineId;
+            std::string dataDir;
+            std::weak_ptr<SharedData> sharedData;
+        };
 
-        for (const auto& sdWPtr : cache) {
-            auto sd = sdWPtr.lock();
-            assert(sd);
+        static std::vector<CacheEntry> cache;
 
-            if (sd
-                    && sd->engineId == engineId
-                    && sd->dataDir == dataDir)
+        for (const auto& entry : cache) {
+            if (entry.engineId != engineId
+                    || entry.dataDir != dataDir)
+                continue;
+
+            if (auto sd = entry.sharedData.lock())
                 return sd;
+
+            assert(false);
         }
 
         std::shared_ptr<SharedData> sd{
-            new SharedData{engineId, dataDir, {}, {}},
-            [](SharedData* sd)
+            new SharedData{},
+            [
+                engineId = std::string{engineId},
+                dataDir = std::string{dataDir}]
+            (SharedData* sd)
             {
                 for (auto iter = cache.begin();
                         iter < cache.end();
                         ++iter)
-                    if (iter->lock().get() == sd) {
+                    if (iter->engineId == engineId
+                            && iter->dataDir == dataDir) {
                         cache.erase(iter);
                         break;
                     }
@@ -53,7 +61,7 @@ struct SharedData {
                 delete sd;
             }};
 
-        cache.push_back(sd);
+        cache.push_back({engineId, dataDir, sd});
 
         return sd;
     }
@@ -76,7 +84,7 @@ std::shared_ptr<DataLock> DataLock::get(
 
     auto dataLock = std::shared_ptr<DataLock>{
         new DataLock{},
-        [sd = sd](DataLock* dataLock)
+        [sd](DataLock* dataLock)
         {
             if (!dataLock)
                 return;
