@@ -34,6 +34,23 @@ struct JsonRefDecrementer {
 using JsonUPtr = std::unique_ptr<json_t, JsonRefDecrementer>;
 
 
+std::string parseJsonTagInfo(json_t* tagInfo)
+{
+    if (!json_is_object(tagInfo))
+        throw LangManagerError{"Not an object"};
+
+    const auto* nameObj = json_object_get(tagInfo, "name");
+    if (!nameObj)
+        throw LangManagerError{"No \"name\""};
+
+    const auto* name = json_string_value(nameObj);
+    if (!name)
+        throw LangManagerError{"\"name\" is not a string"};
+
+    return name;
+}
+
+
 std::vector<std::string> parseJsonTags(const char* jsonData)
 {
     std::vector<std::string> result;
@@ -44,27 +61,17 @@ std::vector<std::string> parseJsonTags(const char* jsonData)
     if (!json)
         throw LangManagerError{error.text};
 
-    if(!json_is_array(json.get()))
-        throw LangManagerError{"JSON root is not an array"};
+    if (!json_is_array(json.get()))
+        throw LangManagerError{"Root is not an array"};
 
-    for (std::size_t i = 0; i < json_array_size(json.get()); i++) {
-        const auto* tagInfo = json_array_get(json.get(), i);
-        if (!json_is_object(tagInfo))
+    for (std::size_t i = 0; i < json_array_size(json.get()); i++)
+        try {
+            result.push_back(
+                parseJsonTagInfo(json_array_get(json.get(), i)));
+        } catch (LangManagerError& e) {
             throw LangManagerError{str::printf(
-                "Array item %i is not an object", i)};
-
-        const auto* nameObj = json_object_get(tagInfo, "name");
-        if (!nameObj)
-            throw LangManagerError{str::printf(
-                "Tag info %i has no \"name\" item", i)};
-
-        const auto* name = json_string_value(nameObj);
-        if (!name)
-            throw LangManagerError{str::printf(
-                "\"name\" of tag info %i is not a string", i)};
-
-        result.push_back(name);
-    }
+                "Array item %zu: %s", i, e.what())};
+        }
 
     return result;
 }
@@ -126,6 +133,47 @@ std::string getRepoTag(const char* userAgent)
 }
 
 
+void parseJsonFileInfo(
+    json_t* fileInfo, std::vector<ExternalLangInfo>& dst)
+{
+    if (!json_is_object(fileInfo))
+        throw LangManagerError{"Not an object"};
+
+    const auto* pathObj = json_object_get(fileInfo, "path");
+    if (!pathObj)
+        throw LangManagerError{"No \"path\""};
+
+    const auto* path = json_string_value(pathObj);
+    if (!path)
+        throw LangManagerError{"\"path\" is not a string"};
+
+    const auto* extPos = std::strrchr(path, '.');
+    if (!extPos || std::strcmp(extPos, traineddataExt) != 0)
+        return;
+
+    const std::string langCode{path, extPos};
+    if (isIgnoredLang(langCode.c_str()))
+        return;
+
+    const auto* sizeObj = json_object_get(fileInfo, "size");
+    if (!sizeObj)
+        throw LangManagerError{"No \"size\""};
+
+    const auto size = json_integer_value(sizeObj);
+
+    const auto* downloadUrlObj = json_object_get(
+        fileInfo, "download_url");
+    if (!downloadUrlObj)
+        throw LangManagerError{"No \"download_url\""};
+
+    const auto* downloadUrl = json_string_value(downloadUrlObj);
+    if (!downloadUrl)
+        throw LangManagerError{"\"download_url\" is not a string"};
+
+    dst.push_back({langCode, size, downloadUrl});
+}
+
+
 std::vector<ExternalLangInfo> parseJsonRepoContents(
     const char* jsonData)
 {
@@ -135,56 +183,18 @@ std::vector<ExternalLangInfo> parseJsonRepoContents(
     if (!json)
         throw LangManagerError{error.text};
 
-    if(!json_is_array(json.get()))
-        throw LangManagerError{"JSON root is not an array"};
+    if (!json_is_array(json.get()))
+        throw LangManagerError{"Root is not an array"};
 
     std::vector<ExternalLangInfo> result;
 
-    for (std::size_t i = 0; i < json_array_size(json.get()); i++) {
-        const auto* fileInfo = json_array_get(json.get(), i);
-        if (!json_is_object(fileInfo))
+    for (std::size_t i = 0; i < json_array_size(json.get()); i++)
+        try {
+            parseJsonFileInfo(json_array_get(json.get(), i), result);
+        } catch (LangManagerError& e) {
             throw LangManagerError{str::printf(
-                "Array item %i is not an object", i)};
-
-        const auto* pathObj = json_object_get(fileInfo, "path");
-        if (!pathObj)
-            throw LangManagerError{str::printf(
-                "File info %i has no \"path\" item", i)};
-
-        const auto* path = json_string_value(pathObj);
-        if (!path)
-            throw LangManagerError{str::printf(
-                "\"path\" of file info %i is not a string", i)};
-
-        const auto* extPos = std::strrchr(path, '.');
-        if (!extPos || std::strcmp(extPos, traineddataExt) != 0)
-            continue;
-
-        const std::string langCode{path, extPos};
-        if (isIgnoredLang(langCode.c_str()))
-            continue;
-
-        const auto* sizeObj = json_object_get(fileInfo, "size");
-        if (!sizeObj)
-            throw LangManagerError{str::printf(
-                "File info %i has no \"size\" item", i)};
-
-        const auto size = json_integer_value(sizeObj);
-
-        const auto* downloadUrlObj = json_object_get(
-            fileInfo, "download_url");
-        if (!downloadUrlObj)
-            throw LangManagerError{str::printf(
-                "File info %i has no \"download_url\" item", i)};
-
-        const auto* downloadUrl = json_string_value(downloadUrlObj);
-        if (!downloadUrl)
-            throw LangManagerError{str::printf(
-                "\"download_url\" of file info %i is not a string",
-                i)};
-
-        result.push_back({langCode, size, downloadUrl});
-    }
+                "Array item %zu: %s", i, e.what())};
+        }
 
     return result;
 }
