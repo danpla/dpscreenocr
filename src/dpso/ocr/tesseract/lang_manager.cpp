@@ -34,7 +34,7 @@ public:
             langInfos.push_back({langCode, LangState::installed, {}});
     }
 
-    void setUserAgent(const char* newUserAgent)
+    void setUserAgent(const char* newUserAgent) override
     {
         userAgent = newUserAgent;
     }

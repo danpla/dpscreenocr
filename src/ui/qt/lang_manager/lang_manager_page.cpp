@@ -48,7 +48,6 @@ private slots:
 private:
     LangList* langList;
     QTreeView* treeView;
-    QSortFilterProxyModel* sortFilterProxyModel;
     QPushButton* actionButton;
 };
 
