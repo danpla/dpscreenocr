@@ -668,16 +668,15 @@ void MainWindow::setSelectionIsEnabled(bool isEnabled)
 
 void MainWindow::setStatus(Status newStatus, const QString& text)
 {
-    const auto textWithAppName = joinInLayoutDirection(
-        " - ", {text, uiAppName});
+    const auto title = newStatus == Status::ok
+        ? uiAppName : joinInLayoutDirection(" - ", {text, uiAppName});
 
-    setWindowTitle(
-        newStatus == Status::ok ? uiAppName : textWithAppName);
+    setWindowTitle(title);
 
     statusIndicator->setStatus(newStatus);
     statusLabel->setText(text);
 
-    trayIcon->setToolTip(textWithAppName);
+    trayIcon->setToolTip(title);
     if (newStatus != lastStatus)
         switch (newStatus) {
         case Status::ok:
