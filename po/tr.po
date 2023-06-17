@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-05-21 13:42+0200\n"
+"POT-Creation-Date: 2023-06-17 15:14+0200\n"
 "PO-Revision-Date: 2022-11-21 15:48+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -525,94 +525,94 @@ msgstr "Yadişçe"
 msgid "Yoruba"
 msgstr "Yorubaca"
 
-#: src/ui/qt/about.cpp:53
+#: src/ui/qt/about.cpp:58
 msgid "Website"
 msgstr "Web sitesi"
 
-#: src/ui/qt/about.cpp:63
+#: src/ui/qt/about.cpp:68
 msgid "User manual"
 msgstr "Kullanıcı kılavuzu"
 
-#: src/ui/qt/about.cpp:67
+#: src/ui/qt/about.cpp:72
 msgid "Changelog"
 msgstr "Değişiklik günlüğü"
 
-#: src/ui/qt/about.cpp:69
+#: src/ui/qt/about.cpp:74
 msgid "License"
 msgstr "Lisans"
 
-#: src/ui/qt/about.cpp:75
+#: src/ui/qt/about.cpp:80
 msgid "Third-party licenses"
 msgstr "Üçüncü taraf lisansları"
 
-#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:111 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Ekrandaki metni tanıma programı"
 
-#: src/ui/qt/action_chooser.cpp:23
+#: src/ui/qt/action_chooser.cpp:26
 msgid "Copy text to clipboard"
 msgstr "Metni panoya kopyala"
 
-#: src/ui/qt/action_chooser.cpp:24
+#: src/ui/qt/action_chooser.cpp:27
 msgid "Add text to history"
 msgstr "Metni geçmişe ekle"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp:29
 msgid "Run executable:"
 msgstr "Programı çalıştır:"
 
-#: src/ui/qt/action_chooser.cpp:28
+#: src/ui/qt/action_chooser.cpp:31
 msgid "Run an executable with the recognized text as the first argument"
 msgstr ""
 "İlk bağımsız değişken tanınan metin olacak şekilde bir programı çalıştırın"
 
-#: src/ui/qt/action_chooser.cpp:150
+#: src/ui/qt/action_chooser.cpp:153
 msgid "Choose an executable"
 msgstr "Bir program seçin"
 
-#: src/ui/qt/history.cpp:39
+#: src/ui/qt/history.cpp:43
 msgid "Export…"
 msgstr "Dışa aktar…"
 
-#: src/ui/qt/history.cpp:44
+#: src/ui/qt/history.cpp:48
 msgid "Clear…"
 msgstr "Temizle…"
 
-#: src/ui/qt/history.cpp:61 src/ui/qt/main_window.cpp:164
+#: src/ui/qt/history.cpp:65 src/ui/qt/main_window.cpp:130
 msgid "History"
 msgstr "Geçmiş"
 
-#: src/ui/qt/history.cpp:86
+#: src/ui/qt/history.cpp:90
 msgid "Export history"
 msgstr "Geçmişi dışa aktar"
 
-#: src/ui/qt/history.cpp:88
+#: src/ui/qt/history.cpp:92
 msgid "Plain text"
 msgstr "Düz metin"
 
-#: src/ui/qt/history.cpp:91
+#: src/ui/qt/history.cpp:95
 msgid "All files"
 msgstr "Tüm dosyalar"
 
-#: src/ui/qt/history.cpp:125
+#: src/ui/qt/history.cpp:129
 msgid "Clear the history?"
 msgstr "Geçmiş temizlensin mi?"
 
-#: src/ui/qt/history.cpp:125 src/ui/qt/lang_manager/lang_manager_page.cpp:248
-#: src/ui/qt/main_window.cpp:243
+#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:249
+#: src/ui/qt/main_window.cpp:200
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/ui/qt/history.cpp:125
+#: src/ui/qt/history.cpp:129
 msgid "Clear"
 msgstr "Temizle"
 
-#: src/ui/qt/lang_browser.cpp:63 src/ui/qt/lang_manager/lang_list.cpp:86
+#: src/ui/qt/lang_browser.cpp:66 src/ui/qt/lang_manager/lang_list.cpp:90
 msgctxt "language"
 msgid "Name"
 msgstr "İsim"
 
-#: src/ui/qt/lang_browser.cpp:64 src/ui/qt/lang_manager/lang_list.cpp:88
+#: src/ui/qt/lang_browser.cpp:67 src/ui/qt/lang_manager/lang_list.cpp:92
 msgctxt "language"
 msgid "Code"
 msgstr "Kod"
@@ -661,52 +661,52 @@ msgstr ""
 msgid "An error occurred while fetching the list of languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:462
+#: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:419
 msgid "Language manager"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:94
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:154
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Install"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:95
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:154
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Update"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:96
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:249
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:250
 msgid "Remove"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:104 src/ui/qt/utils.cpp:109
+#: src/ui/qt/lang_manager/lang_manager.cpp:104 src/ui/qt/utils.cpp:112
 msgid "Close"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:65
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:64
 msgid "Filter"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:196
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:197
 msgid "An error occurred while installing languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:197
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:198
 msgid "An error occurred while updating languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:211
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:212
 msgid "Remove…"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:240
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:241
 msgid "Remove “{name}”?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:268
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:269
 msgid "Some languages were not removed"
 msgstr ""
 
@@ -714,81 +714,80 @@ msgstr ""
 msgid "Check your network connection and try again."
 msgstr ""
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:104
 msgid "{app_name} is already running"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:52
+#: src/ui/qt/main_window.cpp:55
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "{progress}% Tanındı ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:163
+#: src/ui/qt/main_window.cpp:129
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "Temel"
 
-#: src/ui/qt/main_window.cpp:165
+#: src/ui/qt/main_window.cpp:131
 msgid "About"
 msgstr "Hakkında"
 
-#: src/ui/qt/main_window.cpp:242
+#: src/ui/qt/main_window.cpp:199
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Tanıma henüz tamamlanmadı. Yine de çıkılsın mı?"
 
-#: src/ui/qt/main_window.cpp:244 src/ui/qt/main_window.cpp:431
+#: src/ui/qt/main_window.cpp:201 src/ui/qt/main_window.cpp:388
 msgid "Quit"
 msgstr "Çıkış"
 
-#: src/ui/qt/main_window.cpp:423
+#: src/ui/qt/main_window.cpp:380
 msgid "Show {app_name}"
 msgstr "Göster {app_name}"
 
-#: src/ui/qt/main_window.cpp:439
+#: src/ui/qt/main_window.cpp:396
 msgid "Status"
 msgstr "Durumlar"
 
-#: src/ui/qt/main_window.cpp:449
+#: src/ui/qt/main_window.cpp:406
 msgid "Character recognition"
 msgstr "Karakter tanıma"
 
-#: src/ui/qt/main_window.cpp:453
+#: src/ui/qt/main_window.cpp:410
 msgid "Split text blocks"
 msgstr "Bölünmüş metin blokları"
 
-#: src/ui/qt/main_window.cpp:455
+#: src/ui/qt/main_window.cpp:412
 msgid "Split independent text blocks, such as columns"
 msgstr "Sütunlar gibi bağımsız metin bloklarını böl"
 
-#: src/ui/qt/main_window.cpp:458
+#: src/ui/qt/main_window.cpp:415
 msgid "Languages:"
 msgstr "Diller:"
 
-#: src/ui/qt/main_window.cpp:464
+#: src/ui/qt/main_window.cpp:421
 msgid "Install, update, and remove languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:475
+#: src/ui/qt/main_window.cpp:432
 msgid "Actions"
 msgstr "Eylemler"
 
-#: src/ui/qt/main_window.cpp:485
+#: src/ui/qt/main_window.cpp:442
 msgid "Hotkey"
 msgstr "Kısayol"
 
-#: src/ui/qt/main_window.cpp:815
+#: src/ui/qt/main_window.cpp:768
 msgid "Please install languages"
 msgstr "Lütfen dilleri kurun"
 
-#: src/ui/qt/main_window.cpp:817
+#: src/ui/qt/main_window.cpp:770
 msgid "Please select languages"
 msgstr "Lütfen dilleri seçin"
 
-#: src/ui/qt/main_window.cpp:819
+#: src/ui/qt/main_window.cpp:772
 msgid "Please select actions"
 msgstr "Lütfen eylemleri seçin"
 
-#. Translators: Program is ready for OCR
-#: src/ui/qt/main_window.cpp:822
-msgctxt "ocr_status"
-msgid "Ready"
+#: src/ui/qt/main_window.cpp:777
+#, fuzzy
+msgid "{app_name} is ready for recognition"
 msgstr "Hazır"

@@ -771,8 +771,11 @@ void MainWindow::updateStatus()
     else if (!actionChooser->getSelectedActions())
         setStatus(Status::warning, _("Please select actions"));
     else
-        // Translators: Program is ready for OCR
-        setStatus(Status::ok, pgettext("ocr_status", "Ready"));
+        setStatus(
+            Status::ok,
+            dpsoStrNFormat(
+                _("{app_name} is ready for recognition"),
+                {{"app_name", uiAppName}}));
 
     statusValid = true;
 }
