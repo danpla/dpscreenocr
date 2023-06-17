@@ -106,7 +106,7 @@ std::unique_ptr<Backend> Backend::create()
     const auto* xdgSessionType = std::getenv("XDG_SESSION_TYPE");
     if (xdgSessionType && std::strcmp(xdgSessionType, "wayland") == 0)
         throw BackendError(
-            "Wayland is not supported. Please switch to X11 "
+            "Wayland is not supported. Please switch to the X11/Xorg "
             "session.");
 
     return std::make_unique<X11Backend>();

@@ -401,6 +401,14 @@ the author by email; the link is at the bottom of the
       This is not allowed because there is no way to safely pass them
       arbitrary text. Please use another scripting language instead.
 
+*   **(Unix) "Wayland is not supported. Please switch to the X11/Xorg
+    session"**
+
+    You need to switch to the X11/Xorg session, as dpScreenOCR doesn't
+    work with Wayland yet. On most desktop environments, you can do
+    this via a dedicated menu (sometimes hidden under the gear button)
+    when the login screen asks for the password.
+
 *   **(Unix) No languages**
 
     Make sure that the TESSDATA_PREFIX environment variable is either
