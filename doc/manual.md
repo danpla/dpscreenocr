@@ -75,15 +75,11 @@ install other languages, use the language manager as described in the
 
 Alternatively, you can install languages manually: download the needed
 Tesseract language files (for example, from the
-[languages page][Language packs]), and place them in the
-`C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data`
-folder. To quickly navigate to this folder, press Windows + R to open
-"Run" and paste `%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`. You can
-also paste this path to the folder address bar of File Explorer.
-
-If the "tesseract_5_data" folder does not exist in
-`%LOCALAPPDATA%\dpscreenocr` when you start dpScreenOCR, the program
-will copy it from the directory if the EXE file.
+[languages page][Language packs]) and place them in
+`C:\Users\(your name)\AppData\Local\dpscreenocr\tesseract_5_data`. To
+quickly navigate to this folder, paste
+`%LOCALAPPDATA%\dpscreenocr\tesseract_5_data` to either "Run" (press
+Windows + R) or the folder address bar of File Explorer.
 
 
 #### Migrating from version 1.0
