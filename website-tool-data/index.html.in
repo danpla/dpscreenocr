@@ -6,7 +6,7 @@
 <script>
   // The code is intentionally written in ES5 JavaScript to support
   // old browsers.
-  var langs = ["en"];
+  var langs = [@JS_LANGS@];
 
   var userLangFixups = {
     // Some browsers use no longer recommended zh-CN and zh-TW codes
