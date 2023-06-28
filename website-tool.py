@@ -404,11 +404,10 @@ def gen_main_page_content(root_url, translator):
     return (
         APP_NAME,
         logo
-            + '<p>{}</p>'.format(about_text)
-            + '<p>{}</p>'.format(download_text)
+            + '<p>{}</p>\n'.format(about_text)
+            + '<p>{}</p>\n'.format(download_text)
             + download_list
-            + '<p>{}</p>'.format(contribute_text)
-            + '\n')
+            + '<p>{}</p>\n'.format(contribute_text))
 
 
 def write_pages(langs):
