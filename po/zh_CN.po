@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-06-17 15:14+0200\n"
-"PO-Revision-Date: 2022-11-21 15:48+0000\n"
-"Last-Translator: Eric <hamburger1024@mailbox.org>\n"
+"PO-Revision-Date: 2023-06-29 10:52+0000\n"
+"Last-Translator: Eric <hamburger2048@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "dpscreenocr/dpscreenocr/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.18.1\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -786,6 +786,5 @@ msgid "Please select actions"
 msgstr "请选择操作"
 
 #: src/ui/qt/main_window.cpp:777
-#, fuzzy
 msgid "{app_name} is ready for recognition"
-msgstr "准备就绪"
+msgstr "{app_name} 已准备好进行识别"
