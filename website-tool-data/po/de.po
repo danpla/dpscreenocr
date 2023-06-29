@@ -8,18 +8,20 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-06-28 21:36+0200\n"
-"PO-Revision-Date: 2023-06-28 20:08+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-06-30 17:52+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr-website/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: website-tool.py:241
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: website-tool.py:330
 #, python-brace-format
@@ -37,10 +39,12 @@ msgid ""
 "<b>Download</b> version {version_number} (<a {changelog_link}>changelog</a>, "
 "<a {license_link}>license</a>):"
 msgstr ""
+"Version {version_number} (<a {changelog_link}>Änderungsprotokoll</a>, <a "
+"{license_link}>Lizenz</a>) <b>herunterladen</b>:"
 
 #: website-tool.py:371
 msgid "Ubuntu and derivatives"
-msgstr ""
+msgstr "Ubuntu und Derivate"
 
 #: website-tool.py:375
 #, python-brace-format
@@ -48,10 +52,12 @@ msgid ""
 "Windows 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
+"Windows 7 oder neuer: <a {installer_link}>Installationsprogramm</a> oder <a "
+"{zip_archive_link}>ZIP-Archiv</a>"
 
 #: website-tool.py:391
 msgid "Source code (tar.gz)"
-msgstr ""
+msgstr "Quellcode (tar.gz)"
 
 #: website-tool.py:395
 #, python-brace-format
@@ -64,4 +70,4 @@ msgstr ""
 #. language selection menu.
 #: website-tool.py:450
 msgid "LANGUAGE_NAME"
-msgstr ""
+msgstr "Deutsch"
