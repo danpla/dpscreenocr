@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from collections import OrderedDict
 from urllib.request import url2pathname
 import argparse
 import gettext
@@ -158,7 +157,7 @@ def compile_po(out_dir):
 
 # Returns a mapping from a BCP 47 tag to gettext.*Translations.
 def collect_langs(mo_dir):
-    langs = OrderedDict()
+    langs = {}
     langs['en'] = gettext.NullTranslations()
 
     untranslated_langs = []
@@ -200,6 +199,14 @@ def get_url_to_root(url):
     return '/'.join(('..', ) * url.count('/'))
 
 
+def srip_index_html(url):
+    index_html = 'index.html'
+    if url == index_html or url.endswith('/' + index_html):
+        return url[:-len(index_html)]
+
+    return url
+
+
 def write_root_index_page(langs):
     with open(
             os.path.join(DATA_DIR, 'index.html.in'),
@@ -210,7 +217,7 @@ def write_root_index_page(langs):
         f.write(
             index_page_template.replace(
                 '@JS_LANGS@',
-                ','.join('"{}"'.format(l) for l in langs)))
+                ','.join('"{}"'.format(l) for l in sorted(langs))))
 
 
 def gen_unordered_list(tree):
@@ -261,7 +268,7 @@ def gen_lang_menu(langs, page_lang, page_suburl):
                 '<a lang="{lang_code}" hreflang="{lang_code}" '
                 'href="{}/{}">{}</a>'.format(
                     get_url_to_root(url),
-                    url,
+                    srip_index_html(url),
                     lang_name,
                     lang_code=lang_code))
 
