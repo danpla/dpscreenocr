@@ -211,13 +211,19 @@ def write_root_index_page(langs):
     with open(
             os.path.join(DATA_DIR, 'index.html.in'),
             encoding='utf-8') as f:
-        index_page_template = f.read()
+        index_template = f.read()
+
+    replacements = {
+        'TITLE': APP_NAME,
+        'JS_LANGS': ','.join('"{}"'.format(l) for l in sorted(langs))
+    }
+
+    for k, v in replacements.items():
+        index_template = index_template.replace(
+            '@{}@'.format(k), v)
 
     with open_for_text_writing('index.html') as f:
-        f.write(
-            index_page_template.replace(
-                '@JS_LANGS@',
-                ','.join('"{}"'.format(l) for l in sorted(langs))))
+        f.write(index_template)
 
 
 def gen_unordered_list(tree):
