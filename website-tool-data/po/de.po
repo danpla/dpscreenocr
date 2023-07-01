@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-06-28 21:36+0200\n"
+"POT-Creation-Date: 2023-07-01 20:04+0200\n"
 "PO-Revision-Date: 2023-06-30 17:52+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -19,11 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.0-dev\n"
 
-#: website-tool.py:241
 msgid "Language"
 msgstr "Sprache"
 
-#: website-tool.py:330
 #, python-brace-format
 msgid ""
 "<b>{app_name}</b> is a program to recognize text on the screen. Powered by "
@@ -33,20 +31,17 @@ msgid ""
 "instructions on installing, configuring, and using the program."
 msgstr ""
 
-#: website-tool.py:346
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
-"<b>Download</b> version {version_number} (<a {changelog_link}>changelog</a>, "
+"<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
 "<a {license_link}>license</a>):"
 msgstr ""
 "Version {version_number} (<a {changelog_link}>Änderungsprotokoll</a>, <a "
 "{license_link}>Lizenz</a>) <b>herunterladen</b>:"
 
-#: website-tool.py:371
 msgid "Ubuntu and derivatives"
 msgstr "Ubuntu und Derivate"
 
-#: website-tool.py:375
 #, python-brace-format
 msgid ""
 "Windows 7 or newer: <a {installer_link}>installer</a> or <a "
@@ -55,11 +50,9 @@ msgstr ""
 "Windows 7 oder neuer: <a {installer_link}>Installationsprogramm</a> oder <a "
 "{zip_archive_link}>ZIP-Archiv</a>"
 
-#: website-tool.py:391
 msgid "Source code (tar.gz)"
 msgstr "Quellcode (tar.gz)"
 
-#: website-tool.py:395
 #, python-brace-format
 msgid ""
 "<b>Contribute</b> by taking part in <a {translations_link}>translation</a> "
@@ -68,6 +61,5 @@ msgstr ""
 
 #. Translators: This is the target language name to be shown in the
 #. language selection menu.
-#: website-tool.py:450
 msgid "LANGUAGE_NAME"
 msgstr "Deutsch"

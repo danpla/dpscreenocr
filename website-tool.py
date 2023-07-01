@@ -355,7 +355,7 @@ def gen_main_page_content(root_url, translator):
 
     download_text = translator.gettext(N_(
         '<b>Download</b> version {version_number} ('
-        '<a {changelog_link}>changelog</a>, '
+        '<a {changelog_link}>changes</a>, '
         '<a {license_link}>license</a>):')).format(
             version_number=APP_VERSION,
             changelog_link='href="{}/doc/changelog.txt"'.format(

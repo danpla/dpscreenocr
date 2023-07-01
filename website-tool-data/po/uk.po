@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-06-28 21:36+0200\n"
+"POT-Creation-Date: 2023-07-01 20:04+0200\n"
 "PO-Revision-Date: 2023-06-30 17:52+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -16,15 +16,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.0-dev\n"
 
-#: website-tool.py:241
 msgid "Language"
 msgstr "Мова"
 
-#: website-tool.py:330
 #, python-brace-format
 msgid ""
 "<b>{app_name}</b> is a program to recognize text on the screen. Powered by "
@@ -34,25 +32,23 @@ msgid ""
 "instructions on installing, configuring, and using the program."
 msgstr ""
 "<b>{app_name}</b>&thinsp;&mdash;&thinsp;це програма для розпізнавання тексту "
-"на екрані. Завдяки <a href=\"https://uk.wikipedia.org/wiki/Tesseract\""
-">Tesseract</a> вона підтримує понад 100 мов і може розбивати незалежні блоки "
-"тексту, такі як колонки. Прочитайте <a {manual_link}>посібник користувача</"
-"a> для отримання інструкцій зі встановлення, налаштування та використання."
+"на екрані. Завдяки <a href=\"https://uk.wikipedia.org/wiki/Tesseract"
+"\">Tesseract</a> вона підтримує понад 100 мов і може розбивати незалежні "
+"блоки тексту, такі як колонки. Прочитайте <a {manual_link}>посібник "
+"користувача</a> для отримання інструкцій зі встановлення, налаштування та "
+"використання."
 
-#: website-tool.py:346
 #, python-brace-format
 msgid ""
-"<b>Download</b> version {version_number} (<a {changelog_link}>changelog</a>, "
+"<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
 "<a {license_link}>license</a>):"
 msgstr ""
-"<b>Завантажте</b> версію {version_number} (<a {changelog_link}>список змін</"
-"a>, <a {license_link}>ліцензія</a>):"
+"<b>Завантажте</b> версію {version_number} (<a {changelog_link}>зміни</a>, "
+"<a {license_link}>ліцензія</a>):"
 
-#: website-tool.py:371
 msgid "Ubuntu and derivatives"
 msgstr "Ubuntu і похідні"
 
-#: website-tool.py:375
 #, python-brace-format
 msgid ""
 "Windows 7 or newer: <a {installer_link}>installer</a> or <a "
@@ -61,11 +57,9 @@ msgstr ""
 "Windows 7 або новіша: <a {installer_link}>інсталятор</a> або <a "
 "{zip_archive_link}>ZIP-архів</a>"
 
-#: website-tool.py:391
 msgid "Source code (tar.gz)"
 msgstr "Вихідний код (tar.gz)"
 
-#: website-tool.py:395
 #, python-brace-format
 msgid ""
 "<b>Contribute</b> by taking part in <a {translations_link}>translation</a> "
@@ -76,6 +70,5 @@ msgstr ""
 
 #. Translators: This is the target language name to be shown in the
 #. language selection menu.
-#: website-tool.py:450
 msgid "LANGUAGE_NAME"
 msgstr "Українська"
