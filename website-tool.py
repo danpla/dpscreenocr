@@ -72,15 +72,13 @@ def update_po(*, no_fuzzy_matching, keep_pot):
     subprocess.check_call((
         xgettext_path,
         '--from-code=UTF-8',
+        '--no-location',
         '--add-comments=Translators:',
         '--package-name=' + APP_NAME + ' Website',
         '--msgid-bugs-address=' + BUGS_ADDRESS,
         '-kN_',
-        # We use --directory so that only the basename appears in
-        # message location comments.
-        '--directory=' + SCRIPT_DIR,
         '--output=' + pot_path,
-        os.path.basename(SCRIPT_PATH)))
+        SCRIPT_PATH))
 
     # xgettext leaves the header's charset undefined if all source
     # strings are ASCII, even if --from-code is set to UTF-8. Fix it
