@@ -161,8 +161,8 @@ static net::DownloadProgressHandler makeDownloadProgressHandler(
     bool& canceled)
 {
     return [&, lastProgress = -1](
-        std::uint64_t curSize,
-        std::optional<std::uint64_t> totalSize) mutable
+        std::int64_t curSize,
+        std::optional<std::int64_t> totalSize) mutable
     {
         if (!progressHandler)
             return true;

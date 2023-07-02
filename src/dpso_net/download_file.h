@@ -17,7 +17,7 @@ namespace dpso::net {
 // downloaded file.
 using DownloadProgressHandler = std::function<
     bool(
-        std::uint64_t curSize,
+        std::int64_t curSize,
         std::optional<std::int64_t> totalSize)>;
 
 
