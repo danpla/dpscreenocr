@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-07-01 20:04+0200\n"
-"PO-Revision-Date: 2023-06-30 17:52+0000\n"
+"PO-Revision-Date: 2023-07-04 00:52+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr-website/de/>\n"
@@ -31,12 +31,12 @@ msgid ""
 "instructions on installing, configuring, and using the program."
 msgstr ""
 
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
 "<a {license_link}>license</a>):"
 msgstr ""
-"Version {version_number} (<a {changelog_link}>Änderungsprotokoll</a>, <a "
+"Version {version_number} (<a {changelog_link}>Änderungen</a>, <a "
 "{license_link}>Lizenz</a>) <b>herunterladen</b>:"
 
 msgid "Ubuntu and derivatives"
