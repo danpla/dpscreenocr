@@ -8,17 +8,19 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-07-01 20:04+0200\n"
-"PO-Revision-Date: 2023-06-28 20:08+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-07-04 00:53+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr-website/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #, python-brace-format
 msgid ""
@@ -28,32 +30,44 @@ msgid ""
 "blocks, such as columns. Read <a {manual_link}>the manual</a> for "
 "instructions on installing, configuring, and using the program."
 msgstr ""
+"<b>{app_name}</b> es un programa para reconocer el texto en pantalla. "
+"Funciona mediante <a href=\"https://en.wikipedia.org/wiki/"
+"Tesseract_(software)\">Tesseract</a>, admite más de 100 lenguas y es capaz "
+"de dividir bloques de texto independientes, como columnas. Lea <a "
+"{manual_link}>el manual</a> para obtener instrucciones de instalación, "
+"configuración y uso del programa."
 
 #, python-brace-format
 msgid ""
 "<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
 "<a {license_link}>license</a>):"
 msgstr ""
+"<b>Descárguese</b> la versión {version_number} (<a "
+"{changelog_link}>novedades</a>, <a {license_link}>licencia</a>):"
 
 msgid "Ubuntu and derivatives"
-msgstr ""
+msgstr "Ubuntu y derivadas"
 
 #, python-brace-format
 msgid ""
 "Windows 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
+"Windows 7 o más reciente: <a {installer_link}>instalador</a> o <a "
+"{zip_archive_link}>archivador ZIP</a>"
 
 msgid "Source code (tar.gz)"
-msgstr ""
+msgstr "Código fuente (tar.gz)"
 
 #, python-brace-format
 msgid ""
 "<b>Contribute</b> by taking part in <a {translations_link}>translation</a> "
 "or <a {development_link}>development</a>."
 msgstr ""
+"<b>Contribuya</b> al participar en la <a {translations_link}>traducción</a> "
+"o el <a {development_link}>desarrollo</a>."
 
 #. Translators: This is the target language name to be shown in the
 #. language selection menu.
 msgid "LANGUAGE_NAME"
-msgstr ""
+msgstr "Español"
