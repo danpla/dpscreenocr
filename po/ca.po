@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-06-17 15:14+0200\n"
-"PO-Revision-Date: 2020-05-23 00:21+0000\n"
+"PO-Revision-Date: 2023-07-04 00:52+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/ca/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -181,17 +181,14 @@ msgid "French"
 msgstr "francès"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:74
-#, fuzzy
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "francès mitjà (ca. 1400-1600)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:75
-#, fuzzy
 msgid "Frisian, Western"
 msgstr "frisó occidental"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:76
-#, fuzzy
 msgid "Gaelic, Scottish"
 msgstr "gaèlic escocès"
 
@@ -309,9 +306,8 @@ msgid "Korean (vertical)"
 msgstr "coreà (vertical)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:104
-#, fuzzy
 msgid "Kurdish"
-msgstr "kurd (alfabet àrab)"
+msgstr "kurd"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:105
 msgid "Lao"
@@ -330,7 +326,6 @@ msgid "Lithuanian"
 msgstr "lituà"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:109
-#, fuzzy
 msgid "Luxembourgish; Letzeburgesch"
 msgstr "luxemburguès"
 
@@ -549,7 +544,7 @@ msgstr "ioruba"
 
 #: src/ui/qt/about.cpp:58
 msgid "Website"
-msgstr ""
+msgstr "Lloc web"
 
 #: src/ui/qt/about.cpp:68
 msgid "User manual"
@@ -565,7 +560,7 @@ msgstr "Llicència"
 
 #: src/ui/qt/about.cpp:80
 msgid "Third-party licenses"
-msgstr ""
+msgstr "Llicències de tercers"
 
 #: src/ui/qt/about.cpp:111 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
@@ -592,9 +587,8 @@ msgid "Choose an executable"
 msgstr "Trieu un executable"
 
 #: src/ui/qt/history.cpp:43
-#, fuzzy
 msgid "Export…"
-msgstr "Anomena i desa…"
+msgstr "Exporta…"
 
 #: src/ui/qt/history.cpp:48
 msgid "Clear…"
@@ -605,9 +599,8 @@ msgid "History"
 msgstr "Historial"
 
 #: src/ui/qt/history.cpp:90
-#, fuzzy
 msgid "Export history"
-msgstr "Desa l’historial"
+msgstr "Exporta l’historial"
 
 #: src/ui/qt/history.cpp:92
 msgid "Plain text"
@@ -642,104 +635,104 @@ msgstr "Codi"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:115
 msgid "Cancel…"
-msgstr ""
+msgstr "Cancel·la…"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Are you sure you want to cancel the installation?"
-msgstr ""
+msgstr "Segur que voleu cancel·lar la instal·lació?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
 msgid "Continue installation"
-msgstr ""
+msgstr "Continua la instal·lació"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
 msgid "Cancel installation"
-msgstr ""
+msgstr "Cancel·la la instal·lació"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
 msgid "Are you sure you want to cancel the update?"
-msgstr ""
+msgstr "Segur que voleu cancel·lar l’actualització?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:139
 msgid "Continue updating"
-msgstr ""
+msgstr "Continua l’actualització"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:140
 msgid "Cancel update"
-msgstr ""
+msgstr "Cancel·la l’actualització"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
 msgid "Installing “{name}” ({current}/{total})"
-msgstr ""
+msgstr "S’està instal·lant «{name}» ({current}/{total})"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:185
 msgid "Updating “{name}” ({current}/{total})"
-msgstr ""
+msgstr "S’està actualitzant «{name}» ({current}/{total})"
 
 #: src/ui/qt/lang_manager/lang_fetch_progress_dialog.cpp:48
 msgid "Fetching the language list…"
-msgstr ""
+msgstr "S’està recuperant la llista de llengües…"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:49
 msgid "An error occurred while fetching the list of languages"
-msgstr ""
+msgstr "S’ha produït un error en recuperar la llista de llengües"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:419
 msgid "Language manager"
-msgstr ""
+msgstr "Gestor de llengües"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:94
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Install"
-msgstr ""
+msgstr "Instal·la"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:95
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Update"
-msgstr ""
+msgstr "Actualitza"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:96
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:250
 msgid "Remove"
-msgstr ""
+msgstr "Elimina"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:104 src/ui/qt/utils.cpp:112
 msgid "Close"
-msgstr ""
+msgstr "Tanca"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:64
 msgid "Filter"
-msgstr ""
+msgstr "Filtra"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:197
 msgid "An error occurred while installing languages"
-msgstr ""
+msgstr "S’ha produït un error en instal·lar llengües"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:198
 msgid "An error occurred while updating languages"
-msgstr ""
+msgstr "S’ha produït un error en actualitzar llengües"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:212
 msgid "Remove…"
-msgstr ""
+msgstr "Elimina…"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:241
 msgid "Remove “{name}”?"
 msgid_plural "Remove {count} selected languages?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Voleu eliminar «{name}»?"
+msgstr[1] "Voleu eliminar {count} llengües seleccionades?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:269
 msgid "Some languages were not removed"
-msgstr ""
+msgstr "No s’han eliminat algunes llengües"
 
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp:33
 msgid "Check your network connection and try again."
-msgstr ""
+msgstr "Comproveu la connexió de xarxa i torneu-ho a intentar."
 
 #: src/ui/qt/main.cpp:104
 msgid "{app_name} is already running"
-msgstr ""
+msgstr "El programa {app_name} ja s’està executant"
 
 #: src/ui/qt/main_window.cpp:55
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
@@ -752,7 +745,7 @@ msgstr "Principal"
 
 #: src/ui/qt/main_window.cpp:131
 msgid "About"
-msgstr "Acerca de"
+msgstr "Quant a"
 
 #: src/ui/qt/main_window.cpp:199
 msgid "Recognition is not yet finished. Quit anyway?"
@@ -779,7 +772,6 @@ msgid "Split text blocks"
 msgstr "Divideix els blocs de text"
 
 #: src/ui/qt/main_window.cpp:412
-#, fuzzy
 msgid "Split independent text blocks, such as columns"
 msgstr "Divideix els blocs de text independents, p. ex., les columnes"
 
@@ -789,7 +781,7 @@ msgstr "Llengües:"
 
 #: src/ui/qt/main_window.cpp:421
 msgid "Install, update, and remove languages"
-msgstr ""
+msgstr "Instal·leu, actualitzeu i elimineu llengües"
 
 #: src/ui/qt/main_window.cpp:432
 msgid "Actions"
@@ -808,11 +800,9 @@ msgid "Please select languages"
 msgstr "Seleccioneu llengües"
 
 #: src/ui/qt/main_window.cpp:772
-#, fuzzy
 msgid "Please select actions"
 msgstr "Seleccioneu accions"
 
 #: src/ui/qt/main_window.cpp:777
-#, fuzzy
 msgid "{app_name} is ready for recognition"
-msgstr "Preparat"
+msgstr "El {app_name} està preparat per al reconeixement"
