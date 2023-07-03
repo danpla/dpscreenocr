@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-06-17 15:14+0200\n"
-"PO-Revision-Date: 2023-06-19 11:49+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"PO-Revision-Date: 2023-07-04 00:53+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/es/>\n"
 "Language: es\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.1\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -38,7 +38,7 @@ msgstr "Azerí"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:39
 msgid "Azerbaijani (Cyrillic)"
-msgstr "Azerbaiyano (alfabeto cirílico)"
+msgstr "Azerí (cirílico)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:40
 msgid "Belarusian"
@@ -175,15 +175,15 @@ msgstr "Francés"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:74
 msgid "French, Middle (ca. 1400-1600)"
-msgstr "Francés Medio (ca. 1400-1600)"
+msgstr "Francés medio (ca. 1400-1600)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:75
 msgid "Frisian, Western"
-msgstr "Frisón, occidental"
+msgstr "Frisón occidental"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:76
 msgid "Gaelic, Scottish"
-msgstr "Gaélico, Escocés"
+msgstr "Gaélico escocés"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:77
 msgid "Irish"
@@ -203,7 +203,7 @@ msgstr "Guyaratí"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:81
 msgid "Creole, Haitian"
-msgstr "criollo, haitiano"
+msgstr "Criollo haitiano"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:82
 msgid "Hebrew"
@@ -255,7 +255,7 @@ msgstr "Japonés"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:94
 msgid "Japanese (vertical)"
-msgstr "Japonés, vertical"
+msgstr "Japonés (vertical)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:95
 msgid "Kannada"
@@ -275,7 +275,7 @@ msgstr "Kazajo"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:99
 msgid "Khmer, Central"
-msgstr "Jemer, Centro"
+msgstr "Jemer central"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:100
 msgid "Kirghiz; Kyrgyz"
@@ -283,7 +283,7 @@ msgstr "Kirguís"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:101
 msgid "Kurdish, Northern"
-msgstr "Kurdo, del norte"
+msgstr "Kurdo septentrional"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:102
 msgid "Korean"
@@ -291,7 +291,7 @@ msgstr "Coreano"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:103
 msgid "Korean (vertical)"
-msgstr "Coreano, vertical"
+msgstr "Coreano (vertical)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:104
 msgid "Kurdish"
@@ -391,7 +391,7 @@ msgstr "Quechua"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:128
 msgid "Romanian; Moldavian; Moldovan"
-msgstr "Rumano"
+msgstr "Rumano/moldavo"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:129
 msgid "Russian"
@@ -427,7 +427,7 @@ msgstr "Español/castellano"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:137
 msgid "Spanish; Castilian (old)"
-msgstr "Español; Castellano (Antiguo)"
+msgstr "Español/castellano (antiguo)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:138
 msgid "Albanian"
@@ -439,7 +439,7 @@ msgstr "Serbio"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:140
 msgid "Serbian (Latin)"
-msgstr "Serbio (alfabeto latino)"
+msgstr "Serbio (latino)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:141
 msgid "Sundanese"
@@ -511,7 +511,7 @@ msgstr "Uzbeko"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:158
 msgid "Uzbek (Cyrillic)"
-msgstr "Uzbeko (alfabeto cirílico)"
+msgstr "Uzbeko (cirílico)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:159
 msgid "Vietnamese"
@@ -622,7 +622,7 @@ msgstr "Cancelar…"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Are you sure you want to cancel the installation?"
-msgstr "¿Estás seguro de que deseas cancelar la instalación?"
+msgstr "¿Confirma que quiere cancelar la instalación?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
 msgid "Continue installation"
@@ -634,7 +634,7 @@ msgstr "Cancelar la instalación"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
 msgid "Are you sure you want to cancel the update?"
-msgstr "¿Estás seguro de que quieres cancelar la actualización?"
+msgstr "¿Confirma que quiere cancelar la actualización?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:139
 msgid "Continue updating"
@@ -646,15 +646,15 @@ msgstr "Cancelar la actualización"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
 msgid "Installing “{name}” ({current}/{total})"
-msgstr "Instalando “{name}” ({current}/{total})"
+msgstr "Instalando «{name}» ({current}/{total})"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:185
 msgid "Updating “{name}” ({current}/{total})"
-msgstr "Actualizando “{name}” ({current}/{total})"
+msgstr "Actualizando «{name}» ({current}/{total})"
 
 #: src/ui/qt/lang_manager/lang_fetch_progress_dialog.cpp:48
 msgid "Fetching the language list…"
-msgstr "Obteniendo la lista de idiomas…"
+msgstr "Recuperando la lista de idiomas…"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:49
 msgid "An error occurred while fetching the list of languages"
@@ -662,7 +662,7 @@ msgstr "Se ha producido un error al obtener la lista de los idiomas"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:419
 msgid "Language manager"
-msgstr "Administrador de idiomas"
+msgstr "Gestor de idiomas"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:94
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
@@ -677,7 +677,7 @@ msgstr "Actualizar"
 #: src/ui/qt/lang_manager/lang_manager.cpp:96
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:250
 msgid "Remove"
-msgstr "Eliminar"
+msgstr "Quitar"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:104 src/ui/qt/utils.cpp:112
 msgid "Close"
@@ -702,8 +702,8 @@ msgstr "Eliminar…"
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:241
 msgid "Remove “{name}”?"
 msgid_plural "Remove {count} selected languages?"
-msgstr[0] "¿Eliminar \"{name}\"?"
-msgstr[1] "¿Quitar los {count} idiomas seleccionados?"
+msgstr[0] "¿Quiere quitar «{name}»?"
+msgstr[1] "¿Quiere quitar los {count} idiomas seleccionados?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:269
 msgid "Some languages were not removed"
@@ -711,7 +711,7 @@ msgstr "Algunos idiomas no se han eliminado"
 
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp:33
 msgid "Check your network connection and try again."
-msgstr "Comprueba la conexión a Internet y vuelve a intentarlo."
+msgstr "Compruebe la conexión a Internet y vuelva a intentarlo."
 
 #: src/ui/qt/main.cpp:104
 msgid "{app_name} is already running"
@@ -784,8 +784,8 @@ msgstr "Seleccione idiomas"
 
 #: src/ui/qt/main_window.cpp:772
 msgid "Please select actions"
-msgstr "Por favor, elige una acción"
+msgstr "Seleccione acciones"
 
 #: src/ui/qt/main_window.cpp:777
 msgid "{app_name} is ready for recognition"
-msgstr "{app_name} está listo para el reconocimiento"
+msgstr "{app_name} está preparado para el reconocimiento"
