@@ -8,16 +8,19 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-07-01 20:04+0200\n"
-"PO-Revision-Date: 2023-06-28 20:15+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-07-04 00:52+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
+"Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr-website/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 msgid "Language"
-msgstr ""
+msgstr "Llengua"
 
 #, python-brace-format
 msgid ""
@@ -27,32 +30,43 @@ msgid ""
 "blocks, such as columns. Read <a {manual_link}>the manual</a> for "
 "instructions on installing, configuring, and using the program."
 msgstr ""
+"El <b>{app_name}</b> és un programa per a reconéixer text en la pantalla. "
+"Funciona amb el <a href=\"https://en.wikipedia.org/wiki/Tesseract_(software)"
+"\">Tesseract</a>, admet més de 100 llengües i pot separar blocs de text "
+"independents, com ara les columnes. Llegiu <a {manual_link}>el manual</a> "
+"per a obtenir instruccions d’instal·lació, configuració i ús del programa."
 
 #, python-brace-format
 msgid ""
 "<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
 "<a {license_link}>license</a>):"
 msgstr ""
+"<b>Baixeu-vos</b> la versió {version_number} (<a {changelog_link}>canvis</"
+"a>, <a {license_link}>llicència</a>):"
 
 msgid "Ubuntu and derivatives"
-msgstr ""
+msgstr "Ubuntu i distribucions derivades"
 
 #, python-brace-format
 msgid ""
 "Windows 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
+"Windows 7 o més recent: <a {installer_link}>instal·lador</a> o <a "
+"{zip_archive_link}>arxiu ZIP</a>"
 
 msgid "Source code (tar.gz)"
-msgstr ""
+msgstr "Codi font (tar.gz)"
 
 #, python-brace-format
 msgid ""
 "<b>Contribute</b> by taking part in <a {translations_link}>translation</a> "
 "or <a {development_link}>development</a>."
 msgstr ""
+"<b>Contribuïu</b> participant amb la {translations_link}>traducció</a> o el "
+"<a {development_link}>desenvolupament</a>."
 
 #. Translators: This is the target language name to be shown in the
 #. language selection menu.
 msgid "LANGUAGE_NAME"
-msgstr ""
+msgstr "Català"
