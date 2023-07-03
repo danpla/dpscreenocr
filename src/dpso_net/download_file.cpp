@@ -38,6 +38,7 @@ void downloadFile(
     auto response = makeGetRequest(url, userAgent);
 
     const auto fileSize = response->getSize();
+    std::int64_t partSize{};
 
     using Clock = std::chrono::steady_clock;
     Clock::time_point lastProgressReportTime;
@@ -56,6 +57,8 @@ void downloadFile(
             throw Error{str::printf(
                 "fwrite() to \"%s\" failed", partPath.c_str())};
 
+        partSize += numRead;
+
         if (!progressHandler)
             continue;
 
@@ -67,9 +70,7 @@ void downloadFile(
 
         lastProgressReportTime = curTime;
 
-        const auto curSize = std::ftell(partFp.get());
-
-        if (!progressHandler(curSize, fileSize)) {
+        if (!progressHandler(partSize, fileSize)) {
             partFp.reset();
             dpsoRemove(partPath.c_str());  // Ignore errors
             return;
