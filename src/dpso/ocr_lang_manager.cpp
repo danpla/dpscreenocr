@@ -720,7 +720,6 @@ bool dpsoOcrLangManagerRemoveLang(
     if (lang->state.getLock().get() == LangState::notInstalled)
         return true;
 
-
     const auto baseLangIdx = getLangIdx(
         *impl.langManager, lang->code.c_str());
 

@@ -193,9 +193,6 @@ static net::DownloadProgressHandler makeDownloadProgressHandler(
 void TesseractLangManager::installLang(
     int langIdx, const ProgressHandler& progressHandler)
 {
-    if (langInfos[langIdx].state == LangState::installed)
-        return;
-
     assert(!langInfos[langIdx].url.empty());
 
     const auto filePath = getFilePath(langIdx);
@@ -222,9 +219,6 @@ void TesseractLangManager::installLang(
 
 void TesseractLangManager::removeLang(int langIdx)
 {
-    if (langInfos[langIdx].state == LangState::notInstalled)
-        return;
-
     const auto filePath = getFilePath(langIdx);
 
     if (dpsoRemove(filePath.c_str()) != 0)
