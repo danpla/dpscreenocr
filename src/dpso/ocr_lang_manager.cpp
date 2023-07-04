@@ -567,7 +567,7 @@ static std::optional<int> getLangIdx(
 static void installLangs(
     dpso::ocr::LangManager& langManager,
     const dpso::Synchronized<bool>& cancelRequested,
-    const std::vector<int> installList,
+    const std::vector<int>& installList,
     std::vector<Lang>& langs,
     dpso::Synchronized<DpsoOcrLangInstallProgress>& installProgress)
 {
