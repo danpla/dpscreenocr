@@ -6,7 +6,7 @@ const char* const uiAppName = "@APP_NAME@";
 const char* const uiAppVersion = "@APP_VERSION@";
 const char* const uiAppWebsite = "@APP_URL@";
 
-#define COPYRIGHT "Copyright \302\251 @APP_COPYRIGHT_YEAR@ @APP_AUTHOR@"
+#define COPYRIGHT "\302\251 @APP_COPYRIGHT_YEAR@ @APP_AUTHOR@"
 const char* const uiAppCopyright = COPYRIGHT;
 const char* const uiAppLicense =
     COPYRIGHT "\n"

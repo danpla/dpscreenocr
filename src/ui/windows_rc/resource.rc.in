@@ -1,4 +1,6 @@
 
+#pragma code_page(65001)  // UTF-8
+
 #include "winuser.h"
 
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "@CMAKE_CURRENT_BINARY_DIR@/manifest.xml"
@@ -25,7 +27,7 @@ BEGIN
       VALUE "FileDescription", "@APP_NAME@ - @APP_DESCRIPTION@"
       VALUE "FileVersion", "@APP_VERSION@"
       VALUE "InternalName", "@APP_FILE_NAME@"
-      VALUE "LegalCopyright", "Copyright (c) @APP_COPYRIGHT_YEAR@ @APP_AUTHOR@"
+      VALUE "LegalCopyright", "© @APP_COPYRIGHT_YEAR@ @APP_AUTHOR@"
       VALUE "OriginalFilename", "@APP_FILE_NAME@.exe"
       VALUE "ProductName", "@APP_NAME@"
       VALUE "ProductVersion", "@APP_VERSION@"
