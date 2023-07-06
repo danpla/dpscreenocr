@@ -213,7 +213,7 @@ def write_root_index_page(langs):
 
     replacements = {
         'TITLE': APP_NAME,
-        'JS_LANGS': ','.join('"{}"'.format(l) for l in sorted(langs))
+        'JS_LANGS': ', '.join('"{}"'.format(l) for l in sorted(langs))
     }
 
     for k, v in replacements.items():
