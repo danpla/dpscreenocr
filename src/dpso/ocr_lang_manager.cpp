@@ -567,15 +567,15 @@ static std::optional<int> getLangIdx(
 static void installLangs(
     dpso::ocr::LangManager& langManager,
     const dpso::Synchronized<bool>& cancelRequested,
-    const std::vector<int>& installList,
+    const std::vector<int>& langIndices,
     std::vector<Lang>& langs,
     dpso::Synchronized<DpsoOcrLangInstallProgress>& installProgress)
 {
-    for (std::size_t i = 0; i < installList.size(); ++i) {
+    for (std::size_t i = 0; i < langIndices.size(); ++i) {
         if (cancelRequested.getLock().get())
             throw LangOpCanceled{};
 
-        const auto langIdx = installList[i];
+        const auto langIdx = langIndices[i];
         auto& lang = langs[langIdx];
 
         const auto baseLangIdx = getLangIdx(
@@ -590,7 +590,7 @@ static void installLangs(
                     langIdx,
                     progress,
                     static_cast<int>(i + 1),
-                    static_cast<int>(installList.size())
+                    static_cast<int>(langIndices.size())
                 };
 
                 return !cancelRequested.getLock().get();
@@ -616,28 +616,28 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
         return false;
     }
 
-    std::vector<int> installList;
+    std::vector<int> langIndices;
 
     for (std::size_t i = 0; i < impl.langs.size(); ++i) {
         if (!impl.langs[i].installMark)
             continue;
 
-        installList.push_back(i);
+        langIndices.push_back(i);
 
         impl.langs[i].installMark = false;
     }
 
-    if (installList.empty()) {
+    if (langIndices.empty()) {
         dpsoSetError("No languages are marked for installation");
         return false;
     }
 
     impl.installProgress = {
-        installList[0], 0, 1, static_cast<int>(installList.size())
+        langIndices[0], 0, 1, static_cast<int>(langIndices.size())
     };
 
     impl.installControl = impl.langOpExecutor->execute(
-        [&, installList = std::move(installList)]
+        [&, langIndices = std::move(langIndices)]
         (
             dpso::ocr::LangManager& langManager,
             const dpso::Synchronized<bool>& cancelRequested)
@@ -651,7 +651,7 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
             installLangs(
                 langManager,
                 cancelRequested,
-                installList,
+                langIndices,
                 impl.langs,
                 impl.installProgress);
         });
