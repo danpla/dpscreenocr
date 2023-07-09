@@ -18,6 +18,8 @@ bool isIgnoredLang(const char* lang);
 
 // Returns languages from TessBaseAPI::GetAvailableLanguagesAsVector,
 // excluding those that are ignored by isIgnoredLang().
+//
+// Throws ocr::Error.
 std::vector<std::string> getAvailableLangs(const char* dataDir);
 
 

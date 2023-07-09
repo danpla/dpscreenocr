@@ -30,7 +30,15 @@ public:
         , userAgent{}
         , langInfos{}
     {
-        for (const auto& langCode : getAvailableLangs(dataDir))
+        std::vector<std::string> availableLangs;
+        try {
+            availableLangs = getAvailableLangs(dataDir);
+        } catch (Error& e) {
+            throw LangManagerError{str::printf(
+                "Can't get available languages: %s", e.what())};
+        }
+
+        for (const auto& langCode : availableLangs)
             langInfos.push_back({langCode, LangState::installed, {}});
     }
 

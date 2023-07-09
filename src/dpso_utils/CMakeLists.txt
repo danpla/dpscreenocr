@@ -37,6 +37,12 @@ else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
 
+if(WIN32)
+    target_sources(dpso_utils PRIVATE path_encoding_windows.cpp)
+else()
+    target_sources(dpso_utils PRIVATE path_encoding_utf8.cpp)
+endif()
+
 set_target_properties(
     dpso_utils PROPERTIES
     CXX_STANDARD 17

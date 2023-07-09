@@ -11,6 +11,10 @@
 #include <tesseract/strngs.h>
 #endif
 
+#include "dpso_utils/path_encoding.h"
+
+#include "ocr/error.h"
+
 
 namespace dpso::ocr::tesseract {
 
@@ -30,6 +34,15 @@ bool isIgnoredLang(const char* lang)
 
 std::vector<std::string> getAvailableLangs(const char* dataDir)
 {
+    std::string sysDataDir;
+    try {
+        sysDataDir = convertPathFromUtf8ToSys(dataDir);
+    } catch (std::runtime_error& e) {
+        throw Error{
+            std::string{"Can't convert dataDir to system encoding: "}
+            + e.what()};
+    }
+
     ::tesseract::TessBaseAPI tess;
 
     // GetAvailableLanguagesAsVector() is broken by design: it uses
@@ -51,7 +64,7 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
     // may be different on various Unix-like systems (it's hardcoded
     // at compilation time), and you can only get it via
     // GetDatapath(), which also requires the same dummy Init() call.
-    tess.Init(dataDir, nullptr);
+    tess.Init(sysDataDir.c_str(), nullptr);
 
     std::vector<std::string> result;
 

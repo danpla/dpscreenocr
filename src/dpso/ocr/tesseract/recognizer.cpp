@@ -9,6 +9,9 @@
 #include <tesseract/baseapi.h>
 #include <tesseract/ocrclass.h>
 
+#include "dpso_utils/path_encoding.h"
+
+#include "ocr/recognizer_error.h"
 #include "ocr/tesseract/lang_names.h"
 #include "ocr/tesseract/lang_utils.h"
 #include "ocr/tesseract/utils.h"
@@ -23,8 +26,9 @@ public:
     explicit TesseractRecognizer(const char* dataDir)
         : dataDir{dataDir}
         , tess{}
-        , langCodes{getAvailableLangs(dataDir)}
+        , langCodes{}
     {
+        reloadLangCodes();
     }
 
     OcrFeatures getFeatures() const override
@@ -56,7 +60,7 @@ public:
 
     void reloadLangs() override
     {
-        langCodes = getAvailableLangs(dataDir.c_str());
+        reloadLangCodes();
     }
 
     OcrResult recognize(
@@ -68,6 +72,17 @@ private:
     std::string dataDir;
     ::tesseract::TessBaseAPI tess;
     std::vector<std::string> langCodes;
+
+    void reloadLangCodes()
+    {
+        try {
+            langCodes = getAvailableLangs(dataDir.c_str());
+        } catch (Error& e) {
+            throw RecognizerError{
+                std::string{"Can't get available languages: "}
+                + e.what()};
+        }
+    }
 };
 
 
@@ -137,7 +152,17 @@ OcrResult TesseractRecognizer::recognize(
         tessLangsStr += langCode;
     }
 
-    if (tess.Init(dataDir.c_str(), tessLangsStr.c_str()) != 0)
+    std::string sysDataDir;
+    try {
+        sysDataDir = convertPathFromUtf8ToSys(dataDir.c_str());
+    } catch (std::runtime_error& e) {
+        return {
+            OcrResult::Status::error,
+            std::string{"Can't convert dataDir to system encoding: "}
+                + e.what()};
+    }
+
+    if (tess.Init(sysDataDir.c_str(), tessLangsStr.c_str()) != 0)
         return {
             OcrResult::Status::error, "TessBaseAPI::Init() failed"};
 

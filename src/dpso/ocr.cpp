@@ -181,7 +181,12 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
         },
         [&ocr = *ocr]
         {
-            ocr.recognizer->reloadLangs();
+            try {
+                ocr.recognizer->reloadLangs();
+            } catch (dpso::ocr::RecognizerError&) {
+                return;
+            }
+
             reloadLangs(ocr);
         }
     };

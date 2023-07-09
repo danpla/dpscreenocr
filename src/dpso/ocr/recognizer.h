@@ -68,6 +68,7 @@ public:
     // See dpsoOcrGetLangName()
     virtual std::string getLangName(int langIdx) const = 0;
 
+    // Throws RecognizerError
     virtual void reloadLangs() = 0;
 
     virtual OcrResult recognize(

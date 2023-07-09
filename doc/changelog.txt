@@ -6,6 +6,8 @@
   occurred when "Split text blocks" was enabled)
 * Windows:
   * Added language manager
+  * Fixed empty language list on Windows older than 10 version 1903 if
+    user name contains non-ASCII characters
   * Updated Tesseract to 5.3.1
 * Updated translations:
   * French
@@ -39,10 +41,10 @@
   * Turkish
 * Raised minimum requirements for building the program:
   * C++14
-  * CMake >= 3.16
-  * Qt >= 5.3.2
-  * Tesseract >= 4.1.0
-  * gettext >= 0.19
+  * CMake 3.16
+  * Qt 5.3.2
+  * Tesseract 4.1.0
+  * gettext 0.19
 
 
 1.2.0 (2022-09-09)
