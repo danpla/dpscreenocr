@@ -67,6 +67,15 @@ bool dpsoReplace(const char* src, const char* dst);
 
 
 /**
+ * Create a chain of directories.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * false. An existing dirPath is not treated as an error.
+ */
+bool dpsoMakeDirs(const char* dirPath);
+
+
+/**
  * Synchronize file state with storage device.
  *
  * The function transfers all modified data (and possibly file

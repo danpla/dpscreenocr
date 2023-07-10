@@ -9,6 +9,7 @@
 #include "dpso_net/download_file.h"
 #include "dpso_net/error.h"
 
+#include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
@@ -201,10 +202,15 @@ static net::DownloadProgressHandler makeDownloadProgressHandler(
 void TesseractLangManager::installLang(
     int langIdx, const ProgressHandler& progressHandler)
 {
-    assert(!langInfos[langIdx].url.empty());
+    if (!dpsoMakeDirs(dataDir.c_str()))
+        throw LangManagerError{str::printf(
+            "Can't create directory \"%s\": %s",
+            dataDir.c_str(), dpsoGetError())};
+
+    const auto& url = langInfos[langIdx].url;
+    assert(!url.empty());
 
     const auto filePath = getFilePath(langIdx);
-    const auto& url = langInfos[langIdx].url;
 
     bool canceled{};
 

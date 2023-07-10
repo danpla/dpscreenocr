@@ -104,6 +104,80 @@ bool dpsoReplace(const char* src, const char* dst)
 }
 
 
+static bool isDirSep(wchar_t c)
+{
+    return c == L'\\' || c == L'/';
+}
+
+
+bool dpsoMakeDirs(const char* dirPath)
+{
+    std::wstring dirPathUtf16;
+    try {
+        dirPathUtf16 = dpso::windows::utf8ToUtf16(dirPath);
+    } catch (std::runtime_error& e) {
+        dpsoSetError("Can't convert dirPath to UTF-16: %s", e.what());
+        return false;
+    }
+
+    // CreateDirectory() always fails with a permission error instead
+    // of ERROR_ALREADY_EXISTS when called for a drive.
+    //
+    // We could skip the drive, but PathCchSkipRoot() is available
+    // since Windows 8 (we need to support 7), and we don't want to
+    // write our own routine for this, since we have to deal with all
+    // kinds of path forms ("C:\", "\\?\C:\", "\\?\UNC\LOCALHOST\C$",
+    // etc.). Instead, we first iterate the path backward to calculate
+    // the initial part that exists, then forward to create missing
+    // directories.
+    auto* begin = dirPathUtf16.data();
+    auto* s = begin + dirPathUtf16.size();
+    while (s > begin) {
+        const auto c = *s;
+        *s = 0;
+
+        const auto exists =
+            GetFileAttributesW(dirPathUtf16.c_str())
+                != INVALID_FILE_ATTRIBUTES;
+
+        *s = c;
+
+        if (exists)
+            break;
+
+        while (s > begin && isDirSep(s[-1]))
+            --s;
+
+        while (s > begin && !isDirSep(s[-1]))
+            --s;
+    }
+
+    while (*s) {
+        while (*s && !isDirSep(*s))
+            ++s;
+
+        while (*s && isDirSep(*s))
+            ++s;
+
+        const auto c = *s;
+        *s = 0;
+
+        if (!CreateDirectoryW(dirPathUtf16.c_str(), nullptr)
+                && GetLastError() != ERROR_ALREADY_EXISTS) {
+            dpsoSetError(
+                "CreateDirectoryW(): %s",
+                dpso::windows::getErrorMessage(
+                GetLastError()).c_str());
+            return false;
+        }
+
+        *s = c;
+    }
+
+    return true;
+}
+
+
 bool dpsoSyncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);

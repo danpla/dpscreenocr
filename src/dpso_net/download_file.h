@@ -26,6 +26,8 @@ using DownloadProgressHandler = std::function<
 // additional extension. Once the temporary file is downloaded, it's
 // renamed to filePath, silently rewriting an existing file, if any.
 //
+// The function does not create the directory chain for filePath.
+//
 // Throws net::Error.
 void downloadFile(
     const char* url,

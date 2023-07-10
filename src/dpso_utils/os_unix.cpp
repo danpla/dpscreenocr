@@ -11,6 +11,7 @@
 
 #include "error.h"
 #include "unix/fsync.h"
+#include "unix/make_dirs.h"
 
 
 const char* const dpsoDirSeparators = "/";
@@ -48,6 +49,16 @@ bool dpsoReplace(const char* src, const char* dst)
     }
 
     return true;
+}
+
+
+bool dpsoMakeDirs(const char* dirPath)
+{
+    if (dpso::unix::makeDirs(path.data()))
+        return true;
+
+    dpsoSetError("makeDirs(): %s", strerror(errno));
+    return false;
 }
 
 
