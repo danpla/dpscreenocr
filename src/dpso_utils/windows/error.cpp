@@ -12,7 +12,7 @@ std::string getErrorMessage(DWORD error, HMODULE module)
     char* messageBuf{};
     auto size = FormatMessageA(
         FORMAT_MESSAGE_ALLOCATE_BUFFER
-            | FORMAT_MESSAGE_FROM_HMODULE
+            | (module ? FORMAT_MESSAGE_FROM_HMODULE : 0)
             | FORMAT_MESSAGE_FROM_SYSTEM
             | FORMAT_MESSAGE_IGNORE_INSERTS,
         module,
