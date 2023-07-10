@@ -15,7 +15,7 @@ extern "C" {
 
 
 /**
- * Get the last error message.
+ * Get the last error message for the current thread.
  *
  * The message is only applicable when a function signals an error. By
  * convention, if a function doesn't explicitly mention dpsoGetError()
@@ -26,7 +26,7 @@ const char* dpsoGetError(void);
 
 
 /**
- * Set error message.
+ * Set error message for the current thread.
  */
 void dpsoSetError(const char* fmt, ...) DPSO_PRINTF_FN(1);
 

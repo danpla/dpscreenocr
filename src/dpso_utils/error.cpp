@@ -7,7 +7,7 @@
 #include "str.h"
 
 
-static std::string error;
+static thread_local std::string error;
 
 
 const char* dpsoGetError(void)
