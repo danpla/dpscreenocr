@@ -9,7 +9,8 @@ namespace dpso {
 
 
 #if defined(__GNUC__) || defined(__clang__)
-    #ifdef __MINGW32__
+    /* Old MinGW versions don't define __MINGW_STRFTIME_FORMAT. */
+    #if defined(__MINGW32__) && defined(__MINGW_STRFTIME_FORMAT)
         #define DPSO_STRFTIME_FN(N) \
             __attribute__((format(__MINGW_STRFTIME_FORMAT, N, 0)))
     #else
