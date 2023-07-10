@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 
 #include "flow.h"
@@ -115,8 +116,7 @@ static void testSyncFile()
 
     if (!dpsoSyncFile(fp.get()))
         test::failure(
-            "testSyncFile: dpsoSyncFile(): %s\n",
-            std::strerror(errno));
+            "testSyncFile: dpsoSyncFile(): %s\n", dpsoGetError());
 }
 
 
@@ -130,7 +130,7 @@ void testSyncFileDir()
         test::fatalError(
             "testSyncFileDir: dpsoSyncFileDir(\"%s\"): %s\n",
             fileName,
-            std::strerror(errno));
+            dpsoGetError());
 
     dpsoRemove(fileName);
 }
