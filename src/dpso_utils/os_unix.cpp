@@ -54,7 +54,7 @@ bool dpsoReplace(const char* src, const char* dst)
 
 bool dpsoMakeDirs(const char* dirPath)
 {
-    if (dpso::unix::makeDirs(path.data()))
+    if (dpso::unix::makeDirs(dirPath))
         return true;
 
     dpsoSetError("makeDirs(): %s", strerror(errno));
