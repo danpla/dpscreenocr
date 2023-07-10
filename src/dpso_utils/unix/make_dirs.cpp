@@ -17,35 +17,28 @@ bool makeDirs(char* path, mode_t mode)
     while (*s == '/')
         ++s;
 
-    while (true) {
-        // Skip till the first separator.
+    while (*s) {
         while (*s && *s != '/')
             ++s;
 
-        // Consume consecutive separators.
-        while (*s && s[1] == '/')
+        while (*s == '/')
             ++s;
 
-        if (!*s || !s[1])
-            // This is the last directory.
-            break;
-
+        const auto c = *s;
         *s = 0;
         // Force 0777 mode for intermediate directories to emulate
         // `mkdirs -p` behavior. Without this, mkdir() will not be
         // able to create a directory with write or read permissions
         // removed, because the same permissions will be used for the
         // newly created parent dir.
-        const auto ret = mkdir(path, 0777);
-        *s = '/';
+        const auto ret = mkdir(path, *s ? 0777 : mode);
+        *s = c;
 
         if (ret != 0 && errno != EEXIST)
             return false;
-
-        ++s;
     }
 
-    return mkdir(path, mode) == 0 || errno == EEXIST;
+    return true;
 }
 
 
