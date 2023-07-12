@@ -14,14 +14,6 @@ $if(keywords)$
   <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-  <style>
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-$if(quotes)$
-      q { quotes: "“" "”" "‘" "’"; }
-$endif$
-  </style>
 $if(highlighting-css)$
   <style type="text/css">
 $highlighting-css$
@@ -36,7 +28,6 @@ $endif$
 $for(header-includes)$
   $header-includes$
 $endfor$
-  <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 $for(include-before)$
