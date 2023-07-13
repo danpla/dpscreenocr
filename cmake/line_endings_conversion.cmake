@@ -9,15 +9,15 @@ if(NOT UNIX2DOS_EXE)
 endif()
 
 # Convert line endings from Unix (LF) to Windows/DOS (CRLF).
-function(unix2dos target_name in_file out_file)
-    get_filename_component(OUT_DIR "${out_file}" PATH)
+function(unix2dos TARGET_NAME IN_FILE OUT_FILE)
+    get_filename_component(OUT_DIR "${OUT_FILE}" PATH)
 
     add_custom_command(
-        OUTPUT "${out_file}"
+        OUTPUT "${OUT_FILE}"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${OUT_DIR}"
-        COMMAND "${UNIX2DOS_EXE}" -q -n "${in_file}" "${out_file}"
-        DEPENDS "${in_file}"
+        COMMAND "${UNIX2DOS_EXE}" -q -n "${IN_FILE}" "${OUT_FILE}"
+        DEPENDS "${IN_FILE}"
         VERBATIM)
 
-    add_custom_target("${target_name}" ALL DEPENDS "${out_file}")
+    add_custom_target("${TARGET_NAME}" ALL DEPENDS "${OUT_FILE}")
 endfunction()

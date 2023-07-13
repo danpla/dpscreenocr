@@ -5,35 +5,35 @@ include(CMakeParseArguments)
 #
 # The returned string may be empty if the Tesseract version was not
 # detected.
-function(get_tesseract_data_dir_name var)
+function(get_tesseract_data_dir_name VAR)
     if(DPSO_TESSERACT_VERSION_MAJOR)
-        set(${var}
+        set(${VAR}
             "tesseract_${DPSO_TESSERACT_VERSION_MAJOR}_data"
             PARENT_SCOPE)
     else()
-        set(${var} "" PARENT_SCOPE)
+        set(${VAR} "" PARENT_SCOPE)
     endif()
 endfunction()
 
 # Copy contents of tessdata directory.
 #
 # copy_tessdata(
-#   src_dir
-#   dst_dir
+#   SRC_DIR
+#   DST_DIR
 #   LANGUAGES languages...
 #   OPTIONAL)
 #
 # LANGUAGES is a list of traineddata files without extensions.
 # If OPTIONAL is given, nonexistent files are not treated as errors.
-function(copy_tessdata src_dir dst_dir)
+function(copy_tessdata SRC_DIR DST_DIR)
     cmake_parse_arguments(ARG "OPTIONAL" "" "LANGUAGES" ${ARGN})
 
     set(DST_FILES)
 
     foreach(LANG ${ARG_LANGUAGES})
         set(TRAINEDDATA_NAME "${LANG}.traineddata")
-        set(SRC_FILE "${src_dir}/${TRAINEDDATA_NAME}")
-        set(DST_FILE "${dst_dir}/${TRAINEDDATA_NAME}")
+        set(SRC_FILE "${SRC_DIR}/${TRAINEDDATA_NAME}")
+        set(DST_FILE "${DST_DIR}/${TRAINEDDATA_NAME}")
 
         if(NOT EXISTS "${SRC_FILE}")
             if(ARG_OPTIONAL)

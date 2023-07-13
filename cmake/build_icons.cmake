@@ -1,16 +1,16 @@
 
 include(CMakeParseArguments)
 
-# Copy icons from "data/icons/sizes" to dst_dir.
+# Copy icons from "data/icons/sizes" to DST_DIR.
 #
 # build_icons(
-#   dst_dir
+#   DST_DIR
 #   RASTER_SIZES sizes...
 #   INCLUDE_SCALABLE)
 #
 # RASTER_SIZES is either a list of raster icon sizes to include, or
 # "all" to include all sizes. INCLUDE_SCALABLE includes SVG icons.
-function(build_icons dst_dir)
+function(build_icons DST_DIR)
     cmake_parse_arguments(
         ARG "INCLUDE_SCALABLE" "" "RASTER_SIZES" ${ARGN})
 
@@ -62,7 +62,7 @@ function(build_icons dst_dir)
 
         foreach(SRC_FILE ${SRC_FILES})
             get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
-            set(DST_FILE "${dst_dir}/${SIZE}/${SRC_FILE_NAME}")
+            set(DST_FILE "${DST_DIR}/${SIZE}/${SRC_FILE_NAME}")
 
             add_custom_command(
                 OUTPUT "${DST_FILE}"

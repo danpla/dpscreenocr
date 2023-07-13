@@ -4,9 +4,9 @@ if(NOT PANDOC_EXE)
     message(SEND_ERROR "pandoc not found")
 endif()
 
-function(gen_html_manual dst_dir)
+function(gen_html_manual DST_DIR)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
-    set(DST_HTML "${dst_dir}/manual.html")
+    set(DST_HTML "${DST_DIR}/manual.html")
 
     configure_file(
         "${DOC_DIR}/manual-metadata.yaml.in"
@@ -15,7 +15,7 @@ function(gen_html_manual dst_dir)
 
     add_custom_command(
         OUTPUT "${DST_HTML}"
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${dst_dir}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DST_DIR}"
         COMMAND
             "${PANDOC_EXE}"
             --from=markdown
@@ -47,7 +47,7 @@ function(gen_html_manual dst_dir)
     set(DST_DATA_FILES)
     foreach(SRC_FILE ${SRC_DATA_FILES})
         get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
-        set(DST_FILE "${dst_dir}/manual-data/${SRC_FILE_NAME}")
+        set(DST_FILE "${DST_DIR}/manual-data/${SRC_FILE_NAME}")
         list(APPEND DST_DATA_FILES "${DST_FILE}")
 
         add_custom_command(

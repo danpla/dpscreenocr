@@ -1,20 +1,20 @@
 
-# Generates a desktop entry "${APP_FILE_NAME}.desktop" in dst_dir. If
-# translate is TRUE, the entry will be translated using msgfmt based
+# Generates a desktop entry "${APP_FILE_NAME}.desktop" in DST_DIR. If
+# TRANSLATE is TRUE, the entry will be translated using msgfmt based
 # on files from the po/ directory.
-function(gen_desktop_entry dst_dir translate)
+function(gen_desktop_entry DST_DIR TRANSLATE)
     set(ENTRY_NAME "${APP_FILE_NAME}.desktop")
 
-    set(DST_DEP_VARS_FILE_PATH "${dst_dir}/${ENTRY_NAME}.dep_vars")
+    set(DST_DEP_VARS_FILE_PATH "${DST_DIR}/${ENTRY_NAME}.dep_vars")
     configure_file(
         "${CMAKE_CURRENT_LIST_DIR}/gen_desktop_entry.dep_vars.in"
         "${DST_DEP_VARS_FILE_PATH}"
         @ONLY)
 
     set(SRC_ENTRY_PATH "${CMAKE_SOURCE_DIR}/data/${ENTRY_NAME}")
-    set(DST_ENTRY_PATH "${dst_dir}/${ENTRY_NAME}")
+    set(DST_ENTRY_PATH "${DST_DIR}/${ENTRY_NAME}")
 
-    if(NOT translate)
+    if(NOT TRANSLATE)
         configure_file(
             "${SRC_ENTRY_PATH}" "${DST_ENTRY_PATH}" COPYONLY)
         return()
@@ -28,7 +28,7 @@ function(gen_desktop_entry dst_dir translate)
     add_custom_command(
         OUTPUT "${DST_ENTRY_PATH}"
         # msgfmt doesn't create intermediate directories.
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${dst_dir}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DST_DIR}"
         COMMAND
             "${MSGFMT_EXE}"
             --desktop

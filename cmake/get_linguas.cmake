@@ -1,9 +1,9 @@
 
 # Get the list of languages from po/LINGUAS.
-function(get_linguas languages)
+function(get_linguas LANGUAGES)
     file(
         STRINGS "${CMAKE_SOURCE_DIR}/po/LINGUAS" LANGS
         REGEX "^[^#].*")
 
-    set(${languages} ${LANGS} PARENT_SCOPE)
+    set(${LANGUAGES} ${LANGS} PARENT_SCOPE)
 endfunction()
