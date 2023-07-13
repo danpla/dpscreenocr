@@ -22,8 +22,9 @@ p {
 
 /*
 We need the logo to occupy 3 lines of text. To look aesthetic, it
-should not go above the top of the first line and below the baseline
-of the last line, so we adjust the top margin and height accordingly.
+should not go above the ascender of the first line and below the
+descender of the last line, so we adjust the top margin and height
+accordingly.
 
 LH stands for "line-height".
 */
