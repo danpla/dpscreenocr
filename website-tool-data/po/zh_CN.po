@@ -8,18 +8,22 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-07-01 20:04+0200\n"
-"PO-Revision-Date: 2023-06-28 20:16+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-07-14 19:52+0000\n"
+"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"dpscreenocr/dpscreenocr-website/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.0-dev\n"
 
+#, fuzzy
 msgid "Language"
-msgstr ""
+msgstr "语言"
 
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "<b>{app_name}</b> is a program to recognize text on the screen. Powered by "
 "<a href=\"https://en.wikipedia.org/wiki/Tesseract_(software)\">Tesseract</"
@@ -27,6 +31,10 @@ msgid ""
 "blocks, such as columns. Read <a {manual_link}>the manual</a> for "
 "instructions on installing, configuring, and using the program."
 msgstr ""
+"<b>{app_name}</b>是一款屏幕文本识别应用。文本识别引擎为 <a href=\"https://zh."
+"wikipedia.org/wiki/Tesseract\""
+">Tesseract</a>，它支持100种语言并且支持区块识别，例如以列为单位进行区块识别。"
+"阅读 <a {manual_link}>手册</a> 安装、配置和使用手册。"
 
 #, python-brace-format
 msgid ""
