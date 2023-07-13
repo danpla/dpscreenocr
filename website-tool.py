@@ -304,7 +304,9 @@ def write_page(
         ).format(title, root_url=root_url)
 
     copyright_text = (
-        '© {} <a href="mailto:{}?subject={}">{}</a>\n').format(
+        '<div id="copyright">'
+        '© {} <a href="mailto:{}?subject={}">{}</a>'
+        '</div>\n').format(
             APP_COPYRIGHT_YEAR,
             APP_AUTHOR_EMAIL,
             APP_NAME,

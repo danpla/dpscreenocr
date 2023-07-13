@@ -1,13 +1,51 @@
+/*
+Modern CSS has logical properties ("margin-inline-end", "float:
+inline-start", etc.) and ":dir()" for things that depend on script
+direction, but we instead use "[dir="rtl"]" selectors to support old
+browsers.
+
+The same goes for values that might otherwise be automatically
+calculated via calc(), CSS variables, lh units, etc.
+*/
+
 body {
   margin: 0 auto;
-  padding: 1em 1em 0;
+  padding: 0 1em;
   max-width: 36em;
   font-family: sans-serif;
   line-height: 1.6;
 }
 
+p {
+  hyphens: auto;
+}
+
+/*
+We need the logo to occupy 3 lines of text. To look aesthetic, it
+should not go above the top of the first line and below the baseline
+of the last line, so we adjust the top margin and height accordingly.
+
+LH stands for "line-height".
+*/
 #logo {
-  height: 5em;
+  float: left;
+  margin-top: 0.3em; /* (LH - 1) / 2 */
+  margin-right: 0.9em;
+  height: 4.2em; /* (LH * 3) - (LH - 1) */
+}
+
+html[dir="rtl"] #logo {
+  float: right;
+  margin-right: unset;
+  margin-left: 0.9em;
+}
+
+#copyright {
+  float: right;
+}
+
+html[dir="rtl"] #copyright {
+  float: left;
 }
 
 footer {
