@@ -19,6 +19,13 @@ AppCopyright=© {#APP_COPYRIGHT_YEAR} {#APP_AUTHOR}
 AppSupportURL={#APP_URL}
 LicenseFile={#APP_SOURCE_DIR}\LICENSE.txt
 
+; Use the lowest privileges so that the installer shows per-user
+; installation as the recommended method. This way, our uninstaller
+; can ask users if they want to remove user-specific data. In
+; particular, it's not great to silently leave hundreds of megabytes
+; of installed languages if the user is going to remove the program
+; permanently.
+PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 ; We know that we should not make user-specific changes in admin
 ; install mode. Our entry in [Files] that uses {localappdata} has
