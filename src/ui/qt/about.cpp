@@ -68,8 +68,7 @@ static QStringList createLinks()
                 _("User manual")))
             break;
 
-    appendFileLink(
-        result, docDirPath, "changelog.txt", _("Changelog"));
+    appendFileLink(result, docDirPath, "changelog.txt", _("Changes"));
 
     result.append(formatLink(_("License"), QUrl(aboutLicenseUrl)));
 

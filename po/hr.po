@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-06-17 15:14+0200\n"
+"POT-Creation-Date: 2023-07-15 00:14+0200\n"
 "PO-Revision-Date: 2023-06-24 18:51+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -13,8 +13,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 4.18.1\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
@@ -534,19 +534,20 @@ msgstr "Web-stranica"
 msgid "User manual"
 msgstr "Korisnički priručnik"
 
-#: src/ui/qt/about.cpp:72
-msgid "Changelog"
+#: src/ui/qt/about.cpp:71
+#, fuzzy
+msgid "Changes"
 msgstr "Dnevnik promjena"
 
-#: src/ui/qt/about.cpp:74
+#: src/ui/qt/about.cpp:73
 msgid "License"
 msgstr "Licenca"
 
-#: src/ui/qt/about.cpp:80
+#: src/ui/qt/about.cpp:79
 msgid "Third-party licenses"
 msgstr "Licence trećih strana"
 
-#: src/ui/qt/about.cpp:111 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:108 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Program za prepoznavanje teksta na ekranu"
 
