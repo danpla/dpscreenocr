@@ -97,9 +97,7 @@ About::About(QWidget* parent)
     infoTextLabel->setAlignment(Qt::AlignCenter);
     infoTextLabel->setTextFormat(Qt::RichText);
     infoTextLabel->setTextInteractionFlags(
-        Qt::TextSelectableByMouse
-        | Qt::LinksAccessibleByMouse
-        | Qt::LinksAccessibleByKeyboard);
+        Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
     infoTextLabel->setText(QString(
         "<p style=\"line-height: 140%;\">"
         "<b>%1</b><br>"
