@@ -88,17 +88,15 @@ About::About(QWidget* parent)
     const auto fontHeight = fontMetrics().height();
 
     auto* iconLabel = new QLabel();
-    iconLabel->setAlignment(Qt::AlignCenter);
     iconLabel->setPixmap(
-        getIcon(uiAppFileName).pixmap(fontHeight * 5));
+        getIcon(uiAppFileName).pixmap(fontHeight * 4));
 
     auto* infoTextLabel = new QLabel();
-    infoTextLabel->setAlignment(Qt::AlignCenter);
     infoTextLabel->setTextFormat(Qt::RichText);
     infoTextLabel->setTextInteractionFlags(
         Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
     infoTextLabel->setText(QString(
-        "<p style=\"line-height: 140%;\">"
+        "<p style=\"line-height: 130%;\">"
         "<b>%1</b><br>"
         "%2<br>"
         "%3<br>"
@@ -106,16 +104,7 @@ About::About(QWidget* parent)
         ).arg(
             joinInLayoutDirection(" ", {uiAppName, uiAppVersion}),
             _("Program to recognize text on screen"),
-            // The proper way to add spacing around a piece of text is
-            // to use <span> with the margin or padding CSS property,
-            // but it has no effect in Qt 5, so we use non-breaking
-            // spaces instead. Another way is to put individual link
-            // labels in QHBoxLayout and set the margin, but in Qt 5
-            // the keyboard navigation doesn't work properly in this
-            // case (in particular, Ctrl + Tab doesn't move focus from
-            // the link).
-            joinInLayoutDirection(
-                "&nbsp;&nbsp;|&nbsp;&nbsp;", createLinks()),
+            createLinks().join("<br>"),
             uiAppCopyright));
 
     connect(
@@ -134,10 +123,7 @@ About::About(QWidget* parent)
     textEdit->setCurrentFont(textEditFont);
 
     auto* layout = new QVBoxLayout(this);
-
-    QMargins margins;
-    margins.setTop(fontHeight);
-    layout->setContentsMargins(margins);
+    layout->setContentsMargins({});
 
     layout->addWidget(iconLabel);
     layout->addWidget(infoTextLabel);
