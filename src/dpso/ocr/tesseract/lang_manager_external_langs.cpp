@@ -34,7 +34,11 @@ struct JsonRefDecrementer {
 using JsonUPtr = std::unique_ptr<json_t, JsonRefDecrementer>;
 
 
-std::string parseJsonTagInfo(json_t* tagInfo)
+const auto* const gitHubApiReposUrl =
+    "https://api.github.com/repos/tesseract-ocr/tessdata_fast";
+
+
+std::string parseJsonTagInfo(const json_t* tagInfo)
 {
     if (!json_is_object(tagInfo))
         throw LangManagerError{"Not an object"};
@@ -56,7 +60,7 @@ std::vector<std::string> parseJsonTags(const char* jsonData)
     std::vector<std::string> result;
 
     json_error_t error;
-    JsonUPtr json{json_loads(jsonData, 0, &error)};
+    const JsonUPtr json{json_loads(jsonData, 0, &error)};
 
     if (!json)
         throw LangManagerError{error.text};
@@ -64,7 +68,7 @@ std::vector<std::string> parseJsonTags(const char* jsonData)
     if (!json_is_array(json.get()))
         throw LangManagerError{"Root is not an array"};
 
-    for (std::size_t i = 0; i < json_array_size(json.get()); i++)
+    for (std::size_t i = 0; i < json_array_size(json.get()); ++i)
         try {
             result.push_back(
                 parseJsonTagInfo(json_array_get(json.get(), i)));
@@ -80,17 +84,15 @@ std::vector<std::string> parseJsonTags(const char* jsonData)
 // Get a Git data repository tag <= the current Tesseract version.
 std::string getRepoTag(const char* userAgent)
 {
-    const auto* const tagsUrl =
-        "https://api.github.com/repos/tesseract-ocr/tessdata_fast/"
-        "tags";
+    const auto tagsUrl = std::string{gitHubApiReposUrl} +  "/tags";
 
     std::string jsonData;
     try {
-        jsonData = net::getData(tagsUrl, userAgent);
+        jsonData = net::getData(tagsUrl.c_str(), userAgent);
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::printf(
             "Can't get data from \"%s\": %s",
-            tagsUrl, e.what()).c_str());
+            tagsUrl.c_str(), e.what()).c_str());
     }
 
     std::vector<std::string> tags;
@@ -134,7 +136,7 @@ std::string getRepoTag(const char* userAgent)
 
 
 void parseJsonFileInfo(
-    json_t* fileInfo, std::vector<ExternalLangInfo>& dst)
+    const json_t* fileInfo, std::vector<ExternalLangInfo>& dst)
 {
     if (!json_is_object(fileInfo))
         throw LangManagerError{"Not an object"};
@@ -178,7 +180,7 @@ std::vector<ExternalLangInfo> parseJsonRepoContents(
     const char* jsonData)
 {
     json_error_t error;
-    JsonUPtr json{json_loads(jsonData, 0, &error)};
+    const JsonUPtr json{json_loads(jsonData, 0, &error)};
 
     if (!json)
         throw LangManagerError{error.text};
@@ -188,7 +190,7 @@ std::vector<ExternalLangInfo> parseJsonRepoContents(
 
     std::vector<ExternalLangInfo> result;
 
-    for (std::size_t i = 0; i < json_array_size(json.get()); i++)
+    for (std::size_t i = 0; i < json_array_size(json.get()); ++i)
         try {
             parseJsonFileInfo(json_array_get(json.get(), i), result);
         } catch (LangManagerError& e) {
@@ -227,8 +229,8 @@ std::vector<ExternalLangInfo> getExternalLangs(const char* userAgent)
         return cache.infos;
 
     const auto contentsUrl =
-        "https://api.github.com/repos/tesseract-ocr/tessdata_fast/"
-        "contents?ref="
+        std::string{gitHubApiReposUrl}
+        + "/contents?ref="
         + getRepoTag(userAgent);
 
     std::string jsonData;
