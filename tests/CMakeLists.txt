@@ -6,13 +6,13 @@ add_executable(
     main.cpp
     utils.cpp
 
+    dpso/test_geometry.cpp
+    dpso/test_keys.cpp
+    dpso/test_tesseract_utils.cpp
     dpso_ext/test_cfg.cpp
     dpso_ext/test_history.cpp
     dpso_ext/test_history_export.cpp
     dpso_ext/test_str_nformat.cpp
-    dpso/test_geometry.cpp
-    dpso/test_hotkeys.cpp
-    dpso/test_tesseract_utils.cpp
     dpso_utils/test_os.cpp
     dpso_utils/test_progress_tracker.cpp
     dpso_utils/test_str.cpp

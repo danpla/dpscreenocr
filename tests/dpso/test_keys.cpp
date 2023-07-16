@@ -7,10 +7,7 @@
 
 
 const auto allMods =
-    dpsoKeyModCtrl
-    | dpsoKeyModAlt
-    | dpsoKeyModShift
-    | dpsoKeyModWin;
+    dpsoKeyModCtrl | dpsoKeyModAlt | dpsoKeyModShift | dpsoKeyModWin;
 
 
 static void testHotkeyToString()
@@ -107,11 +104,11 @@ static void testHotkeyFromString()
 }
 
 
-static void testHotkeys()
+static void testKeys()
 {
     testHotkeyToString();
     testHotkeyFromString();
 }
 
 
-REGISTER_TEST(testHotkeys);
+REGISTER_TEST(testKeys);
