@@ -197,12 +197,25 @@ def get_url_to_root(url):
     return '/'.join(('..', ) * url.count('/'))
 
 
-def srip_index_html(url):
+def strip_index_html(url):
     index_html = 'index.html'
     if url == index_html or url.endswith('/' + index_html):
         return url[:-len(index_html)]
 
     return url
+
+
+def get_localizable_resource_url(root_url, page_lang, suburl):
+    if page_lang == 'en':
+        return suburl
+
+    url = page_lang + '/' + suburl
+    if os.path.exists(url2pathname(url)):
+        return suburl
+
+    print('"{}" does not exists; remapped to "en"'.format(url))
+
+    return root_url + '/en/' + suburl
 
 
 def write_root_index_page(langs):
@@ -272,7 +285,7 @@ def gen_lang_menu(langs, page_lang, page_suburl):
                 '<a lang="{lang_code}" hreflang="{lang_code}" '
                 'href="{}/{}">{}</a>'.format(
                     get_url_to_root(url),
-                    srip_index_html(url),
+                    strip_index_html(url),
                     lang_name,
                     lang_code=lang_code))
 
@@ -291,7 +304,7 @@ def write_page(
     root_url = get_url_to_root(page_url)
 
     title, body_data = page_content_generator(
-        root_url, langs[page_lang])
+        root_url, page_lang, langs[page_lang])
 
     head_data = (
         '<title>{}</title>\n'
@@ -334,7 +347,7 @@ def write_page(
             '</html>\n')
 
 
-def gen_main_page_content(root_url, translator):
+def gen_main_page_content(root_url, page_lang, translator):
     logo = (
         '<img id="logo" src="{}/images/dpscreenocr.svg" alt="">\n'
         ).format(root_url)
@@ -350,6 +363,10 @@ def gen_main_page_content(root_url, translator):
             app_name=APP_NAME,
             # The manual is currently not translatable.
             manual_link='href="{}/manual.html"'.format(root_url))
+
+    screenshot = '<img id="screenshot" src="{}" alt="">\n'.format(
+        get_localizable_resource_url(
+            root_url, page_lang, 'images/screenshot-windows.png'))
 
     github_repo_file_url_base = (
         'https://raw.githubusercontent.com/danpla/dpscreenocr/v'
@@ -418,6 +435,7 @@ def gen_main_page_content(root_url, translator):
         APP_NAME,
         logo
             + '<p>{}</p>\n'.format(about_text)
+            + screenshot
             + '<p>{}</p>\n'.format(download_text)
             + download_list
             + '<p>{}</p>\n'.format(contribute_text))

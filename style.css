@@ -41,6 +41,10 @@ html[dir="rtl"] #logo {
   margin-left: 0.9em;
 }
 
+#screenshot {
+  max-width: 100%;
+}
+
 #copyright {
   float: right;
 }
