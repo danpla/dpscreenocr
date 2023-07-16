@@ -262,7 +262,7 @@ def gen_lang_menu(langs, page_lang, page_suburl):
 
     result = '<details>\n'
     result += indent('<summary>{}</summary>\n'.format(
-        translator.gettext(N_('Language'))))
+        translator.gettext('Language')))
 
     lang_name_to_code = {}
 
@@ -352,14 +352,14 @@ def gen_main_page_content(root_url, page_lang, translator):
         '<img id="logo" src="{}/images/dpscreenocr.svg" alt="">\n'
         ).format(root_url)
 
-    about_text = translator.gettext(N_(
+    about_text = translator.gettext(
         '<b>{app_name}</b> is a program to recognize text on the '
         'screen. Powered by <a href="https://en.wikipedia.org/wiki/'
         'Tesseract_(software)">Tesseract</a>, it supports more than '
         '100 languages and can split independent text blocks, such '
         'as columns. Read <a {manual_link}>the manual</a> for '
         'instructions on installing, configuring, and using the '
-        'program.')).format(
+        'program.').format(
             app_name=APP_NAME,
             # The manual is currently not translatable.
             manual_link='href="{}/manual.html"'.format(root_url))
@@ -372,10 +372,10 @@ def gen_main_page_content(root_url, page_lang, translator):
         'https://raw.githubusercontent.com/danpla/dpscreenocr/v'
         + APP_VERSION)
 
-    download_text = translator.gettext(N_(
+    download_text = translator.gettext(
         '<b>Download</b> version {version_number} ('
         '<a {changelog_link}>changes</a>, '
-        '<a {license_link}>license</a>):')).format(
+        '<a {license_link}>license</a>):').format(
             version_number=APP_VERSION,
             changelog_link='href="{}/doc/changelog.txt"'.format(
                 github_repo_file_url_base,
@@ -397,14 +397,13 @@ def gen_main_page_content(root_url, page_lang, translator):
                     'package=dpscreenocr">Debian</a>',
                 '<a href="https://launchpad.net/~daniel.p/'
                     '+archive/ubuntu/dpscreenocr">{}</a>'.format(
-                        translator.gettext(
-                            N_('Ubuntu and derivatives')))
+                        translator.gettext('Ubuntu and derivatives'))
             )
         ),
-        translator.gettext(N_(
+        translator.gettext(
                 'Windows 7 or newer: '
                 '<a {installer_link}>installer</a> or '
-                '<a {zip_archive_link}>ZIP archive</a>')).format(
+                '<a {zip_archive_link}>ZIP archive</a>').format(
             installer_link=(
                 'href="{}/{}-{}-win32.exe"'.format(
                     github_release_download_url_base,
@@ -418,13 +417,13 @@ def gen_main_page_content(root_url, page_lang, translator):
         '<a href="https://github.com/danpla/dpscreenocr/archive/'
             'v{}.tar.gz">{}</a>'.format(
                 APP_VERSION,
-                translator.gettext(N_('Source code (tar.gz)'))),
+                translator.gettext('Source code (tar.gz)')),
     ))
 
-    contribute_text = translator.gettext(N_(
+    contribute_text = translator.gettext(
         '<b>Contribute</b> by taking part in '
         '<a {translations_link}>translation</a> or '
-        '<a {development_link}>development</a>.')).format(
+        '<a {development_link}>development</a>.').format(
             translations_link=(
                 'href="https://hosted.weblate.org/engage/'
                 'dpscreenocr/"'),
