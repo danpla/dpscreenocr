@@ -228,6 +228,8 @@ def get_localizable_resource_url(root_url, page_lang, suburl):
     return root_url + '/en/' + suburl
 
 
+GENERATED_DOC_COMMENT = 'This document was automatically generated.'
+
 # The Web Storage API key for the site language.
 JS_STORAGE_LANG_KEY = 'lang';
 
@@ -243,6 +245,9 @@ def write_root_index_page(langs):
         TITLE=APP_NAME,
         JS_LANGS=', '.join('"{}"'.format(l) for l in sorted(langs)),
         JS_STORAGE_LANG_KEY=JS_STORAGE_LANG_KEY)
+
+    index = index.replace(
+        '<html', '<!-- {} -->\n<html'.format(GENERATED_DOC_COMMENT), 1)
 
     with open_for_text_writing('index.html') as f:
         f.write(index)
@@ -360,8 +365,7 @@ def write_page(
 
     with open_for_text_writing(page_path) as f:
         f.write('<!DOCTYPE html>\n')
-        f.write(
-            '<!-- This document is automatically generated. -->\n')
+        f.write('<!-- {} -->\n'.format(GENERATED_DOC_COMMENT))
         f.write('<html lang="{}">\n'.format(page_lang))
         f.write('<head>\n')
         f.write(indent(head_data))
