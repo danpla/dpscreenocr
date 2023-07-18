@@ -4,9 +4,10 @@
 <title>dpScreenOCR</title>
 <meta charset="utf-8">
 <script>
-  // The code is intentionally written in ES5 JavaScript to support
-  // old browsers.
+  // The code is written in ES5 JavaScript to support old browsers.
+
   var langs = ["ca", "de", "en", "es", "ru", "uk"];
+  var storageLangKey = "lang";
 
   var userLangFixups = {
     // Some browsers use no longer recommended zh-CN and zh-TW codes
@@ -26,9 +27,7 @@
     // remove elements later.
     userLangs = userLangs.slice();
 
-    while (userLangs.length > 0) {
-      console.log(userLangs);
-
+    while (userLangs.length > 0)
       for (var i = 0; i < userLangs.length;) {
         var userLang = userLangs[i];
         userLang = userLangFixups[userLang] || userLang;
@@ -39,7 +38,8 @@
             return lang;
         }
 
-        // Trim the last tag for a more generic match.
+        // Trim the last tag for a more generic match on the next
+        // pass.
         var hyphenIndex = userLang.lastIndexOf('-');
         if (hyphenIndex == -1)
           userLangs.splice(i, 1);
@@ -48,25 +48,34 @@
           ++i;
         }
       }
-    }
 
     return null;
   }
 
   var pageLang;
 
+  // The language can be saved in localStorage not only by this
+  // script, but also by clicking on a language menu item.
+  //
   // Access to localStorage may be disabled by the user, so guard it
   // with try-catch.
   try {
-    pageLang = localStorage.getItem("lang");
+    pageLang = localStorage.getItem(storageLangKey);
   } catch {
   }
 
-  pageLang = pageLang || detectPageLang() || "en";
+  // Make sure the cached value is still valid because the language
+  // can be removed.
+  if (pageLang && langs.indexOf(pageLang) == -1)
+    pageLang = null;
 
-  try {
-    localStorage.setItem("lang", pageLang);
-  } catch {
+  if (!pageLang) {
+    pageLang = detectPageLang() || "en";
+
+    try {
+      localStorage.setItem(storageLangKey, pageLang);
+    } catch {
+    }
   }
 
   window.location.replace(pageLang + "/");
@@ -76,10 +85,10 @@
 </noscript>
 </head>
 <body>
-<!--
-A fallback for really weird browsers that support neither ES5 JS nor
-<meta> redirect.
--->
-<a href="en/">English</a>
+  <!--
+  A fallback for really weird browsers that support neither ES5 JS nor
+  <meta> redirect.
+  -->
+  <a href="en/">English</a>
 </body>
 </html>

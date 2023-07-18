@@ -192,6 +192,16 @@ def indent(text):
     return textwrap.indent(text, '  ')
 
 
+# A formatting function that replaces keys wrapped in @ by values from
+# keyword arguments. The goal is to avoid headaches with the standard
+# str.format when the text has a lot of braces (like JavaScript code).
+def at_format(text, **kwargs):
+    for k, v in kwargs.items():
+        text = text.replace('@{}@'.format(k), v)
+
+    return text
+
+
 def get_url_to_root(url):
     assert not '//' in url
     return '/'.join(('..', ) * url.count('/'))
@@ -218,23 +228,24 @@ def get_localizable_resource_url(root_url, page_lang, suburl):
     return root_url + '/en/' + suburl
 
 
+# The Web Storage API key for the site language.
+JS_STORAGE_LANG_KEY = 'lang';
+
+
 def write_root_index_page(langs):
     with open(
             os.path.join(DATA_DIR, 'index.html.in'),
             encoding='utf-8') as f:
         index_template = f.read()
 
-    replacements = {
-        'TITLE': APP_NAME,
-        'JS_LANGS': ', '.join('"{}"'.format(l) for l in sorted(langs))
-    }
-
-    for k, v in replacements.items():
-        index_template = index_template.replace(
-            '@{}@'.format(k), v)
+    index = at_format(
+        index_template,
+        TITLE=APP_NAME,
+        JS_LANGS=', '.join('"{}"'.format(l) for l in sorted(langs)),
+        JS_STORAGE_LANG_KEY=JS_STORAGE_LANG_KEY)
 
     with open_for_text_writing('index.html') as f:
-        f.write(index_template)
+        f.write(index)
 
 
 def gen_unordered_list(tree):
@@ -260,16 +271,21 @@ def gen_unordered_list(tree):
 def gen_lang_menu(langs, page_lang, page_suburl):
     translator = langs[page_lang]
 
-    result = (
-        '<script>\n'
-        '  function onLangClick(element) {\n'
-        '    try {\n'
-        '      localStorage.setItem("lang", element.lang);\n'
-        '    } catch {\n'
-        '    }\n'
-        '    return true;\n'
+    js_on_lang_click_fn = 'onLangClick';
+
+    script = at_format(
+        'function @JS_ON_LANG_CLICK_FN@(element) {\n'
+        '  try {\n'
+        '    localStorage.setItem('
+            '"@JS_STORAGE_LANG_KEY@", element.lang);\n'
+        '  } catch {\n'
         '  }\n'
-        '</script>\n')
+        '  return true;\n'
+        '}\n',
+        JS_ON_LANG_CLICK_FN=js_on_lang_click_fn,
+        JS_STORAGE_LANG_KEY=JS_STORAGE_LANG_KEY)
+
+    result = '<script>\n{}</script>\n'.format(indent(script))
 
     result += '<details>\n'
     result += indent('<summary>{}</summary>\n'.format(
@@ -294,11 +310,12 @@ def gen_lang_menu(langs, page_lang, page_suburl):
             url = lang_code + '/' + page_suburl
             items.append(
                 '<a lang="{lang_code}" '
-                'onclick="onLangClick(this)" '
                 'hreflang="{lang_code}" '
-                'href="{}/{}">{}</a>'.format(
+                'href="{}/{}" '
+                'onclick="{}(this)">{}</a>'.format(
                     get_url_to_root(url),
                     strip_index_html(url),
+                    js_on_lang_click_fn,
                     lang_name,
                     lang_code=lang_code))
 
