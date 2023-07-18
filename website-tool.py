@@ -260,7 +260,18 @@ def gen_unordered_list(tree):
 def gen_lang_menu(langs, page_lang, page_suburl):
     translator = langs[page_lang]
 
-    result = '<details>\n'
+    result = (
+        '<script>\n'
+        '  function onLangClick(element) {\n'
+        '    try {\n'
+        '      localStorage.setItem("lang", element.lang);\n'
+        '    } catch {\n'
+        '    }\n'
+        '    return true;\n'
+        '  }\n'
+        '</script>\n')
+
+    result += '<details>\n'
     result += indent('<summary>{}</summary>\n'.format(
         translator.gettext('Language')))
 
@@ -282,7 +293,9 @@ def gen_lang_menu(langs, page_lang, page_suburl):
         else:
             url = lang_code + '/' + page_suburl
             items.append(
-                '<a lang="{lang_code}" hreflang="{lang_code}" '
+                '<a lang="{lang_code}" '
+                'onclick="onLangClick(this)" '
+                'hreflang="{lang_code}" '
                 'href="{}/{}">{}</a>'.format(
                     get_url_to_root(url),
                     strip_index_html(url),

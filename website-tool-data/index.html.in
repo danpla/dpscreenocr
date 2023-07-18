@@ -16,43 +16,57 @@
     "zh-TW": "zh-Hant"
   };
 
-  function fixupUserLang(userLang) {
-    return userLangFixups[userLang] || userLang;
+  function startsWith(str, other) {
+    return str.lastIndexOf(other, 0) == 0;
   }
 
-  var userLangs = navigator.languages || [navigator.language];
-  var numUserLangs = userLangs.length;
+  function detectPageLang() {
+    var userLangs = navigator.languages || [navigator.language];
+    // navigator.languages is immutable, so make a copy so that we can
+    // remove elements later.
+    userLangs = userLangs.slice();
+
+    while (userLangs.length > 0) {
+      console.log(userLangs);
+
+      for (var i = 0; i < userLangs.length;) {
+        var userLang = userLangs[i];
+        userLang = userLangFixups[userLang] || userLang;
+
+        for (var j = 0; j < langs.length; ++j) {
+          var lang = langs[j];
+          if (startsWith(lang, userLang))
+            return lang;
+        }
+
+        // Trim the last tag for a more generic match.
+        var hyphenIndex = userLang.lastIndexOf('-');
+        if (hyphenIndex == -1)
+          userLangs.splice(i, 1);
+        else {
+          userLangs[i] = userLang.substring(0, hyphenIndex);
+          ++i;
+        }
+      }
+    }
+
+    return null;
+  }
 
   var pageLang;
 
-  for (var i = 0; i < numUserLangs; ++i) {
-    var userLang = fixupUserLang(userLangs[i]);
-    if (langs.indexOf(userLang) > -1) {
-      pageLang = userLang;
-      break;
-    }
+  // Access to localStorage may be disabled by the user, so guard it
+  // with try-catch.
+  try {
+    pageLang = localStorage.getItem("lang");
+  } catch {
   }
 
-  if (!pageLang) {
-    // Try again with stripped script and region subtags.
-    for (var i = 0; i < numUserLangs; ++i) {
-      var userLang = fixupUserLang(userLangs[i]);
+  pageLang = pageLang || detectPageLang() || "en";
 
-      var hyphenIndex = userLang.indexOf('-');
-      if (hyphenIndex == -1) {
-        continue;
-      }
-
-      var langTag = userLang.substring(0, hyphenIndex);
-      if (langs.indexOf(langTag) > -1) {
-        pageLang = langTag;
-        break;
-      }
-    }
-
-    if (!pageLang) {
-      pageLang = "en";
-    }
+  try {
+    localStorage.setItem("lang", pageLang);
+  } catch {
   }
 
   window.location.replace(pageLang + "/");

@@ -35,9 +35,18 @@
   <p><b>Contribute</b> by taking part in <a href="https://hosted.weblate.org/engage/dpscreenocr/">translation</a> or <a href="https://github.com/danpla/dpscreenocr">development</a>.</p>
   <footer>
     <div id="copyright">© 2019-2023 <a href="mailto:daniel.plakhotich@gmail.com?subject=dpScreenOCR">Daniel Plakhotich</a></div>
+    <script>
+      function onLangClick(element) {
+        try {
+          localStorage.setItem("lang", element.lang);
+        } catch {
+        }
+        return true;
+      }
+    </script>
     <details>
       <summary>Sprache</summary>
-      <a lang="ca" hreflang="ca" href="../ca/">Català</a>&emsp;<b>Deutsch</b>&emsp;<a lang="en" hreflang="en" href="../en/">English</a>&emsp;<a lang="es" hreflang="es" href="../es/">Español</a>&emsp;<a lang="ru" hreflang="ru" href="../ru/">Русский</a>&emsp;<a lang="uk" hreflang="uk" href="../uk/">Українська</a>
+      <a lang="ca" onclick="onLangClick(this)" hreflang="ca" href="../ca/">Català</a>&emsp;<b>Deutsch</b>&emsp;<a lang="en" onclick="onLangClick(this)" hreflang="en" href="../en/">English</a>&emsp;<a lang="es" onclick="onLangClick(this)" hreflang="es" href="../es/">Español</a>&emsp;<a lang="ru" onclick="onLangClick(this)" hreflang="ru" href="../ru/">Русский</a>&emsp;<a lang="uk" onclick="onLangClick(this)" hreflang="uk" href="../uk/">Українська</a>
     </details>
   </footer>
 </body>
