@@ -231,7 +231,7 @@ def get_localizable_resource_url(root_url, page_lang, suburl):
 GENERATED_DOC_COMMENT = 'This document was automatically generated.'
 
 # The Web Storage API key for the site language.
-JS_STORAGE_LANG_KEY = 'lang';
+JS_STORAGE_LANG_KEY = 'lang'
 
 
 def write_root_index_page(langs):
@@ -276,7 +276,7 @@ def gen_unordered_list(tree):
 def gen_lang_menu(langs, page_lang, page_suburl):
     translator = langs[page_lang]
 
-    js_on_lang_click_fn = 'onLangClick';
+    js_on_lang_click_fn = 'onLangClick'
 
     script = at_format(
         'function @JS_ON_LANG_CLICK_FN@(element) {\n'
@@ -517,7 +517,7 @@ GETTEXT_LANGUAGE_NAME_KEY = N_('LANGUAGE_NAME')
 def main():
     parser = argparse.ArgumentParser(description='Website tool')
 
-    subparsers = parser.add_subparsers();
+    subparsers = parser.add_subparsers()
 
     update_po_parser = subparsers.add_parser(
         'update_po',
