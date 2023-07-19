@@ -13,8 +13,9 @@ instructions on how to use the service.
 The dpScreenOCR project on Weblate has two translation components:
 "dpScreenOCR" (translation of the program interface) and "dpScreenOCR
 Website". Both components have the same set of target languages. To
-request a new language, choose "Start new translation", but please
-only do this if you intend to do at least part of the translation.
+request a new language, select "Start new translation" (the plus sign
+at the top of any component's language list), but please only do this
+if you intend to do at least part of the translation.
 
 
 Text templates
@@ -46,6 +47,10 @@ translating to your language.
 Translating the website
 =======================
 
+
+HTML
+----
+
 Almost all strings from the website use HTML formatting, so sometimes
 you will see the tags like <b>, <a ...>, etc. Please read an overview
 of HTML markup on Wikipedia if you have never encountered HTML before:
@@ -57,16 +62,17 @@ Spaces and dashes of various widths
 -----------------------------------
 
 If you need to insert a non-ASCII space or dash, please use character
-references, like &ndash; for an en dash or &thinsp; for a thin space.
-Otherwise, it will be nearly impossible for other people to visually
-distinguish such a symbol from its counterparts of different widths.
+references, like "&ndash;" for an en dash or "&thinsp;" for a thin
+space. Otherwise, it will be nearly impossible for other people to
+visually distinguish such a symbol from its counterparts of different
+widths.
 
 
 Links
 -----
 
 Most of links use templates right inside the <a> tag so that you don't
-have to copy URL (href=...) from the source string. However, if a link
-includes a URL, it means that the URL may have a localized version
-(such as a URL to a Wikipedia page), and you are encouraged to use one
-if available.
+have to copy the URL (href=...) from the source string. However, if a
+link includes a URL, it means that the URL may have a localized
+version (such as a URL to a Wikipedia page), and you are encouraged to
+use one if available.
