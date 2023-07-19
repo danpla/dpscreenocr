@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-07-15 00:14+0200\n"
+"POT-Creation-Date: 2023-07-19 18:01+0200\n"
 "PO-Revision-Date: 2023-05-21 11:58+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -546,7 +546,7 @@ msgstr "Ліцензія"
 msgid "Third-party licenses"
 msgstr "Ліцензії третіх сторін"
 
-#: src/ui/qt/about.cpp:108 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Програма для розпізнавання тексту не екрані"
 
@@ -685,6 +685,7 @@ msgid "Close"
 msgstr "Закрити"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:64
+msgctxt "noun"
 msgid "Filter"
 msgstr "Фільтр"
 

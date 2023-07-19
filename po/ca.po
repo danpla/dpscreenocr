@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-07-15 00:14+0200\n"
+"POT-Creation-Date: 2023-07-19 18:01+0200\n"
 "PO-Revision-Date: 2023-07-04 00:52+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -562,7 +562,7 @@ msgstr "Llicència"
 msgid "Third-party licenses"
 msgstr "Llicències de tercers"
 
-#: src/ui/qt/about.cpp:108 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Programa per a reconèixer el text en pantalla"
 
@@ -701,6 +701,7 @@ msgid "Close"
 msgstr "Tanca"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:64
+msgctxt "noun"
 msgid "Filter"
 msgstr "Filtra"
 

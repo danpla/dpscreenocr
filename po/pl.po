@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-07-15 00:14+0200\n"
+"POT-Creation-Date: 2023-07-19 18:01+0200\n"
 "PO-Revision-Date: 2023-04-11 18:48+0000\n"
 "Last-Translator: Eryk Michalak <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -547,7 +547,7 @@ msgstr "Licencja"
 msgid "Third-party licenses"
 msgstr "Licencje stron trzecich"
 
-#: src/ui/qt/about.cpp:108 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Program do rozpoznawania tekstu na ekranie"
 
@@ -687,6 +687,7 @@ msgid "Close"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:64
+msgctxt "noun"
 msgid "Filter"
 msgstr ""
 

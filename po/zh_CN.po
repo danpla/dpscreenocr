@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-07-15 00:14+0200\n"
+"POT-Creation-Date: 2023-07-19 18:01+0200\n"
 "PO-Revision-Date: 2023-06-29 10:52+0000\n"
 "Last-Translator: Eric <hamburger2048@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -546,7 +546,7 @@ msgstr "许可证"
 msgid "Third-party licenses"
 msgstr "第三方许可证"
 
-#: src/ui/qt/about.cpp:108 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "用于识别屏幕上文字的软件"
 
@@ -685,6 +685,7 @@ msgid "Close"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:64
+msgctxt "noun"
 msgid "Filter"
 msgstr ""
 

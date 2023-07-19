@@ -61,7 +61,7 @@ LangManagerPage::LangManagerPage(
     , langList{&langList}
 {
     auto* filterLineEdit = new QLineEdit();
-    filterLineEdit->setPlaceholderText(_("Filter"));
+    filterLineEdit->setPlaceholderText(pgettext("noun", "Filter"));
     filterLineEdit->setClearButtonEnabled(true);
 
     treeView = new QTreeView();

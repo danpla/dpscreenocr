@@ -545,7 +545,7 @@ msgstr "Licencia"
 msgid "Third-party licenses"
 msgstr "Licencias de terceros"
 
-#: src/ui/qt/about.cpp:108 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Programa para reconocer el texto en pantalla"
 
@@ -684,6 +684,7 @@ msgid "Close"
 msgstr "Cerrar"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:64
+msgctxt "noun"
 msgid "Filter"
 msgstr "Filtrar"
 
