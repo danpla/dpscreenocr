@@ -388,13 +388,16 @@ def gen_main_page_content(root_url, page_lang, translator):
 
     about_text = translator.gettext(
         '<b>{app_name}</b> is a program to recognize text on the '
-        'screen. Powered by <a href="https://en.wikipedia.org/wiki/'
-        'Tesseract_(software)">Tesseract</a>, it supports more than '
-        '100 languages and can split independent text blocks, such '
-        'as columns. Read <a {manual_link}>the manual</a> for '
-        'instructions on installing, configuring, and using the '
-        'program.').format(
+        'screen. Powered by <a {tesseract_link}>Tesseract</a>, it '
+        'supports more than 100 languages and can split independent '
+        'text blocks, such as columns. Read <a {manual_link}>the '
+        'manual</a> for instructions on installing, configuring, and '
+        'using the program.').format(
             app_name=APP_NAME,
+            tesseract_link='href="{}"'.format(
+                translator.gettext(
+                    'https://en.wikipedia.org/wiki/'
+                    'Tesseract_(software)')),
             # The manual is currently not translatable.
             manual_link='href="{}/manual.html"'.format(root_url))
 
