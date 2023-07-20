@@ -71,8 +71,9 @@ widths.
 Links
 -----
 
-Most of links use templates right inside the <a> tag so that you don't
-have to copy the URL (href=...) from the source string. However, if a
-link includes a URL, it means that the URL may have a localized
-version (such as a URL to a Wikipedia page), and you are encouraged to
-use one if available.
+Links use templates right inside the <a> tag so that you don't
+have to copy the URL (href=...) from the source string. Instead, URLs
+that may have localized versions (such as Wikipedia URLs) are
+available as separate translation strings. If such a URL doesn't have
+a localized version (e.g., there is no Wikipedia page for the target
+language), simply use the source English URL as the translation.
