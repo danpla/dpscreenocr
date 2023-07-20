@@ -149,7 +149,7 @@ def compile_po(out_dir):
 
     if missing_pos:
         print(
-            'The following PO files don''t exists; run update_po to '
+            'The following PO files don''t exist; run update_po to '
             'generate them: {}'.format(', '.join(missing_pos)))
 
 
@@ -180,7 +180,7 @@ def collect_langs(mo_dir):
 
     if untranslated_langs:
         print(
-            'The following languages are skipped since their '
+            'The following languages were skipped since their '
             '{} msgid is not translated: {}'.format(
                 GETTEXT_LANGUAGE_NAME_KEY,
                 ', '.join(untranslated_langs)))
@@ -223,7 +223,7 @@ def get_localizable_resource_url(root_url, page_lang, suburl):
     if os.path.exists(url2pathname(url)):
         return suburl
 
-    print('"{}" does not exists; remapped to "en"'.format(url))
+    print('"{}" does not exist; remapped to "en"'.format(url))
 
     return root_url + '/en/' + suburl
 
@@ -545,8 +545,7 @@ def main():
 
     generate_parser = subparsers.add_parser(
         'generate', help='Generate the website')
-    generate_parser.set_defaults(
-        func=lambda args: generate_website())
+    generate_parser.set_defaults(func=lambda args: generate_website())
 
     args = parser.parse_args()
 
