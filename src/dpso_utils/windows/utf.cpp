@@ -10,43 +10,46 @@
 namespace dpso::windows {
 
 
-std::wstring utf8ToUtf16(const char* utf8Str)
+static int utf8ToUtf16(const char* utf8Str, wchar_t* dst, int dstSize)
 {
     const auto sizeWithNull = MultiByteToWideChar(
-        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1, nullptr, 0);
+        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1, dst, dstSize);
     if (sizeWithNull <= 0)
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
-    std::wstring result(sizeWithNull - 1, 0);
+    return sizeWithNull;
+}
 
-    if (!MultiByteToWideChar(
-            CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1,
-            result.data(), sizeWithNull))
+
+std::wstring utf8ToUtf16(const char* utf8Str)
+{
+    const auto sizeWithNull = utf8ToUtf16(utf8Str, nullptr, 0);
+    std::wstring result(sizeWithNull - 1, 0);
+    utf8ToUtf16(utf8Str, result.data(), sizeWithNull);
+    return result;
+}
+
+
+static int utf16ToUtf8(
+    const wchar_t* utf16Str, char* dst, int dstSize)
+{
+    const auto sizeWithNull = WideCharToMultiByte(
+        CP_UTF8, WC_ERR_INVALID_CHARS,
+        utf16Str, -1,
+        dst, dstSize,
+        nullptr, nullptr);
+    if (sizeWithNull <= 0)
         throw std::runtime_error(getErrorMessage(GetLastError()));
 
-    return result;
+    return sizeWithNull;
 }
 
 
 std::string utf16ToUtf8(const wchar_t* utf16Str)
 {
-    const auto sizeWithNull = WideCharToMultiByte(
-        CP_UTF8, WC_ERR_INVALID_CHARS,
-        utf16Str, -1,
-        nullptr, 0,
-        nullptr, nullptr);
-    if (sizeWithNull <= 0)
-        throw std::runtime_error(getErrorMessage(GetLastError()));
-
+    const auto sizeWithNull = utf16ToUtf8(utf16Str, nullptr, 0);
     std::string result(sizeWithNull - 1, 0);
-
-    if (!WideCharToMultiByte(
-            CP_UTF8, WC_ERR_INVALID_CHARS,
-            utf16Str, -1,
-            result.data(), sizeWithNull,
-            nullptr, nullptr))
-        throw std::runtime_error(getErrorMessage(GetLastError()));
-
+    utf16ToUtf8(utf16Str, result.data(), sizeWithNull);
     return result;
 }
 
