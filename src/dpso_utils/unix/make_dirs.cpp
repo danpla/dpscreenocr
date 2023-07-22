@@ -26,11 +26,10 @@ bool makeDirs(char* path, mode_t mode)
 
         const auto c = *s;
         *s = 0;
-        // Force 0777 mode for intermediate directories to emulate
-        // `mkdirs -p` behavior. Without this, mkdir() will not be
-        // able to create a directory with write or read permissions
-        // removed, because the same permissions will be used for the
-        // newly created parent dir.
+        // Force 0777 mode for intermediate directories so that mkdir
+        // can create a directory with read or write permissions
+        // removed when the same permissions are used for a newly
+        // created parent directory.
         const auto ret = mkdir(path, *s ? 0777 : mode);
         *s = c;
 
