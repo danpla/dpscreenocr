@@ -65,7 +65,8 @@ void runLangManager(
     int ocrEngineIdx, const std::string& dataDir, QWidget* parent)
 {
     dpso::OcrLangManagerUPtr langManager{
-        dpsoOcrLangManagerCreate(ocrEngineIdx, dataDir.c_str())};
+        dpsoOcrLangManagerCreate(
+            ocrEngineIdx, dataDir.c_str(), uiGetUserAgent())};
     if (!langManager) {
         QMessageBox::critical(
             parent,
@@ -74,9 +75,6 @@ void runLangManager(
                 + dpsoGetError());
         return;
     }
-
-    dpsoOcrLangManagerSetUserAgent(
-        langManager.get(), uiGetUserAgent());
 
     fetchExternalLangs(langManager.get(), parent);
 

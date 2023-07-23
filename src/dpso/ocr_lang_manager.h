@@ -15,19 +15,13 @@ extern "C" {
  * The language manager allows you to install, update, and remove
  * languages.
  *
- * An important thing to keep in mind is that DpsoOcrLangManager is
- * actually a reference: all DpsoOcrLangManager instances created for
- * the same engine-dataDir pair refer to the same language manager
- * object.
- *
- * All DpsoOcrLangManager and DpsoOcr instances created for the same
+ * DpsoOcrLangManager and all DpsoOcr instances created for the same
  * engine and data dir are synchronized as follows. When you create
- * the first DpsoOcrLangManager, all DpsoOcr instances will finish
- * their jobs as if by calling dpsoOcrWaitJobsToComplete(). Until the
- * last DpsoOcrLangManager is deleted, DpsoOcr instances will not
- * allow queuing new jobs, and their language lists will be frozen
- * (that is, they will not reflect changes made via the language
- * manager).
+ * DpsoOcrLangManager, all DpsoOcr instances will finish their jobs as
+ * if by calling dpsoOcrWaitJobsToComplete(). Until DpsoOcrLangManager
+ * is deleted, DpsoOcr instances will not allow queuing new jobs, and
+ * their language lists will be frozen (that is, they will not reflect
+ * changes made via the language manager).
  */
 typedef struct DpsoOcrLangManager DpsoOcrLangManager;
 
@@ -37,9 +31,20 @@ typedef struct DpsoOcrLangManager DpsoOcrLangManager;
  *
  * engineIdx and dataDir arguments are the same as for the
  * DpsoOcr object.
+ *
+ * userAgent sets the user agent for HTTP connections. Most servers
+ * will refuse to negotiate with a client that don't provide a user
+ * agent string. In its simplest form, this string consists of the
+ * application name, optionally followed by a forward slash and a
+ * version number, like "AppName/1.0.0". See the description of the
+ * "User-Agent" from RFC 1945 for the details.
+ *
+ * On failure, sets an error message (dpsoGetError()) and returns
+ * null. In particular, the function will fail if another language
+ * manager for the same engine and data dir is active.
  */
 DpsoOcrLangManager* dpsoOcrLangManagerCreate(
-    int engineIdx, const char* dataDir);
+    int engineIdx, const char* dataDir, const char* userAgent);
 
 
 /**
@@ -50,25 +55,6 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
  * dpsoOcrLangManagerCancelInstall().
  */
 void dpsoOcrLangManagerDelete(DpsoOcrLangManager* langManager);
-
-
-/**
- * Set the user agent for internet connections.
- *
- * Many internet servers will refuse to negotiate with a client that
- * don't provide a user agent string, so it's highly recommended to
- * not leave it empty (which is the default).
- *
- * The user agent string has the same format as the HTTP User-Agent
- * header. It contains the application name, optionally followed by a
- * forward slash and a version number. For example:
- *
- * AppName/1.0.0
- *
- * See RFC 1945 for the details.
- */
-void dpsoOcrLangManagerSetUserAgent(
-    DpsoOcrLangManager* langManager, const char* userAgent);
 
 
 /**

@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <memory>
+#include <stdexcept>
 
 
 namespace dpso::ocr {
@@ -10,10 +11,23 @@ namespace dpso::ocr {
 
 class DataLock {
 public:
-    static std::shared_ptr<DataLock> get(
-        const char* engineId, const char* dataDir);
+    class DataLockedError : public std::runtime_error {
+        using runtime_error::runtime_error;
+    };
+
+    DataLock();
+
+    // Throws DataLockedError if data is already locked by another
+    // DataLock.
+    DataLock(const char* engineId, const char* dataDir);
+
+    ~DataLock();
+
+    DataLock(DataLock&& other) noexcept;
+    DataLock& operator=(DataLock&& other) noexcept;
 private:
-    DataLock() = default;
+    struct Impl;
+    std::unique_ptr<Impl> impl;
 };
 
 

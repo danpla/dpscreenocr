@@ -17,7 +17,7 @@ struct ObserverData {
 
 
 struct SharedData {
-    std::weak_ptr<DataLock> dataLock;
+    bool isDataLocked;
     std::vector<ObserverData*> observerDatas;
 
     static std::shared_ptr<SharedData> get(
@@ -71,35 +71,46 @@ struct SharedData {
 }
 
 
-std::shared_ptr<DataLock> DataLock::get(
-    const char* engineId, const char* dataDir)
+struct DataLock::Impl {
+    std::shared_ptr<SharedData> sd;
+
+    Impl(const char* engineId, const char* dataDir)
+        : sd{SharedData::get(engineId, dataDir)}
+    {
+        if (sd->isDataLocked)
+            throw DataLock::DataLockedError{"Data is already locked"};
+
+        for (auto* observerData : sd->observerDatas)
+            if (observerData->lockAboutToBeCreated)
+                observerData->lockAboutToBeCreated();
+
+        sd->isDataLocked = true;
+    }
+
+    ~Impl()
+    {
+        assert(sd->isDataLocked);
+        sd->isDataLocked = false;
+
+        for (auto* observerData : sd->observerDatas)
+            if (observerData->lockRemoved)
+                observerData->lockRemoved();
+    }
+};
+
+
+DataLock::DataLock() = default;
+
+
+DataLock::DataLock(const char* engineId, const char* dataDir)
+    : impl{std::make_unique<Impl>(engineId, dataDir)}
 {
-    auto sd = SharedData::get(engineId, dataDir);
-    if (auto dataLock = sd->dataLock.lock())
-        return dataLock;
-
-    for (auto* observerData : sd->observerDatas)
-        if (observerData->lockAboutToBeCreated)
-            observerData->lockAboutToBeCreated();
-
-    auto dataLock = std::shared_ptr<DataLock>{
-        new DataLock{},
-        [sd](DataLock* dataLock)
-        {
-            if (!dataLock)
-                return;
-
-            delete dataLock;
-
-            for (auto* observerData : sd->observerDatas)
-                if (observerData->lockRemoved)
-                    observerData->lockRemoved();
-        }};
-
-    sd->dataLock = dataLock;
-
-    return dataLock;
 }
+
+
+DataLock::~DataLock() = default;
+DataLock::DataLock(DataLock&&) noexcept = default;
+DataLock& DataLock::operator=(DataLock&&) noexcept = default;
 
 
 struct DataLockObserver::Impl {
@@ -132,10 +143,7 @@ struct DataLockObserver::Impl {
 };
 
 
-DataLockObserver::DataLockObserver()
-    : impl{}
-{
-}
+DataLockObserver::DataLockObserver() = default;
 
 
 DataLockObserver::DataLockObserver(
@@ -161,7 +169,7 @@ DataLockObserver& DataLockObserver::operator=(
 
 bool DataLockObserver::getIsDataLocked() const
 {
-    return impl && !impl->sd->dataLock.expired();
+    return impl && impl->sd->isDataLocked;
 }
 
 
