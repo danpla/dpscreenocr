@@ -103,3 +103,23 @@
 * Define ENABLE_NLS=1 to enable gettext. If you use dpso_utils/intl.h,
   this can be done with the DPSO_ENABLE_NLS CMake option (enabled by
   default). If you use your own gettext.h, set ENABLE_NLS manually.
+
+* When creating translatable strings with plural forms, don't format
+  the singular form especially, like:
+
+    ngettext("One apple", "{count} apples", n)
+
+  The English singular form always implies 1, so it's technically fine
+  to use "One apple" instead of "{count} apple". However, some other
+  languages use the singular form not only for 1, and such a special
+  English case in the source string can trick people into doing an
+  analogous translation implying a single item instead of using a
+  generic form with a number.
+
+  To avoid this issue, use the same form as for the plural, and handle
+  the special case separately:
+
+    if (n == 1)
+      gettext("One apple")
+    else
+      ngettext("{count} apple", "{count} apples", n)

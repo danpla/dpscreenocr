@@ -236,16 +236,19 @@ bool LangManagerPageRemove::performAction(
 
     if (!confirmDestructiveAction(
             this,
-            dpsoStrNFormat(
-                ngettext(
-                    "Remove \342\200\234{name}\342\200\235?",
-                    "Remove {count} selected languages?",
-                    langCodes.size()),
-                {
-                    {"count",
-                        std::to_string(langCodes.size()).c_str()},
-                    {"name", langName.c_str()}
-                }),
+            langCodes.size() == 1
+                ? dpsoStrNFormat(
+                    _("Remove \342\200\234{name}\342\200\235?"),
+                    {{"name", langName.c_str()}})
+                : dpsoStrNFormat(
+                    ngettext(
+                        "Remove {count} selected language?",
+                        "Remove {count} selected languages?",
+                        langCodes.size()),
+                    {
+                        {"count",
+                            std::to_string(langCodes.size()).c_str()}
+                    }),
             _("Cancel"),
             _("Remove")))
         return false;

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-07-19 18:01+0200\n"
+"POT-Creation-Date: 2023-08-02 22:41+0200\n"
 "PO-Revision-Date: 2021-12-26 16:18+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Bulgarian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -609,7 +609,7 @@ msgstr "Всички файлове"
 msgid "Clear the history?"
 msgstr "Изчистване на историята?"
 
-#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:249
+#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:252
 #: src/ui/qt/main_window.cpp:200
 msgid "Cancel"
 msgstr "Отмяна"
@@ -672,26 +672,26 @@ msgstr ""
 msgid "An error occurred while fetching the list of languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:88 src/ui/qt/main_window.cpp:419
+#: src/ui/qt/lang_manager/lang_manager.cpp:86 src/ui/qt/main_window.cpp:419
 msgid "Language manager"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:94
+#: src/ui/qt/lang_manager/lang_manager.cpp:92
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Install"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:95
+#: src/ui/qt/lang_manager/lang_manager.cpp:93
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Update"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:96
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:250
+#: src/ui/qt/lang_manager/lang_manager.cpp:94
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:253
 msgid "Remove"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:104 src/ui/qt/utils.cpp:112
+#: src/ui/qt/lang_manager/lang_manager.cpp:102 src/ui/qt/utils.cpp:112
 msgid "Close"
 msgstr ""
 
@@ -714,11 +714,15 @@ msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:241
 msgid "Remove “{name}”?"
+msgstr ""
+
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:245
+msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:269
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:272
 msgid "Some languages were not removed"
 msgstr ""
 
