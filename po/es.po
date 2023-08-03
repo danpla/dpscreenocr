@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-08-02 22:41+0200\n"
-"PO-Revision-Date: 2023-07-16 10:06+0000\n"
+"PO-Revision-Date: 2023-08-05 17:51+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/es/>\n"
@@ -705,11 +705,10 @@ msgid "Remove “{name}”?"
 msgstr "¿Quiere quitar «{name}»?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:245
-#, fuzzy
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
-msgstr[0] ""
-msgstr[1] "¿Quiere quitar los {count} idiomas seleccionados?"
+msgstr[0] "¿Eliminar {count} idioma seleccionado?"
+msgstr[1] "¿Eliminar {count} idiomas seleccionados?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:272
 msgid "Some languages were not removed"
