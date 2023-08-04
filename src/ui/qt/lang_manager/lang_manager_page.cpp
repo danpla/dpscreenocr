@@ -223,32 +223,30 @@ bool LangManagerPageRemove::performAction(
     DpsoOcrLangManager* langManager,
     const QList<QByteArray>& langCodes)
 {
-    std::string langName;
+    QString questionText;
+
     if (langCodes.size() == 1) {
         const auto* langCode = langCodes[0].data();
 
         const auto langIdx = dpsoOcrLangManagerGetLangIdx(
             langManager, langCode);
-        const auto* name = dpsoOcrLangManagerGetLangName(
+        const auto* langName = dpsoOcrLangManagerGetLangName(
             langManager, langIdx);
-        langName = *name ? gettext(name) : langCode;
-    }
+
+        questionText = dpsoStrNFormat(
+            _("Remove \342\200\234{name}\342\200\235?"),
+            {{"name", *langName ? gettext(langName) : langCode}});
+    } else
+        questionText = dpsoStrNFormat(
+            ngettext(
+                "Remove {count} selected language?",
+                "Remove {count} selected languages?",
+                langCodes.size()),
+            {{"count", std::to_string(langCodes.size()).c_str()}});
 
     if (!confirmDestructiveAction(
             this,
-            langCodes.size() == 1
-                ? dpsoStrNFormat(
-                    _("Remove \342\200\234{name}\342\200\235?"),
-                    {{"name", langName.c_str()}})
-                : dpsoStrNFormat(
-                    ngettext(
-                        "Remove {count} selected language?",
-                        "Remove {count} selected languages?",
-                        langCodes.size()),
-                    {
-                        {"count",
-                            std::to_string(langCodes.size()).c_str()}
-                    }),
+            questionText,
             _("Cancel"),
             _("Remove")))
         return false;
