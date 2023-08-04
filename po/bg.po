@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-08-02 22:41+0200\n"
-"PO-Revision-Date: 2021-12-26 16:18+0000\n"
-"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"PO-Revision-Date: 2023-08-05 17:51+0000\n"
+"Last-Translator: Salif Mehmed <mail@salif.eu>\n"
 "Language-Team: Bulgarian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/bg/>\n"
 "Language: bg\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 5.0-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -806,6 +806,5 @@ msgid "Please select actions"
 msgstr "Моля, изберете действия"
 
 #: src/ui/qt/main_window.cpp:777
-#, fuzzy
 msgid "{app_name} is ready for recognition"
-msgstr "Готова"
+msgstr "{app_name} е готова"
