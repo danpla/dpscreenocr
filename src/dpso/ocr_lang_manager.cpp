@@ -240,7 +240,10 @@ struct DpsoOcrLangManager {
 
 
 DpsoOcrLangManager* dpsoOcrLangManagerCreate(
-    int engineIdx, const char* dataDir, const char* userAgent)
+    int engineIdx,
+    const char* dataDir,
+    const char* userAgent,
+    const char* infoFileUrl)
 {
     if (engineIdx < 0
             || static_cast<std::size_t>(engineIdx)
@@ -265,13 +268,11 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
 
     try {
         langManager->langManager = ocrEngine.createLangManager(
-            dataDir);
+            dataDir, userAgent, infoFileUrl);
     } catch (dpso::ocr::LangManagerError& e) {
         dpsoSetError("%s", e.what());
         return nullptr;
     }
-
-    langManager->langManager->setUserAgent(userAgent);
 
     reloadLangs(langManager->langs, *langManager->langManager);
 

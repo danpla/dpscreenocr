@@ -8,6 +8,7 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+#include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
 #include "ui_common/ui_common.h"
@@ -64,9 +65,15 @@ static void fetchExternalLangs(
 void runLangManager(
     int ocrEngineIdx, const std::string& dataDir, QWidget* parent)
 {
+    DpsoOcrEngineInfo ocrEngineInfo;
+    dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
+
     dpso::OcrLangManagerUPtr langManager{
         dpsoOcrLangManagerCreate(
-            ocrEngineIdx, dataDir.c_str(), uiGetUserAgent())};
+            ocrEngineIdx,
+            dataDir.c_str(),
+            uiGetUserAgent(),
+            uiGetOcrDataInfoFileUrl(&ocrEngineInfo))};
     if (!langManager) {
         QMessageBox::critical(
             parent,

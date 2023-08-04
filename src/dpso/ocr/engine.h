@@ -44,9 +44,11 @@ public:
     virtual std::unique_ptr<Recognizer> createRecognizer(
         const char* dataDir) const = 0;
 
-    // Throws LangManagerError
+    // See dpsoOcrLangManagerCreate(). Throws LangManagerError.
     virtual std::unique_ptr<LangManager> createLangManager(
-        const char* dataDir) const = 0;
+        const char* dataDir,
+        const char* userAgent,
+        const char* infoFileUrl) const = 0;
 };
 
 

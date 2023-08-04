@@ -1,7 +1,32 @@
 
-#include "ocr_data_dir_name.h"
+#include "ocr_data_utils.h"
 
+#include <cassert>
 #include <string>
+
+#include "app_info.h"
+
+
+const char* uiGetOcrDataInfoFileUrl(
+    const DpsoOcrEngineInfo* ocrEngineInfo)
+{
+    if (!ocrEngineInfo)
+        return "";
+
+    static std::string result;
+    result.clear();
+
+    result = uiAppWebsite;
+    assert(!result.empty());
+
+    if (result.back() != '/')
+        result += '/';
+
+    result += ocrEngineInfo->id;
+    result += "_files.json";
+
+    return result.c_str();
+}
 
 
 const char* uiGetOcrDataDirName(

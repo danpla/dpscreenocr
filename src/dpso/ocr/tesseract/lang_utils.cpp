@@ -90,8 +90,10 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
         const auto& langCode = tessLangCodes[i];
         if (!isIgnoredLang(langCode.c_str()))
             result.push_back(
-                {langCode.c_str(),
-                    static_cast<std::size_t>(langCode.size())});
+                {
+                    langCode.c_str(),
+                    static_cast<std::size_t>(langCode.size())
+                });
     }
 
     #endif

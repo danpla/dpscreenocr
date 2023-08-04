@@ -26,9 +26,6 @@ public:
 
     virtual ~LangManager() = default;
 
-    // See dpsoOcrLangManagerSetUserAgent()
-    virtual void setUserAgent(const char* newUserAgent) = 0;
-
     virtual int getNumLangs() const = 0;
 
     virtual std::string getLangCode(int langIdx) const = 0;

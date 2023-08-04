@@ -72,9 +72,12 @@ public:
     }
 
     std::unique_ptr<LangManager> createLangManager(
-        const char* dataDir) const override
+        const char* dataDir,
+        const char* userAgent,
+        const char* infoFileUrl) const override
     {
-        return tesseract::createLangManager(dataDir);
+        return tesseract::createLangManager(
+            dataDir, userAgent, infoFileUrl);
     }
 private:
     EngineInfo info;

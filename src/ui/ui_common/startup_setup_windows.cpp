@@ -14,7 +14,7 @@
 
 #include "app_dirs.h"
 #include "file_names.h"
-#include "ocr_data_dir_name.h"
+#include "ocr_data_utils.h"
 
 
 // The main goal of registering restart is to give the installer

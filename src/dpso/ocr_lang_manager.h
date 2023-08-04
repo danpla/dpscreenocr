@@ -29,8 +29,8 @@ typedef struct DpsoOcrLangManager DpsoOcrLangManager;
 /**
  * Create language manager.
  *
- * engineIdx and dataDir arguments are the same as for the
- * DpsoOcr object.
+ * engineIdx and dataDir arguments are the same as for the DpsoOcr
+ * object.
  *
  * userAgent sets the user agent for HTTP connections. Most servers
  * will refuse to negotiate with a client that don't provide a user
@@ -39,20 +39,36 @@ typedef struct DpsoOcrLangManager DpsoOcrLangManager;
  * version number, like "AppName/1.0.0". See the description of the
  * "User-Agent" from RFC 1945 for the details.
  *
+ * infoFileUrl is a HTTP(S) URL of a JSON file containing information
+ * about external languages available for downloading. The root of the
+ * JSON is an array of objects containing the following keys:
+ *
+ * * code - a string containing the language code.
+ *
+ * * sha256 - a string containing the SHA-256 checksum of the file.
+ *
+ * * size - a number indicating the size of the file, in bytes.
+ *
+ * * url - a string containing the URL of the file.
+ *
+ * userAgent and infoFileUrl are ignored by engines that don't use the
+ * network connection.
+ *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null. In particular, the function will fail if another language
  * manager for the same engine and data dir is active.
  */
 DpsoOcrLangManager* dpsoOcrLangManagerCreate(
-    int engineIdx, const char* dataDir, const char* userAgent);
+    int engineIdx,
+    const char* dataDir,
+    const char* userAgent,
+    const char* infoFileUrl);
 
 
 /**
  * Delete language manager.
  *
- * If this is the last manager object for the same OCR engine and data
- * directory, the function will implicitly call
- * dpsoOcrLangManagerCancelInstall().
+ * The function implicitly calls dpsoOcrLangManagerCancelInstall().
  */
 void dpsoOcrLangManagerDelete(DpsoOcrLangManager* langManager);
 

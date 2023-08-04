@@ -60,9 +60,9 @@ if(WIN32)
     target_sources(
         dpso
         PRIVATE
+        ocr/remote_files_lang_manager.cpp
         ocr/tesseract/lang_manager.cpp
-        ocr/tesseract/lang_manager_error_utils.cpp
-        ocr/tesseract/lang_manager_external_langs.cpp)
+        ocr/tesseract/lang_manager_error_utils.cpp)
 
     if(NOT TARGET dpso_net)
         add_subdirectory(

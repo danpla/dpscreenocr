@@ -601,9 +601,11 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
 
     for (const auto& result : ocr->fetchedResults)
         ocr->returnedResults.push_back(
-            {result.ocrResult.text.c_str(),
+            {
+                result.ocrResult.text.c_str(),
                 result.ocrResult.text.size(),
-                result.timestamp.c_str()});
+                result.timestamp.c_str()
+            });
 
     *results = {
         ocr->returnedResults.data(),

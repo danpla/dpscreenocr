@@ -14,6 +14,8 @@ add_library(
     error.cpp
     os_common.cpp
     progress_tracker.cpp
+    sha256.cpp
+    sha256_file.cpp
     str.cpp
     strftime.cpp
     version_cmp.cpp)

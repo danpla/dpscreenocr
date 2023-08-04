@@ -5,7 +5,7 @@ add_library(
     cfg_default_values.cpp
     cfg_keys.cpp
     init_intl.cpp
-    ocr_data_dir_name.cpp
+    ocr_data_utils.cpp
     user_agent.cpp)
 
 # Files for configure_file()
