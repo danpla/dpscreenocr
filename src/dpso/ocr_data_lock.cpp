@@ -18,7 +18,7 @@ struct ObserverData {
 
 struct SharedData {
     bool isDataLocked;
-    std::vector<ObserverData*> observerDatas;
+    std::vector<std::reference_wrapper<ObserverData>> observerDatas;
 
     static std::shared_ptr<SharedData> get(
         const char* engineId, const char* dataDir)
@@ -80,9 +80,9 @@ struct DataLock::Impl {
         if (sd->isDataLocked)
             throw DataLock::DataLockedError{"Data is already locked"};
 
-        for (auto* observerData : sd->observerDatas)
-            if (observerData->lockAboutToBeCreated)
-                observerData->lockAboutToBeCreated();
+        for (auto& observerData : sd->observerDatas)
+            if (observerData.get().lockAboutToBeCreated)
+                observerData.get().lockAboutToBeCreated();
 
         sd->isDataLocked = true;
     }
@@ -92,9 +92,9 @@ struct DataLock::Impl {
         assert(sd->isDataLocked);
         sd->isDataLocked = false;
 
-        for (auto* observerData : sd->observerDatas)
-            if (observerData->lockRemoved)
-                observerData->lockRemoved();
+        for (auto& observerData : sd->observerDatas)
+            if (observerData.get().lockRemoved)
+                observerData.get().lockRemoved();
     }
 };
 
@@ -120,14 +120,12 @@ struct DataLockObserver::Impl {
     Impl(
             const char* engineId,
             const char* dataDir,
-            std::function<void()> lockAboutToBeCreated,
-            std::function<void()> lockRemoved)
+            const std::function<void()>& lockAboutToBeCreated,
+            const std::function<void()>& lockRemoved)
         : sd{SharedData::get(engineId, dataDir)}
-        , data{
-            std::move(lockAboutToBeCreated), std::move(lockRemoved)
-        }
+        , data{lockAboutToBeCreated, lockRemoved}
     {
-        sd->observerDatas.push_back(&data);
+        sd->observerDatas.push_back(data);
     }
 
     ~Impl()
@@ -135,7 +133,7 @@ struct DataLockObserver::Impl {
         auto& datas = sd->observerDatas;
 
         for (auto iter = datas.begin(); iter < datas.end(); ++iter)
-            if (*iter == &data) {
+            if (&iter->get() == &data) {
                 datas.erase(iter);
                 break;
             }
@@ -149,13 +147,10 @@ DataLockObserver::DataLockObserver() = default;
 DataLockObserver::DataLockObserver(
         const char* engineId,
         const char* dataDir,
-        std::function<void()> lockAboutToBeCreated,
-        std::function<void()> lockRemoved)
+        const std::function<void()>& lockAboutToBeCreated,
+        const std::function<void()>& lockRemoved)
     : impl{std::make_unique<Impl>(
-        engineId,
-        dataDir,
-        std::move(lockAboutToBeCreated),
-        std::move(lockRemoved))}
+        engineId, dataDir, lockAboutToBeCreated, lockRemoved)}
 {
 }
 
