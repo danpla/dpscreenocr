@@ -43,7 +43,7 @@ int dpsoOcrGetNumLangs(const DpsoOcr* ocr);
  *
  * A language code is a string that uniquely identify a language,
  * like an ISO 639 code. It contains only ASCII alphanumeric
- * characters, hyphens, and underscores.
+ * characters, hyphens, underscores, and periods.
  *
  * The languages are sorted alphabetically by their codes. If you need
  * to find a language index by its code, use dpsoOcrGetLangIdx()
