@@ -17,7 +17,6 @@
 #include "dpso_utils/str.h"
 
 #include "ocr/lang_manager_error.h"
-#include "ocr/tesseract/lang_manager_error_utils.h"
 
 
 namespace dpso::ocr {

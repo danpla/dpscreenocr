@@ -10,7 +10,7 @@ namespace dpso::ocr::tesseract {
 namespace {
 
 
-struct LangName {
+struct LangInfo {
     const char* code;
     const char* name;
 };
@@ -30,7 +30,7 @@ struct LangName {
 // https://iso639-3.sil.org/code_tables/download_tables
 //
 // "equ" and "osd" are not included.
-const LangName names[] = {
+const LangInfo names[] = {
     {"afr",          N_("Afrikaans")},
     {"amh",          N_("Amharic")},
     {"ara",          N_("Arabic")},
@@ -166,9 +166,9 @@ const char* getLangName(const char* langCode)
 {
     const auto iter = std::lower_bound(
         std::begin(names), std::end(names), langCode,
-        [](const LangName& name, const char* langCode)
+        [](const LangInfo& langInfo, const char* langCode)
         {
-            return std::strcmp(name.code, langCode) < 0;
+            return std::strcmp(langInfo.code, langCode) < 0;
         });
 
     if (iter != std::end(names)
