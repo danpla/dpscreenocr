@@ -13,6 +13,7 @@ add_library(
     keys.cpp
     ocr.cpp
     ocr/engine.cpp
+    ocr/lang_code_validator.cpp
     ocr/tesseract/engine.cpp
     ocr/tesseract/lang_names.cpp
     ocr/tesseract/lang_utils.cpp

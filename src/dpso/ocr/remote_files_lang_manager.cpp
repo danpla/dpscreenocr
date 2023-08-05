@@ -16,6 +16,7 @@
 #include "dpso_utils/sha256_file.h"
 #include "dpso_utils/str.h"
 
+#include "ocr/lang_code_validator.h"
 #include "ocr/lang_manager_error.h"
 
 
@@ -265,9 +266,18 @@ RemoteFilesLangManager::parseJsonFileInfo(const char* jsonData)
             if (!json_is_object(fileInfo))
                 throw LangManagerError{"Not an object"};
 
+            const auto code = getStr(fileInfo, "code");
+            try {
+                validateLangCode(code.c_str());
+            } catch (InvalidLangCodeError& e) {
+                throw LangManagerError{str::printf(
+                    "Invalid code \"%s\": %s",
+                    code.c_str(), e.what())};
+            }
+
             result.push_back(
                 {
-                    getStr(fileInfo, "code"),
+                    code,
                     getStr(fileInfo, "sha256"),
                     getInt(fileInfo, "size"),
                     getStr(fileInfo, "url")
