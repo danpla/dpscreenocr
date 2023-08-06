@@ -9,7 +9,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "error.h"
 #include "unix/fsync.h"
 #include "unix/make_dirs.h"
 

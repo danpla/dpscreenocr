@@ -9,7 +9,6 @@
 #include "dpso_net/error.h"
 #include "dpso_net/get_data.h"
 
-#include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/sha256_file.h"
 #include "dpso_utils/str.h"

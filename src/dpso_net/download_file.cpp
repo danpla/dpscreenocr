@@ -6,7 +6,6 @@
 #include <cstring>
 #include <string>
 
-#include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
