@@ -9,9 +9,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "unix/fsync.h"
-#include "unix/make_dirs.h"
-
 
 namespace dpso::os {
 
@@ -64,10 +61,59 @@ void replace(const char* src, const char* dst)
 }
 
 
+static void makeDirs(char* dirPath, mode_t mode)
+{
+    auto* s = dirPath;
+
+    // Root always exists.
+    while (*s == '/')
+        ++s;
+
+    while (*s) {
+        while (*s && *s != '/')
+            ++s;
+
+        while (*s == '/')
+            ++s;
+
+        const auto c = *s;
+        *s = 0;
+        // Force 0777 mode for intermediate directories so that mkdir
+        // can create a directory with read or write permissions
+        // removed when the same permissions are used for a newly
+        // created parent directory.
+        const auto ret = mkdir(dirPath, *s ? 0777 : mode);
+        *s = c;
+
+        if (ret != 0 && errno != EEXIST)
+            throwErrno("mkdir()");
+    }
+}
+
+
 void makeDirs(const char* dirPath)
 {
-    if (!unix::makeDirs(dirPath))
-        throwErrno("unix::makeDirs()");
+    std::string dirPathCopy{dirPath};
+    makeDirs(dirPathCopy.data(), 0777);
+}
+
+
+static int fsync(int fd)
+{
+    #ifdef __APPLE__
+
+    // See:
+    // * "man fsync" on macOS
+    // * https://lists.apple.com/archives/darwin-dev/2005/Feb/msg00072.html
+    if (fcntl(fd, F_FULLFSYNC) != -1)
+        return 0;
+    // F_FULLFSYNC failure indicates that it's not supported for the
+    // current file system (see "man fcntl" for the list of supported
+    // file systems). Fall back to fsync().
+
+    #endif
+
+    return ::fsync(fd);
 }
 
 
@@ -77,7 +123,7 @@ void syncFile(std::FILE* fp)
     if (fd == -1)
         throwErrno("fileno()");
 
-    if (unix::fsync(fd) == -1)
+    if (fsync(fd) == -1)
         throwErrno("unix::fsync()");
 }
 
@@ -98,14 +144,14 @@ void syncFileDir(const char* filePath)
 
     const auto fd = open(dirPath.c_str(), O_RDONLY | O_DIRECTORY);
     if (fd == -1) {
-        if (errno != EACCES)
-            throwErrno("open() directory");
+        if (errno == EACCES)
+            return;
 
-        return;
+        throwErrno("open() directory");
     }
 
     // Some systems can't fsync() a directory, so ignore errors.
-    unix::fsync(fd);
+    fsync(fd);
     close(fd);
 }
 

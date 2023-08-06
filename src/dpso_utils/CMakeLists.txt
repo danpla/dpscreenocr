@@ -25,9 +25,7 @@ if(UNIX)
     target_sources(
         dpso_utils
         PRIVATE
-        os_unix.cpp
-        unix/fsync.cpp
-        unix/make_dirs.cpp)
+        os_unix.cpp)
 elseif(WIN32)
     target_sources(
         dpso_utils

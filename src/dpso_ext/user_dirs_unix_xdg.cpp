@@ -1,13 +1,11 @@
 
 #include "user_dirs.h"
 
-#include <cerrno>
 #include <cstdlib>
-#include <cstring>
 #include <string>
 
 #include "dpso_utils/error.h"
-#include "dpso_utils/unix/make_dirs.h"
+#include "dpso_utils/os.h"
 
 
 // https://specifications.freedesktop.org/basedir-spec/latest/
@@ -39,10 +37,11 @@ static const char* getDir(
     path += '/';
     path += appName;
 
-    if (!dpso::unix::makeDirs(path.data())) {
+    try {
+        dpso::os::makeDirs(path.c_str());
+    } catch (dpso::os::Error& e) {
         dpsoSetError(
-            "makeDirs(\"%s\"): %s",
-            path.c_str(), std::strerror(errno));
+            "os::makeDirs(\"%s\"): %s", path.c_str(), e.what());
         return nullptr;
     }
 
