@@ -2,8 +2,6 @@
 #include "ocr/remote_files_lang_manager.h"
 
 #include <cassert>
-#include <cerrno>
-#include <cstring>
 
 #include <jansson.h>
 
@@ -176,10 +174,13 @@ static net::DownloadProgressHandler makeDownloadProgressHandler(
 void RemoteFilesLangManager::installLang(
     int langIdx, const ProgressHandler& progressHandler)
 {
-    if (!dpsoMakeDirs(dataDir.c_str()))
+    try {
+        os::makeDirs(dataDir.c_str());
+    } catch (os::Error& e) {
         throw LangManagerError{str::printf(
             "Can't create directory \"%s\": %s",
-            dataDir.c_str(), dpsoGetError())};
+            dataDir.c_str(), e.what())};
+    }
 
     auto& langInfo = langInfos[langIdx];
 
@@ -227,10 +228,13 @@ void RemoteFilesLangManager::installLang(
 void RemoteFilesLangManager::removeLang(int langIdx)
 {
     const auto filePath = getFilePath(langIdx);
-    if (dpsoRemove(filePath.c_str()) != 0)
+
+    try {
+        os::removeFile(filePath.c_str());
+    } catch (os::Error& e) {
         throw LangManagerError{str::printf(
-            "Can't remove \"%s\": %s",
-            filePath.c_str(), std::strerror(errno))};
+            "Can't remove \"%s\": %s", filePath.c_str(), e.what())};
+    }
 
     if (auto& langInfo = langInfos[langIdx]; !langInfo.url.empty()) {
         langInfo.state = LangState::notInstalled;
@@ -351,11 +355,14 @@ void RemoteFilesLangManager::addExternalLang(
 
         // As a small optimization, check the file sizes first to
         // avoid calculating SHA-256 if the sizes are different.
-        const auto fileSize = dpsoGetFileSize(filePath.c_str());
-        if (fileSize == -1)
+        std::int64_t fileSize{};
+        try {
+            fileSize = os::getFileSize(filePath.c_str());
+        } catch (os::Error& e) {
             throw LangManagerError{str::printf(
                 "Can't get size of \"%s\": %s",
-                filePath.c_str(), dpsoGetError())};
+                filePath.c_str(), e.what())};
+        }
 
         if (fileSize != externalLang.size) {
             langInfo.state = LangState::updateAvailable;
@@ -393,7 +400,7 @@ std::string RemoteFilesLangManager::getFilePath(
     const std::string& langCode) const
 {
     return
-        dataDir + *dpsoDirSeparators + getFileName(langCode.c_str());
+        dataDir + *os::dirSeparators + getFileName(langCode.c_str());
 }
 
 

@@ -26,7 +26,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
         {".json", dpsoHistoryExportFormatJson},
     };
 
-    if (const auto* ext = dpsoGetFileExt(filePath))
+    if (const auto* ext = dpso::os::getFileExt(filePath))
         for (const auto& e : extensions)
             if (dpso::str::cmp(
                     ext, e.str, dpso::str::cmpIgnoreCase) == 0)
@@ -210,10 +210,10 @@ bool dpsoHistoryExport(
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
-    dpso::StdFileUPtr fp{dpsoFopen(filePath, "w")};
+    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "w")};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopen(..., \"w\"): %s", std::strerror(errno));
+            "os::fopen(..., \"w\"): %s", std::strerror(errno));
         return false;
     }
 

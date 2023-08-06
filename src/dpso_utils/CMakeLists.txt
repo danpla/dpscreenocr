@@ -12,6 +12,7 @@ add_library(
     dpso_utils
 
     error.cpp
+    os_c.cpp
     os_common.cpp
     progress_tracker.cpp
     sha256.cpp

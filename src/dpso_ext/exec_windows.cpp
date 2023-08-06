@@ -105,7 +105,7 @@ static bool canExecute(const char* exePath)
     if (!*exePath)
         return false;
 
-    const auto* ext = dpsoGetFileExt(exePath);
+    const auto* ext = dpso::os::getFileExt(exePath);
     if (!ext)
         return true;
 

@@ -1,7 +1,6 @@
 
 #include <string>
 
-#include "dpso_utils/os.h"
 #include "dpso_utils/sha256_file.h"
 
 #include "flow.h"
@@ -27,11 +26,11 @@ static void testCalcFileSha256()
         test::failure(
             "calcFileSha256(\"%s\"): %s\n", testFileName, e.what());
 
-        dpsoRemove(testFileName);
+        test::utils::removeFile(testFileName);
         return;
     }
 
-    dpsoRemove(testFileName);
+    test::utils::removeFile(testFileName);
 
     if (calculatedDigest == digest)
         return;
@@ -64,7 +63,7 @@ static void testSaveSha256File()
     const auto gotData = test::utils::loadText(
         "testSaveSha256File()", testSha256FileName.c_str());
 
-    dpsoRemove(testSha256FileName.c_str());
+    test::utils::removeFile(testSha256FileName.c_str());
 
     const auto expectedData = digest + " *" + testFileName + "\n";
 
@@ -156,7 +155,7 @@ static void testLoadValidSha256File()
             digest.c_str(), loadedDigest.c_str());
     }
 
-    dpsoRemove(testSha256FileName.c_str());
+    test::utils::removeFile(testSha256FileName.c_str());
 }
 
 
@@ -245,7 +244,7 @@ static void testLoadInvalidSha256File()
             test.description);
     }
 
-    dpsoRemove(testSha256FileName.c_str());
+    test::utils::removeFile(testSha256FileName.c_str());
 }
 
 

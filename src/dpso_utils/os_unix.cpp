@@ -14,73 +14,76 @@
 #include "unix/make_dirs.h"
 
 
-const char* const dpsoDirSeparators = "/";
+namespace dpso::os {
 
 
-int64_t dpsoGetFileSize(const char* filePath)
+const char* const dirSeparators = "/";
+
+
+[[noreturn]]
+static void throwErrno(const char* description)
+{
+    const auto message =
+        std::string{description} + ": " + strerror(errno);
+
+    switch (errno) {
+    case ENOENT:
+        throw FileNotFoundError{message};
+    default:
+        throw Error{message};
+    }
+}
+
+
+std::int64_t getFileSize(const char* filePath)
 {
     struct stat st;
-    if (stat(filePath, &st) != 0) {
-        dpsoSetError("stat(): %s", strerror(errno));
-        return -1;
-    }
+    if (stat(filePath, &st) != 0)
+        throwErrno("stat()");
 
     return st.st_size;
 }
 
 
-FILE* dpsoFopen(const char* filePath, const char* mode)
+std::FILE* fopen(const char* filePath, const char* mode)
 {
-    return fopen(filePath, mode);
+    return ::fopen(filePath, mode);
 }
 
 
-int dpsoRemove(const char* filePath)
+void removeFile(const char* filePath)
 {
-    return remove(filePath);
+    if (unlink(filePath) != 0)
+        throwErrno("unlink()");
 }
 
 
-bool dpsoReplace(const char* src, const char* dst)
+void replace(const char* src, const char* dst)
 {
-    if (rename(src, dst) == -1) {
-        dpsoSetError("rename(): %s", strerror(errno));
-        return false;
-    }
-
-    return true;
+    if (rename(src, dst) != 0)
+        throwErrno("rename()")
 }
 
 
-bool dpsoMakeDirs(const char* dirPath)
+void makeDirs(const char* dirPath)
 {
-    if (dpso::unix::makeDirs(dirPath))
-        return true;
-
-    dpsoSetError("makeDirs(): %s", strerror(errno));
-    return false;
+    if (!unix::makeDirs(dirPath))
+        throwErrno("unix::makeDirs()");
 }
 
 
-bool dpsoSyncFile(FILE* fp)
+void syncFile(std::FILE* fp)
 {
     const auto fd = fileno(fp);
     if (fd == -1) {
-        dpsoSetError("fileno(): %s", strerror(errno));
-        return false;
-    }
+        throwErrno("fileno()");
 
-    if (dpso::unix::fsync(fd) == -1) {
-        dpsoSetError(
-            "unix::fsync(): %s", strerror(errno));
-        return false;
-    }
-
-    return true;
+    if (unix::fsync(fd) == -1)
+        throwErrno("unix::fsync()");
 }
 
 
-bool dpsoSyncFileDir(const char* filePath)
+void syncFileDir(const char* filePath)
 {
     std::string dirPath;
     if (const auto* sep = strrchr(filePath, '/'))
@@ -96,17 +99,16 @@ bool dpsoSyncFileDir(const char* filePath)
 
     const auto fd = open(dirPath.c_str(), O_RDONLY | O_DIRECTORY);
     if (fd == -1) {
-        if (errno == EACCES)
-            return true;
+        if (errno != EACCES)
+            throwErrno("open() directory");
 
-        dpsoSetError(
-            "open() for directory failed: %s", strerror(errno));
-        return false;
+        return;
     }
 
     // Some systems can't fsync() a directory, so ignore errors.
-    dpso::unix::fsync(fd);
+    unix::fsync(fd);
     close(fd);
+}
 
-    return true;
+
 }

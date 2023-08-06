@@ -9,7 +9,6 @@
 #include "dpso_utils/str.h"
 #include "dpso_ext/cfg.h"
 #include "dpso_ext/cfg_ext.h"
-#include "dpso_utils/os.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -277,7 +276,7 @@ static void reload(DpsoCfg* cfg)
             dpsoGetError());
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
-    dpsoRemove(cfgFileName);
+    test::utils::removeFile(cfgFileName);
 
     if (!loaded)
         test::fatalError(
@@ -292,7 +291,7 @@ static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
     test::utils::saveText("loadCfgData()", cfgFileName, cfgData);
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
-    dpsoRemove(cfgFileName);
+    test::utils::removeFile(cfgFileName);
 
     if (!loaded)
         test::fatalError(
@@ -633,7 +632,7 @@ static void testSavedValueFormat()
             test.expectedData.c_str(), gotData.c_str());
     }
 
-    dpsoRemove(cfgFileName);
+    test::utils::removeFile(cfgFileName);
 }
 
 

@@ -4,7 +4,6 @@
 
 #include "dpso_ext/history.h"
 #include "dpso_utils/error.h"
-#include "dpso_utils/os.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -83,7 +82,7 @@ static void testIO(bool append)
 
     dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
     if (!history) {
-        dpsoRemove(historyFileName);
+        test::utils::removeFile(historyFileName);
         test::fatalError(
             "testlIO(%sappend): dpsoHistoryOpen(\"%s\"): %s\n",
             append ? "" : "!",
@@ -99,7 +98,7 @@ static void testIO(bool append)
         if (append) {
             if (!dpsoHistoryAppend(history.get(), &test.inEntry)) {
                 history.reset();
-                dpsoRemove(historyFileName);
+                test::utils::removeFile(historyFileName);
 
                 test::fatalError(
                     "testIO(true): dpsoHistoryAppend(): %s\n",
@@ -142,7 +141,7 @@ static void testInvalidData()
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
         const auto opened = history != nullptr;
         history.reset();
-        dpsoRemove(historyFileName);
+        test::utils::removeFile(historyFileName);
 
         if (!opened)
             continue;

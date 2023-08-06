@@ -18,10 +18,10 @@ const char* const sha256FileExt = ".sha256";
 
 std::string calcFileSha256(const char* filePath)
 {
-    StdFileUPtr fp{std::fopen(filePath, "rb")};
+    os::StdFileUPtr fp{os::fopen(filePath, "rb")};
     if (!fp)
         throw Sha256FileError{str::printf(
-            "fopen: %s", std::strerror(errno))};
+            "os::fopen: %s", std::strerror(errno))};
 
     Sha256 h;
 
@@ -50,7 +50,7 @@ static const char* getFileName(const char* path)
     const auto* result = path;
 
     for (const auto* s = path; *s; ++s)
-        if (std::strchr(dpsoDirSeparators, *s))
+        if (std::strchr(os::dirSeparators, *s))
             result = s + 1;
 
     return result;
@@ -63,10 +63,10 @@ void saveSha256File(
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
 
-    StdFileUPtr fp{std::fopen(sha256FilePath.c_str(), "wb")};
+    os::StdFileUPtr fp{os::fopen(sha256FilePath.c_str(), "wb")};
     if (!fp)
         throw Sha256FileError{str::printf(
-            "fopen(\"%s\", \"wb\"): %s",
+            "os::fopen(\"%s\", \"wb\"): %s",
             sha256FilePath.c_str(), std::strerror(errno))};
 
     if (std::fprintf(
@@ -145,13 +145,13 @@ std::string loadSha256File(const char* digestSourceFilePath)
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
 
-    StdFileUPtr fp{std::fopen(sha256FilePath.c_str(), "rb")};
+    os::StdFileUPtr fp{os::fopen(sha256FilePath.c_str(), "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return {};
 
         throw Sha256FileError{str::printf(
-            "fopen(\"%s\", \"rb\"): %s",
+            "os::fopen(\"%s\", \"rb\"): %s",
             sha256FilePath.c_str(), std::strerror(errno))};
     }
 
@@ -171,10 +171,14 @@ void removeSha256File(const char* digestSourceFilePath)
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
 
-    if (dpsoRemove(sha256FilePath.c_str()) != 0 && errno != ENOENT)
+    try {
+        os::removeFile(sha256FilePath.c_str());
+    } catch (os::FileNotFoundError&) {
+    } catch (os::Error& e) {
         throw Sha256FileError{str::printf(
-            "dpsoRemove(\"%s\"): %s",
-            sha256FilePath.c_str(), std::strerror(errno))};
+            "os::removeFile(\"%s\"): %s",
+            sha256FilePath.c_str(), e.what())};
+    }
 }
 
 

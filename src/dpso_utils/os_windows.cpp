@@ -5,48 +5,75 @@
 #include <cstring>
 #include <io.h>
 
-#include "error.h"
 #include "windows/error.h"
 #include "windows/utf.h"
 
 
-const char* const dpsoDirSeparators = "\\/";
+namespace dpso::os {
 
 
-int64_t dpsoGetFileSize(const char* filePath)
+const char* const dirSeparators = "\\/";
+
+
+[[noreturn]]
+static void throwLastError(const char* description)
 {
-    std::wstring filePathUtf16;
-    try {
-        filePathUtf16 = dpso::windows::utf8ToUtf16(filePath);
-    } catch (std::runtime_error& e) {
-        dpsoSetError(
-            "Can't convert filePath to UTF-16: %s", e.what());
-        return -1;
+    const auto lastError = GetLastError();
+
+    const auto message =
+        std::string{description}
+        + ": "
+        + windows::getErrorMessage(lastError);
+
+    switch (lastError) {
+    case ERROR_FILE_NOT_FOUND:
+        throw FileNotFoundError{message};
+    default:
+        throw Error{message};
     }
+}
+
+
+static std::wstring toUtf16(const char* str, const char* varName)
+{
+    try {
+        return windows::utf8ToUtf16(str);
+    } catch (std::runtime_error& e) {
+        throw Error{
+            std::string{"Can't convert "}
+            + varName
+            + " to UTF-16: "
+            + e.what()};
+    }
+}
+
+
+#define DPSO_WIN_TO_UTF16(VAR_NAME) toUtf16(VAR_NAME, #VAR_NAME)
+
+
+std::int64_t getFileSize(const char* filePath)
+{
+    const auto filePathUtf16 = DPSO_WIN_TO_UTF16(filePath);
 
     WIN32_FILE_ATTRIBUTE_DATA attrs;
     if (!GetFileAttributesExW(
-            filePathUtf16.c_str(), GetFileExInfoStandard, &attrs)) {
-        dpsoSetError(
-            "GetFileAttributesExW(): %s",
-            dpso::windows::getErrorMessage(GetLastError()).c_str());
-        return -1;
-    }
+            filePathUtf16.c_str(), GetFileExInfoStandard, &attrs))
+        throwLastError("GetFileAttributesExW()");
 
     return
-        (static_cast<int64_t>(attrs.nFileSizeHigh) << 32)
+        (static_cast<std::uint64_t>(attrs.nFileSizeHigh) << 32)
         | attrs.nFileSizeLow;
 }
 
 
-FILE* dpsoFopen(const char* filePath, const char* mode)
+FILE* fopen(const char* filePath, const char* mode)
 {
     std::wstring filePathUtf16;
     std::wstring modeUtf16;
 
     try {
-        filePathUtf16 = dpso::windows::utf8ToUtf16(filePath);
-        modeUtf16 = dpso::windows::utf8ToUtf16(mode);
+        filePathUtf16 = windows::utf8ToUtf16(filePath);
+        modeUtf16 = windows::utf8ToUtf16(mode);
     } catch (std::runtime_error&) {
         errno = EINVAL;
         return nullptr;
@@ -56,51 +83,20 @@ FILE* dpsoFopen(const char* filePath, const char* mode)
 }
 
 
-int dpsoRemove(const char* filePath)
+void removeFile(const char* filePath)
 {
-    std::wstring filePathUtf16;
-
-    try {
-        filePathUtf16 = dpso::windows::utf8ToUtf16(filePath);
-    } catch (std::runtime_error&) {
-        errno = EINVAL;
-        return -1;
-    }
-
-    return _wremove(filePathUtf16.c_str());
+    if (!DeleteFileW(DPSO_WIN_TO_UTF16(filePath).c_str()))
+        throwLastError("DeleteFileW()");
 }
 
 
-bool dpsoReplace(const char* src, const char* dst)
+void replace(const char* src, const char* dst)
 {
-    std::wstring srcUtf16;
-    try {
-        srcUtf16 = dpso::windows::utf8ToUtf16(src);
-    } catch (std::runtime_error& e) {
-        dpsoSetError("Can't convert src to UTF-16: %s", e.what());
-        return false;
-    }
-
-    std::wstring dstUtf16;
-    try {
-        dstUtf16 = dpso::windows::utf8ToUtf16(dst);
-    } catch (std::runtime_error& e) {
-        dpsoSetError("Can't convert dst to UTF-16: %s", e.what());
-        return false;
-    }
-
-    if (MoveFileExW(
-            srcUtf16.c_str(),
-            dstUtf16.c_str(),
-            MOVEFILE_REPLACE_EXISTING
-                | MOVEFILE_WRITE_THROUGH) == 0) {
-        dpsoSetError(
-            "MoveFileExW(): %s",
-            dpso::windows::getErrorMessage(GetLastError()).c_str());
-        return false;
-    }
-
-    return true;
+    if (!MoveFileExW(
+            DPSO_WIN_TO_UTF16(src).c_str(),
+            DPSO_WIN_TO_UTF16(dst).c_str(),
+            MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
+        throwLastError("MoveFileExW()");
 }
 
 
@@ -110,15 +106,9 @@ static bool isDirSep(wchar_t c)
 }
 
 
-bool dpsoMakeDirs(const char* dirPath)
+void makeDirs(const char* dirPath)
 {
-    std::wstring dirPathUtf16;
-    try {
-        dirPathUtf16 = dpso::windows::utf8ToUtf16(dirPath);
-    } catch (std::runtime_error& e) {
-        dpsoSetError("Can't convert dirPath to UTF-16: %s", e.what());
-        return false;
-    }
+    auto dirPathUtf16 = DPSO_WIN_TO_UTF16(dirPath);
 
     // CreateDirectory() always fails with a permission error instead
     // of ERROR_ALREADY_EXISTS when called for a drive.
@@ -163,41 +153,32 @@ bool dpsoMakeDirs(const char* dirPath)
         *s = 0;
 
         if (!CreateDirectoryW(dirPathUtf16.c_str(), nullptr)
-                && GetLastError() != ERROR_ALREADY_EXISTS) {
-            dpsoSetError(
-                "CreateDirectoryW(): %s",
-                dpso::windows::getErrorMessage(
-                GetLastError()).c_str());
-            return false;
-        }
+                && GetLastError() != ERROR_ALREADY_EXISTS)
+            throwLastError("CreateDirectoryW()");
 
         *s = c;
     }
-
-    return true;
 }
 
 
-bool dpsoSyncFile(FILE* fp)
+void syncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);
-    if (fd == -1) {
-        dpsoSetError("_fileno(): %s", std::strerror(errno));
-        return false;
-    }
+    if (fd == -1)
+        throw Error{
+            std::string{"_fileno(): "} + std::strerror(errno)};
 
-    if (_commit(fd) == -1) {
-        dpsoSetError("_commit(): %s", std::strerror(errno));
-        return false;
-    }
-
-    return true;
+    if (_commit(fd) == -1)
+        throw Error{
+            std::string{"_commit(): "} + std::strerror(errno)};
 }
 
 
-bool dpsoSyncFileDir(const char* filePath)
+void syncFileDir(const char* filePath)
 {
-    (void)filePath;
     // Windows doesn't support directory synchronization.
-    return true;
+    (void)filePath;
+}
+
+
 }

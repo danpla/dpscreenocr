@@ -25,7 +25,7 @@ struct DpsoHistory {
 
     std::string filePath;
     std::vector<Entry> entries;
-    dpso::StdFileUPtr fp;
+    dpso::os::StdFileUPtr fp;
 };
 
 
@@ -33,13 +33,13 @@ static bool loadData(const char* filePath, std::string& data)
 {
     data.clear();
 
-    dpso::StdFileUPtr fp{dpsoFopen(filePath, "rb")};
+    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
         dpsoSetError(
-            "dpsoFopen(..., \"rb\"): %s", std::strerror(errno));
+            "os::fopen(..., \"rb\"): %s", std::strerror(errno));
         return false;
     }
 
@@ -123,18 +123,20 @@ static bool createEntries(
 }
 
 
-static dpso::StdFileUPtr openSync(
+static dpso::os::StdFileUPtr openSync(
     const char* filePath, const char* mode)
 {
-    dpso::StdFileUPtr fp{dpsoFopen(filePath, mode)};
+    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, mode)};
     if (!fp) {
         dpsoSetError(
-            "dpsoFopen(..., \"%s\"): %s", mode, std::strerror(errno));
+            "os::fopen(..., \"%s\"): %s", mode, std::strerror(errno));
         return nullptr;
     }
 
-    if (!dpsoSyncFileDir(filePath)) {
-        dpsoSetError("dpsoSyncFileDir(): %s", dpsoGetError());
+    try {
+        dpso::os::syncFileDir(filePath);
+    } catch (dpso::os::Error& e) {
+        dpsoSetError("os::syncFileDir(): %s", e.what());
         return nullptr;
     }
 
@@ -229,8 +231,10 @@ bool dpsoHistoryAppend(
         return false;
     }
 
-    if (!dpsoSyncFile(fp)) {
-        dpsoSetError("dpsoSyncFile(): %s", dpsoGetError());
+    try {
+        dpso::os::syncFile(fp);
+    } catch (dpso::os::Error& e) {
+        dpsoSetError("os::syncFile(): %s", e.what());
         history->fp.reset();
         return false;
     }

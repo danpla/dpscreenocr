@@ -1,26 +1,20 @@
 
 #include "os.h"
 
-#include <chrono>
 #include <cstring>
-#include <thread>
 
 
-void dpsoSleep(int milliseconds)
-{
-    std::this_thread::sleep_for(
-        std::chrono::milliseconds{milliseconds});
-}
+namespace dpso::os {
 
 
-const char* dpsoGetFileExt(const char* filePath)
+const char* getFileExt(const char* filePath)
 {
     const char* ext{};
 
     for (const auto* s = filePath; *s; ++s)
         if (*s == '.')
             ext = s;
-        else if (std::strchr(dpsoDirSeparators, *s))
+        else if (std::strchr(dirSeparators, *s))
             ext = nullptr;
 
     if (ext
@@ -28,8 +22,11 @@ const char* dpsoGetFileExt(const char* filePath)
             // A leading period denotes a "hidden" file on Unix-like
             // systems. We follow this convention on all platforms.
             && ext != filePath
-            && !std::strchr(dpsoDirSeparators, ext[-1]))
+            && !std::strchr(dirSeparators, ext[-1]))
         return ext;
 
     return nullptr;
+}
+
+
 }

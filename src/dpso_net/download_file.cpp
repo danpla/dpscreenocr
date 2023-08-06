@@ -29,7 +29,7 @@ void downloadFile(
 {
     const auto partPath = std::string{filePath} + ".part";
 
-    StdFileUPtr partFp{dpsoFopen(partPath.c_str(), "wb")};
+    os::StdFileUPtr partFp{os::fopen(partPath.c_str(), "wb")};
     if (!partFp)
         throw Error{str::printf(
             "Can't open \"%s\": %s",
@@ -72,7 +72,13 @@ void downloadFile(
 
         if (!progressHandler(partSize, fileSize)) {
             partFp.reset();
-            dpsoRemove(partPath.c_str());  // Ignore errors
+
+            try {
+                os::removeFile(partPath.c_str());
+            } catch (os::Error&) {
+                // Ignore errors
+            }
+
             return;
         }
     }
@@ -81,17 +87,23 @@ void downloadFile(
         throw Error{str::printf(
             "fflush() for \"%s\" failed", partPath.c_str())};
 
-    if (!dpsoSyncFile(partFp.get()))
+    try {
+        os::syncFile(partFp.get());
+    } catch (os::Error& e) {
         throw Error{str::printf(
-            "dpsoSyncFile() for \"%s\": %s",
-            partPath.c_str(), dpsoGetError())};
+            "os::syncFile() for \"%s\": %s",
+            partPath.c_str(), e.what())};
+    }
 
     partFp.reset();
 
-    if (!dpsoReplace(partPath.c_str(), filePath))
+    try {
+        os::replace(partPath.c_str(), filePath);
+    } catch (os::Error& e) {
         throw Error{str::printf(
-            "dpsoReplace(\"%s\", \"%s\"): %s",
-            partPath.c_str(), filePath, dpsoGetError())};
+            "os::replace(\"%s\", \"%s\"): %s",
+            partPath.c_str(), filePath, e.what())};
+    }
 }
 
 

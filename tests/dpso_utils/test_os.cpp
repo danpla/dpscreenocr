@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 
 #include "flow.h"
@@ -25,7 +24,7 @@ static void testGetFileExt()
         {"a.", ""},
     };
 
-    for (const char* sep = dpsoDirSeparators; *sep; ++sep)
+    for (const char* sep = dpso::os::dirSeparators; *sep; ++sep)
         tests.insert(tests.end(), {
             {std::string{"a.b"} + *sep, ""},
             {std::string{"a.b"} + *sep + ".a", ""},
@@ -34,11 +33,11 @@ static void testGetFileExt()
         });
 
     for (const auto& test : tests) {
-        const auto* ext = dpsoGetFileExt(test.path.c_str());
+        const auto* ext = dpso::os::getFileExt(test.path.c_str());
         if (!ext) {
             if (!test.expectedExt.empty())
                 test::failure(
-                    "testGetFileExt(): dpsoGetFileExt(\"%s\"): "
+                    "testGetFileExt(): os::getFileExt(\"%s\"): "
                     "expected \"%s\", got null\n",
                     test::utils::escapeStr(test.path.c_str()).c_str(),
                     test::utils::escapeStr(
@@ -57,7 +56,7 @@ static void testGetFileExt()
             expected = std::string{"\""} + test.expectedExt + '"';
 
         test::failure(
-            "testGetFileExt(): dpsoGetFileExt(\"%s\"): "
+            "testGetFileExt(): os::getFileExt(\"%s\"): "
             "expected \"%s\", got \"%s\"\n",
             test::utils::escapeStr(test.path.c_str()).c_str(),
             test::utils::escapeStr(expected.c_str()).c_str(),
@@ -73,33 +72,33 @@ const auto* const testUnicodeFileName =
 
 static void testFopen()
 {
-    dpso::StdFileUPtr fp{dpsoFopen(testUnicodeFileName, "wb")};
-    if (!fp)
-        test::failure(
-            "dpsoFopen(\"%s\"): %s\n",
-            testUnicodeFileName,
-            std::strerror(errno));
-
-    dpsoRemove(testUnicodeFileName);
-}
-
-
-static void testRemove()
-{
     {
-        dpso::StdFileUPtr fp{dpsoFopen(testUnicodeFileName, "wb")};
+        dpso::os::StdFileUPtr fp{
+            dpso::os::fopen(testUnicodeFileName, "wb")};
         if (!fp)
-            test::fatalError(
-                "testRemove: dpsoFopen(\"%s\"): %s\n",
+            test::failure(
+                "os::fopen(\"%s\"): %s\n",
                 testUnicodeFileName,
                 std::strerror(errno));
     }
 
-    if (dpsoRemove(testUnicodeFileName) != 0)
+    test::utils::removeFile(testUnicodeFileName);
+}
+
+
+static void testRemoveFile()
+{
+    test::utils::saveText(
+        "testRemoveFile", testUnicodeFileName, "abc");
+
+    try {
+        dpso::os::removeFile(testUnicodeFileName);
+    } catch (dpso::os::Error& e) {
         test::failure(
-            "dpsoRemove(\"%s\"): %s\n",
+            "os::removeFile(\"%s\"): %s\n",
             testUnicodeFileName,
-            std::strerror(errno));
+            e.what());
+    }
 }
 
 
@@ -107,16 +106,18 @@ static void testSyncFile()
 {
     const auto* fileName = "test_sync_file.txt";
 
-    dpso::StdFileUPtr fp{dpsoFopen(fileName, "wb")};
+    dpso::os::StdFileUPtr fp{dpso::os::fopen(fileName, "wb")};
     if (!fp)
         test::fatalError(
-            "testSyncFile: dpsoFopen(\"%s\"): %s\n",
-            fileName,
-            std::strerror(errno));
+            "testSyncFile: os::fopen(\"%s\"): %s\n",
+            fileName, std::strerror(errno));
 
-    if (!dpsoSyncFile(fp.get()))
+    try {
+        dpso::os::syncFile(fp.get());
+    } catch (dpso::os::Error& e) {
         test::failure(
-            "testSyncFile: dpsoSyncFile(): %s\n", dpsoGetError());
+            "testSyncFile: os::syncFile(): %s\n", e.what());
+    }
 }
 
 
@@ -126,13 +127,15 @@ void testSyncFileDir()
 
     test::utils::saveText("testSyncFileDir", fileName, "");
 
-    if (!dpsoSyncFileDir(fileName))
+    try {
+        dpso::os::syncFileDir(fileName);
+    } catch (dpso::os::Error& e) {
         test::fatalError(
-            "testSyncFileDir: dpsoSyncFileDir(\"%s\"): %s\n",
-            fileName,
-            dpsoGetError());
+            "testSyncFileDir: os::syncFileDir(\"%s\"): %s\n",
+            fileName, e.what());
+    }
 
-    dpsoRemove(fileName);
+    test::utils::removeFile(fileName);
 }
 
 
@@ -140,7 +143,7 @@ static void testOs()
 {
     testGetFileExt();
     testFopen();
-    testRemove();
+    testRemoveFile();
     testSyncFile();
     testSyncFileDir();
 }

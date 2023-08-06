@@ -104,7 +104,7 @@ std::string lfToNativeNewline(const char* str)
 void saveText(
     const char* contextInfo, const char* filePath, const char* text)
 {
-    dpso::StdFileUPtr fp{dpsoFopen(filePath, "wb")};
+    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "wb")};
     if (!fp)
         test::fatalError(
             "%s: saveText(): dpsoFopen(\"%s\", \"wb\"): %s\n",
@@ -122,7 +122,7 @@ void saveText(
 
 std::string loadText(const char* contextInfo, const char* filePath)
 {
-    dpso::StdFileUPtr fp{dpsoFopen(filePath, "rb")};
+    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
     if (!fp)
         test::fatalError(
             "%s: loadText(): dpsoFopen(\"%s\", \"rb\"): %s\n",
@@ -214,6 +214,18 @@ void printFirstDifference(const char* expected, const char* actual)
             contextLines.pop();
 
         contextLines.push(el);
+    }
+}
+
+
+void removeFile(const char* filePath)
+{
+    try {
+        dpso::os::removeFile(filePath);
+    } catch (dpso::os::FileNotFoundError&) {
+    } catch (dpso::os::Error& e) {
+        test::fatalError(
+            "os::removeFile(\"%s\"): %s", filePath, e.what());
     }
 }
 

@@ -6,7 +6,6 @@
 #include "dpso_ext/history.h"
 #include "dpso_ext/history_export.h"
 #include "dpso_utils/error.h"
-#include "dpso_utils/os.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -418,11 +417,11 @@ static void testExport()
                     expectedData.c_str(), gotData.c_str());
             }
 
-            dpsoRemove(exportedFileName.c_str());
+            test::utils::removeFile(exportedFileName.c_str());
         }
     }
 
-    dpsoRemove(historyFileName);
+    test::utils::removeFile(historyFileName);
 }
 
 

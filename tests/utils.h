@@ -72,5 +72,10 @@ std::string loadText(const char* contextInfo, const char* filePath);
 void printFirstDifference(const char* expected, const char* actual);
 
 
+// Does nothing if filePath doesn't exist. Calls tests::fatalError()
+// on errors.
+void removeFile(const char* filePath);
+
+
 }
 }
