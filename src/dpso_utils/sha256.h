@@ -12,7 +12,7 @@ namespace dpso {
 
 class Sha256 {
 public:
-    static constexpr auto digestSize = 32;
+    static constexpr std::size_t digestSize = 32;
     using Digest = std::array<std::uint8_t, digestSize>;
 
     void update(const void* data, std::size_t size);

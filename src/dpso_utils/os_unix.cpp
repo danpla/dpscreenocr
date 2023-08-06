@@ -60,7 +60,7 @@ void removeFile(const char* filePath)
 void replace(const char* src, const char* dst)
 {
     if (rename(src, dst) != 0)
-        throwErrno("rename()")
+        throwErrno("rename()");
 }
 
 
@@ -74,7 +74,7 @@ void makeDirs(const char* dirPath)
 void syncFile(std::FILE* fp)
 {
     const auto fd = fileno(fp);
-    if (fd == -1) {
+    if (fd == -1)
         throwErrno("fileno()");
 
     if (unix::fsync(fd) == -1)
