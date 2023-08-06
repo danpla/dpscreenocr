@@ -72,16 +72,17 @@ const auto* const testUnicodeFileName =
 
 static void testFopen()
 {
-    {
-        dpso::os::StdFileUPtr fp{
-            dpso::os::fopen(testUnicodeFileName, "wb")};
-        if (!fp)
-            test::failure(
-                "os::fopen(\"%s\"): %s\n",
-                testUnicodeFileName,
-                std::strerror(errno));
+    dpso::os::StdFileUPtr fp{
+        dpso::os::fopen(testUnicodeFileName, "wb")};
+    if (!fp) {
+        test::failure(
+            "os::fopen(\"%s\"): %s\n",
+            testUnicodeFileName,
+            std::strerror(errno));
+        return;
     }
 
+    fp.reset();
     test::utils::removeFile(testUnicodeFileName);
 }
 
@@ -118,6 +119,9 @@ static void testSyncFile()
         test::failure(
             "testSyncFile: os::syncFile(): %s\n", e.what());
     }
+
+    fp.reset();
+    test::utils::removeFile(fileName);
 }
 
 
