@@ -91,7 +91,7 @@ void makeDirs(const char* dirPath);
 void syncFile(std::FILE* fp);
 
 
-// Synchronize directory containing with storage device.
+// Synchronize directory with storage device.
 //
 // The function is an equivalent of syncFile() for directories: it's
 // usually called after creating a file to ensure that the new
