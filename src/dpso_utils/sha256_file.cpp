@@ -45,18 +45,6 @@ std::string calcFileSha256(const char* filePath)
 }
 
 
-static const char* getFileName(const char* path)
-{
-    const auto* result = path;
-
-    for (const auto* s = path; *s; ++s)
-        if (std::strchr(os::dirSeparators, *s))
-            result = s + 1;
-
-    return result;
-}
-
-
 void saveSha256File(
     const char* digestSourceFilePath, const char* digest)
 {
@@ -73,7 +61,7 @@ void saveSha256File(
             fp.get(),
             "%s *%s\n",
             digest,
-            getFileName(digestSourceFilePath)) < 0)
+            os::getBaseName(digestSourceFilePath).c_str()) < 0)
         throw Sha256FileError{str::printf(
             "fprintf to \"%s\" failed", sha256FilePath.c_str())};
 }
@@ -157,7 +145,7 @@ std::string loadSha256File(const char* digestSourceFilePath)
 
     try {
         return loadDigestFromSha256File(
-            fp.get(), getFileName(digestSourceFilePath));
+            fp.get(), os::getBaseName(digestSourceFilePath).c_str());
     } catch (Sha256FileError& e) {
         throw Sha256FileError{str::printf(
             "\"%s\": %s",

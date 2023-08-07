@@ -10,6 +10,50 @@
 #include "utils.h"
 
 
+static void testPathSplit()
+{
+    const struct Test {
+        const char* path;
+        const char* dirName;
+        const char* baseName;
+    } tests[] = {
+        #ifdef _WIN32
+        #else
+        {"", "", ""},
+        {"/", "/", ""},
+        {"//", "//", ""},
+        {"//a", "//", "a"},
+        {"/a/", "/a", ""},
+        {"/a//", "/a", ""},
+        {"/a/b", "/a", "b"},
+        {"/a//b", "/a", "b"},
+        {"a", "", "a"},
+        {"a/b", "a", "b"},
+        #endif
+    };
+
+    for (const auto& test : tests) {
+        const auto dirName = dpso::os::getDirName(test.path);
+        if (dirName != test.dirName)
+            test::failure(
+                "os::getDirName(\"%s\"): Expected \"%s\", got "
+                "\"%s\"\n",
+                test.path,
+                test.dirName,
+                dirName.c_str());
+
+        const auto baseName = dpso::os::getBaseName(test.path);
+        if (baseName != test.baseName)
+            test::failure(
+                "os::getBaseName(\"%s\"): Expected \"%s\", got "
+                "\"%s\"\n",
+                test.path,
+                test.baseName,
+                baseName.c_str());
+    }
+}
+
+
 static void testGetFileExt()
 {
     struct Test {
@@ -127,24 +171,21 @@ static void testSyncFile()
 
 void testSyncFileDir()
 {
-    const auto* fileName = "test_sync_file.txt";
-
-    test::utils::saveText("testSyncFileDir", fileName, "");
+    const auto* dirPath = ".";
 
     try {
-        dpso::os::syncFileDir(fileName);
+        dpso::os::syncDir(dirPath);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "testSyncFileDir: os::syncFileDir(\"%s\"): %s\n",
-            fileName, e.what());
+            "testSyncFileDir: os::syncDir(\"%s\"): %s\n",
+            dirPath, e.what());
     }
-
-    test::utils::removeFile(fileName);
 }
 
 
 static void testOs()
 {
+    testPathSplit();
     testGetFileExt();
     testFopen();
     testRemoveFile();

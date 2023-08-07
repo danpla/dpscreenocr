@@ -12,9 +12,6 @@
 namespace dpso::os {
 
 
-const char* const dirSeparators = "\\/";
-
-
 [[noreturn]]
 static void throwLastError(const char* description)
 {
@@ -49,6 +46,21 @@ static std::wstring toUtf16(const char* str, const char* varName)
 
 
 #define DPSO_WIN_TO_UTF16(VAR_NAME) toUtf16(VAR_NAME, #VAR_NAME)
+
+
+const char* const dirSeparators = "\\/";
+
+
+std::string getDirName(const char* path)
+{
+    static_assert(false, "TODO");
+}
+
+
+std::string getBaseName(const char* path)
+{
+    static_assert(false, "TODO");
+}
 
 
 std::int64_t getFileSize(const char* filePath)
@@ -174,10 +186,10 @@ void syncFile(FILE* fp)
 }
 
 
-void syncFileDir(const char* filePath)
+void syncDir(const char* dirPath)
 {
     // Windows doesn't support directory synchronization.
-    (void)filePath;
+    (void)dirPath;
 }
 
 

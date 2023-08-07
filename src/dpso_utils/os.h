@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <memory>
 #include <stdexcept>
+#include <string>
 
 
 namespace dpso::os {
@@ -23,6 +24,14 @@ class FileNotFoundError : public Error {
 // Directory separators for the current platform. The primary one is
 // the first in the list.
 extern const char* const dirSeparators;
+
+
+// Returns the path without the last component.
+std::string getDirName(const char* path);
+
+
+// Returns the last path component.
+std::string getBaseName(const char* path);
 
 
 // Return a pointer to the period of the extension, or
@@ -82,14 +91,14 @@ void makeDirs(const char* dirPath);
 void syncFile(std::FILE* fp);
 
 
-// Synchronize directory containing filePath with storage device.
+// Synchronize directory containing with storage device.
 //
 // The function is an equivalent of syncFile() for directories: it's
 // usually called after creating a file to ensure that the new
 // directory entry has reached the storage device.
 //
 // Throws os::Error.
-void syncFileDir(const char* filePath);
+void syncDir(const char* dirPath);
 
 
 }

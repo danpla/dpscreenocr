@@ -4,20 +4,16 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-#include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
 
 namespace dpso::os {
-
-
-const char* const dirSeparators = "/";
-
+namespace {
 
 [[noreturn]]
-static void throwErrno(const char* description)
+void throwErrno(const char* description)
 {
     const auto message =
         std::string{description} + ": " + strerror(errno);
@@ -28,6 +24,53 @@ static void throwErrno(const char* description)
     default:
         throw Error{message};
     }
+}
+
+
+struct PathParts {
+    const char* dirBegin;
+    const char* dirEnd;
+    const char* baseBegin;
+    const char* baseEnd;
+};
+
+
+PathParts splitPath(const char* path)
+{
+    const auto* sepBegin = path;
+    const auto* sepEnd = sepBegin;
+
+    const auto* s = path;
+
+    for (; *s; ++s)
+        if (*s == '/') {
+            if (s > path && s[-1] != '/')
+                sepBegin = s;
+
+            sepEnd = s + 1;
+        }
+
+    return {path, sepBegin == path ? sepEnd : sepBegin, sepEnd, s};
+}
+
+
+}
+
+
+const char* const dirSeparators = "/";
+
+
+std::string getDirName(const char* path)
+{
+    const auto pathParts = splitPath(path);
+    return {pathParts.dirBegin, pathParts.dirEnd};
+}
+
+
+std::string getBaseName(const char* path)
+{
+    const auto pathParts = splitPath(path);
+    return {pathParts.baseBegin, pathParts.baseEnd};
 }
 
 
@@ -128,21 +171,13 @@ void syncFile(std::FILE* fp)
 }
 
 
-void syncFileDir(const char* filePath)
+void syncDir(const char* dirPath)
 {
-    std::string dirPath;
-    if (const auto* sep = strrchr(filePath, '/'))
-        // Include the separator in case the file is in the root
-        // directory.
-        dirPath.assign(filePath, sep - filePath + 1);
-    else
-        dirPath = ".";
-
     #ifndef O_DIRECTORY
     #define O_DIRECTORY 0
     #endif
 
-    const auto fd = open(dirPath.c_str(), O_RDONLY | O_DIRECTORY);
+    const auto fd = open(dirPath, O_RDONLY | O_DIRECTORY);
     if (fd == -1) {
         if (errno == EACCES)
             return;

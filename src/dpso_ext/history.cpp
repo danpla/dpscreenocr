@@ -133,10 +133,12 @@ static dpso::os::StdFileUPtr openSync(
         return nullptr;
     }
 
+    const auto fileDir = dpso::os::getDirName(filePath);
+
     try {
-        dpso::os::syncFileDir(filePath);
+        dpso::os::syncDir(fileDir.empty() ? "." : fileDir.c_str());
     } catch (dpso::os::Error& e) {
-        dpsoSetError("os::syncFileDir(): %s", e.what());
+        dpsoSetError("os::syncDir(): %s", e.what());
         return nullptr;
     }
 
