@@ -30,7 +30,6 @@ extern const char* const dirSeparators;
 const char* getFileExt(const char* filePath);
 
 
-
 // Return size of filePath in bytes. The behavior is platform-specific
 // if the filePath points to anything other than a regular file.
 // Throws os::Error.

@@ -123,8 +123,8 @@ void syncFile(std::FILE* fp)
     if (fd == -1)
         throwErrno("fileno()");
 
-    if (fsync(fd) == -1)
-        throwErrno("unix::fsync()");
+    if (os::fsync(fd) == -1)
+        throwErrno("os::fsync()");
 }
 
 
@@ -151,7 +151,7 @@ void syncFileDir(const char* filePath)
     }
 
     // Some systems can't fsync() a directory, so ignore errors.
-    fsync(fd);
+    os::fsync(fd);
     close(fd);
 }
 
