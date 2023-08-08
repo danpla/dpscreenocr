@@ -62,15 +62,15 @@ const char* const dirSeparators = "/";
 
 std::string getDirName(const char* path)
 {
-    const auto pathParts = splitPath(path);
-    return {pathParts.dirBegin, pathParts.dirEnd};
+    const auto parts = splitPath(path);
+    return {parts.dirBegin, parts.dirEnd};
 }
 
 
 std::string getBaseName(const char* path)
 {
-    const auto pathParts = splitPath(path);
-    return {pathParts.baseBegin, pathParts.baseEnd};
+    const auto parts = splitPath(path);
+    return {parts.baseBegin, parts.baseEnd};
 }
 
 

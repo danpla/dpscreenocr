@@ -26,11 +26,11 @@ class FileNotFoundError : public Error {
 extern const char* const dirSeparators;
 
 
-// Returns the path without the last component.
+// Return the path without the last component.
 std::string getDirName(const char* path);
 
 
-// Returns the last path component.
+// Return the last path component.
 std::string getBaseName(const char* path);
 
 

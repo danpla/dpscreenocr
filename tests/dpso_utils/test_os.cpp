@@ -18,7 +18,66 @@ static void testPathSplit()
         const char* baseName;
     } tests[] = {
         #ifdef _WIN32
+
+        {"", "", ""},
+        {"c:", "c:", ""},
+        {"c:\\", "c:\\", ""},
+        {"c:\\a", "c:\\", "a"},
+        {"c:\\a\\", "c:\\a", ""},
+        {"c:\\\\a", "c:\\\\", "a"},
+        {"c:\\\\a\\\\b", "c:\\\\a", "b"},
+        {"c:/a", "c:/", "a"},
+        {"c:/a/", "c:/a", ""},
+        {"c:/a/b", "c:/a", "b"},
+
+        // UNC paths.
+        {"\\\\", "\\\\", ""},
+        {"\\\\server", "\\\\server", ""},
+        {"\\\\server\\", "\\\\server\\", ""},
+        {"\\\\server\\share", "\\\\server\\share", ""},
+        {"\\\\server\\share\\", "\\\\server\\share\\", ""},
+        {"\\\\server\\share\\a", "\\\\server\\share\\", "a"},
+        {"\\\\server\\share\\a\\b", "\\\\server\\share\\a", "b"},
+
+        // Device paths.
+        {"\\\\?", "\\\\?", ""},
+        {"\\\\?\\", "\\\\?\\", ""},
+        {"\\\\?\\c:", "\\\\?\\c:", ""},
+        {"\\\\?\\c:\\\\", "\\\\?\\c:\\\\", ""},
+        {"\\\\?\\c:\\\\a", "\\\\?\\c:\\\\", "a"},
+        {"\\\\?\\c:\\\\a\\\\b", "\\\\?\\c:\\\\a", "b"},
+        {"\\\\?\\UNC", "\\\\?\\UNC", ""},
+        {"\\\\?\\UNC\\", "\\\\?\\UNC\\", ""},
+        {"\\\\?\\UNC\\server", "\\\\?\\UNC\\server", ""},
+        {"\\\\?\\UNC\\server\\", "\\\\?\\UNC\\server\\", ""},
+        {
+            "\\\\?\\UNC\\server\\share",
+            "\\\\?\\UNC\\server\\share",
+            ""
+        },
+        {
+            "\\\\?\\UNC\\server\\share\\",
+            "\\\\?\\UNC\\server\\share\\",
+            ""
+        },
+        {
+            "\\\\?\\UNC\\server\\share\\a",
+            "\\\\?\\UNC\\server\\share\\",
+            "a"
+        },
+        {
+            "\\\\?\\UNC\\server\\share\\a\\b",
+            "\\\\?\\UNC\\server\\share\\a",
+            "b"
+        },
+        {
+            "\\\\?\\unC\\server\\share",
+            "\\\\?\\unC\\server\\share",
+            ""
+        },
+
         #else
+
         {"", "", ""},
         {"/", "/", ""},
         {"//", "//", ""},
@@ -29,6 +88,7 @@ static void testPathSplit()
         {"/a//b", "/a", "b"},
         {"a", "", "a"},
         {"a/b", "a", "b"},
+
         #endif
     };
 
