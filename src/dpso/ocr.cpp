@@ -400,8 +400,8 @@ static dpso::ocr::OcrImage prepareScreenshot(
         &localProgressTracker);
     END_TIMING(
         unsharpMasking,
-        "Unsharp masking (radius=%i, %ix%i px)",
-        unsharpMaskRadius, bufferW, bufferH);
+        "Unsharp masking (radius=%i, amount=%.2f, %ix%i px)",
+        unsharpMaskRadius, unsharpMaskAmount, bufferW, bufferH);
 
     localProgressTracker.finish();
 
