@@ -20,13 +20,8 @@ class Screenshot;
 
 class Backend {
 public:
-    /**
-     * Create a backend.
-     *
-     * The concrete backend should provide definition of this method.
-     *
-     * \throws BackendError
-     */
+    // The concrete backend should provide definition of this method.
+    // Throws BackendError.
     static std::unique_ptr<Backend> create();
 
     virtual ~Backend() = default;
@@ -34,13 +29,8 @@ public:
     virtual KeyManager& getKeyManager() = 0;
     virtual Selection& getSelection() = 0;
 
-    /**
-     * Take screenshot.
-     *
-     * The method will clamp the rect to screen.
-     *
-     * \throws ScreenshotError
-     */
+    // The method will clamp the rect to screen. Throws
+    // ScreenshotError.
     virtual std::unique_ptr<Screenshot> takeScreenshot(
         const Rect& rect) = 0;
 

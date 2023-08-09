@@ -39,11 +39,7 @@ private:
 };
 
 
-/**
- * Synchronized value.
- *
- * This is a wrapper that ties a value with a mutex.
- */
+// Synchronized is a wrapper that ties a value with a mutex.
 template<typename T>
 class Synchronized {
 public:
