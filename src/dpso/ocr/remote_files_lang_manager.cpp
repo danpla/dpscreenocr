@@ -244,7 +244,6 @@ void RemoteFilesLangManager::removeLang(int langIdx)
     try {
         removeSha256File(filePath.c_str());
     } catch (Sha256FileError&) {
-        // Ignore errors.
     }
 }
 

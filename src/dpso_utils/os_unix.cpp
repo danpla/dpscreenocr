@@ -12,6 +12,7 @@
 namespace dpso::os {
 namespace {
 
+
 [[noreturn]]
 void throwErrno(const char* description)
 {

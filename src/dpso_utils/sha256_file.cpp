@@ -30,15 +30,15 @@ std::string calcFileSha256(const char* filePath)
         const auto numRead = std::fread(
             buf, 1, sizeof(buf), fp.get());
 
-        const auto isLastRead = numRead < sizeof(buf);
-        if (isLastRead && std::ferror(fp.get()))
-            throw Sha256FileError{str::printf(
-                "fread: %s", std::strerror(errno))};
-
         h.update(buf, numRead);
 
-        if (isLastRead)
+        if (numRead < sizeof(buf)) {
+            if (std::ferror(fp.get()))
+                throw Sha256FileError{str::printf(
+                    "fread: %s", std::strerror(errno))};
+
             break;
+        }
     }
 
     return toHex(h.getDigest());

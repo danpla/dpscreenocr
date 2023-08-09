@@ -152,11 +152,11 @@ std::string getBaseName(const char* path)
 
 std::int64_t getFileSize(const char* filePath)
 {
-    const auto filePathUtf16 = DPSO_WIN_TO_UTF16(filePath);
-
     WIN32_FILE_ATTRIBUTE_DATA attrs;
     if (!GetFileAttributesExW(
-            filePathUtf16.c_str(), GetFileExInfoStandard, &attrs))
+            DPSO_WIN_TO_UTF16(filePath).c_str(),
+            GetFileExInfoStandard,
+            &attrs))
         throwLastError("GetFileAttributesExW()");
 
     return
@@ -237,7 +237,7 @@ void makeDirs(const char* dirPath)
         while (*s && !isDirSep(*s))
             ++s;
 
-        while (*s && isDirSep(*s))
+        while (isDirSep(*s))
             ++s;
 
         const auto c = *s;

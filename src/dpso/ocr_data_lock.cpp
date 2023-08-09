@@ -81,8 +81,8 @@ struct DataLock::Impl {
             throw DataLock::DataLockedError{"Data is already locked"};
 
         for (auto& observerData : sd->observerDatas)
-            if (observerData.get().lockAboutToBeCreated)
-                observerData.get().lockAboutToBeCreated();
+            if (auto& fn = observerData.get().lockAboutToBeCreated)
+                fn();
 
         sd->isDataLocked = true;
     }
@@ -93,8 +93,8 @@ struct DataLock::Impl {
         sd->isDataLocked = false;
 
         for (auto& observerData : sd->observerDatas)
-            if (observerData.get().lockRemoved)
-                observerData.get().lockRemoved();
+            if (auto& fn = observerData.get().lockRemoved)
+                fn();
     }
 };
 

@@ -196,7 +196,7 @@ static int setupUserData(const wchar_t* userDataDir)
             uiGetAppDir(UiAppDirData));
     } catch (std::runtime_error& e) {
         dpsoSetError(
-            "Can't convert UiDirData to UTF-16: %s", e.what());
+            "Can't convert UiAppDirData to UTF-16: %s", e.what());
         return false;
     }
 

@@ -136,7 +136,10 @@ std::string loadText(const char* contextInfo, const char* filePath)
     while (true) {
         const auto numRead = std::fread(
             buf, 1, sizeof(buf), fp.get());
-        if (numRead == 0) {
+
+        result.append(buf, numRead);
+
+        if (numRead < sizeof(buf)) {
             if (std::ferror(fp.get()))
                 test::fatalError(
                     "%s: loadText(): fread() from \"%s\" failed\n",
@@ -145,8 +148,6 @@ std::string loadText(const char* contextInfo, const char* filePath)
 
             break;
         }
-
-        result.append(buf, numRead);
     }
 
     return result;

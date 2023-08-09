@@ -75,7 +75,6 @@ void downloadFile(
             try {
                 os::removeFile(partPath.c_str());
             } catch (os::Error&) {
-                // Ignore errors
             }
 
             return;
