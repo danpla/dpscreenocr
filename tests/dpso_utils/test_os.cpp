@@ -1,10 +1,12 @@
 
 #include <cerrno>
+#include <cinttypes>
 #include <cstring>
 #include <string>
 #include <vector>
 
 #include "dpso_utils/os.h"
+#include "dpso_utils/scope_exit.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -169,6 +171,25 @@ static void testGetFileExt()
 }
 
 
+static void testGetFileSize()
+{
+    const auto* fileName = "test_get_file_size.txt";
+    const std::int64_t size = 123456;
+
+    test::utils::saveText(
+        "testGetFileSize", fileName, std::string(size, '1').c_str());
+
+    const auto gotSize = dpso::os::getFileSize(fileName);
+    if (gotSize != size)
+        test::failure(
+            "os::getFileSize(\"%s\"): expected \"%" PRIi64 "\", got "
+            "\"%" PRIi64 "\"\n",
+            fileName, size, gotSize);
+
+    test::utils::removeFile(fileName);
+}
+
+
 const auto* const testUnicodeFileName =
     // 汉语.txt
     "\346\261\211\350\257\255.txt";
@@ -204,6 +225,98 @@ static void testRemoveFile()
             testUnicodeFileName,
             e.what());
     }
+
+    try {
+        dpso::os::removeFile("nonexistent_file");
+        test::failure(
+            "os::removeFile() for a nonexistent file didn't threw an "
+            "error\n");
+    } catch (dpso::os::FileNotFoundError&) {
+    } catch (dpso::os::Error& e) {
+        test::failure(
+            "os::removeFile() for a nonexistent file threw an error "
+            "(\"%s\") of class other than FileNotFoundError\n",
+            e.what());
+    }
+}
+
+
+static void testReplaceSrcExists(bool dstExists)
+{
+    const auto* srcFilePath = "test_replace_src.txt";
+    const auto* dstFilePath = "test_replace_dst.txt";
+
+    test::utils::saveText("testReplace", srcFilePath, srcFilePath);
+    if (dstExists)
+        test::utils::saveText(
+            "testReplace", dstFilePath, dstFilePath);
+
+    const dpso::ScopeExit scopeExit{
+        [=]
+        {
+            test::utils::removeFile(srcFilePath);
+            test::utils::removeFile(dstFilePath);
+        }};
+
+    try {
+        dpso::os::replace(srcFilePath, dstFilePath);
+    } catch (dpso::os::Error& e) {
+        test::failure(
+            "os::replace(\"%s\", \"%s\"): %s\n",
+            srcFilePath, dstFilePath, e.what());
+        return;
+    }
+
+    if (dpso::os::StdFileUPtr{dpso::os::fopen(srcFilePath, "r")})
+        test::failure(
+            "os::replace(\"%s\", \"%s\") didn't failed, but the "
+            "source file still exists\n",
+            srcFilePath, dstFilePath);
+
+    if (!dstExists
+            && !dpso::os::StdFileUPtr{
+                dpso::os::fopen(dstFilePath, "r")}) {
+        test::failure(
+            "os::replace(\"%s\", \"%s\") didn't created the "
+            "destination file\n",
+            srcFilePath, dstFilePath);
+        return;
+    }
+
+    const auto dstText = test::utils::loadText(
+        "testReplace", dstFilePath);
+
+    if (dstText != srcFilePath)
+        test::failure(
+            "os::replace(\"%s\", \"%s\"): the destination file "
+            "contents (\"%s\") are not the same as in source "
+            "(\"%s\")\n",
+            srcFilePath, dstFilePath, dstText.c_str(), srcFilePath);
+}
+
+
+static void testReplaceNoSrc()
+{
+    try {
+        dpso::os::replace("nonexistent_file", "dst");
+        test::failure(
+            "os::replace() for a nonexistent source file didn't "
+            "threw an error");
+    } catch (dpso::os::FileNotFoundError&) {
+    } catch (dpso::os::Error& e) {
+        test::failure(
+            "os::replace() for a nonexistent file threw an error "
+            "(\"%s\") of class other than FileNotFoundError\n",
+            e.what());
+    }
+}
+
+
+static void testReplace()
+{
+    testReplaceSrcExists(false);
+    testReplaceSrcExists(true);
+    testReplaceNoSrc();
 }
 
 
@@ -247,8 +360,10 @@ static void testOs()
 {
     testPathSplit();
     testGetFileExt();
+    testGetFileSize();
     testFopen();
     testRemoveFile();
+    testReplace();
     testSyncFile();
     testSyncFileDir();
 }

@@ -288,7 +288,7 @@ static void reload(DpsoCfg* cfg)
 
 static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 {
-    test::utils::saveText("loadCfgData()", cfgFileName, cfgData);
+    test::utils::saveText("loadCfgData", cfgFileName, cfgData);
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     test::utils::removeFile(cfgFileName);
@@ -622,7 +622,7 @@ static void testSavedValueFormat()
                 dpsoGetError());
 
         const auto gotData = test::utils::loadText(
-                "testSavedValueFormat()", cfgFileName);
+                "testSavedValueFormat", cfgFileName);
         if (gotData == test.expectedData)
             continue;
 

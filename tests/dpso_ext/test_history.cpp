@@ -136,7 +136,7 @@ static void testInvalidData()
 
     for (const auto& test : tests) {
         test::utils::saveText(
-            "testInvalidData()", historyFileName, test.data);
+            "testInvalidData", historyFileName, test.data);
 
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
         const auto opened = history != nullptr;

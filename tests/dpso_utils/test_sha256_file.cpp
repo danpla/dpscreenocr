@@ -16,7 +16,7 @@ static void testCalcFileSha256()
         "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd4"
         "19db06c1";
 
-    test::utils::saveText("testCalcFileSha256()", testFileName, data);
+    test::utils::saveText("testCalcFileSha256", testFileName, data);
 
     std::string calculatedDigest;
 
@@ -61,7 +61,7 @@ static void testSaveSha256File()
     }
 
     const auto gotData = test::utils::loadText(
-        "testSaveSha256File()", testSha256FileName.c_str());
+        "testSaveSha256File", testSha256FileName.c_str());
 
     test::utils::removeFile(testSha256FileName.c_str());
 
@@ -130,7 +130,7 @@ static void testLoadValidSha256File()
 
     for (const auto& test : tests) {
         test::utils::saveText(
-            "testLoadValidSha256File()",
+            "testLoadValidSha256File",
             testSha256FileName.c_str(),
             test.data.c_str());
 
@@ -229,7 +229,7 @@ static void testLoadInvalidSha256File()
 
     for (const auto& test : tests) {
         test::utils::saveText(
-            "testLoadInvalidSha256File()",
+            "testLoadInvalidSha256File",
             testSha256FileName.c_str(),
             test.data.c_str());
 

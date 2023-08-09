@@ -405,7 +405,7 @@ static void testExport()
             const auto& expectedData =
                 test.*exportFormatData[exportFormat];
             const auto gotData = test::utils::loadText(
-                "testExport()", exportedFileName.c_str());
+                "testExport", exportedFileName.c_str());
 
             if (gotData != expectedData) {
                 test::failure(
