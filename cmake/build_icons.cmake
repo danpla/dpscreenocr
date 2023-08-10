@@ -14,6 +14,8 @@ function(build_icons DST_DIR)
     cmake_parse_arguments(
         ARG "INCLUDE_SCALABLE" "" "RASTER_SIZES" ${ARGN})
 
+    set(SCALABLE_SIZE "scalable")
+
     set(SRC_DIR "${CMAKE_SOURCE_DIR}/data/icons/sizes")
 
     set(INCLUDE_ALL_SIZES FALSE)
@@ -45,8 +47,9 @@ function(build_icons DST_DIR)
         list(APPEND SIZES ${ARG_RASTER_SIZES})
     endif()
 
-    if(ARG_INCLUDE_SCALABLE AND IS_DIRECTORY "${SRC_DIR}/scalable")
-        list(APPEND SIZES "scalable")
+    if(ARG_INCLUDE_SCALABLE
+            AND IS_DIRECTORY "${SRC_DIR}/${SCALABLE_SIZE}")
+        list(APPEND SIZES "${SCALABLE_SIZE}")
     endif()
 
     if(NOT SIZES)
@@ -57,7 +60,18 @@ function(build_icons DST_DIR)
 
     set(DST_FILES)
     foreach(SIZE ${SIZES})
-        file(GLOB SRC_FILES CONFIGURE_DEPENDS "${SRC_DIR}/${SIZE}/*")
+        set(FILE_EXT)
+        if(SIZE STREQUAL SCALABLE_SIZE)
+            set(FILE_EXT ".svg")
+        else()
+            set(FILE_EXT ".png")
+        endif()
+
+        file(
+            GLOB
+            SRC_FILES
+            CONFIGURE_DEPENDS
+            "${SRC_DIR}/${SIZE}/*${FILE_EXT}")
         list(SORT SRC_FILES)
 
         foreach(SRC_FILE ${SRC_FILES})
