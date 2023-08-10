@@ -7,12 +7,8 @@
 * Windows:
   * Added language manager
   * Fixed empty language list on Windows older than 10 version 1903 if
-    user name contains non-ASCII characters
-  * Updated Tesseract to 5.3.1
-* Updated translations:
-  * French
-  * Polish
-  * Spanish
+    the user name contains non-ASCII characters
+  * Updated Tesseract to 5.3.2
 * Minimum required C++ standard is raised to C++17
 
 
