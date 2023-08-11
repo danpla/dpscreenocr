@@ -22,8 +22,9 @@ const char* uiGetOcrDataInfoFileUrl(
     if (result.back() != '/')
         result += '/';
 
+    result += "ocr_engine_data/";
     result += ocrEngineInfo->id;
-    result += "_files.json";
+    result += "_data.json";
 
     return result.c_str();
 }

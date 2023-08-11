@@ -12,8 +12,8 @@ extern "C" {
 /**
  * Get URL of the JSON info file for dpsoOcrLangManagerCreate().
  *
- * The URL will point to a file "{ocrEngineInfo->id}_files.json" at
- * uiAppWebsite.
+ * Returns
+ * "{uiAppWebsite}/ocr_engine_data/{ocrEngineInfo->id}_data.json".
  */
 const char* uiGetOcrDataInfoFileUrl(
     const DpsoOcrEngineInfo* ocrEngineInfo);
