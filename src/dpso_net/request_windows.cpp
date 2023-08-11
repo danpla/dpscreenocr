@@ -139,7 +139,7 @@ std::size_t WindowsResponse::read(void* dst, std::size_t dstSize)
     // if the provided buffer is not large enough. We thus have to
     // make our own caching layer for such cases.
 
-    size_t dstPos{};
+    std::size_t dstPos{};
     while (true) {
         assert(bufPos <= buf.size());
 

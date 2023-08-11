@@ -19,7 +19,7 @@ namespace {
 namespace sha256 {
 
 
-const uint32_t k[64]{
+const std::uint32_t k[64]{
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b,
     0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
     0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7,
@@ -84,7 +84,7 @@ inline std::uint32_t sSig1(std::uint32_t x)
 
 
 template<typename T>
-void storeBe(T v, uint8_t dst[sizeof(T)])
+void storeBe(T v, std::uint8_t dst[sizeof(T)])
 {
     for (auto i = sizeof(T); i--;)
         *dst++ = (v >> (i * 8)) & 0xff;
@@ -92,7 +92,7 @@ void storeBe(T v, uint8_t dst[sizeof(T)])
 
 
 template<typename T>
-void loadBe(T& v, const uint8_t src[sizeof(T)])
+void loadBe(T& v, const std::uint8_t src[sizeof(T)])
 {
     v = 0;
     for (auto i = sizeof(T); i--;)
