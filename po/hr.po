@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-08-02 22:41+0200\n"
+"POT-Creation-Date: 2023-08-12 17:37+0200\n"
 "PO-Revision-Date: 2023-08-05 17:51+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -13,8 +13,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.0-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
@@ -598,7 +598,7 @@ msgstr "Sve datoteke"
 msgid "Clear the history?"
 msgstr "Isprazniti kronologiju?"
 
-#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:252
+#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:250
 #: src/ui/qt/main_window.cpp:200
 msgid "Cancel"
 msgstr "Odustani"
@@ -657,30 +657,30 @@ msgstr "Aktualizira se „{name}” ({current}/{total})"
 msgid "Fetching the language list…"
 msgstr "Dohvaćanje popisa jezika …"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:49
+#: src/ui/qt/lang_manager/lang_manager.cpp:50
 msgid "An error occurred while fetching the list of languages"
 msgstr "Dogodila se greška tijekom dohvaćanje popisa jezika"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:86 src/ui/qt/main_window.cpp:419
+#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:419
 msgid "Language manager"
 msgstr "Upravljač jezika"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:92
+#: src/ui/qt/lang_manager/lang_manager.cpp:99
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Install"
 msgstr "Instaliraj"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93
+#: src/ui/qt/lang_manager/lang_manager.cpp:100
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Update"
 msgstr "Aktualiziraj"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:94
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:253
+#: src/ui/qt/lang_manager/lang_manager.cpp:101
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:251
 msgid "Remove"
 msgstr "Ukloni"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:102 src/ui/qt/utils.cpp:112
+#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:112
 msgid "Close"
 msgstr "Zatvori"
 
@@ -701,18 +701,18 @@ msgstr "Dogodila se greška tijekom aktualiziranja jezika"
 msgid "Remove…"
 msgstr "Ukloni …"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:241
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:237
 msgid "Remove “{name}”?"
 msgstr "Ukloniti „{name}”?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:245
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:242
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] "Ukloniti {count} odabrani jezik?"
 msgstr[1] "Ukloniti {count} odabrana jezika?"
 msgstr[2] "Ukloniti {count} odabranih jezika?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:272
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:270
 msgid "Some languages were not removed"
 msgstr "Neki jezici nisu uklonjeni"
 

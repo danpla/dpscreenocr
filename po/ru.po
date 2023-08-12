@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-08-02 22:41+0200\n"
+"POT-Creation-Date: 2023-08-12 17:37+0200\n"
 "PO-Revision-Date: 2023-07-31 23:07+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -601,7 +601,7 @@ msgstr "Все файлы"
 msgid "Clear the history?"
 msgstr "Очистить историю?"
 
-#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:252
+#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:250
 #: src/ui/qt/main_window.cpp:200
 msgid "Cancel"
 msgstr "Отменить"
@@ -660,30 +660,30 @@ msgstr "Обновление «{name}» ({current}/{total})"
 msgid "Fetching the language list…"
 msgstr "Получение списка языков…"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:49
+#: src/ui/qt/lang_manager/lang_manager.cpp:50
 msgid "An error occurred while fetching the list of languages"
 msgstr "Произошла ошибка при получении списка языков"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:86 src/ui/qt/main_window.cpp:419
+#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:419
 msgid "Language manager"
 msgstr "Менеджер языков"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:92
+#: src/ui/qt/lang_manager/lang_manager.cpp:99
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Install"
 msgstr "Установить"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93
+#: src/ui/qt/lang_manager/lang_manager.cpp:100
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:155
 msgid "Update"
 msgstr "Обновить"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:94
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:253
+#: src/ui/qt/lang_manager/lang_manager.cpp:101
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:251
 msgid "Remove"
 msgstr "Удалить"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:102 src/ui/qt/utils.cpp:112
+#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:112
 msgid "Close"
 msgstr "Закрыть"
 
@@ -704,18 +704,18 @@ msgstr "Произошла ошибка при обновлении языков
 msgid "Remove…"
 msgstr "Удалить…"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:241
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:237
 msgid "Remove “{name}”?"
 msgstr "Удалить «{name}»?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:245
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:242
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] "Удалить {count} выбранный язык?"
 msgstr[1] "Удалить {count} выбранных языка?"
 msgstr[2] "Удалить {count} выбранных языков?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:272
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:270
 msgid "Some languages were not removed"
 msgstr "Некоторые языки не были удалены"
 
