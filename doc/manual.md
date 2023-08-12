@@ -21,7 +21,7 @@ and can split independent text blocks, such as columns.
 ### Unix-like systems
 
 The [dpScreenOCR website][] provides several options, including
-repositories for Debian, Ubuntu, and derivatives. If you don't find a
+repositories for Debian, Ubuntu, and derivatives. If there is no
 suitable choice for your system, download the source code tarball,
 unpack it, and follow the instructions in "doc/building-unix.txt".
 
@@ -48,30 +48,16 @@ German has the following names:
 *   "tesseract-langpack-deu" on Fedora
 *   "tesseract-ocr-traineddata-german" on openSUSE
 
-When searching for a language, be aware that some codes are not from
-[ISO 639-3][]. In particular, "frk" is German Fraktur rather than
-Frankish. The Tesseract developers are aware of this and will
-probably fix the code in the future (see issues
-[68][tessdata-frk-issue-68], [49][tessdata-frk-issue-49], and
-[61][tessdata-frk-issue-61]); meanwhile, if "frk" is described as
-"Frankish" in your package manager, you can report the problem to the
-package maintainer.
-
-There are also two special packs that provide extra features rather
-than languages: "osd" (automatic script and orientation detection) and
+There are two special packs that provide extra features rather than
+languages: "osd" (automatic script and orientation detection) and
 "equ" (math and equation detection). dpScreenOCR doesn't use them.
-
-[ISO 639-3]: https://en.wikipedia.org/wiki/ISO_639-3
-[tessdata-frk-issue-68]: https://github.com/tesseract-ocr/tessdata_best/issues/68
-[tessdata-frk-issue-49]: https://github.com/tesseract-ocr/tessdata/issues/49
-[tessdata-frk-issue-61]: https://github.com/tesseract-ocr/langdata/issues/61
 
 
 ### Windows
 
-dpScreenOCR for Windows comes with the English language pack. To
+dpScreenOCR for Windows is shipped with the English language pack. To
 install other languages, use the language manager as described in the
-"[Language manager]" section.
+"[Language manager][]" section.
 
 Alternatively, you can install languages manually: download the needed
 Tesseract language files (for example, from the
@@ -80,20 +66,6 @@ Tesseract language files (for example, from the
 quickly navigate to this folder, paste
 `%LOCALAPPDATA%\dpscreenocr\tesseract_5_data` to either "Run" (press
 Windows + R) or the folder address bar of File Explorer.
-
-
-#### Migrating from version 1.0
-
-When upgrading from version 1.0, the installer will automatically
-migrate languages from the old location, which was the "tessdata"
-folder in the directory of the EXE file. To be more specific, the
-contents of "tessdata" are copied to the "tesseract_5_data" folder in
-the directory of the EXE file, and then each user launching
-dpScreenOCR gets their own copy of "tesseract_5_data" in
-`%LOCALAPPDATA%\dpscreenocr`.
-
-For the ZIP version, you need to manually copy languages from
-"tessdata" to `%LOCALAPPDATA%\dpscreenocr\tesseract_5_data`.
 
 
 # Usage
@@ -127,23 +99,21 @@ selection until the problem is fixed.
 
 ### Split text blocks
 
-If this option is enabled, dpScreenOCR will try to detect and split
-independent text blocks, such as columns. Otherwise, everything is
-treated as a contiguous block of text. This behavior is best
-described by the following picture, which shows a two-column text
-layout (A) recognized with (B) and without (C) the "Split text blocks"
-option:
+If this option is enabled, dpScreenOCR tries to split independent
+blocks of text, such as columns. Otherwise, the text is treated as one
+continuous block. This behavior is best illustrated by the following
+image, which shows a two-column text layout (A) recognized with (B)
+and without (C) the "Split text blocks" option:
 
 ![](manual-data/split.svg)
 
-Disabling this option will not prevent dpScreenOCR from detecting
-paragraphs.
+This option does not affect paragraph detection.
 
 
 ### Languages
 
 This is the list of languages that dpScreenOCR can use to recognize
-text. You can choose more than one, but be aware that this may slow
+text. You can select more than one, but be aware that this may slow
 down recognition and reduce its accuracy.
 
 
@@ -152,7 +122,7 @@ down recognition and reduce its accuracy.
 The language manager allows you to install, update, and remove
 languages. It is not available on Unix-like systems, where you can
 handle languages via the system package manager as described in the
-"[Installing languages]" section.
+"[Installing languages][]" section.
 
 When you open the language manager, it will try to fetch the list of
 available languages from the Internet. If it fails (e.g., if there is
@@ -185,7 +155,7 @@ paths listed in your PATH environment variable.
 
 Before using your script, make sure it starts with a proper
 [shebang][] and you have the execute permission (run
-`chmod u+x your_script`).
+`chmod +x your_script`).
 
 Here is an example Unix shell script that translates the recognized
 text to your native language using [Translate Shell][] and displays
@@ -274,7 +244,7 @@ exist, you can create it as described in the previous section.
 The hotkey starts and ends the on-screen selection. To cancel the
 selection, press Escape.
 
-The hotkey is global: it works even if the dpScreenOCR's window is
+The hotkey is global: it works even if the dpScreenOCR window is
 minimized. If pressing the hotkey has no effect, it probably means
 that another program is already using it. In this case, try another
 key combination.
@@ -321,7 +291,7 @@ settings file:
 *   `action_copy_to_clipboard_text_separator` (`\n\n\n` by default)
     the separator to insert between recognized texts when the "Copy
     text to clipboard" action gets several of them at once. This
-    option only has effect if `ocr_allow_queuing` is enabled.
+    option is only effective if `ocr_allow_queuing` is enabled.
 
 *   `history_wrap_words` (`true` by default) whether to break long
     lines of text in the history so that you don't have to scroll
@@ -332,13 +302,13 @@ settings file:
 
 *   `ocr_allow_queuing` (`true` by default) allows you to queue a new
     selection for recognition without waiting for the previous one to
-    complete. If this option is disabled, pressing the hotkey will
-    have no effect until the recognition is done.
+    complete.
 
-    If this option is enabled, the "Copy text to clipboard" action can
-    get several recognized texts at once, in which case they will be
-    joined using `action_copy_to_clipboard_text_separator` as a
-    separator.
+    If this option is disabled, pressing the hotkey will have no
+    effect until the recognition is finished. If this option is
+    enabled, the "Copy text to clipboard" action can get several
+    recognized texts at once, in which case they will be joined using
+    `action_copy_to_clipboard_text_separator` as a separator.
 
 *   `selection_border_width` (`3` by default) width of the selection
     border.
@@ -355,7 +325,7 @@ settings file:
     on start.
 
 *   `ui_window_minimize_to_tray` (`false` by default) hide window to
-    the notification area on minimizing. This option only has effect
+    the notification area on minimizing. This option is only effective
     if `ui_tray_icon_visible` is enabled.
 
 
@@ -388,7 +358,7 @@ the author by email; the link is at the bottom of the
       environment variable.
 
     * (Unix) Make sure you have the execute permission. Run
-      `chmod u+x executable`.
+      `chmod +x executable`.
 
     * (Unix) If your executable is a script, make sure it starts with
       a proper [shebang][].
@@ -401,9 +371,9 @@ the author by email; the link is at the bottom of the
     session"**
 
     You need to switch to the X11/Xorg session, as dpScreenOCR doesn't
-    work with Wayland yet. On most desktop environments, you can do
-    this via a dedicated menu (sometimes hidden under the gear button)
-    when the login screen asks for the password.
+    work with Wayland yet. In most desktop environments, you can do
+    this from a dedicated menu (sometimes hidden under the gear
+    button) when the login screen asks for the password.
 
 *   **(Unix) No languages**
 
@@ -413,10 +383,10 @@ the author by email; the link is at the bottom of the
 *   **(Windows) "Run executable" opens the script in a text editor**
 
     Create a file association as described in
-    [Creating file associations].
+    [Creating file associations][].
 
 *   **(Windows) "Run executable" runs the script without an
     argument**
 
     Make sure that the file association ends with `%*`. See
-    [Creating file associations] for the details.
+    [Creating file associations][] for the details.
