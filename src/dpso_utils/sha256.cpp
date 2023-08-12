@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <type_traits>
 
 
 // See:
@@ -86,17 +87,23 @@ inline std::uint32_t sSig1(std::uint32_t x)
 template<typename T>
 void storeBe(T v, std::uint8_t dst[sizeof(T)])
 {
-    for (auto i = sizeof(T); i--;)
-        *dst++ = (v >> (i * 8)) & 0xff;
+    using UT = std::make_unsigned_t<T>;
+
+    for (auto i = sizeof(UT); i--;)
+        *dst++ = (static_cast<UT>(v) >> (i * 8)) & 0xff;
 }
 
 
 template<typename T>
 void loadBe(T& v, const std::uint8_t src[sizeof(T)])
 {
-    v = 0;
-    for (auto i = sizeof(T); i--;)
-        v |= (static_cast<T>(*src++) << (i * 8));
+    using UT = std::make_unsigned_t<T>;
+
+    UT uv{};
+    for (std::size_t i = 0; i < sizeof(UT); ++i)
+        uv = (uv << 8) | *src++;
+
+    v = static_cast<T>(uv);
 }
 
 
