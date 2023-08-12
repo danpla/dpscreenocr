@@ -2,6 +2,7 @@
 #include "backend/x11/x11_screenshot.h"
 
 #include <cassert>
+#include <string>
 
 #include <X11/Xutil.h>
 
@@ -97,7 +98,7 @@ static void getGrayscaleData32bpp(
 
     for (int y = 0; y < image.height; ++y) {
         const auto* srcRow =
-            reinterpret_cast<std::uint8_t*>(image.data)
+            reinterpret_cast<const std::uint8_t*>(image.data)
             + image.bytes_per_line * y;
         auto* dstRow = buf + pitch * y;
 
@@ -145,7 +146,7 @@ static void getGrayscaleData16bpp(
 
     for (int y = 0; y < image.height; ++y) {
         const auto* srcRow =
-            reinterpret_cast<std::uint8_t*>(image.data)
+            reinterpret_cast<const std::uint8_t*>(image.data)
             + image.bytes_per_line * y;
         auto* dstRow = buf + pitch * y;
 
@@ -175,6 +176,7 @@ void X11Screenshot::getGrayscaleData(
 {
     if (image->bits_per_pixel == 32) {
         if (image->depth == 30)
+            // XRGB 2-10-10-10
             getGrayscaleData32bpp(
                 *image, buf, pitch,
                 [](XPixel c)
@@ -182,6 +184,7 @@ void X11Screenshot::getGrayscaleData(
                     return c / 4;
                 });
         else
+            // 32 (ARGB 8-8-8-8) and 24 (XRGB 8-8-8-8)
             getGrayscaleData32bpp(
                 *image, buf, pitch,
                 [](XPixel c)
@@ -190,6 +193,11 @@ void X11Screenshot::getGrayscaleData(
                 });
     } else if (image->bits_per_pixel == 16)
         getGrayscaleData16bpp(*image, buf, pitch);
+    else
+        throw ScreenshotError(
+            "Bit depth "
+            + std::to_string(image->bits_per_pixel)
+            + " is not supported");
 }
 
 

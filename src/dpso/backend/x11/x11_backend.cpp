@@ -1,6 +1,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 #include <X11/Xlib.h>
 
