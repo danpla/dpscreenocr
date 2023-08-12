@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+#include <cwchar>
 #include <iterator>
 #include <string>
 
@@ -20,10 +21,10 @@ namespace dpso::backend {
 // Fortunately, string atom functions (GlobalAddAtom() and related)
 // can transparently work with integer atoms: if the atom name starts
 // with # followed by a decimal number, that number is returned as
-// atom. The only thing too keep in mind that an integer atom has the
+// atom. The only thing to keep in mind that an integer atom has the
 // range 0x0001 - 0xBFFF; 0x0000 is not a valid value.
 //
-// It thus possible to avoid two separate code paths for a static
+// It's thus possible to avoid two separate code paths for a static
 // library and a DLL:
 //
 // 1. First, we make an integer atom by packing a hotkey to the first
@@ -59,7 +60,7 @@ const auto sentinelBit = 1 << (modsBits + keyBits);
 static_assert((1 << (modsBits + keyBits)) <= 0xFFFF - 0xC000 + 1);
 
 
-const wchar_t atomNamePrefix[] =
+const auto* const atomNamePrefix =
     #if DPSO_DLL
     L"dpso"
     #else
@@ -67,7 +68,7 @@ const wchar_t atomNamePrefix[] =
     #endif
 ;
 
-const auto atomNamePrefixLen = std::size(atomNamePrefix) - 1;
+const auto atomNamePrefixLen = std::wcslen(atomNamePrefix);
 
 
 static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
@@ -136,8 +137,7 @@ WindowsKeyManager::WindowsKeyManager()
 
 WindowsKeyManager::~WindowsKeyManager()
 {
-    // Make sure we unregister all hotkeys.
-    setHotkeysEnabled(false);
+    setHotkeysEnabled(false);  // Unregister all hotkeys.
 }
 
 
