@@ -83,15 +83,36 @@ int X11Screenshot::getHeight() const
 }
 
 
-template<typename CCTransformerT>
-static void getGrayscaleData32bpp(
+template<int bytesPerPixel>
+static inline XPixel extractPixel(
+    const std::uint8_t* data, int byteOrder)
+{
+    XPixel px{};
+
+    if (byteOrder == LSBFirst)
+        for (int i = 0; i < bytesPerPixel; ++i)
+            px |= static_cast<XPixel>(data[i]) << (i * 8);
+    else
+        for (int i = 0; i < bytesPerPixel; ++i)
+            px = (px << 8) | data[i];
+
+    return px;
+}
+
+
+template<
+    int bytesPerPixel,
+    typename RTransformer,
+    typename GTransformer,
+    typename BTransformer>
+static void getGrayscaleDataImpl(
     const XImage& image,
     std::uint8_t* buf,
     int pitch,
-    CCTransformerT ccTransformer)
+    RTransformer rTransformer,
+    GTransformer gTransformer,
+    BTransformer bTransformer)
 {
-    assert(image.bits_per_pixel == 32);
-
     const auto rShift = img::getMaskRightShift(image.red_mask);
     const auto gShift = img::getMaskRightShift(image.green_mask);
     const auto bShift = img::getMaskRightShift(image.blue_mask);
@@ -103,71 +124,33 @@ static void getGrayscaleData32bpp(
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < image.width; ++x) {
-            XPixel px;
-            if (image.byte_order == LSBFirst)
-                px =
-                    static_cast<XPixel>(srcRow[3]) << 24
-                    | static_cast<XPixel>(srcRow[2]) << 16
-                    | static_cast<XPixel>(srcRow[1]) << 8
-                    | srcRow[0];
-            else
-                px =
-                    static_cast<XPixel>(srcRow[0]) << 24
-                    | static_cast<XPixel>(srcRow[1]) << 16
-                    | static_cast<XPixel>(srcRow[2]) << 8
-                    | srcRow[3];
-            srcRow += 4;
+            const auto px = extractPixel<bytesPerPixel>(
+                srcRow, image.byte_order);
+            srcRow += bytesPerPixel;
 
-            const auto r = ccTransformer(
-                (px & image.red_mask) >> rShift);
-            const auto g = ccTransformer(
-                (px & image.green_mask) >> gShift);
-            const auto b = ccTransformer(
-                (px & image.blue_mask) >> bShift);
-
-            dstRow[x] = img::rgbToGray(r, g, b);
+            dstRow[x] = img::rgbToGray(
+                rTransformer((px & image.red_mask) >> rShift),
+                gTransformer((px & image.green_mask) >> gShift),
+                bTransformer((px & image.blue_mask) >> bShift));
         }
     }
 }
 
 
-static void getGrayscaleData16bpp(
-    const XImage& image, std::uint8_t* buf, int pitch)
+template<int bytesPerPixel, typename CCTransformer>
+static void getGrayscaleDataImpl(
+    const XImage& image,
+    std::uint8_t* buf,
+    int pitch,
+    CCTransformer ccTransformer)
 {
-    assert(image.bits_per_pixel == 16);
-
-    const auto rShift = img::getMaskRightShift(image.red_mask);
-    const auto gShift = img::getMaskRightShift(image.green_mask);
-    const auto bShift = img::getMaskRightShift(image.blue_mask);
-
-    const auto rBits = 5;
-    const auto gBits = image.depth == 16 ? 6 : 5;
-    const auto bBits = 5;
-
-    for (int y = 0; y < image.height; ++y) {
-        const auto* srcRow =
-            reinterpret_cast<const std::uint8_t*>(image.data)
-            + image.bytes_per_line * y;
-        auto* dstRow = buf + pitch * y;
-
-        for (int x = 0; x < image.width; ++x) {
-            XPixel px;
-            if (image.byte_order == LSBFirst)
-                px = static_cast<XPixel>(srcRow[1]) << 8 | srcRow[0];
-            else
-                px = static_cast<XPixel>(srcRow[0]) << 8 | srcRow[1];
-            srcRow += 2;
-
-            const auto r = img::expandTo8Bit(
-                (px & image.red_mask) >> rShift, rBits);
-            const auto g = img::expandTo8Bit(
-                (px & image.green_mask) >> gShift, gBits);
-            const auto b = img::expandTo8Bit(
-                (px & image.blue_mask) >> bShift, bBits);
-
-            dstRow[x] = img::rgbToGray(r, g, b);
-        }
-    }
+    getGrayscaleDataImpl<bytesPerPixel>(
+        image,
+        buf,
+        pitch,
+        ccTransformer,
+        ccTransformer,
+        ccTransformer);
 }
 
 
@@ -175,25 +158,28 @@ void X11Screenshot::getGrayscaleData(
     std::uint8_t* buf, int pitch) const
 {
     if (image->bits_per_pixel == 32) {
-        if (image->depth == 30)
-            // XRGB 2-10-10-10
-            getGrayscaleData32bpp(
+        getGrayscaleDataImpl<4>(
                 *image, buf, pitch,
-                [](XPixel c)
+                image->depth == 30
+                    // XRGB 2-10-10-10
+                    ? [](XPixel c) { return c / 4; }
+                    // 32 (ARGB 8-8-8-8) and 24 (XRGB 8-8-8-8)
+                    : [](XPixel c) { return c; });
+    } else if (image->bits_per_pixel == 16) {
+        const auto makeExpander = [](unsigned numBits)
+        {
+            return [=](XPixel c)
                 {
-                    return c / 4;
-                });
-        else
-            // 32 (ARGB 8-8-8-8) and 24 (XRGB 8-8-8-8)
-            getGrayscaleData32bpp(
-                *image, buf, pitch,
-                [](XPixel c)
-                {
-                    return c;
-                });
-    } else if (image->bits_per_pixel == 16)
-        getGrayscaleData16bpp(*image, buf, pitch);
-    else
+                    return img::expandTo8Bit(c, numBits);
+                };
+        };
+
+        getGrayscaleDataImpl<2>(
+            *image, buf, pitch,
+            makeExpander(5),
+            makeExpander(image->depth == 16 ? 6 : 5),
+            makeExpander(5));
+    } else
         throw ScreenshotError(
             "Bit depth "
             + std::to_string(image->bits_per_pixel)
