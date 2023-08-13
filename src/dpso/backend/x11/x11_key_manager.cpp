@@ -289,18 +289,25 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
 }
 
 
+static const struct {
+    unsigned x11Mod;
+    DpsoKeyMod dpsoMod;
+} modMap[] = {
+    {ShiftMask, dpsoKeyModShift},
+    {ControlMask, dpsoKeyModCtrl},
+    {Mod1Mask, dpsoKeyModAlt},
+    {Mod4Mask, dpsoKeyModWin},
+};
+static_assert(std::size(modMap) == dpsoNumKeyMods);
+
+
 static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods)
 {
     DpsoKeyMods dpsoMods = dpsoNoKeyMods;
 
-    if (x11Mods & ShiftMask)
-        dpsoMods |= dpsoKeyModShift;
-    if (x11Mods & ControlMask)
-        dpsoMods |= dpsoKeyModCtrl;
-    if (x11Mods & Mod1Mask)
-        dpsoMods |= dpsoKeyModAlt;
-    if (x11Mods & Mod4Mask)
-        dpsoMods |= dpsoKeyModWin;
+    for (const auto& modPair : modMap)
+        if (x11Mods & modPair.x11Mod)
+            dpsoMods |= modPair.dpsoMod;
 
     return dpsoMods;
 }
@@ -310,14 +317,9 @@ static unsigned dpsoModsToX11Mods(DpsoKeyMods dpsoMods)
 {
     unsigned x11Mods = 0;
 
-    if (dpsoMods & dpsoKeyModShift)
-        x11Mods |= ShiftMask;
-    if (dpsoMods & dpsoKeyModCtrl)
-        x11Mods |= ControlMask;
-    if (dpsoMods & dpsoKeyModAlt)
-        x11Mods |= Mod1Mask;
-    if (dpsoMods & dpsoKeyModWin)
-        x11Mods |= Mod4Mask;
+    for (const auto& modPair : modMap)
+        if (dpsoMods & modPair.dpsoMod)
+            x11Mods |= modPair.x11Mod;
 
     return x11Mods;
 }
