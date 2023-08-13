@@ -236,7 +236,7 @@ void WindowsKeyManager::handleWmHotkey(const MSG& msg)
     // 255 bytes (not characters), but GlobalGetAtomName() expects
     // the buffer length in characters.
     static const auto atomNameBufLen = 255 / sizeof(wchar_t) + 1;
-    static wchar_t atomName[atomNameBufLen];
+    wchar_t atomName[atomNameBufLen];
     if (GlobalGetAtomNameW(id, atomName, atomNameBufLen) == 0)
         return;
 
