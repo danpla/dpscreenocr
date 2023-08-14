@@ -68,11 +68,11 @@ if(WIN32)
         add_subdirectory(
             ../dpso_net "${CMAKE_BINARY_DIR}/src/dpso_net")
     endif()
-    target_link_libraries(dpso PRIVATE dpso_net)
 
     pkg_search_module(JANSSON REQUIRED jansson>=2)
+
     target_include_directories(dpso PRIVATE ${JANSSON_INCLUDE_DIRS})
-    target_link_libraries(dpso PRIVATE ${JANSSON_LIBRARIES})
+    target_link_libraries(dpso PRIVATE dpso_net ${JANSSON_LIBRARIES})
 else()
     target_sources(dpso PRIVATE ocr/tesseract/lang_manager_null.cpp)
 endif()
@@ -97,17 +97,18 @@ if(NOT TARGET dpso_utils)
     add_subdirectory(
         ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
-target_link_libraries(dpso PRIVATE dpso_utils)
 
 if(NOT TARGET stb_image_resize)
     add_subdirectory(
         ../thirdparty/stb_image_resize
         "${CMAKE_BINARY_DIR}/src/thirdparty/stb_image_resize")
 endif()
-target_link_libraries(dpso PRIVATE stb_image_resize)
 
 find_package(Threads REQUIRED)
-target_link_libraries(dpso PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+
+target_link_libraries(
+    dpso
+    PRIVATE dpso_utils stb_image_resize ${CMAKE_THREAD_LIBS_INIT})
 
 if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)
@@ -117,7 +118,8 @@ if(UNIX AND NOT APPLE)
 
     target_include_directories(
         dpso PRIVATE ${X11_INCLUDE_DIR} ${X11_Xshape_INCLUDE_PATH})
-    target_link_libraries(dpso PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
+    target_link_libraries(
+        dpso PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
 endif()
 
 # TODO: If Tesseract was installed via CMake, we can also try to use
