@@ -118,27 +118,6 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 }
 
 
-static bool getLine(std::FILE* fp, std::string& line)
-{
-    line.clear();
-
-    while (true) {
-        const auto c = std::fgetc(fp);
-        if (c == EOF)
-            return !line.empty();
-
-        // We don't care about line ending formats (e.g. CRLF) since
-        // empty lines are ignored anyway.
-        if (c == '\n' || c == '\r')
-            break;
-
-        line += c;
-    }
-
-    return true;
-}
-
-
 // Our file format allows using any byte values, so we don't use the
 // text mode (i.e. fopen() without the "b" flag) for IO - neither for
 // reading nor for writing - to avoid surprises when we actually need
@@ -168,10 +147,17 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
     std::string line;
     DpsoCfg::KeyValue kv;
-    while (getLine(fp.get(), line)) {
+    while (dpso::os::readLine(fp.get(), line)) {
         parseKeyValue(line.c_str(), kv);
         if (!kv.key.empty())
             dpsoCfgSetStr(cfg, kv.key.c_str(), kv.value.c_str());
+    }
+
+    if (std::ferror(fp.get())) {
+        dpsoSetError("Error while reading file");
+
+        cfg->keyValues.clear();
+        return false;
     }
 
     return true;

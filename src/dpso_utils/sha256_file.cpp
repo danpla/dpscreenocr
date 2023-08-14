@@ -71,19 +71,7 @@ static std::string loadDigestFromSha256File(
     std::FILE* fp, const char* expectedFileName)
 {
     std::string line;
-
-    while (true) {
-        const auto c = std::fgetc(fp);
-        if (c == EOF || c == '\r' || c == '\n') {
-            if (c == '\r')
-                if (const auto c2 = std::fgetc(fp); c2 != '\n')
-                    std::ungetc(c2, fp);
-
-            break;
-        }
-
-        line += c;
-    }
+    os::readLine(fp, line);
 
     if (std::fgetc(fp) != EOF)
         throw Sha256FileError{

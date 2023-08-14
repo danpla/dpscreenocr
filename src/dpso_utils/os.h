@@ -66,6 +66,15 @@ struct StdFileCloser {
 using StdFileUPtr = std::unique_ptr<std::FILE, StdFileCloser>;
 
 
+// Read the next line from a file, terminating on either line break
+// (\r, \n, or \r\n) or end of file. Returns false if the line cannot
+// be read due to either EOF or error; as in other stdio functions,
+// you should check feof() or ferror() to determine which occurred.
+//
+// The function clears the line before performing any action.
+bool readLine(std::FILE* fp, std::string& line);
+
+
 // Throws os::Error.
 void removeFile(const char* filePath);
 

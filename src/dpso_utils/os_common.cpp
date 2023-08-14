@@ -29,4 +29,28 @@ const char* getFileExt(const char* filePath)
 }
 
 
+bool readLine(std::FILE* fp, std::string& line)
+{
+    line.clear();
+
+    while (true) {
+        const auto c = std::fgetc(fp);
+        if (c == EOF)
+            return !std::ferror(fp) && !line.empty();
+
+        if (c == '\r' || c == '\n') {
+            if (c == '\r')
+                if (const auto c2 = std::fgetc(fp); c2 != '\n')
+                    std::ungetc(c2, fp);
+
+            break;
+        }
+
+        line += c;
+    }
+
+    return true;
+}
+
+
 }

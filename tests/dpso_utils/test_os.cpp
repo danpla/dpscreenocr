@@ -212,6 +212,82 @@ static void testFopen()
 }
 
 
+static void testReadLine()
+{
+    const struct Test {
+        const char* text;
+        std::vector<std::string> expectedLines;
+    } tests[] = {
+        {"", {}},
+        {" ", {" "}},
+        {"\r", {""}},
+        {"\n", {""}},
+        {"\r\n", {""}},
+        {"\n\r", {"", ""}},
+        {"\r\r", {"", ""}},
+        {"\n\n", {"", ""}},
+        {"a", {"a"}},
+        {"a\n", {"a"}},
+        {"a\nb\r", {"a", "b"}},
+        {"a\nb\rc", {"a", "b", "c"}},
+        {"a\nb\rc\r\n", {"a", "b", "c"}},
+    };
+
+    const auto* fileName = "test_read_line.txt";
+
+    for (const auto& test : tests) {
+        test::utils::saveText(
+            "testReadLine", fileName, test.text);
+
+        dpso::os::StdFileUPtr fp{
+            dpso::os::fopen(fileName, "rb")};
+        if (!fp)
+            test::fatalError(
+                "os::fopen(\"%s\"): %s\n",
+                fileName,
+                std::strerror(errno));
+
+        std::string line{"initial line content"};
+
+        std::vector<std::string> lines;
+        while (dpso::os::readLine(fp.get(), line))
+            lines.push_back(line);
+
+        if (!line.empty())
+            test::failure(
+                "os::readLine() didn't cleared the line after "
+                "finishing reading\n");
+
+        line = "initial line content for an extra os::readLine()";
+        if (dpso::os::readLine(fp.get(), line))
+            test::failure(
+                "An extra os::readLine() returned true after reading "
+                "was finished\n");
+
+        if (!line.empty())
+            test::failure(
+                "An extra os::readLine() didn't cleared the line\n");
+
+        if (std::ferror(fp.get()))
+            test::fatalError(
+                "Error while reading \"%s\"\n", fileName);
+
+        if (lines != test.expectedLines)
+            test::failure(
+                "Unexpected lines from os::readLine() if \"%s\": "
+                "expected %s, got %s\n",
+                test::utils::escapeStr(test.text).c_str(),
+                test::utils::toStr(
+                    test.expectedLines.begin(),
+                    test.expectedLines.end()).c_str(),
+                test::utils::toStr(
+                    lines.begin(), lines.end()).c_str());
+    }
+
+    test::utils::removeFile(fileName);
+}
+
+
 static void testRemoveFile()
 {
     test::utils::saveText(
@@ -362,6 +438,7 @@ static void testOs()
     testGetFileExt();
     testGetFileSize();
     testFopen();
+    testReadLine();
     testRemoveFile();
     testReplace();
     testSyncFile();
