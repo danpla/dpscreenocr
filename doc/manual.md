@@ -32,6 +32,12 @@ The [dpScreenOCR website][] provides an installer and a ZIP archive.
 The latter doesn't need installation: unpack it anywhere and run
 dpscreenocr.exe.
 
+Both versions are identical. In particular, the ZIP variant is not a
+so-called [portable application][]: it stores its configuration and
+other files in the same directories as the installer version.
+
+[Portable application]: https://en.wikipedia.org/wiki/Portable_application
+
 
 ## Installing languages
 
@@ -85,15 +91,6 @@ The rest of this chapter will describe the various settings that you
 can find in the Main tab.
 
 
-## Status
-
-The status describes the current state of dpScreenOCR. Green means the
-program is ready to use, and you can press the hotkey to start the
-selection. Yellow shows the progress of recognition. Red warns that
-the program needs some setup, and you will not be able to start the
-selection until the problem is fixed.
-
-
 ## Character recognition
 
 
@@ -124,16 +121,10 @@ languages. It is not available on Unix-like systems, where you can
 handle languages via the system package manager as described in the
 "[Installing languages][]" section.
 
-When you open the language manager, it will try to fetch the list of
-available languages from the Internet. If it fails (e.g., if there is
-no network connection), you can still remove languages in the
-corresponding tab.
-
-To install, update, or remove languages, switch to the appropriate
-tab, select one or more languages, and press the action button below
-the language list. You can also use the filter entry to quickly find
-the languages you need; filtering is case-insensitive and applies to
-all columns.
+When you open the manager, it will try to fetch the list of available
+languages from the Internet. If it fails (e.g., if there is no network
+connection), you can still remove languages using the corresponding
+tab.
 
 
 ## Actions
@@ -372,8 +363,8 @@ the author by email; the link is at the bottom of the
 
     You need to switch to the X11/Xorg session, as dpScreenOCR doesn't
     work with Wayland yet. In most desktop environments, you can do
-    this from a dedicated menu (sometimes hidden under the gear
-    button) when the login screen asks for the password.
+    this from a dedicated menu (sometimes hidden under a gear button)
+    when the login screen asks for the password.
 
 *   **(Unix) No languages**
 
