@@ -1,4 +1,4 @@
-1.4.0 (2023-??-??)
+1.4.0 (2023-08-15)
 ==================
 
 * Fixed recognition with vertical variants of Chinese, Japanese, and
