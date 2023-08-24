@@ -45,7 +45,7 @@ static int cmpKeys(const char* a, const char* b)
 
 
 template<typename T>
-static auto keyValuesLowerBound(T& keyValues, const char* key)
+static auto getLowerBound(T& keyValues, const char* key)
 {
     return std::lower_bound(
         keyValues.begin(), keyValues.end(), key,
@@ -252,7 +252,7 @@ const char* dpsoCfgGetStr(
     if (!cfg)
         return defaultVal;
 
-    const auto iter = keyValuesLowerBound(cfg->keyValues, key);
+    const auto iter = getLowerBound(cfg->keyValues, key);
     if (iter != cfg->keyValues.end()
             && cmpKeys(iter->key.c_str(), key) == 0)
         return iter->value.c_str();
@@ -275,7 +275,7 @@ void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
     if (!isValidKey(key))
         return;
 
-    const auto iter = keyValuesLowerBound(cfg->keyValues, key);
+    const auto iter = getLowerBound(cfg->keyValues, key);
     if (iter != cfg->keyValues.end() &&
             cmpKeys(iter->key.c_str(), key) == 0)
         iter->value = val;
