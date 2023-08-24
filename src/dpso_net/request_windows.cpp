@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <cstring>
 #include <string>
 #include <utility>
 #include <vector>
@@ -55,9 +54,11 @@ void throwLastError(const char* info)
     // circumstances it is used, but the Internet says that one of the
     // reasons could be a wrong TLS configuration.
     case ERROR_INTERNET_CANNOT_CONNECT:  // 12029
+        [[fallthrough]];
     // ERROR_INTERNET_NAME_NOT_RESOLVED is set by InternetOpenUrl()
     // when there's no connection.
     case ERROR_INTERNET_NAME_NOT_RESOLVED:  // 12007
+        [[fallthrough]];
     // ERROR_INTERNET_TIMEOUT is set when the connection is
     // interrupted when using InternetReadFile().
     case ERROR_INTERNET_TIMEOUT:  // 12002
@@ -108,7 +109,7 @@ public:
     WindowsResponse(InternetUPtr hInternet, InternetUPtr hConnection)
         : hInternet{std::move(hInternet)}
         , hConnection{std::move(hConnection)}
-        , size{getContentLength(this->hConnection.get())}
+        , contentLength{getContentLength(this->hConnection.get())}
         , buf{}
         , bufPos{}
     {
@@ -116,14 +117,14 @@ public:
 
     std::optional<std::int64_t> getSize() const override
     {
-        return size;
+        return contentLength;
     }
 
     std::size_t read(void* dst, std::size_t dstSize) override;
 private:
     InternetUPtr hInternet;
     InternetUPtr hConnection;
-    std::optional<std::int64_t> size;
+    std::optional<std::int64_t> contentLength;
     std::vector<unsigned char> buf;
     std::size_t bufPos;
 };
@@ -144,16 +145,14 @@ std::size_t WindowsResponse::read(void* dst, std::size_t dstSize)
         assert(bufPos <= buf.size());
 
         if (bufPos < buf.size()) {
-            const auto availSrcSize = buf.size() - bufPos;
-
             assert(dstPos <= dstSize);
-            const auto availDstSize = dstSize - dstPos;
 
-            const auto numRead = std::min(availDstSize, availSrcSize);
-            std::memcpy(
-                static_cast<unsigned char*>(dst) + dstPos,
+            const auto numRead = std::min(
+                dstSize - dstPos, buf.size() - bufPos);
+            std::copy_n(
                 buf.data() + bufPos,
-                numRead);
+                numRead,
+                static_cast<unsigned char*>(dst) + dstPos);
 
             bufPos += numRead;
             dstPos += numRead;
@@ -260,7 +259,7 @@ std::unique_ptr<Response> makeGetRequest(
 
     const auto statusCode = getStatusCode(hConnection.get());
     if (statusCode != 200)
-        throw Error{str::printf("HTTP code %lu", statusCode)};
+        throw Error{str::printf("HTTP status code %lu", statusCode)};
 
     return std::make_unique<WindowsResponse>(
         std::move(hInternet),
