@@ -4,18 +4,21 @@ project(dpso)
 
 include(CMakeDependentOption)
 
-# This option is intended to be turned on when Tesseract is shipped
-# with the program (e.g. statically linked or bundled with AppImage).
-# Otherwise, the language manager will be disabled, because language
-# packs for system-wide Tesseract should be installed via the package
-# manager.
+string(
+    CONCAT DPSO_USE_DEFAULT_TESSERACT_DATA_PATH_DESCRIPTION
+    "Use the default Tesseract data path instead of the explicit "
+    "one. You should disable this if Tesseract is going to be "
+    "shipped with the program (e.g., statically linked or bundled in "
+    "AppImage). Otherwise, the language manager will be disabled, "
+    "because language packs for system-wide Tesseract should be "
+    "installed via the package manager.")
 cmake_dependent_option(
-    DPSO_USE_EXPLICIT_TESSERACT_DATA_PATH
-    "Use an explicit Tesseract data path instead of the default one."
-    NO
+    DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
+    "${DPSO_USE_DEFAULT_TESSERACT_DATA_PATH_DESCRIPTION}"
+    YES
     "UNIX; NOT APPLE"
-    YES)
-mark_as_advanced(DPSO_TESSERACT_USE_EXPLICIT_DATA_PATH)
+    NO)
+mark_as_advanced(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
 
 add_library(
     dpso
@@ -67,7 +70,7 @@ endif()
 find_package(PkgConfig REQUIRED)
 
 # Language manager
-if(DPSO_USE_EXPLICIT_TESSERACT_DATA_PATH)
+if(NOT DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
     target_sources(
         dpso
         PRIVATE
@@ -88,7 +91,10 @@ else()
 endif()
 
 target_compile_definitions(
-    dpso PRIVATE DPSO_DLL=$<BOOL:${BUILD_SHARED_LIBS}>)
+    dpso
+    PRIVATE
+    DPSO_DLL=$<BOOL:${BUILD_SHARED_LIBS}>
+    DPSO_USE_DEFAULT_TESSERACT_DATA_PATH=$<BOOL:${DPSO_USE_DEFAULT_TESSERACT_DATA_PATH}>)
 
 set_target_properties(
     dpso PROPERTIES

@@ -37,7 +37,7 @@ std::string getMajorVersionString()
 
 EngineInfo::DataDirPreference getDataDirPreference()
 {
-    #if defined(__unix__) && !defined(__APPLE__)
+    #if DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
     return EngineInfo::DataDirPreference::preferDefault;
     #else
     return EngineInfo::DataDirPreference::preferExplicit;
