@@ -2,6 +2,21 @@ cmake_minimum_required(VERSION 3.16)
 
 project(dpso)
 
+include(CMakeDependentOption)
+
+# This option is intended to be turned on when Tesseract is shipped
+# with the program (e.g. statically linked or bundled with AppImage).
+# Otherwise, the language manager will be disabled, because language
+# packs for system-wide Tesseract should be installed via the package
+# manager.
+cmake_dependent_option(
+    DPSO_USE_EXPLICIT_TESSERACT_DATA_PATH
+    "Use an explicit Tesseract data path instead of the default one."
+    NO
+    "UNIX; NOT APPLE"
+    YES)
+mark_as_advanced(DPSO_TESSERACT_USE_EXPLICIT_DATA_PATH)
+
 add_library(
     dpso
 
@@ -52,12 +67,7 @@ endif()
 find_package(PkgConfig REQUIRED)
 
 # Language manager
-# For now, the language manager is only available on Windows, because
-# on Unix-like systems we use the system package manager instead. But
-# in fact, dpso_net is the only piece that is not implemented for
-# Unix-like systems, so we can remove platform-specific checks below
-# once we add a libcurl backed for dpso_net.
-if(WIN32)
+if(DPSO_USE_EXPLICIT_TESSERACT_DATA_PATH)
     target_sources(
         dpso
         PRIVATE

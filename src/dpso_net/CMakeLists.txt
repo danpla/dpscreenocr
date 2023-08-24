@@ -10,14 +10,15 @@ add_library(
 )
 
 if(WIN32)
-    target_sources(
-        dpso_net
-        PRIVATE
-        request_windows.cpp)
-
+    target_sources(dpso_net PRIVATE request_windows.cpp)
     target_link_libraries(dpso_net PRIVATE wininet)
 else()
-    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
+    target_sources(dpso_net PRIVATE request_curl.cpp)
+
+    # curl_multi_wait() was added in 7.28.
+    find_package(CURL 7.28 REQUIRED)
+    target_include_directories(dpso_net PRIVATE ${CURL_INCLUDE_DIRS})
+    target_link_libraries(dpso_net PRIVATE ${CURL_LIBRARIES})
 endif()
 
 set_target_properties(
