@@ -25,10 +25,9 @@ Usage
 Building
 --------
 
-To compile the launcher, you need to set the following CMake
-variables:
+To build the launcher, you need to set the following CMake variables:
 
-  * LAUNCHER_EXE_PATH - path of the executable to be launched
+  * LAUNCHER_EXE_PATH - path to the executable to be launched
 
   * LAUNCHER_LIB_DIR_PATH - path to the directory with bundled
     libraries
