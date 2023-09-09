@@ -10,22 +10,59 @@
 #include "dpso_utils/str.h"
 
 #include "error.h"
+#include "request_curl_lib.h"
 
 
 namespace dpso::net {
 namespace {
 
 
-struct CurlGlobalInit {
+// curl_global_init() docs say:
+//
+//   [...] you must not call this function when any other thread in
+//   the program (i.e. a thread sharing the same memory) is running.
+//   This does not just mean no other thread that is using libcurl.
+//   Because curl_global_init calls functions of other libraries that
+//   are similarly thread unsafe, it could conflict with any other
+//   thread that uses these other libraries.
+//
+// The documentation suggest to call curl_global_init/cleanup() either
+// from the very begin/end of main(), or from constructor/destructor
+// of a global static C++ object.
+//
+// For details, see:
+// * https://curl.se/libcurl/c/curl_global_init.html
+// * "Global constants" at https://curl.se/libcurl/c/libcurl.html
+class CurlGlobalInit {
+public:
     CurlGlobalInit()
     {
-        curl_global_init(CURL_GLOBAL_ALL);
+        try {
+            const auto& libCurl = LibCurl::get();
+
+            const auto code = libCurl.global_init(CURL_GLOBAL_ALL);
+            if (code != CURLE_OK)
+                errorText = str::printf(
+                    "curl_global_init: %s",
+                    libCurl.easy_strerror(code));
+        } catch (Error& e) {
+            errorText = e.what();
+        }
     }
 
     ~CurlGlobalInit()
     {
-        curl_global_cleanup();
+        if (errorText.empty())
+            LibCurl::get().global_cleanup();
     }
+
+    // The text is empty if there was no error.
+    const std::string& getErrorText() const
+    {
+        return errorText;
+    }
+private:
+    std::string errorText;
 };
 
 
@@ -35,7 +72,7 @@ const CurlGlobalInit curlGlobalInit;
 struct CurlMDeleter {
     void operator()(CURLM* curlM) const
     {
-        curl_multi_cleanup(curlM);
+        LibCurl::get().multi_cleanup(curlM);
     }
 };
 
@@ -46,7 +83,7 @@ using CurlMUPtr = std::unique_ptr<CURLM, CurlMDeleter>;
 struct CurlDeleter {
     void operator()(CURL* curl) const
     {
-        curl_easy_cleanup(curl);
+        LibCurl::get().easy_cleanup(curl);
     }
 };
 
@@ -60,12 +97,12 @@ public:
         : curlM{curlM}
         , curl{curl}
     {
-        curl_multi_add_handle(curlM, curl);
+        LibCurl::get().multi_add_handle(curlM, curl);
     }
 
     ~CurlMConnector()
     {
-        curl_multi_remove_handle(curlM, curl);
+        LibCurl::get().multi_remove_handle(curlM, curl);
     }
 private:
     CURLM* curlM;
@@ -84,6 +121,7 @@ public:
 
     std::size_t read(void* dst, std::size_t dstSize) override;
 private:
+    const LibCurl& libCurl;
     char curlError[CURL_ERROR_SIZE]{};
     CurlMUPtr curlM;
     CurlUPtr curl;
@@ -125,12 +163,13 @@ private:
 
 
 CurlResponse::CurlResponse(const char* url, const char* userAgent)
+    : libCurl{LibCurl::get()}
 {
-    curlM.reset(curl_multi_init());
+    curlM.reset(libCurl.multi_init());
     if (!curlM)
         throw Error{"curl_multi_init() failed"};
 
-    curl.reset(curl_easy_init());
+    curl.reset(libCurl.easy_init());
     if (!curl)
         throw Error{"curl_easy_init() failed"};
 
@@ -140,7 +179,7 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
     // instead.
     #define SETOPT(OPT, PARAM) \
     do { \
-        const auto code = curl_easy_setopt(curl.get(), OPT, PARAM); \
+        const auto code = libCurl.easy_setopt(curl.get(), OPT, PARAM); \
         if (code != CURLE_OK) \
             throwError("curl_easy_setopt() " #OPT, code); \
     } while (false)
@@ -195,10 +234,10 @@ void CurlResponse::throwError(const char* description, CURLcode code)
 {
     assert(code != CURLE_OK);
 
-    const auto message =
-        std::string{description}
-        + ": "
-        + (curlError[0] ? curlError : curl_easy_strerror(code));
+    const auto message = str::printf(
+        "%s: %s",
+        description,
+        *curlError ? curlError : libCurl.easy_strerror(code));
 
     // cURL versions before 7.60.0 don't clear the buffer before
     // returning an error code if there were no error details, so we
@@ -221,8 +260,8 @@ void CurlResponse::throwError(const char* description, CURLcode code)
 void CurlResponse::throwError(const char* description, CURLMcode code)
 {
     assert(code != CURLM_OK);
-    throw Error{
-        std::string{description} + ": " + curl_multi_strerror(code)};
+    throw Error{str::printf(
+        "%s: %s", description, LibCurl::get().multi_strerror(code))};
 }
 
 
@@ -321,18 +360,18 @@ void CurlResponse::performTransferStep()
     if (transferDone)
         return;
 
-    auto code = curl_multi_wait(
+    auto code = libCurl.multi_wait(
         curlM.get(), nullptr, 0, 500, nullptr);
     if (code != CURLM_OK)
         throwError("curl_multi_wait()", code);
 
     int numRunningHandles{};
-    code = curl_multi_perform(curlM.get(), &numRunningHandles);
+    code = libCurl.multi_perform(curlM.get(), &numRunningHandles);
     if (code != CURLM_OK)
         throwError("curl_multi_perform()", code);
 
     int numMsgsInQueue{};
-    while (const auto* msg = curl_multi_info_read(
+    while (const auto* msg = libCurl.multi_info_read(
             curlM.get(), &numMsgsInQueue)) {
         assert(msg->easy_handle == curl.get());
 
@@ -391,6 +430,10 @@ std::size_t CurlResponse::read()
 std::unique_ptr<Response> makeGetRequest(
     const char* url, const char* userAgent)
 {
+    if (const auto& errorText = curlGlobalInit.getErrorText();
+            !errorText.empty())
+        throw Error{"libcurl initialization failed: " + errorText};
+
     return std::make_unique<CurlResponse>(url, userAgent);
 }
 

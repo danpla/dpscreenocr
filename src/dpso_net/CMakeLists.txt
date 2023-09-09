@@ -9,16 +9,40 @@ add_library(
     get_data.cpp
 )
 
+include(CMakeDependentOption)
+string(
+    CONCAT DPSO_DYNAMIC_CURL_DESCRIPTION
+    "Load libcurl dynamically. You should enable this option if "
+    "libcurl is going to be shipped with the program (e.g., bundled "
+    "in AppImage)")
+cmake_dependent_option(
+    DPSO_DYNAMIC_CURL
+    "${DPSO_DYNAMIC_CURL_DESCRIPTION}"
+    NO
+    "UNIX; NOT APPLE"
+    NO)
+
 if(WIN32)
     target_sources(dpso_net PRIVATE request_windows.cpp)
     target_link_libraries(dpso_net PRIVATE wininet)
 else()
-    target_sources(dpso_net PRIVATE request_curl.cpp)
+    target_sources(
+        dpso_net PRIVATE request_curl.cpp request_curl_lib.cpp)
 
     # curl_multi_wait() was added in 7.28.
     find_package(CURL 7.28 REQUIRED)
     target_include_directories(dpso_net PRIVATE ${CURL_INCLUDE_DIRS})
-    target_link_libraries(dpso_net PRIVATE ${CURL_LIBRARIES})
+
+    target_compile_definitions(
+        dpso_net
+        PRIVATE
+        DPSO_DYNAMIC_CURL=$<BOOL:${DPSO_DYNAMIC_CURL}>)
+
+    if(DPSO_DYNAMIC_CURL)
+        target_link_libraries(dpso_net PRIVATE dl)
+    else()
+        target_link_libraries(dpso_net PRIVATE ${CURL_LIBRARIES})
+    endif()
 endif()
 
 set_target_properties(
