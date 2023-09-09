@@ -1,7 +1,7 @@
 
 #include "request_curl_lib.h"
 
-#ifdef DPSO_DYNAMIC_CURL
+#if DPSO_DYNAMIC_CURL
 #include <dlfcn.h>
 #endif
 

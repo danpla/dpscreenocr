@@ -10,6 +10,7 @@ add_library(
 )
 
 include(CMakeDependentOption)
+
 string(
     CONCAT DPSO_DYNAMIC_CURL_DESCRIPTION
     "Load libcurl dynamically. You should enable this option if "
