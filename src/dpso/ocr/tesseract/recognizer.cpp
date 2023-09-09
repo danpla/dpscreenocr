@@ -9,7 +9,7 @@
 #include <tesseract/baseapi.h>
 #include <tesseract/ocrclass.h>
 
-#include "dpso_utils/path_encoding.h"
+#include "dpso_utils/os.h"
 
 #include "ocr/recognizer_error.h"
 #include "ocr/tesseract/lang_names.h"
@@ -154,7 +154,7 @@ OcrResult TesseractRecognizer::recognize(
 
     std::string sysDataDir;
     try {
-        sysDataDir = convertPathFromUtf8ToSys(dataDir.c_str());
+        sysDataDir = os::convertUtf8PathToSys(dataDir.c_str());
     } catch (std::runtime_error& e) {
         return {
             OcrResult::Status::error,

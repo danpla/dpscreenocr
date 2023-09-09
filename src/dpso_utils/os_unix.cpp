@@ -75,6 +75,12 @@ std::string getBaseName(const char* path)
 }
 
 
+std::string convertUtf8PathToSys(const char* utf8Path)
+{
+    return utf8Path;
+}
+
+
 std::int64_t getFileSize(const char* filePath)
 {
     struct stat st;

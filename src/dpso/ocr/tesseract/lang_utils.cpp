@@ -11,7 +11,7 @@
 #include <tesseract/strngs.h>
 #endif
 
-#include "dpso_utils/path_encoding.h"
+#include "dpso_utils/os.h"
 
 #include "ocr/error.h"
 
@@ -36,7 +36,7 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
 {
     std::string sysDataDir;
     try {
-        sysDataDir = convertPathFromUtf8ToSys(dataDir);
+        sysDataDir = os::convertUtf8PathToSys(dataDir);
     } catch (std::runtime_error& e) {
         throw Error{
             std::string{"Can't convert dataDir to system encoding: "}

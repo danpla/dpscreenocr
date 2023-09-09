@@ -5,6 +5,9 @@
 #include <cstring>
 #include <io.h>
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 #include "windows/error.h"
 #include "windows/utf.h"
 
@@ -147,6 +150,50 @@ std::string getBaseName(const char* path)
 {
     const auto parts = splitPath(path);
     return {parts.baseBegin, parts.baseEnd};
+}
+
+
+// Returns the checked result of WideCharToMultiByte(), always > 0.
+static int utf16ToAcp(
+    const wchar_t* utf16Str, char* dst, int dstSize)
+{
+    BOOL defaultCharUsed{};
+
+    const auto sizeWithNull = WideCharToMultiByte(
+        CP_ACP,
+        WC_NO_BEST_FIT_CHARS,
+        utf16Str, -1,
+        dst, dstSize,
+        nullptr, &defaultCharUsed);
+
+    if (sizeWithNull <= 0)
+        throwLastError("WideCharToMultiByte(CP_ACP, ...)");
+
+    if (defaultCharUsed)
+        throw Error{
+            "UTF-16 string contains characters that cannot be "
+            "represented by the current code page "
+            "(cp" + std::to_string(GetACP()) + ")"};
+
+    return sizeWithNull;
+}
+
+
+static std::string utf16ToAcp(const wchar_t* utf16Str)
+{
+    const auto sizeWithNull = utf16ToAcp(utf16Str, nullptr, 0);
+    std::string result(sizeWithNull - 1, 0);
+    utf16ToAcp(utf16Str, result.data(), sizeWithNull);
+    return result;
+}
+
+
+std::string convertPathFromUtf8ToSys(const char* utf8Path)
+{
+    if (GetACP() == CP_UTF8)
+        return utf8Path;
+
+    return utf16ToAcp(DPSO_WIN_TO_UTF16(utf8Path).c_str());
 }
 
 
