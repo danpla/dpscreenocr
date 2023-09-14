@@ -3,6 +3,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <shellapi.h>
 #include <shobjidl.h>
 
 #include "dpso_ext/user_dirs.h"
@@ -118,6 +119,12 @@ static bool shellCopy(
             dpso::windows::getHresultMessage(hresult).c_str());
         return false;
     }
+
+    hresult = fileOp->SetOperationFlags(
+        FOF_NOCONFIRMMKDIR
+        | FOF_NOERRORUI
+        | FOFX_EARLYFAILURE
+        | FOF_SILENT);
 
     hresult = fileOp->PerformOperations();
     if (FAILED(hresult)) {
