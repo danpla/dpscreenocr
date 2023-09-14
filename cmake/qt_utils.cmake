@@ -1,6 +1,4 @@
 
-include(CMakeParseArguments)
-
 # Copy standard Qt translations from SRC_DIR to DST_DIR.
 #
 # copy_qt_translations(

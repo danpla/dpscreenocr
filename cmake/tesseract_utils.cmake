@@ -1,6 +1,4 @@
 
-include(CMakeParseArguments)
-
 # Get name of tesseract data directory to be used in install().
 #
 # The returned string may be empty if the Tesseract version was not
