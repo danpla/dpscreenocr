@@ -2,18 +2,23 @@
 # Generate inno_setup_config.isi.
 function(gen_inno_setup_config)
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(APP_IS_64_BIT 1)
+        set(APP_IS_64_BIT Yes)
     elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-        set(APP_IS_64_BIT 0)
+        set(APP_IS_64_BIT No)
     else()
         message(
             FATAL_ERROR
             "Unexpected CMAKE_SIZEOF_VOID_P (${CMAKE_SIZEOF_VOID_P})")
     endif()
 
-    set(APP_USES_NLS ${DPSO_ENABLE_NLS})
-    set(APP_UI ${DPSO_UI})
-    set(APP_TESSERACT_VERSION_MAJOR ${DPSO_TESSERACT_VERSION_MAJOR})
+    set(APP_USES_NLS "${DPSO_ENABLE_NLS}")
+
+    set(APP_UI "${DPSO_UI}")
+    if(DPSO_UI STREQUAL "qt")
+        set(APP_UI "${APP_UI}${DPSO_QT_VERSION}")
+    endif()
+
+    set(APP_TESSERACT_VERSION_MAJOR "${DPSO_TESSERACT_VERSION_MAJOR}")
 
     string(REPLACE "/" "\\" APP_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
 

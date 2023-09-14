@@ -109,16 +109,16 @@ Source: "{#TESSERACT_DATA_DIR}\{#ENG_TRAINEDDATA}"; \
   Check: ShouldCopyEngTraineddataForCurrentUser(); \
   Flags: ignoreversion uninsneveruninstall
 
-#if APP_UI == "qt"
-Source: "platforms\*"; \
-  DestDir: "{app}\platforms"; \
-  Flags: ignoreversion recursesubdirs
-Source: "styles\*"; \
-  DestDir: "{app}\styles"; \
+#if APP_UI == "qt5" || APP_UI == "qt6"
+Source: "qt.conf"; \
+  DestDir: "{app}"; \
+  Flags: ignoreversion
+Source: "{#APP_UI}\plugins\*"; \
+  DestDir: "{app}\{#APP_UI}\plugins"; \
   Flags: ignoreversion recursesubdirs
 #if APP_USES_NLS
-Source: "translations\*"; \
-  DestDir: "{app}\translations"; \
+Source: "{#APP_UI}\translations\*"; \
+  DestDir: "{app}\{#APP_UI}\translations"; \
   Flags: ignoreversion recursesubdirs
 #endif
 #endif
