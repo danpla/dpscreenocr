@@ -41,7 +41,7 @@ Required:
   * Make
   * Qt 5.3.2 - 6. DPSO_QT_VERSION CMake option.
   * tesseract >= 4.1.0
-  * jansson
+  * jansson >= 2.7
   * pkg-config (recent MSYS2 uses a compatible pkgconf tool)
   * dos2unix
 

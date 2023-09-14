@@ -82,7 +82,8 @@ if(NOT DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
             ../dpso_net "${CMAKE_BINARY_DIR}/src/dpso_net")
     endif()
 
-    pkg_search_module(JANSSON REQUIRED jansson>=2)
+    # json_string_length() was added in 2.7.
+    pkg_search_module(JANSSON REQUIRED jansson>=2.7)
 
     target_include_directories(dpso PRIVATE ${JANSSON_INCLUDE_DIRS})
     target_link_libraries(dpso PRIVATE dpso_net ${JANSSON_LIBRARIES})
