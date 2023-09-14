@@ -188,7 +188,7 @@ static std::string utf16ToAcp(const wchar_t* utf16Str)
 }
 
 
-std::string convertPathFromUtf8ToSys(const char* utf8Path)
+std::string convertUtf8PathToSys(const char* utf8Path)
 {
     if (GetACP() == CP_UTF8)
         return utf8Path;
