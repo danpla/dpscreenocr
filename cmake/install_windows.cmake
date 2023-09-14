@@ -21,21 +21,37 @@ if(DPSO_UI STREQUAL "qt")
     build_icons(
         "${CMAKE_BINARY_DIR}/icons"
         RASTER_SIZES all)
-
     install(
         DIRECTORY
             "${CMAKE_BINARY_DIR}/icons"
-            "${CMAKE_BINARY_DIR}/platforms"
-            "${CMAKE_BINARY_DIR}/styles"
         DESTINATION .
+        COMPONENT Required)
+
+    install(
+        DIRECTORY "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/plugins"
+        DESTINATION "qt${DPSO_QT_VERSION}"
         COMPONENT Required)
 
     if(DPSO_ENABLE_NLS)
         install(
-            DIRECTORY "${CMAKE_BINARY_DIR}/translations"
-            DESTINATION .
+            DIRECTORY
+                "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
+            DESTINATION "qt${DPSO_QT_VERSION}"
             COMPONENT localization)
     endif()
+
+    string(
+        JOIN "\n" QT_CONF
+        "[Paths]"
+        "Prefix = qt${DPSO_QT_VERSION}")
+    file(
+        GENERATE
+        OUTPUT "${CMAKE_BINARY_DIR}/qt.conf"
+        CONTENT "${QT_CONF}")
+    install(
+        FILES "${CMAKE_BINARY_DIR}/qt.conf"
+        DESTINATION .
+        COMPONENT Required)
 endif()
 
 include(tesseract_utils)
