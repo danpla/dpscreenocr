@@ -144,6 +144,7 @@ static Point getMousePosition()
 }
 
 
+[[noreturn]]
 static void throwLastError(const char* description)
 {
     throw BackendError(
