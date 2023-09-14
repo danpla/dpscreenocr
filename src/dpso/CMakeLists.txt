@@ -18,7 +18,6 @@ cmake_dependent_option(
     YES
     "UNIX; NOT APPLE"
     NO)
-mark_as_advanced(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
 
 add_library(
     dpso
