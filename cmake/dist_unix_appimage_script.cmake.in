@@ -1,0 +1,323 @@
+# This script can be run with "cmake -P". It supports setting a custom
+# name of the generated AppImage via the APPIMAGE_PATH variable:
+#
+#    cmake -DAPPIMAGE_PATH=dir/file.AppImage -P ...
+#
+# If APPIMAGE_PATH is not set, the AppImage file will have the default
+# name and will be created in the current working directory.
+
+
+# Note that we need to support CMake 3.16, while:
+# * COMMAND_ERROR_IS_FATAL in execute_process() was added in 3.19.
+# * REQUIRED in find_program() was added in 3.18.
+
+
+# Create the variables explicitly so that we don't have to mess with
+# @-substitutions all over the script.
+set(CMAKE_COMMAND "@CMAKE_COMMAND@")
+set(CMAKE_GENERATOR "@CMAKE_GENERATOR@")
+set(CMAKE_BINARY_DIR "@CMAKE_BINARY_DIR@")
+set(CMAKE_SOURCE_DIR "@CMAKE_SOURCE_DIR@")
+set(CMAKE_SYSTEM_PROCESSOR "@CMAKE_SYSTEM_PROCESSOR@")
+
+set(APP_NAME "@APP_NAME@")
+set(APP_FILE_NAME "@APP_FILE_NAME@")
+set(APP_VERSION "@APP_VERSION@")
+
+set(DPSO_UI "@DPSO_UI@")
+set(DPSO_ENABLE_NLS "@DPSO_ENABLE_NLS@")
+
+set(BUILD_DIR "${CMAKE_BINARY_DIR}/appimage_build")
+set(APP_DIR "${BUILD_DIR}/AppDir")
+
+
+function(validate_build_settings)
+    set(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
+        "@DPSO_USE_DEFAULT_TESSERACT_DATA_PATH@")
+
+    if(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
+        message(
+            FATAL_ERROR
+            "DPSO_USE_DEFAULT_TESSERACT_DATA_PATH must be disabled for AppImage")
+    endif()
+
+    set(DPSO_DYNAMIC_CURL "@DPSO_DYNAMIC_CURL@")
+    if(NOT DPSO_DYNAMIC_CURL)
+        message(
+            FATAL_ERROR
+            "DPSO_DYNAMIC_CURL must be enabled for AppImage")
+    endif()
+
+    if(NOT DPSO_UI STREQUAL "qt")
+        message(
+            FATAL_ERROR
+            "Building AppImage with \"${DPSO_UI}\" DPSO_UI is not supported")
+    endif()
+endfunction()
+
+
+# Build and install the program as AppDir.
+function(set_up_program)
+    execute_process(
+        COMMAND
+            ${CMAKE_COMMAND}
+            --build ${CMAKE_BINARY_DIR}
+            --parallel
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(FATAL_ERROR "Can't build \"${CMAKE_BINARY_DIR}\"")
+    endif()
+
+    execute_process(
+        COMMAND
+            ${CMAKE_COMMAND}
+            --install ${CMAKE_BINARY_DIR}
+            --strip
+            --prefix ${APP_DIR}/usr
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(
+            FATAL_ERROR
+            "Can't install \"${CMAKE_BINARY_DIR}\" to \"${APP_DIR}/usr\"")
+    endif()
+endfunction()
+
+
+# Build and install the launcher as AppDir/AppRun.
+function(set_up_app_run)
+    set(LAUNCHER_SOURCE_DIR
+        "${CMAKE_SOURCE_DIR}/tools/app_launcher_unix")
+    set(LAUNCHER_BUILD_DIR "${BUILD_DIR}/AppRun")
+
+    execute_process(
+        COMMAND
+            ${CMAKE_COMMAND}
+            -S ${LAUNCHER_SOURCE_DIR}
+            -B ${LAUNCHER_BUILD_DIR}
+            -G ${CMAKE_GENERATOR}
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DLAUNCHER_EXE_PATH=usr/bin/${APP_FILE_NAME}
+            -DLAUNCHER_LIB_DIR_PATH=usr/lib
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(
+            FATAL_ERROR
+            "Can't generate \"${LAUNCHER_BUILD_DIR}\" from \"${LAUNCHER_SOURCE_DIR}\"")
+    endif()
+
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} --build ${LAUNCHER_BUILD_DIR}
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(FATAL_ERROR "Can't build \"${LAUNCHER_BUILD_DIR}\"")
+    endif()
+
+    file(
+        INSTALL "${LAUNCHER_BUILD_DIR}/launcher"
+        DESTINATION "${APP_DIR}"
+        PERMISSIONS
+            OWNER_READ OWNER_WRITE OWNER_EXECUTE
+            GROUP_READ GROUP_EXECUTE
+            WORLD_READ WORLD_EXECUTE)
+    file(RENAME "${APP_DIR}/launcher" "${APP_DIR}/AppRun")
+endfunction()
+
+
+function(bundle_fallback_lib LIB_PATH)
+    get_filename_component(LIB_REAL_PATH "${LIB_PATH}" REALPATH)
+
+    get_filename_component(LIB_NAME "${LIB_PATH}" NAME)
+    get_filename_component(LIB_REAL_NAME "${LIB_REAL_PATH}" NAME)
+
+    set(DIR "${APP_DIR}/usr/lib/fallback/${LIB_NAME}")
+
+    file(COPY "${LIB_REAL_PATH}" DESTINATION "${DIR}")
+    file(CREATE_LINK "${LIB_REAL_NAME}" "${DIR}/${LIB_NAME}" SYMBOLIC)
+endfunction()
+
+
+function(create_qt_conf)
+    string(
+        JOIN "\n" QT_CONF
+        "[Paths]"
+        "Prefix = .."
+        "Plugins = lib/qt/plugins"
+        "Translations = share/qt/translations")
+    file(WRITE "${APP_DIR}/usr/bin/qt.conf" "${QT_CONF}")
+endfunction()
+
+
+function(qmake_query PROP OUT_VAR)
+    find_program(QMAKE_EXE qmake)
+    if(NOT QMAKE_EXE)
+        message(FATAL_ERROR "qmake not found")
+    endif()
+
+    execute_process(
+        COMMAND ${QMAKE_EXE} -query ${PROP}
+        OUTPUT_VARIABLE OUT
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(FATAL_ERROR "\"qmake -query ${PROP}\" failed")
+    endif()
+
+    set(${OUT_VAR} ${OUT} PARENT_SCOPE)
+endfunction()
+
+
+function(bundle_qt_plugins)
+    qmake_query(QT_INSTALL_PLUGINS SRC_DIR)
+    set(DST_DIR "${APP_DIR}/usr/lib/qt/plugins")
+
+    file(
+        COPY "${SRC_DIR}/platforminputcontexts"
+        DESTINATION "${DST_DIR}")
+    file(
+        COPY "${SRC_DIR}/platforms/libqxcb.so"
+        DESTINATION "${DST_DIR}/platforms")
+endfunction()
+
+
+function(bundle_qt_translations)
+    qmake_query(QT_INSTALL_TRANSLATIONS SRC_DIR)
+    set(DST_DIR "${APP_DIR}/usr/share/qt/translations")
+
+    set(LOCALE_DIR "${APP_DIR}/usr/share/locale")
+
+    file(
+        GLOB LOCALES
+        RELATIVE "${LOCALE_DIR}"
+        "${LOCALE_DIR}/*")
+
+    set(COMPONENTS qt qtbase)
+
+    foreach(LOCALE ${LOCALES})
+        foreach(COMPONENT ${COMPONENTS})
+            set(QM "${SRC_DIR}/${COMPONENT}_${LOCALE}.qm")
+            if(EXISTS "${QM}")
+                file(COPY "${QM}" DESTINATION "${DST_DIR}")
+            endif()
+        endforeach()
+    endforeach()
+endfunction()
+
+
+function(set_up_third_party_licenses_dir)
+    set(DST_DOC_DIR "${APP_DIR}/usr/share/doc")
+
+    # This directory is intended to be set up inside a Docker
+    # environment.
+    set(MIL_LICENSES_DIR
+        "/usr/local/share/doc/manually-installed-lib-licenses")
+
+    if(IS_DIRECTORY "${MIL_LICENSES_DIR}")
+        file(GLOB LICENSE_DIRS "${MIL_LICENSES_DIR}/*")
+        file(COPY ${LICENSE_DIRS} DESTINATION "${DST_DOC_DIR}")
+    else()
+        string(
+            CONCAT TEXT
+            "Licenses of manually installed libraries (if any) will "
+            "not be included because the \"${MIL_LICENSES_DIR}\" "
+            "directory where they should be does not exist.")
+        message(WARNING "${TEXT}")
+    endif()
+
+    file(
+        GLOB LICENSE_DIRS
+        RELATIVE "${DST_DOC_DIR}"
+        "${DST_DOC_DIR}/*")
+    list(REMOVE_ITEM LICENSE_DIRS "${APP_FILE_NAME}")
+
+    set(TPL_DIR
+        "${DST_DOC_DIR}/${APP_FILE_NAME}/third-party-licenses")
+    file(MAKE_DIRECTORY "${TPL_DIR}")
+
+    foreach(LICENSE_DIR ${LICENSE_DIRS})
+        file(
+            CREATE_LINK
+                "../../${LICENSE_DIR}" "${TPL_DIR}/${LICENSE_DIR}"
+            SYMBOLIC)
+    endforeach()
+endfunction()
+
+
+# There's no point in doing anything if we don't have linuxdeploy, so
+# find it early.
+set(LINUXDEPLOY_NAMES
+    linuxdeploy
+    "linuxdeploy-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
+find_program(LINUXDEPLOY_EXE NAMES ${LINUXDEPLOY_NAMES})
+if(NOT LINUXDEPLOY_EXE)
+    string(
+        JOIN "\n" TEXT
+        "Can't find linuxdeploy using following names:"
+        ${LINUXDEPLOY_NAMES})
+    message(FATAL_ERROR "${TEXT}")
+endif()
+
+validate_build_settings()
+
+file(REMOVE_RECURSE "${APP_DIR}")
+
+set_up_program()
+set_up_app_run()
+
+bundle_fallback_lib("/usr/lib/x86_64-linux-gnu/libstdc++.so.6")
+
+if(DPSO_UI STREQUAL "qt")
+    create_qt_conf()
+    bundle_qt_plugins()
+
+    if(DPSO_ENABLE_NLS)
+        bundle_qt_translations()
+    endif()
+
+    # Tell linuxdeploy where to find dependencies of Qt plugins.
+    qmake_query(QT_INSTALL_LIBS QT_LIBS_DIR)
+    set(ENV{LD_LIBRARY_PATH} "${QT_LIBS_DIR}:$ENV{LD_LIBRARY_PATH}")
+endif()
+
+# Setting LINUXDEPLOY_OUTPUT_APP_NAME is not actually necessary, as
+# it's read from the desktop file by default.
+set(ENV{LINUXDEPLOY_OUTPUT_APP_NAME} "${APP_NAME}")
+
+# We should set LINUXDEPLOY_OUTPUT_VERSION even if the AppImage file
+# name is set explicitly, because the version will also be written to
+# the desktop file.
+set(ENV{LINUXDEPLOY_OUTPUT_VERSION} "${APP_VERSION}")
+
+set(ENV{LDAI_NO_APPSTREAM} "1")
+
+if(APPIMAGE_PATH)
+    set(ENV{LDAI_OUTPUT} "${APPIMAGE_PATH}")
+endif()
+
+# Linuxdeploy automatically collects licenses of libraries installed
+# via the package manager, so we need to call it two times: one for
+# the main AppDir setup, after which we can handle these licenses for
+# our "third-party-licenses" dir, and the second time to create the
+# actual AppImage file with "--output=appimage".
+execute_process(
+    COMMAND ${LINUXDEPLOY_EXE} --appdir=${APP_DIR}
+    RESULT_VARIABLE EXIT_STATUS)
+if(NOT EXIT_STATUS EQUAL 0)
+    message(FATAL_ERROR "linuxdeploy failed")
+endif()
+
+set_up_third_party_licenses_dir()
+
+# This time we call linuxdeploy to build the actual AppImage. We now
+# have a fully set up AppDir, so force --verbosity to errors since we
+# already saw the messages from the linuxdeploy itself (this will not
+# inhibit messages from appimagetool).
+execute_process(
+    COMMAND
+        ${LINUXDEPLOY_EXE}
+        --verbosity=3
+        --appdir=${APP_DIR}
+        --output=appimage
+    RESULT_VARIABLE EXIT_STATUS)
+if(NOT EXIT_STATUS EQUAL 0)
+    message(FATAL_ERROR "linuxdeploy failed")
+endif()

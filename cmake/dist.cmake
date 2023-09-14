@@ -11,7 +11,9 @@ set(CPACK_PACKAGE_HOMEPAGE_URL "${APP_URL}")
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
 
-if(WIN32)
+if(UNIX AND NOT APPLE)
+    include(dist_unix_appimage)
+elseif(WIN32)
     include(dist_windows_iss)
 endif()
 

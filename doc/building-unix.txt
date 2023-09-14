@@ -59,3 +59,50 @@ from paths relative to the location of the executable, rather than
 from absolute paths based on the installation prefix. For example, you
 can install in "~/dpscreenocr", then move the "dpscreenocr" directory
 to a different location, and the program will still work correctly.
+
+
+Packaging
+=========
+
+
+AppImage
+--------
+
+It's recommended to create an AppImage from within a Docker
+environment that you can find in the "tools/docker_env" directory. It
+uses an old OS distribution to make sure that the resulting AppImage
+will work even on legacy systems, and has all the necessary
+dependencies configured. Read "tools/docker_env/readme.txt" for the
+details.
+
+If you are not using a Docker image, you will need to install
+additional dependencies beyond those listed in the "Dependencies"
+section above:
+
+  * libcurl >= 7.28. If your system provides several flavors of
+    libcurl, it doesn't matter which one to install: dpScreenOCR will
+    dynamically load libcurl instead of linking against it, so only
+    the headers are needed when building. It usually makes sense to
+    use the flavor whose runtime version is already installed: this
+    avoids downloading unnecessary transitive dependencies.
+
+  * libjansson >= 2.7
+
+  * linuxdeploy (https://github.com/linuxdeploy/linuxdeploy/releases)
+    CMake will search for linuxdeploy in your PATH under the names
+    "linuxdeploy" and "linuxdeploy-ARCH.AppImage", where ARCH is the
+    output of "uname -m".
+
+On Debian, Ubuntu, and derivatives, you can install libcurl and
+libjansson with:
+
+    sudo apt-get install libcurl4-gnutls-dev libjansson-dev
+
+The process of creating an AppImage is now independent of whether you
+are inside a Docker image: use the steps described in the "Building"
+section above, with two important differences:
+
+  * Disable DPSO_USE_DEFAULT_TESSERACT_DATA_PATH and enable
+    DPSO_DYNAMIC_CURL CMake options.
+
+  * Call "make appimage" instead of just "make".

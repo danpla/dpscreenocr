@@ -1,0 +1,12 @@
+diff -Naur a/src/plugins/platforms/xcb/qxcbconnection.cpp b/src/plugins/platforms/xcb/qxcbconnection.cpp
+--- a/src/plugins/platforms/xcb/qxcbconnection.cpp	2021-11-16 07:41:20.000000000 +0100
++++ b/src/plugins/platforms/xcb/qxcbconnection.cpp	2023-09-09 12:43:44.168887885 +0200
+@@ -862,7 +862,7 @@
+ 
+ 
+         QXcbWindow::setWindowTitle(connection(), m_clientLeader,
+-                                   QStringLiteral("Qt Client Leader Window"));
++                                   QGuiApplication::applicationDisplayName());
+ 
+         xcb_change_property(xcb_connection(),
+                             XCB_PROP_MODE_REPLACE,
