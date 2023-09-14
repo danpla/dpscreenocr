@@ -1,6 +1,6 @@
 ---
 lang: en
 title: dpScreenOCR User Manual
-subtitle: Version @APP_VERSION_MAJOR@.@APP_VERSION_MINOR@
+subtitle: Version @APP_VERSION@
 toc-title: Table of contents
 ---
