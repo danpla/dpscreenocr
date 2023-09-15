@@ -23,6 +23,9 @@ public:
 
     ~DataLock();
 
+    DataLock(const DataLock& other) = delete;
+    DataLock& operator=(const DataLock& other) = delete;
+
     DataLock(DataLock&& other) noexcept;
     DataLock& operator=(DataLock&& other) noexcept;
 private:
@@ -41,6 +44,10 @@ public:
         const std::function<void()>& lockRemoved);
 
     ~DataLockObserver();
+
+    DataLockObserver(const DataLockObserver& other) = delete;
+    DataLockObserver& operator=(
+        const DataLockObserver& other) = delete;
 
     DataLockObserver(DataLockObserver&& other) noexcept;
     DataLockObserver& operator=(DataLockObserver&& other) noexcept;
