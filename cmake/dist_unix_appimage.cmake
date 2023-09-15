@@ -12,13 +12,10 @@ set(APPIMAGE_NAME
     "${APP_NAME}-${APP_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
 set(APPIMAGE_PATH "${CMAKE_BINARY_DIR}/${APPIMAGE_NAME}")
 
-add_custom_command(
-    OUTPUT "${APPIMAGE_PATH}"
+add_custom_target(
+    appimage
     COMMAND
         "${CMAKE_COMMAND}"
         -D "APPIMAGE_PATH=${APPIMAGE_PATH}"
         -P "${APPIMAGE_BUILD_SCRIPT}"
-    DEPENDS "${APPIMAGE_BUILD_SCRIPT}"
     VERBATIM)
-
-add_custom_target(appimage DEPENDS "${APPIMAGE_PATH}")
