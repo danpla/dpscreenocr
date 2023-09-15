@@ -60,8 +60,8 @@ endfunction()
 function(set_up_program)
     execute_process(
         COMMAND
-            ${CMAKE_COMMAND}
-            --build ${CMAKE_BINARY_DIR}
+            "${CMAKE_COMMAND}"
+            --build "${CMAKE_BINARY_DIR}"
             --parallel
         RESULT_VARIABLE EXIT_STATUS)
     if(NOT EXIT_STATUS EQUAL 0)
@@ -70,10 +70,10 @@ function(set_up_program)
 
     execute_process(
         COMMAND
-            ${CMAKE_COMMAND}
-            --install ${CMAKE_BINARY_DIR}
+            "${CMAKE_COMMAND}"
+            --install "${CMAKE_BINARY_DIR}"
             --strip
-            --prefix ${APP_DIR}/usr
+            --prefix "${APP_DIR}/usr"
         RESULT_VARIABLE EXIT_STATUS)
     if(NOT EXIT_STATUS EQUAL 0)
         message(
@@ -91,13 +91,13 @@ function(set_up_app_run)
 
     execute_process(
         COMMAND
-            ${CMAKE_COMMAND}
-            -S ${LAUNCHER_SOURCE_DIR}
-            -B ${LAUNCHER_BUILD_DIR}
-            -G ${CMAKE_GENERATOR}
-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DLAUNCHER_EXE_PATH=usr/bin/${APP_FILE_NAME}
-            -DLAUNCHER_LIB_DIR_PATH=usr/lib
+            "${CMAKE_COMMAND}"
+            -S "${LAUNCHER_SOURCE_DIR}"
+            -B "${LAUNCHER_BUILD_DIR}"
+            -G "${CMAKE_GENERATOR}"
+            "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+            "-DLAUNCHER_EXE_PATH=usr/bin/${APP_FILE_NAME}"
+            "-DLAUNCHER_LIB_DIR_PATH=usr/lib"
         RESULT_VARIABLE EXIT_STATUS)
     if(NOT EXIT_STATUS EQUAL 0)
         message(
@@ -106,7 +106,7 @@ function(set_up_app_run)
     endif()
 
     execute_process(
-        COMMAND ${CMAKE_COMMAND} --build ${LAUNCHER_BUILD_DIR}
+        COMMAND "${CMAKE_COMMAND}" --build "${LAUNCHER_BUILD_DIR}"
         RESULT_VARIABLE EXIT_STATUS)
     if(NOT EXIT_STATUS EQUAL 0)
         message(FATAL_ERROR "Can't build \"${LAUNCHER_BUILD_DIR}\"")
@@ -154,7 +154,7 @@ function(qmake_query PROP OUT_VAR)
     endif()
 
     execute_process(
-        COMMAND ${QMAKE_EXE} -query ${PROP}
+        COMMAND "${QMAKE_EXE}" -query "${PROP}"
         OUTPUT_VARIABLE OUT
         OUTPUT_STRIP_TRAILING_WHITESPACE
         RESULT_VARIABLE EXIT_STATUS)
@@ -299,7 +299,7 @@ endif()
 # our "third-party-licenses" dir, and the second time to create the
 # actual AppImage file with "--output=appimage".
 execute_process(
-    COMMAND ${LINUXDEPLOY_EXE} --appdir=${APP_DIR}
+    COMMAND "${LINUXDEPLOY_EXE}" "--appdir=${APP_DIR}"
     RESULT_VARIABLE EXIT_STATUS)
 if(NOT EXIT_STATUS EQUAL 0)
     message(FATAL_ERROR "linuxdeploy failed")
@@ -313,9 +313,9 @@ set_up_third_party_licenses_dir()
 # inhibit messages from appimagetool).
 execute_process(
     COMMAND
-        ${LINUXDEPLOY_EXE}
+        "${LINUXDEPLOY_EXE}"
         --verbosity=3
-        --appdir=${APP_DIR}
+        "--appdir=${APP_DIR}"
         --output=appimage
     RESULT_VARIABLE EXIT_STATUS)
 if(NOT EXIT_STATUS EQUAL 0)

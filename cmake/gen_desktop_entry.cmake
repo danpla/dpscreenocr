@@ -39,9 +39,9 @@ function(gen_desktop_entry DST_DIR TRANSLATE)
             # string as a workaround).
             --keyword=
             --keyword=Comment
-            --template=${SRC_ENTRY_PATH}
-            -d ${CMAKE_SOURCE_DIR}/po
-            -o ${DST_ENTRY_PATH}
+            "--template=${SRC_ENTRY_PATH}"
+            -d "${CMAKE_SOURCE_DIR}/po"
+            -o "${DST_ENTRY_PATH}"
         DEPENDS "${SRC_ENTRY_PATH}" "${DST_DEP_VARS_FILE_PATH}"
         VERBATIM)
 

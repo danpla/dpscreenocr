@@ -22,9 +22,8 @@ foreach(FILE ${FILES})
 
     execute_process(
         COMMAND "@CMAKE_COMMAND@" -E remove "${FILE_PATH}"
-        RESULT_VARIABLE RM_RESULT)
-
-    if(NOT RM_RESULT STREQUAL 0)
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
         message(FATAL_ERROR "Can't remove ${FILE_PATH}")
     endif()
 endforeach()

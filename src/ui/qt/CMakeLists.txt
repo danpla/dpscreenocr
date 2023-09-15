@@ -91,7 +91,7 @@ find_package(
 
 # Qt 5 < 5.3.2 is affected by a window title bug:
 # https://bugreports.qt.io/browse/QTBUG-33775
-if (DPSO_QT_VERSION EQUAL 5
+if(DPSO_QT_VERSION EQUAL 5
         AND Qt5Widgets_VERSION VERSION_LESS "5.3.2")
     message(FATAL_ERROR "Qt 5 >= 5.3.2 is required")
 endif()

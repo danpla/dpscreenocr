@@ -15,7 +15,9 @@ function(unix2dos TARGET_NAME IN_FILE OUT_FILE)
     add_custom_command(
         OUTPUT "${OUT_FILE}"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${OUT_DIR}"
-        COMMAND "${UNIX2DOS_EXE}" -q -n "${IN_FILE}" "${OUT_FILE}"
+        COMMAND
+            "${UNIX2DOS_EXE}" --quiet --newfile
+            "${IN_FILE}" "${OUT_FILE}"
         DEPENDS "${IN_FILE}"
         VERBATIM)
 
