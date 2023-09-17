@@ -22,32 +22,32 @@ namespace {
 // Unix-like systems (like AppImage), it's necessary not to bundle
 // libcurl, but instead to load the system version dynamically.
 //
-// The main reason are TLS certificates. They all have expiration
+// The main reason is TLS certificates. They all have expiration
 // dates, and if we bundle them in the package, the networking part
-// will one day become broken.
+// will break one day.
 //
 // One solution would be to tell the bundled libcurl a path to the
-// system certificates location, but this path is not standardized
-// across various GNU/Linux distributions.
+// location of system certificates, but this path is not standardized
+// across different GNU/Linux distributions.
 //
-// Another obvious choice is to just let the application to link with
-// system libcurl, but this will not work for at least two reasons:
+// Another obvious choice is to just let the application to link
+// against the system libcurl, but this will not work for at least two
+// reasons:
 //
-// 1. Modern systems are shipped with various flavors of libcurl,
-//    depending on the used TLS backend. For example, Debian and
-//    derivatives have OpenSSL (libcurl.so.*), GnuTLS
-//    (libcurl-gnutls.so), and NSS (libcurl-nss.so.*) flavors.
-//    Moreover, the GnuTLS flavor is in fact the default version on
-//    Debian, as it's installed in the stock system as a dependency of
-//    default programs like network-manager.
+// * Modern systems ship with different flavors of libcurl, depending
+//   on the TLS backend used. For example, Debian and derivatives have
+//   OpenSSL (libcurl.so.*), GnuTLS (libcurl-gnutls.so.*), and NSS
+//   (libcurl-nss.so.*) flavors. Moreover, the GnuTLS flavor is
+//   actually the default version on Debian, as it's installed in the
+//   stock system as a dependency of standard programs like network-
+//   manager.
 //
-// 2. Even if we could assume that the user has a OpenSSL flavor
-//    of libcurl (libcurl.so.*), the linkage can still fail due to
-//    versioned symbols in the library - not only on other
-//    distributions, but also on a new version of the same system. For
-//    example, a program built on Ubuntu 14.04 will fail to link on
-//    Ubuntu 20.04 because the version "CURL_OPENSSL_3" will not be
-//    found.
+// * Even if we could assume that the user has the OpenSSL flavor of
+//   libcurl (libcurl.so.*), the linkage can still fail due to
+//   versioned symbols - not only on other distributions, but also on
+//   newer versions of the same system. For example, a program built
+//   on Ubuntu 14.04 will fail to link on 20.04 because the version
+//   "CURL_OPENSSL_3" will not be found.
 
 
 struct DlHandleCloser {

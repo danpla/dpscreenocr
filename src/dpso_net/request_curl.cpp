@@ -173,10 +173,10 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
     if (!curl)
         throw Error{"curl_easy_init() failed"};
 
-    // cURL allows to get an option name string by its CURLOPT_ id via
-    // curl_easy_option_by_id() added in 7.73.0 (Oct 2020). However,
-    // we want to support older versions, so use macro stringification
-    // instead.
+    // cURL allows you to get an option name string by its CURLOPT_ id
+    // via curl_easy_option_by_id() added in 7.73.0 (Oct 2020).
+    // However, we want to support older versions, so use macro
+    // stringification instead.
     #define SETOPT(OPT, PARAM) \
     do { \
         const auto code = libCurl.easy_setopt(curl.get(), OPT, PARAM); \
@@ -210,17 +210,18 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
     //   has no effect during the transfer.
     //
     // * curl_multi_wait/poll() accepts a timeout, but doesn't let you
-    //   to determine if it returned due to the timeout or lack of
-    //   activity. That is, it can return a zero numfds several times
-    //   during the transfer even if there's an active easy handle.
+    //   to determine whether it returned due to the timeout or lack
+    //   of activity. That is, it can return a zero numfds several
+    //   times during the transfer even if there's an active easy
+    //   handle.
     SETOPT(CURLOPT_LOW_SPEED_LIMIT, 1l);
     SETOPT(CURLOPT_LOW_SPEED_TIME, 10l);
 
     curlMConnector = std::make_unique<CurlMConnector>(
         curlM.get(), curl.get());
 
-    // Fetch the first chunk of response body explicitly to make sure
-    // we handled the header.
+    // Fetch the first chunk of the response body explicitly to make
+    // sure we handled the header.
     while (!transferDone && buf.empty())
         performTransferStep();
 
@@ -240,8 +241,8 @@ void CurlResponse::throwError(const char* description, CURLcode code)
         *curlError ? curlError : libCurl.easy_strerror(code));
 
     // cURL versions before 7.60.0 don't clear the buffer before
-    // returning an error code if there were no error details, so we
-    // do it ourselves. Of course, this will force subsequent calls to
+    // returning an error code if there are no error details, so we do
+    // it ourselves. Of course, this will force subsequent calls to
     // throwError() to degrade to curl_easy_strerror(), but it's still
     // better than an irrelevant error message.
     curlError[0] = 0;
