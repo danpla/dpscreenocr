@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# This is a simple helper script to create an AppImage with a single
+# "docker run [...] build-appimage" call, without having to go into a
+# shell inside the container and mess around with CMake.
 
 set -eu
 
@@ -18,7 +22,9 @@ if [ "$#" -ne 1 ] || [ -z "$1" ]; then
 fi
 
 SOURCE_CODE_DIR="$1"
-BUILD_DIR="/tmp/$(basename ${0})-build-dir"
+
+# Note we are using "/tmp" that is inside the container.
+BUILD_DIR="/tmp/$(basename $0)-build-dir"
 
 cmake \
     -S "$SOURCE_CODE_DIR" \
@@ -27,6 +33,8 @@ cmake \
     -DDPSO_USE_DEFAULT_TESSERACT_DATA_PATH=No \
     -DDPSO_DYNAMIC_CURL=Yes
 
+# There's no need for --parallel here, because the "appimage" target
+# is always built in the parallel mode under the hood.
 cmake --build "$BUILD_DIR" --target appimage
 
 mv --force "$BUILD_DIR"/*".AppImage" .
