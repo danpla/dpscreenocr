@@ -1,15 +1,15 @@
-This directory contains files to create a Docker image, which is
-primarily intended to be used as an AppImage build environment. The
-image contains everything needed for the task, from all the necessary
-libraries to the linuxdeploy tool.
+This directory contains files to create a Docker image intended to be
+used as an AppImage build environment. The image contains everything
+needed for the task, from all the necessary libraries to the
+linuxdeploy tool.
 
 To build the image, use:
 
-  docker build --force-rm -t dpscreenocr-env .
+  docker build --force-rm -t dpscreenocr-appimage-env .
 
 To build an AppImage, run:
 
-  docker run --rm -v "$PWD:/workspace" dpscreenocr-env \
+  docker run --rm -v "$PWD:/workspace" dpscreenocr-appimage-env \
     build-appimage SOURCE_CODE_DIR
 
 Where SOURCE_CODE_DIR is a path to the dpScreenOCR source code
@@ -17,7 +17,7 @@ directory, relative to the current working directory.
 
 If you need full control over the build process, use:
 
-  docker run --rm -it -v "$PWD:/workspace" dpscreenocr-env
+  docker run --rm -it -v "$PWD:/workspace" dpscreenocr-appimage-env
 
 The above command will drop you into the bash shell, with the current
 working directory mounted as the "/workspace" directory inside the

@@ -69,11 +69,11 @@ AppImage
 --------
 
 It's recommended to create an AppImage from within a Docker
-environment that you can find in the "tools/docker_env" directory. It
-uses an old OS distribution to make sure that the resulting AppImage
-will work even on legacy systems, and has all the necessary
-dependencies configured. Read "tools/docker_env/readme.txt" for the
-details.
+environment that you can find in the "tools/dpscreenocr_appimage_env"
+directory. It uses an old OS distribution to make sure that the
+AppImage will work even on legacy systems, and has all the necessary
+dependencies configured. Read "tools/dpscreenocr_appimage_env/
+readme.txt" for the details.
 
 If you are not using a Docker image, you will need to install
 additional dependencies beyond those listed in the "Dependencies"
