@@ -427,7 +427,15 @@ def gen_main_page_content(root_url, page_lang, translator):
 
     download_list = gen_unordered_list((
         (
-            'GNU/Linux',
+            translator.gettext(
+                    'GNU/Linux: Download <a {appimage_link}>an '
+                    'AppImage</a>, which works on most systems, or '
+                    'choose a package for your distribution:').format(
+                appimage_link=(
+                    'href="{}/{}-{}-x86_64.AppImage"').format(
+                        github_release_download_url_base,
+                        APP_NAME,
+                        APP_VERSION)),
             (
                 '<a href="https://software.opensuse.org//'
                     'download.html?project=home%3Adanpla&'
