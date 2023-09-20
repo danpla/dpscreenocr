@@ -120,6 +120,10 @@ static bool shellCopy(
         return false;
     }
 
+    // The default operation flags are FOF_ALLOWUNDO and
+    // FOF_NOCONFIRMMKDIR. We explicitly set flags to hide the
+    // progress dialog (since it allows canceling the operation) and
+    // generally disable all other interactivity.
     hresult = fileOp->SetOperationFlags(
         FOF_NOCONFIRMMKDIR
         | FOF_NOERRORUI
