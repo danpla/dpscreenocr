@@ -3,7 +3,6 @@
 
 #include "cfg.h"
 #include "cfg_ext.h"
-#include "exec.h"
 #include "history.h"
 #include "history_export.h"
 #include "str_nformat.h"

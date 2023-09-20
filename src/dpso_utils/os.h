@@ -127,4 +127,16 @@ void syncFile(std::FILE* fp);
 void syncDir(const char* dirPath);
 
 
+// Run an executable.
+//
+// If supported by the platform, exe may be just the name of the
+// executable (e.g., to look up in the PATH environment variable).
+//
+// The function blocks the caller's thread until the executable exits.
+//
+// Throws os::Error.
+void exec(
+    const char* exe, const char* const args[], std::size_t numArgs);
+
+
 }

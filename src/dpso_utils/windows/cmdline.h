@@ -2,7 +2,6 @@
 #pragma once
 
 #include <cstddef>
-#include <initializer_list>
 #include <string>
 
 
@@ -20,13 +19,6 @@ namespace dpso::windows {
 std::string createCmdLine(
     const char* programName,
     const char* const* args, std::size_t numArgs);
-
-
-inline std::string createCmdLine(
-    const char* programName, std::initializer_list<const char*> args)
-{
-    return createCmdLine(programName, args.begin(), args.size());
-}
 
 
 }

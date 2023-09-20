@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 
+#include "error.h"
 #include "os.h"
 
 
@@ -16,3 +17,15 @@ void dpsoSleep(int milliseconds)
         std::chrono::milliseconds{milliseconds});
 }
 
+
+bool dpsoExec(
+    const char* exe, const char* const args[], size_t numArgs)
+{
+    try {
+        dpso::os::exec(exe, args, numArgs);
+        return true;
+    } catch (dpso::os::Error& e) {
+        dpsoSetError("%s", e.what());
+        return false;
+    }
+}

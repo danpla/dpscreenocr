@@ -3,13 +3,20 @@
 
 #include <cerrno>
 #include <cstring>
+#include <initializer_list>
 #include <io.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <shellapi.h>
 
+#include "windows/cmdline.h"
+#include "windows/com.h"
 #include "windows/error.h"
 #include "windows/utf.h"
+#include "windows/utf.h"
+
+#include "str.h"
 
 
 namespace dpso::os {
@@ -316,6 +323,81 @@ void syncDir(const char* dirPath)
 {
     // Windows doesn't support directory synchronization.
     (void)dirPath;
+}
+
+
+static bool canExecute(const char* exe)
+{
+    // Don't execute an empty string since ShellExecute() opens the
+    // current working directory in Explorer in this case.
+    while (str::isSpace(*exe))
+        ++exe;
+    if (!*exe)
+        return false;
+
+    const auto* ext = getFileExt(exe);
+    if (!ext)
+        return true;
+
+    // We can't allow executing batch scripts, because it's impossible
+    // to safely pass arbitrary text to them. The ^-escaping rules for
+    // variables are broken by design: for example, unescaping happens
+    // every time a variable is accessed, even on assignment to
+    // another variable.
+
+    // The string can contain trailing whitespace that will be
+    // stripped by ShellExecute().
+    const auto* extEnd = ext;
+    for (const auto* s = ext; *s; ++s)
+        if (!str::isSpace(*s))
+            extEnd = s + 1;
+
+    for (const auto* batchExt : {".bat", ".cmd"})
+        if (str::cmpSubStr(
+                batchExt, ext, extEnd - ext, str::cmpIgnoreCase) == 0)
+            return false;
+
+    return true;
+}
+
+
+void exec(
+    const char* exe, const char* const args[], std::size_t numArgs)
+{
+    if (!canExecute(exe))
+        return;
+
+    const dpso::windows::CoInitializer coInitializer{
+        COINIT_APARTMENTTHREADED};
+
+    const auto exeUtf16 = DPSO_WIN_TO_UTF16(exe);
+
+    const auto cmdLine = windows::createCmdLine("", args, numArgs);
+    const auto cmdLineUtf16 = DPSO_WIN_TO_UTF16(cmdLine);
+
+    // We use ShellExecute(), as it allows launching a script directly
+    // without having to invoke the interpreter explicitly, that is,
+    // it does the same as double-click on the file in Explorer. To do
+    // the same with CreateProcess(), w eneed to pass the script path
+    // trough cmd.exe, which requires escaping of metacharacters with
+    // ^, as well as workarounds for newlines in arguments.
+    //
+    // For a high-level info about ShellExecute(), see:
+    //   https://docs.microsoft.com/en-us/windows/desktop/shell/launch
+    SHELLEXECUTEINFOW si{};
+    si.cbSize = sizeof(si);
+    si.fMask = SEE_MASK_NOCLOSEPROCESS;
+    si.lpFile = exePathUtf16.c_str();
+    si.lpParameters = cmdLineUtf16.c_str();
+    si.nShow = SW_SHOWNORMAL;
+
+    if (!ShellExecuteExW(&si))
+        throwLastError("ShellExecuteExW()");
+
+    if (WaitForSingleObject(si.hProcess, INFINITE) == WAIT_FAILED)
+        throwLastError("WaitForSingleObject()");
+
+    CloseHandle(si.hProcess);
 }
 
 

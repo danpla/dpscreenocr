@@ -6,7 +6,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
+
+#include <vector>
 
 
 namespace dpso::os {
@@ -195,6 +198,30 @@ void syncDir(const char* dirPath)
     // Some systems can't fsync() a directory, so ignore errors.
     os::fsync(fd);
     close(fd);
+}
+
+
+void exec(
+    const char* exe, const char* const args[], std::size_t numArgs)
+{
+    const auto pid = fork();
+    if (pid == -1)
+        throwErrno("fork()");
+
+    if (pid == 0) {
+        std::vector<const char*> argv;
+        argv.reserve(1 + numArgs + 1);
+
+        argv.push_back(exe);
+        argv.insert(argv.end(), args, args + numArgs);
+        argv.push_back(nullptr);
+
+        execvp(argv[0], (char* const*)argv.data());
+        _Exit(EXIT_FAILURE);
+    }
+
+    if (waitpid(pid, nullptr, 0) == -1)
+        throwErrno("waitpid()");
 }
 
 

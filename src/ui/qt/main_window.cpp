@@ -817,7 +817,7 @@ void MainWindow::checkResults()
             history->append(result.timestamp, result.text);
 
         if (actions & ActionChooser::Action::runExe)
-            dpsoExec(exePath.data(), result.text);
+            dpsoExec(exePath.data(), &result.text, 1);
     }
 
     if (jobsCompleted && clipboardTextPending) {

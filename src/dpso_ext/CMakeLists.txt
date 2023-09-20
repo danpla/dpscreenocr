@@ -11,13 +11,6 @@ add_library(
     history_export.cpp
     str_nformat.cpp)
 
-if(UNIX)
-    target_sources(
-        dpso_ext
-        PRIVATE
-        exec_unix.cpp)
-endif()
-
 if(UNIX AND NOT APPLE)
     target_sources(
         dpso_ext
@@ -27,7 +20,6 @@ elseif(WIN32)
     target_sources(
         dpso_ext
         PRIVATE
-        exec_windows.cpp
         user_dirs_windows.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
