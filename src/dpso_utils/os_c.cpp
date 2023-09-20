@@ -19,10 +19,10 @@ void dpsoSleep(int milliseconds)
 
 
 bool dpsoExec(
-    const char* exe, const char* const args[], size_t numArgs)
+    const char* exePath, const char* const args[], size_t numArgs)
 {
     try {
-        dpso::os::exec(exe, args, numArgs);
+        dpso::os::exec(exePath, args, numArgs);
         return true;
     } catch (dpso::os::Error& e) {
         dpsoSetError("%s", e.what());

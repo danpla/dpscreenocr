@@ -202,7 +202,9 @@ void syncDir(const char* dirPath)
 
 
 void exec(
-    const char* exe, const char* const args[], std::size_t numArgs)
+    const char* exePath,
+    const char* const args[],
+    std::size_t numArgs)
 {
     const auto pid = fork();
     if (pid == -1)
@@ -212,7 +214,7 @@ void exec(
         std::vector<const char*> argv;
         argv.reserve(1 + numArgs + 1);
 
-        argv.push_back(exe);
+        argv.push_back(exePath);
         argv.insert(argv.end(), args, args + numArgs);
         argv.push_back(nullptr);
 

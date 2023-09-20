@@ -47,11 +47,8 @@ std::wstring toUtf16(const char* str, const char* varName)
     try {
         return windows::utf8ToUtf16(str);
     } catch (std::runtime_error& e) {
-        throw Error{
-            std::string{"Can't convert "}
-            + varName
-            + " to UTF-16: "
-            + e.what()};
+        throw Error{str::printf(
+            "Can't convert %s to UTF-16: %s", varName, e.what())};
     }
 }
 
@@ -177,10 +174,10 @@ static int utf16ToAcp(
         throwLastError("WideCharToMultiByte(CP_ACP, ...)");
 
     if (defaultCharUsed)
-        throw Error{
+        throw Error{str::printf(
             "UTF-16 string contains characters that cannot be "
-            "represented by the current code page "
-            "(cp" + std::to_string(GetACP()) + ")"};
+            "represented by the current code page (cp%u)",
+            GetACP())};
 
     return sizeWithNull;
 }
@@ -310,12 +307,12 @@ void syncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);
     if (fd == -1)
-        throw Error{
-            std::string{"_fileno(): "} + std::strerror(errno)};
+        throw Error{str::printf(
+            "_fileno(): %s", std::strerror(errno))};
 
     if (_commit(fd) == -1)
-        throw Error{
-            std::string{"_commit(): "} + std::strerror(errno)};
+        throw Error{str::printf(
+            "_commit(): %s", std::strerror(errno))};
 }
 
 
@@ -326,18 +323,19 @@ void syncDir(const char* dirPath)
 }
 
 
-static bool canExecute(const char* exe)
+static void validateExePath(const char* exePath)
 {
-    // Don't execute an empty string since ShellExecute() opens the
-    // current working directory in Explorer in this case.
-    while (str::isSpace(*exe))
-        ++exe;
-    if (!*exe)
-        return false;
+    while (str::isSpace(*exePath))
+        ++exePath;
 
-    const auto* ext = getFileExt(exe);
+    // ShellExecute() opens the current working directory in Explorer
+    // if the executable path is empty.
+    if (!*exePath)
+        throw Error{"Path is empty"};
+
+    const auto* ext = getFileExt(exePath);
     if (!ext)
-        return true;
+        return;
 
     // We can't allow executing batch scripts, because it's impossible
     // to safely pass arbitrary text to them. The ^-escaping rules for
@@ -355,30 +353,29 @@ static bool canExecute(const char* exe)
     for (const auto* batchExt : {".bat", ".cmd"})
         if (str::cmpSubStr(
                 batchExt, ext, extEnd - ext, str::cmpIgnoreCase) == 0)
-            return false;
-
-    return true;
+            throw Error{"Execution of batch files is forbidden"};
 }
 
 
 void exec(
-    const char* exe, const char* const args[], std::size_t numArgs)
+    const char* exePath,
+    const char* const args[],
+    std::size_t numArgs)
 {
-    if (!canExecute(exe))
-        return;
+    validateExePath(exePath);
 
     const dpso::windows::CoInitializer coInitializer{
         COINIT_APARTMENTTHREADED};
 
-    const auto exeUtf16 = DPSO_WIN_TO_UTF16(exe);
-
     const auto cmdLine = windows::createCmdLine("", args, numArgs);
-    const auto cmdLineUtf16 = DPSO_WIN_TO_UTF16(cmdLine);
+
+    const auto exePathUtf16 = DPSO_WIN_TO_UTF16(exePath);
+    const auto cmdLineUtf16 = DPSO_WIN_TO_UTF16(cmdLine.c_str());
 
     // We use ShellExecute(), as it allows launching a script directly
     // without having to invoke the interpreter explicitly, that is,
     // it does the same as double-click on the file in Explorer. To do
-    // the same with CreateProcess(), w eneed to pass the script path
+    // the same with CreateProcess(), we need to pass the script path
     // trough cmd.exe, which requires escaping of metacharacters with
     // ^, as well as workarounds for newlines in arguments.
     //
