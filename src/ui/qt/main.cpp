@@ -42,7 +42,7 @@ static void installQtTranslations(QApplication& app)
 }
 
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     uiPrepareEnvironment(argv);
 
