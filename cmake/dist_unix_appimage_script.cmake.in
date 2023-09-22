@@ -263,7 +263,8 @@ file(REMOVE_RECURSE "${APP_DIR}")
 set_up_program()
 set_up_app_run()
 
-bundle_fallback_lib("/usr/lib/x86_64-linux-gnu/libstdc++.so.6")
+bundle_fallback_lib(
+    "/usr/lib/${CMAKE_SYSTEM_PROCESSOR}-linux-gnu/libstdc++.so.6")
 
 if(DPSO_UI STREQUAL "qt")
     create_qt_conf()
