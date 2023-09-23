@@ -17,6 +17,13 @@ namespace dpso::net {
 namespace {
 
 
+// Note that we never call LibCurl::get() from destructors and
+// unique_ptr deleters to avoid confusing static analysis tools. They
+// don't know that such calls will not throw, since there is always a
+// previous LibCurl::get() to create a cURL object or access
+// curl_global_init().
+
+
 // curl_global_init() docs say:
 //
 //   [...] you must not call this function when any other thread in
@@ -38,22 +45,22 @@ public:
     CurlGlobalInit()
     {
         try {
-            const auto& libCurl = LibCurl::get();
-
-            const auto code = libCurl.global_init(CURL_GLOBAL_ALL);
-            if (code != CURLE_OK)
-                errorText = str::printf(
-                    "curl_global_init: %s",
-                    libCurl.easy_strerror(code));
+            libCurl = &LibCurl::get();
         } catch (Error& e) {
             errorText = e.what();
+            return;
         }
+
+        const auto code = libCurl->global_init(CURL_GLOBAL_ALL);
+        if (code != CURLE_OK)
+            errorText = str::printf(
+                "curl_global_init: %s", libCurl->easy_strerror(code));
     }
 
     ~CurlGlobalInit()
     {
-        if (errorText.empty())
-            LibCurl::get().global_cleanup();
+        if (libCurl && errorText.empty())
+            libCurl->global_cleanup();
     }
 
     // The text is empty if there was no error.
@@ -62,6 +69,7 @@ public:
         return errorText;
     }
 private:
+    const LibCurl* libCurl;
     std::string errorText;
 };
 
@@ -69,22 +77,38 @@ private:
 const CurlGlobalInit curlGlobalInit;
 
 
-struct CurlMDeleter {
+class CurlMDeleter {
+public:
+    explicit CurlMDeleter(const LibCurl& libCurl)
+        : libCurl{libCurl}
+    {
+    }
+
     void operator()(CURLM* curlM) const
     {
-        LibCurl::get().multi_cleanup(curlM);
+        libCurl.multi_cleanup(curlM);
     }
+private:
+    const LibCurl& libCurl;
 };
 
 
 using CurlMUPtr = std::unique_ptr<CURLM, CurlMDeleter>;
 
 
-struct CurlDeleter {
+class CurlDeleter {
+public:
+    explicit CurlDeleter(const LibCurl& libCurl)
+        : libCurl{libCurl}
+    {
+    }
+
     void operator()(CURL* curl) const
     {
-        LibCurl::get().easy_cleanup(curl);
+        libCurl.easy_cleanup(curl);
     }
+private:
+    const LibCurl& libCurl;
 };
 
 
@@ -93,18 +117,20 @@ using CurlUPtr = std::unique_ptr<CURL, CurlDeleter>;
 
 class CurlMConnector {
 public:
-    CurlMConnector(CURLM* curlM, CURL* curl)
-        : curlM{curlM}
+    CurlMConnector(const LibCurl& libCurl, CURLM* curlM, CURL* curl)
+        : libCurl{libCurl}
+        , curlM{curlM}
         , curl{curl}
     {
-        LibCurl::get().multi_add_handle(curlM, curl);
+        libCurl.multi_add_handle(curlM, curl);
     }
 
     ~CurlMConnector()
     {
-        LibCurl::get().multi_remove_handle(curlM, curl);
+        libCurl.multi_remove_handle(curlM, curl);
     }
 private:
+    const LibCurl& libCurl;
     CURLM* curlM;
     CURL* curl;
 };
@@ -142,7 +168,7 @@ private:
     [[noreturn]]
     void throwError(const char* description, CURLcode code);
     [[noreturn]]
-    static void throwError(const char* description, CURLMcode code);
+    void throwError(const char* description, CURLMcode code);
 
     static std::size_t curlHeaderFn(
         char* data,
@@ -164,6 +190,8 @@ private:
 
 CurlResponse::CurlResponse(const char* url, const char* userAgent)
     : libCurl{LibCurl::get()}
+    , curlM{{}, CurlMDeleter{libCurl}}
+    , curl{{}, CurlDeleter{libCurl}}
 {
     curlM.reset(libCurl.multi_init());
     if (!curlM)
@@ -218,7 +246,7 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
     SETOPT(CURLOPT_LOW_SPEED_TIME, 10l);
 
     curlMConnector = std::make_unique<CurlMConnector>(
-        curlM.get(), curl.get());
+        libCurl, curlM.get(), curl.get());
 
     // Fetch the first chunk of the response body explicitly to make
     // sure we handled the header.
@@ -262,7 +290,7 @@ void CurlResponse::throwError(const char* description, CURLMcode code)
 {
     assert(code != CURLM_OK);
     throw Error{str::printf(
-        "%s: %s", description, LibCurl::get().multi_strerror(code))};
+        "%s: %s", description, libCurl.multi_strerror(code))};
 }
 
 
