@@ -14,7 +14,7 @@ BUGS_ADDRESS = 'https://github.com/danpla/dpscreenocr/issues'
 
 def check_min_version(tool_path, min_version):
     version_info = subprocess.check_output(
-        (tool_path, '-V'), text=True).splitlines()[0]
+        (tool_path, '-V'), universal_newlines=True).splitlines()[0]
 
     # Version info from GNU gettext tools looks like:
     # xgettext (GNU gettext-tools) 0.21.1
