@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-08-12 17:37+0200\n"
+"POT-Creation-Date: 2023-09-24 19:54+0200\n"
 "PO-Revision-Date: 2023-08-06 19:25+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Bulgarian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -579,42 +579,42 @@ msgstr "Стартирайте изпълнимия файл с разпозна
 msgid "Choose an executable"
 msgstr "Изберете изпълнимия файл"
 
-#: src/ui/qt/history.cpp:43
+#: src/ui/qt/history.cpp:44
 #, fuzzy
 msgid "Export…"
 msgstr "Запази като…"
 
-#: src/ui/qt/history.cpp:48
+#: src/ui/qt/history.cpp:49
 msgid "Clear…"
 msgstr "Изчисти…"
 
-#: src/ui/qt/history.cpp:65 src/ui/qt/main_window.cpp:130
+#: src/ui/qt/history.cpp:66 src/ui/qt/main_window.cpp:130
 msgid "History"
 msgstr "История"
 
-#: src/ui/qt/history.cpp:90
+#: src/ui/qt/history.cpp:83
+msgid "Plain text"
+msgstr "Обикновен текст"
+
+#: src/ui/qt/history.cpp:118
+msgid "All files"
+msgstr "Всички файлове"
+
+#: src/ui/qt/history.cpp:123
 #, fuzzy
 msgid "Export history"
 msgstr "Запазване на историята"
 
-#: src/ui/qt/history.cpp:92
-msgid "Plain text"
-msgstr "Обикновен текст"
-
-#: src/ui/qt/history.cpp:95
-msgid "All files"
-msgstr "Всички файлове"
-
-#: src/ui/qt/history.cpp:129
+#: src/ui/qt/history.cpp:159
 msgid "Clear the history?"
 msgstr "Изчистване на историята?"
 
-#: src/ui/qt/history.cpp:129 src/ui/qt/lang_manager/lang_manager_page.cpp:250
+#: src/ui/qt/history.cpp:159 src/ui/qt/lang_manager/lang_manager_page.cpp:250
 #: src/ui/qt/main_window.cpp:200
 msgid "Cancel"
 msgstr "Отмяна"
 
-#: src/ui/qt/history.cpp:129
+#: src/ui/qt/history.cpp:159
 msgid "Clear"
 msgstr "Изчисти"
 
@@ -730,7 +730,7 @@ msgstr ""
 msgid "Check your network connection and try again."
 msgstr ""
 
-#: src/ui/qt/main.cpp:104
+#: src/ui/qt/main.cpp:99
 msgid "{app_name} is already running"
 msgstr ""
 
