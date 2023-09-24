@@ -8,6 +8,7 @@
 #include "stb_image_resize.h"
 #include "stb_image_resize_progress.h"
 
+#include "dpso_utils/os.h"
 #include "dpso_utils/progress_tracker.h"
 
 
@@ -252,15 +253,13 @@ void savePgm(
     if (w < 1 || h < 1 || pitch < w)
         return;
 
-    auto* fp = std::fopen(filePath, "wb");
+    os::StdFileUPtr fp{os::fopen(filePath, "wb")};
     if (!fp)
         return;
 
-    std::fprintf(fp, "P5\n%i %i\n255\n", w, h);
+    std::fprintf(fp.get(), "P5\n%i %i\n255\n", w, h);
     for (int y = 0; y < h; ++y)
-        std::fwrite(data + y * pitch, 1, w, fp);
-
-    std::fclose(fp);
+        std::fwrite(data + y * pitch, 1, w, fp.get());
 }
 
 
