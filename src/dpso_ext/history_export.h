@@ -19,6 +19,30 @@ typedef enum {
 } DpsoHistoryExportFormat;
 
 
+typedef struct DpsoHistoryExportFormatInfo {
+    const char* name;
+
+    /**
+     * Array of one or more file extensions.
+     *
+     * Each extension is in lower case and has a leading period.
+     */
+    const char* const* extensions;
+
+    /**
+     * Number of items in the extensions array.
+     *
+     * Always > 0.
+     */
+    int numExtensions;
+} DpsoHistoryExportFormatInfo;
+
+
+void dpsoHistoryGetExportFormatInfo(
+    DpsoHistoryExportFormat exportFormat,
+    DpsoHistoryExportFormatInfo* exportFormatInfo);
+
+
 /**
  * Detect history export format by file name extension.
  *

@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QStringList>
 #include <QTextEdit>
 #include <QVBoxLayout>
 
@@ -73,6 +74,30 @@ void History::setButtonsEnabled(bool enabled)
 }
 
 
+static QString createNameFilter(DpsoHistoryExportFormat exportFormat)
+{
+    DpsoHistoryExportFormatInfo exportFormatInfo;
+    dpsoHistoryGetExportFormatInfo(exportFormat, &exportFormatInfo);
+
+    QString result = exportFormat == dpsoHistoryExportFormatPlainText
+        ? _("Plain text") : exportFormatInfo.name;
+
+    result += " (";
+
+    for (int i = 0; i < exportFormatInfo.numExtensions; ++i) {
+        if (i > 0)
+            result += ' ';
+
+        result += '*';
+        result += exportFormatInfo.extensions[i];
+    }
+
+    result += ')';
+
+    return result;
+}
+
+
 void History::doExport()
 {
     if (!history)
@@ -84,15 +109,20 @@ void History::doExport()
     if (dirPath.isEmpty() || !QDir(dirPath).exists())
         dirPath = QDir::homePath();
 
+    QStringList nameFilters;
+
+    for (int i = 0; i < dpsoNumHistoryExportFormats; ++i)
+        nameFilters.append(createNameFilter(
+            static_cast<DpsoHistoryExportFormat>(i)));
+
+    nameFilters.append(QString(_("All files")) + " (*)");
+
     const auto filePath = QDir::toNativeSeparators(
         QFileDialog::getSaveFileName(
             this,
             _("Export history"),
             QDir(dirPath).filePath(lastFileName),
-            QString(_("Plain text")) + " (*.txt);;"
-                + "HTML (*.html *.htm);;"
-                + "JSON (*.json);;"
-                + _("All files") + " (*)",
+            nameFilters.join(";;"),
             &selectedNameFilter));
     if (filePath.isEmpty())
         return;

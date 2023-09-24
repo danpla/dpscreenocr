@@ -4,39 +4,17 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <vector>
 
 #include "dpso_utils/error.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
 
-DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
-    const char* filePath,
-    DpsoHistoryExportFormat defaultExportFormat)
-{
-    struct Extension {
-        const char* str;
-        DpsoHistoryExportFormat format;
-    };
-
-    static const Extension extensions[] = {
-        {".txt", dpsoHistoryExportFormatPlainText},
-        {".html", dpsoHistoryExportFormatHtml},
-        {".htm", dpsoHistoryExportFormatHtml},
-        {".json", dpsoHistoryExportFormatJson},
-    };
-
-    if (const auto* ext = dpso::os::getFileExt(filePath))
-        for (const auto& e : extensions)
-            if (dpso::str::cmp(
-                    ext, e.str, dpso::str::cmpIgnoreCase) == 0)
-                return e.format;
-
-    return defaultExportFormat;
-}
+namespace {
 
 
-static void exportPlainText(const DpsoHistory* history, std::FILE* fp)
+void exportPlainText(const DpsoHistory* history, std::FILE* fp)
 {
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
@@ -53,7 +31,7 @@ static void exportPlainText(const DpsoHistory* history, std::FILE* fp)
 }
 
 
-static void writeEscapedHtml(
+void writeEscapedHtml(
     std::FILE* fp, const char* indent, const char* text)
 {
     for (const auto* s = text; *s;) {
@@ -94,7 +72,7 @@ static void writeEscapedHtml(
 
 
 // W3C Markup Validator: https://validator.w3.org/
-static void exportHtml(const DpsoHistory* history, std::FILE* fp)
+void exportHtml(const DpsoHistory* history, std::FILE* fp)
 {
     std::fputs(
         "<!DOCTYPE html>\n"
@@ -135,7 +113,7 @@ static void exportHtml(const DpsoHistory* history, std::FILE* fp)
 }
 
 
-static void writeEscapedJson(std::FILE* fp, const char* text)
+void writeEscapedJson(std::FILE* fp, const char* text)
 {
     for (const auto* s = text; *s; ++s) {
         switch (const auto c = *s) {
@@ -166,7 +144,7 @@ static void writeEscapedJson(std::FILE* fp, const char* text)
 
 // To validate JSON:
 //   python3 -m json.tool *.json > /dev/null
-static void exportJson(const DpsoHistory* history, std::FILE* fp)
+void exportJson(const DpsoHistory* history, std::FILE* fp)
 {
     std::fputs("[\n", fp);
 
@@ -197,6 +175,70 @@ static void exportJson(const DpsoHistory* history, std::FILE* fp)
 }
 
 
+using ExportFn = void (&)(const DpsoHistory*, std::FILE*);
+
+
+struct ExportFormatInfo {
+    const char* name;
+    std::vector<const char*> extensions;
+    ExportFn exportFn;
+};
+
+
+const ExportFormatInfo exportFormatInfos[] = {
+    {"TXT", {".txt"}, exportPlainText},
+    {"HTML", {".html", ".htm"}, exportHtml},
+    {"JSON", {".json"}, exportJson},
+};
+static_assert(
+    std::size(exportFormatInfos) == dpsoNumHistoryExportFormats);
+
+
+}
+
+
+void dpsoHistoryGetExportFormatInfo(
+    DpsoHistoryExportFormat exportFormat,
+    DpsoHistoryExportFormatInfo* exportFormatInfo)
+{
+    if (!exportFormatInfo)
+        return;
+
+    if (exportFormat < 0
+            || exportFormat >= dpsoNumHistoryExportFormats) {
+        static const char* emptyExt = "";
+        *exportFormatInfo = {"", &emptyExt, 1};
+        return;
+    }
+
+    const auto& info = exportFormatInfos[exportFormat];
+
+    *exportFormatInfo = {
+        info.name,
+        info.extensions.data(),
+        static_cast<int>(info.extensions.size())
+    };
+}
+
+
+DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
+    const char* filePath,
+    DpsoHistoryExportFormat defaultExportFormat)
+{
+    const auto* ext = dpso::os::getFileExt(filePath);
+    if (!ext)
+        return defaultExportFormat;
+
+    for (int i = 0; i < dpsoNumHistoryExportFormats; ++i)
+        for (const auto* formatExt : exportFormatInfos[i].extensions)
+            if (dpso::str::cmp(
+                    ext, formatExt, dpso::str::cmpIgnoreCase) == 0)
+                return static_cast<DpsoHistoryExportFormat>(i);
+
+    return defaultExportFormat;
+}
+
+
 bool dpsoHistoryExport(
     const DpsoHistory* history,
     const char* filePath,
@@ -204,6 +246,12 @@ bool dpsoHistoryExport(
 {
     if (!history) {
         dpsoSetError("history is null");
+        return false;
+    }
+
+    if (exportFormat < 0
+            || exportFormat >= dpsoNumHistoryExportFormats) {
+        dpsoSetError("Unknown export format %i", exportFormat);
         return false;
     }
 
@@ -217,19 +265,7 @@ bool dpsoHistoryExport(
         return false;
     }
 
-    switch (exportFormat) {
-    case dpsoHistoryExportFormatPlainText:
-        exportPlainText(history, fp.get());
-        break;
-    case dpsoHistoryExportFormatHtml:
-        exportHtml(history, fp.get());
-        break;
-    case dpsoHistoryExportFormatJson:
-        exportJson(history, fp.get());
-        break;
-    case dpsoNumHistoryExportFormats:
-        break;
-    }
+    exportFormatInfos[exportFormat].exportFn(history, fp.get());
 
     return true;
 }

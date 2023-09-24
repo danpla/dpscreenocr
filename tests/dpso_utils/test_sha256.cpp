@@ -90,7 +90,10 @@ static void testSha256()
 
         test::failure(
             "SHA-256 failed for \"%s\" (repeats: %i)\n%s\n%s\n",
-            test.str.c_str(), test.numRepeats, test.digest, dpso::toHex(h.getDigest()).c_str());
+            test.str.c_str(),
+            test.numRepeats,
+            test.digest,
+            dpso::toHex(h.getDigest()).c_str());
         break;
     }
 }

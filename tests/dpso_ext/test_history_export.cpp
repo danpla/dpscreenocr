@@ -11,19 +11,11 @@
 #include "utils.h"
 
 
-static std::string exportFormatToStr(
-    DpsoHistoryExportFormat exportFormat)
+static std::string toStr(DpsoHistoryExportFormat exportFormat)
 {
-    const char* const names[] = {"TXT", "HTML", "JSON"};
-    static_assert(std::size(names) == dpsoNumHistoryExportFormats);
-
-    if (exportFormat < 0
-            || exportFormat >= dpsoNumHistoryExportFormats)
-        test::fatalError(
-            "Unexpected DpsoHistoryExportFormat %i\n",
-            exportFormat);
-
-    return names[exportFormat];
+    DpsoHistoryExportFormatInfo exportFormatInfo;
+    dpsoHistoryGetExportFormatInfo(exportFormat, &exportFormatInfo);
+    return exportFormatInfo.name;
 }
 
 
@@ -41,9 +33,9 @@ static void testDetectExportFormat(
         "dpsoHistoryDetectExportFormat(\"%s\", %s): "
         "expected %s, got %s\n",
         filePath,
-        exportFormatToStr(defaultExportFormat).c_str(),
-        exportFormatToStr(expectedExportFormat).c_str(),
-        exportFormatToStr(gotExportFormat).c_str());
+        toStr(defaultExportFormat).c_str(),
+        toStr(expectedExportFormat).c_str(),
+        toStr(gotExportFormat).c_str());
 }
 
 
@@ -112,9 +104,7 @@ static void testExport()
     const struct Test {
         const char* description;
         std::vector<DpsoHistoryEntry> entries;
-        std::string txtData;
-        std::string htmlData;
-        std::string jsonData;
+        std::vector<std::string> exportedData;
 
         Test(
                 const char* description,
@@ -124,13 +114,18 @@ static void testExport()
                 const char* jsonData)
             : description{description}
             , entries{std::move(entries)}
-            , txtData{test::utils::lfToNativeNewline(txtData)}
-            , htmlData{
+            , exportedData{
+                test::utils::lfToNativeNewline(txtData),
                 test::utils::lfToNativeNewline(htmlBegin)
-                + test::utils::lfToNativeNewline(htmlBodyData)
-                + test::utils::lfToNativeNewline(htmlEnd)}
-            , jsonData{test::utils::lfToNativeNewline(jsonData)}
+                    + test::utils::lfToNativeNewline(htmlBodyData)
+                    + test::utils::lfToNativeNewline(htmlEnd),
+                test::utils::lfToNativeNewline(jsonData)}
         {
+            if (exportedData.size() != dpsoNumHistoryExportFormats)
+                test::fatalError(
+                    "Unexpected number of exportedData entries. "
+                    "Seems like some export formats were added or "
+                    "removed, so exportedData should be adjusted.\n");
         }
     } tests[] = {
         {
@@ -360,14 +355,6 @@ static void testExport()
 
     const auto* historyFileName = "test_history_export.txt";
 
-    const std::string Test::*exportFormatData[] = {
-        &Test::txtData,
-        &Test::htmlData,
-        &Test::jsonData,
-    };
-    static_assert(
-        std::size(exportFormatData) == dpsoNumHistoryExportFormats);
-
     for (const auto& test : tests) {
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
         if (!history)
@@ -389,9 +376,14 @@ static void testExport()
             const auto exportFormat =
                 static_cast<DpsoHistoryExportFormat>(i);
 
+            DpsoHistoryExportFormatInfo exportFormatInfo;
+            dpsoHistoryGetExportFormatInfo(
+                exportFormat, &exportFormatInfo);
+
             const auto exportedFileName =
-                "test_history_export_"
-                + exportFormatToStr(exportFormat);
+                std::string{"test_history_export_"}
+                + exportFormatInfo.name
+                + exportFormatInfo.extensions[0];
 
             if (!dpsoHistoryExport(
                     history.get(),
@@ -400,10 +392,10 @@ static void testExport()
                 test::fatalError(
                     "dpsoHistoryExport(..., \"%s\", %s)\n",
                     exportedFileName.c_str(),
-                    exportFormatToStr(exportFormat).c_str());
+                    toStr(exportFormat).c_str());
 
             const auto& expectedData =
-                test.*exportFormatData[exportFormat];
+                test.exportedData[exportFormat];
             const auto gotData = test::utils::loadText(
                 "testExport", exportedFileName.c_str());
 
@@ -411,7 +403,7 @@ static void testExport()
                 test::failure(
                     "testExport(): Unexpected exported %s data "
                     "for the \"%s\" case\n",
-                    exportFormatToStr(exportFormat).c_str(),
+                    toStr(exportFormat).c_str(),
                     test.description);
                 test::utils::printFirstDifference(
                     expectedData.c_str(), gotData.c_str());
