@@ -103,7 +103,7 @@ void showError(
     QMessageBox messageBox(parent);
 
     messageBox.setWindowTitle(uiAppName);
-    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setIcon(QMessageBox::Critical);
 
     messageBox.setText(text);
     messageBox.setInformativeText(informativeText);
