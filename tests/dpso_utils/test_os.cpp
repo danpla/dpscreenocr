@@ -12,7 +12,10 @@
 #include "utils.h"
 
 
-static void testPathSplit()
+namespace {
+
+
+void testPathSplit()
 {
     const struct Test {
         const char* path;
@@ -116,7 +119,7 @@ static void testPathSplit()
 }
 
 
-static void testGetFileExt()
+void testGetFileExt()
 {
     struct Test {
         std::string path;
@@ -171,7 +174,7 @@ static void testGetFileExt()
 }
 
 
-static void testGetFileSize()
+void testGetFileSize()
 {
     const auto* fileName = "test_get_file_size.txt";
     const std::int64_t size = 123456;
@@ -195,7 +198,7 @@ const auto* const testUnicodeFileName =
     "\346\261\211\350\257\255.txt";
 
 
-static void testFopen()
+void testFopen()
 {
     dpso::os::StdFileUPtr fp{
         dpso::os::fopen(testUnicodeFileName, "wb")};
@@ -212,7 +215,7 @@ static void testFopen()
 }
 
 
-static void testReadLine()
+void testReadLine()
 {
     const struct Test {
         const char* text;
@@ -288,7 +291,7 @@ static void testReadLine()
 }
 
 
-static void testRemoveFile()
+void testRemoveFile()
 {
     test::utils::saveText(
         "testRemoveFile", testUnicodeFileName, "abc");
@@ -317,7 +320,7 @@ static void testRemoveFile()
 }
 
 
-static void testReplaceSrcExists(bool dstExists)
+void testReplaceSrcExists(bool dstExists)
 {
     const auto* srcFilePath = "test_replace_src.txt";
     const auto* dstFilePath = "test_replace_dst.txt";
@@ -371,7 +374,7 @@ static void testReplaceSrcExists(bool dstExists)
 }
 
 
-static void testReplaceNoSrc()
+void testReplaceNoSrc()
 {
     try {
         dpso::os::replace("nonexistent_file", "dst");
@@ -388,7 +391,7 @@ static void testReplaceNoSrc()
 }
 
 
-static void testReplace()
+void testReplace()
 {
     testReplaceSrcExists(false);
     testReplaceSrcExists(true);
@@ -396,7 +399,7 @@ static void testReplace()
 }
 
 
-static void testSyncFile()
+void testSyncFile()
 {
     const auto* fileName = "test_sync_file.txt";
 
@@ -432,7 +435,7 @@ void testSyncFileDir()
 }
 
 
-static void testOs()
+void testOs()
 {
     testPathSplit();
     testGetFileExt();
@@ -443,6 +446,9 @@ static void testOs()
     testReplace();
     testSyncFile();
     testSyncFileDir();
+}
+
+
 }
 
 

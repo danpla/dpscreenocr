@@ -15,8 +15,11 @@
 #include "utils.h"
 
 
+namespace {
+
+
 // Wrapper around CommandLineToArgvW()
-static std::vector<std::string> cmdLineToArgv(const char* cmdLine)
+std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 {
     int argc;
     auto** argv = CommandLineToArgvW(
@@ -38,7 +41,7 @@ static std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 }
 
 
-static void testArgv(std::initializer_list<const char*> argv)
+void testArgv(std::initializer_list<const char*> argv)
 {
     using namespace dpso::windows;
 
@@ -76,7 +79,7 @@ static void testArgv(std::initializer_list<const char*> argv)
 }
 
 
-static void testCreateCmdLine()
+void testWindowsCmdLine()
 {
     const auto* programName = "program name";
     const std::initializer_list<const char*> argvs[] = {
@@ -91,10 +94,7 @@ static void testCreateCmdLine()
 }
 
 
-static void testWindowsUtils()
-{
-    testCreateCmdLine();
 }
 
 
-REGISTER_TEST(testWindowsUtils);
+REGISTER_TEST(testWindowsCmdLine);

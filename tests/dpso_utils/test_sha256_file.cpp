@@ -7,7 +7,10 @@
 #include "utils.h"
 
 
-static void testCalcFileSha256()
+namespace {
+
+
+void testCalcFileSha256()
 {
     const auto* testFileName = "test_calc_file_sha256.txt";
     const auto* data =
@@ -41,7 +44,7 @@ static void testCalcFileSha256()
 }
 
 
-static void testSaveSha256File()
+void testSaveSha256File()
 {
     const std::string digest =
         "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61"
@@ -76,7 +79,7 @@ static void testSaveSha256File()
 }
 
 
-static void testLoadNonexistentSha256File()
+void testLoadNonexistentSha256File()
 {
     std::string digest;
     try {
@@ -97,7 +100,7 @@ static void testLoadNonexistentSha256File()
 }
 
 
-static void testLoadValidSha256File()
+void testLoadValidSha256File()
 {
     const std::string digest =
         "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61"
@@ -159,7 +162,7 @@ static void testLoadValidSha256File()
 }
 
 
-static void testLoadInvalidSha256File()
+void testLoadInvalidSha256File()
 {
     const std::string digest =
         "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61"
@@ -248,7 +251,7 @@ static void testLoadInvalidSha256File()
 }
 
 
-static void testSha256File()
+void testSha256File()
 {
     testCalcFileSha256();
 
@@ -257,6 +260,9 @@ static void testSha256File()
     testLoadNonexistentSha256File();
     testLoadValidSha256File();
     testLoadInvalidSha256File();
+}
+
+
 }
 
 

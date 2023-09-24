@@ -31,10 +31,7 @@ struct BasicTypesTest {
 };
 
 
-}
-
-
-static void testGetStr(
+void testGetStr(
     const DpsoCfg* cfg,
     const char* key,
     const char* expectedVal,
@@ -56,7 +53,7 @@ static void testGetStr(
 }
 
 
-static void testGetInt(
+void testGetInt(
     const DpsoCfg* cfg,
     const char* key,
     int expectedVal,
@@ -75,7 +72,7 @@ static void testGetInt(
 }
 
 
-static void testGetBool(
+void testGetBool(
     const DpsoCfg* cfg,
     const char* key,
     bool expectedVal,
@@ -132,13 +129,13 @@ const std::initializer_list<BasicTypesTest> boolTests{
 };
 
 
-static const std::string makeCfgKeyForChar(char c)
+const std::string makeCfgKeyForChar(char c)
 {
     return dpso::str::printf("str_char_%02hhx", c);
 }
 
 
-static void setStrByteChars(DpsoCfg* cfg)
+void setStrByteChars(DpsoCfg* cfg)
 {
     for (int c = 1; c < 256; ++c) {
         const char val[2] = {static_cast<char>(c), 0};
@@ -147,7 +144,7 @@ static void setStrByteChars(DpsoCfg* cfg)
 }
 
 
-static void getStrByteChars(const DpsoCfg* cfg)
+void getStrByteChars(const DpsoCfg* cfg)
 {
     for (int c = 1; c < 256; ++c) {
         const char val[2] = {static_cast<char>(c), 0};
@@ -156,7 +153,7 @@ static void getStrByteChars(const DpsoCfg* cfg)
 }
 
 
-static void setBasicTypes(DpsoCfg* cfg)
+void setBasicTypes(DpsoCfg* cfg)
 {
     for (const auto& test : strTests)
         dpsoCfgSetStr(cfg, test.key, test.strVal);
@@ -171,7 +168,7 @@ static void setBasicTypes(DpsoCfg* cfg)
 }
 
 
-static void getBasicTypes(const DpsoCfg* cfg)
+void getBasicTypes(const DpsoCfg* cfg)
 {
     testGetStr(cfg, nonexistentKey, nullptr, nullptr);
     testGetStr(cfg, nonexistentKey, "default", "default");
@@ -196,13 +193,13 @@ static void getBasicTypes(const DpsoCfg* cfg)
 }
 
 
-static std::string hotkeyToStr(const DpsoHotkey& hotkey)
+std::string toStr(const DpsoHotkey& hotkey)
 {
     return dpsoHotkeyToString(&hotkey);
 }
 
 
-static void testGetHotkey(
+void testGetHotkey(
     const DpsoCfg* cfg,
     const char* key,
     const DpsoHotkey& expectedVal,
@@ -218,9 +215,9 @@ static void testGetHotkey(
         "dpsoCfgGetHotkey(\"%s\", &, {%s}): "
         "expected {%s}, got {%s}\n",
         key,
-        hotkeyToStr(defaultVal).c_str(),
-        hotkeyToStr(expectedVal).c_str(),
-        hotkeyToStr(gotVal).c_str());
+        toStr(defaultVal).c_str(),
+        toStr(expectedVal).c_str(),
+        toStr(gotVal).c_str());
 }
 
 
@@ -247,14 +244,14 @@ const HotkeyTest hotkeyTests[] = {
 };
 
 
-static void setHotkey(DpsoCfg* cfg)
+void setHotkey(DpsoCfg* cfg)
 {
     for (const auto& test : hotkeyTests)
         dpsoCfgSetHotkey(cfg, test.key, &test.hotkey);
 }
 
 
-static void getHotkey(const DpsoCfg* cfg)
+void getHotkey(const DpsoCfg* cfg)
 {
     const DpsoHotkey defaultHotkey{dpsoKeyF1, dpsoKeyModWin};
 
@@ -267,7 +264,7 @@ static void getHotkey(const DpsoCfg* cfg)
 const auto* const cfgFileName = "test_cfg_file.cfg";
 
 
-static void reload(DpsoCfg* cfg)
+void reload(DpsoCfg* cfg)
 {
     if (!dpsoCfgSave(cfg, cfgFileName))
         test::fatalError(
@@ -286,7 +283,7 @@ static void reload(DpsoCfg* cfg)
 }
 
 
-static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
+void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 {
     test::utils::saveText("loadCfgData", cfgFileName, cfgData);
 
@@ -301,7 +298,7 @@ static void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 }
 
 
-static void testValueOverridingOnLoad(DpsoCfg* cfg)
+void testValueOverridingOnLoad(DpsoCfg* cfg)
 {
     const std::string key = "duplicate_key";
 
@@ -310,7 +307,7 @@ static void testValueOverridingOnLoad(DpsoCfg* cfg)
 }
 
 
-static void testStrParsing(DpsoCfg* cfg)
+void testStrParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -359,7 +356,7 @@ static void testStrParsing(DpsoCfg* cfg)
 }
 
 
-static void testIntParsing(DpsoCfg* cfg)
+void testIntParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -385,7 +382,7 @@ static void testIntParsing(DpsoCfg* cfg)
 }
 
 
-static void testBoolParsing(DpsoCfg* cfg)
+void testBoolParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -409,7 +406,7 @@ static void testBoolParsing(DpsoCfg* cfg)
 }
 
 
-static void testHotkeyParsing(DpsoCfg* cfg)
+void testHotkeyParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -537,7 +534,7 @@ static void testHotkeyParsing(DpsoCfg* cfg)
 }
 
 
-static void testKeyValidity(DpsoCfg* cfg)
+void testKeyValidity(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
@@ -572,7 +569,7 @@ static void testKeyValidity(DpsoCfg* cfg)
     }
 }
 
-static void testKeyCaseInsensitivity(DpsoCfg* cfg)
+void testKeyCaseInsensitivity(DpsoCfg* cfg)
 {
     dpsoCfgSetStr(cfg, "Case_Insensitivity_TEST", "");
     if (!dpsoCfgKeyExists(cfg, "case_insensitivity_test"))
@@ -580,7 +577,7 @@ static void testKeyCaseInsensitivity(DpsoCfg* cfg)
 }
 
 
-static void testSavedValueFormat()
+void testSavedValueFormat()
 {
     static const auto* key = "key";
 
@@ -636,7 +633,7 @@ static void testSavedValueFormat()
 }
 
 
-static void testCfg()
+void testCfg()
 {
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
@@ -660,6 +657,9 @@ static void testCfg()
     testKeyCaseInsensitivity(cfg.get());
 
     testSavedValueFormat();
+}
+
+
 }
 
 

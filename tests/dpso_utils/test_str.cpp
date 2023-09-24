@@ -14,10 +14,7 @@ enum class Order {
 };
 
 
-}
-
-
-static Order getOrder(int cmpResult)
+Order getOrder(int cmpResult)
 {
     if (cmpResult < 0)
         return Order::less;
@@ -29,7 +26,7 @@ static Order getOrder(int cmpResult)
 }
 
 
-static const char* orderToStr(Order order)
+const char* toStr(Order order)
 {
     switch (order) {
     case Order::less:
@@ -44,7 +41,7 @@ static const char* orderToStr(Order order)
 }
 
 
-static void testCmpSubStr()
+void testCmpSubStr()
 {
     using namespace dpso::str;
 
@@ -90,12 +87,12 @@ static void testCmpSubStr()
             "testCmpSubStr: cmpSubStr(\"%s\", \"%s\", %zu, %u): "
             "expected %s, got %s\n",
             test.str, test.subStr, test.subStrLen, test.cmpOptions,
-            orderToStr(test.expectedOrder), orderToStr(gotOrder));
+            toStr(test.expectedOrder), toStr(gotOrder));
     }
 }
 
 
-static void testPrintf()
+void testPrintf()
 {
     using namespace dpso;
 
@@ -120,10 +117,13 @@ static void testPrintf()
 }
 
 
-static void testStr()
+void testStr()
 {
     testCmpSubStr();
     testPrintf();
+}
+
+
 }
 
 

@@ -9,7 +9,10 @@
 #include "utils.h"
 
 
-static void cmpFields(
+namespace {
+
+
+void cmpFields(
     const char* name, const char* a, const char* b, int lineNum)
 {
     if (std::strcmp(a, b) == 0)
@@ -24,7 +27,7 @@ static void cmpFields(
 }
 
 
-static void cmpEntries(
+void cmpEntries(
     const DpsoHistoryEntry& a, const DpsoHistoryEntry& b, int lineNum)
 {
     #define CMP(name) cmpFields(#name, a.name, b.name, lineNum)
@@ -39,8 +42,7 @@ static void cmpEntries(
 #define CMP_ENTRIES(a, b) cmpEntries(a, b, __LINE__)
 
 
-static void testCount(
-    const DpsoHistory* history, int expected, int lineNum)
+void testCount(const DpsoHistory* history, int expected, int lineNum)
 {
     const auto got = dpsoHistoryCount(history);
     if (got == expected)
@@ -61,7 +63,7 @@ static void testCount(
 const auto* const historyFileName = "test_history.txt";
 
 
-static void testIO(bool append)
+void testIO(bool append)
 {
     const struct Test {
         DpsoHistoryEntry inEntry;
@@ -121,7 +123,7 @@ static void testIO(bool append)
 }
 
 
-static void testInvalidData()
+void testInvalidData()
 {
     const struct Test {
         const char* description;
@@ -154,11 +156,14 @@ static void testInvalidData()
 }
 
 
-static void testHistory()
+void testHistory()
 {
     testIO(true);
     testIO(false);
     testInvalidData();
+}
+
+
 }
 
 

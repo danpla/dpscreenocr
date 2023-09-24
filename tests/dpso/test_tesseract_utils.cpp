@@ -8,7 +8,10 @@
 #include "utils.h"
 
 
-static void testPrettifyText()
+namespace {
+
+
+void testPrettifyText()
 {
     const struct Test {
         const char* original;
@@ -53,9 +56,12 @@ static void testPrettifyText()
 }
 
 
-static void testTesseractUtils()
+void testTesseractUtils()
 {
     testPrettifyText();
+}
+
+
 }
 
 

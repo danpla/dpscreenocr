@@ -5,7 +5,10 @@
 #include "utils.h"
 
 
-static void testUtfConversion(const char* utf8Str)
+namespace {
+
+
+void testUtfConversion(const char* utf8Str)
 {
     using namespace dpso::windows;
 
@@ -42,7 +45,7 @@ static void testUtfConversion(const char* utf8Str)
 }
 
 
-static void testUtfConversions()
+void testUtfConversions()
 {
     const char* const utf8Strings[] = {
         "",
@@ -55,7 +58,7 @@ static void testUtfConversions()
 }
 
 
-static void testInvalidUtf8()
+void testInvalidUtf8()
 {
     using namespace dpso::windows;
 
@@ -96,7 +99,7 @@ static void testInvalidUtf8()
 }
 
 
-static void testInvalidUtf16()
+void testInvalidUtf16()
 {
     const wchar_t* const strings[] = {
         L"\xd800",  // min leading
@@ -120,11 +123,14 @@ static void testInvalidUtf16()
 }
 
 
-static void testWindowsUtf()
+void testWindowsUtf()
 {
     testUtfConversions();
     testInvalidUtf8();
     testInvalidUtf16();
+}
+
+
 }
 
 

@@ -6,11 +6,14 @@
 #include "flow.h"
 
 
+namespace {
+
+
 const auto allMods =
     dpsoKeyModCtrl | dpsoKeyModAlt | dpsoKeyModShift | dpsoKeyModWin;
 
 
-static void testHotkeyToString()
+void testHotkeyToString()
 {
     const DpsoHotkey hotkeys[] = {
         {dpsoNoKey, dpsoKeyModCtrl},
@@ -35,13 +38,13 @@ static void testHotkeyToString()
 }
 
 
-static std::string hotkeyToStr(const DpsoHotkey& hotkey)
+std::string toStr(const DpsoHotkey& hotkey)
 {
     return dpsoHotkeyToString(&hotkey);
 }
 
 
-static void testHotkeyFromString()
+void testHotkeyFromString()
 {
     const struct Test {
         const char* str;
@@ -98,16 +101,19 @@ static void testHotkeyFromString()
             "testHotkeyFromString: dpsoHotkeyFromString(\"%s\"): "
             "expected \"%s\", got \"%s\"\n",
             test.str,
-            hotkeyToStr(test.expectedHotkey).c_str(),
-            hotkeyToStr(got).c_str());
+            toStr(test.expectedHotkey).c_str(),
+            toStr(got).c_str());
     }
 }
 
 
-static void testKeys()
+void testKeys()
 {
     testHotkeyToString();
     testHotkeyFromString();
+}
+
+
 }
 
 

@@ -15,10 +15,7 @@ struct ProgressInfo {
 };
 
 
-}
-
-
-static dpso::ProgressTracker::ProgressHandler makeProgressHandler(
+dpso::ProgressTracker::ProgressHandler makeProgressHandler(
     ProgressInfo& progressInfo)
 {
     return [&](float progress)
@@ -29,7 +26,7 @@ static dpso::ProgressTracker::ProgressHandler makeProgressHandler(
 }
 
 
-static void checkProgressInfo(
+void checkProgressInfo(
     const ProgressInfo& progressInfo,
     int numCalls,
     float progress,
@@ -51,7 +48,7 @@ static void checkProgressInfo(
     checkProgressInfo(progressInfo, NUM_CALLS, PROGRESS, __LINE__)
 
 
-static void testHierarchy()
+void testHierarchy()
 {
     ProgressInfo progressInfo;
 
@@ -95,7 +92,7 @@ static void testHierarchy()
 }
 
 
-static void testSensitivity()
+void testSensitivity()
 {
     ProgressInfo progressInfo;
 
@@ -134,10 +131,13 @@ static void testSensitivity()
 }
 
 
-static void testProgressTracker()
+void testProgressTracker()
 {
     testHierarchy();
     testSensitivity();
+}
+
+
 }
 
 

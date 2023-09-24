@@ -7,7 +7,10 @@
 using namespace dpso;
 
 
-static void testEqual(const Point& a, const Point& b, int lineNum)
+namespace {
+
+
+void testEqual(const Point& a, const Point& b, int lineNum)
 {
     if (a.x == b.x && a.y == b.y)
         return;
@@ -20,7 +23,7 @@ static void testEqual(const Point& a, const Point& b, int lineNum)
 }
 
 
-static void testEqual(const Rect& a, const Rect& b, int lineNum)
+void testEqual(const Rect& a, const Rect& b, int lineNum)
 {
     #define CMP(N) a.N == b.N
     if (CMP(x) && CMP(y) && CMP(w) && CMP(h))
@@ -38,7 +41,7 @@ static void testEqual(const Rect& a, const Rect& b, int lineNum)
 #define TEST_EQUAL(a, b) testEqual(a, b, __LINE__)
 
 
-static void testEmpty(const Rect& r, bool expectEmpty, int lineNum)
+void testEmpty(const Rect& r, bool expectEmpty, int lineNum)
 {
     if (isEmpty(r) == expectEmpty)
         return;
@@ -54,13 +57,13 @@ static void testEmpty(const Rect& r, bool expectEmpty, int lineNum)
 #define TEST_EMPTY(r, expectEmpty) testEmpty(r, expectEmpty, __LINE__)
 
 
-static void testPoint()
+void testPoint()
 {
     TEST_EQUAL(Point(), Point(0, 0));
 }
 
 
-static void testRect()
+void testRect()
 {
     TEST_EQUAL(Rect(), Rect(0, 0, 0, 0));
 
@@ -93,10 +96,13 @@ static void testRect()
 }
 
 
-static void testGeometry()
+void testGeometry()
 {
     testPoint();
     testRect();
+}
+
+
 }
 
 

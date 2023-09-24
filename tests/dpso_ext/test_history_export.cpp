@@ -11,7 +11,10 @@
 #include "utils.h"
 
 
-static std::string toStr(DpsoHistoryExportFormat exportFormat)
+namespace {
+
+
+std::string toStr(DpsoHistoryExportFormat exportFormat)
 {
     DpsoHistoryExportFormatInfo exportFormatInfo;
     dpsoHistoryGetExportFormatInfo(exportFormat, &exportFormatInfo);
@@ -19,7 +22,7 @@ static std::string toStr(DpsoHistoryExportFormat exportFormat)
 }
 
 
-static void testDetectExportFormat(
+void testDetectExportFormat(
     const char* filePath,
     DpsoHistoryExportFormat defaultExportFormat,
     DpsoHistoryExportFormat expectedExportFormat)
@@ -39,7 +42,7 @@ static void testDetectExportFormat(
 }
 
 
-static void testDetectExportFormat()
+void testDetectExportFormat()
 {
     const struct Test {
         std::vector<const char*> extensions;
@@ -80,7 +83,7 @@ static void testDetectExportFormat()
 }
 
 
-static void testExport()
+void testExport()
 {
     static const auto* htmlBegin =
         "<!DOCTYPE html>\n"
@@ -417,10 +420,13 @@ static void testExport()
 }
 
 
-static void testHistoryExport()
+void testHistoryExport()
 {
     testDetectExportFormat();
     testExport();
+}
+
+
 }
 
 
