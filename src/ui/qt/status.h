@@ -8,7 +8,7 @@ namespace ui::qt {
 enum class Status {
     ok,
     busy,
-    warning
+    error
 };
 
 

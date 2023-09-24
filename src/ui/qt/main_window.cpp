@@ -685,7 +685,7 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
         case Status::busy:
             trayIcon->setIcon(trayIconBusy);
             break;
-        case Status::warning:
+        case Status::error:
             trayIcon->setIcon(trayIconError);
             break;
         }
@@ -698,7 +698,7 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     case Status::busy:
         tbState = UiTaskbarStateProgress;
         break;
-    case Status::warning:
+    case Status::error:
         tbState = UiTaskbarStateError;
         break;
     }
@@ -765,11 +765,11 @@ void MainWindow::updateStatus()
     if (statusValid)
         return;
     if (dpsoOcrGetNumLangs(ocr.get()) == 0)
-        setStatus(Status::warning, _("Please install languages"));
+        setStatus(Status::error, _("Please install languages"));
     else if (dpsoOcrGetNumActiveLangs(ocr.get()) == 0)
-        setStatus(Status::warning, _("Please select languages"));
+        setStatus(Status::error, _("Please select languages"));
     else if (!actionChooser->getSelectedActions())
-        setStatus(Status::warning, _("Please select actions"));
+        setStatus(Status::error, _("Please select actions"));
     else
         setStatus(
             Status::ok,

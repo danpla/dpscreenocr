@@ -48,7 +48,7 @@ static const QColor& getStatusColor(Status status)
         return green;
     case Status::busy:
         return yellow;
-    case Status::warning:
+    case Status::error:
         return red;
     }
 
