@@ -242,15 +242,14 @@ ENV QT_VERSION="$QT_VERSION_ROOT.12"
 # * Disabling these features causes compilation errors:
 #
 #   cborstreamreader
-#   timezone
 #   datestring
 #   datetimeparser
-#   xml*
-#   style_windows
 #   regularexpression
-#   textdate
-#   textcodec
 #   tabletevent
+#   textcodec
+#   textdate
+#   timezone
+#   xml*
 #
 # * Disabling filesystemwatcher results in empty file lists in file
 #   dialogs.
@@ -291,10 +290,12 @@ RUN \
             -opensource \
             -confirm-license \
             -release \
+            -optimize-size \
             -strip \
             -nomake examples \
             -no-glib \
             -no-iconv \
+            -no-icu \
             -qt-pcre \
             -system-zlib \
             -no-ssl \
@@ -308,7 +309,15 @@ RUN \
             -no-egl \
             -no-eglfs \
             -qpa xcb \
+            -no-directfb \
+            -no-eglfs \
+            -no-gbm \
+            -no-kms \
+            -no-linuxfb \
+            -no-mirclient \
             -qt-xcb \
+            -no-libudev \
+            -no-evdev \
             -xcb-xinput \
             -xkbcommon \
             -no-gif \
@@ -331,6 +340,7 @@ RUN \
             -no-feature-testlib \
             \
             -no-feature-animation \
+            -no-feature-bearermanagement \
             -no-feature-big_codecs \
             -no-feature-calendarwidget \
             -no-feature-codecs \
@@ -347,12 +357,14 @@ RUN \
             -no-feature-effects \
             -no-feature-fontcombobox \
             -no-feature-fontdialog \
+            -no-feature-formlayout \
             -no-feature-ftp \
             -no-feature-future \
             -no-feature-gestures \
             -no-feature-graphicseffect \
             -no-feature-graphicsview \
             -no-feature-http \
+            -no-feature-identityproxymodel \
             -no-feature-image_heuristic_mask \
             -no-feature-image_text \
             -no-feature-imageformat_bmp \
@@ -361,6 +373,7 @@ RUN \
             -no-feature-imageformatplugin \
             -no-feature-itemmodeltester \
             -no-feature-lcdnumber \
+            -no-feature-listwidget \
             -no-feature-localserver \
             -no-feature-mdiarea \
             -no-feature-mimetype \
@@ -375,13 +388,19 @@ RUN \
             -no-feature-printer \
             -no-feature-printpreviewdialog \
             -no-feature-printpreviewwidget \
+            -no-feature-process \
             -no-feature-resizehandler \
+            -no-feature-rubberband \
+            -no-feature-scroller \
             -no-feature-socks5 \
             -no-feature-splashscreen \
             -no-feature-sqlmodel \
             -no-feature-statemachine \
             -no-feature-style-stylesheet \
             -no-feature-syntaxhighlighter \
+            -no-feature-tableview \
+            -no-feature-tablewidget \
+            -no-feature-textbrowser \
             -no-feature-textodfwriter \
             -no-feature-toolbox \
             -no-feature-topleveldomain \
@@ -391,6 +410,7 @@ RUN \
             -no-feature-undogroup \
             -no-feature-undostack \
             -no-feature-undoview \
+            -no-feature-whatsthis \
             -no-feature-wizard \
         && make -j$(nproc) \
         && make install) \
