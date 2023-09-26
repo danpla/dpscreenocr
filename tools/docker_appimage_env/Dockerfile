@@ -53,6 +53,7 @@ RUN \
         libdbus-1-dev \
         libfontconfig1-dev \
         libfreetype6-dev \
+        libglib2.0-dev \
         libpng-dev \
         libtool \
         libx11-dev \
@@ -182,11 +183,7 @@ RUN \
 # which is the last version with autotools support (so that we don't
 # have to install meson for a newer version).
 RUN \
-    export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y update \
-    && apt-get -y install libglib2.0-dev \
-    \
-    && VERSION_ROOT="2.26" \
+    VERSION_ROOT="2.26" \
     && VERSION="$VERSION_ROOT.3" \
     && BASE="at-spi2-core-$VERSION"\
     && ARCHIVE="$BASE.tar.xz" \
@@ -209,11 +206,7 @@ RUN \
             --disable-gtk-doc-html \
         && make -j$(nproc) \
         && make install-strip) \
-    && rm -rf "$BASE" \
-    \
-    && apt-get -y purge libglib2.0-dev \
-    && apt-get -y autoremove \
-    && rm -rf "/var/lib/apt/lists"/*
+    && rm -rf "$BASE"
 
 # This is the directory where we will put the license files of all
 # manually built libraries. Each license should be in its own
