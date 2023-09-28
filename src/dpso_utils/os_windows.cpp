@@ -28,10 +28,10 @@ void throwLastError(const char* description)
 {
     const auto lastError = GetLastError();
 
-    const auto message =
-        std::string{description}
-        + ": "
-        + windows::getErrorMessage(lastError);
+    const auto message = str::printf(
+        "%s: %s",
+        description,
+        windows::getErrorMessage(lastError).c_str());
 
     switch (lastError) {
     case ERROR_FILE_NOT_FOUND:
@@ -88,7 +88,8 @@ const char* skipRoot(const char* path)
         if (
                 p[0] == '?'
                 && isDirSep(p[1])
-                && _strnicmp(p + 2, "UNC", 3) == 0
+                && str::cmpSubStr(
+                    "UNC", p + 2, 3, str::cmpIgnoreCase) == 0
                 && isDirSep(p[5]))
             p += 6;
 
@@ -218,18 +219,14 @@ std::int64_t getFileSize(const char* filePath)
 
 FILE* fopen(const char* filePath, const char* mode)
 {
-    std::wstring filePathUtf16;
-    std::wstring modeUtf16;
-
     try {
-        filePathUtf16 = windows::utf8ToUtf16(filePath);
-        modeUtf16 = windows::utf8ToUtf16(mode);
+        return _wfopen(
+            DPSO_WIN_TO_UTF16(filePath).c_str(),
+            DPSO_WIN_TO_UTF16(mode).c_str());
     } catch (std::runtime_error&) {
         errno = EINVAL;
         return nullptr;
     }
-
-    return _wfopen(filePathUtf16.c_str(), modeUtf16.c_str());
 }
 
 
