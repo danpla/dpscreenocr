@@ -34,8 +34,7 @@ std::string calcFileSha256(const char* filePath)
 
         if (numRead < sizeof(buf)) {
             if (std::ferror(fp.get()))
-                throw Sha256FileError{str::printf(
-                    "fread: %s", std::strerror(errno))};
+                throw Sha256FileError{"fread() failed"};
 
             break;
         }
