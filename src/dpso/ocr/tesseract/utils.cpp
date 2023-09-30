@@ -46,7 +46,7 @@ std::size_t prettifyText(char* text)
     const auto* src = text;
     auto* dst = text;
 
-    while (dpso::str::isSpace(*src))
+    while (str::isSpace(*src))
         ++src;
 
     while (*src) {
@@ -70,7 +70,7 @@ std::size_t prettifyText(char* text)
             *dst++ = *src++;
     }
 
-    while (dst > text && dpso::str::isSpace(dst[-1]))
+    while (dst > text && str::isSpace(dst[-1]))
         --dst;
 
     *dst = 0;
