@@ -31,39 +31,25 @@ struct DpsoHistory {
 
 static bool loadData(const char* filePath, std::string& data)
 {
-    data.clear();
+    try {
+        data.resize(dpso::os::getFileSize(filePath));
+    } catch (dpso::os::FileNotFoundError&) {
+        data.clear();
+        return true;
+    } catch (dpso::os::Error& e) {
+        dpsoSetError("os::getFileSize(): %s", e.what());
+        return false;
+    }
 
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
     if (!fp) {
-        if (errno == ENOENT)
-            return true;
-
         dpsoSetError(
             "os::fopen(..., \"rb\"): %s", std::strerror(errno));
         return false;
     }
 
-    if (std::fseek(fp.get(), 0, SEEK_END) != 0) {
-        dpsoSetError(
-            "fseek(..., SEEK_END): %s", std::strerror(errno));
-        return false;
-    }
-
-    const auto size = std::ftell(fp.get());
-    if (size < 0) {
-        dpsoSetError("ftell(): %s", std::strerror(errno));
-        return false;
-    }
-
-    if (std::fseek(fp.get(), 0, SEEK_SET) != 0) {
-        dpsoSetError(
-            "fseek(..., 0, SEEK_SET): %s", std::strerror(errno));
-        return false;
-    }
-
-    data.resize(size);
-    if (std::fread(data.data(), 1, size, fp.get())
-            != static_cast<std::size_t>(size)) {
+    if (std::fread(data.data(), 1, data.size(), fp.get())
+            != data.size()) {
         dpsoSetError("fread() failed");
         return false;
     }
