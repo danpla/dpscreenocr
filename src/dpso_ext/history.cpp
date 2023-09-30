@@ -76,7 +76,7 @@ static bool createEntries(
         }
 
         DpsoHistory::Entry e;
-        e.timestamp.assign(timestampBegin, s - timestampBegin);
+        e.timestamp.assign(timestampBegin, s);
 
         s += 2;
 
@@ -84,7 +84,7 @@ static bool createEntries(
         while (*s && *s != '\f')
             ++s;
 
-        e.text.assign(textBegin, s - textBegin);
+        e.text.assign(textBegin, s);
 
         entries.push_back(std::move(e));
 

@@ -50,7 +50,7 @@ const char* dpsoStrNFormat(
                 else {
                     // If no arg with such name found, leave it as is.
                     result += '{';
-                    result.append(nameBegin, nameEnd - nameBegin);
+                    result.append(nameBegin, nameEnd);
                     result += '}';
                 }
             } else {

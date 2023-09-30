@@ -53,7 +53,7 @@ void dpsoCfgLoadActiveLangs(
             if (!dpso::str::isBlank(*s))
                 langCodeEnd = s + 1;
 
-        langCode.assign(langCodeBegin, langCodeEnd - langCodeBegin);
+        langCode.assign(langCodeBegin, langCodeEnd);
         enableLang(ocr, langCode.c_str());
     }
 }
