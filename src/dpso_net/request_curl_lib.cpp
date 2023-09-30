@@ -61,45 +61,67 @@ struct DlHandleCloser {
 using DlHandleUPtr = std::unique_ptr<void, DlHandleCloser>;
 
 
-DlHandleUPtr loadLib()
+struct LibInfo {
+    std::string name;
+    DlHandleUPtr handle;
+};
+
+
+LibInfo loadLib()
 {
+    // As of this writing, the current SO version is 4, bumped in
+    // libcurl 7.16.0. The set of functions we will load requires a
+    // much newer libcurl, so we don't try to load libraries with
+    // older SO versions.
+    //
+    // https://curl.se/libcurl/abi.html
+    const auto minSoVersion = 4;
+
+    // To make the code more future-proof, we also try to load
+    // libraries with newer SO versions, hoping that the ABI changes
+    // introduced in them won't affect the functions we load.
+    const auto maxSoVersion = minSoVersion + 5;
+
     const char* names[] = {
-        "libcurl.so",
-        "libcurl.so.3",
-        "libcurl.so.4",
-        "libcurl-gnutls.so.3",
-        "libcurl-gnutls.so.4",
-        "libcurl-nss.so.3",
-        "libcurl-nss.so.4",
+        "libcurl",
+        "libcurl-gnutls",
+        "libcurl-nss",
     };
 
-    for (const auto* name : names)
-        if (auto* handle = dlopen(name, RTLD_NOW))
-            return DlHandleUPtr{handle};
+    for (auto v = minSoVersion; v <= maxSoVersion; ++v)
+        for (const auto* name : names) {
+            const auto soName = str::printf("%s.so.%i", name, v);
+            if (auto* handle = dlopen(
+                    soName.c_str(), RTLD_NOW | RTLD_LOCAL))
+                return {soName, DlHandleUPtr{handle}};
+        }
 
-    std::string namesStr;
+    std::string triedSoNames;
     for (const auto* name : names) {
-        if (!namesStr.empty())
-            namesStr += ", ";
+        if (!triedSoNames.empty())
+            triedSoNames += ", ";
 
-        namesStr += name;
+        triedSoNames += str::printf(
+            "%s.so.[%i-%i]", name, minSoVersion, maxSoVersion);
     }
 
     throw Error{str::printf(
         "Can't load libcurl. Tried names: %s. Last error: %s",
-        namesStr.c_str(),
+        triedSoNames.c_str(),
         dlerror())};
 }
 
 
 void* loadFn(const char* name)
 {
-    static auto dlHandle = loadLib();
+    static auto libInfo = loadLib();
 
-    if (auto* result = dlsym(dlHandle.get(), name))
+    if (auto* result = dlsym(libInfo.handle.get(), name))
         return result;
 
-    throw Error{str::printf("dlsym for \"%s\": %s", name, dlerror())};
+    throw Error{str::printf(
+        "dlsym for \"%s\" from \"%s\": %s",
+        name, libInfo.name.c_str(), dlerror())};
 }
 
 
