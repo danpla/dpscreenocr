@@ -165,12 +165,11 @@ int dpsoHistoryCount(const DpsoHistory* history)
 static std::string replaceReservedChar(
     const char* text, char reservedChar)
 {
-    std::string result(std::strlen(text), 0);
+    std::string result{text};
 
-    for (std::size_t i = 0; i < result.size(); ++i) {
-        const auto c = text[i];
-        result[i] = c == reservedChar ? ' ' : c;
-    }
+    for (auto& c : result)
+        if (c == reservedChar)
+            c = ' ';
 
     return result;
 }
