@@ -190,6 +190,19 @@ void testGetFileSize()
             fileName, size, gotSize);
 
     test::utils::removeFile(fileName);
+
+    try {
+        dpso::os::getFileSize("nonexistent_file");
+        test::failure(
+            "os::getFileSize() for a nonexistent source file didn't "
+            "threw an error");
+    } catch (dpso::os::FileNotFoundError&) {
+    } catch (dpso::os::Error& e) {
+        test::failure(
+            "os::getFileSize() for a nonexistent file threw an error "
+            "(\"%s\") of class other than FileNotFoundError\n",
+            e.what());
+    }
 }
 
 
