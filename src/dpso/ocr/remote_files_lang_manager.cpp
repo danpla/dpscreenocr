@@ -70,7 +70,7 @@ std::string RemoteFilesLangManager::getLangCode(int langIdx) const
 
 std::string RemoteFilesLangManager::getLangName(int langIdx) const
 {
-    return getLangName(getLangCode(langIdx).c_str());
+    return getLangName(langInfos[langIdx].code.c_str());
 }
 
 
