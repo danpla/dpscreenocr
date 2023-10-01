@@ -73,11 +73,12 @@ JsonType getType(const json_t* json)
 
 HandleUPtr loadJson(const char* data, JsonType type)
 {
-    json_error_t jsonError;
-    HandleUPtr result{json_loads(data, 0, &jsonError)};
+    json_error_t error;
+    HandleUPtr result{json_loads(data, 0, &error)};
 
     if (!result)
-        throw Error{jsonError.text};
+        throw Error{str::printf(
+            "%i:%i: %s", error.line, error.column, error.text)};
 
     if (getType(result.get()) != type)
         throw Error{str::printf("Root is not %s", getName(type))};
