@@ -49,11 +49,11 @@ private:
         std::string code;
         LangState state;
         std::string sha256;
-        std::string externalSha256;
+        std::string remoteSha256;
         std::string url;
     };
 
-    struct ExternalLangInfo {
+    struct RemoteLangInfo {
         std::string code;
         std::string sha256;
         std::int64_t size;
@@ -65,13 +65,15 @@ private:
     std::string infoFileUrl;
     std::vector<LangInfo> langInfos;
 
-    static std::vector<ExternalLangInfo> parseJsonFileInfo(
+    static std::vector<RemoteLangInfo> parseJsonFileInfos(
         const char* jsonData);
-    static std::vector<ExternalLangInfo> getExternalLangs(
+    static std::vector<RemoteLangInfo> getRemoteLangs(
         const char* infoFileUrl, const char* userAgent);
 
-    void clearExternalLangs();
-    void addExternalLang(const ExternalLangInfo& externalLang);
+    void clearRemoteLangs();
+    void mergeRemoteLang(
+        LangInfo& langInfo, const RemoteLangInfo& remoteLangInfo);
+    void addRemoteLang(const RemoteLangInfo& remoteLangInfo);
     std::string getFilePath(const std::string& langCode) const;
 };
 

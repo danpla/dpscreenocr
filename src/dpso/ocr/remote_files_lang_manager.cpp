@@ -86,6 +86,7 @@ RemoteFilesLangManager::RemoteFilesLangManager(
     , userAgent{userAgent}
     , infoFileUrl{infoFileUrl}
 {
+    langInfos.reserve(localLangCodes.size());
     for (const auto& langCode : localLangCodes)
         langInfos.push_back(
             {langCode, LangState::installed, {}, {}, {}});
@@ -127,12 +128,12 @@ LangManager::LangState RemoteFilesLangManager::getLangState(
 
 void RemoteFilesLangManager::fetchExternalLangs()
 {
-    clearExternalLangs();
+    clearRemoteLangs();
 
-    for (const auto& externalLang : getExternalLangs(
+    for (const auto& remoteLangInfo : getRemoteLangs(
             infoFileUrl.c_str(), userAgent.c_str()))
-        if (!shouldIgnoreLang(externalLang.code.c_str()))
-            addExternalLang(externalLang);
+        if (!shouldIgnoreLang(remoteLangInfo.code.c_str()))
+            addRemoteLang(remoteLangInfo);
 }
 
 
@@ -181,7 +182,7 @@ void RemoteFilesLangManager::installLang(
 
     auto& langInfo = langInfos[langIdx];
 
-    assert(langInfo.sha256 != langInfo.externalSha256);
+    assert(langInfo.sha256 != langInfo.remoteSha256);
     assert(!langInfo.url.empty());
 
     const auto filePath = getFilePath(langInfo.code);
@@ -206,7 +207,7 @@ void RemoteFilesLangManager::installLang(
         return;
 
     langInfo.state = LangState::installed;
-    langInfo.sha256 = langInfo.externalSha256;
+    langInfo.sha256 = langInfo.remoteSha256;
 
     // Even though we know the digest in advance, we cannot save it
     // before the language file is downloaded, as this would
@@ -246,8 +247,8 @@ void RemoteFilesLangManager::removeLang(int langIdx)
 }
 
 
-std::vector<RemoteFilesLangManager::ExternalLangInfo>
-RemoteFilesLangManager::parseJsonFileInfo(const char* jsonData)
+std::vector<RemoteFilesLangManager::RemoteLangInfo>
+RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
 {
     json_error_t jsonError;
     const JsonUPtr json{json_loads(jsonData, 0, &jsonError)};
@@ -258,7 +259,8 @@ RemoteFilesLangManager::parseJsonFileInfo(const char* jsonData)
     if (!json_is_array(json.get()))
         throw LangManagerError{"Root is not an array"};
 
-    std::vector<ExternalLangInfo> result;
+    std::vector<RemoteLangInfo> result;
+    result.reserve(json_array_size(json.get()));
 
     for (std::size_t i = 0; i < json_array_size(json.get()); ++i)
         try {
@@ -291,8 +293,8 @@ RemoteFilesLangManager::parseJsonFileInfo(const char* jsonData)
 }
 
 
-std::vector<RemoteFilesLangManager::ExternalLangInfo>
-RemoteFilesLangManager::getExternalLangs(
+std::vector<RemoteFilesLangManager::RemoteLangInfo>
+RemoteFilesLangManager::getRemoteLangs(
     const char* infoFileUrl, const char* userAgent)
 {
     std::string jsonData;
@@ -305,7 +307,7 @@ RemoteFilesLangManager::getExternalLangs(
     }
 
     try {
-        return parseJsonFileInfo(jsonData.c_str());
+        return parseJsonFileInfos(jsonData.c_str());
     } catch (LangManagerError& e) {
         throw LangManagerError{str::printf(
             "Can't parse JSON info file from \"%s\": %s",
@@ -314,7 +316,7 @@ RemoteFilesLangManager::getExternalLangs(
 }
 
 
-void RemoteFilesLangManager::clearExternalLangs()
+void RemoteFilesLangManager::clearRemoteLangs()
 {
     for (auto iter = langInfos.begin(); iter < langInfos.end();) {
         if (iter->state == LangState::notInstalled) {
@@ -323,7 +325,7 @@ void RemoteFilesLangManager::clearExternalLangs()
         }
 
         iter->state = LangState::installed;
-        iter->externalSha256.clear();
+        iter->remoteSha256.clear();
         iter->url.clear();
 
         ++iter;
@@ -331,63 +333,68 @@ void RemoteFilesLangManager::clearExternalLangs()
 }
 
 
-void RemoteFilesLangManager::addExternalLang(
-    const ExternalLangInfo& externalLang)
+void RemoteFilesLangManager::mergeRemoteLang(
+    LangInfo& langInfo, const RemoteLangInfo& remoteLangInfo)
 {
-    for (auto& langInfo : langInfos) {
-        if (langInfo.code != externalLang.code)
-            continue;
+    assert(langInfo.code == remoteLangInfo.code);
 
-        // Old external langs should be cleared before adding new
-        // ones.
-        assert(langInfo.state == LangState::installed);
-        assert(langInfo.externalSha256.empty());
-        assert(langInfo.url.empty());
+    // Old remote langs should be cleared before adding new ones.
+    assert(langInfo.state == LangState::installed);
+    assert(langInfo.remoteSha256.empty());
+    assert(langInfo.url.empty());
 
-        langInfo.externalSha256 = externalLang.sha256;
-        langInfo.url = externalLang.url;
+    langInfo.remoteSha256 = remoteLangInfo.sha256;
+    langInfo.url = remoteLangInfo.url;
 
-        const auto filePath = getFilePath(langInfo.code);
+    const auto filePath = getFilePath(langInfo.code);
 
-        // As an optimization, compare file sizes first to avoid
-        // calculating SHA-256 if they are different.
-        std::int64_t fileSize{};
-        try {
-            fileSize = os::getFileSize(filePath.c_str());
-        } catch (os::Error& e) {
-            throw LangManagerError{str::printf(
-                "Can't get size of \"%s\": %s",
-                filePath.c_str(), e.what())};
-        }
+    // As an optimization, compare file sizes first to avoid
+    // calculating SHA-256 if they are different.
+    std::int64_t fileSize{};
+    try {
+        fileSize = os::getFileSize(filePath.c_str());
+    } catch (os::Error& e) {
+        throw LangManagerError{str::printf(
+            "Can't get size of \"%s\": %s",
+            filePath.c_str(), e.what())};
+    }
 
-        if (fileSize != externalLang.size) {
-            langInfo.state = LangState::updateAvailable;
-            return;
-        }
-
-        if (langInfo.sha256.empty())
-            try {
-                langInfo.sha256 = getSha256HexDigestWithCaching(
-                    filePath.c_str());
-            } catch (Sha256FileError& e) {
-                throw LangManagerError{str::printf(
-                    "Can't get SHA-256 of \"%s\": %s",
-                    filePath.c_str(), e.what())};
-            }
-
-        if (langInfo.sha256 != langInfo.externalSha256)
-            langInfo.state = LangState::updateAvailable;
-
+    if (fileSize != remoteLangInfo.size) {
+        langInfo.state = LangState::updateAvailable;
         return;
     }
 
+    if (langInfo.sha256.empty())
+        try {
+            langInfo.sha256 = getSha256HexDigestWithCaching(
+                filePath.c_str());
+        } catch (Sha256FileError& e) {
+            throw LangManagerError{str::printf(
+                "Can't get SHA-256 of \"%s\": %s",
+                filePath.c_str(), e.what())};
+        }
+
+    if (langInfo.sha256 != langInfo.remoteSha256)
+        langInfo.state = LangState::updateAvailable;
+}
+
+
+void RemoteFilesLangManager::addRemoteLang(
+    const RemoteLangInfo& remoteLangInfo)
+{
+    for (auto& langInfo : langInfos)
+        if (langInfo.code == remoteLangInfo.code) {
+            mergeRemoteLang(langInfo, remoteLangInfo);
+            return;
+        }
+
     langInfos.push_back(
         {
-            externalLang.code,
+            remoteLangInfo.code,
             LangState::notInstalled,
             {},
-            externalLang.sha256,
-            externalLang.url
+            remoteLangInfo.sha256,
+            remoteLangInfo.url
         });
 }
 
