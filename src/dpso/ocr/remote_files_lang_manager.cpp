@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include <jansson.h>
+#include "dpso_json/json.h"
 
 #include "dpso_net/download_file.h"
 #include "dpso_net/error.h"
@@ -18,10 +18,9 @@
 
 
 namespace dpso::ocr {
-namespace {
 
 
-void rethrowNetErrorAsLangManagerError(const char* message)
+static void rethrowNetErrorAsLangManagerError(const char* message)
 {
     try {
         throw;
@@ -30,50 +29,6 @@ void rethrowNetErrorAsLangManagerError(const char* message)
     } catch (net::Error&) {
         throw LangManagerError{message};
     }
-}
-
-
-struct JsonRefDecrementer {
-    void operator()(json_t* json) const
-    {
-        json_decref(json);
-    }
-};
-
-
-using JsonUPtr = std::unique_ptr<json_t, JsonRefDecrementer>;
-
-
-const json_t* get(const json_t* object, const char* key)
-{
-    if (const auto* obj = json_object_get(object, key))
-        return obj;
-
-    throw LangManagerError{str::printf("No \"%s\"", key)};
-}
-
-
-std::string getStr(const json_t* object, const char* key)
-{
-    if (const auto* obj = get(object, key);
-            const auto* val = json_string_value(obj))
-        return {val, json_string_length(obj)};
-
-    throw LangManagerError{
-        str::printf("\"%s\" is not a string", key)};
-}
-
-
-std::int64_t getInt(const json_t* object, const char* key)
-{
-    if (const auto* obj = get(object, key); json_is_integer(obj))
-        return json_integer_value(obj);
-
-    throw LangManagerError{
-        str::printf("\"%s\" is not an integer", key)};
-}
-
-
 }
 
 
@@ -250,29 +205,20 @@ void RemoteFilesLangManager::removeLang(int langIdx)
 std::vector<RemoteFilesLangManager::RemoteLangInfo>
 RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
 {
-    json_error_t jsonError;
-    const JsonUPtr json{json_loads(jsonData, 0, &jsonError)};
-
-    if (!json)
-        throw LangManagerError{jsonError.text};
-
-    if (!json_is_array(json.get()))
-        throw LangManagerError{"Root is not an array"};
+    const auto fileInfos = json::Array::load(jsonData);
 
     std::vector<RemoteLangInfo> result;
-    result.reserve(json_array_size(json.get()));
+    result.reserve(fileInfos.getSize());
 
-    for (std::size_t i = 0; i < json_array_size(json.get()); ++i)
+    for (std::size_t i = 0; i < fileInfos.getSize(); ++i) {
+        const auto fileInfo = fileInfos.getObject(i);
+
         try {
-            const auto* fileInfo = json_array_get(json.get(), i);
-            if (!json_is_object(fileInfo))
-                throw LangManagerError{"Not an object"};
-
-            const auto code = getStr(fileInfo, "code");
+            const auto code = fileInfo.getStr("code");
             try {
                 validateLangCode(code.c_str());
             } catch (InvalidLangCodeError& e) {
-                throw LangManagerError{str::printf(
+                throw json::Error{str::printf(
                     "Invalid code \"%s\": %s",
                     code.c_str(), e.what())};
             }
@@ -280,14 +226,15 @@ RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
             result.push_back(
                 {
                     code,
-                    getStr(fileInfo, "sha256"),
-                    getInt(fileInfo, "size"),
-                    getStr(fileInfo, "url")
+                    fileInfo.getStr("sha256"),
+                    fileInfo.getInt("size"),
+                    fileInfo.getStr("url")
                 });
-        } catch (LangManagerError& e) {
-            throw LangManagerError{str::printf(
-                "Array item %zu: %s", i, e.what())};
+        } catch (json::Error& e) {
+            throw json::Error{str::printf(
+                "File info at index %zu: %s", i, e.what())};
         }
+    }
 
     return result;
 }
@@ -308,7 +255,7 @@ RemoteFilesLangManager::getRemoteLangs(
 
     try {
         return parseJsonFileInfos(jsonData.c_str());
-    } catch (LangManagerError& e) {
+    } catch (json::Error& e) {
         throw LangManagerError{str::printf(
             "Can't parse JSON info file from \"%s\": %s",
             infoFileUrl, e.what())};

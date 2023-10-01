@@ -66,8 +66,6 @@ else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
 
-find_package(PkgConfig REQUIRED)
-
 # Language manager
 if(NOT DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
     target_sources(
@@ -76,16 +74,17 @@ if(NOT DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
         ocr/remote_files_lang_manager.cpp
         ocr/tesseract/lang_manager.cpp)
 
+    if(NOT TARGET dpso_json)
+        add_subdirectory(
+            ../dpso_json "${CMAKE_BINARY_DIR}/src/dpso_json")
+    endif()
+
     if(NOT TARGET dpso_net)
         add_subdirectory(
             ../dpso_net "${CMAKE_BINARY_DIR}/src/dpso_net")
     endif()
 
-    # json_string_length() was added in 2.7.
-    pkg_search_module(JANSSON REQUIRED jansson>=2.7)
-
-    target_include_directories(dpso PRIVATE ${JANSSON_INCLUDE_DIRS})
-    target_link_libraries(dpso PRIVATE dpso_net ${JANSSON_LIBRARIES})
+    target_link_libraries(dpso PRIVATE dpso_json dpso_net)
 else()
     target_sources(dpso PRIVATE ocr/tesseract/lang_manager_null.cpp)
 endif()
@@ -137,6 +136,8 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(
         dpso PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
 endif()
+
+find_package(PkgConfig REQUIRED)
 
 # TODO: If Tesseract was installed via CMake, we can also try to use
 # find_package(Tesseract). For now, we only build on various Linux
