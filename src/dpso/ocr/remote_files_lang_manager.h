@@ -73,7 +73,6 @@ private:
     void clearExternalLangs();
     void addExternalLang(const ExternalLangInfo& externalLang);
     std::string getFilePath(const std::string& langCode) const;
-    std::string getFilePath(int langIdx) const;
 };
 
 

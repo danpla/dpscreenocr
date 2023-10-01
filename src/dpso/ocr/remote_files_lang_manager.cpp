@@ -154,9 +154,7 @@ static net::DownloadProgressHandler makeDownloadProgressHandler(
                 progress = 100;
             else
                 progress =
-                    static_cast<float>(curSize)
-                    / *totalSize
-                    * 100;
+                    static_cast<float>(curSize) / *totalSize * 100;
 
             if (progress == lastProgress)
                 return true;
@@ -186,7 +184,7 @@ void RemoteFilesLangManager::installLang(
     assert(langInfo.sha256 != langInfo.externalSha256);
     assert(!langInfo.url.empty());
 
-    const auto filePath = getFilePath(langIdx);
+    const auto filePath = getFilePath(langInfo.code);
 
     bool canceled{};
 
@@ -226,7 +224,7 @@ void RemoteFilesLangManager::installLang(
 
 void RemoteFilesLangManager::removeLang(int langIdx)
 {
-    const auto filePath = getFilePath(langIdx);
+    const auto filePath = getFilePath(langInfos[langIdx].code);
 
     try {
         os::removeFile(filePath.c_str());
@@ -351,8 +349,8 @@ void RemoteFilesLangManager::addExternalLang(
 
         const auto filePath = getFilePath(langInfo.code);
 
-        // As a small optimization, check the file sizes first to
-        // avoid calculating SHA-256 if the sizes are different.
+        // As an optimization, compare file sizes first to avoid
+        // calculating SHA-256 if they are different.
         std::int64_t fileSize{};
         try {
             fileSize = os::getFileSize(filePath.c_str());
@@ -399,12 +397,6 @@ std::string RemoteFilesLangManager::getFilePath(
 {
     return
         dataDir + *os::dirSeparators + getFileName(langCode.c_str());
-}
-
-
-std::string RemoteFilesLangManager::getFilePath(int langIdx) const
-{
-    return getFilePath(langInfos[langIdx].code);
 }
 
 
