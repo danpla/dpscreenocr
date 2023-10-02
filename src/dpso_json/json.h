@@ -47,6 +47,7 @@ public:
     bool getBool(const char* key) const;
     std::string getStr(const char* key) const;
     std::int64_t getInt(const char* key) const;
+    Object getObject(const char* key) const;
     Array getArray(const char* key) const;
 private:
     friend class Array;
@@ -67,6 +68,7 @@ public:
     std::string getStr(std::size_t idx) const;
     std::int64_t getInt(std::size_t idx) const;
     Object getObject(std::size_t idx) const;
+    Array getArray(std::size_t idx) const;
 private:
     friend class Object;
 

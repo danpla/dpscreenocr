@@ -152,6 +152,13 @@ std::int64_t Object::getInt(const char* key) const
 }
 
 
+Object Object::getObject(const char* key) const
+{
+    auto* val = get(handle.get(), key, JsonType::object);
+    return Object{HandleUPtr{json_incref(val)}};
+}
+
+
 Array Object::getArray(const char* key) const
 {
     auto* val = get(handle.get(), key, JsonType::array);
@@ -228,6 +235,13 @@ Object Array::getObject(std::size_t idx) const
 {
     auto* object = get(handle.get(), idx, JsonType::object);
     return Object{HandleUPtr{json_incref(object)}};
+}
+
+
+Array Array::getArray(std::size_t idx) const
+{
+    auto* object = get(handle.get(), idx, JsonType::array);
+    return Array{HandleUPtr{json_incref(object)}};
 }
 
 
