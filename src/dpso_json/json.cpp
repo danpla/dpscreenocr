@@ -48,6 +48,8 @@ const char* getName(JsonType type)
 
 JsonType getType(const json_t* json)
 {
+    assert(json);
+
     switch (json_typeof(json)) {
     case JSON_OBJECT:
         return JsonType::object;
@@ -73,6 +75,8 @@ JsonType getType(const json_t* json)
 
 HandleUPtr loadJson(const char* data, JsonType type)
 {
+    assert(type == JsonType::array || type == JsonType::object);
+
     json_error_t error;
     HandleUPtr result{json_loads(data, 0, &error)};
 
@@ -106,6 +110,7 @@ Object::Object(HandleUPtr h)
     : handle{std::move(h)}
 {
     assert(handle);
+    assert(getType(handle.get()) == JsonType::object);
 }
 
 
@@ -154,15 +159,15 @@ std::int64_t Object::getInt(const char* key) const
 
 Object Object::getObject(const char* key) const
 {
-    auto* val = get(handle.get(), key, JsonType::object);
-    return Object{HandleUPtr{json_incref(val)}};
+    return Object{HandleUPtr{
+        json_incref(get(handle.get(), key, JsonType::object))}};
 }
 
 
 Array Object::getArray(const char* key) const
 {
-    auto* val = get(handle.get(), key, JsonType::array);
-    return Array{HandleUPtr{json_incref(val)}};
+    return Array{HandleUPtr{
+        json_incref(get(handle.get(), key, JsonType::array))}};
 }
 
 
@@ -176,6 +181,7 @@ Array::Array(HandleUPtr h)
     : handle{std::move(h)}
 {
     assert(handle);
+    assert(getType(handle.get()) == JsonType::array);
 }
 
 
@@ -198,6 +204,11 @@ static json_t* get(
             "Index %zu is out of bounds [0, %zu)", idx, size)};
 
     auto* val = json_array_get(array, idx);
+
+    // We have already checked all the conditions under which
+    // json_array_get() can return null according to the
+    // documentation.
+    assert(val);
 
     if (getType(val) == JsonType::null)
         throw Error{str::printf("Value at index %zu is null", idx)};
@@ -233,15 +244,15 @@ std::int64_t Array::getInt(std::size_t idx) const
 
 Object Array::getObject(std::size_t idx) const
 {
-    auto* object = get(handle.get(), idx, JsonType::object);
-    return Object{HandleUPtr{json_incref(object)}};
+    return Object{HandleUPtr{
+        json_incref(get(handle.get(), idx, JsonType::object))}};
 }
 
 
 Array Array::getArray(std::size_t idx) const
 {
-    auto* object = get(handle.get(), idx, JsonType::array);
-    return Array{HandleUPtr{json_incref(object)}};
+    return Array{HandleUPtr{
+        json_incref(get(handle.get(), idx, JsonType::array))}};
 }
 
 
