@@ -135,8 +135,7 @@ std::string loadSha256File(const char* digestSourceFilePath)
             fp.get(), os::getBaseName(digestSourceFilePath).c_str());
     } catch (Sha256FileError& e) {
         throw Sha256FileError{str::printf(
-            "\"%s\": %s",
-            sha256FilePath.c_str(), e.what())};
+            "\"%s\": %s", sha256FilePath.c_str(), e.what())};
     }
 }
 

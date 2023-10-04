@@ -161,14 +161,15 @@ Sha256::Digest Sha256::Context::finalize()
     assert(bufLen < blockSize);
     buf[bufLen++] = 0x80;
 
-    if (bufLen > blockSize - sizeof(bitSize)) {
+    const auto bitSizePos = blockSize - sizeof(bitSize);
+    if (bufLen > bitSizePos) {
         std::fill(buf + bufLen, buf + blockSize, 0);
         transform(buf);
         bufLen = 0;
     }
 
-    std::fill(buf + bufLen, buf + blockSize - sizeof(bitSize), 0);
-    storeBe(bitSize, buf + blockSize - sizeof(bitSize));
+    std::fill(buf + bufLen, buf + bitSizePos, 0);
+    storeBe(bitSize, buf + bitSizePos);
     transform(buf);
 
     Digest digest;
