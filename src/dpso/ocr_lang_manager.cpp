@@ -77,7 +77,7 @@ void reloadLangs(
 void clearExternalLangs(std::vector<Lang>& langs)
 {
     for (auto iter = langs.begin(); iter < langs.end();) {
-        if (iter->state.getLock().get() == LangState::notInstalled) {
+        if (*iter->state.getLock() == LangState::notInstalled) {
             iter = langs.erase(iter);
             continue;
         }
@@ -352,7 +352,7 @@ DpsoOcrLangState dpsoOcrLangManagerGetLangState(
     if (!lang)
         return {};
 
-    switch (lang->state.getLock().get()) {
+    switch (*lang->state.getLock()) {
     case LangState::notInstalled:
         return DpsoOcrLangStateNotInstalled;
     case LangState::installed:
@@ -466,7 +466,7 @@ void dpsoOcrLangManagerSetInstallMark(
     DpsoOcrLangManager* langManager, int langIdx, bool installMark)
 {
     auto* lang = getLang(langManager, langIdx);
-    if (lang && lang->state.getLock().get() != LangState::installed)
+    if (lang && *lang->state.getLock() != LangState::installed)
         lang->installMark = installMark;
 }
 
@@ -488,7 +488,7 @@ static void installLangs(
     const dpso::Synchronized<bool>& cancelRequested)
 {
     for (std::size_t i = 0; i < langIndices.size(); ++i) {
-        if (cancelRequested.getLock().get())
+        if (*cancelRequested.getLock())
             throw LangOpCanceled{};
 
         const auto langIdx = langIndices[i];
@@ -509,7 +509,7 @@ static void installLangs(
                     static_cast<int>(langIndices.size())
                 };
 
-                return !cancelRequested.getLock().get();
+                return !*cancelRequested.getLock();
             });
 
         lang.state = langManager.langManager->getLangState(
@@ -576,8 +576,7 @@ void dpsoOcrLangManagerGetInstallProgress(
     DpsoOcrLangInstallProgress* progress)
 {
     if (langManager && progress)
-        *progress =
-            langManager->installProgress.getLock().get();
+        *progress = *langManager->installProgress.getLock();
 }
 
 
@@ -625,7 +624,7 @@ bool dpsoOcrLangManagerRemoveLang(
         return false;
     }
 
-    if (lang->state.getLock().get() == LangState::notInstalled)
+    if (*lang->state.getLock() == LangState::notInstalled)
         return true;
 
     const auto baseLangIdx = getLangIdx(

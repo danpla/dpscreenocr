@@ -149,8 +149,7 @@ static void waitJobsToFinish(DpsoOcr& ocr)
 {
     auto link = ocr.link.getLock();
     link.wait(
-        link.get().jobsDoneCondVar,
-        [&]{ return !link.get().jobsPending(); });
+        link->jobsDoneCondVar, [&]{ return !link->jobsPending(); });
 }
 
 
@@ -228,8 +227,8 @@ void dpsoOcrDelete(DpsoOcr* ocr)
 
     {
         auto link = ocr->link.getLock();
-        link.get().terminateThread = true;
-        link.get().threadActionCondVar.notify_one();
+        link->terminateThread = true;
+        link->threadActionCondVar.notify_one();
     }
     ocr->thread.join();
 
@@ -415,7 +414,7 @@ static void processJob(DpsoOcr& ocr, const Job& job)
         2,
         [&](float progress)
         {
-            ocr.link.getLock().get().progress.curJobProgress =
+            ocr.link.getLock()->progress.curJobProgress =
                 progress * 100;
         }};
 
@@ -438,12 +437,12 @@ static void processJob(DpsoOcr& ocr, const Job& job)
         [&](int progress)
         {
             progressTracker.update(progress / 100.0f);
-            return !ocr.link.getLock().get().terminateJobs;
+            return !ocr.link.getLock()->terminateJobs;
         });
 
     progressTracker.finish();
 
-    ocr.link.getLock().get().results.push_back(
+    ocr.link.getLock()->results.push_back(
         {std::move(ocrResult), job.timestamp});
 }
 
@@ -456,38 +455,38 @@ static void threadLoop(DpsoOcr& ocr)
         {
             auto link = ocr.link.getLock();
             link.wait(
-                link.get().threadActionCondVar,
+                link->threadActionCondVar,
                 [&]
                 {
                     return
-                        link.get().terminateThread
-                        || !link.get().jobQueue.empty();
+                        link->terminateThread
+                        || !link->jobQueue.empty();
                 });
 
-            if (link.get().terminateThread)
+            if (link->terminateThread)
                 break;
 
-            job = std::move(link.get().jobQueue.front());
-            link.get().jobQueue.pop();
+            job = std::move(link->jobQueue.front());
+            link->jobQueue.pop();
 
-            link.get().jobActive = true;
+            link->jobActive = true;
 
             // Although processJob() will reset progress to zero, this
             // should also be done before incrementing curJob so that
             // we don't return the progress of the previous job from
             // dpsoOcrGetProgress() before the new one starts.
-            link.get().progress.curJobProgress = 0;
-            ++link.get().progress.curJob;
+            link->progress.curJobProgress = 0;
+            ++link->progress.curJob;
         }
 
         processJob(ocr, job);
 
         auto link = ocr.link.getLock();
 
-        link.get().jobActive = false;
-        if (link.get().jobQueue.empty()) {
-            link.get().progress = {};
-            link.get().jobsDoneCondVar.notify_one();
+        link->jobActive = false;
+        if (link->jobQueue.empty()) {
+            link->progress = {};
+            link->jobsDoneCondVar.notify_one();
         }
     }
 }
@@ -555,9 +554,9 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
 
     auto link = ocr->link.getLock();
 
-    link.get().jobQueue.push(std::move(job));
-    ++link.get().progress.totalJobs;
-    link.get().threadActionCondVar.notify_one();
+    link->jobQueue.push(std::move(job));
+    ++link->progress.totalJobs;
+    link->threadActionCondVar.notify_one();
 
     return true;
 }
@@ -578,13 +577,13 @@ bool dpsoOcrProgressEqual(
 void dpsoOcrGetProgress(const DpsoOcr* ocr, DpsoOcrProgress* progress)
 {
     if (ocr && progress)
-        *progress = ocr->link.getLock().get().progress;
+        *progress = ocr->link.getLock()->progress;
 }
 
 
 bool dpsoOcrHasPendingJobs(const DpsoOcr* ocr)
 {
-    return ocr && ocr->link.getLock().get().jobsPending();
+    return ocr && ocr->link.getLock()->jobsPending();
 }
 
 
@@ -594,7 +593,7 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
         return;
 
     ocr->fetchedResults.clear();
-    ocr->fetchedResults.swap(ocr->link.getLock().get().results);
+    ocr->fetchedResults.swap(ocr->link.getLock()->results);
 
     ocr->returnedResults.clear();
     ocr->returnedResults.reserve(ocr->fetchedResults.size());
@@ -621,15 +620,15 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 
     {
         auto link = ocr->link.getLock();
-        link.get().jobQueue = {};
-        link.get().terminateJobs = true;
+        link->jobQueue = {};
+        link->terminateJobs = true;
     }
 
     waitJobsToFinish(*ocr);
 
     auto link = ocr->link.getLock();
-    link.get().results.clear();
-    link.get().terminateJobs = false;
+    link->results.clear();
+    link->terminateJobs = false;
 }
 
 

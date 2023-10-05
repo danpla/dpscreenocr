@@ -18,12 +18,22 @@ public:
     {
     }
 
-    const T& get() const
+    const T* operator->() const
+    {
+        return &v;
+    }
+
+    T* operator->()
+    {
+        return &v;
+    }
+
+    const T& operator*() const
     {
         return v;
     }
 
-    T& get()
+    T& operator*()
     {
         return v;
     }
