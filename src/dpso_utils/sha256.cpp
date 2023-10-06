@@ -208,14 +208,9 @@ void Sha256::Context::transform(const std::uint8_t block[blockSize])
         const auto t2 =
             sha256::bSig0(ts[0]) + sha256::maj(ts[0], ts[1], ts[2]);
 
-        ts[7] = ts[6];
-        ts[6] = ts[5];
-        ts[5] = ts[4];
-        ts[4] = ts[3] + t1;
-        ts[3] = ts[2];
-        ts[2] = ts[1];
-        ts[1] = ts[0];
+        std::copy_backward(ts, ts + stateSize - 1, ts + stateSize);
         ts[0] = t1 + t2;
+        ts[4] += t1;
     }
 
     for (auto i = 0; i < stateSize; ++i)
