@@ -23,6 +23,9 @@ extern "C" {
 /**
  * Initialize dpso library.
  *
+ * The dpsoInit/Shutdown() pair is reference counted: each successful
+ * dpsoInit() should have a corresponding dpsoShutdown().
+ *
  * On failure, sets an error message (dpsoGetError()) and returns
  * false.
  */

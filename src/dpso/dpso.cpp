@@ -34,12 +34,9 @@ namespace {
 
 struct Module {
     const char* name;
-    void (*init)(dpso::backend::Backend&);
-    void (*shutdown)();
+    void (&init)(dpso::backend::Backend&);
+    void (&shutdown)();
 };
-
-
-}
 
 
 #define MODULE(NAME) {#NAME, dpso::NAME::init, dpso::NAME::shutdown}
@@ -56,8 +53,19 @@ const Module modules[] = {
 const auto numModules = std::size(modules);
 
 
+std::size_t refCount;
+
+
+}
+
+
 bool dpsoInit(void)
 {
+    if (refCount > 0) {
+        ++refCount;
+        return true;
+    }
+
     try {
         backend = dpso::backend::Backend::create();
     } catch (dpso::backend::BackendError& e) {
@@ -79,12 +87,16 @@ bool dpsoInit(void)
             return false;
         }
 
+    ++refCount;
     return true;
 }
 
 
 void dpsoShutdown(void)
 {
+    if (refCount == 0 || --refCount > 0)
+        return;
+
     for (auto i = numModules; i--;)
         modules[i].shutdown();
 
