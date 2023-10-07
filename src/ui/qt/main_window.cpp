@@ -66,7 +66,6 @@ MainWindow::MainWindow()
 {
     setWindowTitle(uiAppName);
 
-    dpsoInitializer  = dpso::DpsoInitializer::init();
     if (!dpsoInitializer)
         throw Error(dpsoGetError());
 

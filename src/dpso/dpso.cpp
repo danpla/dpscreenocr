@@ -114,20 +114,8 @@ void dpsoUpdate(void)
 namespace dpso {
 
 
-DpsoInitializer DpsoInitializer::init()
-{
-    return DpsoInitializer{dpsoInit()};
-}
-
-
 DpsoInitializer::DpsoInitializer()
-    : DpsoInitializer{false}
-{
-}
-
-
-DpsoInitializer::DpsoInitializer(bool isActive)
-    : isActive{isActive}
+    : isActive{dpsoInit()}
 {
 }
 
@@ -140,7 +128,7 @@ DpsoInitializer::~DpsoInitializer()
 
 
 DpsoInitializer::DpsoInitializer(DpsoInitializer&& other) noexcept
-    : DpsoInitializer{}
+    : isActive{}
 {
     *this = std::move(other);
 }

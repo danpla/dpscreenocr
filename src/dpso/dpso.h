@@ -62,16 +62,13 @@ namespace dpso {
 /**
  * RAII for dpsoInit/Shutdown().
  *
- * DpsoInitializer::init() calls dpsoInit(). If the initialization
- * succeeds, the bool operator of DpsoInitializer returns true and its
- * destructor calls dpsoSutdown() once object goes out of scope. If
- * dpsoInit() fails, the bool operator returns false, and the
- * destructor does nothing.
+ * The constructor will call dpsoInit(). If the initialization
+ * succeeds, the bool operator returns true and the destructor calls
+ * dpsoSutdown() when object goes out of scope. If dpsoInit() fails,
+ * the bool operator returns false, and the destructor does nothing.
  */
 class DpsoInitializer {
 public:
-    static DpsoInitializer init();
-
     DpsoInitializer();
     ~DpsoInitializer();
 
@@ -83,8 +80,6 @@ public:
 
     explicit operator bool() const;
 private:
-    explicit DpsoInitializer(bool isActive);
-
     bool isActive;
 };
 
