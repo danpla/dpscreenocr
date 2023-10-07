@@ -25,16 +25,16 @@ public:
 
     void update();
 private:
-    bool isEnabled;
-    int dpi;
-    int baseBorderWidth;
-    int borderWidth;
+    bool isEnabled{};
+    int dpi{};
+    int baseBorderWidth{defaultBorderWidth};
+    int borderWidth{baseBorderWidth};
     Point origin;
     Rect geom;
 
     windows::WindowUPtr window;
 
-    DWORD dashPenPattern[2];
+    DWORD dashPenPattern[2]{};
     windows::ObjectUPtr<HPEN> pens[2];
 
     static LRESULT CALLBACK wndProc(

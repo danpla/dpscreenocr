@@ -60,20 +60,20 @@ private:
 
     std::string ocrDataDirPath;
 
-    int updateTimerId;
+    int updateTimerId{};
 
-    bool ocrAllowQueuing;
+    bool ocrAllowQueuing{};
 
-    DpsoOcrProgress lastProgress;
-    bool wasActiveLangs;
-    bool statusValid;
+    DpsoOcrProgress lastProgress{};
+    bool wasActiveLangs{};
+    bool statusValid{};
 
     QAction* visibilityAction;
     QAction* quitAction;
 
     QTabWidget* tabs;
 
-    Status lastStatus;
+    Status lastStatus{};
     StatusIndicator* statusIndicator;
     QLabel* statusLabel;
 
@@ -83,10 +83,10 @@ private:
     QPushButton* langManagerButton;
     ActionChooser* actionChooser;
     HotkeyEditor* hotkeyEditor;
-    DpsoHotkey cancelSelectionHotkey;
+    DpsoHotkey cancelSelectionHotkey{};
 
     QString clipboardText;
-    bool clipboardTextPending;
+    bool clipboardTextPending{};
     QString copyToClipboardTextSeparator;
 
     History* history;
@@ -96,12 +96,12 @@ private:
     QIcon trayIconBusy;
     QIcon trayIconError;
 
-    bool minimizeToTray;
-    bool minimizeOnStart;
+    bool minimizeToTray{};
+    bool minimizeOnStart{};
 
     ui::TaskbarUPtr taskbar;
 
-    int selectionBorderWidth;
+    int selectionBorderWidth{};
 
     void createQActions();
 

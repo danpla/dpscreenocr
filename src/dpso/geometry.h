@@ -8,13 +8,10 @@ namespace dpso {
 
 
 struct Point {
-    int x;
-    int y;
+    int x{};
+    int y{};
 
-    Point()
-        : Point{0, 0}
-    {
-    }
+    Point() = default;
 
     Point(int x, int y)
         : x{x}
@@ -25,15 +22,12 @@ struct Point {
 
 
 struct Rect {
-    int x;
-    int y;
-    int w;
-    int h;
+    int x{};
+    int y{};
+    int w{};
+    int h{};
 
-    Rect()
-        : Rect{0, 0, 0, 0}
-    {
-    }
+    Rect() = default;
 
     Rect(int x, int y, int w, int h)
         : x{x}

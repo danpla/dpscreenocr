@@ -21,7 +21,7 @@ public:
 protected:
     void paintEvent(QPaintEvent* event) override;
 private:
-    Status status;
+    Status status{};
 };
 
 

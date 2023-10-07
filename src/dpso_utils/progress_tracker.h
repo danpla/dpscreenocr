@@ -71,13 +71,13 @@ public:
     // Finish progress. Unconditionally reports 1.0.
     void finish();
 private:
-    int numJobs;
+    int numJobs{};
     ProgressHandler progressHandler;
-    ProgressTracker* parent;
-    float sensitivity;
+    ProgressTracker* parent{};
+    float sensitivity{};
 
-    int curJobNum;
-    float lastProgress;
+    int curJobNum{};
+    float lastProgress{-1.0f};
 
     void report(float progress);
 };

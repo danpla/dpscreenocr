@@ -14,7 +14,7 @@ namespace dpso::backend {
 
 class WindowsKeyManager : public KeyManager {
 public:
-    WindowsKeyManager();
+    WindowsKeyManager() = default;
     ~WindowsKeyManager();
 
     bool getHotkeysEnabled() const override;
@@ -32,8 +32,8 @@ public:
     void handleWmHotkey(const MSG& msg);
 private:
     std::vector<HotkeyBinding> bindings;
-    bool hotkeysEnabled;
-    DpsoHotkeyAction hotkeyAction;
+    bool hotkeysEnabled{};
+    DpsoHotkeyAction hotkeyAction{dpsoNoHotkeyAction};
 
     HotkeyBinding* findBinding(const DpsoHotkey& hotkey);
 };

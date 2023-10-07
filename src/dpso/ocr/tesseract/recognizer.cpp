@@ -25,8 +25,6 @@ class TesseractRecognizer : public Recognizer {
 public:
     explicit TesseractRecognizer(const char* dataDir)
         : dataDir{dataDir}
-        , tess{}
-        , langCodes{}
     {
         reloadLangCodes();
     }

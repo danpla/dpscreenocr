@@ -41,8 +41,6 @@ private:
 
 WindowsBackend::WindowsBackend()
     : instance{GetModuleHandleW(nullptr)}
-    , keyManager{}
-    , selection{}
 {
     if (!instance)
         throw BackendError(

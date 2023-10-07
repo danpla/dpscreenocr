@@ -25,13 +25,13 @@ public:
     void updateStart() override;
     void handleEvent(const XEvent& event) override;
 private:
-    Display* display;
-    Window window;
-    GC gc;
+    Display* display{};
+    Window window{};
+    GC gc{};
 
-    bool isEnabled;
-    int baseBorderWidth;
-    int borderWidth;
+    bool isEnabled{};
+    int baseBorderWidth{defaultBorderWidth};
+    int borderWidth{baseBorderWidth};
     Point origin;
     Rect geom;
 

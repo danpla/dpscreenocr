@@ -31,11 +31,6 @@ ProgressTracker::ProgressTracker(
 
 ProgressTracker::ProgressTracker(int numJobs)
     : numJobs{numJobs > 0 ? numJobs : 1}
-    , progressHandler{}
-    , parent{}
-    , sensitivity{}
-    , curJobNum{}
-    , lastProgress{-1.0f}
 {
 }
 

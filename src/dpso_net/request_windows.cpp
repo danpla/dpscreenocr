@@ -110,8 +110,6 @@ public:
         : hInternet{std::move(hInternet)}
         , hConnection{std::move(hConnection)}
         , contentLength{getContentLength(this->hConnection.get())}
-        , buf{}
-        , bufPos{}
     {
     }
 
@@ -126,7 +124,7 @@ private:
     InternetUPtr hConnection;
     std::optional<std::int64_t> contentLength;
     std::vector<unsigned char> buf;
-    std::size_t bufPos;
+    std::size_t bufPos{};
 };
 
 

@@ -127,14 +127,6 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 }
 
 
-WindowsKeyManager::WindowsKeyManager()
-    : bindings{}
-    , hotkeysEnabled{}
-    , hotkeyAction{dpsoNoHotkeyAction}
-{
-}
-
-
 WindowsKeyManager::~WindowsKeyManager()
 {
     setHotkeysEnabled(false);  // Unregister all hotkeys.

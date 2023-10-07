@@ -34,12 +34,12 @@ private:
     std::string historyFilePath;
     dpso::HistoryUPtr history;
 
-    bool wrapWords;
+    bool wrapWords{};
 
     QTextEdit* textEdit;
     QTextCharFormat charFormat;
     QTextBlockFormat blockFormat;
-    int blockMargin;
+    int blockMargin{};
 
     QPushButton* exportButton;
     QPushButton* clearButton;

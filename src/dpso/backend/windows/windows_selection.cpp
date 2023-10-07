@@ -184,15 +184,7 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 
 
 WindowsSelection::WindowsSelection(HINSTANCE instance)
-    : isEnabled{}
-    , dpi{baseDpi}
-    , baseBorderWidth{defaultBorderWidth}
-    , borderWidth{baseBorderWidth}
-    , origin{}
-    , geom{}
-    , window{}
-    , dashPenPattern{}
-    , pens{}
+    : dpi{baseDpi}
 {
     registerWindowClass(instance, WindowsSelection::wndProc);
 

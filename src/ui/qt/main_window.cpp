@@ -53,16 +53,6 @@ MainWindow::MainWindow()
     : QWidget{}
     , progressStatusFmt{_(
         "Recognition {progress}% ({current_job}/{total_jobs})")}
-    , ocrAllowQueuing{}
-    , lastProgress{}
-    , wasActiveLangs{}
-    , statusValid{}
-    , lastStatus{}
-    , cancelSelectionHotkey{}
-    , clipboardTextPending{}
-    , minimizeToTray{}
-    , minimizeOnStart{}
-    , selectionBorderWidth{}
 {
     setWindowTitle(uiAppName);
 

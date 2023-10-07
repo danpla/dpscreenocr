@@ -39,8 +39,8 @@ public:
 private:
     Display* display;
     std::vector<X11HotkeyBinding> x11bindings;
-    bool hotkeysEnabled;
-    DpsoHotkeyAction hotkeyAction;
+    bool hotkeysEnabled{};
+    DpsoHotkeyAction hotkeyAction{dpsoNoHotkeyAction};
 };
 
 

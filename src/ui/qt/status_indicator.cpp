@@ -9,7 +9,6 @@ namespace ui::qt {
 
 StatusIndicator::StatusIndicator(QWidget* parent)
     : QWidget{parent}
-    , status{}
 {
 }
 

@@ -16,8 +16,6 @@ HotkeyEditor::HotkeyEditor(
         QWidget* parent)
     : QWidget{parent}
     , action{action}
-    , modChecks{}
-    , keyCombo{}
 {
     auto* layout = new QHBoxLayout(this);
     layout->setContentsMargins({});

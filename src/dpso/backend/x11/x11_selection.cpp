@@ -69,13 +69,6 @@ static int getDpi(Display* display)
 
 X11Selection::X11Selection(Display* display)
     : display{display}
-    , window{}
-    , gc{}
-    , isEnabled{}
-    , baseBorderWidth{defaultBorderWidth}
-    , borderWidth{baseBorderWidth}
-    , origin{}
-    , geom{}
 {
     XSetWindowAttributes windowAttrs;
     windowAttrs.override_redirect = True;
