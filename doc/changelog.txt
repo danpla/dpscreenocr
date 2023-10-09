@@ -1,3 +1,17 @@
+1.?.? (????-??-??)
+==================
+
+* Unix:
+  * Added support for building the program as an AppImage. The
+    AppImage is now available for download from the program website.
+  * Fixed inability to start the program if it's already running for
+    another user that shares the same /tmp directory
+* Windows:
+  * Updated Tesseract to 5.3.3
+* Updated translations:
+  * Chinese (Simplified)
+
+
 1.4.0 (2023-08-15)
 ==================
 
