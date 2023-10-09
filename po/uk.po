@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-09-24 19:54+0200\n"
+"POT-Creation-Date: 2023-10-09 18:24+0200\n"
 "PO-Revision-Date: 2023-05-21 11:58+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -546,110 +546,110 @@ msgstr "Ліцензія"
 msgid "Third-party licenses"
 msgstr "Ліцензії третіх сторін"
 
-#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:9
+#: src/ui/qt/about.cpp:105 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
 msgstr "Програма для розпізнавання тексту не екрані"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp:25
 msgid "Copy text to clipboard"
 msgstr "Копіювати текст в буфер обміну"
 
-#: src/ui/qt/action_chooser.cpp:27
+#: src/ui/qt/action_chooser.cpp:26
 msgid "Add text to history"
 msgstr "Додати текст в історію"
 
-#: src/ui/qt/action_chooser.cpp:29
+#: src/ui/qt/action_chooser.cpp:28
 msgid "Run executable:"
 msgstr "Запустити виконуваний файл:"
 
-#: src/ui/qt/action_chooser.cpp:31
+#: src/ui/qt/action_chooser.cpp:30
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "Запустити виконуваний файл із розпізнаним текстом як першим аргументом"
 
-#: src/ui/qt/action_chooser.cpp:153
+#: src/ui/qt/action_chooser.cpp:152
 msgid "Choose an executable"
 msgstr "Виберіть виконуваний файл"
 
-#: src/ui/qt/history.cpp:44
+#: src/ui/qt/history.cpp:42
 msgid "Export…"
 msgstr "Експортувати…"
 
-#: src/ui/qt/history.cpp:49
+#: src/ui/qt/history.cpp:47
 msgid "Clear…"
 msgstr "Очистити…"
 
-#: src/ui/qt/history.cpp:66 src/ui/qt/main_window.cpp:130
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:118
 msgid "History"
 msgstr "Історія"
 
-#: src/ui/qt/history.cpp:83
+#: src/ui/qt/history.cpp:81
 msgid "Plain text"
 msgstr "Звичайний текст"
 
-#: src/ui/qt/history.cpp:118
+#: src/ui/qt/history.cpp:116
 msgid "All files"
 msgstr "Усі файли"
 
-#: src/ui/qt/history.cpp:123
+#: src/ui/qt/history.cpp:121
 msgid "Export history"
 msgstr "Експортувати історію"
 
-#: src/ui/qt/history.cpp:159
+#: src/ui/qt/history.cpp:157
 msgid "Clear the history?"
 msgstr "Очистити історію?"
 
-#: src/ui/qt/history.cpp:159 src/ui/qt/lang_manager/lang_manager_page.cpp:250
-#: src/ui/qt/main_window.cpp:200
+#: src/ui/qt/history.cpp:157 src/ui/qt/lang_manager/lang_manager_page.cpp:247
+#: src/ui/qt/main_window.cpp:187
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: src/ui/qt/history.cpp:159
+#: src/ui/qt/history.cpp:157
 msgid "Clear"
 msgstr "Очистити"
 
-#: src/ui/qt/lang_browser.cpp:66 src/ui/qt/lang_manager/lang_list.cpp:90
+#: src/ui/qt/lang_browser.cpp:65 src/ui/qt/lang_manager/lang_list.cpp:90
 msgctxt "language"
 msgid "Name"
 msgstr "Назва"
 
-#: src/ui/qt/lang_browser.cpp:67 src/ui/qt/lang_manager/lang_list.cpp:92
+#: src/ui/qt/lang_browser.cpp:66 src/ui/qt/lang_manager/lang_list.cpp:92
 msgctxt "language"
 msgid "Code"
 msgstr "Код"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:115
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:113
 msgid "Cancel…"
 msgstr "Скасувати…"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:130
 msgid "Are you sure you want to cancel the installation?"
 msgstr "Ви впевнені, що хочете скасувати встановлення?"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:131
 msgid "Continue installation"
 msgstr "Продовжити встановлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Cancel installation"
 msgstr "Скасувати встановлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:136
 msgid "Are you sure you want to cancel the update?"
 msgstr "Ви впевнені, що хочете скасувати оновлення?"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:139
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:137
 msgid "Continue updating"
 msgstr "Продовжити оновлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:140
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
 msgid "Cancel update"
 msgstr "Скасувати оновлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:181
 msgid "Installing “{name}” ({current}/{total})"
 msgstr "Встановлення «{name}» ({current}/{total})"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:185
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
 msgid "Updating “{name}” ({current}/{total})"
 msgstr "Оновлення «{name}» ({current}/{total})"
 
@@ -661,58 +661,58 @@ msgstr "Отримання списку мов…"
 msgid "An error occurred while fetching the list of languages"
 msgstr "Виникла помилка при отриманні списку мов"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:419
+#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:406
 msgid "Language manager"
 msgstr "Менеджер мов"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:99
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:155
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:152
 msgid "Install"
 msgstr "Встановити"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:100
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:155
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:152
 msgid "Update"
 msgstr "Оновити"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:101
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:251
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:248
 msgid "Remove"
 msgstr "Видалити"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:112
+#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:114
 msgid "Close"
 msgstr "Закрити"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:64
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:61
 msgctxt "noun"
 msgid "Filter"
 msgstr "Фільтр"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:197
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:194
 msgid "An error occurred while installing languages"
 msgstr "Виникла помилка при встановленні мов"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:198
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:195
 msgid "An error occurred while updating languages"
 msgstr "Виникла помилка при оновленні мов"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:212
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:209
 msgid "Remove…"
 msgstr "Видалити…"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:237
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:234
 msgid "Remove “{name}”?"
 msgstr "Видалити «{name}»?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:242
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:239
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] "Видалити {count} вибрану мову?"
 msgstr[1] "Видалити {count} вибрані мови?"
 msgstr[2] "Видалити {count} вибраних мов?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:270
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:267
 msgid "Some languages were not removed"
 msgstr "Деякі мови не були видалені"
 
@@ -724,75 +724,75 @@ msgstr "Перевірте ваше підключення до мережі т�
 msgid "{app_name} is already running"
 msgstr "{app_name} вже запущений"
 
-#: src/ui/qt/main_window.cpp:55
+#: src/ui/qt/main_window.cpp:54
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Розпізнавання {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:129
+#: src/ui/qt/main_window.cpp:117
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "Головне"
 
-#: src/ui/qt/main_window.cpp:131
+#: src/ui/qt/main_window.cpp:119
 msgid "About"
 msgstr "Про програму"
 
-#: src/ui/qt/main_window.cpp:199
+#: src/ui/qt/main_window.cpp:186
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Розпізнавання ще не закінчено. Все одно вийти?"
 
-#: src/ui/qt/main_window.cpp:201 src/ui/qt/main_window.cpp:388
+#: src/ui/qt/main_window.cpp:188 src/ui/qt/main_window.cpp:375
 msgid "Quit"
 msgstr "Вийти"
 
-#: src/ui/qt/main_window.cpp:380
+#: src/ui/qt/main_window.cpp:367
 msgid "Show {app_name}"
 msgstr "Показати {app_name}"
 
-#: src/ui/qt/main_window.cpp:396
+#: src/ui/qt/main_window.cpp:383
 msgid "Status"
 msgstr "Статус"
 
-#: src/ui/qt/main_window.cpp:406
+#: src/ui/qt/main_window.cpp:393
 msgid "Character recognition"
 msgstr "Розпізнавання символів"
 
-#: src/ui/qt/main_window.cpp:410
+#: src/ui/qt/main_window.cpp:397
 msgid "Split text blocks"
 msgstr "Розділити блоки тексту"
 
-#: src/ui/qt/main_window.cpp:412
+#: src/ui/qt/main_window.cpp:399
 msgid "Split independent text blocks, such as columns"
 msgstr "Розділити незалежні блоки тексту, такі як колонки"
 
-#: src/ui/qt/main_window.cpp:415
+#: src/ui/qt/main_window.cpp:402
 msgid "Languages:"
 msgstr "Мови:"
 
-#: src/ui/qt/main_window.cpp:421
+#: src/ui/qt/main_window.cpp:408
 msgid "Install, update, and remove languages"
 msgstr "Встановлення, оновлення та видалення мов"
 
-#: src/ui/qt/main_window.cpp:432
+#: src/ui/qt/main_window.cpp:419
 msgid "Actions"
 msgstr "Дії"
 
-#: src/ui/qt/main_window.cpp:442
+#: src/ui/qt/main_window.cpp:429
 msgid "Hotkey"
 msgstr "Гаряча клавіша"
 
-#: src/ui/qt/main_window.cpp:768
+#: src/ui/qt/main_window.cpp:752
 msgid "Please install languages"
 msgstr "Будь ласка, встановіть мови"
 
-#: src/ui/qt/main_window.cpp:770
+#: src/ui/qt/main_window.cpp:754
 msgid "Please select languages"
 msgstr "Будь ласка, виберіть мови"
 
-#: src/ui/qt/main_window.cpp:772
+#: src/ui/qt/main_window.cpp:756
 msgid "Please select actions"
 msgstr "Будь ласка, виберіть дії"
 
-#: src/ui/qt/main_window.cpp:777
+#: src/ui/qt/main_window.cpp:761
 msgid "{app_name} is ready for recognition"
 msgstr "{app_name} готовий для розпізнавання"
