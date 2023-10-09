@@ -12,10 +12,8 @@ namespace ui::qt {
 
 HotkeyEditor::HotkeyEditor(
         DpsoHotkeyAction action,
-        bool hideNoKey,
-        QWidget* parent)
-    : QWidget{parent}
-    , action{action}
+        bool hideNoKey)
+    : action{action}
 {
     auto* layout = new QHBoxLayout(this);
     layout->setContentsMargins({});

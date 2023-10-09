@@ -20,8 +20,7 @@
 namespace ui::qt {
 
 
-ActionChooser::ActionChooser(QWidget* parent)
-    : QWidget{parent}
+ActionChooser::ActionChooser()
 {
     copyToClipboardCheck = new QCheckBox(_("Copy text to clipboard"));
     addToHistoryCheck = new QCheckBox(_("Add text to history"));

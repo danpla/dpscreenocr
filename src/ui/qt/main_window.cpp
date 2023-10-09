@@ -45,13 +45,12 @@ enum : DpsoHotkeyAction {
 };
 
 
-// Our GUI currently doesn't allow to select an OCR engine.
+// Our GUI currently doesn't allow selecting an OCR engine.
 const auto ocrEngineIdx = 0;
 
 
 MainWindow::MainWindow()
-    : QWidget{}
-    , progressStatusFmt{_(
+    : progressStatusFmt{_(
         "Recognition {progress}% ({current_job}/{total_jobs})")}
 {
     setWindowTitle(uiAppName);
@@ -134,13 +133,12 @@ MainWindow::MainWindow()
 
     loadState(cfg.get());
 
-    if (minimizeOnStart) {
-        if (trayIcon->isVisible() && minimizeToTray)
-            visibilityAction->setChecked(false);
-        else
-            showMinimized();
-    } else
+    if (!minimizeOnStart)
         show();
+    else if (trayIcon->isVisible() && minimizeToTray)
+        visibilityAction->setChecked(false);
+    else
+        showMinimized();
 
     updateTimerId = startTimer(1000 / 60);
 
@@ -317,7 +315,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
     noInteraction = true;
     #endif
 
-    // 3. Qt versions from 5.6 till 6.0 allow to disable the fallback
+    // 3. Qt versions from 5.6 till 6.0 allows disabling the fallback
     //    management via setFallbackSessionManagementEnabled(). The
     //    "true" management seem to give a better desktop integration
     //    (see https://bugs.kde.org/show_bug.cgi?id=354724), so we
@@ -715,14 +713,10 @@ void MainWindow::updateStatus()
 
         lastProgress = progress;
 
-        int totalProgress;
-        if (progress.curJob == 0)
-            totalProgress = 0;
-        else
-            totalProgress =
-                ((progress.curJob - 1) * 100
-                    + progress.curJobProgress)
-                / progress.totalJobs;
+        const auto totalProgress = progress.curJob == 0
+            ? 0
+            : (((progress.curJob - 1) * 100 + progress.curJobProgress)
+                / progress.totalJobs);
 
         setStatus(
             Status::busy,
@@ -753,6 +747,7 @@ void MainWindow::updateStatus()
 
     if (statusValid)
         return;
+
     if (dpsoOcrGetNumLangs(ocr.get()) == 0)
         setStatus(Status::error, _("Please install languages"));
     else if (dpsoOcrGetNumActiveLangs(ocr.get()) == 0)
@@ -830,13 +825,12 @@ void MainWindow::checkHotkeyActions()
 
         setSelectionIsEnabled(false);
 
-        DpsoOcrJobArgs jobArgs;
+        DpsoOcrJobArgs jobArgs{};
 
         dpsoGetSelectionGeometry(&jobArgs.screenRect);
         if (dpsoRectIsEmpty(&jobArgs.screenRect))
             break;
 
-        jobArgs.flags = 0;
         if (splitTextBlocksCheck->isChecked())
             jobArgs.flags |= dpsoOcrJobTextSegmentation;
 

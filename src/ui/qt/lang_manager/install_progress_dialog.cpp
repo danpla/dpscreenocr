@@ -31,8 +31,6 @@ namespace {
 class ProgressLabel : public QFrame {
     Q_OBJECT
 public:
-    using QFrame::QFrame;
-
     QSize minimumSizeHint() const override
     {
         return QSize(0, fontMetrics().height());

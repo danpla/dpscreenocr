@@ -16,7 +16,7 @@ namespace ui::qt {
 class LangBrowser : public QTreeWidget {
     Q_OBJECT
 public:
-    explicit LangBrowser(DpsoOcr* ocr, QWidget* parent = nullptr);
+    explicit LangBrowser(DpsoOcr* ocr);
 
     void reloadLangs();
 

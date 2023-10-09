@@ -11,7 +11,7 @@
 namespace ui::qt {
 
 
-enum : int {
+enum {
     columnIdxCheckbox,
     columnIdxName,
     columnIdxCode
@@ -57,9 +57,8 @@ public:
 };
 
 
-LangBrowser::LangBrowser(DpsoOcr* ocr, QWidget* parent)
-    : QTreeWidget{parent}
-    , ocr{ocr}
+LangBrowser::LangBrowser(DpsoOcr* ocr)
+    : ocr{ocr}
 {
     setHeaderLabels({
         "",  // Checkbox
@@ -161,30 +160,24 @@ void LangBrowser::selectCheckboxColumn(QTreeWidgetItem* current)
 
 void LangBrowser::loadState(const DpsoCfg* cfg)
 {
-    const char* fallbackLangCode;
-    if (dpsoOcrGetNumLangs(ocr) == 1)
-        fallbackLangCode = dpsoOcrGetLangCode(ocr, 0);
-    else
-        fallbackLangCode = dpsoOcrGetDefaultLangCode(ocr);
-
     dpsoCfgLoadActiveLangs(
-        cfg, cfgKeyOcrLanguages, ocr, fallbackLangCode);
+        cfg,
+        cfgKeyOcrLanguages,
+        ocr,
+        dpsoOcrGetNumLangs(ocr) == 1
+            ? dpsoOcrGetLangCode(ocr, 0)
+            : dpsoOcrGetDefaultLangCode(ocr));
 
     reloadLangs();
 
-    const auto columnIdx = qBound<int>(
-        columnIdxCheckbox,
-        dpsoCfgGetInt(
-            cfg, cfgKeyUiLanguagesSortColumn, columnIdxName),
-        columnIdxCode);
-
-    Qt::SortOrder sortOrder;
-    if (dpsoCfgGetBool(cfg, cfgKeyUiLanguagesSortDescending, false))
-        sortOrder = Qt::DescendingOrder;
-    else
-        sortOrder = Qt::AscendingOrder;
-
-    sortByColumn(columnIdx, sortOrder);
+    sortByColumn(
+        qBound<int>(
+            columnIdxCheckbox,
+            dpsoCfgGetInt(
+                cfg, cfgKeyUiLanguagesSortColumn, columnIdxName),
+            columnIdxCode),
+        dpsoCfgGetBool(cfg, cfgKeyUiLanguagesSortDescending, false)
+            ? Qt::DescendingOrder : Qt::AscendingOrder);
 }
 
 

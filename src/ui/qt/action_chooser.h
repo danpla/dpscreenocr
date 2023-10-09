@@ -26,7 +26,7 @@ public:
 
     Q_DECLARE_FLAGS(Actions, Action)
 
-    explicit ActionChooser(QWidget* parent = nullptr);
+    ActionChooser();
 
     Actions getSelectedActions() const;
     QString getExePath() const;

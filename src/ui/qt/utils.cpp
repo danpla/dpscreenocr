@@ -76,21 +76,22 @@ bool confirmDestructiveAction(
     const QString& cancelText,
     const QString& okText)
 {
-    QMessageBox messageBox(parent);
+    QMessageBox msgBox(
+        QMessageBox::Warning,
+        uiAppName,
+        question,
+        QMessageBox::NoButton,
+        parent);
 
-    messageBox.setWindowTitle(uiAppName);
-    messageBox.setText(question);
-    messageBox.setIcon(QMessageBox::Warning);
-
-    auto* cancelButton = messageBox.addButton(
+    auto* cancelButton = msgBox.addButton(
         cancelText, QMessageBox::RejectRole);
-    messageBox.setDefaultButton(cancelButton);
-    auto* okButton = messageBox.addButton(
+    msgBox.setDefaultButton(cancelButton);
+    auto* okButton = msgBox.addButton(
         okText, QMessageBox::AcceptRole);
 
-    messageBox.exec();
+    msgBox.exec();
 
-    return messageBox.clickedButton() == okButton;
+    return msgBox.clickedButton() == okButton;
 }
 
 
@@ -100,18 +101,19 @@ void showError(
     const QString& informativeText,
     const QString& detailedText)
 {
-    QMessageBox messageBox(parent);
+    QMessageBox msgBox(
+        QMessageBox::Critical,
+        uiAppName,
+        text,
+        QMessageBox::NoButton,
+        parent);
 
-    messageBox.setWindowTitle(uiAppName);
-    messageBox.setIcon(QMessageBox::Critical);
+    msgBox.setInformativeText(informativeText);
+    msgBox.setDetailedText(detailedText);
 
-    messageBox.setText(text);
-    messageBox.setInformativeText(informativeText);
-    messageBox.setDetailedText(detailedText);
+    msgBox.addButton(_("Close"), QMessageBox::RejectRole);
 
-    messageBox.addButton(_("Close"), QMessageBox::RejectRole);
-
-    messageBox.exec();
+    msgBox.exec();
 }
 
 

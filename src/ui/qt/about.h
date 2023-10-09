@@ -13,7 +13,7 @@ namespace ui::qt {
 class About : public QWidget {
     Q_OBJECT
 public:
-    explicit About(QWidget* parent = nullptr);
+    About();
 private slots:
     void handleLinkActivation(const QString &link);
     void handleLinkHover(const QString &link);

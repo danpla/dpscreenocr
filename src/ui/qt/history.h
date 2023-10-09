@@ -20,8 +20,7 @@ namespace ui::qt {
 class History : public QWidget {
     Q_OBJECT
 public:
-    explicit History(
-        const std::string& dirPath, QWidget* parent = nullptr);
+    explicit History(const std::string& dirPath);
 
     void append(const char* timestamp, const char* text);
 

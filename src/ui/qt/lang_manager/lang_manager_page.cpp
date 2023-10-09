@@ -35,8 +35,7 @@ public:
     LangManagerPage(
         LangList& langList,
         LangListSortFilterProxy::LangGroup langGroup,
-        const QString& actionName,
-        QWidget* parent = nullptr);
+        const QString& actionName);
 protected:
     // Returns false if the action was canceled.
     virtual bool performAction(
@@ -55,10 +54,8 @@ private:
 LangManagerPage::LangManagerPage(
         LangList& langList,
         LangListSortFilterProxy::LangGroup langGroup,
-        const QString& actionName,
-        QWidget* parent)
-    : QWidget{parent}
-    , langList{&langList}
+        const QString& actionName)
+    : langList{&langList}
 {
     auto* filterLineEdit = new QLineEdit();
     filterLineEdit->setPlaceholderText(pgettext("noun", "Filter"));

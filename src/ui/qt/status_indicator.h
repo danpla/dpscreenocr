@@ -12,8 +12,6 @@ namespace ui::qt {
 class StatusIndicator: public QWidget {
     Q_OBJECT
 public:
-    explicit StatusIndicator(QWidget* parent = nullptr);
-
     void setStatus(Status newStatus);
 
     QSize minimumSizeHint() const override;

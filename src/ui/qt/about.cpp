@@ -82,8 +82,7 @@ static QStringList createLinks()
 }
 
 
-About::About(QWidget* parent)
-    : QWidget{parent}
+About::About()
 {
     const auto fontHeight = fontMetrics().height();
 
@@ -172,13 +171,11 @@ void About::handleLinkHover(const QString &link)
     if (url.scheme() == "about")
         return;
 
-    QString tooltip;
-    if (url.isLocalFile())
-        tooltip = QDir::toNativeSeparators(url.toLocalFile());
-    else
-        tooltip = link;
-
-    QToolTip::showText(QCursor::pos(), tooltip);
+    QToolTip::showText(
+        QCursor::pos(),
+        url.isLocalFile()
+            ? QDir::toNativeSeparators(url.toLocalFile())
+            : link);
 }
 
 

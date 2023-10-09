@@ -32,8 +32,7 @@ public:
      */
     explicit HotkeyEditor(
         DpsoHotkeyAction action,
-        bool hideNoKey = true,
-        QWidget* parent = nullptr);
+        bool hideNoKey = true);
 signals:
     /**
      * Emitted every time the editor is changed.

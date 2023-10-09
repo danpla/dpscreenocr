@@ -25,8 +25,7 @@
 namespace ui::qt {
 
 
-History::History(const std::string& dirPath, QWidget* parent)
-    : QWidget{parent}
+History::History(const std::string& dirPath)
 {
     historyFilePath =
         dirPath + *dpsoDirSeparators + uiHistoryFileName;

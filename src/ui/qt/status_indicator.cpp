@@ -7,12 +7,6 @@
 namespace ui::qt {
 
 
-StatusIndicator::StatusIndicator(QWidget* parent)
-    : QWidget{parent}
-{
-}
-
-
 void StatusIndicator::setStatus(Status newStatus)
 {
     if (newStatus == status)
@@ -38,9 +32,12 @@ QSize StatusIndicator::sizeHint() const
 
 static const QColor& getStatusColor(Status status)
 {
-    static QColor green(0x60, 0xee, 0x60);
-    static QColor yellow(0xee, 0xee, 0x60);
-    static QColor red(0xee, 0x60, 0x60);
+    static const auto a = 0xee;
+    static const auto b = 0x60;
+
+    static QColor green(b, a, b);
+    static QColor yellow(a, a, b);
+    static QColor red(a, b, b);
 
     switch (status) {
     case Status::ok:
@@ -51,6 +48,7 @@ static const QColor& getStatusColor(Status status)
         return red;
     }
 
+    Q_ASSERT(false);
     return green;
 }
 
