@@ -48,7 +48,6 @@ private:
     struct LangInfo {
         std::string code;
         LangState state;
-        std::string sha256;
         std::string remoteSha256;
         std::string url;
     };

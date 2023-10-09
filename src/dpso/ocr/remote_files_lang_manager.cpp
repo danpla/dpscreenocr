@@ -43,8 +43,7 @@ RemoteFilesLangManager::RemoteFilesLangManager(
 {
     langInfos.reserve(localLangCodes.size());
     for (const auto& langCode : localLangCodes)
-        langInfos.push_back(
-            {langCode, LangState::installed, {}, {}, {}});
+        langInfos.push_back({langCode, LangState::installed, {}, {}});
 }
 
 
@@ -137,7 +136,7 @@ void RemoteFilesLangManager::installLang(
 
     auto& langInfo = langInfos[langIdx];
 
-    assert(langInfo.sha256 != langInfo.remoteSha256);
+    assert(!langInfo.remoteSha256.empty());
     assert(!langInfo.url.empty());
 
     const auto filePath = getFilePath(langInfo.code);
@@ -162,14 +161,14 @@ void RemoteFilesLangManager::installLang(
         return;
 
     langInfo.state = LangState::installed;
-    langInfo.sha256 = langInfo.remoteSha256;
 
     // Even though we know the digest in advance, we cannot save it
     // before the language file is downloaded, as this would
     // prematurely overwrite the existing digest file in case of a
     // language update.
     try {
-        saveSha256File(filePath.c_str(), langInfo.sha256.c_str());
+        saveSha256File(
+            filePath.c_str(), langInfo.remoteSha256.c_str());
     } catch (Sha256FileError&) {
         // Ignore errors, as the language file is already downloaded
         // anyway, and the previous one is overwritten in case of an
@@ -189,10 +188,9 @@ void RemoteFilesLangManager::removeLang(int langIdx)
             "Can't remove \"%s\": %s", filePath.c_str(), e.what())};
     }
 
-    if (auto& langInfo = langInfos[langIdx]; !langInfo.url.empty()) {
+    if (auto& langInfo = langInfos[langIdx]; !langInfo.url.empty())
         langInfo.state = LangState::notInstalled;
-        langInfo.sha256.clear();
-    } else
+    else
         langInfos.erase(langInfos.begin() + langIdx);
 
     try {
@@ -295,34 +293,29 @@ void RemoteFilesLangManager::mergeRemoteLang(
 
     const auto filePath = getFilePath(langInfo.code);
 
-    // As an optimization, compare file sizes first to avoid
-    // calculating SHA-256 if they are different.
-    std::int64_t fileSize{};
+    // As an optimization, don't calculate SHA-256 if file sizes are
+    // different.
     try {
-        fileSize = os::getFileSize(filePath.c_str());
+        if (os::getFileSize(filePath.c_str())
+                != remoteLangInfo.size) {
+            langInfo.state = LangState::updateAvailable;
+            return;
+        }
     } catch (os::Error& e) {
         throw LangManagerError{str::printf(
             "Can't get size of \"%s\": %s",
             filePath.c_str(), e.what())};
     }
 
-    if (fileSize != remoteLangInfo.size) {
-        langInfo.state = LangState::updateAvailable;
-        return;
+    try {
+        if (getSha256HexDigestWithCaching(filePath.c_str())
+                != langInfo.remoteSha256)
+            langInfo.state = LangState::updateAvailable;
+    } catch (Sha256FileError& e) {
+        throw LangManagerError{str::printf(
+            "Can't get SHA-256 of \"%s\": %s",
+            filePath.c_str(), e.what())};
     }
-
-    if (langInfo.sha256.empty())
-        try {
-            langInfo.sha256 = getSha256HexDigestWithCaching(
-                filePath.c_str());
-        } catch (Sha256FileError& e) {
-            throw LangManagerError{str::printf(
-                "Can't get SHA-256 of \"%s\": %s",
-                filePath.c_str(), e.what())};
-        }
-
-    if (langInfo.sha256 != langInfo.remoteSha256)
-        langInfo.state = LangState::updateAvailable;
 }
 
 
@@ -339,7 +332,6 @@ void RemoteFilesLangManager::addRemoteLang(
         {
             remoteLangInfo.code,
             LangState::notInstalled,
-            {},
             remoteLangInfo.sha256,
             remoteLangInfo.url
         });
