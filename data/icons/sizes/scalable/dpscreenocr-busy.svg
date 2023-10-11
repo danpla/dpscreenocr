@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="150" width="150" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 39.687495 39.687495">
+ <rect style="color:#000000;paint-order:normal" height="37.30625" width="37.30625" y="1.190625" x="1.19055" fill="#eeee60"/>
+ <path style="color:#000000;paint-order:normal" stroke-width="3" d="m30.1626 19.8437c0 5.698916-4.619884 10.3188-10.3188 10.3188s-10.3188-4.619884-10.3188-10.3188c2e-7 -5.698916 7.969002-6.349952 10.3188-6.349952s10.3188 0.651036 10.3188 6.349952z" fill="#fff"/>
+ <circle stroke-linejoin="round" style="color:#000000;paint-order:normal" cx="19.8438" stroke="#000" cy="19.8437" r="10.3188" stroke-width="2.38125" fill="none"/>
+ <circle style="color:#000000;paint-order:normal" r="3.9687" cy="19.8438" cx="19.84365" stroke-width="3"/>
+ <path stroke="#000" stroke-width="2.38125" d="m0.7936501 21.43122s9.525-7.9374 19.05-7.9374 19.05 7.9374 19.05 7.9374" fill="none"/>
+ <rect style="color:#000000;paint-order:normal" height="37.30625" width="37.30625" stroke="#000" stroke-linecap="round" y="1.190625" x="1.19055" stroke-width="2.38125" fill="none"/>
+</svg>
