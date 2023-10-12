@@ -10,12 +10,6 @@
   * Updated Tesseract to 5.3.3
 * Updated translations:
   * Chinese (Simplified)
-* Building:
-  * Raster icons are now generated during the build process, so the
-    following tools are required:
-    * rsvg-convert
-    * optipng
-    * icotool (Windows only)
 
 
 1.4.0 (2023-08-15)

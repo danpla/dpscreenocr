@@ -43,9 +43,6 @@ Required:
   * tesseract >= 4.1.0
   * jansson >= 2.7
   * pkg-config (recent MSYS2 uses a compatible pkgconf tool)
-  * rsvg-convert (librsvg package)
-  * optipng
-  * icotool (icoutils package)
   * dos2unix
 
 Optional:
@@ -61,10 +58,7 @@ To install all dependencies except Pandoc, run in a MinGW shell:
         $MINGW_PACKAGE_PREFIX-cmake \
         $MINGW_PACKAGE_PREFIX-gcc \
         $MINGW_PACKAGE_PREFIX-gettext \
-        $MINGW_PACKAGE_PREFIX-icoutils \
         $MINGW_PACKAGE_PREFIX-jansson \
-        $MINGW_PACKAGE_PREFIX-librsvg \
-        $MINGW_PACKAGE_PREFIX-optipng \
         $MINGW_PACKAGE_PREFIX-pkgconf \
         $MINGW_PACKAGE_PREFIX-qt5-base \
         $MINGW_PACKAGE_PREFIX-qt5-translations \
