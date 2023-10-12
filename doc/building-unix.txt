@@ -12,6 +12,9 @@ Required:
   * pkg-config to find libtesseract
   * libx11
   * libxext - for X11 Nonrectangular Window Shape Extension
+  * rsvg-convert. Depending on the system, it may come as a separate
+    package (like librsvg2-bin on Debian) or as part of librsvg.
+  * optipng
 
 Optional:
 
@@ -27,8 +30,9 @@ Optional:
 
 To install dependencies on Debian, Ubuntu, and derivatives, run:
 
-    sudo apt-get install cmake make pkg-config g++ qtbase5-dev \
-        libtesseract-dev libx11-dev libxext-dev gettext pandoc
+    sudo apt-get install cmake g++ gettext librsvg2-bin \
+        libtesseract-dev libx11-dev libxext-dev make optipng pandoc \
+        pkg-config qtbase5-dev
 
 
 Building

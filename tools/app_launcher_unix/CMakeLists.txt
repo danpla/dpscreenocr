@@ -2,14 +2,12 @@ cmake_minimum_required(VERSION 3.5)
 
 project(launcher C)
 
-set(
-    LAUNCHER_EXE_PATH
+set(LAUNCHER_EXE_PATH
     ""
     CACHE
     STRING
     "Relative path to an executable to be launched")
-set(
-    LAUNCHER_LIB_DIR_PATH
+set(LAUNCHER_LIB_DIR_PATH
     ""
     CACHE
     STRING

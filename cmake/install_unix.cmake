@@ -11,10 +11,10 @@ install(
     FILES "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}.desktop"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
 
-include(build_icons)
-build_icons(
+include(icon_tools)
+gen_icons(
     "${CMAKE_BINARY_DIR}/icons"
-    RASTER_SIZES all
+    RASTER_SIZES 16 24 32 48 64 128
     INCLUDE_SCALABLE)
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/icons"

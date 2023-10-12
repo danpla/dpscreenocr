@@ -17,10 +17,10 @@ install(
     COMPONENT Required)
 
 if(DPSO_UI STREQUAL "qt")
-    include(build_icons)
-    build_icons(
+    include(icons_tools)
+    gen_icons(
         "${CMAKE_BINARY_DIR}/icons"
-        RASTER_SIZES all)
+        RASTER_SIZES 16 24 32 48 64 128)
     install(
         DIRECTORY
             "${CMAKE_BINARY_DIR}/icons"
