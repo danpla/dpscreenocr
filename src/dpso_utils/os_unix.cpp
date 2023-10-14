@@ -135,7 +135,7 @@ static void makeDirs(char* dirPath, mode_t mode)
         // can create a directory with read or write permissions
         // removed when the same permissions are used for a newly
         // created parent directory.
-        const auto ret = mkdir(dirPath, *s ? 0777 : mode);
+        const auto ret = mkdir(dirPath, c ? 0777 : mode);
         *s = c;
 
         if (ret != 0 && errno != EEXIST)
