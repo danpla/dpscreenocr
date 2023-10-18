@@ -173,13 +173,11 @@ std::size_t WindowsResponse::read(void* dst, std::size_t dstSize)
         if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
             throwLastError("InternetReadFile (direct)");
 
-        if (buf.empty())
-            buf.reserve(
-                std::max<std::size_t>(16 * 1024, availDstSize));
-        // If the buffer is not empty, don't expand the capacity:
-        // since it was fine for the previous run, there is a good
-        // chance that it will also be suitable for the current one.
-
+        // Note that we don't increase the capacity if it's already
+        // big enough: since it was fine for the previous run, there's
+        // a chance that it will work for the current one.
+        buf.reserve(
+            std::max<std::size_t>(16 * 1024, availDstSize * 2));
         buf.resize(buf.capacity());
 
         while (true) {
