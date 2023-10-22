@@ -51,8 +51,8 @@ std::string getBaseName(const char* path);
 std::string convertUtf8PathToSys(const char* utf8Path);
 
 
-// Return a pointer to the period of the extension, or
-// null if filePath has no extension.
+// Return a pointer to the period of the extension, or null if
+// filePath has no extension.
 const char* getFileExt(const char* filePath);
 
 
@@ -81,13 +81,15 @@ using StdFileUPtr = std::unique_ptr<std::FILE, StdFileCloser>;
 
 // Read the next line from a file, terminating on either line break
 // (\r, \n, or \r\n) or end of file. Returns false if the line cannot
-// be read due to either EOF or error; as in other stdio functions,
+// be read due to either EOF or error; as with other stdio functions,
 // you should check feof() or ferror() to determine which occurred.
 //
 // The function clears the line before performing any action.
 bool readLine(std::FILE* fp, std::string& line);
 
 
+// Remove a regular file. The behavior is platform-specific if
+// filePath points to anything other than a regular file.
 // Throws os::Error.
 void removeFile(const char* filePath);
 
