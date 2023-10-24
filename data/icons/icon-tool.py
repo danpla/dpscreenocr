@@ -80,8 +80,8 @@ def create_svg_to_png_converter():
             def fn(svg_path, png_path, size):
                 subprocess.check_call((
                     magick_exe,
+                    '-size', '{0}x{0}'.format(size),
                     svg_path,
-                    '-size {}x{}'.format(size, size),
                     png_path))
 
             return fn
@@ -237,20 +237,18 @@ def create_ico_generator():
 
             subprocess.check_call(args)
 
-    need_force_rgba = (
-        # icotool doesn't force RGBA.
-        icotool_exe is not None
-        # ImageMagick forces RGBA, but only since 6.9.11-35 due to a
-        # bug: https://github.com/ImageMagick/ImageMagick/issues/2756
-        or image_magick_version < (6, 9, 11, 35))
-
-    if not need_force_rgba:
-        return base_fn
+    # Wrap base_fn in a function that forces RGBA for the 256 px PNG.
+    # At the time of writing, we have to do this unconditionally:
+    #
+    #   * The icotool's --raw option doesn't force RGBA.
+    #
+    #   * ImageMagick tries to force RGBA, but it was broken from the
+    #     start and remains so as of version 7.1.1-20:
+    #     https://github.com/ImageMagick/ImageMagick/issues/2756
 
     png_path_256_rgba = os.path.join(
         tempfile.gettempdir(), 'icon-tool-ico-tmp-256-rgba.png')
 
-    # Wrap base_fn in a function that forces RGBA for the 256 px PNG.
     def fn(png_paths, ico_path):
         png_path_256 = png_paths.get(256)
         if not png_path_256:
