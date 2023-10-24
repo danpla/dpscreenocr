@@ -1,50 +1,5 @@
 #!/usr/bin/env python3
 
-# Some details about the external programs used. See --help for a
-# short list of them.
-#
-#
-# SVG rendering
-# =============
-#
-# We need to use librsvg to get perfectly rendered SVGs. This can be
-# done via rvg-convert, ImageMagick, or Inkscape.
-#
-# On Windows, we always use ImageMagick: as long as it comes from the
-# official site, it has libsrvg built in. There are no official
-# rvg-convert binaries for Windows, and we don't want to require
-# installing them from MSYS2 (which, by the way, will pull
-# dependencies for more megabytes than the size of the official
-# ImageMagick binaries).
-#
-# On Unix-like systems, we always use rvg-convert, as there's no
-# guarantee that ImageMagick is build with librsvg (if not, we really
-# don't want to use IM's own internal crappy SVG renderer).
-#
-# On all platforms, Inkscape is the fallback option because it's slow
-# to start. We don't want to drop Inkscape: after all, all SVGs are
-# drawn with it, so there's a chance it's already installed.
-#
-#
-# ICO creation
-# ============
-#
-# Unfortunately, using the icotool program from the icoutils package
-# is not enough to create a proper ICO with embedded PNGs. Icotool can
-# read PNGs to store uncompressed images, but embedding is only
-# possible with the --raw option that copies the PNG as is.
-#
-# The catch here is that PNGs inside ICO must be in RGBA format,
-# otherwise they will be ignored by Windows. We have to force RGBA,
-# because some of our tools (like rsvg-convert and optipng) are smart
-# enough not to include the alpha channel if the image doesn't have
-# transparent pixels.
-#
-# ImageMagick >= 6.7.8 automatically uses RGBA for the 256 px image
-# when assembling ICO, so we don't need icotool in this case. But for
-# older versions, we still have to use icotool, and ImageMagick is
-# still needed to force the PNG format to RGBA for the --raw option.
-
 from functools import lru_cache
 import argparse
 import os
@@ -66,47 +21,130 @@ def get_exe_path(name):
     return path
 
 
+def find_image_magick_exe():
+    """Find the ImageMagick binary.
+
+    Returns the path to either "magick" or "convert", or None if
+    neither is found.
+    """
+    # ImageMagick >= 7.
+    result = shutil.which('magick')
+    if result:
+        return result
+
+    # ImageMagick < 7; mostly relevant for Unix-like systems. Don't
+    # try "convert" on Windows, since that's the name of the standard
+    # Windows utility.
+    if os.name != 'nt':
+        result = shutil.which('convert')
+
+    return result
+
+
+def get_image_magick_version_info(image_magick_exe, key):
+    """Return value of the given key from the output of "-version".
+    """
+    version_info = subprocess.check_output(
+        (image_magick_exe, '-version'), universal_newlines=True)
+
+    for line in version_info.splitlines():
+        parts = line.split(':', maxsplit=1)
+        if len(parts) == 2 and parts[0] == key:
+            return parts[1].rstrip()
+
+    sys.exit(
+        'No "{}" key in the output of \"{} -version\". Time to '
+        'update the script.'.format(key, image_magick_exe))
+
+
+def get_image_magick_version(image_magick_exe):
+    """Return ImageMagick version as a tuple of ints.
+    """
+    parts = get_image_magick_version_info(
+        image_magick_exe, 'Version').split()
+
+    if (len(parts) > 1 and parts[0] == 'ImageMagick'):
+        # The version string looks like "6.9.10-23".
+        return tuple(
+            int(n) for n in parts[1].replace('-', '.').split('.'))
+
+    sys.exit(
+        'Can\'t determine the version of "{}"'.format(
+            image_magick_exe))
+
+
+def image_magick_has_rsvg(image_magick_exe):
+    delegates = get_image_magick_version_info(
+        image_magick_exe, 'Delegates (built-in)').split()
+
+    return 'rsvg' in delegates
+
+
 def create_svg_to_png_converter():
     """Return a function to convert SVG to PNG.
 
     The returned function will accept 3 arguments: an input SVG path,
     output PNG path, and int denoting the output PNG size.
     """
-    if os.name == 'nt':
-        magick_exe = shutil.which('magick')
-        if magick_exe:
-            print('Using ImageMagick for SVG conversion')
+    # We need to use librsvg to get perfectly rendered SVGs. This can
+    # be done via rvg-convert, ImageMagick, or Inkscape.
+
+    # First check rvg-convert. This is a primary choice, especially on
+    # Unix-like systems where there's no guarantee that ImageMagick is
+    # built with librsvg (if not, we really don't want to use IM's own
+    # internal crappy SVG renderer). It also has fewer dependencies
+    # than IM.
+    rsvg_convert_exe = shutil.which('rsvg-convert')
+    if rsvg_convert_exe:
+        print('Using rsvg-convert for SVG conversion')
+
+        def fn(svg_path, png_path, size):
+            subprocess.check_call((
+                rsvg_convert_exe,
+                svg_path,
+                '--height=' + str(size),
+                '--width=' + str(size),
+                '--keep-aspect-ratio',
+                '--format=png',
+                '--output=' + png_path))
+
+        return fn
+
+    # If there's no rsvg-convert, try using ImageMagick. This is
+    # mainly for Windows: as long as IM comes from the official site,
+    # it has libsrvg built in. There are no official rvg-convert
+    # binaries for Windows, and we don't want to require installing
+    # them from MSYS2 (which, by the way, will pull dependencies for
+    # more megabytes than the size of the official IM binaries).
+    image_magick_exe = find_image_magick_exe()
+    if image_magick_exe:
+        if image_magick_has_rsvg(image_magick_exe):
+            print(
+                'Using ImageMagick ({}) for SVG conversion'.format(
+                    image_magick_exe))
 
             def fn(svg_path, png_path, size):
                 subprocess.check_call((
-                    magick_exe,
+                    image_magick_exe,
                     '-size', '{0}x{0}'.format(size),
                     svg_path,
                     png_path))
 
             return fn
-    else:
-        rsvg_convert_exe = shutil.which('rsvg-convert')
-        if rsvg_convert_exe:
-            print('Using rsvg-convert for SVG conversion')
+        else:
+            print(
+                'Skipping ImageMagick ({}) as an SVG conversion tool '
+                'as it doesn\'t have rsvg support'.format(
+                    image_magick_exe))
 
-            def fn(svg_path, png_path, size):
-                subprocess.check_call((
-                    rsvg_convert_exe,
-                    svg_path,
-                    '--height=' + str(size),
-                    '--width=' + str(size),
-                    '--keep-aspect-ratio',
-                    '--format=png',
-                    '--output=' + png_path))
-
-            return fn
-
+    # On all platforms, Inkscape is the fallback option because it's
+    # slow to start. We don't want to drop Inkscape: since all SVGs
+    # are drawn in it, there's a chance it's already there.
     inkscape_exe = get_exe_path('inkscape')
     print('Using Inkscape for SVG conversion')
 
-    # Newer versions of Inkscape actually accept the legacy pre-1.0
-    # options, but we still try to use the right ones to avoid
+    # Newer Inkscape versions actually accept the legacy pre-1.0
+    # options, but we still try to use the modern ones to avoid
     # deprecation messages. See:
     # https://wiki.inkscape.org/wiki/Using_the_Command_Line
     version_info = subprocess.check_output(
@@ -162,41 +200,31 @@ def gen_png(icon_name, png_path, size):
     subprocess.check_call((optipng_exe, '-quiet', png_path))
 
 
-def get_image_magick_version(image_magick_exe):
-    version_info = subprocess.check_output(
-        (image_magick_exe, '-version'), universal_newlines=True)
-
-    for line in version_info.splitlines():
-        parts = line.split()
-        if (len(parts) < 3
-                or parts[0] != 'Version:'
-                or parts[1] != 'ImageMagick'):
-            continue
-
-        # The version string looks like "6.9.10-23".
-        return tuple(
-            int(n) for n in parts[2].replace('-', '.').split('.'))
-
-    sys.exit(
-        'Can\'t determine the version of "{}"'.format(
-            image_magick_exe))
-
-
 def create_ico_generator():
     """Return a function to create an ICO from a set of PNGs.
 
     The returned function accepts 2 arguments: a mapping from PNG size
     to PNG path, and the output ICO path.
     """
-    # ImageMagick >= 7.
-    image_magick_exe = shutil.which('magick')
+    # Unfortunately, using the icotool program from the icoutils
+    # package is not enough to create a proper ICO with embedded PNGs.
+    # Icotool can read PNGs to store uncompressed images, but
+    # embedding PNGs is only possible with the --raw option that
+    # copies them as is.
+    #
+    # The catch here is that PNGs inside ICO must be in RGBA format,
+    # otherwise they will be ignored by Windows. We have to force
+    # RGBA, because some of our tools (like rsvg-convert and optipng)
+    # are smart enough not to include the alpha channel if the image
+    # doesn't have transparent pixels.
+    #
+    # Newer ImageMagick versions use RGBA for the 256 px image when
+    # assembling ICO, so we don't need icotool in this case. But for
+    # older versions, we still have to use icotool, and ImageMagick
+    # is still needed to force the PNG format to RGBA for the --raw
+    # option.
 
-    # ImageMagick < 7; mostly relevant for Unix-like systems. Don't
-    # even try "convert" on Windows, since that's the name of the
-    # standard Windows utility.
-    if not image_magick_exe and os.name != 'nt':
-        image_magick_exe = shutil.which('convert')
-
+    image_magick_exe = find_image_magick_exe()
     if not image_magick_exe:
         sys.exit('ImageMagick not found')
 
