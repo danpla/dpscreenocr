@@ -398,18 +398,20 @@ Dependencies
 ============
 
 The tool depends on several programs:
-  * Unix-like systems:
-    * rsvg-convert or Inkscape
-    * optipng
-    * The gen_ico command additionally requires:
-      * ImageMagick
-      * icotool from the icoutils package if ImageMagick < 6.7.8
-  * Windows:
-    * ImageMagick >= 7. It\'s strongly recommended to use binaries
-      from the official website, as other versions (e.g. from MSYS2)
-      may be misconfigured, resulting in incorrect SVG rendering and
-      other problems.
-    * optipng
+
+  * One of the following for SVG rendering:
+    * rsvg-convert
+    * ImageMagick with rsvg support
+    * Inkscape
+  * optipng
+  * The gen_ico command additionally requires:
+    * ImageMagick is mandatory
+    * icotool from the icoutils package if ImageMagick < 6.7.8
+
+On Windows, it\'s strongly recommended to use the ImageMagick binaries
+from the official website, as other versions (e.g. from MSYS2) may be
+misconfigured, resulting in incorrect SVG rendering and other
+problems.
 """
 
 
