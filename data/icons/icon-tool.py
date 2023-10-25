@@ -41,27 +41,34 @@ def find_image_magick_exe():
     return result
 
 
-def get_image_magick_version_info(image_magick_exe, key):
-    """Return value of the given key from the output of "-version".
+def get_image_magick_version_info(image_magick_exe):
+    """Return a dict of key-value pairs from the output of "-version".
     """
     version_info = subprocess.check_output(
         (image_magick_exe, '-version'), universal_newlines=True)
 
+    result = {}
+
     for line in version_info.splitlines():
         parts = line.split(':', maxsplit=1)
-        if len(parts) == 2 and parts[0] == key:
-            return parts[1].rstrip()
+        if len(parts) == 2:
+            result[parts[0]] = parts[1].strip()
 
-    sys.exit(
-        'No "{}" key in the output of \"{} -version\". Time to '
-        'update the script.'.format(key, image_magick_exe))
+    return result
 
 
 def get_image_magick_version(image_magick_exe):
     """Return ImageMagick version as a tuple of ints.
     """
-    parts = get_image_magick_version_info(
-        image_magick_exe, 'Version').split()
+    version = get_image_magick_version_info(image_magick_exe).get(
+        'Version')
+
+    if not version:
+        sys.exit(
+            'No "Version" in the output of "{} -version"'.format(
+                image_magick_exe))
+
+    parts = version.split()
 
     if (len(parts) > 1 and parts[0] == 'ImageMagick'):
         # The version string looks like "6.9.10-23".
@@ -69,13 +76,14 @@ def get_image_magick_version(image_magick_exe):
             int(n) for n in parts[1].replace('-', '.').split('.'))
 
     sys.exit(
-        'Can\'t determine the version of "{}"'.format(
-            image_magick_exe))
+        'Can\'t determine the version of "{}" from "{}"'.format(
+            image_magick_exe, version))
 
 
 def image_magick_has_rsvg(image_magick_exe):
+    # Older versions of ImageMagick don't have "Delegates (built-in)".
     delegates = get_image_magick_version_info(
-        image_magick_exe, 'Delegates (built-in)').split()
+        image_magick_exe).get('Delegates (built-in)', '').split()
 
     return 'rsvg' in delegates
 
@@ -134,7 +142,7 @@ def create_svg_to_png_converter():
         else:
             print(
                 'Skipping ImageMagick ({}) as an SVG conversion tool '
-                'as it doesn\'t have rsvg support'.format(
+                'as it doesn\'t seem to have rsvg support'.format(
                     image_magick_exe))
 
     # On all platforms, Inkscape is the fallback option because it's
