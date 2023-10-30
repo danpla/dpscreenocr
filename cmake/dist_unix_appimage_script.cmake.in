@@ -6,6 +6,7 @@
 # If APPIMAGE_PATH is not set, the AppImage file will have the default
 # name and will be created in the current working directory.
 
+cmake_minimum_required(VERSION "@CMAKE_MINIMUM_REQUIRED_VERSION@")
 
 # Note that we need to support CMake 3.16, while:
 # * COMMAND_ERROR_IS_FATAL in execute_process() was added in 3.19.
@@ -242,6 +243,34 @@ function(set_up_third_party_licenses_dir)
 endfunction()
 
 
+# Remove the execute bit from all shared libraries for aesthetic
+# purposes.
+#
+# The execute bit is unnecessary for a shared library, but GCC sets it
+# anyway, so all manually build libraries will have it. At the same
+# time, the libraries installed from the package manager may have it
+# removed (e.g. this is true for Debian and derivatives). To keep
+# things consistent, we remove the execute bit from all libraries
+# after collecting them.
+function(cleanup_lib_permissions)
+    # file(CHMOD_RECURSE) was added in CMake 3.19. We need to support
+    # 3.16, so use system chmod manually.
+    file(
+        GLOB_RECURSE LIBS
+        LIST_DIRECTORIES FALSE
+        "${APP_DIR}/usr/lib/*.*")
+
+    foreach(LIB ${LIBS})
+        execute_process(
+            COMMAND chmod -x "${LIB}"
+            RESULT_VARIABLE EXIT_STATUS)
+        if(NOT EXIT_STATUS EQUAL 0)
+            message(FATAL_ERROR "chmod for \"${LIB}\"failed")
+        endif()
+    endforeach()
+endfunction()
+
+
 # There's no point in doing anything if we don't have linuxdeploy, so
 # find it early.
 set(LINUXDEPLOY_NAMES
@@ -306,6 +335,7 @@ if(NOT EXIT_STATUS EQUAL 0)
     message(FATAL_ERROR "linuxdeploy failed")
 endif()
 
+cleanup_lib_permissions()
 set_up_third_party_licenses_dir()
 
 # This time we call linuxdeploy to build the actual AppImage. We now
