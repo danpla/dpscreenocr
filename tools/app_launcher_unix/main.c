@@ -28,6 +28,13 @@
 #endif
 
 
+static void cleanupStr(char** ctx)
+{
+    free(*ctx);
+}
+#define CLEANUP_STR __attribute__((cleanup(cleanupStr)))
+
+
 static bool enableDebug = false;
 
 
@@ -147,6 +154,13 @@ static void errorCtxSetText(ErrorCtx* ctx, const char* fmt, ...)
 }
 
 
+static void cleanupErrorCtx(ErrorCtx** ctx)
+{
+    errorCtxDelete(*ctx);
+}
+#define CLEANUP_ERROR_CTX __attribute__((cleanup(cleanupErrorCtx)))
+
+
 static const char* getBaseName(const char* path)
 {
     const char* lastSlash = strrchr(path, '/');
@@ -178,19 +192,18 @@ static bool prependToColonSeparatedEnv(
     if (!oldVal)
         oldVal = "";
 
-    char* newVal = asPrintf(
+    CLEANUP_STR char* newVal = asPrintf(
         "%s%s%s", val, *oldVal ? ":" : "", oldVal);
 
-    const bool result = setenv(envVar, newVal, 1) == 0;
-    if (!result)
-        errorCtxSetText(
-            errorCtx,
-            "setenv(\"%s\", \"%s\", 1): %s",
-            envVar, newVal, strerror(errno));
+    if (setenv(envVar, newVal, 1) == 0)
+        return true;
 
-    free(newVal);
+    errorCtxSetText(
+        errorCtx,
+        "setenv(\"%s\", \"%s\", 1): %s",
+        envVar, newVal, strerror(errno));
 
-    return result;
+    return false;
 }
 
 
@@ -213,52 +226,58 @@ static char* getExeDir(ErrorCtx* errorCtx)
     return result;
 }
 
+static void cleanupDlHandle(void** handle)
+{
+    dlclose(*handle);
+}
+#define CLEANUP_DL_HANDLE __attribute__((cleanup(cleanupDlHandle)))
+
 
 static char* getSysLibPath(const char* libName, ErrorCtx* errorCtx)
 {
-    void* handle = dlopen(libName, RTLD_LAZY);
+    CLEANUP_DL_HANDLE void* handle = dlopen(libName, RTLD_LAZY);
     if (!handle) {
         errorCtxSetText(errorCtx, "dlopen: %s", dlerror());
         return NULL;
     }
 
-    char* result = NULL;
-
     struct link_map* linkMap = NULL;
-    if (dlinfo(handle, RTLD_DI_LINKMAP, &linkMap) == -1)
+    if (dlinfo(handle, RTLD_DI_LINKMAP, &linkMap) == -1) {
         errorCtxSetText(errorCtx, "dlinfo: %s", dlerror());
-    else {
-        // In practice, the link_map entry corresponding to the main
-        // lib will be the first in the list, but we do a generic
-        // search since this behavior is not documented.
-        for (; linkMap; linkMap = linkMap->l_next) {
-            if (strcmp(getBaseName(linkMap->l_name), libName) != 0)
-                continue;
-
-            result = getRealPath(linkMap->l_name, errorCtx);
-            if (!result)
-                errorCtxSetText(
-                    errorCtx,
-                    "Can't get real path of \"%s\": %s",
-                    linkMap->l_name, errorCtxGetText(errorCtx));
-
-            break;
-        }
-
-        if (!linkMap)
-            errorCtxSetText(
-                errorCtx, "Library was not found in link_map");
+        return NULL;
     }
 
-    dlclose(handle);
-    return result;
+    // In practice, the link_map entry corresponding to the main lib
+    // will be the first in the list, but we do a generic search since
+    // this behavior is not documented.
+    for (; linkMap; linkMap = linkMap->l_next) {
+        if (strcmp(getBaseName(linkMap->l_name), libName) != 0)
+            continue;
+
+        char* path = getRealPath(linkMap->l_name, errorCtx);
+        if (path)
+            return path;
+
+        errorCtxSetText(
+            errorCtx,
+            "Can't get real path of \"%s\": %s",
+            linkMap->l_name, errorCtxGetText(errorCtx));
+
+        return NULL;
+    }
+
+    if (!linkMap)
+        errorCtxSetText(
+            errorCtx, "Library was not found in link_map");
+
+    return NULL;
 }
 
 
 static char* getFallbackLibPath(
     const char* libName, const char* libDir, ErrorCtx* errorCtx)
 {
-    char* path = asPrintf("%s/%s", libDir, libName);
+    CLEANUP_STR char* path = asPrintf("%s/%s", libDir, libName);
 
     char* result = getRealPath(path, errorCtx);
     if (!result) {
@@ -266,8 +285,6 @@ static char* getFallbackLibPath(
             errorCtx,
             "Can't get real path of \"%s\": %s",
             path, errorCtxGetText(errorCtx));
-
-        free(path);
         return NULL;
     }
 
@@ -288,8 +305,6 @@ static char* getFallbackLibPath(
         free(result);
         result = NULL;
     }
-
-    free(path);
 
     return result;
 }
@@ -445,7 +460,7 @@ static bool selectLib(
     // First handle everything related to the fallback lib to detect
     // packaging errors early.
 
-    char* fallbackLibPath = getFallbackLibPath(
+    CLEANUP_STR char* fallbackLibPath = getFallbackLibPath(
         libName, fallbackLibDir, errorCtx);
     if (!fallbackLibPath) {
         errorCtxSetText(
@@ -468,17 +483,13 @@ static bool selectLib(
             "Can't extract the version of fallback %s from the path "
             "\"%s\": %s",
             libName, fallbackLibPath, errorCtxGetText(errorCtx));
-
-        free(fallbackLibPath);
         return false;
     }
-
-    free(fallbackLibPath);
 
     // The system libraries are not under our control, so we don't
     // threat any issues related to them as errors.
 
-    char* sysLibPath = getSysLibPath(libName, errorCtx);
+    CLEANUP_STR char* sysLibPath = getSysLibPath(libName, errorCtx);
     if (!sysLibPath) {
         logMsg(
             logDebug,
@@ -508,11 +519,8 @@ static bool selectLib(
             libName, sysLibPath, errorCtxGetText(errorCtx));
 
         *selectedLib = libSelectionSystem;
-        free(sysLibPath);
         return true;
     }
-
-    free(sysLibPath);
 
     *selectedLib =
         (cmpVersion(&sysLibVer, &fallbackLibVer) >= 0)
@@ -559,78 +567,73 @@ static bool setUpFallbackLib(
 }
 
 
+static void cleanupDir(DIR** dir)
+{
+    if (*dir)
+        closedir(*dir);
+}
+#define CLEANUP_DIR __attribute__((cleanup(cleanupDir)))
+
+
 static bool setUpFallbackLibs(
     const char* libDirPath, ErrorCtx* errorCtx)
 {
-    char* fallbackLibDirPath = asPrintf("%s/fallback", libDirPath);
+    CLEANUP_STR char* fallbackLibDirPath = asPrintf(
+        "%s/fallback", libDirPath);
 
-    DIR* dirp = opendir(fallbackLibDirPath);
+    CLEANUP_DIR DIR* dirp = opendir(fallbackLibDirPath);
     if (!dirp) {
-        bool result = true;
-
-        if (errno == ENOENT)
+        if (errno == ENOENT) {
             logMsg(
                 logDebug,
                 "Skipping fallback libs setup as the \"%s\" "
                 "directory does not exist",
                 fallbackLibDirPath);
-        else {
-            errorCtxSetText(
-                errorCtx,
-                "opendir(\"%s\"): %s",
-                fallbackLibDirPath, strerror(errno));
-
-            result = false;
+            return true;
         }
 
-        free(fallbackLibDirPath);
-        return result;
-    }
+        errorCtxSetText(
+            errorCtx,
+            "opendir(\"%s\"): %s",
+            fallbackLibDirPath, strerror(errno));
 
-    bool result = true;
+        return false;
+    }
 
     while (true) {
         errno = 0;
         struct dirent* dp = readdir(dirp);
         if (!dp) {
-            if (errno != 0) {
-                errorCtxSetText(
-                    errorCtx,
-                    "readdir() for \"%s\" handle: %s",
-                    fallbackLibDirPath, strerror(errno));
-                result = false;
-            }
+            if (errno == 0)
+                break;
 
-            break;
+            errorCtxSetText(
+                errorCtx,
+                "readdir() for \"%s\" handle: %s",
+                fallbackLibDirPath, strerror(errno));
+            return false;
         }
 
         if (strcmp(dp->d_name, ".") == 0
                 || strcmp(dp->d_name, "..") == 0)
             continue;
 
-        char* curLibFallbackDirPath = asPrintf(
+        CLEANUP_STR char* curLibFallbackDirPath = asPrintf(
             "%s/%s", fallbackLibDirPath, dp->d_name);
 
-        result = setUpFallbackLib(
-            dp->d_name, curLibFallbackDirPath, errorCtx);
-
-        free(curLibFallbackDirPath);
-
-        if (!result) {
+        if (!setUpFallbackLib(
+                dp->d_name, curLibFallbackDirPath, errorCtx)) {
             errorCtxSetText(
                 errorCtx,
                 "Can't set up %s from \"%s\": %s",
                 dp->d_name,
                 curLibFallbackDirPath,
                 errorCtxGetText(errorCtx));
-            break;
+            return false;
         }
     }
 
-    closedir(dirp);
-    free(fallbackLibDirPath);
-
-    return result;
+    return true;
 }
 
 
@@ -693,25 +696,21 @@ int main(int argc, char* argv[])
             && strcmp(launcherDebugEnvVar, "0") != 0)
         enableDebug = true;
 
-    ErrorCtx* errorCtx = errorCtxCreate();
+    CLEANUP_ERROR_CTX ErrorCtx* errorCtx = errorCtxCreate();
 
-    char* launcherDir = getExeDir(errorCtx);
+    CLEANUP_STR char* launcherDir = getExeDir(errorCtx);
     if (!launcherDir) {
         logMsg(
             logError,
             "Can't get launcher dir: %s",
             errorCtxGetText(errorCtx));
-
-        errorCtxDelete(errorCtx);
         return EXIT_FAILURE;
     }
 
-    char* exePath = asPrintf(
+    CLEANUP_STR char* exePath = asPrintf(
         "%s/%s", launcherDir, LAUNCHER_EXE_PATH);
-    char* libDirPath = asPrintf(
+    CLEANUP_STR char* libDirPath = asPrintf(
         "%s/%s", launcherDir, LAUNCHER_LIB_DIR_PATH);
-
-    free(launcherDir);
 
     logMsg(logDebug, "Exe path: %s", exePath);
     logMsg(logDebug, "Lib dir path: %s", libDirPath);
@@ -722,10 +721,6 @@ int main(int argc, char* argv[])
             "Can't set up libraries from \"%s\": %s",
             libDirPath,
             errorCtxGetText(errorCtx));
-
-        free(exePath);
-        free(libDirPath);
-        errorCtxDelete(errorCtx);
         return EXIT_FAILURE;
     }
 
@@ -748,17 +743,12 @@ int main(int argc, char* argv[])
                 errorCtxGetText(errorCtx));
     }
 
-    free(libDirPath);
-    errorCtxDelete(errorCtx);
-
     *argv = exePath;
     execvp(*argv, argv);
     logMsg(
         logError,
         "execvp(\"%s\", ...): %s",
         *argv, strerror(errno));
-
-    free(exePath);
 
     return EXIT_FAILURE;
 }
