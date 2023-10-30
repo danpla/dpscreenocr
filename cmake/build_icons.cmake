@@ -70,7 +70,6 @@ function(build_icons DST_DIR)
             SRC_FILES
             CONFIGURE_DEPENDS
             "${SRC_DIR}/${SIZE}/*${FILE_EXT}")
-        list(SORT SRC_FILES)
 
         foreach(SRC_FILE ${SRC_FILES})
             get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)

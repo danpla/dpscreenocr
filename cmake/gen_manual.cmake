@@ -42,7 +42,6 @@ function(gen_html_manual DST_DIR)
         "${DOC_DIR}/manual-data/*.png"
         "${DOC_DIR}/manual-data/*.svg"
         "${DOC_DIR}/manual-data/*.css")
-    list(SORT SRC_DATA_FILES)
 
     set(DST_DATA_FILES)
     foreach(SRC_FILE ${SRC_DATA_FILES})
