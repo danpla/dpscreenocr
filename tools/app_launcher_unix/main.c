@@ -35,6 +35,13 @@ static void cleanupStr(char** ctx)
 #define CLEANUP_STR __attribute__((cleanup(cleanupStr)))
 
 
+static void cleanupVaList(va_list* va)
+{
+    va_end(*va);
+}
+#define CLEANUP_VA_LIST __attribute__((cleanup(cleanupVaList)))
+
+
 static bool enableDebug = false;
 
 
@@ -63,10 +70,9 @@ static void logMsg(LogSeverity severity, const char* fmt, ...)
 
     fputs("] ", stderr);
 
-    va_list args;
+    CLEANUP_VA_LIST va_list args;
     va_start(args, fmt);
     vfprintf(stderr, fmt, args);
-    va_end(args);
 
     fputc('\n', stderr);
 }
@@ -77,15 +83,13 @@ static char* asPrintf(const char* fmt, ...)
 {
     char* result;
 
-    va_list args;
+    CLEANUP_VA_LIST va_list args;
     va_start(args, fmt);
 
     if (vasprintf(&result, fmt, args) == -1) {
         logMsg(logError, "vasprintf(&, \"%s\", ...) failed", fmt);
         exit(EXIT_FAILURE);
     }
-
-    va_end(args);
 
     return result;
 }
@@ -134,7 +138,7 @@ static void errorCtxSetText(ErrorCtx* ctx, const char* fmt, ...)
     // don't free it until we create the new one.
     char* newText;
 
-    va_list args;
+    CLEANUP_VA_LIST va_list args;
     va_start(args, fmt);
 
     if (vasprintf(&newText, fmt, args) == -1) {
@@ -144,8 +148,6 @@ static void errorCtxSetText(ErrorCtx* ctx, const char* fmt, ...)
             fmt);
         exit(EXIT_FAILURE);
     }
-
-    va_end(args);
 
     if (ctx->text)
         free(ctx->text);
@@ -202,7 +204,6 @@ static bool prependToColonSeparatedEnv(
         errorCtx,
         "setenv(\"%s\", \"%s\", 1): %s",
         envVar, newVal, strerror(errno));
-
     return false;
 }
 
@@ -262,14 +263,10 @@ static char* getSysLibPath(const char* libName, ErrorCtx* errorCtx)
             errorCtx,
             "Can't get real path of \"%s\": %s",
             linkMap->l_name, errorCtxGetText(errorCtx));
-
         return NULL;
     }
 
-    if (!linkMap)
-        errorCtxSetText(
-            errorCtx, "Library was not found in link_map");
-
+    errorCtxSetText(errorCtx, "Library was not found in link_map");
     return NULL;
 }
 
@@ -354,7 +351,7 @@ static bool parseVersion(
                 errorCtx,
                 "Expected a number, but got \"%s\" at index %zu",
                 s, s - str);
-            break;
+            return false;
         }
 
         char* end;
@@ -366,7 +363,7 @@ static bool parseVersion(
                 errorCtx,
                 "Invalid number \"%s\" at index %zu",
                 s, s - str);
-            break;
+            return false;
         }
 
         s = end;
@@ -376,7 +373,7 @@ static bool parseVersion(
                     errorCtx,
                     "All %i numbers were parsed, but \"%s\" remains",
                     numVersionNumbers, s);
-                break;
+                return false;
             }
 
             ++s;
@@ -386,12 +383,12 @@ static bool parseVersion(
                 "Number is followed by an unexpected \"%c\" at index "
                 "%zu",
                 *s, s - str);
-            break;
+            return false;
         } else
             return true;
     }
 
-    return false;
+    return true;
 }
 
 
@@ -596,7 +593,6 @@ static bool setUpFallbackLibs(
             errorCtx,
             "opendir(\"%s\"): %s",
             fallbackLibDirPath, strerror(errno));
-
         return false;
     }
 
