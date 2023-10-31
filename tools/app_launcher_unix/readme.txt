@@ -1,5 +1,5 @@
 This is a launcher to run an application bundled with its own
-libraries, like AppImage or just binaries in an archive.
+libraries.
 
 
 Why C instead of a shell script?

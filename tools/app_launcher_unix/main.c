@@ -732,9 +732,9 @@ int main(int argc, char* argv[])
             ldLibraryPathEnv, ldLibraryPathEnvVar);
 
     if (enableDebug) {
-        // Show the ldd output so that users can include it in bug
-        // reports. It will be non-trivial for the user to do this
-        // manually if the application is packaged as AppImage.
+        // It's easy to run ldd manually (we've shown LD_LIBRARY_PATH
+        // above), but we don't want to ask users to take extra steps
+        // when reporting bugs.
         logMsg(logDebug, "ldd output:");
         if (!callLdd(exePath, errorCtx))
             logMsg(
