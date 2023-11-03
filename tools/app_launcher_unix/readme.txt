@@ -13,27 +13,40 @@ libstdc++ resolved by the linker.
 
 Why not just use the bundled libstdc++ unconditionally? Although
 libstdc++ itself is backward-compatible, the application can still
-link with system libraries built with stock (newer) libstdc++, such as
-graphics card drivers. If this happens, the linkage will fail as the
-linker is forced to use an older libstdc++.
+link against system libraries built with stock (newer) libstdc++. If
+this happens, the linkage will fail as the linker is forced to use the
+bundled (older) libstdc++, which lacks the necessary symbols.
 
 
 Usage
 =====
 
 
-Building
---------
+Configuration file
+------------------
 
-To build the launcher, you need to set the following CMake variables:
+The launcher requires a configuration file, which should be in the
+same directory as the launcher and have the same name as the launcher
+binary with an extra ".cfg" extension. Each line in this file contains
+a key-value pair, separated by one or more spaces. The following are
+required:
 
-  * LAUNCHER_EXE_PATH - path to the executable to be launched
-
-  * LAUNCHER_LIB_DIR_PATH - path to the directory with bundled
-    libraries
+  * exe - a path to the executable to be launched
+  * lib_dir - a path to the directory with bundled libraries
 
 Both paths will be calculated relative to the launcher location, and
 therefore should not be absolute.
+
+A CFG file for a launcher located in the installation prefix might
+look like this:
+
+    exe     bin/your-app
+    lib_dir lib
+
+A CFG file for an AppImage (AppRun.cfg) will be:
+
+    exe     usr/bin/your-app
+    lib_dir usr/lib
 
 
 Choosing between system and bundled libraries
@@ -43,8 +56,8 @@ If you want the launcher to choose between the system and the bundled
 library at runtime (you will usually need to do this for libstdc++),
 the bundled library should be packaged especially:
 
-  * Add a "fallback" directory in LAUNCHER_LIB_DIR_PATH. The word
-    "fallback" in this context means "a fallback library to be used if
+  * Add a "fallback" directory in the "lib_dir" path from CFG file.
+    The word "fallback" in this context means "a library to be used if
     the system one is older".
 
   * Add a directory inside "fallback" that has the same name as the
@@ -63,9 +76,9 @@ the bundled library should be packaged especially:
     processes the library directory, it will use this symbolic link to
     get the actual library path.
 
-For example, if LAUNCHER_LIB_DIR_PATH is "lib" and the application
-links against libstdc++.so.6, the actual library from you machine
-(say, libstdc++.so.6.0.28) should be bundled like:
+For example, if the "lib_dir" path in the CFG file is "lib" and the
+application links against libstdc++.so.6, the actual library from you
+machine (say, libstdc++.so.6.0.28) should be bundled like:
 
     lib/fallback/libstdc++.so.6/libstdc++.so.6
     lib/fallback/libstdc++.so.6/libstdc++.so.6.0.28

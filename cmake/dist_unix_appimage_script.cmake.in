@@ -98,8 +98,6 @@ function(set_up_app_run)
             -B "${LAUNCHER_BUILD_DIR}"
             -G "${CMAKE_GENERATOR}"
             "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-            "-DLAUNCHER_EXE_PATH=usr/bin/${APP_FILE_NAME}"
-            "-DLAUNCHER_LIB_DIR_PATH=usr/lib"
         RESULT_VARIABLE EXIT_STATUS)
     if(NOT EXIT_STATUS EQUAL 0)
         message(
@@ -122,6 +120,12 @@ function(set_up_app_run)
             GROUP_READ GROUP_EXECUTE
             WORLD_READ WORLD_EXECUTE)
     file(RENAME "${APP_DIR}/launcher" "${APP_DIR}/AppRun")
+
+    string(
+        JOIN "\n" LAUNCHER_CFG
+        "exe     usr/bin/${APP_FILE_NAME}"
+        "lib_dir usr/lib")
+    file(WRITE "${APP_DIR}/AppRun.cfg" "${LAUNCHER_CFG}")
 endfunction()
 
 

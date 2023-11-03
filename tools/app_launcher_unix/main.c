@@ -1,10 +1,11 @@
 
 #ifndef _GNU_SOURCE
-    // Needed for v/asprintf() and dlinfo().
+    // Required for dlinfo() and some utilities like vasprintf().
     #define _GNU_SOURCE
 #endif
 
 #include <assert.h>
+#include <ctype.h>
 #include <dirent.h>
 #include <dlfcn.h>
 #include <errno.h>
@@ -17,15 +18,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
-
-#ifndef LAUNCHER_EXE_PATH
-    #error "LAUNCHER_EXE_PATH is not defined"
-#endif
-
-#ifndef LAUNCHER_LIB_DIR_PATH
-    #error "LAUNCHER_LIB_DIR_PATH is not defined"
-#endif
 
 
 static void cleanupStr(char** ctx)
@@ -78,20 +70,46 @@ static void logMsg(LogSeverity severity, const char* fmt, ...)
 }
 
 
-__attribute__((format(printf, 1, 2)))
-static char* asPrintf(const char* fmt, ...)
+static char* xStrdup(const char* s)
+{
+    char* result = strdup(s);
+    if (result)
+        return result;
+
+    logMsg(logError, "strdup(): %s", strerror(errno));
+    exit(EXIT_FAILURE);
+}
+
+
+static char* xStrndup(const char* s, size_t len)
+{
+    char* result = strndup(s, len);
+    if (result)
+        return result;
+
+    logMsg(logError, "strndup(): %s", strerror(errno));
+    exit(EXIT_FAILURE);
+}
+
+
+static char* xVasprintf(const char *fmt, va_list args)
 {
     char* result;
+    if (vasprintf(&result, fmt, args) != -1)
+        return result;
 
+    logMsg(logError, "vasprintf(&, \"%s\", ...) failed", fmt);
+    exit(EXIT_FAILURE);
+}
+
+
+__attribute__((format(printf, 1, 2)))
+static char* xAsprintf(const char* fmt, ...)
+{
     CLEANUP_VA_LIST va_list args;
     va_start(args, fmt);
 
-    if (vasprintf(&result, fmt, args) == -1) {
-        logMsg(logError, "vasprintf(&, \"%s\", ...) failed", fmt);
-        exit(EXIT_FAILURE);
-    }
-
-    return result;
+    return xVasprintf(fmt, args);
 }
 
 
@@ -104,12 +122,11 @@ typedef struct ErrorCtx {
 static ErrorCtx* errorCtxCreate(void)
 {
     ErrorCtx* ctx = calloc(1, sizeof(ErrorCtx));
-    if (!ctx) {
-        logMsg(logError, "calloc for ErrorCtx: %s", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
+    if (ctx)
+        return ctx;
 
-    return ctx;
+    logMsg(logError, "calloc() for ErrorCtx: %s", strerror(errno));
+    exit(EXIT_FAILURE);
 }
 
 
@@ -134,20 +151,12 @@ static void errorCtxSetText(ErrorCtx* ctx, const char* fmt, ...)
     if (!ctx)
         return;
 
-    // The existing error text can be passed as a format argument, so
-    // don't free it until we create the new one.
-    char* newText;
-
     CLEANUP_VA_LIST va_list args;
     va_start(args, fmt);
 
-    if (vasprintf(&newText, fmt, args) == -1) {
-        logMsg(
-            logError,
-            "errorCtxSetText vasprintf(&, \"%s\", ...) failed",
-            fmt);
-        exit(EXIT_FAILURE);
-    }
+    // The existing error text can be passed as a format argument, so
+    // don't free it until we create the new one.
+    char* newText = xVasprintf(fmt, args);
 
     if (ctx->text)
         free(ctx->text);
@@ -163,10 +172,26 @@ static void cleanupErrorCtx(ErrorCtx** ctx)
 #define CLEANUP_ERROR_CTX __attribute__((cleanup(cleanupErrorCtx)))
 
 
+static char* getDirName(const char* path)
+{
+    const char* sep = NULL;
+    for (const char* s = path; *s; ++s)
+        if (*s == '/' && (s == path || s[-1] != '/'))
+            sep = s;
+
+    if (!sep)
+        return xStrdup(".");
+    if (sep == path)
+        return xStrdup("/");
+
+    return xStrndup(path, sep - path);
+}
+
+
 static const char* getBaseName(const char* path)
 {
-    const char* lastSlash = strrchr(path, '/');
-    return lastSlash ? lastSlash + 1 : path;
+    const char* lastSep = strrchr(path, '/');
+    return lastSep ? lastSep + 1 : path;
 }
 
 
@@ -174,13 +199,25 @@ static char* getRealPath(const char* path, ErrorCtx* errorCtx)
 {
     char* result = realpath(path, NULL);
     if (!result)
-        errorCtxSetText(
-            errorCtx,
-            "realpath(\"%s\", NULL): %s",
-            path,
-            strerror(errno));
+        errorCtxSetText(errorCtx, "realpath(): %s", strerror(errno));
 
     return result;
+}
+
+
+static char* getExePath(ErrorCtx* errorCtx)
+{
+    const char* procPath = "/proc/self/exe";
+
+    char* result = getRealPath(procPath, errorCtx);
+    if (result)
+        return result;
+
+    errorCtxSetText(
+        errorCtx,
+        "Can't get real path of \"%s\": %s",
+        procPath, errorCtxGetText(errorCtx));
+    return NULL;
 }
 
 
@@ -194,7 +231,7 @@ static bool prependToColonSeparatedEnv(
     if (!oldVal)
         oldVal = "";
 
-    CLEANUP_STR char* newVal = asPrintf(
+    CLEANUP_STR char* newVal = xAsprintf(
         "%s%s%s", val, *oldVal ? ":" : "", oldVal);
 
     if (setenv(envVar, newVal, 1) == 0)
@@ -208,24 +245,211 @@ static bool prependToColonSeparatedEnv(
 }
 
 
-static char* getExeDir(ErrorCtx* errorCtx)
+static void cleanupFile(FILE** fp)
 {
-    const char* procPath = "/proc/self/exe";
-    char* result = getRealPath(procPath, errorCtx);
-    if (!result) {
+    if (*fp)
+        fclose(*fp);
+}
+#define CLEANUP_FILE __attribute__((cleanup(cleanupFile)))
+
+
+typedef struct LauncherPaths {
+    char* exe;
+    char* libDir;
+} LauncherPaths;
+
+
+static void cleanupLauncherPaths(LauncherPaths* paths)
+{
+    free(paths->exe);
+    free(paths->libDir);
+}
+#define CLEANUP_LAUNCHER_PATHS \
+    __attribute__((cleanup(cleanupLauncherPaths)))
+
+
+void cfgExtractKeyValue(
+    char* line, const char** key, const char** value)
+{
+    assert(key);
+    assert(value);
+
+    char* keyBegin = line;
+    while (isspace((unsigned char)*keyBegin))
+        ++keyBegin;
+
+    char* keyEnd = keyBegin;
+    while (*keyEnd && !isspace((unsigned char)*keyEnd))
+        ++keyEnd;
+
+    char* valueBegin = keyEnd;
+    while (isspace((unsigned char)*valueBegin))
+        ++valueBegin;
+
+    char* valueEnd = valueBegin;
+    for (char* s = valueEnd; *s; ++s)
+        if (!isspace((unsigned char)*s))
+            valueEnd = s + 1;
+
+    *key = keyBegin;
+    *keyEnd = 0;
+
+    *value = valueBegin;
+    *valueEnd = 0;
+}
+
+
+static const char* const cfgKeyExe = "exe";
+static const char* const cfgKeyLibDir = "lib_dir";
+
+
+static char** cfgGetFieldForKey(LauncherPaths* paths, const char* key)
+{
+    if (strcmp(key, cfgKeyExe) == 0)
+        return &paths->exe;
+    if (strcmp(key, cfgKeyLibDir) == 0)
+        return &paths->libDir;
+
+    return NULL;
+}
+
+
+static bool cfgProcessLine(
+    char* line,
+    const char* baseDirPath,
+    LauncherPaths* paths,
+    ErrorCtx* errorCtx)
+{
+    assert(*baseDirPath == '/');
+    assert(paths);
+
+    const char* key = NULL;
+    const char* path = NULL;
+    cfgExtractKeyValue(line, &key, &path);
+
+    if (!*key)
+        // Ignore empty lines.
+        return true;
+
+    char** dst = cfgGetFieldForKey(paths, key);
+    if (!dst) {
+        errorCtxSetText(errorCtx, "Unknown key \"%s\"", key);
+        return false;
+    }
+
+    if (*dst) {
+        errorCtxSetText(errorCtx, "Duplicate key \"%s\"", key);
+        return false;
+    }
+
+    if (!*path) {
+        errorCtxSetText(errorCtx, "\"%s\" path is empty", key);
+        return false;
+    }
+
+    if (*path == '/') {
+        errorCtxSetText(
+            errorCtx, "\"%s\" path must not be absolute", key);
+        return false;
+    }
+
+    CLEANUP_STR char* fullPath = xAsprintf(
+        "%s/%s", baseDirPath, path);
+
+    char* realPath = getRealPath(fullPath, errorCtx);
+    if (!realPath) {
         errorCtxSetText(
             errorCtx,
             "Can't get real path of \"%s\": %s",
-            procPath, errorCtxGetText(errorCtx));
-        return NULL;
+            fullPath, errorCtxGetText(errorCtx));
+        return false;
     }
 
-    char* lastSlash = strrchr(result, '/');
-    if (lastSlash)
-        *lastSlash = 0;
+    assert(!*dst);
+    *dst = realPath;
 
-    return result;
+    return true;
 }
+
+
+static bool cfgLoad(
+    const char* cfgPath, LauncherPaths* paths, ErrorCtx* errorCtx)
+{
+    assert(paths);
+    *paths = (LauncherPaths){0};
+
+    CLEANUP_FILE FILE* fp = fopen(cfgPath, "r");
+    if (!fp) {
+        errorCtxSetText(
+            errorCtx, "fopen(..., \"r\"): %s", strerror(errno));
+        return false;
+    }
+
+    CLEANUP_STR char* baseDirPath = getDirName(cfgPath);
+
+    CLEANUP_STR char* line = NULL;
+    size_t lineSize = 0;
+
+    for (int lineNum = 1; true; ++lineNum) {
+        const ssize_t lineLen = getline(&line, &lineSize, fp);
+        if (lineLen == -1)
+            break;
+
+        if (!cfgProcessLine(line, baseDirPath, paths, errorCtx)) {
+            errorCtxSetText(
+                errorCtx,
+                "Line %i: %s",
+                lineNum, errorCtxGetText(errorCtx));
+            return false;
+        }
+    }
+
+    if (ferror(fp)) {
+        errorCtxSetText(errorCtx, "Read error: %s", strerror(errno));
+        return false;
+    }
+
+    const char* cfgKeys[] = {cfgKeyExe, cfgKeyLibDir, NULL};
+    for (const char** key = cfgKeys; *key; ++key) {
+        char** field = cfgGetFieldForKey(paths, *key);
+        assert(field);
+
+        if (!*field) {
+            errorCtxSetText(errorCtx, "\"%s\" is not set", *key);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+static bool loadLauncherPaths(
+    LauncherPaths* paths, ErrorCtx* errorCtx)
+{
+    assert(paths);
+
+    CLEANUP_STR char* exePath = getExePath(errorCtx);
+    if (!exePath) {
+        errorCtxSetText(
+            errorCtx,
+            "Can't get launcher executable path: %s",
+            errorCtxGetText(errorCtx));
+        return false;
+    }
+
+    CLEANUP_STR char* cfgPath = xAsprintf("%s.cfg", exePath);
+    if (!cfgLoad(cfgPath, paths, errorCtx)) {
+        errorCtxSetText(
+            errorCtx,
+            "%s: %s",
+            cfgPath, errorCtxGetText(errorCtx));
+        return false;
+    }
+
+    return true;
+}
+
 
 static void cleanupDlHandle(void** handle)
 {
@@ -238,13 +462,14 @@ static char* getSysLibPath(const char* libName, ErrorCtx* errorCtx)
 {
     CLEANUP_DL_HANDLE void* handle = dlopen(libName, RTLD_LAZY);
     if (!handle) {
-        errorCtxSetText(errorCtx, "dlopen: %s", dlerror());
+        errorCtxSetText(errorCtx, "dlopen(): %s", dlerror());
         return NULL;
     }
 
     struct link_map* linkMap = NULL;
     if (dlinfo(handle, RTLD_DI_LINKMAP, &linkMap) == -1) {
-        errorCtxSetText(errorCtx, "dlinfo: %s", dlerror());
+        errorCtxSetText(
+            errorCtx, "dlinfo(RTLD_DI_LINKMAP): %s", dlerror());
         return NULL;
     }
 
@@ -274,7 +499,7 @@ static char* getSysLibPath(const char* libName, ErrorCtx* errorCtx)
 static char* getFallbackLibPath(
     const char* libName, const char* libDir, ErrorCtx* errorCtx)
 {
-    CLEANUP_STR char* path = asPrintf("%s/%s", libDir, libName);
+    CLEANUP_STR char* path = xAsprintf("%s/%s", libDir, libName);
 
     char* result = getRealPath(path, errorCtx);
     if (!result) {
@@ -406,7 +631,7 @@ static bool getLibVersion(
     if (strncmp(baseName, libName, libNameLen) != 0) {
         errorCtxSetText(
             errorCtx,
-            "The base name (\"%s\") doesn't start with %s",
+            "The base name (\"%s\") doesn't start with \"%s\"",
             baseName, libName);
         return false;
     }
@@ -575,7 +800,7 @@ static void cleanupDir(DIR** dir)
 static bool setUpFallbackLibs(
     const char* libDirPath, ErrorCtx* errorCtx)
 {
-    CLEANUP_STR char* fallbackLibDirPath = asPrintf(
+    CLEANUP_STR char* fallbackLibDirPath = xAsprintf(
         "%s/fallback", libDirPath);
 
     CLEANUP_DIR DIR* dirp = opendir(fallbackLibDirPath);
@@ -614,7 +839,7 @@ static bool setUpFallbackLibs(
                 || strcmp(dp->d_name, "..") == 0)
             continue;
 
-        CLEANUP_STR char* curLibFallbackDirPath = asPrintf(
+        CLEANUP_STR char* curLibFallbackDirPath = xAsprintf(
             "%s/%s", fallbackLibDirPath, dp->d_name);
 
         if (!setUpFallbackLib(
@@ -694,28 +919,23 @@ int main(int argc, char* argv[])
 
     CLEANUP_ERROR_CTX ErrorCtx* errorCtx = errorCtxCreate();
 
-    CLEANUP_STR char* launcherDir = getExeDir(errorCtx);
-    if (!launcherDir) {
+    CLEANUP_LAUNCHER_PATHS LauncherPaths launcherPaths = {0};
+    if (!loadLauncherPaths(&launcherPaths, errorCtx)) {
         logMsg(
             logError,
-            "Can't get launcher dir: %s",
+            "Can't load launcher paths: %s",
             errorCtxGetText(errorCtx));
         return EXIT_FAILURE;
     }
 
-    CLEANUP_STR char* exePath = asPrintf(
-        "%s/%s", launcherDir, LAUNCHER_EXE_PATH);
-    CLEANUP_STR char* libDirPath = asPrintf(
-        "%s/%s", launcherDir, LAUNCHER_LIB_DIR_PATH);
+    logMsg(logDebug, "Exe path: %s", launcherPaths.exe);
+    logMsg(logDebug, "Lib dir path: %s", launcherPaths.libDir);
 
-    logMsg(logDebug, "Exe path: %s", exePath);
-    logMsg(logDebug, "Lib dir path: %s", libDirPath);
-
-    if (!setUpLibs(libDirPath, errorCtx)) {
+    if (!setUpLibs(launcherPaths.libDir, errorCtx)) {
         errorCtxSetText(
             errorCtx,
             "Can't set up libraries from \"%s\": %s",
-            libDirPath,
+            launcherPaths.libDir,
             errorCtxGetText(errorCtx));
         return EXIT_FAILURE;
     }
@@ -723,28 +943,24 @@ int main(int argc, char* argv[])
     const char* ldLibraryPathEnvVar = getenv(ldLibraryPathEnv);
     if (ldLibraryPathEnvVar)
         logMsg(
-            logDebug,
-            "%s=\"%s\"",
-            ldLibraryPathEnv, ldLibraryPathEnvVar);
+            logDebug, "%s=%s", ldLibraryPathEnv, ldLibraryPathEnvVar);
 
     if (enableDebug) {
         // It's easy to run ldd manually (we've shown LD_LIBRARY_PATH
         // above), but we don't want to ask users to take extra steps
         // when reporting bugs.
         logMsg(logDebug, "ldd output:");
-        if (!callLdd(exePath, errorCtx))
+        if (!callLdd(launcherPaths.exe, errorCtx))
             logMsg(
                 logDebug,
                 "Can't execute ldd: %s",
                 errorCtxGetText(errorCtx));
     }
 
-    *argv = exePath;
-    execvp(*argv, argv);
+    *argv = launcherPaths.exe;
+    execv(*argv, argv);
     logMsg(
-        logError,
-        "execvp(\"%s\", ...): %s",
-        *argv, strerror(errno));
+        logError, "execv(\"%s\", ...): %s", *argv, strerror(errno));
 
     return EXIT_FAILURE;
 }
