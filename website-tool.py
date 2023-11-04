@@ -430,12 +430,12 @@ def gen_main_page_content(root_url, page_lang, translator):
 
     download_list = gen_unordered_list((
         (
-            translator.gettext(
-                    'GNU/Linux: Download <a {appimage_link}>an '
-                    'AppImage</a>, which works on most systems, or '
-                    'choose a package for your distribution:').format(
-                appimage_link=(
-                    'href="{}/{}-{}-x86_64.AppImage"').format(
+            'GNU/Linux<br>'
+            + translator.gettext(
+                'Download {file}, which works on most systems, or '
+                'choose a package for your distribution:').format(
+                    file=('<a href="{}/{}-{}-x86_64.AppImage">'
+                        'AppImage</a>').format(
                         github_release_download_url_base,
                         APP_NAME,
                         APP_VERSION)),

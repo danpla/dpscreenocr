@@ -40,7 +40,7 @@ msgstr ""
 
 #, python-brace-format
 msgid ""
-"GNU/Linux: Download <a {appimage_link}>an AppImage</a>, which works on most "
+"Download {file}, which works on most "
 "systems, or choose a package for your distribution:"
 msgstr ""
 

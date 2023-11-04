@@ -50,10 +50,10 @@ msgstr ""
 
 #, python-brace-format
 msgid ""
-"GNU/Linux: Download <a {appimage_link}>an AppImage</a>, which works on most "
+"Download {file}, which works on most "
 "systems, or choose a package for your distribution:"
 msgstr ""
-"GNU/Linux: Загрузите <a {appimage_link}>AppImage</a>, который работает на "
+"Загрузите {file}, который работает на "
 "большинстве систем, или выберите пакет для вашего дистрибутива:"
 
 msgid "Ubuntu and derivatives"

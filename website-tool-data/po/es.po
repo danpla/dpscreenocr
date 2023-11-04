@@ -47,12 +47,13 @@ msgstr ""
 "<b>Descárguese</b> la versión {version_number} (<a {changelog_link}"
 ">novedades</a>, <a {license_link}>licencia</a>):"
 
+#, fuzzy
 #, python-brace-format
 msgid ""
-"GNU/Linux: Download <a {appimage_link}>an AppImage</a>, which works on most "
+"Download {file}, which works on most "
 "systems, or choose a package for your distribution:"
 msgstr ""
-"GNU/Linux: descarga <a {appimage_link}>una AppImage</a>, que funciona en la "
+"Descarga {file}, que funciona en la "
 "mayoría de los sistemas, o elige un paquete para su distribución:"
 
 msgid "Ubuntu and derivatives"
