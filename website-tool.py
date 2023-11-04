@@ -247,7 +247,8 @@ def write_root_index_page(langs):
         JS_STORAGE_LANG_KEY=JS_STORAGE_LANG_KEY)
 
     index = index.replace(
-        '<html', '<!-- {} -->\n<html'.format(GENERATED_DOC_COMMENT), 1)
+        '<html', '<!-- {} -->\n<html'.format(GENERATED_DOC_COMMENT),
+        1)
 
     with open_for_text_writing('index.html') as f:
         f.write(index)
@@ -386,13 +387,15 @@ def gen_main_page_content(root_url, page_lang, translator):
         '<img id="logo" src="{}/images/dpscreenocr.svg" alt="">\n'
         ).format(root_url)
 
+    title = '<div id="title">{}</div>\n'.format(APP_NAME)
+
     about_text = translator.gettext(
-        '<b>{app_name}</b> is a program to recognize text on the '
-        'screen. Powered by <a {tesseract_link}>Tesseract</a>, it '
-        'supports more than 100 languages and can split independent '
-        'text blocks, such as columns. Read <a {manual_link}>the '
-        'manual</a> for instructions on installing, configuring, and '
-        'using the program.').format(
+        '{app_name} is a program to recognize text on the screen. '
+        'Powered by <a {tesseract_link}>Tesseract</a>, it supports '
+        'more than 100 languages and can split independent text '
+        'blocks, such as columns. Read <a {manual_link}>the manual'
+        '</a> for instructions on installing, configuring, and using '
+        'the program.').format(
             app_name=APP_NAME,
             tesseract_link='href="{}"'.format(
                 translator.gettext(
@@ -477,7 +480,9 @@ def gen_main_page_content(root_url, page_lang, translator):
 
     return (
         APP_NAME,
-        logo
+        '<header>\n'
+            + indent(logo + title)
+            + '</header>\n'
             + '<p>{}</p>\n'.format(about_text)
             + screenshot
             + '<p>{}</p>\n'.format(download_text)
