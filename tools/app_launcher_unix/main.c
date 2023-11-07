@@ -932,8 +932,8 @@ int main(int argc, char* argv[])
     logMsg(logDebug, "Lib dir path: %s", launcherPaths.libDir);
 
     if (!setUpLibs(launcherPaths.libDir, errorCtx)) {
-        errorCtxSetText(
-            errorCtx,
+        logMsg(
+            logError,
             "Can't set up libraries from \"%s\": %s",
             launcherPaths.libDir,
             errorCtxGetText(errorCtx));
