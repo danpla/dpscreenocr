@@ -65,19 +65,22 @@ Packaging
 =========
 
 
-AppImage
---------
+Bundle
+------
 
-It's recommended to create an AppImage from within a Docker
-environment that you can find in the "tools/dpscreenocr_appimage_env"
-directory. It uses an old OS distribution to make sure that the
-AppImage will work even on legacy systems, and has all the necessary
-dependencies configured. Read "tools/dpscreenocr_appimage_env/
-readme.txt" for the details.
+You can build dpScreenOCR as a bundle - a self-contained directory
+that includes the program itself, all the necessary libraries, and a
+launcher.
+
+It's recommended to build the bundle from within a Docker environment
+from the "tools/dpscreenocr_build_env" directory. It uses an old OS
+distribution to ensure that the bundle will work even on legacy
+systems, and has all the necessary dependencies configured. See
+"tools/dpscreenocr_build_env/readme.txt" for the details.
 
 If you are not using a Docker image, you will need to install
 additional dependencies beyond those listed in the "Dependencies"
-section above:
+section:
 
   * libcurl >= 7.28. If your system provides several flavors of
     libcurl, it doesn't matter which one to install: dpScreenOCR will
@@ -88,21 +91,15 @@ section above:
 
   * libjansson >= 2.7
 
-  * linuxdeploy (https://github.com/linuxdeploy/linuxdeploy/releases)
-    CMake will search for linuxdeploy in your PATH under the names
-    "linuxdeploy" and "linuxdeploy-ARCH.AppImage", where ARCH is the
-    output of "uname -m".
-
-On Debian, Ubuntu, and derivatives, you can install libcurl and
-libjansson with:
+On Debian, Ubuntu, and derivatives, you can install the above with:
 
     sudo apt-get install libcurl4-gnutls-dev libjansson-dev
 
-The process of creating an AppImage is now independent of whether you
+The process of creating the bundle is now independent of whether you
 are inside a Docker image: use the steps described in the "Building"
-section above, with two important differences:
+section, with two important differences:
 
   * Disable DPSO_USE_DEFAULT_TESSERACT_DATA_PATH and enable
     DPSO_DYNAMIC_CURL CMake options.
 
-  * Call "make appimage" instead of just "make".
+  * Call "make bundle_archive" instead of "make".

@@ -19,17 +19,14 @@ namespace {
 #if DPSO_DYNAMIC_CURL
 
 // When the application is shipped in a self-contained package for
-// Unix-like systems (like AppImage), it's necessary not to bundle
-// libcurl, but instead to load the system version dynamically.
+// Unix-like systems, it's necessary not to bundle libcurl, but
+// instead to load the system version dynamically.
 //
 // The main reason is TLS certificates. They all have expiration
 // dates, and if we bundle them in the package, the networking part
-// will break one day.
-//
-// One solution would be to tell the bundled libcurl a path to the
-// location of system certificates, but this path is not standardized
-// across different GNU/Linux distributions.
-//
+// will break one day. One solution would be to tell the bundled
+// libcurl a path to the location of system certificates, but this
+// path is not standardized across different GNU/Linux distributions.
 // Another obvious choice is to just let the application to link
 // against the system libcurl, but this will not work for at least two
 // reasons:

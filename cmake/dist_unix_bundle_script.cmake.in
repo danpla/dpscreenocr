@@ -1,0 +1,425 @@
+# This script can be run with "cmake -P". It requires the following
+# arguments:
+#
+#  * BUNDLE_BUILD_DIR - a directory for auxiliary files
+#  * BUNDLE_DIR - a directory in which to store the bundle
+
+cmake_minimum_required(VERSION "@CMAKE_MINIMUM_REQUIRED_VERSION@")
+
+# Note that we need to support CMake 3.16, while:
+# * COMMAND_ERROR_IS_FATAL in execute_process() was added in 3.19.
+# * REQUIRED in find_program() was added in 3.18.
+
+# Create the variables explicitly so that we don't have to mess with
+# @-substitutions all over the script.
+set(CMAKE_COMMAND "@CMAKE_COMMAND@")
+set(CMAKE_GENERATOR "@CMAKE_GENERATOR@")
+set(CMAKE_BUILD_TYPE "@CMAKE_BUILD_TYPE@")
+set(CMAKE_BINARY_DIR "@CMAKE_BINARY_DIR@")
+set(CMAKE_SOURCE_DIR "@CMAKE_SOURCE_DIR@")
+
+set(APP_FILE_NAME "@APP_FILE_NAME@")
+
+set(DPSO_UI "@DPSO_UI@")
+set(DPSO_ENABLE_NLS "@DPSO_ENABLE_NLS@")
+
+
+function(validate_build_settings)
+    if(NOT BUNDLE_BUILD_DIR)
+        message(FATAL_ERROR "BUNDLE_BUILD_DIR is not set")
+    endif()
+
+    if(NOT BUNDLE_DIR)
+        message(FATAL_ERROR "BUNDLE_DIR is not set")
+    endif()
+
+    set(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
+        "@DPSO_USE_DEFAULT_TESSERACT_DATA_PATH@")
+
+    if(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
+        message(
+            FATAL_ERROR
+            "DPSO_USE_DEFAULT_TESSERACT_DATA_PATH must be disabled "
+            "for the bundle")
+    endif()
+
+    set(DPSO_DYNAMIC_CURL "@DPSO_DYNAMIC_CURL@")
+    if(NOT DPSO_DYNAMIC_CURL)
+        message(
+            FATAL_ERROR
+            "DPSO_DYNAMIC_CURL must be enabled for the bundle")
+    endif()
+
+    if(NOT DPSO_UI STREQUAL "qt")
+        message(
+            FATAL_ERROR
+            "Bundling with \"${DPSO_UI}\" DPSO_UI is not implemented")
+    endif()
+endfunction()
+
+
+function(set_up_program)
+    execute_process(
+        COMMAND
+            "${CMAKE_COMMAND}"
+            --build "${CMAKE_BINARY_DIR}"
+            --parallel
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(FATAL_ERROR "Can't build \"${CMAKE_BINARY_DIR}\"")
+    endif()
+
+    execute_process(
+        COMMAND
+            "${CMAKE_COMMAND}"
+            --install "${CMAKE_BINARY_DIR}"
+            --strip
+            --prefix "${BUNDLE_DIR}"
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(
+            FATAL_ERROR
+            "Can't install \"${CMAKE_BINARY_DIR}\" to "
+            "\"${BUNDLE_DIR}\"")
+    endif()
+endfunction()
+
+
+function(set_up_launcher)
+    set(LAUNCHER_SOURCE_DIR
+        "${CMAKE_SOURCE_DIR}/tools/app_launcher_unix")
+    set(LAUNCHER_BUILD_DIR "${BUNDLE_BUILD_DIR}/launcher")
+
+    execute_process(
+        COMMAND
+            "${CMAKE_COMMAND}"
+            -S "${LAUNCHER_SOURCE_DIR}"
+            -B "${LAUNCHER_BUILD_DIR}"
+            -G "${CMAKE_GENERATOR}"
+            "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(
+            FATAL_ERROR
+            "Can't generate \"${LAUNCHER_BUILD_DIR}\" from "
+            "\"${LAUNCHER_SOURCE_DIR}\"")
+    endif()
+
+    execute_process(
+        COMMAND "${CMAKE_COMMAND}" --build "${LAUNCHER_BUILD_DIR}"
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(FATAL_ERROR "Can't build \"${LAUNCHER_BUILD_DIR}\"")
+    endif()
+
+    file(
+        INSTALL "${LAUNCHER_BUILD_DIR}/launcher"
+        DESTINATION "${BUNDLE_DIR}"
+        USE_SOURCE_PERMISSIONS)
+    file(
+        RENAME
+        "${BUNDLE_DIR}/launcher" "${BUNDLE_DIR}/${APP_FILE_NAME}")
+
+    string(
+        JOIN "\n" LAUNCHER_CFG
+        "exe     bin/${APP_FILE_NAME}"
+        "lib_dir lib")
+    file(WRITE "${BUNDLE_DIR}/${APP_FILE_NAME}.cfg" "${LAUNCHER_CFG}")
+endfunction()
+
+
+function(create_qt_conf)
+    string(
+        JOIN "\n" QT_CONF
+        "[Paths]"
+        "Prefix = .."
+        "Plugins = lib/qt/plugins"
+        "Translations = share/qt/translations")
+    file(WRITE "${BUNDLE_DIR}/bin/qt.conf" "${QT_CONF}")
+endfunction()
+
+
+function(qmake_query PROP OUT_VAR)
+    find_program(QMAKE_EXE qmake)
+    if(NOT QMAKE_EXE)
+        message(FATAL_ERROR "qmake not found")
+    endif()
+
+    execute_process(
+        COMMAND "${QMAKE_EXE}" -query "${PROP}"
+        OUTPUT_VARIABLE OUT
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE EXIT_STATUS)
+    if(NOT EXIT_STATUS EQUAL 0)
+        message(FATAL_ERROR "\"${QMAKE_EXE} -query ${PROP}\" failed")
+    endif()
+
+    set(${OUT_VAR} "${OUT}" PARENT_SCOPE)
+endfunction()
+
+
+function(bundle_qt_translations)
+    qmake_query(QT_INSTALL_TRANSLATIONS SRC_DIR)
+    set(DST_DIR "${BUNDLE_DIR}/share/qt/translations")
+
+    set(LOCALE_DIR "${BUNDLE_DIR}/share/locale")
+
+    file(GLOB LOCALES RELATIVE "${LOCALE_DIR}" "${LOCALE_DIR}/*")
+
+    set(COMPONENTS qt qtbase)
+
+    foreach(LOCALE ${LOCALES})
+        foreach(COMPONENT ${COMPONENTS})
+            set(QM "${SRC_DIR}/${COMPONENT}_${LOCALE}.qm")
+            if(EXISTS "${QM}")
+                file(COPY "${QM}" DESTINATION "${DST_DIR}")
+            endif()
+        endforeach()
+    endforeach()
+endfunction()
+
+
+set(DOC_DIR "${BUNDLE_DIR}/share/doc")
+
+
+# Find a program for bundle_file_licenses().
+find_program(DPKG_QUERY_EXE "dpkg-query")
+if(NOT DPKG_QUERY_EXE)
+    message(
+        WARNING
+        "License collection is not implemented for this system")
+endif()
+
+
+# This function is intended for files that come from system packages.
+function(bundle_file_licenses FILE_PATH)
+    if(DPKG_QUERY_EXE)
+        execute_process(
+            COMMAND "${DPKG_QUERY_EXE}" --search "${FILE_PATH}"
+            OUTPUT_VARIABLE OUT
+            RESULT_VARIABLE EXIT_STATUS
+            ERROR_QUIET)
+        if(NOT EXIT_STATUS EQUAL 0)
+            return()
+        endif()
+
+        # The output of "dpkg-query --search" consists of one or more
+        # lines of the form "package-name:arch: file-path".
+        string(REGEX MATCH "[^:]*" PACKAGE_NAME "${OUT}")
+        set(COPYRIGHT_FILE_PATH
+            "/usr/share/doc/${PACKAGE_NAME}/copyright")
+        if(EXISTS "${COPYRIGHT_FILE_PATH}")
+            file(
+                COPY "${COPYRIGHT_FILE_PATH}"
+                DESTINATION "${DOC_DIR}/${PACKAGE_NAME}")
+        endif()
+    endif()
+endfunction()
+
+
+# Copy a library LIB_PATH to the DIR_PATH directory.
+#
+# FOLLOW_SYMLINK_CHAIN is the right thing to do when copying
+# fallback libraries: it will create both a symlink (pointed to by
+# LIB_PATH) and the actual file, as required by the launcher. For
+# libraries bundled in the normal way, symlinks are not necessary
+# (i.e., we can copy from the real path and give the file a name from
+# LIB_PATH), but still useful for debugging purposes.
+#
+# NO_SOURCE_PERMISSIONS is for aesthetic purpose, to make sure that
+# the copied files don't have the execute bit. This bit is unnecessary
+# for a shared library, but GCC sets it anyway, so all manually build
+# libraries will have it. At the same time, the libraries installed
+# from the package manager may have it removed (e.g. this is true for
+# Debian and derivatives). To keep things consistent, we remove the
+# execute bit from all libraries.
+function(copy_lib LIB_PATH DIR_PATH)
+    file(
+        COPY "${LIB_PATH}"
+        DESTINATION "${DIR_PATH}"
+        FOLLOW_SYMLINK_CHAIN
+        NO_SOURCE_PERMISSIONS)
+endfunction()
+
+
+# Bundle Qt plugins and return their paths in QT_PLUGIN_PATHS so that
+# we can collect their dependencies later.
+function(bundle_qt_plugins QT_PLUGIN_PATHS)
+    qmake_query(QT_INSTALL_PLUGINS SRC_DIR)
+    set(DST_DIR "${BUNDLE_DIR}/lib/qt/plugins")
+
+    file(
+        GLOB_RECURSE PLUGINS
+        LIST_DIRECTORIES FALSE
+        RELATIVE "${SRC_DIR}"
+        "${SRC_DIR}/platforminputcontexts/*.so")
+
+    list(APPEND PLUGINS "platforms/libqxcb.so")
+
+    set(PLUGIN_PATHS)
+    foreach(PLUGIN ${PLUGINS})
+        get_filename_component(PLUGIN_DIR "${PLUGIN}" DIRECTORY)
+
+        set(PLUGIN_PATH "${SRC_DIR}/${PLUGIN}")
+        copy_lib("${PLUGIN_PATH}" "${DST_DIR}/${PLUGIN_DIR}")
+
+        list(APPEND PLUGIN_PATHS "${PLUGIN_PATH}")
+    endforeach()
+
+    set(${QT_PLUGIN_PATHS} ${PLUGIN_PATHS} PARENT_SCOPE)
+endfunction()
+
+
+function(bundle_libs)
+    # file(GET_RUNTIME_DEPENDENCIES) has a DIRECTORIES option to
+    # specify custom locations to search for libraries in. However, if
+    # a library is actually found in DIRECTORIES, CMake will
+    # deliberately issue a warning on Unix-like systems (and we can't
+    # work around this with LD_LIBRARY_PATH as CMake ignores it).
+    #
+    # We don't want any warnings, so instead of using DIRECTORIES and
+    # passing file(GET_RUNTIME_DEPENDENCIES) the paths to already
+    # bundled Qt plugins, we instead use the original plugins path.
+    # This will work because each plugin has an RPATH entry to the
+    # directory containing libraries.
+    set(EXTRA_LIBS)
+
+    if(DPSO_UI STREQUAL "qt")
+        bundle_qt_plugins(QT_PLUGIN_PATHS)
+        list(APPEND EXTRA_LIBS ${QT_PLUGIN_PATHS})
+    endif()
+
+    # We could put the exclude list in PRE_EXCLUDE_REGEXES, but
+    # instead we do filtering ourselves: this way, we can get paths
+    # for fallback libraries without messing with platform-specific
+    # library locations. For example, libstdc++ is located in
+    # /usr/lib/x86_64-linux-gnu on Debian, but in /usr/lib on Arch.
+    file(
+        GET_RUNTIME_DEPENDENCIES
+        EXECUTABLES "${BUNDLE_DIR}/bin/${APP_FILE_NAME}"
+        LIBRARIES ${EXTRA_LIBS}
+        RESOLVED_DEPENDENCIES_VAR RESOLVED_LIBS
+        UNRESOLVED_DEPENDENCIES_VAR UNRESOLVED_LIBS)
+
+    if(UNRESOLVED_LIBS)
+        string(REPLACE ";" "\n" UNRESOLVED_LIBS "${UNRESOLVED_LIBS}")
+        message(FATAL_ERROR "Unresolved libs:\n${UNRESOLVED_LIBS}")
+    endif()
+
+    # The libraries that will be bundled as required by the launcher.
+    set(FALLBACK_LIBS libstdc++)
+
+    # We don't want to bundle core libraries that are normally a part
+    # of any sane desktop environment. Some notes:
+    #
+    # * Since all libX11* libraries are excluded, we don't need libxcb
+    #   as libX11 depends on it since about 2010.
+    #
+    # * Keep libxcb-xkb and libxkb* libraries, as they are not
+    #   installed by default on Ubuntu 14.04, which is our minimally
+    #   supported environment at the time of this writing.
+    #
+    # * Keep libpng12, as modern systems use libpng16.
+    set(EXCLUDED_LIBS
+        ld-linux
+        ld-linux-x86-64
+        libX11
+        libX11-xcb
+        libXau
+        libXdmcp
+        libXext
+        libXrender
+        libc
+        libdl
+        libexpat
+        libfontconfig
+        libfreetype
+        libgcc_s
+        libm
+        libpthread
+        librt
+        libstdc++
+        libxcb
+        libz)
+
+    foreach(LIB_PATH ${RESOLVED_LIBS})
+        get_filename_component(LIB_NAME_WE "${LIB_PATH}" NAME_WE)
+
+        set(DST_DIR)
+        if(LIB_NAME_WE IN_LIST FALLBACK_LIBS)
+            get_filename_component(LIB_NAME "${LIB_PATH}" NAME)
+            set(DST_DIR "${BUNDLE_DIR}/lib/fallback/${LIB_NAME}")
+        elseif(NOT LIB_NAME_WE IN_LIST EXCLUDED_LIBS)
+            set(DST_DIR "${BUNDLE_DIR}/lib")
+        else()
+            continue()
+        endif()
+
+        copy_lib("${LIB_PATH}" "${DST_DIR}")
+        bundle_file_licenses("${LIB_PATH}")
+    endforeach()
+endfunction()
+
+
+function(bundle_manually_installed_lib_licenses)
+    # This directory is intended to be set up inside a Docker
+    # environment.
+    set(MIL_LICENSES_DIR
+        "/usr/local/share/doc/manually-installed-lib-licenses")
+
+    if(IS_DIRECTORY "${MIL_LICENSES_DIR}")
+        file(GLOB LICENSE_DIRS "${MIL_LICENSES_DIR}/*")
+        file(COPY ${LICENSE_DIRS} DESTINATION "${DOC_DIR}")
+    else()
+        message(
+            WARNING
+            "Licenses of manually installed libraries (if any) will "
+            "not be included because the \"${MIL_LICENSES_DIR}\" "
+            "directory where they should be does not exist.")
+    endif()
+endfunction()
+
+
+function(set_up_third_party_licenses_dir)
+    file(
+        GLOB LICENSE_DIRS
+        RELATIVE "${DOC_DIR}"
+        "${DOC_DIR}/*")
+    list(REMOVE_ITEM LICENSE_DIRS "${APP_FILE_NAME}")
+
+    # The application will check for this directory and show a
+    # corresponding link in the "About" section, so the name should be
+    # kept in sync with the source.
+    set(TPL_DIR "${DOC_DIR}/${APP_FILE_NAME}/third-party-licenses")
+    file(MAKE_DIRECTORY "${TPL_DIR}")
+
+    foreach(LICENSE_DIR ${LICENSE_DIRS})
+        file(
+            CREATE_LINK
+                "../../${LICENSE_DIR}" "${TPL_DIR}/${LICENSE_DIR}"
+            SYMBOLIC)
+    endforeach()
+endfunction()
+
+
+validate_build_settings()
+
+file(REMOVE_RECURSE "${BUNDLE_DIR}")
+
+set_up_program()
+set_up_launcher()
+
+bundle_libs()
+
+bundle_manually_installed_lib_licenses()
+set_up_third_party_licenses_dir()
+
+if(DPSO_UI STREQUAL "qt")
+    create_qt_conf()
+
+    if(DPSO_ENABLE_NLS)
+        bundle_qt_translations()
+    endif()
+
+    # Plugins are handled in bundle_libs().
+endif()

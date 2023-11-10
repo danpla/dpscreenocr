@@ -5,13 +5,12 @@ project(dpso)
 include(CMakeDependentOption)
 
 string(
-    CONCAT DPSO_USE_DEFAULT_TESSERACT_DATA_PATH_DESCRIPTION
-    "Use the default Tesseract data path instead of the explicit "
-    "one. You should disable this if Tesseract is going to be "
-    "shipped with the program (e.g., statically linked or bundled in "
-    "AppImage). Otherwise, the language manager will be disabled, "
-    "because language packs for system-wide Tesseract should be "
-    "installed via the package manager.")
+    JOIN " " DPSO_USE_DEFAULT_TESSERACT_DATA_PATH_DESCRIPTION
+    "Use the default Tesseract data path instead of the explicit one."
+    "You should disable this if Tesseract is going to be shipped"
+    "with the program. Otherwise, the language manager will be"
+    "disabled, because language packs for system-wide Tesseract"
+    "should be installed via the package manager.")
 cmake_dependent_option(
     DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
     "${DPSO_USE_DEFAULT_TESSERACT_DATA_PATH_DESCRIPTION}"

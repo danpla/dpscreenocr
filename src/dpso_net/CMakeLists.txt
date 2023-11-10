@@ -13,9 +13,8 @@ include(CMakeDependentOption)
 
 string(
     CONCAT DPSO_DYNAMIC_CURL_DESCRIPTION
-    "Load libcurl dynamically. You should enable this option if "
-    "libcurl is going to be shipped with the program (e.g., bundled "
-    "in AppImage)")
+    "Load libcurl dynamically. You should enable this option if the "
+    "program is going to be shipped in a self-contained package.")
 cmake_dependent_option(
     DPSO_DYNAMIC_CURL
     "${DPSO_DYNAMIC_CURL_DESCRIPTION}"

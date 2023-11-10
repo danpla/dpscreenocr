@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# This is a simple helper script to create an AppImage with a single
-# "docker run [...] build-appimage" call, without having to go into a
+# This is a simple helper script to create a bundle with a single
+# "docker run [...] build-bundle" call, without having to go into a
 # shell inside the container and mess around with CMake.
 
 set -eu
@@ -11,8 +11,8 @@ printHelp()
 cat << EOF
 Usage: $0 SOURCE_CODE_DIR
 
-Build AppImage from the program source code in SOURCE_CODE_DIR. The
-AppImage file will be written to the current working directory.
+Build a bundle from the program source code in SOURCE_CODE_DIR. The
+TAR.XZ archive will be written to the current working directory.
 EOF
 )
 
@@ -33,8 +33,8 @@ cmake \
     -DDPSO_USE_DEFAULT_TESSERACT_DATA_PATH=No \
     -DDPSO_DYNAMIC_CURL=Yes
 
-# There's no need for --parallel here, because the "appimage" target
-# is always built in the parallel mode under the hood.
-cmake --build "$BUILD_DIR" --target appimage
+# There's no need for --parallel here, because the "bundle_archive"
+# target is already built in the parallel mode under the hood.
+cmake --build "$BUILD_DIR" --target bundle_archive
 
-mv --force "$BUILD_DIR"/*".AppImage" .
+mv --force "$BUILD_DIR"/*".tar.xz" .

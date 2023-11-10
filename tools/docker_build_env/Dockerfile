@@ -26,8 +26,8 @@ WORKDIR /tmp
 #
 # Obviously, libstdc++ of all GCC from this PPA are newer than the
 # the one from GCC 4.8, but we can pick the newest GCC anyway, becasue
-# libstdc++ will be shipped with AppImage, and all libstdc++ from PPA
-# are linked against the stock libc of Ubuntu 14.04.
+# libstdc++ will be bundled, and all libstdc++ from PPA are linked
+# against the stock libc of Ubuntu 14.04.
 #
 #
 # libcurl
@@ -236,7 +236,7 @@ ENV QT_VERSION="$QT_VERSION_ROOT.12"
 # Disabled features
 # =================
 #
-# We try to disable unnecessary Qt features to minimize the AppImage
+# We try to disable unnecessary Qt features to minimize the bundle
 # size. However, not all features can be disabled:
 #
 # * Disabling these features causes compilation errors:
@@ -576,25 +576,8 @@ RUN \
 # Tell the linker about new libs in /usr/local/lib.
 RUN ldconfig
 
-# linuxdeploy
-RUN \
-    VERSION="1-alpha-20230713-1" \
-    && FILE_NAME="linuxdeploy-x86_64.AppImage" \
-    && FILE_PATH="/usr/local/bin/$FILE_NAME" \
-    && wget \
-        --progress=dot:mega \
-        --output-document="$FILE_PATH" \
-        "https://github.com/linuxdeploy/linuxdeploy/releases/download/$VERSION/$FILE_NAME" \
-    && chmod +x "$FILE_PATH"
-
-# Tell AppImages to extract and run themselves, because mounting FUSE
-# filesystems is forbidden in Docker unless we run an image in a
-# privileged mode.
-# https://github.com/AppImage/AppImageKit/wiki/FUSE
-ENV APPIMAGE_EXTRACT_AND_RUN=1
-
-COPY include/build-appimage.sh /usr/local/bin/build-appimage
-RUN chmod +x /usr/local/bin/build-appimage
+COPY include/build-bundle.sh /usr/local/bin/build-bundle
+RUN chmod +x /usr/local/bin/build-bundle
 
 WORKDIR /workspace
 
