@@ -93,7 +93,9 @@ function(gen_inno_setup_language_list)
             REPLACE ";" ", " UNDEFINED_ISLS_STR "${UNDEFINED_ISLS}")
         message(
             WARNING
-            "Inno Setup language files for the following locales are not defined: ${UNDEFINED_ISLS_STR}. Add them to the list above.")
+            "Inno Setup language files for the following locales are "
+            "not defined: ${UNDEFINED_ISLS_STR}. Add them to the "
+            "list above.")
     endif()
 endfunction()
 

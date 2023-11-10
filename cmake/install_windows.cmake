@@ -67,7 +67,9 @@ if(TESSERACT_DATA_DIR_NAME)
         COMPONENT Required
         OPTIONAL)
 else()
-    message("Tesseract data dir was not detected; please set up Tesseract data manually")
+    message(
+        "Tesseract data dir was not detected; please set up "
+        "Tesseract data manually")
 endif()
 
 if(DPSO_ENABLE_NLS)
