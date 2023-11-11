@@ -23,8 +23,8 @@ private:
     std::condition_variable actionDoneCondVar;
     std::mutex mutex;
 
-    bool terminate;
-    Action* currentAction;
+    bool terminate{};
+    Action* currentAction{};
     std::exception_ptr actionException;
 
     void threadLoop();
@@ -34,15 +34,8 @@ private:
 }
 
 BgThreadActionExecutor::BgThreadActionExecutor()
-    : thread{}
-    , actionSetCondVar{}
-    , actionDoneCondVar{}
-    , mutex{}
-    , terminate{}
-    , currentAction{}
-    , actionException{}
+    : thread{std::thread(&BgThreadActionExecutor::threadLoop, this)}
 {
-    thread = std::thread(&BgThreadActionExecutor::threadLoop, this);
 }
 
 

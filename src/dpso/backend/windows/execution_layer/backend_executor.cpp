@@ -13,7 +13,6 @@ namespace {
 
 class BackendExecutor : public Backend {
 public:
-
     BackendExecutor(
         std::unique_ptr<ActionExecutor> actionExecutor,
         BackendCreatorFn creatorFn);
