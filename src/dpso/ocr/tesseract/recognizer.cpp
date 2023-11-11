@@ -153,7 +153,7 @@ OcrResult TesseractRecognizer::recognize(
     std::string sysDataDir;
     try {
         sysDataDir = os::convertUtf8PathToSys(dataDir.c_str());
-    } catch (std::runtime_error& e) {
+    } catch (os::Error& e) {
         return {
             OcrResult::Status::error,
             std::string{"Can't convert dataDir to system encoding: "}
