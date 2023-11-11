@@ -18,7 +18,6 @@ public:
 
     void execute(Action& action) override;
 private:
-    std::thread thread;
     std::condition_variable actionSetCondVar;
     std::condition_variable actionDoneCondVar;
     std::mutex mutex;
@@ -26,6 +25,8 @@ private:
     bool terminate{};
     Action* currentAction{};
     std::exception_ptr actionException;
+
+    std::thread thread;
 
     void threadLoop();
 };
