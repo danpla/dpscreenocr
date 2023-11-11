@@ -4,7 +4,6 @@
 #include <memory>
 
 #include <QApplication>
-#include <QDir>
 #include <QLibraryInfo>
 #include <QLocale>
 #include <QtGlobal>
