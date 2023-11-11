@@ -7,17 +7,20 @@
 #include "app_info.h"
 
 
+namespace {
+
+
 // See RFC 1945.
-static bool isValidTokenChar(char c)
+bool isValidTokenChar(char c)
 {
     return
-        c > 0x0F
-        && c != 0x7F
+        c > 31
+        && c < 127
         && !std::strchr("()<>@,;:\\\"/[]?={} \t", c);
 }
 
 
-static void appendAsToken(std::string& result, const char* str)
+void appendAsToken(std::string& result, const char* str)
 {
     for (const char* s = str; *s; ++s)
         if (isValidTokenChar(*s))
@@ -25,7 +28,7 @@ static void appendAsToken(std::string& result, const char* str)
 }
 
 
-static std::string buildUserAgent()
+std::string buildUserAgent()
 {
     std::string result;
 
@@ -34,6 +37,9 @@ static std::string buildUserAgent()
     appendAsToken(result, uiAppVersion);
 
     return result;
+}
+
+
 }
 
 
