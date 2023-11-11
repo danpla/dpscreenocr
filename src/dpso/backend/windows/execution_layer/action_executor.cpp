@@ -68,6 +68,8 @@ void BgThreadActionExecutor::execute(Action& action)
 
 void BgThreadActionExecutor::threadLoop()
 {
+    // No need to protect "terminate" since it's set from within an
+    // action.
     while (!terminate) {
         std::unique_lock lock{mutex};
         actionSetCondVar.wait(lock, [&]{ return currentAction; });
