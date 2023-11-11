@@ -18,10 +18,13 @@
 #include "ocr_data_utils.h"
 
 
+namespace {
+
+
 // The main goal of registering restart is to give the installer
 // (e.g. Inno Setup) an ability to restart our application in case it
 // was automatically closed before installing an update.
-static void registerApplicationRestart()
+void registerApplicationRestart()
 {
     const auto* cmdLine = GetCommandLineW();
     // The command line is actually never empty, but check anyway for
@@ -46,13 +49,13 @@ static void registerApplicationRestart()
 
 
 // Returns true if a file system entry (file, dir, etc.) exists.
-static bool entryExists(const wchar_t* path)
+bool entryExists(const wchar_t* path)
 {
     return GetFileAttributesW(path) != INVALID_FILE_ATTRIBUTES;
 }
 
 
-static HRESULT shCreateItemFromParsingName(
+HRESULT shCreateItemFromParsingName(
     const wchar_t* name,
     IBindCtx *pbc,
     dpso::windows::CoUPtr<IShellItem>& ptr)
@@ -66,8 +69,7 @@ static HRESULT shCreateItemFromParsingName(
 }
 
 
-static bool shellCopy(
-    const wchar_t* srcPath, const wchar_t* dstDirPath)
+bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
 {
     const dpso::windows::CoInitializer coInitializer{
         COINIT_APARTMENTTHREADED};
@@ -144,7 +146,7 @@ static bool shellCopy(
 
 // Copy the given entry (file or directory) to dstDir if it exists in
 // srcDir but doesn't exist in dstDir.
-static bool setupEntry(
+bool setupEntry(
     const wchar_t* entryName,
     const wchar_t* srcDir,
     const wchar_t* dstDir)
@@ -176,7 +178,7 @@ static bool setupEntry(
 }
 
 
-static bool setupOcrData(
+bool setupOcrData(
     const wchar_t* srcDataDir, const wchar_t* userDataDir)
 {
     for (int i = 0; i < dpsoOcrGetNumEngines(); ++i) {
@@ -199,7 +201,7 @@ static bool setupOcrData(
 }
 
 
-static int setupUserData(const wchar_t* userDataDir)
+int setupUserData(const wchar_t* userDataDir)
 {
     std::wstring srcDataDir;
     try {
@@ -212,6 +214,9 @@ static int setupUserData(const wchar_t* userDataDir)
     }
 
     return setupOcrData(srcDataDir.c_str(), userDataDir);
+}
+
+
 }
 
 
