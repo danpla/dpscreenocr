@@ -60,10 +60,9 @@ void BgThreadActionExecutor::execute(Action& action)
         actionDoneCondVar.wait(lock, [&]{ return !currentAction; });
     }
 
-    if (actionException) {
-        std::rethrow_exception(actionException);
-        actionException = nullptr;
-    }
+    if (actionException)
+        std::rethrow_exception(
+            std::exchange(actionException, nullptr));
 }
 
 
