@@ -228,7 +228,7 @@ struct DpsoOcrLangManager {
     LangOpExecutor::Control installControl;
     dpso::Synchronized<DpsoOcrLangInstallProgress> installProgress;
 
-    // A cache for C API functions in order extend the lifetime of
+    // A cache for C API functions to extend the lifetime of
     // DpsoOcrLangOpStatus::errorText.
     mutable struct {
         LangOpStatus fetchStatus;

@@ -13,7 +13,7 @@ extern "C" {
 /**
  * Load currently active languages.
  *
- * All languages not listed in the key's value are disabled.
+ * Languages not listed in the key value are disabled.
  *
  * If the key doesn't exist, the language with fallbackLangCode is
  * enabled, if available. Pass an empty string as fallbackLangCode if
@@ -32,7 +32,7 @@ void dpsoCfgSaveActiveLangs(
 /**
  * Get hotkey.
  *
- * If key exists, the hotkey is set to the result of
+ * If the key exists, the hotkey is set to the result of
  * dpsoHotkeyFromString().
  *
  * If the key does not exist, defaultHotkey is returned. If
@@ -43,6 +43,7 @@ void dpsoCfgGetHotkey(
     const char* key,
     DpsoHotkey* hotkey,
     const DpsoHotkey* defaultHotkey);
+
 
 /**
  * Set hotkey.

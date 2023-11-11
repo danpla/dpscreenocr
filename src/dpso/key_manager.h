@@ -25,8 +25,6 @@ bool dpsoGetHotkeysEnabled(void);
 
 /**
  * Set whether hotkeys are enabled.
- *
- * \sa dpsoGetHotkeysEnabled()
  */
 void dpsoSetHotkeysEnabled(bool newHotkeysEnabled);
 

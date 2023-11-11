@@ -22,9 +22,9 @@ extern "C" {
  * trailing spaces, either escape the last one or put \ after it at
  * the end of the line (dpsoCfgSave() will do the latter).
  *
- * Regarding the API, the file format implies that the key should not
- * be empty or contain a space, \t, \r, or \n. The functions will do
- * nothing on attempt to set such a key.
+ * As for the API, the file format implies that the key should not be
+ * empty or contain a space, \t, \r, or \n. The functions will do
+ * nothing if you try to set such a key.
  */
 typedef struct DpsoCfg DpsoCfg;
 
@@ -57,8 +57,6 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath);
  *
  * On failure, sets an error message (dpsoGetError()) and returns
  * false.
- *
- * \sa dpsoLoadCfg()
  */
 bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath);
 
