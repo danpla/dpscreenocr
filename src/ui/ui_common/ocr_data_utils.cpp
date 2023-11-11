@@ -14,7 +14,6 @@ const char* uiGetOcrDataInfoFileUrl(
         return "";
 
     static std::string result;
-    result.clear();
 
     result = uiAppWebsite;
     assert(!result.empty());
