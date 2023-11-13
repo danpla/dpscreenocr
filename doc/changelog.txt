@@ -2,8 +2,9 @@
 ==================
 
 * Unix:
-  * Added support for building the program as an AppImage. The
-    AppImage is now available for download from the program website.
+  * Added support for building the program as a self-contained bundle.
+    The bundle for GNU/Linux (in a TAR.XZ archive) is now available
+    for download from the website.
   * Fixed inability to start the program if it's already running for
     another user that shares the same /tmp directory
 * Windows:
