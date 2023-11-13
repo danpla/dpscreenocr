@@ -428,17 +428,19 @@ def gen_main_page_content(root_url, page_lang, translator):
         'https://github.com/danpla/dpscreenocr/releases/download/'
         'v' + APP_VERSION)
 
+    linux_archive = '{}-{}-linux-x86_64.tar.xz'.format(
+        APP_NAME, APP_VERSION)
+
     download_list = gen_unordered_list((
         (
             'GNU/Linux<br>'
             + translator.gettext(
                 'Download {file}, which works on most systems, or '
                 'choose a package for your distribution:').format(
-                    file=('<a href="{}/{}-{}-x86_64.AppImage">'
-                        'AppImage</a>').format(
-                        github_release_download_url_base,
-                        APP_NAME,
-                        APP_VERSION)),
+                    file=('<a href="{}/{archive}">{archive}'
+                        '</a>').format(
+                            github_release_download_url_base,
+                            archive=linux_archive)),
             (
                 '<a href="https://software.opensuse.org//'
                     'download.html?project=home%3Adanpla&'
