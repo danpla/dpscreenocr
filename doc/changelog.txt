@@ -1,4 +1,4 @@
-1.?.? (????-??-??)
+1.4.1 (2023-11-15)
 ==================
 
 * Unix:
@@ -6,7 +6,7 @@
     The bundle for GNU/Linux (in a TAR.XZ archive) is now available
     for download from the website.
   * Fixed inability to start the program if it's already running for
-    another user that shares the same /tmp directory
+    another user sharing the same /tmp directory
 * Windows:
   * Updated Tesseract to 5.3.3
 * Updated translations:
