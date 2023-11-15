@@ -12,7 +12,7 @@ import textwrap
 
 
 APP_NAME = 'dpScreenOCR'
-APP_VERSION = '1.4.0'
+APP_VERSION = '1.4.1'
 APP_COPYRIGHT_YEAR = '2019-2023'
 APP_AUTHOR = 'Daniel Plakhotich'
 APP_AUTHOR_EMAIL = 'daniel.plakhotich@gmail.com'
