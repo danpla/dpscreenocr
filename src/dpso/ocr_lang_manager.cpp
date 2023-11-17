@@ -103,37 +103,27 @@ class LangOpExecutor {
 public:
     class Control {
     public:
-        Control()
-            : Control{{}, {}}
-        {
-        }
+        Control() = default;
 
         Control(
                 const std::shared_future<LangOpStatus>& future,
                 const std::shared_ptr<dpso::Synchronized<bool>>&
                     cancelFlag)
             : future{future}
-            , status{
-                future.valid()
-                    ? DpsoOcrLangOpStatusCodeProgress
-                    : DpsoOcrLangOpStatusCodeNone
-                , {}}
             , cancelFlag{cancelFlag}
         {
         }
 
         LangOpStatus getStatus() const
         {
-            if (status.code == DpsoOcrLangOpStatusCodeProgress
-                    && future.valid()
-                    && future.wait_for(std::chrono::seconds{})
-                        == std::future_status::ready) {
-                status = future.get();
-                assert(
-                    status.code != DpsoOcrLangOpStatusCodeProgress);
-            }
+            if (!future.valid())
+                return {DpsoOcrLangOpStatusCodeNone, {}};
 
-            return status;
+            if (future.wait_for(std::chrono::seconds{})
+                    == std::future_status::timeout)
+                return {DpsoOcrLangOpStatusCodeProgress, {}};
+
+            return future.get();
         }
 
         void requestCancel()
@@ -149,7 +139,6 @@ public:
         }
     private:
         std::shared_future<LangOpStatus> future;
-        mutable LangOpStatus status;
         std::shared_ptr<dpso::Synchronized<bool>> cancelFlag;
     };
 
