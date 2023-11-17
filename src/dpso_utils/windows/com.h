@@ -32,14 +32,12 @@ struct CoInitializer {
         : hresult{
             CoInitializeEx(
                 nullptr, dwCoInit | COINIT_DISABLE_OLE1DDE)}
-        , moved{}
     {
     }
 
     ~CoInitializer()
     {
-        if (!moved && coInitSuccess(hresult))
-            CoUninitialize();
+        finalize();
     }
 
     CoInitializer(const CoInitializer& other) = delete;
@@ -53,6 +51,8 @@ struct CoInitializer {
     CoInitializer& operator=(CoInitializer&& other) noexcept
     {
         if (this != &other) {
+            finalize();
+
             hresult = other.hresult;
             moved = other.moved;
             other.moved = true;
@@ -65,10 +65,15 @@ struct CoInitializer {
     {
         return hresult;
     }
-
 private:
-    HRESULT hresult;
-    bool moved;
+    HRESULT hresult{};
+    bool moved{};
+
+    void finalize()
+    {
+        if (!moved && coInitSuccess(hresult))
+            CoUninitialize();
+    }
 };
 
 

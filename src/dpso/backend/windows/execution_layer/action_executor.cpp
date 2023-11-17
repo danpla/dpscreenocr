@@ -34,6 +34,7 @@ private:
 
 }
 
+
 BgThreadActionExecutor::BgThreadActionExecutor()
     : thread{std::thread(&BgThreadActionExecutor::threadLoop, this)}
 {
