@@ -27,6 +27,10 @@ public:
 std::unique_ptr<ActionExecutor> createBgThreadActionExecutor();
 
 
+// execute() handles return values manually to avoid heap allocations
+// made by std::promise/future.
+
+
 // Overload for callables that return nothing.
 template<typename CallableT>
 auto execute(ActionExecutor& executor, const CallableT& callable)
