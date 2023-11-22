@@ -453,7 +453,8 @@ static bool loadLauncherPaths(
 
 static void cleanupDlHandle(void** handle)
 {
-    dlclose(*handle);
+    if (*handle)
+        dlclose(*handle);
 }
 #define CLEANUP_DL_HANDLE __attribute__((cleanup(cleanupDlHandle)))
 
