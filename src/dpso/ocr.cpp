@@ -359,10 +359,10 @@ static dpso::ocr::OcrImage prepareScreenshot(
     for (auto& buffer : imgBuffers)
         buffer.resize(bufferH * bufferPitch);
 
-    START_TIMING(screenshotGetData);
+    DPSO_START_TIMING(screenshotGetData);
     screenshot.getGrayscaleData(
         imgBuffers[0].data(), bufferPitch);
-    END_TIMING(
+    DPSO_END_TIMING(
         screenshotGetData,
         "screenshot.getGrayscaleData (%ix%i px)",
         screenshot.getWidth(), screenshot.getHeight());
@@ -370,14 +370,14 @@ static dpso::ocr::OcrImage prepareScreenshot(
     dpso::ProgressTracker localProgressTracker(2, &progressTracker);
 
     localProgressTracker.advanceJob();
-    START_TIMING(imageResizing);
+    DPSO_START_TIMING(imageResizing);
     dpso::img::resize(
         imgBuffers[0].data(),
         screenshot.getWidth(), screenshot.getHeight(), bufferPitch,
         imgBuffers[1].data(),
         bufferW, bufferH, bufferPitch,
         &localProgressTracker);
-    END_TIMING(
+    DPSO_END_TIMING(
         imageResizing,
         "Image resizing (%ix%i px -> %ix%i px, x%i)",
         screenshot.getWidth(), screenshot.getHeight(),
@@ -388,7 +388,7 @@ static dpso::ocr::OcrImage prepareScreenshot(
     const auto unsharpMaskAmount = 1.0f;
 
     localProgressTracker.advanceJob();
-    START_TIMING(unsharpMasking);
+    DPSO_START_TIMING(unsharpMasking);
     dpso::img::unsharpMask(
         imgBuffers[1].data(), bufferPitch,
         imgBuffers[0].data(), bufferPitch,
@@ -397,7 +397,7 @@ static dpso::ocr::OcrImage prepareScreenshot(
         unsharpMaskRadius,
         unsharpMaskAmount,
         &localProgressTracker);
-    END_TIMING(
+    DPSO_END_TIMING(
         unsharpMasking,
         "Unsharp masking (radius=%i, amount=%.2f, %ix%i px)",
         unsharpMaskRadius, unsharpMaskAmount, bufferW, bufferH);
@@ -524,7 +524,7 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         return false;
     }
 
-    START_TIMING(takeScreenshot);
+    DPSO_START_TIMING(takeScreenshot);
 
     std::unique_ptr<dpso::backend::Screenshot> screenshot;
     try {
@@ -535,7 +535,7 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         return false;
     }
 
-    END_TIMING(
+    DPSO_END_TIMING(
         takeScreenshot,
         "Take screenshot (%ix%i px)",
         screenshot->getWidth(),

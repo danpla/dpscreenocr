@@ -19,6 +19,7 @@ add_library(
     sha256_file.cpp
     str.cpp
     strftime.cpp
+    timing.cpp
     version_cmp.cpp)
 
 if(UNIX)
