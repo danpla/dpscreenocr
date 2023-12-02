@@ -25,6 +25,7 @@ if(WIN32)
     target_sources(
         tests
         PRIVATE
+        dpso/test_windows_action_executor.cpp
         dpso_utils/test_windows_cmdline.cpp
         dpso_utils/test_windows_utf.cpp)
 endif()
