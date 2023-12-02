@@ -25,7 +25,7 @@ float getTime()
 
 void report(float startTime, const char* fmt, ...)
 {
-    const auto time = getTime() - startTime;
+    const auto duration = getTime() - startTime;
 
     std::printf("Timing: ");
 
@@ -34,7 +34,7 @@ void report(float startTime, const char* fmt, ...)
     std::vprintf(fmt, args);
     va_end(args);
 
-    std::printf(": %f ms\n", time);
+    std::printf(": %f ms\n", duration);
 
     std::fflush(stdout);
 }
