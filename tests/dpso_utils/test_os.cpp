@@ -146,8 +146,8 @@ void testGetFileExt()
         if (!ext) {
             if (!test.expectedExt.empty())
                 test::failure(
-                    "testGetFileExt(): os::getFileExt(\"%s\"): "
-                    "expected \"%s\", got null\n",
+                    "os::getFileExt(\"%s\"): expected \"%s\", "
+                    "got null\n",
                     test::utils::escapeStr(test.path.c_str()).c_str(),
                     test::utils::escapeStr(
                         test.expectedExt.c_str()).c_str());
@@ -165,8 +165,7 @@ void testGetFileExt()
             expected = std::string{"\""} + test.expectedExt + '"';
 
         test::failure(
-            "testGetFileExt(): os::getFileExt(\"%s\"): "
-            "expected \"%s\", got \"%s\"\n",
+            "os::getFileExt(\"%s\"): expected \"%s\", got \"%s\"\n",
             test::utils::escapeStr(test.path.c_str()).c_str(),
             test::utils::escapeStr(expected.c_str()).c_str(),
             test::utils::escapeStr(ext).c_str());
@@ -290,7 +289,7 @@ void testReadLine()
 
         if (lines != test.expectedLines)
             test::failure(
-                "Unexpected lines from os::readLine() if \"%s\": "
+                "Unexpected lines from os::readLine() for \"%s\": "
                 "expected %s, got %s\n",
                 test::utils::escapeStr(test.text).c_str(),
                 test::utils::toStr(
@@ -425,8 +424,7 @@ void testSyncFile()
     try {
         dpso::os::syncFile(fp.get());
     } catch (dpso::os::Error& e) {
-        test::failure(
-            "testSyncFile: os::syncFile(): %s\n", e.what());
+        test::failure("os::syncFile(): %s\n", e.what());
     }
 
     fp.reset();
@@ -434,7 +432,7 @@ void testSyncFile()
 }
 
 
-void testSyncFileDir()
+void testSyncDir()
 {
     const auto* dirPath = ".";
 
@@ -442,8 +440,7 @@ void testSyncFileDir()
         dpso::os::syncDir(dirPath);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "testSyncFileDir: os::syncDir(\"%s\"): %s\n",
-            dirPath, e.what());
+            "os::syncDir(\"%s\"): %s\n", dirPath, e.what());
     }
 }
 
@@ -458,7 +455,7 @@ void testOs()
     testRemoveFile();
     testReplace();
     testSyncFile();
-    testSyncFileDir();
+    testSyncDir();
 }
 
 
