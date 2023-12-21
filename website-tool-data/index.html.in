@@ -3,6 +3,7 @@
 <head>
 <title>@TITLE@</title>
 <meta charset="utf-8">
+<link rel="icon" type="image/png" href="favicon.png">
 <script>
   // The code is written in ES5 JavaScript to support old browsers.
 
