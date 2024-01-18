@@ -28,8 +28,7 @@ typedef struct DpsoStrNFormatArg {
  * mention it twice.
  *
  * This function is mainly intended to be used for translatable
- * strings to provide reorderable and human-readable arguments instead
- * of printf-like magic numbers.
+ * strings to provide reorderable and human-readable arguments.
  */
 const char* dpsoStrNFormat(
     const char* str, const DpsoStrNFormatArg* args, size_t numArgs);

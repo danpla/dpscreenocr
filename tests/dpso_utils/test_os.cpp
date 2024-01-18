@@ -262,8 +262,13 @@ void testReadLine()
         std::string line{"initial line content"};
 
         std::vector<std::string> lines;
-        while (dpso::os::readLine(fp.get(), line))
-            lines.push_back(line);
+
+        try {
+            while (dpso::os::readLine(fp.get(), line))
+                lines.push_back(line);
+        } catch (dpso::os::Error& e) {
+            test::fatalError("os::readLine(): {}\n", e.what());
+        }
 
         if (!line.empty())
             test::failure(
@@ -279,10 +284,6 @@ void testReadLine()
         if (!line.empty())
             test::failure(
                 "An extra os::readLine() didn't cleared the line\n");
-
-        if (std::ferror(fp.get()))
-            test::fatalError(
-                "Error while reading \"{}\"\n", fileName);
 
         if (lines != test.expectedLines)
             test::failure(

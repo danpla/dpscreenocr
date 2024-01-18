@@ -48,9 +48,10 @@ static bool loadData(const char* filePath, std::string& data)
         return false;
     }
 
-    if (std::fread(data.data(), 1, data.size(), fp.get())
-            != data.size()) {
-        dpso::setError("fread() failed");
+    try {
+        dpso::os::read(fp.get(), data.data(), data.size());
+    } catch (dpso::os::Error& e) {
+        dpso::setError("os::read(): {}", e.what());
         return false;
     }
 
@@ -203,11 +204,16 @@ bool dpsoHistoryAppend(
     };
 
     auto* fp = history->fp.get();
-    if ((!history->entries.empty() && std::fputs("\f\n", fp) == EOF)
-            || std::fputs(e.timestamp.c_str(), fp) == EOF
-            || std::fputs("\n\n", fp) == EOF
-            || std::fputs(e.text.c_str(), fp) == EOF) {
-        dpso::setError("fputs() failed");
+
+    try {
+        if (!history->entries.empty())
+            dpso::os::write(fp, "\f\n");
+
+        dpso::os::write(fp, e.timestamp);
+        dpso::os::write(fp, "\n\n");
+        dpso::os::write(fp, e.text);
+    } catch (dpso::os::Error& e) {
+        dpso::setError("os::write(): {}", e.what());
         history->fp.reset();
         return false;
     }

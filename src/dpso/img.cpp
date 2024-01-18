@@ -5,6 +5,8 @@
 #include <cassert>
 #include <cstdio>
 
+#include <fmt/core.h>
+
 #include "stb_image_resize.h"
 #include "stb_image_resize_progress.h"
 
@@ -257,9 +259,13 @@ void savePgm(
     if (!fp)
         return;
 
-    std::fprintf(fp.get(), "P5\n%i %i\n255\n", w, h);
-    for (int y = 0; y < h; ++y)
-        std::fwrite(data + y * pitch, 1, w, fp.get());
+    try {
+        fmt::print(fp.get(), "P5\n{} {}\n255\n", w, h);
+
+        for (int y = 0; y < h; ++y)
+            os::write(fp.get(), data + y * pitch, w);
+    } catch (std::runtime_error&) {
+    }
 }
 
 

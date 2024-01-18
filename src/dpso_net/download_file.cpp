@@ -52,9 +52,12 @@ void downloadFile(
         if (numRead == 0)
             break;
 
-        if (std::fwrite(buf, 1, numRead, partFp.get()) != numRead)
+        try {
+            os::write(partFp.get(), buf, numRead);
+        } catch (os::Error& e) {
             throw Error{fmt::format(
-                "fwrite() to \"{}\" failed", partPath)};
+                "os::write() to \"{}\": {}", partPath, e.what())};
+        }
 
         partSize += numRead;
 

@@ -11,23 +11,28 @@
 #include "dpso_utils/str.h"
 
 
+using namespace dpso;
+
+
 namespace {
 
 
-void exportPlainText(const DpsoHistory* history, std::FILE* fp)
+void writePlainText(std::FILE* fp, const DpsoHistory* history)
 {
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
-            std::fputs("\n\n\n", fp);
+            os::write(fp, "\n\n\n");
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        std::fprintf(fp, "=== %s ===\n\n", e.timestamp);
-        std::fputs(e.text, fp);
+        os::write(fp, "=== ");
+        os::write(fp, e.timestamp);
+        os::write(fp, " ===\n\n");
+        os::write(fp, e.text);
     }
 
-    std::fputs("\n", fp);
+    os::write(fp, "\n");
 }
 
 
@@ -35,7 +40,7 @@ void writeEscapedHtml(
     std::FILE* fp, const char* indent, const char* text)
 {
     for (const auto* s = text; *s;) {
-        std::fputs(indent, fp);
+        os::write(fp, indent);
 
         while (*s) {
             const auto c = *s++;
@@ -46,24 +51,24 @@ void writeEscapedHtml(
                 // add an empty line when rendered in browsers), we
                 // still add it so that we can restore the original
                 // text from the resulting HTML.
-                std::fputs("<br>", fp);
+                os::write(fp, "<br>");
                 break;
             case '<':
-                std::fputs("&lt;", fp);
+                os::write(fp, "&lt;");
                 break;
             case '>':
-                std::fputs("&gt;", fp);
+                os::write(fp, "&gt;");
                 break;
             case '&':
-                std::fputs("&amp;", fp);
+                os::write(fp, "&amp;");
                 break;
             default:
-                std::fputc(c, fp);
+                os::write(fp, c);
                 break;
             }
 
             if (c == '\n') {
-                std::putc(c, fp);
+                os::write(fp, c);
                 break;
             }
         }
@@ -72,9 +77,10 @@ void writeEscapedHtml(
 
 
 // W3C Markup Validator: https://validator.w3.org/
-void exportHtml(const DpsoHistory* history, std::FILE* fp)
+void writeHtml(std::FILE* fp, const DpsoHistory* history)
 {
-    std::fputs(
+    os::write(
+        fp,
         "<!DOCTYPE html>\n"
         "<html>\n"
         "<head>\n"
@@ -87,108 +93,104 @@ void exportHtml(const DpsoHistory* history, std::FILE* fp)
         "    }\n"
         "  </style>\n"
         "</head>\n"
-        "<body>\n",
-        fp);
+        "<body>\n");
 
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
-            std::fputs("  <hr>\n", fp);
+            os::write(fp, "  <hr>\n");
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        std::fputs("  <p class=\"timestamp\"><b>", fp);
+        os::write(fp, "  <p class=\"timestamp\"><b>");
         writeEscapedHtml(fp, "", e.timestamp);
-        std::fputs("</b></p>\n", fp);
+        os::write(fp, "</b></p>\n");
 
-        std::fputs("  <p class=\"text\">\n", fp);
+        os::write(fp, "  <p class=\"text\">\n");
         writeEscapedHtml(fp, "    ", e.text);
-        std::fputs("\n  </p>\n", fp);
+        os::write(fp, "\n  </p>\n");
     }
 
-    std::fputs(
+    os::write(
+        fp,
         "</body>\n"
-        "</html>\n",
-        fp);
+        "</html>\n");
 }
 
 
 void writeEscapedJson(std::FILE* fp, const char* text)
 {
-    for (const auto* s = text; *s; ++s) {
+    for (const auto* s = text; *s; ++s)
         switch (const auto c = *s) {
         case '\b':
-            std::fputs("\\b", fp);
+            os::write(fp, "\\b");
             break;
         case '\f':
-            std::fputs("\\f", fp);
+            os::write(fp, "\\f");
             break;
         case '\n':
-            std::fputs("\\n", fp);
+            os::write(fp, "\\n");
             break;
         case '\r':
-            std::fputs("\\r", fp);
+            os::write(fp, "\\r");
             break;
         case '\t':
-            std::fputs("\\t", fp);
+            os::write(fp, "\\t");
             break;
         default:
             if (c == '\\' || c == '/' || c == '"')
-                std::fputc('\\', fp);
-            std::fputc(c, fp);
+                os::write(fp, '\\');
+
+            os::write(fp, c);
             break;
         }
-    }
 }
 
 
 // To validate JSON:
 //   python3 -m json.tool *.json > /dev/null
-void exportJson(const DpsoHistory* history, std::FILE* fp)
+void writeJson(std::FILE* fp, const DpsoHistory* history)
 {
-    std::fputs("[\n", fp);
+    os::write(fp, "[\n");
 
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        std::fputs(
+        os::write(fp,
             "  {\n"
-            "    \"timestamp\": \"",
-            fp);
+            "    \"timestamp\": \"");
         writeEscapedJson(fp, e.timestamp);
-        std::fputs("\",\n", fp);
+        os::write(fp, "\",\n");
 
-        std::fputs("    \"text\": \"", fp);
+        os::write(fp, "    \"text\": \"");
         writeEscapedJson(fp, e.text);
-        std::fputs(
+        os::write(fp,
             "\"\n"
-            "  }",
-            fp);
+            "  }");
 
         if (i + 1 < dpsoHistoryCount(history))
-            std::fputc(',', fp);
-        std::fputc('\n', fp);
+            os::write(fp, ',');
+        os::write(fp, '\n');
     }
 
-    std::fputs("]\n", fp);
+    os::write(fp, "]\n");
 }
 
 
-using ExportFn = void (&)(const DpsoHistory*, std::FILE*);
-
-
 struct ExportFormatInfo {
+    using WriteFn = void (&)(std::FILE*, const DpsoHistory*);
+
     const char* name;
     std::vector<const char*> extensions;
-    ExportFn exportFn;
+    WriteFn writeFn;
 };
 
 
 const ExportFormatInfo exportFormatInfos[] = {
-    {"TXT", {".txt"}, exportPlainText},
-    {"HTML", {".html", ".htm"}, exportHtml},
-    {"JSON", {".json"}, exportJson},
+    {"TXT", {".txt"}, writePlainText},
+    {"HTML", {".html", ".htm"}, writeHtml},
+    {"JSON", {".json"}, writeJson},
 };
 static_assert(
     std::size(exportFormatInfos) == dpsoNumHistoryExportFormats);
@@ -267,7 +269,12 @@ bool dpsoHistoryExport(
         return false;
     }
 
-    exportFormatInfos[exportFormat].exportFn(history, fp.get());
+    try {
+        exportFormatInfos[exportFormat].writeFn(fp.get(), history);
+    } catch (os::Error& e) {
+        dpso::setError("{}", e.what());
+        return false;
+    }
 
     return true;
 }

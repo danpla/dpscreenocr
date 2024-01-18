@@ -79,13 +79,35 @@ struct StdFileCloser {
 using StdFileUPtr = std::unique_ptr<std::FILE, StdFileCloser>;
 
 
+// Read up to dstSize bytes from a file. Returns the number of bytes
+// read, which may be less than dstSize if the end of the file is
+// reached.
+//
+// Throws os::Error.
+std::size_t readSome(std::FILE* fp, void* dst, std::size_t dstSize);
+
+
+// Read the given number of bytes from a file.
+//
+// Throws os::Error
+void read(std::FILE* fp, void* dst, std::size_t dstSize);
+
+
 // Read the next line from a file, terminating on either line break
-// (\r, \n, or \r\n) or end of file. Returns false if the line cannot
-// be read due to either EOF or error; as with other stdio functions,
-// you should check feof() or ferror() to determine which occurred.
+// (\r, \n, or \r\n) or the end of the file. Returns false if the line
+// cannot be read because the end of the file is reached.
 //
 // The function clears the line before performing any action.
+//
+// Throws os::Error.
 bool readLine(std::FILE* fp, std::string& line);
+
+
+// Write data to a file. Throws os::Error.
+void write(std::FILE* fp, const void* data, std::size_t dataSize);
+void write(std::FILE* fp, const std::string& str);
+void write(std::FILE* fp, const char* str);
+void write(std::FILE* fp, char c);
 
 
 // Remove a regular file. The behavior is platform-specific if

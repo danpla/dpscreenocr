@@ -29,17 +29,18 @@ std::string calcFileSha256(const char* filePath)
 
     unsigned char buf[32 * 1024];
     while (true) {
-        const auto numRead = std::fread(
-            buf, 1, sizeof(buf), fp.get());
+        std::size_t numRead{};
+        try {
+            numRead = os::readSome(fp.get(), buf, sizeof(buf));
+        } catch (os::Error& e) {
+            throw Sha256FileError{fmt::format(
+                "os::readSome(): {}", e.what())};
+        }
 
         h.update(buf, numRead);
 
-        if (numRead < sizeof(buf)) {
-            if (std::ferror(fp.get()))
-                throw Sha256FileError{"fread() failed"};
-
+        if (numRead < sizeof(buf))
             break;
-        }
     }
 
     return toHex(h.getDigest());
@@ -66,8 +67,7 @@ void saveSha256File(
             os::getBaseName(digestSourceFilePath).c_str());
     } catch (std::system_error& e) {
         throw Sha256FileError{fmt::format(
-            "fmt::print() to \"{}\" failed: {}",
-            sha256FilePath, e.what())};
+            "fmt::print() to \"{}\": {}", sha256FilePath, e.what())};
     }
 }
 
@@ -76,15 +76,18 @@ static std::string loadDigestFromSha256File(
     std::FILE* fp, const char* expectedFileName)
 {
     std::string line;
-    os::readLine(fp, line);
 
-    if (std::fgetc(fp) != EOF)
-        throw Sha256FileError{
-            "File has more than one line, but only one hash "
-            "definition is expected."};
+    try {
+        os::readLine(fp, line);
 
-    if (std::ferror(fp))
-        throw Sha256FileError{"Read error"};
+        if (std::string extraLine; os::readLine(fp, extraLine))
+            throw Sha256FileError{
+                "File has more than one line, but only one hash "
+                "definition is expected."};
+    } catch (os::Error& e) {
+        throw Sha256FileError{fmt::format(
+            "os::readLine(): {}", e.what())};
+    }
 
     const auto* digestBegin = line.c_str();
     const auto* digestEnd = digestBegin;

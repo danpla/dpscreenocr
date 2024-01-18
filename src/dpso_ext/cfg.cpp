@@ -16,6 +16,9 @@
 #include "dpso_utils/str.h"
 
 
+using namespace dpso;
+
+
 struct DpsoCfg {
     struct KeyValue {
         std::string key;
@@ -40,7 +43,7 @@ void dpsoCfgDelete(DpsoCfg* cfg)
 
 static int cmpKeys(const char* a, const char* b)
 {
-    return dpso::str::cmp(a, b, dpso::str::cmpIgnoreCase);
+    return str::cmp(a, b, str::cmpIgnoreCase);
 }
 
 
@@ -59,17 +62,17 @@ static auto getLowerBound(T& keyValues, const char* key)
 static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 {
     const auto* keyBegin = str;
-    while (dpso::str::isBlank(*keyBegin))
+    while (str::isBlank(*keyBegin))
         ++keyBegin;
 
     const auto* keyEnd = keyBegin;
-    while (*keyEnd && !dpso::str::isBlank(*keyEnd))
+    while (*keyEnd && !str::isBlank(*keyEnd))
         ++keyEnd;
 
     kv.key.assign(keyBegin, keyEnd);
 
     const auto* valueBegin = keyEnd;
-    while (dpso::str::isBlank(*valueBegin))
+    while (str::isBlank(*valueBegin))
         ++valueBegin;
 
     kv.value.clear();
@@ -81,7 +84,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
     const auto* blanksEnd = blanksBegin;
 
     for (const auto* s = valueBegin; *s;) {
-        if (dpso::str::isBlank(*s)) {
+        if (str::isBlank(*s)) {
             if (s != blanksEnd)
                 blanksBegin = s;
 
@@ -129,35 +132,37 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
-        dpso::setError("cfg is null");
+        setError("cfg is null");
         return false;
     }
 
     cfg->keyValues.clear();
 
-    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
+    os::StdFileUPtr fp{os::fopen(filePath, "rb")};
     if (!fp) {
         if (errno == ENOENT)
             return true;
 
-        dpso::setError(
+        setError(
             "os::fopen(..., \"rb\"): {}", std::strerror(errno));
         return false;
     }
 
     std::string line;
     DpsoCfg::KeyValue kv;
-    while (dpso::os::readLine(fp.get(), line)) {
+    while (true) {
+        try {
+            if (!os::readLine(fp.get(), line))
+                break;
+        } catch (os::Error& e) {
+            setError("os::readLine(): {}", e.what());
+            cfg->keyValues.clear();
+            return false;
+        }
+
         parseKeyValue(line.c_str(), kv);
         if (!kv.key.empty())
             dpsoCfgSetStr(cfg, kv.key.c_str(), kv.value.c_str());
-    }
-
-    if (std::ferror(fp.get())) {
-        dpso::setError("Error while reading file");
-
-        cfg->keyValues.clear();
-        return false;
     }
 
     return true;
@@ -165,69 +170,78 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
 
 static void writeKeyValue(
-    std::FILE* fp, const DpsoCfg::KeyValue& kv, int maxKeyLen)
+    std::FILE* fp, const DpsoCfg::KeyValue& kv, std::size_t maxKeyLen)
 {
-    std::fprintf(fp, "%-*s ", maxKeyLen, kv.key.c_str());
+    os::write(fp, kv.key);
+
+    for (auto i = kv.key.size(); i < maxKeyLen; ++i)
+        os::write(fp, ' ');
+
+    os::write(fp, ' ');
 
     if (!kv.value.empty() && kv.value.front() == ' ')
-        std::fputc('\\', fp);
+        os::write(fp, '\\');
 
-    for (const auto* s = kv.value.c_str(); *s; ++s) {
+    for (const auto* s = kv.value.c_str(); *s; ++s)
         switch (const auto c = *s) {
         case '\n':
-            std::fputs("\\n", fp);
+            os::write(fp, "\\n");
             break;
         case '\r':
-            std::fputs("\\r", fp);
+            os::write(fp, "\\r");
             break;
         case '\t':
-            std::fputs("\\t", fp);
+            os::write(fp, "\\t");
             break;
         case '\\':
-            std::fputs("\\\\", fp);
+            os::write(fp, "\\\\");
             break;
         default:
-            std::fputc(c, fp);
+            os::write(fp, c);
             break;
         }
-    }
 
     // If we have a single space, it's already escaped, but we still
     // append \ to make the end visible.
     if (!kv.value.empty() && kv.value.back() == ' ')
-        std::fputc('\\', fp);
+        os::write(fp, '\\');
 
     // Use CRLF on Windows to make Notepad users happy.
     #ifdef _WIN32
-    std::fputc('\r', fp);
+    os::write(fp, '\r');
     #endif
 
-    std::fputc('\n', fp);
+    os::write(fp, '\n');
 }
 
 
 bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
-        dpso::setError("cfg is null");
+        setError("cfg is null");
         return false;
     }
 
-    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "wb")};
+    os::StdFileUPtr fp{os::fopen(filePath, "wb")};
     if (!fp) {
-        dpso::setError(
+        setError(
             "os::fopen(..., \"wb\"): {}", std::strerror(errno));
         return false;
     }
 
-    std::size_t maxKeyLen = 0;
+    std::size_t maxKeyLen{};
 
     for (const auto& kv : cfg->keyValues)
         if (kv.key.size() > maxKeyLen)
             maxKeyLen = kv.key.size();
 
-    for (const auto& kv : cfg->keyValues)
-        writeKeyValue(fp.get(), kv, maxKeyLen);
+    try {
+        for (const auto& kv : cfg->keyValues)
+            writeKeyValue(fp.get(), kv, maxKeyLen);
+    } catch (os::Error& e) {
+        setError("{}", e.what());
+        return false;
+    }
 
     return true;
 }
@@ -329,10 +343,7 @@ bool dpsoCfgGetBool(
         return defaultVal;
 
     for (int i = 0; i < 2; ++i)
-        if (dpso::str::cmp(
-                str,
-                boolToStr(i),
-                dpso::str::cmpIgnoreCase) == 0)
+        if (str::cmp(str, boolToStr(i), str::cmpIgnoreCase) == 0)
             return i;
 
     return defaultVal;
