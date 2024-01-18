@@ -27,7 +27,7 @@ std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 
     if (!argv)
         test::fatalError(
-            "CommandLineToArgvW(%s) failed with error %lu.\n",
+            "CommandLineToArgvW({}) failed with error {}.\n",
             cmdLine, GetLastError());
 
     std::vector<std::string> result;
@@ -52,13 +52,14 @@ void testArgv(std::initializer_list<const char*> argv)
 
     if (gotArgv.size() != argv.size()) {
         test::failure(
-            "CommandLineTogotArgvW(%s) returned a different number "
-            "of arguments: %zu (was %zu in original array). "
+            "CommandLineTogotArgvW({}) returned a different number "
+            "of arguments: {} (was {} in original array). "
             "Returned array:\n"
-            "  %s\n",
-            cmdLine.c_str(), gotArgv.size(), argv.size(),
-            test::utils::toStr(
-                gotArgv.begin(), gotArgv.end()).c_str());
+            "  {}\n",
+            cmdLine,
+            gotArgv.size(),
+            argv.size(),
+            test::utils::toStr(gotArgv.begin(), gotArgv.end()));
         return;
     }
 
@@ -67,15 +68,14 @@ void testArgv(std::initializer_list<const char*> argv)
             "createCmdLine() and CommandLineTogotArgvW() don't "
             "match.\n"
             "  createCmdLine() string:\n"
-            "    %s\n"
+            "    {}\n"
             "  Original argv passed to createCmdLine():\n"
-            "    %s\n"
+            "    {}\n"
             "  CommandLineTogotArgvW() from createCmdLine() string:\n"
-            "    %s\n",
-            cmdLine.c_str(),
-            test::utils::toStr(argv.begin(), argv.end()).c_str(),
-            test::utils::toStr(
-                gotArgv.begin(), gotArgv.end()).c_str());
+            "    {}\n",
+            cmdLine,
+            test::utils::toStr(argv.begin(), argv.end()),
+            test::utils::toStr(gotArgv.begin(), gotArgv.end()));
 }
 
 

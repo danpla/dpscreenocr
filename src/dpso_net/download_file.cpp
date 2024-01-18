@@ -6,8 +6,9 @@
 #include <cstring>
 #include <string>
 
+#include <fmt/core.h>
+
 #include "dpso_utils/os.h"
-#include "dpso_utils/str.h"
 
 #include "error.h"
 #include "request.h"
@@ -30,9 +31,8 @@ void downloadFile(
 
     os::StdFileUPtr partFp{os::fopen(partPath.c_str(), "wb")};
     if (!partFp)
-        throw Error{str::printf(
-            "Can't open \"%s\": %s",
-            partPath.c_str(), std::strerror(errno))};
+        throw Error{fmt::format(
+            "Can't open \"{}\": {}", partPath, std::strerror(errno))};
 
     auto response = makeGetRequest(url, userAgent);
 
@@ -53,8 +53,8 @@ void downloadFile(
             break;
 
         if (std::fwrite(buf, 1, numRead, partFp.get()) != numRead)
-            throw Error{str::printf(
-                "fwrite() to \"%s\" failed", partPath.c_str())};
+            throw Error{fmt::format(
+                "fwrite() to \"{}\" failed", partPath)};
 
         partSize += numRead;
 
@@ -82,15 +82,14 @@ void downloadFile(
     }
 
     if (std::fflush(partFp.get()) == EOF)
-        throw Error{str::printf(
-            "fflush() for \"%s\" failed", partPath.c_str())};
+        throw Error{fmt::format(
+            "fflush() for \"{}\" failed", partPath)};
 
     try {
         os::syncFile(partFp.get());
     } catch (os::Error& e) {
-        throw Error{str::printf(
-            "os::syncFile() for \"%s\": %s",
-            partPath.c_str(), e.what())};
+        throw Error{fmt::format(
+            "os::syncFile() for \"{}\": {}", partPath, e.what())};
     }
 
     partFp.reset();
@@ -98,9 +97,9 @@ void downloadFile(
     try {
         os::replace(partPath.c_str(), filePath);
     } catch (os::Error& e) {
-        throw Error{str::printf(
-            "os::replace(\"%s\", \"%s\"): %s",
-            partPath.c_str(), filePath, e.what())};
+        throw Error{fmt::format(
+            "os::replace(\"{}\", \"{}\"): {}",
+            partPath, filePath, e.what())};
     }
 }
 

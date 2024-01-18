@@ -8,7 +8,8 @@
 
 #include "dpso_ext/user_dirs.h"
 #include "dpso/ocr.h"
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_get.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/windows/com.h"
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/utf.h"
@@ -74,10 +75,10 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
     const dpso::windows::CoInitializer coInitializer{
         COINIT_APARTMENTTHREADED};
     if (!dpso::windows::coInitSuccess(coInitializer.getHresult())) {
-        dpsoSetError(
-            "COM initialization failed: %s",
+        dpso::setError(
+            "COM initialization failed: {}",
             dpso::windows::getHresultMessage(
-                coInitializer.getHresult()).c_str());
+                coInitializer.getHresult()));
         return false;
     }
 
@@ -85,9 +86,9 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
     auto hresult = shCreateItemFromParsingName(
         srcPath, nullptr, srcSi);
     if (FAILED(hresult)) {
-        dpsoSetError(
-            "Can't create IShellItem for srcPath: %s",
-            dpso::windows::getHresultMessage(hresult).c_str());
+        dpso::setError(
+            "Can't create IShellItem for srcPath: {}",
+            dpso::windows::getHresultMessage(hresult));
         return false;
     }
 
@@ -95,9 +96,9 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
     hresult = shCreateItemFromParsingName(
         dstDirPath, nullptr, dstDirSi);
     if (FAILED(hresult)) {
-        dpsoSetError(
-            "Can't create IShellItem for dstDirPath: %s",
-            dpso::windows::getHresultMessage(hresult).c_str());
+        dpso::setError(
+            "Can't create IShellItem for dstDirPath: {}",
+            dpso::windows::getHresultMessage(hresult));
         return false;
     }
 
@@ -105,9 +106,9 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
     hresult = dpso::windows::coCreateInstance(
         CLSID_FileOperation, nullptr, CLSCTX_INPROC_SERVER, fileOp);
     if (FAILED(hresult)) {
-        dpsoSetError(
-            "Can't create IFileOperation: %s",
-            dpso::windows::getHresultMessage(hresult).c_str());
+        dpso::setError(
+            "Can't create IFileOperation: {}",
+            dpso::windows::getHresultMessage(hresult));
         return false;
     }
 
@@ -116,9 +117,9 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
     hresult = fileOp->CopyItem(
         srcSi.get(), dstDirSi.get(), nullptr, nullptr);
     if (FAILED(hresult)) {
-        dpsoSetError(
-            "IFileOperation::CopyItem(): %s",
-            dpso::windows::getHresultMessage(hresult).c_str());
+        dpso::setError(
+            "IFileOperation::CopyItem(): {}",
+            dpso::windows::getHresultMessage(hresult));
         return false;
     }
 
@@ -134,9 +135,9 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
 
     hresult = fileOp->PerformOperations();
     if (FAILED(hresult)) {
-        dpsoSetError(
-            "IFileOperation::PerformOperations(): %s",
-            dpso::windows::getHresultMessage(hresult).c_str());
+        dpso::setError(
+            "IFileOperation::PerformOperations(): {}",
+            dpso::windows::getHresultMessage(hresult));
         return false;
     }
 
@@ -168,9 +169,9 @@ bool setupEntry(
         } catch (std::runtime_error& e) {
         }
 
-        dpsoSetError(
-            "Can't copy \"%s\" to \"%s\": %s",
-            srcPathUtf8.c_str(), dstDirUtf8.c_str(), dpsoGetError());
+        dpso::setError(
+            "Can't copy \"{}\" to \"{}\": {}",
+            srcPathUtf8, dstDirUtf8, dpsoGetError());
         return false;
     }
 
@@ -208,8 +209,8 @@ int setupUserData(const wchar_t* userDataDir)
         srcDataDir = dpso::windows::utf8ToUtf16(
             uiGetAppDir(UiAppDirData));
     } catch (std::runtime_error& e) {
-        dpsoSetError(
-            "Can't convert UiAppDirData to UTF-16: %s", e.what());
+        dpso::setError(
+            "Can't convert UiAppDirData to UTF-16: {}", e.what());
         return false;
     }
 
@@ -227,7 +228,7 @@ bool uiStartupSetup(void)
     const auto* userDataDir = dpsoGetUserDir(
         DpsoUserDirData, uiAppFileName);
     if (!userDataDir) {
-        dpsoSetError("Can't get user data dir: %s", dpsoGetError());
+        dpso::setError("Can't get user data dir: {}", dpsoGetError());
         return false;
     }
 
@@ -235,8 +236,8 @@ bool uiStartupSetup(void)
     try {
         userDataDirUtf16 = dpso::windows::utf8ToUtf16(userDataDir);
     } catch (std::runtime_error& e) {
-        dpsoSetError(
-            "Can't convert userDataDir to UTF-16: %s", e.what());
+        dpso::setError(
+            "Can't convert userDataDir to UTF-16: {}", e.what());
         return false;
     }
 

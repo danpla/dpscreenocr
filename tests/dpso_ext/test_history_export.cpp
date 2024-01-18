@@ -5,7 +5,7 @@
 
 #include "dpso_ext/history.h"
 #include "dpso_ext/history_export.h"
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_get.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -33,12 +33,12 @@ void testDetectExportFormat(
         return;
 
     test::failure(
-        "dpsoHistoryDetectExportFormat(\"%s\", %s): "
-        "expected %s, got %s\n",
+        "dpsoHistoryDetectExportFormat(\"{}\", {}): "
+        "expected {}, got {}\n",
         filePath,
-        toStr(defaultExportFormat).c_str(),
-        toStr(expectedExportFormat).c_str(),
-        toStr(gotExportFormat).c_str());
+        toStr(defaultExportFormat),
+        toStr(expectedExportFormat),
+        toStr(gotExportFormat));
 }
 
 
@@ -362,18 +362,18 @@ void testExport()
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
         if (!history)
             test::fatalError(
-                "dpsoHistoryOpen(\"%s\"): %s\n",
+                "dpsoHistoryOpen(\"{}\"): {}\n",
                 historyFileName,
                 dpsoGetError());
 
         if (!dpsoHistoryClear(history.get()))
             test::fatalError(
-                "dpsoHistoryClear(): %s\n", dpsoGetError());
+                "dpsoHistoryClear(): {}\n", dpsoGetError());
 
         for (const auto& entry : test.entries)
             if (!dpsoHistoryAppend(history.get(), &entry))
                 test::fatalError(
-                    "dpsoHistoryAppend(): %s\n", dpsoGetError());
+                    "dpsoHistoryAppend(): {}\n", dpsoGetError());
 
         for (int i = 0; i < dpsoNumHistoryExportFormats; ++i) {
             const auto exportFormat =
@@ -393,9 +393,9 @@ void testExport()
                     exportedFileName.c_str(),
                     exportFormat))
                 test::fatalError(
-                    "dpsoHistoryExport(..., \"%s\", %s)\n",
-                    exportedFileName.c_str(),
-                    toStr(exportFormat).c_str());
+                    "dpsoHistoryExport(..., \"{}\", {})\n",
+                    exportedFileName,
+                    toStr(exportFormat));
 
             const auto& expectedData =
                 test.exportedData[exportFormat];
@@ -404,9 +404,9 @@ void testExport()
 
             if (gotData != expectedData) {
                 test::failure(
-                    "testExport(): Unexpected exported %s data "
-                    "for the \"%s\" case\n",
-                    toStr(exportFormat).c_str(),
+                    "testExport(): Unexpected exported {} data "
+                    "for the \"{}\" case\n",
+                    toStr(exportFormat),
                     test.description);
                 test::utils::printFirstDifference(
                     expectedData.c_str(), gotData.c_str());

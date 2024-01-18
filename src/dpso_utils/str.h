@@ -1,11 +1,8 @@
 
 #pragma once
 
-#include <cstdarg>
 #include <cstddef>
 #include <string>
-
-#include "printf_fn.h"
 
 
 namespace dpso::str {
@@ -52,12 +49,6 @@ inline int cmp(
 {
     return cmpSubStr(a, b, -1, options);
 }
-
-
-// We can't use overloading here, since on some systems va_list is a
-// typedef for char*.
-std::string vprintf(const char* fmt, std::va_list args);
-std::string printf(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
 
 }

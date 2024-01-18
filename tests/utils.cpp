@@ -3,17 +3,17 @@
 
 #include <cctype>
 #include <cerrno>
-#include <cstdio>
 #include <cstring>
 #include <queue>
+
+#include <fmt/core.h>
 
 #include "flow.h"
 
 #include "dpso_utils/os.h"
 
 
-namespace test {
-namespace utils {
+namespace test::utils {
 
 
 std::string escapeStr(const char* str)
@@ -21,9 +21,7 @@ std::string escapeStr(const char* str)
     std::string result;
 
     while (*str) {
-        const auto c = *str++;
-
-        switch (c) {
+        switch (const auto c = *str++; c) {
         case '\b':
             result += "\\b";
             break;
@@ -45,11 +43,9 @@ std::string escapeStr(const char* str)
         default: {
             if (std::isprint(static_cast<unsigned char>(c)))
                 result += c;
-            else {
-                char buf[5];
-                std::snprintf(buf, sizeof(buf), "\\x%02hhx", c);
-                result += buf;
-            }
+            else
+                result += fmt::format("\\x{:02x}", c);
+
             break;
         }
         }
@@ -107,14 +103,14 @@ void saveText(
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "wb")};
     if (!fp)
         test::fatalError(
-            "%s: saveText(): dpsoFopen(\"%s\", \"wb\"): %s\n",
+            "{}: saveText(): dpsoFopen(\"{}\", \"wb\"): {}\n",
             contextInfo,
             filePath,
             std::strerror(errno));
 
     if (std::fputs(text, fp.get()) == EOF)
         test::fatalError(
-            "%s: saveText(): fputs() to \"%s\" failed\n",
+            "{}: saveText(): fputs() to \"{}\" failed\n",
             contextInfo,
             filePath);
 }
@@ -125,7 +121,7 @@ std::string loadText(const char* contextInfo, const char* filePath)
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
     if (!fp)
         test::fatalError(
-            "%s: loadText(): dpsoFopen(\"%s\", \"rb\"): %s\n",
+            "{}: loadText(): dpsoFopen(\"{}\", \"rb\"): {}\n",
             contextInfo,
             filePath,
             std::strerror(errno));
@@ -142,7 +138,7 @@ std::string loadText(const char* contextInfo, const char* filePath)
         if (numRead < sizeof(buf)) {
             if (std::ferror(fp.get()))
                 test::fatalError(
-                    "%s: loadText(): fread() from \"%s\" failed\n",
+                    "{}: loadText(): fread() from \"{}\" failed\n",
                     contextInfo,
                     filePath);
 
@@ -184,27 +180,25 @@ void printFirstDifference(const char* expected, const char* actual)
         const auto al = getNextLine(a);
 
         if (el != al) {
-            std::fprintf(
+            fmt::print(
                 stderr,
                 "First difference between expected (e) and actual "
-                "(a) data, with %zu preceding\n"
-                "line%s. Non-printable characters are escaped with "
+                "(a) data, with {} preceding\n"
+                "line{}. Non-printable characters are escaped with "
                 "C-style sequences.\n",
                 contextLines.size(),
                 contextLines.size() == 1 ? "" : "s");
 
             while (!contextLines.empty()) {
-                std::fprintf(
+                fmt::print(
                     stderr,
-                    " |%s\n",
-                    escapeStr(contextLines.front().c_str()).c_str());
+                    " |{}\n",
+                    escapeStr(contextLines.front().c_str()));
                 contextLines.pop();
             }
 
-            std::fprintf(
-                stderr, "e|%s\n", escapeStr(el.c_str()).c_str());
-            std::fprintf(
-                stderr, "a|%s\n", escapeStr(al.c_str()).c_str());
+            fmt::print(stderr, "e|{}\n", escapeStr(el.c_str()));
+            fmt::print(stderr, "a|{}\n", escapeStr(al.c_str()));
             break;
         }
 
@@ -226,10 +220,9 @@ void removeFile(const char* filePath)
     } catch (dpso::os::FileNotFoundError&) {
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "os::removeFile(\"%s\"): %s", filePath, e.what());
+            "os::removeFile(\"{}\"): {}", filePath, e.what());
     }
 }
 
 
-}
 }

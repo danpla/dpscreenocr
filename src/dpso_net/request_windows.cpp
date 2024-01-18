@@ -11,7 +11,8 @@
 #include <windows.h>
 #include <wininet.h>
 
-#include "dpso_utils/str.h"
+#include <fmt/core.h>
+
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/utf.h"
 
@@ -38,11 +39,11 @@ using InternetUPtr = std::unique_ptr<HINTERNET, InternetCloser>;
 [[noreturn]]
 void throwLastError(const char* info)
 {
-    const auto message = str::printf(
-        "%s: %s (%lu)",
+    const auto message = fmt::format(
+        "{}: {} ({})",
         info,
         windows::getErrorMessage(
-            GetLastError(), GetModuleHandleW(L"wininet")).c_str(),
+            GetLastError(), GetModuleHandleW(L"wininet")),
         // Include the code so that we can do a quick search on
         // https://learn.microsoft.com/en-us/windows/win32/wininet/wininet-errors
         GetLastError());
@@ -215,8 +216,8 @@ std::unique_ptr<Response> makeGetRequest(
     try {
         userAgentUtf16 = windows::utf8ToUtf16(userAgent);
     } catch (std::runtime_error& e) {
-        throw Error{str::printf(
-            "Can't convert userAgent to UTF-16: %s", e.what())};
+        throw Error{fmt::format(
+            "Can't convert userAgent to UTF-16: {}", e.what())};
     }
 
     InternetUPtr hInternet{InternetOpenW(
@@ -232,8 +233,8 @@ std::unique_ptr<Response> makeGetRequest(
     try {
         urlUtf16 = windows::utf8ToUtf16(url);
     } catch (std::runtime_error& e) {
-        throw Error{str::printf(
-            "Can't convert URL to UTF-16: %s", e.what())};
+        throw Error{fmt::format(
+            "Can't convert URL to UTF-16: {}", e.what())};
     }
 
     InternetUPtr hConnection{InternetOpenUrlW(
@@ -255,7 +256,7 @@ std::unique_ptr<Response> makeGetRequest(
 
     const auto statusCode = getStatusCode(hConnection.get());
     if (statusCode != 200)
-        throw Error{str::printf("HTTP status code %lu", statusCode)};
+        throw Error{fmt::format("HTTP status code {}", statusCode)};
 
     return std::make_unique<WindowsResponse>(
         std::move(hInternet),

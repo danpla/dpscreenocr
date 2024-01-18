@@ -6,7 +6,7 @@
 #include <cstring>
 #include <vector>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
@@ -245,13 +245,15 @@ bool dpsoHistoryExport(
     DpsoHistoryExportFormat exportFormat)
 {
     if (!history) {
-        dpsoSetError("history is null");
+        dpso::setError("history is null");
         return false;
     }
 
     if (exportFormat < 0
             || exportFormat >= dpsoNumHistoryExportFormats) {
-        dpsoSetError("Unknown export format %i", exportFormat);
+        dpso::setError(
+            "Unknown export format {}",
+            static_cast<int>(exportFormat));
         return false;
     }
 
@@ -260,8 +262,8 @@ bool dpsoHistoryExport(
     // format, but is convenient for Notepad users.
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "w")};
     if (!fp) {
-        dpsoSetError(
-            "os::fopen(..., \"w\"): %s", std::strerror(errno));
+        dpso::setError(
+            "os::fopen(..., \"w\"): {}", std::strerror(errno));
         return false;
     }
 

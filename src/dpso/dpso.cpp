@@ -5,7 +5,7 @@
 #include <iterator>
 #include <stdexcept>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 
 #include "backend/backend.h"
 #include "backend/backend_error.h"
@@ -69,7 +69,7 @@ bool dpsoInit(void)
     try {
         backend = dpso::backend::Backend::create();
     } catch (dpso::backend::BackendError& e) {
-        dpsoSetError("Can't create backend: %s", e.what());
+        dpso::setError("Can't create backend: {}", e.what());
         return false;
     }
 
@@ -77,8 +77,8 @@ bool dpsoInit(void)
         try {
             modules[i].init(*backend);
         } catch (std::runtime_error& e) {
-            dpsoSetError(
-                "Can't init %s: %s", modules[i].name, e.what());
+            dpso::setError(
+                "Can't init {}: {}", modules[i].name, e.what());
 
             for (auto j = i; j--;)
                 modules[j].shutdown();

@@ -1,6 +1,5 @@
 
 #include <cerrno>
-#include <cinttypes>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -101,20 +100,20 @@ void testPathSplit()
         const auto dirName = dpso::os::getDirName(test.path);
         if (dirName != test.dirName)
             test::failure(
-                "os::getDirName(\"%s\"): Expected \"%s\", got "
-                "\"%s\"\n",
+                "os::getDirName(\"{}\"): Expected \"{}\", got "
+                "\"{}\"\n",
                 test.path,
                 test.dirName,
-                dirName.c_str());
+                dirName);
 
         const auto baseName = dpso::os::getBaseName(test.path);
         if (baseName != test.baseName)
             test::failure(
-                "os::getBaseName(\"%s\"): Expected \"%s\", got "
-                "\"%s\"\n",
+                "os::getBaseName(\"{}\"): Expected \"{}\", got "
+                "\"{}\"\n",
                 test.path,
                 test.baseName,
-                baseName.c_str());
+                baseName);
     }
 }
 
@@ -146,11 +145,10 @@ void testGetFileExt()
         if (!ext) {
             if (!test.expectedExt.empty())
                 test::failure(
-                    "os::getFileExt(\"%s\"): expected \"%s\", "
+                    "os::getFileExt(\"{}\"): expected \"{}\", "
                     "got null\n",
-                    test::utils::escapeStr(test.path.c_str()).c_str(),
-                    test::utils::escapeStr(
-                        test.expectedExt.c_str()).c_str());
+                    test::utils::escapeStr(test.path.c_str()),
+                    test::utils::escapeStr(test.expectedExt.c_str()));
 
             continue;
         }
@@ -165,10 +163,10 @@ void testGetFileExt()
             expected = std::string{"\""} + test.expectedExt + '"';
 
         test::failure(
-            "os::getFileExt(\"%s\"): expected \"%s\", got \"%s\"\n",
-            test::utils::escapeStr(test.path.c_str()).c_str(),
-            test::utils::escapeStr(expected.c_str()).c_str(),
-            test::utils::escapeStr(ext).c_str());
+            "os::getFileExt(\"{}\"): expected \"{}\", got \"{}\"\n",
+            test::utils::escapeStr(test.path.c_str()),
+            test::utils::escapeStr(expected.c_str()),
+            test::utils::escapeStr(ext));
     }
 }
 
@@ -184,8 +182,7 @@ void testGetFileSize()
     const auto gotSize = dpso::os::getFileSize(fileName);
     if (gotSize != size)
         test::failure(
-            "os::getFileSize(\"%s\"): expected \"%" PRIi64 "\", got "
-            "\"%" PRIi64 "\"\n",
+            "os::getFileSize(\"{}\"): expected {}, got {}\n",
             fileName, size, gotSize);
 
     test::utils::removeFile(fileName);
@@ -199,7 +196,7 @@ void testGetFileSize()
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::getFileSize() for a nonexistent file threw an error "
-            "(\"%s\") of class other than FileNotFoundError\n",
+            "(\"{}\") of class other than FileNotFoundError\n",
             e.what());
     }
 }
@@ -216,7 +213,7 @@ void testFopen()
         dpso::os::fopen(testUnicodeFileName, "wb")};
     if (!fp) {
         test::failure(
-            "os::fopen(\"%s\"): %s\n",
+            "os::fopen(\"{}\"): {}\n",
             testUnicodeFileName,
             std::strerror(errno));
         return;
@@ -258,7 +255,7 @@ void testReadLine()
             dpso::os::fopen(fileName, "rb")};
         if (!fp)
             test::fatalError(
-                "os::fopen(\"%s\"): %s\n",
+                "os::fopen(\"{}\"): {}\n",
                 fileName,
                 std::strerror(errno));
 
@@ -285,18 +282,17 @@ void testReadLine()
 
         if (std::ferror(fp.get()))
             test::fatalError(
-                "Error while reading \"%s\"\n", fileName);
+                "Error while reading \"{}\"\n", fileName);
 
         if (lines != test.expectedLines)
             test::failure(
-                "Unexpected lines from os::readLine() for \"%s\": "
-                "expected %s, got %s\n",
-                test::utils::escapeStr(test.text).c_str(),
+                "Unexpected lines from os::readLine() for \"{}\": "
+                "expected {}, got {}\n",
+                test::utils::escapeStr(test.text),
                 test::utils::toStr(
                     test.expectedLines.begin(),
-                    test.expectedLines.end()).c_str(),
-                test::utils::toStr(
-                    lines.begin(), lines.end()).c_str());
+                    test.expectedLines.end()),
+                test::utils::toStr(lines.begin(), lines.end()));
     }
 
     test::utils::removeFile(fileName);
@@ -312,7 +308,7 @@ void testRemoveFile()
         dpso::os::removeFile(testUnicodeFileName);
     } catch (dpso::os::Error& e) {
         test::failure(
-            "os::removeFile(\"%s\"): %s\n",
+            "os::removeFile(\"{}\"): {}\n",
             testUnicodeFileName,
             e.what());
     }
@@ -326,7 +322,7 @@ void testRemoveFile()
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::removeFile() for a nonexistent file threw an error "
-            "(\"%s\") of class other than FileNotFoundError\n",
+            "(\"{}\") of class other than FileNotFoundError\n",
             e.what());
     }
 }
@@ -353,14 +349,14 @@ void testReplaceSrcExists(bool dstExists)
         dpso::os::replace(srcFilePath, dstFilePath);
     } catch (dpso::os::Error& e) {
         test::failure(
-            "os::replace(\"%s\", \"%s\"): %s\n",
+            "os::replace(\"{}\", \"{}\"): {}\n",
             srcFilePath, dstFilePath, e.what());
         return;
     }
 
     if (dpso::os::StdFileUPtr{dpso::os::fopen(srcFilePath, "r")})
         test::failure(
-            "os::replace(\"%s\", \"%s\") didn't failed, but the "
+            "os::replace(\"{}\", \"{}\") didn't failed, but the "
             "source file still exists\n",
             srcFilePath, dstFilePath);
 
@@ -368,7 +364,7 @@ void testReplaceSrcExists(bool dstExists)
             && !dpso::os::StdFileUPtr{
                 dpso::os::fopen(dstFilePath, "r")}) {
         test::failure(
-            "os::replace(\"%s\", \"%s\") didn't created the "
+            "os::replace(\"{}\", \"{}\") didn't created the "
             "destination file\n",
             srcFilePath, dstFilePath);
         return;
@@ -379,10 +375,10 @@ void testReplaceSrcExists(bool dstExists)
 
     if (dstText != srcFilePath)
         test::failure(
-            "os::replace(\"%s\", \"%s\"): the destination file "
-            "contents (\"%s\") are not the same as in source "
-            "(\"%s\")\n",
-            srcFilePath, dstFilePath, dstText.c_str(), srcFilePath);
+            "os::replace(\"{}\", \"{}\"): the destination file "
+            "contents (\"{}\") are not the same as in source "
+            "(\"{}\")\n",
+            srcFilePath, dstFilePath, dstText, srcFilePath);
 }
 
 
@@ -397,7 +393,7 @@ void testReplaceNoSrc()
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::replace() for a nonexistent file threw an error "
-            "(\"%s\") of class other than FileNotFoundError\n",
+            "(\"{}\") of class other than FileNotFoundError\n",
             e.what());
     }
 }
@@ -418,13 +414,13 @@ void testSyncFile()
     dpso::os::StdFileUPtr fp{dpso::os::fopen(fileName, "wb")};
     if (!fp)
         test::fatalError(
-            "testSyncFile: os::fopen(\"%s\"): %s\n",
+            "testSyncFile: os::fopen(\"{}\"): {}\n",
             fileName, std::strerror(errno));
 
     try {
         dpso::os::syncFile(fp.get());
     } catch (dpso::os::Error& e) {
-        test::failure("os::syncFile(): %s\n", e.what());
+        test::failure("os::syncFile(): {}\n", e.what());
     }
 
     fp.reset();
@@ -440,7 +436,7 @@ void testSyncDir()
         dpso::os::syncDir(dirPath);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "os::syncDir(\"%s\"): %s\n", dirPath, e.what());
+            "os::syncDir(\"{}\"): {}\n", dirPath, e.what());
     }
 }
 

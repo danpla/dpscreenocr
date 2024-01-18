@@ -34,12 +34,12 @@ void checkProgressInfo(
 {
     if (progressInfo.numCalls != numCalls)
         test::failure(
-            "line %i: ProgressInfo::numCalls{%i} != %i\n",
+            "line {}: ProgressInfo::numCalls{{{}}} != {}\n",
             lineNum, progressInfo.numCalls, numCalls);
 
     if (std::abs(progressInfo.progress - progress) > 0.00001f)
         test::failure(
-            "line %i: ProgressInfo::progress{%f} != %f\n",
+            "line {}: ProgressInfo::progress{{{}}} != {}\n",
             lineNum, progressInfo.progress, progress);
 }
 

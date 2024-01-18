@@ -1,10 +1,9 @@
 
 #include "get_data.h"
 
-#include <cinttypes>
 #include <limits>
 
-#include "dpso_utils/str.h"
+#include <fmt/core.h>
 
 #include "error.h"
 #include "request.h"
@@ -23,9 +22,8 @@ std::string getData(
 
     if (const auto size = response->getSize();
             size && *size > sizeLimit)
-        throw Error{str::printf(
-            "Response data size (%" PRIi64 ") exceeds "
-            "limit (%" PRIi64 ")",
+        throw Error{fmt::format(
+            "Response data size ({}) exceeds limit ({})",
             *size, sizeLimit)};
 
     std::string result;
@@ -40,9 +38,8 @@ std::string getData(
                     < numRead
                 || static_cast<std::int64_t>(result.size() + numRead)
                     > sizeLimit)
-            throw Error{str::printf(
-                "Response data size exceeds limit (%" PRIi64 ")",
-                sizeLimit)};
+            throw Error{fmt::format(
+                "Response data size exceeds limit ({})", sizeLimit)};
 
         result.append(buf, numRead);
     }

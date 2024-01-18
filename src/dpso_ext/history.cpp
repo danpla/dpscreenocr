@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
 
 
@@ -37,20 +37,20 @@ static bool loadData(const char* filePath, std::string& data)
         data.clear();
         return true;
     } catch (dpso::os::Error& e) {
-        dpsoSetError("os::getFileSize(): %s", e.what());
+        dpso::setError("os::getFileSize(): {}", e.what());
         return false;
     }
 
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
     if (!fp) {
-        dpsoSetError(
-            "os::fopen(..., \"rb\"): %s", std::strerror(errno));
+        dpso::setError(
+            "os::fopen(..., \"rb\"): {}", std::strerror(errno));
         return false;
     }
 
     if (std::fread(data.data(), 1, data.size(), fp.get())
             != data.size()) {
-        dpsoSetError("fread() failed");
+        dpso::setError("fread() failed");
         return false;
     }
 
@@ -69,8 +69,8 @@ static bool createEntries(
             ++s;
 
         if (*s != '\n' || s[1] != '\n') {
-            dpsoSetError(
-                "No \\n\\n terminator for timestamp at %zu\n",
+            dpso::setError(
+                "No \\n\\n terminator for timestamp at {}\n",
                 timestampBegin - data);
             return false;
         }
@@ -90,14 +90,14 @@ static bool createEntries(
 
         if (*s == '\f') {
             if (s[1] != '\n') {
-                dpsoSetError(
-                    "Unexpected 0x%hhx after \\f at %zu",
+                dpso::setError(
+                    "Unexpected {:#04x} after \\f at {}",
                     s[1], s - data);
                 return false;
             }
 
             if (!s[2]) {
-                dpsoSetError("\\f\\n at end of file");
+                dpso::setError("\\f\\n at end of file");
                 return false;
             }
 
@@ -114,8 +114,8 @@ static dpso::os::StdFileUPtr openSync(
 {
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, mode)};
     if (!fp) {
-        dpsoSetError(
-            "os::fopen(..., \"%s\"): %s", mode, std::strerror(errno));
+        dpso::setError(
+            "os::fopen(..., \"{}\"): {}", mode, std::strerror(errno));
         return nullptr;
     }
 
@@ -124,7 +124,7 @@ static dpso::os::StdFileUPtr openSync(
     try {
         dpso::os::syncDir(fileDir.empty() ? "." : fileDir.c_str());
     } catch (dpso::os::Error& e) {
-        dpsoSetError("os::syncDir(): %s", e.what());
+        dpso::setError("os::syncDir(): {}", e.what());
         return nullptr;
     }
 
@@ -183,17 +183,17 @@ bool dpsoHistoryAppend(
     DpsoHistory* history, const DpsoHistoryEntry* entry)
 {
     if (!history) {
-        dpsoSetError("history is null");
+        dpso::setError("history is null");
         return false;
     }
 
     if (!entry) {
-        dpsoSetError("entry is null");
+        dpso::setError("entry is null");
         return false;
     }
 
     if (!history->fp) {
-        dpsoSetError(failureStateErrorMsg);
+        dpso::setError("{}", failureStateErrorMsg);
         return false;
     }
 
@@ -207,13 +207,13 @@ bool dpsoHistoryAppend(
             || std::fputs(e.timestamp.c_str(), fp) == EOF
             || std::fputs("\n\n", fp) == EOF
             || std::fputs(e.text.c_str(), fp) == EOF) {
-        dpsoSetError("fputs() failed");
+        dpso::setError("fputs() failed");
         history->fp.reset();
         return false;
     }
 
     if (std::fflush(fp) == EOF) {
-        dpsoSetError("fflush() failed");
+        dpso::setError("fflush() failed");
         history->fp.reset();
         return false;
     }
@@ -221,7 +221,7 @@ bool dpsoHistoryAppend(
     try {
         dpso::os::syncFile(fp);
     } catch (dpso::os::Error& e) {
-        dpsoSetError("os::syncFile(): %s", e.what());
+        dpso::setError("os::syncFile(): {}", e.what());
         history->fp.reset();
         return false;
     }
@@ -256,12 +256,12 @@ void dpsoHistoryGet(
 bool dpsoHistoryClear(DpsoHistory* history)
 {
     if (!history) {
-        dpsoSetError("history is null");
+        dpso::setError("history is null");
         return false;
     }
 
     if (!history->fp) {
-        dpsoSetError(failureStateErrorMsg);
+        dpso::setError("{}", failureStateErrorMsg);
         return false;
     }
 

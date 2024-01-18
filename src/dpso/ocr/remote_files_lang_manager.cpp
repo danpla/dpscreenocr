@@ -3,6 +3,8 @@
 
 #include <cassert>
 
+#include <fmt/core.h>
+
 #include "dpso_json/json.h"
 
 #include "dpso_net/download_file.h"
@@ -11,7 +13,6 @@
 
 #include "dpso_utils/os.h"
 #include "dpso_utils/sha256_file.h"
-#include "dpso_utils/str.h"
 
 #include "ocr/lang_code_validator.h"
 #include "ocr/lang_manager_error.h"
@@ -129,9 +130,8 @@ void RemoteFilesLangManager::installLang(
     try {
         os::makeDirs(dataDir.c_str());
     } catch (os::Error& e) {
-        throw LangManagerError{str::printf(
-            "Can't create directory \"%s\": %s",
-            dataDir.c_str(), e.what())};
+        throw LangManagerError{fmt::format(
+            "Can't create directory \"{}\": {}", dataDir, e.what())};
     }
 
     auto& langInfo = langInfos[langIdx];
@@ -150,10 +150,10 @@ void RemoteFilesLangManager::installLang(
             filePath.c_str(),
             makeDownloadProgressHandler(progressHandler, canceled));
     } catch (net::Error& e) {
-        rethrowNetErrorAsLangManagerError(str::printf(
-            "Can't download \"%s\" to \"%s\": %s",
-            langInfo.url.c_str(),
-            filePath.c_str(),
+        rethrowNetErrorAsLangManagerError(fmt::format(
+            "Can't download \"{}\" to \"{}\": {}",
+            langInfo.url,
+            filePath,
             e.what()).c_str());
     }
 
@@ -184,8 +184,8 @@ void RemoteFilesLangManager::removeLang(int langIdx)
     try {
         os::removeFile(filePath.c_str());
     } catch (os::Error& e) {
-        throw LangManagerError{str::printf(
-            "Can't remove \"%s\": %s", filePath.c_str(), e.what())};
+        throw LangManagerError{fmt::format(
+            "Can't remove \"{}\": {}", filePath, e.what())};
     }
 
     if (auto& langInfo = langInfos[langIdx]; !langInfo.url.empty())
@@ -216,9 +216,8 @@ RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
             try {
                 validateLangCode(code.c_str());
             } catch (InvalidLangCodeError& e) {
-                throw json::Error{str::printf(
-                    "Invalid code \"%s\": %s",
-                    code.c_str(), e.what())};
+                throw json::Error{fmt::format(
+                    "Invalid code \"{}\": {}", code, e.what())};
             }
 
             result.push_back(
@@ -229,8 +228,8 @@ RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
                     fileInfo.getStr("url")
                 });
         } catch (json::Error& e) {
-            throw json::Error{str::printf(
-                "File info at index %zu: %s", i, e.what())};
+            throw json::Error{fmt::format(
+                "File info at index {}: {}", i, e.what())};
         }
     }
 
@@ -246,16 +245,16 @@ RemoteFilesLangManager::getRemoteLangs(
     try {
         jsonData = net::getData(infoFileUrl, userAgent);
     } catch (net::Error& e) {
-        rethrowNetErrorAsLangManagerError(str::printf(
-            "Can't get data from \"%s\": %s",
+        rethrowNetErrorAsLangManagerError(fmt::format(
+            "Can't get data from \"{}\": {}",
             infoFileUrl, e.what()).c_str());
     }
 
     try {
         return parseJsonFileInfos(jsonData.c_str());
     } catch (json::Error& e) {
-        throw LangManagerError{str::printf(
-            "Can't parse JSON info file from \"%s\": %s",
+        throw LangManagerError{fmt::format(
+            "Can't parse JSON info file from \"{}\": {}",
             infoFileUrl, e.what())};
     }
 }
@@ -302,9 +301,8 @@ void RemoteFilesLangManager::mergeRemoteLang(
             return;
         }
     } catch (os::Error& e) {
-        throw LangManagerError{str::printf(
-            "Can't get size of \"%s\": %s",
-            filePath.c_str(), e.what())};
+        throw LangManagerError{fmt::format(
+            "Can't get size of \"{}\": {}", filePath, e.what())};
     }
 
     try {
@@ -312,9 +310,8 @@ void RemoteFilesLangManager::mergeRemoteLang(
                 != langInfo.remoteSha256)
             langInfo.state = LangState::updateAvailable;
     } catch (Sha256FileError& e) {
-        throw LangManagerError{str::printf(
-            "Can't get SHA-256 of \"%s\": %s",
-            filePath.c_str(), e.what())};
+        throw LangManagerError{fmt::format(
+            "Can't get SHA-256 of \"{}\": {}", filePath, e.what())};
     }
 }
 

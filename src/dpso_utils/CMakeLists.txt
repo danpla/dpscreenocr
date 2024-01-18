@@ -54,3 +54,10 @@ target_include_directories(dpso_utils PRIVATE . PUBLIC ..)
 
 target_compile_definitions(
     dpso PUBLIC DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>)
+
+if(NOT TARGET fmt)
+    add_subdirectory(
+        ../thirdparty/fmt "${CMAKE_BINARY_DIR}/src/thirdparty/fmt")
+endif()
+
+target_link_libraries(dpso_utils PUBLIC fmt)

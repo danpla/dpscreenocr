@@ -10,6 +10,8 @@
 #include <windows.h>
 #include <shellapi.h>
 
+#include <fmt/core.h>
+
 #include "windows/cmdline.h"
 #include "windows/com.h"
 #include "windows/error.h"
@@ -28,10 +30,8 @@ void throwLastError(const char* description)
 {
     const auto lastError = GetLastError();
 
-    const auto message = str::printf(
-        "%s: %s",
-        description,
-        windows::getErrorMessage(lastError).c_str());
+    const auto message = fmt::format(
+        "{}: {}", description, windows::getErrorMessage(lastError));
 
     switch (lastError) {
     case ERROR_FILE_NOT_FOUND:
@@ -47,8 +47,8 @@ std::wstring toUtf16(const char* str, const char* varName)
     try {
         return windows::utf8ToUtf16(str);
     } catch (std::runtime_error& e) {
-        throw Error{str::printf(
-            "Can't convert %s to UTF-16: %s", varName, e.what())};
+        throw Error{fmt::format(
+            "Can't convert {} to UTF-16: {}", varName, e.what())};
     }
 }
 
@@ -175,9 +175,9 @@ static int utf16ToAcp(
         throwLastError("WideCharToMultiByte(CP_ACP, ...)");
 
     if (defaultCharUsed)
-        throw Error{str::printf(
+        throw Error{fmt::format(
             "UTF-16 string contains characters that cannot be "
-            "represented by the current code page (cp%u)",
+            "represented by the current code page (cp{})",
             GetACP())};
 
     return sizeWithNull;
@@ -304,12 +304,12 @@ void syncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);
     if (fd == -1)
-        throw Error{str::printf(
-            "_fileno(): %s", std::strerror(errno))};
+        throw Error{fmt::format(
+            "_fileno(): {}", std::strerror(errno))};
 
     if (_commit(fd) == -1)
-        throw Error{str::printf(
-            "_commit(): %s", std::strerror(errno))};
+        throw Error{fmt::format(
+            "_commit(): {}", std::strerror(errno))};
 }
 
 

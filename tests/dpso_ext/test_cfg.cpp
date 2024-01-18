@@ -4,9 +4,10 @@
 #include <initializer_list>
 #include <string>
 
+#include <fmt/core.h>
+
 #include "dpso/dpso.h"
-#include "dpso_utils/error.h"
-#include "dpso_utils/str.h"
+#include "dpso_utils/error_get.h"
 #include "dpso_ext/cfg.h"
 #include "dpso_ext/cfg_ext.h"
 
@@ -45,11 +46,11 @@ void testGetStr(
         return;
 
     test::failure(
-        "dpsoGetStr(\"%s\", %s): expected %s, got %s\n",
+        "dpsoGetStr(\"{}\", {}): expected {}, got {}\n",
         key,
-        test::utils::toStr(defaultVal).c_str(),
-        test::utils::toStr(expectedVal).c_str(),
-        test::utils::toStr(gotVal).c_str());
+        test::utils::toStr(defaultVal),
+        test::utils::toStr(expectedVal),
+        test::utils::toStr(gotVal));
 }
 
 
@@ -64,7 +65,7 @@ void testGetInt(
         return;
 
     test::failure(
-        "dpsoGetInt(\"%s\", %i): expected %i, got %i\n",
+        "dpsoGetInt(\"{}\", {}): expected {}, got {}\n",
         key,
         defaultVal,
         expectedVal,
@@ -83,11 +84,11 @@ void testGetBool(
         return;
 
     test::failure(
-        "dpsoGetBool(\"%s\", %s): expected %s, got %s\n",
+        "dpsoGetBool(\"{}\", {}): expected {}, got {}\n",
         key,
-        test::utils::toStr(defaultVal).c_str(),
-        test::utils::toStr(expectedVal).c_str(),
-        test::utils::toStr(gotVal).c_str());
+        test::utils::toStr(defaultVal),
+        test::utils::toStr(expectedVal),
+        test::utils::toStr(gotVal));
 }
 
 
@@ -131,7 +132,7 @@ const std::initializer_list<BasicTypesTest> boolTests{
 
 const std::string makeCfgKeyForChar(char c)
 {
-    return dpso::str::printf("str_char_%02hhx", c);
+    return fmt::format("str_char_{:02x}", c);
 }
 
 
@@ -212,12 +213,12 @@ void testGetHotkey(
         return;
 
     test::failure(
-        "dpsoCfgGetHotkey(\"%s\", &, {%s}): "
-        "expected {%s}, got {%s}\n",
+        "dpsoCfgGetHotkey(\"{}\", &, [{}]): "
+        "expected [{}], got [{}]\n",
         key,
-        toStr(defaultVal).c_str(),
-        toStr(expectedVal).c_str(),
-        toStr(gotVal).c_str());
+        toStr(defaultVal),
+        toStr(expectedVal),
+        toStr(gotVal));
 }
 
 
@@ -268,7 +269,7 @@ void reload(DpsoCfg* cfg)
 {
     if (!dpsoCfgSave(cfg, cfgFileName))
         test::fatalError(
-            "reload(): dpsoCfgSave(cfg, \"%s\"): %s\n",
+            "reload(): dpsoCfgSave(cfg, \"{}\"): {}\n",
             cfgFileName,
             dpsoGetError());
 
@@ -277,7 +278,7 @@ void reload(DpsoCfg* cfg)
 
     if (!loaded)
         test::fatalError(
-            "reload(): dpsoCfgLoad(cfg, \"%s\"): %s\n",
+            "reload(): dpsoCfgLoad(cfg, \"{}\"): {}\n",
             cfgFileName,
             dpsoGetError());
 }
@@ -292,7 +293,7 @@ void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 
     if (!loaded)
         test::fatalError(
-            "loadCfgData(): dpsoCfgLoad(cfg, \"%s\"): %s\n",
+            "loadCfgData(): dpsoCfgLoad(cfg, \"{}\"): {}\n",
             cfgFileName,
             dpsoGetError());
 }
@@ -561,9 +562,9 @@ void testKeyValidity(DpsoCfg* cfg)
             continue;
 
         test::failure(
-            "testKeyValidity: Key \"%s\" is expected to be %s and "
-            "%s be set\n",
-            test::utils::escapeStr(test.key).c_str(),
+            "testKeyValidity: Key \"{}\" is expected to be {} and "
+            "{} be set\n",
+            test::utils::escapeStr(test.key),
             test.isValid ? "valid" : "invalid",
             test.isValid ? "should" : "should not");
     }
@@ -588,9 +589,7 @@ void testSavedValueFormat()
             : val{val}
             , expectedData{
                 test::utils::lfToNativeNewline(
-                    (std::string{"key "}
-                        + expectedValData
-                        + '\n').c_str())}
+                    fmt::format("key {}\n", expectedValData).c_str())}
         {
         }
     } tests[] = {
@@ -606,20 +605,20 @@ void testSavedValueFormat()
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
         test::fatalError(
-            "testSavedValueFormat(): dpsoCfgCreate(): %s\n",
+            "testSavedValueFormat(): dpsoCfgCreate(): {}\n",
             dpsoGetError());
 
     for (const auto& test : tests) {
         dpsoCfgSetStr(cfg.get(), key, test.val);
         if (!dpsoCfgSave(cfg.get(), cfgFileName))
             test::fatalError(
-                "testSavedValueFormat(): dpsoCfgSave(cfg, \"%s\"): "
-                "%s\n",
+                "testSavedValueFormat(): dpsoCfgSave(cfg, \"{}\"): "
+                "{}\n",
                 cfgFileName,
                 dpsoGetError());
 
         const auto gotData = test::utils::loadText(
-                "testSavedValueFormat", cfgFileName);
+            "testSavedValueFormat", cfgFileName);
         if (gotData == test.expectedData)
             continue;
 
@@ -637,7 +636,7 @@ void testCfg()
 {
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
-        test::fatalError("dpsoCfgCreate(): %s\n", dpsoGetError());
+        test::fatalError("dpsoCfgCreate(): {}\n", dpsoGetError());
 
     setBasicTypes(cfg.get());
     setHotkey(cfg.get());

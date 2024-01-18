@@ -1,6 +1,8 @@
 
 #include "dpso/geometry.h"
 
+#include <fmt/core.h>
+
 #include "flow.h"
 
 
@@ -10,16 +12,24 @@ using namespace dpso;
 namespace {
 
 
+std::string toStr(const Point& p)
+{
+    return fmt::format("Point{{{}, {}}}", p.x, p.y);
+}
+
+
 void testEqual(const Point& a, const Point& b, int lineNum)
 {
     if (a.x == b.x && a.y == b.y)
         return;
 
-    test::failure(
-        "line %i: Point(%i, %i) != Point(%i, %i)\n",
-        lineNum,
-        a.x, a.y,
-        b.x, b.y);
+    test::failure("line {}: {} != {}\n", lineNum, toStr(a), toStr(b));
+}
+
+
+std::string toStr(const Rect& r)
+{
+    return fmt::format("Rect{{{}, {}, {}, {}}}", r.x, r.y, r.w, r.h);
 }
 
 
@@ -30,11 +40,7 @@ void testEqual(const Rect& a, const Rect& b, int lineNum)
         return;
     #undef CMP
 
-    test::failure(
-        "line %i: Rect(%i, %i, %i, %i) != Rect(%i, %i,  %i, %i)\n",
-        lineNum,
-        a.x, a.y, a.w, a.h,
-        b.x, b.y, b.w, b.h);
+    test::failure("line {}: {} != {}\n", lineNum, toStr(a), toStr(b));
 }
 
 
@@ -47,9 +53,9 @@ void testEmpty(const Rect& r, bool expectEmpty, int lineNum)
         return;
 
     test::failure(
-        "line %i: Rect(%i, %i, %i, %i) is expected to be %sempty\n",
+        "line {}: {} is expected to be {}empty\n",
         lineNum,
-        r.x, r.y, r.w, r.h,
+        toStr(r),
         expectEmpty ? "" : "non-");
 }
 

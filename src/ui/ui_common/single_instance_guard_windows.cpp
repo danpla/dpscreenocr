@@ -6,7 +6,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/utf.h"
 
@@ -22,7 +22,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     try {
         idUtf16 = dpso::windows::utf8ToUtf16(id);
     } catch (std::runtime_error& e) {
-        dpsoSetError("Can't convert id to UTF-16: %s", e.what());
+        dpso::setError("Can't convert id to UTF-16: {}", e.what());
         return {};
     }
 
@@ -44,10 +44,10 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     const auto mutex = CreateMutexW(
         nullptr, false, mutexName.c_str());
     if (!mutex) {
-        dpsoSetError(
-            "CreateMutexW(..., \"%s\"): %s",
-            dpso::windows::utf16ToUtf8(mutexName.c_str()).c_str(),
-            dpso::windows::getErrorMessage(GetLastError()).c_str());
+        dpso::setError(
+            "CreateMutexW(..., \"{}\"): {}",
+            dpso::windows::utf16ToUtf8(mutexName.c_str()),
+            dpso::windows::getErrorMessage(GetLastError()));
         return {};
     }
 

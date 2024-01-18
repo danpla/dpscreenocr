@@ -6,7 +6,6 @@
 
 
 #include <chrono>
-#include <cstdarg>
 #include <cstdio>
 #include <ratio>
 
@@ -23,18 +22,14 @@ float getTime()
 }
 
 
-void report(float startTime, const char* fmt, ...)
+void vReport(
+    float startTime, fmt::string_view format, fmt::format_args args)
 {
     const auto duration = getTime() - startTime;
 
-    std::printf("Timing: ");
-
-    std::va_list args;
-    va_start(args, fmt);
-    std::vprintf(fmt, args);
-    va_end(args);
-
-    std::printf(": %f ms\n", duration);
+    fmt::print("Timing: ");
+    fmt::vprint(format, args);
+    fmt::print(": {} ms\n", duration);
 
     std::fflush(stdout);
 }

@@ -26,11 +26,11 @@ static void testStrftime()
         const auto result = dpso::strftime(test.format, &tm);
         if (result != test.result)
             test::failure(
-                "dpso::strftime(\"%s\"): "
-                "Expected \"%s\", got \"%s\"\n",
+                "dpso::strftime(\"{}\"): "
+                "Expected \"{}\", got \"{}\"\n",
                 test.format,
                 test.result,
-                result.c_str());
+                result);
     }
 }
 

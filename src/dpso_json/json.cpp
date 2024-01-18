@@ -3,9 +3,8 @@
 
 #include <cassert>
 
+#include <fmt/core.h>
 #include <jansson.h>
-
-#include "dpso_utils/str.h"
 
 
 namespace dpso::json {
@@ -81,11 +80,11 @@ HandleUPtr loadJson(const char* data, JsonType type)
     HandleUPtr result{json_loads(data, 0, &error)};
 
     if (!result)
-        throw Error{str::printf(
-            "%i:%i: %s", error.line, error.column, error.text)};
+        throw Error{fmt::format(
+            "{}:{}: {}", error.line, error.column, error.text)};
 
     if (getType(result.get()) != type)
-        throw Error{str::printf("Root is not %s", getName(type))};
+        throw Error{fmt::format("Root is not {}", getName(type))};
 
     return result;
 }
@@ -123,14 +122,14 @@ static json_t* get(
 
     auto* val = json_object_get(object, key);
     if (!val)
-        throw Error{str::printf("No \"%s\"", key)};
+        throw Error{fmt::format("No \"{}\"", key)};
 
     if (getType(val) == JsonType::null)
-        throw Error{str::printf("\"%s\" is null", key)};
+        throw Error{fmt::format("\"{}\" is null", key)};
 
     if (getType(val) != type)
-        throw Error{str::printf(
-            "\"%s\" is not %s", key, getName(type))};
+        throw Error{fmt::format(
+            "\"{}\" is not {}", key, getName(type))};
 
     return val;
 }
@@ -200,8 +199,8 @@ static json_t* get(
 
     const auto size = json_array_size(array);
     if (idx >= size)
-        throw Error{str::printf(
-            "Index %zu is out of bounds [0, %zu)", idx, size)};
+        throw Error{fmt::format(
+            "Index {} is out of bounds [0, {})", idx, size)};
 
     auto* val = json_array_get(array, idx);
 
@@ -211,11 +210,11 @@ static json_t* get(
     assert(val);
 
     if (getType(val) == JsonType::null)
-        throw Error{str::printf("Value at index %zu is null", idx)};
+        throw Error{fmt::format("Value at index {} is null", idx)};
 
     if (getType(val) != type)
-        throw Error{str::printf(
-            "Value at index %zu is not %s", idx, getName(type))};
+        throw Error{fmt::format(
+            "Value at index {} is not {}", idx, getName(type))};
 
     return val;
 }

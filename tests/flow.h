@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "dpso_utils/printf_fn.h"
+#include <fmt/core.h>
 
 
 namespace test {
@@ -34,7 +34,13 @@ static test::Runner FN ## TestRunner(#FN, FN)
 
 // Report a test case failure, increment the failure counter, and
 // continue.
-void failure(const char* fmt, ...) DPSO_PRINTF_FN(1);
+void vFailure(fmt::string_view format, fmt::format_args args);
+
+template<typename... T>
+void failure(fmt::format_string<T...> format, T&&... args)
+{
+    vFailure(format, fmt::make_format_args(args...));
+}
 
 
 // Return the number of failure() calls.
@@ -44,7 +50,15 @@ int getNumFailures();
 // Report an abnormal error and exit. The function is intended for
 // errors that are not directly related to test cases, e.g. an IO
 // error when setting up a test.
-[[noreturn]] void fatalError(const char* fmt, ...) DPSO_PRINTF_FN(1);
+[[noreturn]]
+void vFatalError(fmt::string_view format, fmt::format_args args);
+
+template<typename... T>
+[[noreturn]]
+void fatalError(fmt::format_string<T...> format, T&&... args)
+{
+    vFatalError(format, fmt::make_format_args(args...));
+}
 
 
 }

@@ -4,7 +4,7 @@
 #include <chrono>
 #include <thread>
 
-#include "error.h"
+#include "error_set.h"
 #include "os.h"
 
 
@@ -25,7 +25,7 @@ bool dpsoExec(
         dpso::os::exec(exePath, args, numArgs);
         return true;
     } catch (dpso::os::Error& e) {
-        dpsoSetError("%s", e.what());
+        dpso::setError("{}", e.what());
         return false;
     }
 }

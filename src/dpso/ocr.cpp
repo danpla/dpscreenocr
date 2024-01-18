@@ -15,7 +15,7 @@
 #include <utility>
 #include <vector>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/progress_tracker.h"
 #include "dpso_utils/strftime.h"
 #include "dpso_utils/synchronized.h"
@@ -161,7 +161,7 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
     if (engineIdx < 0
             || static_cast<std::size_t>(engineIdx)
                 >= dpso::ocr::Engine::getCount()) {
-        dpsoSetError("engineIdx is out of bounds");
+        dpso::setError("engineIdx is out of bounds");
         return nullptr;
     }
 
@@ -191,14 +191,14 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
     };
 
     if (ocr->dataLockObserver.getIsDataLocked()) {
-        dpsoSetError("OCR data is locked");
+        dpso::setError("OCR data is locked");
         return nullptr;
     }
 
     try {
         ocr->recognizer = ocrEngine.createRecognizer(dataDir);
     } catch (dpso::ocr::RecognizerError& e) {
-        dpsoSetError("Can't create recognizer: %s", e.what());
+        dpso::setError("Can't create recognizer: {}", e.what());
         return nullptr;
     }
 
@@ -364,7 +364,7 @@ static dpso::ocr::OcrImage prepareScreenshot(
         imgBuffers[0].data(), bufferPitch);
     DPSO_END_TIMING(
         screenshotGetData,
-        "screenshot.getGrayscaleData (%ix%i px)",
+        "screenshot.getGrayscaleData ({}x{} px)",
         screenshot.getWidth(), screenshot.getHeight());
 
     dpso::ProgressTracker localProgressTracker(2, &progressTracker);
@@ -379,7 +379,7 @@ static dpso::ocr::OcrImage prepareScreenshot(
         &localProgressTracker);
     DPSO_END_TIMING(
         imageResizing,
-        "Image resizing (%ix%i px -> %ix%i px, x%i)",
+        "Image resizing ({}x{} px -> {}x{} px, x{})",
         screenshot.getWidth(), screenshot.getHeight(),
         bufferW, bufferH,
         scale);
@@ -399,7 +399,7 @@ static dpso::ocr::OcrImage prepareScreenshot(
         &localProgressTracker);
     DPSO_END_TIMING(
         unsharpMasking,
-        "Unsharp masking (radius=%i, amount=%.2f, %ix%i px)",
+        "Unsharp masking (radius={}, amount={}, {}x{} px)",
         unsharpMaskRadius, unsharpMaskAmount, bufferW, bufferH);
 
     localProgressTracker.finish();
@@ -495,32 +495,32 @@ static void threadLoop(DpsoOcr& ocr)
 bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
 {
     if (!backend) {
-        dpsoSetError("Library is not initialized");
+        dpso::setError("Library is not initialized");
         return false;
     }
 
     if (!ocr) {
-        dpsoSetError("ocr is null");
+        dpso::setError("ocr is null");
         return false;
     }
 
     if (!jobArgs) {
-        dpsoSetError("jobArgs is null");
+        dpso::setError("jobArgs is null");
         return false;
     }
 
     if (dpsoRectIsEmpty(&jobArgs->screenRect)) {
-        dpsoSetError("jobArgs->screenRect is empty");
+        dpso::setError("jobArgs->screenRect is empty");
         return false;
     }
 
     if (ocr->numActiveLangs == 0) {
-        dpsoSetError("No active languages");
+        dpso::setError("No active languages");
         return false;
     }
 
     if (ocr->dataLockObserver.getIsDataLocked()) {
-        dpsoSetError("OCR data is locked");
+        dpso::setError("OCR data is locked");
         return false;
     }
 
@@ -531,13 +531,13 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         screenshot = backend->takeScreenshot(
             dpso::Rect{jobArgs->screenRect});
     } catch (dpso::backend::ScreenshotError& e) {
-        dpsoSetError("Can't take screenshot: %s", e.what());
+        dpso::setError("Can't take screenshot: {}", e.what());
         return false;
     }
 
     DPSO_END_TIMING(
         takeScreenshot,
-        "Take screenshot (%ix%i px)",
+        "Take screenshot ({}x{} px)",
         screenshot->getWidth(),
         screenshot->getHeight());
 

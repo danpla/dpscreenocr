@@ -1,7 +1,7 @@
 
 #include "windows/error.h"
 
-#include "str.h"
+#include <fmt/core.h>
 
 
 namespace dpso::windows {
@@ -22,7 +22,7 @@ std::string getErrorMessage(DWORD error, HMODULE module)
         0, nullptr);
 
     if (size == 0)
-        return "Windows error " + std::to_string(error);
+        return fmt::format("Windows error {}", error);
 
     if (size > 1
             && messageBuf[size - 2] == '\r'
@@ -45,7 +45,7 @@ std::string getHresultMessage(HRESULT hresult)
     if (HRESULT_FACILITY(hresult) == FACILITY_WIN32)
         return getErrorMessage(HRESULT_CODE(hresult));
 
-    return str::printf("HRESULT 0x%08lX", hresult);
+    return fmt::format("HRESULT {:#010X}", hresult);
 }
 
 

@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <string>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
 
 
@@ -28,8 +28,8 @@ static const char* getDir(
         path += '/';
         path += homeFallbackDir;
     } else {
-        dpsoSetError(
-            "Neither %s nor HOME environment variable is set",
+        dpso::setError(
+            "Neither {} nor HOME environment variable is set",
             xdgHomeEnv);
         return nullptr;
     }
@@ -40,8 +40,7 @@ static const char* getDir(
     try {
         dpso::os::makeDirs(path.c_str());
     } catch (dpso::os::Error& e) {
-        dpsoSetError(
-            "os::makeDirs(\"%s\"): %s", path.c_str(), e.what());
+        dpso::setError("os::makeDirs(\"{}\"): {}", path, e.what());
         return nullptr;
     }
 

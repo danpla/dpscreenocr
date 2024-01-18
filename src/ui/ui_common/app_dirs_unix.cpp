@@ -20,7 +20,7 @@
 #include <string>
 #include <unistd.h>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 
 #include "app_dirs_unix_cfg.h"
 
@@ -73,15 +73,14 @@ bool uiInitAppDirs(const char* argv0)
     else {
         path = findExeInPath(argv0);
         if (path.empty()) {
-            dpsoSetError("Can't find \"%s\" in $PATH", argv0);
+            dpso::setError("Can't find \"{}\" in $PATH", argv0);
             return false;
         }
     }
 
     auto* realPath = realpath(path.c_str(), nullptr);
     if (!realPath) {
-        dpsoSetError(
-            "realpath(\"%s\"): %s", path.c_str(), strerror(errno));
+        dpso::setError("realpath(\"{}\"): {}", path, strerror(errno));
         return false;
     }
 

@@ -18,8 +18,8 @@ void testUtfConversion(const char* utf8Str)
         utf16Str = utf8ToUtf16(utf8Str);
     } catch (std::runtime_error& e) {
         test::failure(
-            "utf8ToUtf16(\"%s\"): %s\n",
-            test::utils::escapeStr(utf8Str).c_str(), e.what());
+            "utf8ToUtf16(\"{}\"): {}\n",
+            test::utils::escapeStr(utf8Str), e.what());
         return;
     }
 
@@ -29,19 +29,18 @@ void testUtfConversion(const char* utf8Str)
     } catch (std::runtime_error& e) {
         test::failure(
             "utf16ToUtf8() failed to convert result of "
-            "utf8ToUtf16(\"%s\"): %s\n",
-            test::utils::escapeStr(utf8Str).c_str(), e.what());
+            "utf8ToUtf16(\"{}\"): {}\n",
+            test::utils::escapeStr(utf8Str), e.what());
         return;
     }
 
     if (utf16ToUtf8Result != utf8Str)
         test::failure(
             "utf8ToUtf16() <=> utf16ToUtf8() conversion failed.\n"
-            "  Original:  %s\n"
-            "  Converted: %s\n",
-            test::utils::escapeStr(utf8Str).c_str(),
-            test::utils::escapeStr(
-                utf16ToUtf8Result.c_str()).c_str());
+            "  Original:  {}\n"
+            "  Converted: {}\n",
+            test::utils::escapeStr(utf8Str),
+            test::utils::escapeStr(utf16ToUtf8Result.c_str()));
 }
 
 
@@ -91,8 +90,8 @@ void testInvalidUtf8()
         try {
             dpso::windows::utf8ToUtf16(s);
             test::failure(
-                "utf8ToUtf16(\"%s\") doesn't throw\n",
-                test::utils::escapeStr(s).c_str());
+                "utf8ToUtf16(\"{}\") doesn't throw\n",
+                test::utils::escapeStr(s));
         } catch (std::runtime_error& e) {
         }
     }

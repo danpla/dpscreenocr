@@ -11,7 +11,7 @@
 #include <utility>
 #include <vector>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/scope_exit.h"
 #include "dpso_utils/synchronized.h"
 
@@ -237,7 +237,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
     if (engineIdx < 0
             || static_cast<std::size_t>(engineIdx)
                 >= dpso::ocr::Engine::getCount()) {
-        dpsoSetError("engineIdx is out of bounds");
+        dpso::setError("engineIdx is out of bounds");
         return nullptr;
     }
 
@@ -251,7 +251,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
         langManager->dataLock = dpso::ocr::DataLock{
             engineId.c_str(), dataDir};
     } catch (dpso::ocr::DataLock::DataLockedError& e) {
-        dpsoSetError("%s", e.what());
+        dpso::setError("{}", e.what());
         return nullptr;
     }
 
@@ -259,7 +259,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
         langManager->langManager = ocrEngine.createLangManager(
             dataDir, userAgent, infoFileUrl);
     } catch (dpso::ocr::LangManagerError& e) {
-        dpsoSetError("%s", e.what());
+        dpso::setError("{}", e.what());
         return nullptr;
     }
 
@@ -363,7 +363,7 @@ bool dpsoOcrLangOpStatusIsError(DpsoOcrLangOpStatusCode code)
 
 static void setLangOpActiveError()
 {
-    dpsoSetError("An operation is active");
+    dpso::setError("An operation is active");
 }
 
 
@@ -371,7 +371,7 @@ bool dpsoOcrLangManagerStartFetchExternalLangs(
     DpsoOcrLangManager* langManager)
 {
     if (!langManager) {
-        dpsoSetError("langManager is null");
+        dpso::setError("langManager is null");
         return false;
     }
 
@@ -410,7 +410,7 @@ bool dpsoOcrLangManagerLoadFetchedExternalLangs(
     DpsoOcrLangManager* langManager)
 {
     if (!langManager) {
-        dpsoSetError("langManager is null");
+        dpso::setError("langManager is null");
         return false;
     }
 
@@ -425,13 +425,12 @@ bool dpsoOcrLangManagerLoadFetchedExternalLangs(
     const auto fetchStatus = langManager->fetchControl.getStatus();
 
     if (fetchStatus.code == DpsoOcrLangOpStatusCodeNone) {
-        dpsoSetError("Fetching wasn't started");
+        dpso::setError("Fetching wasn't started");
         return false;
     }
 
     if (dpsoOcrLangOpStatusIsError(fetchStatus.code)) {
-        dpsoSetError(
-            "Fetching failed: %s", fetchStatus.errorText.c_str());
+        dpso::setError("Fetching failed: {}", fetchStatus.errorText);
         return false;
     }
 
@@ -510,7 +509,7 @@ static void installLangs(
 bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
 {
     if (!langManager) {
-        dpsoSetError("langManager is null");
+        dpso::setError("langManager is null");
         return false;
     }
 
@@ -532,7 +531,7 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
     }
 
     if (langIndices.empty()) {
-        dpsoSetError("No languages are marked for installation");
+        dpso::setError("No languages are marked for installation");
         return false;
     }
 
@@ -597,7 +596,7 @@ bool dpsoOcrLangManagerRemoveLang(
     DpsoOcrLangManager* langManager, int langIdx)
 {
     if (!langManager) {
-        dpsoSetError("langManager is null");
+        dpso::setError("langManager is null");
         return false;
     }
 
@@ -609,7 +608,7 @@ bool dpsoOcrLangManagerRemoveLang(
 
     auto* lang = getLang(langManager, langIdx);
     if (!lang) {
-        dpsoSetError("langIdx is out of bounds");
+        dpso::setError("langIdx is out of bounds");
         return false;
     }
 
@@ -637,7 +636,7 @@ bool dpsoOcrLangManagerRemoveLang(
     try {
         langManager->langManager->removeLang(*baseLangIdx);
     } catch (dpso::ocr::LangManagerError& e) {
-        dpsoSetError("%s", e.what());
+        dpso::setError("{}", e.what());
         return false;
     }
 

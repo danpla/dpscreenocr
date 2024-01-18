@@ -3,7 +3,7 @@
 #include <iterator>
 
 #include "dpso_ext/history.h"
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_get.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -19,11 +19,11 @@ void cmpFields(
         return;
 
     test::failure(
-        "line %i: DpsoHistoryEntry::%s: \"%s\" != \"%s\"\n",
+        "line {}: DpsoHistoryEntry::{}: \"{}\" != \"{}\"\n",
         lineNum,
         name,
-        test::utils::escapeStr(a).c_str(),
-        test::utils::escapeStr(b).c_str());
+        test::utils::escapeStr(a),
+        test::utils::escapeStr(b));
 }
 
 
@@ -49,7 +49,7 @@ void testCount(const DpsoHistory* history, int expected, int lineNum)
         return;
 
     test::failure(
-        "line %i: dpsoHistoryCount(): Expected %i, got %i\n",
+        "line {}: dpsoHistoryCount(): Expected {}, got {}\n",
         lineNum,
         expected,
         got);
@@ -86,7 +86,7 @@ void testIO(bool append)
     if (!history) {
         test::utils::removeFile(historyFileName);
         test::fatalError(
-            "testlIO(%sappend): dpsoHistoryOpen(\"%s\"): %s\n",
+            "testlIO({}append): dpsoHistoryOpen(\"{}\"): {}\n",
             append ? "" : "!",
             historyFileName,
             dpsoGetError());
@@ -103,7 +103,7 @@ void testIO(bool append)
                 test::utils::removeFile(historyFileName);
 
                 test::fatalError(
-                    "testIO(true): dpsoHistoryAppend(): %s\n",
+                    "testIO(true): dpsoHistoryAppend(): {}\n",
                     dpsoGetError());
             }
 
@@ -150,7 +150,7 @@ void testInvalidData()
 
         test::failure(
             "testInvalidData(): dpsoHistoryOpen() doesn't fail in "
-            "the \"%s\" case\n",
+            "the \"{}\" case\n",
             test.description);
     }
 }

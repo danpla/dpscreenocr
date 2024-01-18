@@ -1,12 +1,10 @@
 
 /**
  * \file
- * Error message handling.
+ * Error message handling for C APIs.
  */
 
 #pragma once
-
-#include "printf_fn.h"
 
 
 #ifdef __cplusplus
@@ -23,12 +21,6 @@ extern "C" {
  * error message on failure and dpsoGetError() should not be used.
  */
 const char* dpsoGetError(void);
-
-
-/**
- * Set error message for the current thread.
- */
-void dpsoSetError(const char* fmt, ...) DPSO_PRINTF_FN(1);
 
 
 #ifdef __cplusplus

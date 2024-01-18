@@ -1,19 +1,20 @@
 
-#include <cstdio>
 #include <cstdlib>
+
+#include <fmt/core.h>
 
 #include "flow.h"
 
 
 int main()
 {
-    int curRunnerNum = 0;
+    int curRunnerNum{};
 
     for (const auto* runner = test::Runner::getFirst();
             runner;
             runner = runner->getNext()) {
-        std::printf(
-            "%4i/%i: %s\n",
+        fmt::print(
+            "{:4}/{}: {}\n",
             ++curRunnerNum, test::Runner::getNumRunners(),
             runner->getName());
         // Flush to make sure that failure() messages (written to
@@ -22,13 +23,13 @@ int main()
         runner->run();
     }
 
-    std::printf("===\n");
+    fmt::print("===\n");
     const auto numFailures = test::getNumFailures();
     if (numFailures == 0)
-        std::printf("Everything is OK\n");
+        fmt::print("Everything is OK\n");
     else
-        std::printf(
-            "%i failure%s\n",
+        fmt::print(
+            "{} failure{}\n",
             numFailures,
             numFailures > 1 ? "s" : "");
 

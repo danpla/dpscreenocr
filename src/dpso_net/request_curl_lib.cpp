@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "dpso_utils/str.h"
+#include <fmt/core.h>
 
 #include "error.h"
 
@@ -87,7 +87,7 @@ LibInfo loadLib()
 
     for (auto v = minSoVersion; v <= maxSoVersion; ++v)
         for (const auto* name : names) {
-            const auto soName = str::printf("%s.so.%i", name, v);
+            const auto soName = fmt::format("{}.so.{}", name, v);
             if (auto* handle = dlopen(
                     soName.c_str(), RTLD_NOW | RTLD_LOCAL))
                 return {soName, DlHandleUPtr{handle}};
@@ -98,14 +98,13 @@ LibInfo loadLib()
         if (!triedSoNames.empty())
             triedSoNames += ", ";
 
-        triedSoNames += str::printf(
-            "%s.so.[%i-%i]", name, minSoVersion, maxSoVersion);
+        triedSoNames += fmt::format(
+            "{}.so.[{}-{}]", name, minSoVersion, maxSoVersion);
     }
 
-    throw Error{str::printf(
-        "Can't load libcurl. Tried names: %s. Last error: %s",
-        triedSoNames.c_str(),
-        dlerror())};
+    throw Error{fmt::format(
+        "Can't load libcurl. Tried names: {}. Last error: {}",
+        triedSoNames, dlerror())};
 }
 
 
@@ -116,9 +115,9 @@ void* loadFn(const char* name)
     if (auto* result = dlsym(libInfo.handle.get(), name))
         return result;
 
-    throw Error{str::printf(
-        "dlsym for \"%s\" from \"%s\": %s",
-        name, libInfo.name.c_str(), dlerror())};
+    throw Error{fmt::format(
+        "dlsym for \"{}\" from \"{}\": {}",
+        name, libInfo.name, dlerror())};
 }
 
 

@@ -2,10 +2,11 @@
 #include "prepare_environment.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include <fmt/core.h>
 
 
 // On some hardware, OpenMP multithreading in Tesseract 4 and 5
@@ -49,9 +50,9 @@ void uiPrepareEnvironment(char* argv[])
 
     if (setenv(
             ompThreadLimit, ompThreadLimitRequiredVal, true) == -1) {
-        fprintf(
+        fmt::print(
             stderr,
-            "setenv(\"%s\", ...): %s\n",
+            "setenv(\"{}\", ...): {}\n",
             ompThreadLimit,
             strerror(errno));
         exit(EXIT_FAILURE);
@@ -59,7 +60,7 @@ void uiPrepareEnvironment(char* argv[])
 
     execvp(*argv, argv);
 
-    fprintf(
-        stderr, "execvp(\"%s\", ...): %s", *argv, strerror(errno));
+    fmt::print(
+        stderr, "execvp(\"{}\", ...): {}", *argv, strerror(errno));
     exit(EXIT_FAILURE);
 }

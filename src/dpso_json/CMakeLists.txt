@@ -17,12 +17,10 @@ endif()
 
 target_include_directories(dpso_json PRIVATE . PUBLIC ..)
 
-if(NOT TARGET dpso_utils)
+if(NOT TARGET fmt)
     add_subdirectory(
-        ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
+        ../thirdparty/fmt "${CMAKE_BINARY_DIR}/src/thirdparty/fmt")
 endif()
-
-target_link_libraries(dpso_json PRIVATE dpso_utils)
 
 find_package(PkgConfig REQUIRED)
 
@@ -30,4 +28,5 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(JANSSON REQUIRED jansson>=2.7)
 
 target_include_directories(dpso_json PRIVATE ${JANSSON_INCLUDE_DIRS})
-target_link_libraries(dpso_json PRIVATE dpso_net ${JANSSON_LIBRARIES})
+
+target_link_libraries(dpso_json PRIVATE fmt ${JANSSON_LIBRARIES})

@@ -8,7 +8,7 @@
 #include <shobjidl.h>
 #include <versionhelpers.h>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/windows/com.h"
 #include "dpso_utils/windows/error.h"
 
@@ -23,12 +23,12 @@ struct UiTaskbar {
 UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
 {
     if (!hwnd) {
-        dpsoSetError("hwnd is null");
+        dpso::setError("hwnd is null");
         return nullptr;
     }
 
     if (!IsWindows7OrGreater()) {
-        dpsoSetError(
+        dpso::setError(
             "ITaskbarList3 is only available on Windows 7 or newer");
         return nullptr;
     }
@@ -36,10 +36,10 @@ UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
     dpso::windows::CoInitializer coInitializer{
         COINIT_APARTMENTTHREADED};
     if (!dpso::windows::coInitSuccess(coInitializer.getHresult())) {
-        dpsoSetError(
-            "COM initialization failed: %s",
+        dpso::setError(
+            "COM initialization failed: {}",
             dpso::windows::getHresultMessage(
-                coInitializer.getHresult()).c_str());
+                coInitializer.getHresult()));
         return nullptr;
     }
 
@@ -47,17 +47,17 @@ UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
     auto hresult = dpso::windows::coCreateInstance(
         CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, tbl);
     if (FAILED(hresult)) {
-        dpsoSetError(
-            "CoCreateInstance() for ITaskbarList3 failed: %s",
-            dpso::windows::getHresultMessage(hresult).c_str());
+        dpso::setError(
+            "CoCreateInstance() for ITaskbarList3 failed: {}",
+            dpso::windows::getHresultMessage(hresult));
         return nullptr;
     }
 
     hresult = tbl->HrInit();
     if (FAILED(hresult)) {
-        dpsoSetError(
-            "ITaskbarList3::HrInit(): %s",
-            dpso::windows::getHresultMessage(hresult).c_str());
+        dpso::setError(
+            "ITaskbarList3::HrInit(): {}",
+            dpso::windows::getHresultMessage(hresult));
         return nullptr;
     }
 

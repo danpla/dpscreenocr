@@ -4,10 +4,12 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <system_error>
+
+#include <fmt/core.h>
 
 #include "os.h"
 #include "sha256.h"
-#include "str.h"
 
 
 namespace dpso {
@@ -20,8 +22,8 @@ std::string calcFileSha256(const char* filePath)
 {
     os::StdFileUPtr fp{os::fopen(filePath, "rb")};
     if (!fp)
-        throw Sha256FileError{str::printf(
-            "os::fopen: %s", std::strerror(errno))};
+        throw Sha256FileError{fmt::format(
+            "os::fopen: {}", std::strerror(errno))};
 
     Sha256 h;
 
@@ -52,17 +54,21 @@ void saveSha256File(
 
     os::StdFileUPtr fp{os::fopen(sha256FilePath.c_str(), "wb")};
     if (!fp)
-        throw Sha256FileError{str::printf(
-            "os::fopen(\"%s\", \"wb\"): %s",
-            sha256FilePath.c_str(), std::strerror(errno))};
+        throw Sha256FileError{fmt::format(
+            "os::fopen(\"{}\", \"wb\"): {}",
+            sha256FilePath, std::strerror(errno))};
 
-    if (std::fprintf(
+    try {
+        fmt::print(
             fp.get(),
-            "%s *%s\n",
+            "{} *{}\n",
             digest,
-            os::getBaseName(digestSourceFilePath).c_str()) < 0)
-        throw Sha256FileError{str::printf(
-            "fprintf to \"%s\" failed", sha256FilePath.c_str())};
+            os::getBaseName(digestSourceFilePath).c_str());
+    } catch (std::system_error& e) {
+        throw Sha256FileError{fmt::format(
+            "fmt::print() to \"{}\" failed: {}",
+            sha256FilePath, e.what())};
+    }
 }
 
 
@@ -91,8 +97,8 @@ static std::string loadDigestFromSha256File(
         throw Sha256FileError{"Line doesn't start with digest"};
 
     if (digestSize != Sha256::digestSize * 2)
-        throw Sha256FileError{str::printf(
-            "Invalid digest size %zu (should be %zu for SHA-256)",
+        throw Sha256FileError{fmt::format(
+            "Invalid digest size {} (should be {} for SHA-256)",
             digestSize, Sha256::digestSize * 2)};
 
     if (*digestEnd != ' ')
@@ -100,15 +106,15 @@ static std::string loadDigestFromSha256File(
 
     const auto mode = digestEnd[1];
     if (mode != '*')
-        throw Sha256FileError{str::printf(
-            "Expected binary digest mode \"*\", but got \"%c\"",
+        throw Sha256FileError{fmt::format(
+            "Expected binary digest mode \"*\", but got \"{}\"",
             mode)};
 
     const auto* fileName = digestEnd + 2;
 
     if (std::strcmp(fileName, expectedFileName) != 0)
-        throw Sha256FileError{str::printf(
-            "Unexpected file name \"%s\" (should be \"%s\")",
+        throw Sha256FileError{fmt::format(
+            "Unexpected file name \"{}\" (should be \"{}\")",
             fileName, expectedFileName)};
 
     return {digestBegin, digestEnd};
@@ -125,17 +131,17 @@ std::string loadSha256File(const char* digestSourceFilePath)
         if (errno == ENOENT)
             return {};
 
-        throw Sha256FileError{str::printf(
-            "os::fopen(\"%s\", \"rb\"): %s",
-            sha256FilePath.c_str(), std::strerror(errno))};
+        throw Sha256FileError{fmt::format(
+            "os::fopen(\"{}\", \"rb\"): {}",
+            sha256FilePath, std::strerror(errno))};
     }
 
     try {
         return loadDigestFromSha256File(
             fp.get(), os::getBaseName(digestSourceFilePath).c_str());
     } catch (Sha256FileError& e) {
-        throw Sha256FileError{str::printf(
-            "\"%s\": %s", sha256FilePath.c_str(), e.what())};
+        throw Sha256FileError{fmt::format(
+            "\"{}\": {}", sha256FilePath, e.what())};
     }
 }
 
@@ -149,9 +155,8 @@ void removeSha256File(const char* digestSourceFilePath)
         os::removeFile(sha256FilePath.c_str());
     } catch (os::FileNotFoundError&) {
     } catch (os::Error& e) {
-        throw Sha256FileError{str::printf(
-            "os::removeFile(\"%s\"): %s",
-            sha256FilePath.c_str(), e.what())};
+        throw Sha256FileError{fmt::format(
+            "os::removeFile(\"{}\"): {}", sha256FilePath, e.what())};
     }
 }
 
@@ -163,8 +168,8 @@ std::string getSha256HexDigestWithCaching(const char* filePath)
     try {
         digest = loadSha256File(filePath);
     } catch (Sha256FileError& e) {
-        throw Sha256FileError{str::printf(
-            "Can't load digest: %s", e.what())};
+        throw Sha256FileError{fmt::format(
+            "Can't load digest: {}", e.what())};
     }
 
     if (!digest.empty())
@@ -173,15 +178,15 @@ std::string getSha256HexDigestWithCaching(const char* filePath)
     try {
         digest = calcFileSha256(filePath);
     } catch (Sha256FileError& e) {
-        throw Sha256FileError{str::printf(
-            "Can't calculate digest: %s", e.what())};
+        throw Sha256FileError{fmt::format(
+            "Can't calculate digest: {}", e.what())};
     }
 
     try {
         saveSha256File(filePath, digest.c_str());
     } catch (Sha256FileError& e) {
-        throw Sha256FileError{str::printf(
-            "Can't save digest: %s", e.what())};
+        throw Sha256FileError{fmt::format(
+            "Can't save digest: {}", e.what())};
     }
 
     return digest;

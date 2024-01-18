@@ -1,5 +1,6 @@
 
-#include "error.h"
+#include "error_get.h"
+#include "error_set.h"
 
 #include <cstdarg>
 #include <string>
@@ -16,10 +17,13 @@ const char* dpsoGetError(void)
 }
 
 
-void dpsoSetError(const char* fmt, ...)
+namespace dpso {
+
+
+void vSetError(fmt::string_view format, fmt::format_args args)
 {
-    std::va_list args;
-    va_start(args, fmt);
-    error = dpso::str::vprintf(fmt, args);
-    va_end(args);
+    error = fmt::vformat(format, args);
+}
+
+
 }

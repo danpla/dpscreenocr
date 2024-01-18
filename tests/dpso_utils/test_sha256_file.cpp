@@ -27,7 +27,7 @@ void testCalcFileSha256()
         calculatedDigest = dpso::calcFileSha256(testFileName);
     } catch (dpso::Sha256FileError& e) {
         test::failure(
-            "calcFileSha256(\"%s\"): %s\n", testFileName, e.what());
+            "calcFileSha256(\"{}\"): {}\n", testFileName, e.what());
 
         test::utils::removeFile(testFileName);
         return;
@@ -58,8 +58,8 @@ void testSaveSha256File()
             testFileName.c_str(), digest.c_str());
     } catch (dpso::Sha256FileError& e) {
         test::failure(
-            "saveSha256File(\"%s\", ...): %s\n",
-            testFileName.c_str(), e.what());
+            "saveSha256File(\"{}\", ...): {}\n",
+            testFileName, e.what());
         return;
     }
 
@@ -87,14 +87,14 @@ void testLoadNonexistentSha256File()
     } catch (dpso::Sha256FileError& e) {
         test::failure(
             "loadSha256File() threw an exception for a nonexistent "
-            "file: %s\n",
+            "file: {}\n",
             e.what());
         return;
     }
 
     if (!digest.empty())
         test::failure(
-            "loadSha256File() returned a non-empty digest \"%s\" for "
+            "loadSha256File() returned a non-empty digest \"{}\" for "
             "a nonexistent file\n",
             digest.c_str());
 }
@@ -143,8 +143,8 @@ void testLoadValidSha256File()
                 testFileName.c_str());
         } catch (dpso::Sha256FileError& e) {
             test::failure(
-                "loadSha256File() threw an exception for the \"%s\" "
-                "case: %s\n",
+                "loadSha256File() threw an exception for the \"{}\" "
+                "case: {}\n",
                 test.description, e.what());
             continue;
         }
@@ -243,7 +243,7 @@ void testLoadInvalidSha256File()
         }
 
         test::failure(
-            "loadSha256File() didn't failed for the \"%s\" case\n",
+            "loadSha256File() didn't failed for the \"{}\" case\n",
             test.description);
     }
 

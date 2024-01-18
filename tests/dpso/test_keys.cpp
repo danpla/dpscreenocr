@@ -31,7 +31,7 @@ void testHotkeyToString()
             continue;
 
         test::failure(
-            "testHotkeyToString: \"%s\" wasn't successfully parsed "
+            "testHotkeyToString: \"{}\" wasn't successfully parsed "
             "by dpsoHotkeyFromString())\n",
             str);
     }
@@ -98,11 +98,11 @@ void testHotkeyFromString()
             continue;
 
         test::failure(
-            "testHotkeyFromString: dpsoHotkeyFromString(\"%s\"): "
-            "expected \"%s\", got \"%s\"\n",
+            "testHotkeyFromString: dpsoHotkeyFromString(\"{}\"): "
+            "expected \"{}\", got \"{}\"\n",
             test.str,
-            toStr(test.expectedHotkey).c_str(),
-            toStr(got).c_str());
+            toStr(test.expectedHotkey),
+            toStr(got));
     }
 }
 

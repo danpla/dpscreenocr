@@ -3,8 +3,9 @@
 #include <initializer_list>
 #include <string>
 
+#include <fmt/core.h>
+
 #include "dpso_ext/str_nformat.h"
-#include "dpso_utils/str.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -12,7 +13,7 @@
 
 static std::string toStr(const DpsoStrNFormatArg& arg)
 {
-    return dpso::str::printf("{\"%s\": \"%s\"}", arg.name, arg.str);
+    return fmt::format("{\"{}\": \"{}\"}", arg.name, arg.str);
 }
 
 
@@ -85,11 +86,10 @@ static void testStrNFormat()
             continue;
 
         test::failure(
-            "dpsoStrNFormat(\"%s\", %s): "
-            "expected \"%s\", got \"%s\"\n",
+            "dpsoStrNFormat(\"{}\", {}): "
+            "expected \"{}\", got \"{}\"\n",
             test.str,
-            test::utils::toStr(
-                test.args.begin(), test.args.end()).c_str(),
+            test::utils::toStr(test.args.begin(), test.args.end()),
             test.expected,
             got);
     }

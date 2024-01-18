@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 
 
 struct UiSingleInstanceGuard {
@@ -41,9 +41,9 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     errno = 0;
     const auto* passwd = getpwuid(uid);
     if (!passwd) {
-        dpsoSetError(
-            "getpwuid(%lu): %s",
-            static_cast<unsigned long>(uid),
+        dpso::setError(
+            "getpwuid({}): {}",
+            uid,
             errno != 0 ? strerror(errno) : "Can't find the user");
         return {};
     }
@@ -57,9 +57,8 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     const auto fd = open(
         filePath.c_str(), O_WRONLY | O_CREAT, S_IWUSR | S_IRUSR);
     if (fd == -1) {
-        dpsoSetError(
-            "open(\"%s\", ...): %s",
-            filePath.c_str(), strerror(errno));
+        dpso::setError(
+            "open(\"{}\", ...): {}", filePath, strerror(errno));
         return {};
     }
 
@@ -71,7 +70,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     if (errno == EACCES || errno == EAGAIN)
         return new UiSingleInstanceGuard{{}, -1};
 
-    dpsoSetError("lockf(): %s", strerror(errno));
+    dpso::setError("lockf(): {}", strerror(errno));
     return {};
 }
 

@@ -4,8 +4,7 @@
 #include <string>
 
 
-namespace test {
-namespace utils {
+namespace test::utils {
 
 
 // Escape non-printable characters with C-style sequences.
@@ -77,5 +76,4 @@ void printFirstDifference(const char* expected, const char* actual);
 void removeFile(const char* filePath);
 
 
-}
 }

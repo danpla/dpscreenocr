@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "dpso_utils/error.h"
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
@@ -129,7 +129,7 @@ static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
 bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
-        dpsoSetError("cfg is null");
+        dpso::setError("cfg is null");
         return false;
     }
 
@@ -140,8 +140,8 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
         if (errno == ENOENT)
             return true;
 
-        dpsoSetError(
-            "os::fopen(..., \"rb\"): %s", std::strerror(errno));
+        dpso::setError(
+            "os::fopen(..., \"rb\"): {}", std::strerror(errno));
         return false;
     }
 
@@ -154,7 +154,7 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
     }
 
     if (std::ferror(fp.get())) {
-        dpsoSetError("Error while reading file");
+        dpso::setError("Error while reading file");
 
         cfg->keyValues.clear();
         return false;
@@ -209,14 +209,14 @@ static void writeKeyValue(
 bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
 {
     if (!cfg) {
-        dpsoSetError("cfg is null");
+        dpso::setError("cfg is null");
         return false;
     }
 
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "wb")};
     if (!fp) {
-        dpsoSetError(
-            "os::fopen(..., \"wb\"): %s", std::strerror(errno));
+        dpso::setError(
+            "os::fopen(..., \"wb\"): {}", std::strerror(errno));
         return false;
     }
 

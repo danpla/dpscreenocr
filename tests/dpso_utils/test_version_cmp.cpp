@@ -51,10 +51,10 @@ static void testVersionCmp()
             continue;
 
         test::failure(
-            "\"%s\" < \"%s\" expected to be %s\n",
+            "\"{}\" < \"{}\" expected to be {}\n",
             test.strA,
             test.strB,
-            test::utils::toStr(test.isLess).c_str());
+            test::utils::toStr(test.isLess));
     }
 }
 

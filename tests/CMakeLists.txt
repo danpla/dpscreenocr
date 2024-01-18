@@ -56,7 +56,12 @@ if(NOT TARGET dpso_utils)
         ../src/dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(tests dpso dpso_ext dpso_utils)
+if(NOT TARGET fmt)
+    add_subdirectory(
+        ../thirdparty/fmt "${CMAKE_BINARY_DIR}/src/thirdparty/fmt")
+endif()
+
+target_link_libraries(tests dpso dpso_ext dpso_utils fmt)
 
 add_executable(test_c_compilation test_c_compilation.c)
 

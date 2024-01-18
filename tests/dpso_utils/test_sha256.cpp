@@ -89,11 +89,11 @@ static void testSha256()
             continue;
 
         test::failure(
-            "SHA-256 failed for \"%s\" (repeats: %i)\n%s\n%s\n",
-            test.str.c_str(),
+            "SHA-256 failed for \"{}\" (repeats: {})\n{}\n{}\n",
+            test.str,
             test.numRepeats,
             test.digest,
-            dpso::toHex(h.getDigest()).c_str());
+            dpso::toHex(h.getDigest()));
         break;
     }
 }
