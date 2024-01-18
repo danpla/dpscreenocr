@@ -511,7 +511,7 @@ static char* getFallbackLibPath(
         return NULL;
     }
 
-    // The checks rated to the version string syntax will be done by
+    // The checks related to the version string syntax will be done by
     // parseVersion. Here we only check the symbolic link resolution.
     const size_t pathLen = strlen(path);
     if (strncmp(result, path, pathLen) != 0
