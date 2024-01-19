@@ -361,15 +361,17 @@ void testIntParsing(DpsoCfg* cfg)
 {
     const struct Test {
         const char* key;
-        const char* valInFile;
+        std::string valInFile;
         int expectedVal;
         int defaultVal;
     } tests[] = {
         {"int_minus_0", "-0", 0, 1},
         {"int_123", "123", 123, 0},
         {"int_minus_123", "-123", -123, 0},
-        {"int_too_big", "999999999999999999999999", INT_MAX, 0},
-        {"int_too_small", "-999999999999999999999999", INT_MIN, 0},
+        {"int_min", fmt::format("{}", INT_MIN), INT_MIN, 0},
+        {"int_max", fmt::format("{}", INT_MAX), INT_MAX, 0},
+        {"int_too_big", "9999999999999999999", 1, 1},
+        {"int_too_small", "-9999999999999999999", 1, 1},
         {"int_leading_0x", "0x01", 5, 5},
         {"int_leading_0", "012", 12, 1},
     };

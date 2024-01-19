@@ -47,5 +47,9 @@ if(NOT TARGET dpso_utils)
         ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
+if(NOT TARGET fmt)
+    add_subdirectory(
+        ../thirdparty/fmt "${CMAKE_BINARY_DIR}/src/thirdparty/fmt")
+endif()
 
-target_link_libraries(dpso_ext PUBLIC dpso PRIVATE dpso_utils)
+target_link_libraries(dpso_ext PUBLIC dpso PRIVATE dpso_utils fmt)

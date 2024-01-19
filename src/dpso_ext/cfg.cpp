@@ -2,14 +2,14 @@
 #include "cfg.h"
 
 #include <algorithm>
-#include <cctype>
 #include <cerrno>
-#include <climits>
+#include <charconv>
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <string>
 #include <vector>
+
+#include <fmt/core.h>
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
@@ -172,12 +172,7 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 static void writeKeyValue(
     std::FILE* fp, const DpsoCfg::KeyValue& kv, std::size_t maxKeyLen)
 {
-    os::write(fp, kv.key);
-
-    for (auto i = kv.key.size(); i < maxKeyLen; ++i)
-        os::write(fp, ' ');
-
-    os::write(fp, ' ');
+    os::write(fp, fmt::format("{:{}} ", kv.key, maxKeyLen));
 
     if (!kv.value.empty() && kv.value.front() == ' ')
         os::write(fp, '\\');
@@ -307,25 +302,21 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
     // There's no sense to allow leading or trailing whitespace around
     // numbers, since it can only occur when explicitly included,
     // implying that the user probably really wanted a string.
-    //
-    // Since strtol() uses locale-dependent isspace() to skip leading
-    // whitespace, we must also use this function instead of our
-    // ASCII-only variant.
-    if (std::isspace(static_cast<unsigned char>(*str)))
-        return defaultVal;
 
-    char* end;
-    const auto result = std::strtol(str, &end, 10);
-    if (end == str || *end)
-        return defaultVal;
+    int result{};
 
-    return std::clamp<long>(result, INT_MIN, INT_MAX);
+    const auto* strEnd = str + std::strlen(str);
+    const auto [ptr, ec] = std::from_chars(str, strEnd, result, 10);
+    if (ec == std::errc{} && ptr == strEnd)
+        return result;
+
+    return defaultVal;
 }
 
 
 void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val)
 {
-    dpsoCfgSetStr(cfg, key, std::to_string(val).c_str());
+    dpsoCfgSetStr(cfg, key, fmt::format("{}", val).c_str());
 }
 
 
