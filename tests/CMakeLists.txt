@@ -18,8 +18,7 @@ add_executable(
     dpso_utils/test_sha256.cpp
     dpso_utils/test_sha256_file.cpp
     dpso_utils/test_str.cpp
-    dpso_utils/test_strftime.cpp
-    dpso_utils/test_version_cmp.cpp)
+    dpso_utils/test_strftime.cpp)
 
 if(WIN32)
     target_sources(
