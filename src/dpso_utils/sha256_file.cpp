@@ -64,7 +64,7 @@ void saveSha256File(
             fp.get(),
             "{} *{}\n",
             digest,
-            os::getBaseName(digestSourceFilePath).c_str());
+            os::getBaseName(digestSourceFilePath));
     } catch (std::system_error& e) {
         throw Sha256FileError{fmt::format(
             "fmt::print() to \"{}\": {}", sha256FilePath, e.what())};
