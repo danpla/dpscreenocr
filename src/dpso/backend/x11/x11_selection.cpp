@@ -1,7 +1,8 @@
 
 #include "backend/x11/x11_selection.h"
 
-#include <cstdlib>
+#include <charconv>
+#include <cstring>
 
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
@@ -54,14 +55,19 @@ static int getDpi(Display* display)
     // also allow to set windows scale factor. We should probably take
     // this into account in the future. See:
     // https://wiki.archlinux.org/title/HiDPI
-    if (const auto* dpiStr = XGetDefault(display, "Xft", "dpi"))
+    const auto* dpiStr = XGetDefault(display, "Xft", "dpi");
+    if (!dpiStr)
         // Xft.dpi may be unset when the default 96 is used.
-        //
-        // Xft.dpi is usually written as an integer, but Xft itself
-        // parses it as a double. We treat it as int, ignoring the
-        // fractional part, so that we don't depend on the current
-        // locale by using strtod() and similar routines.
-        return std::atoi(dpiStr);
+        return baseDpi;
+
+    // Xft.dpi is usually written as an integer, but Xft parses it as
+    // a double. We treat it as int, ignoring the fractional part.
+    if (int dpi{}; std::from_chars(
+            dpiStr,
+            dpiStr + std::strlen(dpiStr),
+            dpi,
+            10).ec == std::errc{})
+        return dpi;
 
     return baseDpi;
 }

@@ -2,8 +2,8 @@
 #include "backend/x11/x11_screenshot.h"
 
 #include <cassert>
-#include <string>
 
+#include <fmt/core.h>
 #include <X11/Xutil.h>
 
 #include "backend/screenshot_error.h"
@@ -180,10 +180,8 @@ void X11Screenshot::getGrayscaleData(
             makeExpander(image->depth == 16 ? 6 : 5),
             makeExpander(5));
     } else
-        throw ScreenshotError(
-            "Bit depth "
-            + std::to_string(image->bits_per_pixel)
-            + " is not supported");
+        throw ScreenshotError(fmt::format(
+            "Bit depth {} is not supported", image->bits_per_pixel));
 }
 
 
