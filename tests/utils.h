@@ -49,8 +49,7 @@ std::string toStr(T begin, T end)
 
 
 // Convert all line feeds (\n) to native line endings for the current
-// platform. This function uses the same line endings as written by
-// fopen() without the "b" flag.
+// platform.
 std::string lfToNativeNewline(const char* str);
 
 

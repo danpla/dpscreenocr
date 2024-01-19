@@ -20,8 +20,8 @@ std::string escapeStr(const char* str)
 {
     std::string result;
 
-    while (*str) {
-        switch (const auto c = *str++; c) {
+    while (*str)
+        switch (const auto c = *str++) {
         case '\b':
             result += "\\b";
             break;
@@ -49,7 +49,6 @@ std::string escapeStr(const char* str)
             break;
         }
         }
-    }
 
     return result;
 }
@@ -103,16 +102,20 @@ void saveText(
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "wb")};
     if (!fp)
         test::fatalError(
-            "{}: saveText(): dpsoFopen(\"{}\", \"wb\"): {}\n",
+            "{}: saveText(): os::fopen(\"{}\", \"wb\"): {}\n",
             contextInfo,
             filePath,
             std::strerror(errno));
 
-    if (std::fputs(text, fp.get()) == EOF)
+    try {
+        dpso::os::write(fp.get(), text);
+    } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: saveText(): fputs() to \"{}\" failed\n",
+            "{}: saveText(): os::write() to \"{}\": {}\n",
             contextInfo,
-            filePath);
+            filePath,
+            e.what());
+    }
 }
 
 
@@ -121,7 +124,7 @@ std::string loadText(const char* contextInfo, const char* filePath)
     dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
     if (!fp)
         test::fatalError(
-            "{}: loadText(): dpsoFopen(\"{}\", \"rb\"): {}\n",
+            "{}: loadText(): os::fopen(\"{}\", \"rb\"): {}\n",
             contextInfo,
             filePath,
             std::strerror(errno));
@@ -130,20 +133,21 @@ std::string loadText(const char* contextInfo, const char* filePath)
 
     char buf[4096];
     while (true) {
-        const auto numRead = std::fread(
-            buf, 1, sizeof(buf), fp.get());
+        std::size_t numRead{};
+        try {
+            numRead = dpso::os::readSome(fp.get(), buf, sizeof(buf));
+        } catch (dpso::os::Error& e) {
+            test::fatalError(
+                "{}: loadText(): os::readSome() from \"{}\": {}\n",
+                contextInfo,
+                filePath,
+                e.what());
+        }
 
         result.append(buf, numRead);
 
-        if (numRead < sizeof(buf)) {
-            if (std::ferror(fp.get()))
-                test::fatalError(
-                    "{}: loadText(): fread() from \"{}\" failed\n",
-                    contextInfo,
-                    filePath);
-
+        if (numRead < sizeof(buf))
             break;
-        }
     }
 
     return result;
