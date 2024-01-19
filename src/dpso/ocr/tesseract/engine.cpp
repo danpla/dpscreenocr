@@ -55,8 +55,7 @@ public:
             getDataDirPreference(),
             getDataDirPreference()
                     == EngineInfo::DataDirPreference::preferExplicit
-                && hasLangManager()
-        }
+                && hasLangManager()}
     {
     }
 

@@ -153,8 +153,7 @@ void History::clear()
         return;
 
     if (!confirmDestructiveAction(
-            this,
-            _("Clear the history?"), _("Cancel"), _("Clear")))
+            this, _("Clear the history?"), _("Cancel"), _("Clear")))
         return;
 
     if (!dpsoHistoryClear(history.get())) {

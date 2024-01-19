@@ -206,18 +206,18 @@ struct ModNameInfo {
 
 const ModNameInfo modNameInfos[] = {
     {dpsoKeyModCtrl, "Ctrl", {}},
-    {dpsoKeyModAlt, "Alt",
+    {
+        dpsoKeyModAlt,
+        "Alt",
         {
-            {KeyPlatformId::macos, "Option"},
-        }
-    },
+            {KeyPlatformId::macos, "Option"}}},
     {dpsoKeyModShift, "Shift", {}},
-    {dpsoKeyModWin, "Windows",
+    {
+        dpsoKeyModWin,
+        "Windows",
         {
             {KeyPlatformId::macos, "Command"},
-            {KeyPlatformId::unix, "Super"},
-        }
-    },
+            {KeyPlatformId::unix, "Super"}}},
 };
 static_assert(std::size(modNameInfos) == dpsoNumKeyMods);
 

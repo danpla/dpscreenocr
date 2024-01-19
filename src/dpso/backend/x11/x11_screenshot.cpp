@@ -190,8 +190,7 @@ std::unique_ptr<Screenshot> takeX11Screenshot(
 {
     auto* screen = XDefaultScreenOfDisplay(display);
     const Rect screenRect{
-        0, 0, XWidthOfScreen(screen), XHeightOfScreen(screen)
-    };
+        0, 0, XWidthOfScreen(screen), XHeightOfScreen(screen)};
     const auto captureRect = getIntersection(rect, screenRect);
     if (isEmpty(captureRect))
         throw ScreenshotError("Rect is outside screen bounds");

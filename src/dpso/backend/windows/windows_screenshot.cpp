@@ -90,8 +90,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
         GetSystemMetrics(SM_XVIRTUALSCREEN),
         GetSystemMetrics(SM_YVIRTUALSCREEN),
         GetSystemMetrics(SM_CXVIRTUALSCREEN),
-        GetSystemMetrics(SM_CYVIRTUALSCREEN)
-    };
+        GetSystemMetrics(SM_CYVIRTUALSCREEN)};
 
     const auto captureRect = getIntersection(rect, virtualScreenRect);
     if (isEmpty(captureRect))

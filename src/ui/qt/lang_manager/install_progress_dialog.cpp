@@ -185,8 +185,7 @@ void InstallProgressDialog::timerEvent(QTimerEvent* event)
         {
             {"name", *langName ? gettext(langName) : langCode},
             {"current", std::to_string(progress.curLangNum).c_str()},
-            {"total", std::to_string(progress.totalLangs).c_str()},
-        }));
+            {"total", std::to_string(progress.totalLangs).c_str()}}));
 }
 
 

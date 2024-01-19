@@ -238,8 +238,7 @@ const HotkeyTest hotkeyTests[] = {
     {"hotkey_none", {dpsoNoKey, dpsoNoKeyMods}},
     {
         "hotkey_mods_only",
-        {dpsoNoKey, dpsoKeyModShift | dpsoKeyModCtrl}
-    },
+        {dpsoNoKey, dpsoKeyModShift | dpsoKeyModCtrl}},
     {"hotkey_key_only", {dpsoKeyA, dpsoNoKeyMods}},
     {"hotkey", {dpsoKeyA, dpsoKeyModShift | dpsoKeyModCtrl}},
 };
@@ -421,110 +420,92 @@ void testHotkeyParsing(DpsoCfg* cfg)
             "hotkey_empty",
             "",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoNoKeyMods}
-        },
+            {dpsoKeyA, dpsoNoKeyMods}},
         {
             "hotkey_a_upper",
             "A",
             {dpsoKeyA, dpsoNoKeyMods},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_a_lower",
             "a",
             {dpsoKeyA, dpsoNoKeyMods},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_ctrl_a",
             "ctRL+A",
             {dpsoKeyA, dpsoKeyModCtrl},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_ctrl_a_a",
             "Ctrl+A+A",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoKeyModCtrl}
-        },
+            {dpsoKeyA, dpsoKeyModCtrl}},
         {
             "hotkey_ctrl_ctrl_a",
             "Ctrl+Ctrl+A",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoKeyModCtrl}
-        },
+            {dpsoKeyA, dpsoKeyModCtrl}},
         {
             "hotkey_a_ctrl",
             "A+Ctrl",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoKeyModCtrl}
-        },
+            {dpsoKeyA, dpsoKeyModCtrl}},
         {
             "hotkey_with_blanks",
             " \t Ctrl \t + \t A \t ",
             {dpsoKeyA, dpsoKeyModCtrl},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_with_cr",
             "\rA",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoNoKeyMods}
-        },
+            {dpsoKeyA, dpsoNoKeyMods}},
         {
             "hotkey_with_lf",
             "\nA",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoNoKeyMods}
-        },
+            {dpsoKeyA, dpsoNoKeyMods}},
         {
             "hotkey_leading_plus",
             "+A",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoNoKeyMods}
-        },
+            {dpsoKeyA, dpsoNoKeyMods}},
         {
             "hotkey_trailing_plus",
             "A+",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoNoKeyMods}
-        },
+            {dpsoKeyA, dpsoNoKeyMods}},
         {
             "hotkey_extra_plus_inside",
             "Ctrl++A",
             dpsoEmptyHotkey,
-            {dpsoKeyA, dpsoKeyModCtrl}
-        },
+            {dpsoKeyA, dpsoKeyModCtrl}},
         {
             "hotkey_keypad_plus",
             "Keypad +",
             {dpsoKeyKpPlus, dpsoNoKeyMods},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_ctrl",
             "Ctrl",
             {dpsoNoKey, dpsoKeyModCtrl},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_option",
             "Option",
             {dpsoNoKey, dpsoKeyModAlt},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_command",
             "Command",
             {dpsoNoKey, dpsoKeyModWin},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
         {
             "hotkey_super",
             "Super",
             {dpsoNoKey, dpsoKeyModWin},
-            dpsoEmptyHotkey
-        },
+            dpsoEmptyHotkey},
     };
 
     for (const auto& test : tests) {

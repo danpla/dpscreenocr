@@ -40,6 +40,5 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
         internalInfo.name.c_str(),
         internalInfo.version.c_str(),
         dataDirPreference,
-        internalInfo.hasLangManager
-    };
+        internalInfo.hasLangManager};
 }

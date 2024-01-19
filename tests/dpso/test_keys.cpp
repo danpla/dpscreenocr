@@ -73,8 +73,7 @@ void testHotkeyFromString()
         {"Alt+Shift+Ctrl+Windows+A", {dpsoKeyA, allMods}},
         {
             "  CTRL  +  alt  +  shifT  +  WiNdows  +  a  ",
-            {dpsoKeyA, allMods}
-        },
+            {dpsoKeyA, allMods}},
         {"Ctrl+Alt+Shift+Windows+Keypad +", {dpsoKeyKpPlus, allMods}},
 
         {"\t Ctrl\t +\t A\t ", {dpsoKeyA, dpsoKeyModCtrl}},

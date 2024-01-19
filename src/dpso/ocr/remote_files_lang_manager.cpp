@@ -225,8 +225,7 @@ RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
                     code,
                     fileInfo.getStr("sha256"),
                     fileInfo.getInt("size"),
-                    fileInfo.getStr("url")
-                });
+                    fileInfo.getStr("url")});
         } catch (json::Error& e) {
             throw json::Error{fmt::format(
                 "File info at index {}: {}", i, e.what())};
@@ -330,8 +329,7 @@ void RemoteFilesLangManager::addRemoteLang(
             remoteLangInfo.code,
             LangState::notInstalled,
             remoteLangInfo.sha256,
-            remoteLangInfo.url
-        });
+            remoteLangInfo.url});
 }
 
 

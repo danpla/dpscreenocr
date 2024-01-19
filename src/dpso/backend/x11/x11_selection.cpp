@@ -228,26 +228,22 @@ void X11Selection::updateWindowShape()
             0,
             0,
             static_cast<unsigned short>(windowW),
-            static_cast<unsigned short>(borderWidth)
-        },
+            static_cast<unsigned short>(borderWidth)},
         {
             0,
             static_cast<short>(borderWidth),
             static_cast<unsigned short>(borderWidth),
-            static_cast<unsigned short>(sideH)
-        },
+            static_cast<unsigned short>(sideH)},
         {
             static_cast<short>(windowW - borderWidth),
             static_cast<short>(borderWidth),
             static_cast<unsigned short>(borderWidth),
-            static_cast<unsigned short>(sideH)
-        },
+            static_cast<unsigned short>(sideH)},
         {
             0,
             static_cast<short>(windowH - borderWidth),
             static_cast<unsigned short>(windowW),
-            static_cast<unsigned short>(borderWidth)
-        },
+            static_cast<unsigned short>(borderWidth)},
     };
 
     XShapeCombineRectangles(

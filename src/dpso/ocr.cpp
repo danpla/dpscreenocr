@@ -129,8 +129,7 @@ static void reloadLangs(DpsoOcr& ocr)
                 ocr.recognizer->getLangCode(i),
                 ocr.recognizer->getLangName(i),
                 i,
-                false
-            });
+                false});
 
     std::sort(
         ocr.langs.begin(), ocr.langs.end(),
@@ -549,8 +548,7 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs)
         std::move(screenshot),
         getActiveLangIndices(*ocr),
         ocrFeatures,
-        createTimestamp()
-    };
+        createTimestamp()};
 
     auto link = ocr->link.getLock();
 
@@ -603,13 +601,11 @@ void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results)
             {
                 result.ocrResult.text.c_str(),
                 result.ocrResult.text.size(),
-                result.timestamp.c_str()
-            });
+                result.timestamp.c_str()});
 
     *results = {
         ocr->returnedResults.data(),
-        static_cast<int>(ocr->returnedResults.size())
-    };
+        static_cast<int>(ocr->returnedResults.size())};
 }
 
 

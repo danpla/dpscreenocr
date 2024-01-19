@@ -242,10 +242,7 @@ bool LangManagerPageRemove::performAction(
             {{"count", std::to_string(langCodes.size()).c_str()}});
 
     if (!confirmDestructiveAction(
-            this,
-            questionText,
-            _("Cancel"),
-            _("Remove")))
+            this, questionText, _("Cancel"), _("Remove")))
         return false;
 
     QString detailedErrorText;

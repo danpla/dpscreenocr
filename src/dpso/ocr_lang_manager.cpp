@@ -62,8 +62,7 @@ void reloadLangs(
                 langManager.getLangCode(i),
                 langManager.getLangName(i),
                 langManager.getLangState(i),
-                false
-            });
+                false});
 
     std::sort(
         langs.begin(), langs.end(),
@@ -494,8 +493,7 @@ static void installLangs(
                     langIdx,
                     progress,
                     static_cast<int>(i + 1),
-                    static_cast<int>(langIndices.size())
-                };
+                    static_cast<int>(langIndices.size())};
 
                 return !*cancelRequested.getLock();
             });
@@ -536,8 +534,7 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
     }
 
     langManager->installProgress = {
-        langIndices[0], 0, 1, static_cast<int>(langIndices.size())
-    };
+        langIndices[0], 0, 1, static_cast<int>(langIndices.size())};
 
     langManager->installControl = langManager->langOpExecutor.execute(
         [
@@ -551,8 +548,7 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
                     langManager->installProgress = {-1, 0, 0, 0};
                 }};
 
-            installLangs(
-                *langManager, langIndices, cancelRequested);
+            installLangs(*langManager, langIndices, cancelRequested);
         });
 
     return true;

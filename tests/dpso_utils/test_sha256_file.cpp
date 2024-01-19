@@ -115,20 +115,16 @@ void testLoadValidSha256File()
     } tests[] = {
         {
             "Normal",
-            digest + " *" + testFileName + "\n"
-        },
+            digest + " *" + testFileName + "\n"},
         {
             "CRLF",
-            digest + " *" + testFileName + "\r\n"
-        },
+            digest + " *" + testFileName + "\r\n"},
         {
             "CR only",
-            digest + " *" + testFileName + "\r"
-        },
+            digest + " *" + testFileName + "\r"},
         {
             "No trailing newline",
-            digest + " *" + testFileName
-        },
+            digest + " *" + testFileName},
     };
 
     for (const auto& test : tests) {
@@ -175,59 +171,26 @@ void testLoadInvalidSha256File()
         const char* description;
         std::string data;
     } tests[] = {
-        {
-            "Leading spaces",
-            " " + digest + " *" + testFileName
-        },
-        {
-            "Trailing spaces",
-            digest + " *" + testFileName + " "
-        },
-        {
-            "Extra digest separators",
-            digest + "   *" + testFileName
-        },
-        {
-            "Text digest mode",
-            digest + "  " + testFileName
-        },
-        {
-            "Invalid digest mode",
-            digest + " |" + testFileName
-        },
-        {
-            "No digest",
-            " *" + testFileName
-        },
-        {
-            "Only digest",
-            digest
-        },
-        {
-            "No file name",
-            digest + " *"
-        },
+        {"Leading spaces", " " + digest + " *" + testFileName},
+        {"Trailing spaces", digest + " *" + testFileName + " "},
+        {"Extra digest separators", digest + "   *" + testFileName},
+        {"Text digest mode", digest + "  " + testFileName},
+        {"Invalid digest mode", digest + " |" + testFileName},
+        {"No digest", " *" + testFileName},
+        {"Only digest", digest},
+        {"No file name", digest + " *" },
         {
             "Truncated digest",
-            digest.substr(digest.size() - 2) + " *" + testFileName
-        },
-        {
-            "Overlong digest",
-            digest + "ab *" + testFileName
-        },
-        {
-            "Unexpected file name",
-            digest + " *" + "unexpected"
-        },
+            digest.substr(digest.size() - 2) + " *" + testFileName},
+        {"Overlong digest", digest + "ab *" + testFileName},
+        {"Unexpected file name", digest + " *" + "unexpected"},
         {
             "Two digest lines",
             digest + " *" + testFileName + "\n"
-            + digest + " *" + testFileName
-        },
+            + digest + " *" + testFileName},
         {
             "Two trailing line feeds",
-            digest + " *" + testFileName + "\n\n"
-        },
+            digest + " *" + testFileName + "\n\n"},
     };
 
     for (const auto& test : tests) {

@@ -174,8 +174,7 @@ void About::handleLinkHover(const QString &link)
     QToolTip::showText(
         QCursor::pos(),
         url.isLocalFile()
-            ? QDir::toNativeSeparators(url.toLocalFile())
-            : link);
+            ? QDir::toNativeSeparators(url.toLocalFile()) : link);
 }
 
 

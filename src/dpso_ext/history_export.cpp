@@ -218,8 +218,7 @@ void dpsoHistoryGetExportFormatInfo(
     *exportFormatInfo = {
         info.name,
         info.extensions.data(),
-        static_cast<int>(info.extensions.size())
-    };
+        static_cast<int>(info.extensions.size())};
 }
 
 

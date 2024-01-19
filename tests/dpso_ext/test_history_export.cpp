@@ -140,9 +140,7 @@ void testExport()
             ""
             ,
             "[\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "Empty entry",
             {{"", ""}},
@@ -162,9 +160,7 @@ void testExport()
             "    \"timestamp\": \"\",\n"
             "    \"text\": \"\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "Two empty entries",
             {{"", ""}, {"", ""}},
@@ -195,9 +191,7 @@ void testExport()
             "    \"timestamp\": \"\",\n"
             "    \"text\": \"\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "Single entry",
             {{"ts", "text"}}
@@ -219,9 +213,7 @@ void testExport()
             "    \"timestamp\": \"ts\",\n"
             "    \"text\": \"text\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "Two entries",
             {{"ts 1", "text 1"}, {"ts 2", "text 2"}},
@@ -254,9 +246,7 @@ void testExport()
             "    \"timestamp\": \"ts 2\",\n"
             "    \"text\": \"text 2\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "Multiline text",
             {{"ts line 1\nts line 2", "text line 1\ntext line 2"}},
@@ -279,9 +269,7 @@ void testExport()
             "    \"timestamp\": \"ts line 1 ts line 2\",\n"
             "    \"text\": \"text line 1\\ntext line 2\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "Text with trailing newline",
             {{"ts", "text\n"}},
@@ -303,9 +291,7 @@ void testExport()
             "    \"timestamp\": \"ts\",\n"
             "    \"text\": \"text\\n\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "HTML entities",
             {{"'\"<>&", "'\"<>&"}},
@@ -326,9 +312,7 @@ void testExport()
             "    \"timestamp\": \"'\\\"<>&\",\n"
             "    \"text\": \"'\\\"<>&\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
         {
             "JSON escape sequences",
             // \320\264 is Д in UTF-8
@@ -351,9 +335,7 @@ void testExport()
             "    \"timestamp\": \"\\b\\f \\r\\t\320\264\",\n"
             "    \"text\": \"\\b \\n\\r\\t\320\264\"\n"
             "  }\n"
-            "]\n"
-            ,
-        },
+            "]\n"},
     };
 
     const auto* historyFileName = "test_history_export.txt";

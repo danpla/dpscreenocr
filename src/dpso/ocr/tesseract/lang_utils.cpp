@@ -92,8 +92,7 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
             result.push_back(
                 {
                     langCode.c_str(),
-                    static_cast<std::size_t>(langCode.size())
-                });
+                    static_cast<std::size_t>(langCode.size())});
     }
 
     #endif

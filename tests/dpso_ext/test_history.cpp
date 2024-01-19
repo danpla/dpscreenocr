@@ -76,8 +76,7 @@ void testIO(bool append)
         {{"ts4", "text4"}, {}},
         {
             {"ts5 \n\n\f\n a \f\n", "text5 \n\n\f\n line \f\n"},
-            {"ts5   \f  a \f ", "text5 \n\n \n line  \n"},
-        },
+            {"ts5   \f  a \f ", "text5 \n\n \n line  \n"}},
     };
 
     const auto numTests = std::size(tests);

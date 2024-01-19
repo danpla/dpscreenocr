@@ -57,28 +57,23 @@ void testPathSplit()
         {
             "\\\\?\\UNC\\server\\share",
             "\\\\?\\UNC\\server\\share",
-            ""
-        },
+            ""},
         {
             "\\\\?\\UNC\\server\\share\\",
             "\\\\?\\UNC\\server\\share\\",
-            ""
-        },
+            ""},
         {
             "\\\\?\\UNC\\server\\share\\a",
             "\\\\?\\UNC\\server\\share\\",
-            "a"
-        },
+            "a"},
         {
             "\\\\?\\UNC\\server\\share\\a\\b",
             "\\\\?\\UNC\\server\\share\\a",
-            "b"
-        },
+            "b"},
         {
             "\\\\?\\unC\\server\\share",
             "\\\\?\\unC\\server\\share",
-            ""
-        },
+            ""},
 
         #else
 

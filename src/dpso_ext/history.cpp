@@ -200,8 +200,7 @@ bool dpsoHistoryAppend(
 
     DpsoHistory::Entry e{
         replaceReservedChar(entry->timestamp, '\n'),
-        replaceReservedChar(entry->text, '\f')
-    };
+        replaceReservedChar(entry->text, '\f')};
 
     auto* fp = history->fp.get();
 

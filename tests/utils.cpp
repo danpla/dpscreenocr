@@ -40,14 +40,12 @@ std::string escapeStr(const char* str)
         case '\\':
             result += "\\\\";
             break;
-        default: {
+        default:
             if (std::isprint(static_cast<unsigned char>(c)))
                 result += c;
             else
                 result += fmt::format("\\x{:02x}", c);
-
             break;
-        }
         }
 
     return result;

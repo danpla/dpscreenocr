@@ -14,7 +14,7 @@ int main()
             runner;
             runner = runner->getNext()) {
         fmt::print(
-            "{:4}/{}: {}\n",
+            "{:3}/{}: {}\n",
             ++curRunnerNum, test::Runner::getNumRunners(),
             runner->getName());
         // Flush to make sure that failure() messages (written to

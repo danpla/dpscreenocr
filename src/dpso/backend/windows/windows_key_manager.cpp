@@ -89,8 +89,7 @@ static DpsoHotkey atomNameToHotkey(const wchar_t* name)
 
     return {
         static_cast<DpsoKey>((atom & keyMask) >> modsBits),
-        static_cast<DpsoKeyMods>(atom & modsMask)
-    };
+        static_cast<DpsoKeyMods>(atom & modsMask)};
 }
 
 
