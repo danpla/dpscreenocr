@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <charconv>
 #include <string>
 
 #include <curl/curl.h>
@@ -327,25 +328,39 @@ std::size_t CurlResponse::curlHeaderFn(
 
         if (const auto spacePos = std::find(data, dataEnd, ' ');
                 spacePos != dataEnd)
-            try {
-                resp.statusCode = std::stoi(
-                    std::string{spacePos + 1, dataEnd});
-            } catch (std::logic_error&)
-            {
-            }
+            std::from_chars(
+                spacePos + 1, dataEnd, resp.statusCode, 10);
     } else if (const auto colonPos = std::find(data, dataEnd, ':');
             colonPos != dataEnd
             && str::cmpSubStr(
                 "Content-Length",
                 data,
                 colonPos - data,
-                str::cmpIgnoreCase) == 0)
-        try {
-            resp.contentLength = std::stoll(
-                std::string{colonPos + 1, dataEnd});
-        } catch (std::logic_error&)
-        {
-        }
+                str::cmpIgnoreCase) == 0) {
+        // According to RFC 9112, a header value may contain leading
+        // or trailing whitespace (spaces and horizontal tabs), which
+        // should be ignored.
+        const auto* valBegin = colonPos + 1;
+        while (valBegin < dataEnd && str::isBlank(*valBegin))
+            ++valBegin;
+
+        const auto* valEnd = dataEnd;
+
+        // cURL doesn't exclude CRLF from headers.
+        if (valEnd - valBegin > 1
+                && valEnd[-2] == '\r'
+                && valEnd[-1] == '\n')
+            valEnd -= 2;
+
+        while (valBegin < valEnd && str::isBlank(valEnd[-1]))
+            --valEnd;
+
+        std::int64_t contentLength{};
+        const auto [ptr, ec] = std::from_chars(
+            valBegin, valEnd, contentLength, 10);
+        if (ec == std::errc{} && ptr == valEnd && contentLength >= 0)
+            resp.contentLength = contentLength;
+    }
 
     return dataSize;
 }
