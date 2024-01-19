@@ -12,6 +12,9 @@
 #include "dpso_utils/os.h"
 
 
+using namespace dpso;
+
+
 // Each entry in a history file consists of a timestamp, two line
 // feeds (\n\n), and the actual text. Entries are separated by a form
 // feed and a line feed (\f\n).
@@ -25,33 +28,32 @@ struct DpsoHistory {
 
     std::string filePath;
     std::vector<Entry> entries;
-    dpso::os::StdFileUPtr fp;
+    os::StdFileUPtr fp;
 };
 
 
 static bool loadData(const char* filePath, std::string& data)
 {
     try {
-        data.resize(dpso::os::getFileSize(filePath));
-    } catch (dpso::os::FileNotFoundError&) {
+        data.resize(os::getFileSize(filePath));
+    } catch (os::FileNotFoundError&) {
         data.clear();
         return true;
-    } catch (dpso::os::Error& e) {
-        dpso::setError("os::getFileSize(): {}", e.what());
+    } catch (os::Error& e) {
+        setError("os::getFileSize(): {}", e.what());
         return false;
     }
 
-    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
+    os::StdFileUPtr fp{os::fopen(filePath, "rb")};
     if (!fp) {
-        dpso::setError(
-            "os::fopen(..., \"rb\"): {}", std::strerror(errno));
+        setError("os::fopen(..., \"rb\"): {}", std::strerror(errno));
         return false;
     }
 
     try {
-        dpso::os::read(fp.get(), data.data(), data.size());
-    } catch (dpso::os::Error& e) {
-        dpso::setError("os::read(): {}", e.what());
+        os::read(fp.get(), data.data(), data.size());
+    } catch (os::Error& e) {
+        setError("os::read(): {}", e.what());
         return false;
     }
 
@@ -70,7 +72,7 @@ static bool createEntries(
             ++s;
 
         if (*s != '\n' || s[1] != '\n') {
-            dpso::setError(
+            setError(
                 "No \\n\\n terminator for timestamp at {}\n",
                 timestampBegin - data);
             return false;
@@ -91,14 +93,14 @@ static bool createEntries(
 
         if (*s == '\f') {
             if (s[1] != '\n') {
-                dpso::setError(
+                setError(
                     "Unexpected {:#04x} after \\f at {}",
                     s[1], s - data);
                 return false;
             }
 
             if (!s[2]) {
-                dpso::setError("\\f\\n at end of file");
+                setError("\\f\\n at end of file");
                 return false;
             }
 
@@ -110,22 +112,22 @@ static bool createEntries(
 }
 
 
-static dpso::os::StdFileUPtr openSync(
+static os::StdFileUPtr openSync(
     const char* filePath, const char* mode)
 {
-    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, mode)};
+    os::StdFileUPtr fp{os::fopen(filePath, mode)};
     if (!fp) {
-        dpso::setError(
+        setError(
             "os::fopen(..., \"{}\"): {}", mode, std::strerror(errno));
         return nullptr;
     }
 
-    const auto fileDir = dpso::os::getDirName(filePath);
+    const auto fileDir = os::getDirName(filePath);
 
     try {
-        dpso::os::syncDir(fileDir.empty() ? "." : fileDir.c_str());
-    } catch (dpso::os::Error& e) {
-        dpso::setError("os::syncDir(): {}", e.what());
+        os::syncDir(fileDir.empty() ? "." : fileDir.c_str());
+    } catch (os::Error& e) {
+        setError("os::syncDir(): {}", e.what());
         return nullptr;
     }
 
@@ -184,17 +186,17 @@ bool dpsoHistoryAppend(
     DpsoHistory* history, const DpsoHistoryEntry* entry)
 {
     if (!history) {
-        dpso::setError("history is null");
+        setError("history is null");
         return false;
     }
 
     if (!entry) {
-        dpso::setError("entry is null");
+        setError("entry is null");
         return false;
     }
 
     if (!history->fp) {
-        dpso::setError("{}", failureStateErrorMsg);
+        setError("{}", failureStateErrorMsg);
         return false;
     }
 
@@ -206,27 +208,27 @@ bool dpsoHistoryAppend(
 
     try {
         if (!history->entries.empty())
-            dpso::os::write(fp, "\f\n");
+            os::write(fp, "\f\n");
 
-        dpso::os::write(fp, e.timestamp);
-        dpso::os::write(fp, "\n\n");
-        dpso::os::write(fp, e.text);
-    } catch (dpso::os::Error& e) {
-        dpso::setError("os::write(): {}", e.what());
+        os::write(fp, e.timestamp);
+        os::write(fp, "\n\n");
+        os::write(fp, e.text);
+    } catch (os::Error& e) {
+        setError("os::write(): {}", e.what());
         history->fp.reset();
         return false;
     }
 
     if (std::fflush(fp) == EOF) {
-        dpso::setError("fflush() failed");
+        setError("fflush() failed");
         history->fp.reset();
         return false;
     }
 
     try {
-        dpso::os::syncFile(fp);
-    } catch (dpso::os::Error& e) {
-        dpso::setError("os::syncFile(): {}", e.what());
+        os::syncFile(fp);
+    } catch (os::Error& e) {
+        setError("os::syncFile(): {}", e.what());
         history->fp.reset();
         return false;
     }
@@ -261,12 +263,12 @@ void dpsoHistoryGet(
 bool dpsoHistoryClear(DpsoHistory* history)
 {
     if (!history) {
-        dpso::setError("history is null");
+        setError("history is null");
         return false;
     }
 
     if (!history->fp) {
-        dpso::setError("{}", failureStateErrorMsg);
+        setError("{}", failureStateErrorMsg);
         return false;
     }
 

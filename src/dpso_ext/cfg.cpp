@@ -225,10 +225,8 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
     }
 
     std::size_t maxKeyLen{};
-
     for (const auto& kv : cfg->keyValues)
-        if (kv.key.size() > maxKeyLen)
-            maxKeyLen = kv.key.size();
+        maxKeyLen = std::max(maxKeyLen, kv.key.size());
 
     try {
         for (const auto& kv : cfg->keyValues)
@@ -278,10 +276,7 @@ static bool isValidKey(const char* key)
 
 void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
 {
-    if (!cfg)
-        return;
-
-    if (!isValidKey(key))
+    if (!cfg || !isValidKey(key))
         return;
 
     const auto iter = getLowerBound(cfg->keyValues, key);

@@ -226,14 +226,13 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
     const char* filePath,
     DpsoHistoryExportFormat defaultExportFormat)
 {
-    const auto* ext = dpso::os::getFileExt(filePath);
+    const auto* ext = os::getFileExt(filePath);
     if (!ext)
         return defaultExportFormat;
 
     for (int i = 0; i < dpsoNumHistoryExportFormats; ++i)
         for (const auto* formatExt : exportFormatInfos[i].extensions)
-            if (dpso::str::cmp(
-                    ext, formatExt, dpso::str::cmpIgnoreCase) == 0)
+            if (str::cmp(ext, formatExt, str::cmpIgnoreCase) == 0)
                 return static_cast<DpsoHistoryExportFormat>(i);
 
     return defaultExportFormat;
@@ -246,13 +245,13 @@ bool dpsoHistoryExport(
     DpsoHistoryExportFormat exportFormat)
 {
     if (!history) {
-        dpso::setError("history is null");
+        setError("history is null");
         return false;
     }
 
     if (exportFormat < 0
             || exportFormat >= dpsoNumHistoryExportFormats) {
-        dpso::setError(
+        setError(
             "Unknown export format {}",
             static_cast<int>(exportFormat));
         return false;
@@ -261,17 +260,16 @@ bool dpsoHistoryExport(
     // We intentionally use fopen() without 'b' flag, enabling CRLF
     // line endings on Windows. This is not required by any export
     // format, but is convenient for Notepad users.
-    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "w")};
+    os::StdFileUPtr fp{os::fopen(filePath, "w")};
     if (!fp) {
-        dpso::setError(
-            "os::fopen(..., \"w\"): {}", std::strerror(errno));
+        setError("os::fopen(..., \"w\"): {}", std::strerror(errno));
         return false;
     }
 
     try {
         exportFormatInfos[exportFormat].writeFn(fp.get(), history);
     } catch (os::Error& e) {
-        dpso::setError("{}", e.what());
+        setError("{}", e.what());
         return false;
     }
 

@@ -68,7 +68,7 @@ void dpsoCfgSaveActiveLangs(
         if (!dpsoOcrGetLangIsActive(ocr, i))
             continue;
 
-        if (!str.empty()) {
+        if (i > 0) {
             str += langSeparator;
             str += ' ';
         }
