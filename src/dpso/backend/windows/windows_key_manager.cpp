@@ -2,11 +2,14 @@
 #include "backend/windows/windows_key_manager.h"
 
 #include <cassert>
-#include <cstdlib>
-#include <cstring>
+#include <charconv>
 #include <cwchar>
 #include <iterator>
 #include <string>
+
+#include <fmt/core.h>
+
+#include "dpso_utils/windows/utf.h"
 
 
 namespace dpso::backend {
@@ -73,8 +76,9 @@ const auto atomNamePrefixLen = std::wcslen(atomNamePrefix);
 
 static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
 {
-    return atomNamePrefix + std::to_wstring(
-        sentinelBit | (hotkey.key << modsBits) | hotkey.mods);
+    const auto str = fmt::format(
+        "{}", sentinelBit | (hotkey.key << modsBits) | hotkey.mods);
+    return atomNamePrefix + dpso::windows::utf8ToUtf16(str.c_str());
 }
 
 
@@ -83,8 +87,15 @@ static DpsoHotkey atomNameToHotkey(const wchar_t* name)
     if (std::wcsncmp(name, atomNamePrefix, atomNamePrefixLen) != 0)
         return dpsoEmptyHotkey;
 
-    const auto atom = _wtoi(name + atomNamePrefixLen);
-    if (atom < 1)
+    const auto str = dpso::windows::utf16ToUtf8(
+        name + atomNamePrefixLen);
+
+    ATOM atom{};
+    const auto [ptr, ec] = std::from_chars(
+        str.data(), str.data() + str.size(), atom, 10);
+    if (ec != std::errc{}
+            || ptr != str.data() + str.size()
+            || atom < 1)
         return dpsoEmptyHotkey;
 
     return {
