@@ -1,6 +1,7 @@
 
 #include "history.h"
 
+#include <algorithm>
 #include <cerrno>
 #include <cstdio>
 #include <string>
@@ -33,10 +34,11 @@ struct DpsoHistory {
 
 static bool loadData(const char* filePath, std::string& data)
 {
+    data.clear();
+
     try {
         data.resize(os::getFileSize(filePath));
     } catch (os::FileNotFoundError&) {
-        data.clear();
         return true;
     } catch (os::Error& e) {
         setError("os::getFileSize(): {}", e.what());
@@ -141,8 +143,8 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
     auto history = std::make_unique<DpsoHistory>();
     history->filePath = filePath;
 
-    std::string data;
-    if (!loadData(filePath, data)
+    if (std::string data;
+            !loadData(filePath, data)
             || !createEntries(data.c_str(), history->entries))
         return nullptr;
 
@@ -163,19 +165,6 @@ void dpsoHistoryClose(DpsoHistory* history)
 int dpsoHistoryCount(const DpsoHistory* history)
 {
     return history ? history->entries.size() : 0;
-}
-
-
-static std::string replaceReservedChar(
-    const char* text, char reservedChar)
-{
-    std::string result{text};
-
-    for (auto& c : result)
-        if (c == reservedChar)
-            c = ' ';
-
-    return result;
 }
 
 
@@ -201,9 +190,10 @@ bool dpsoHistoryAppend(
         return false;
     }
 
-    DpsoHistory::Entry e{
-        replaceReservedChar(entry->timestamp, '\n'),
-        replaceReservedChar(entry->text, '\f')};
+    DpsoHistory::Entry e{entry->timestamp, entry->text};
+
+    std::replace(e.timestamp.begin(), e.timestamp.end(), '\n', ' ');
+    std::replace(e.text.begin(), e.text.end(), '\f', ' ');
 
     auto* fp = history->fp.get();
 
@@ -250,14 +240,12 @@ void dpsoHistoryGet(
             || idx < 0
             || static_cast<std::size_t>(idx)
                 >= history->entries.size()) {
-        entry->timestamp = "";
-        entry->text = "";
+        *entry = {"", ""};
         return;
     }
 
     const auto& e = history->entries[idx];
-    entry->timestamp = e.timestamp.c_str();
-    entry->text = e.text.c_str();
+    *entry = {e.timestamp.c_str(), e.text.c_str()};
 }
 
 
