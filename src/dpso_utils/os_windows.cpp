@@ -217,6 +217,14 @@ std::int64_t getFileSize(const char* filePath)
 }
 
 
+std::string getErrnoMsg(int errnum)
+{
+    // On Windows, strerror() does not depend on the locale and is
+    // documented to return a pointer to a thread-local storage.
+    return std::strerror(errnum);
+}
+
+
 FILE* fopen(const char* filePath, const char* mode)
 {
     try {

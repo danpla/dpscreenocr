@@ -144,7 +144,7 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
             return true;
 
         setError(
-            "os::fopen(..., \"rb\"): {}", std::strerror(errno));
+            "os::fopen(..., \"rb\"): {}", os::getErrnoMsg(errno));
         return false;
     }
 
@@ -220,7 +220,7 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
     os::StdFileUPtr fp{os::fopen(filePath, "wb")};
     if (!fp) {
         setError(
-            "os::fopen(..., \"wb\"): {}", std::strerror(errno));
+            "os::fopen(..., \"wb\"): {}", os::getErrnoMsg(errno));
         return false;
     }
 

@@ -21,6 +21,7 @@
 #include <unistd.h>
 
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/os.h"
 
 #include "app_dirs_unix_cfg.h"
 
@@ -80,7 +81,9 @@ bool uiInitAppDirs(const char* argv0)
 
     auto* realPath = realpath(path.c_str(), nullptr);
     if (!realPath) {
-        dpso::setError("realpath(\"{}\"): {}", path, strerror(errno));
+        dpso::setError(
+            "realpath(\"{}\"): {}",
+            path, dpso::os::getErrnoMsg(errno));
         return false;
     }
 

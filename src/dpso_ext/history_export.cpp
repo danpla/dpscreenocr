@@ -3,7 +3,6 @@
 
 #include <cerrno>
 #include <cstdio>
-#include <cstring>
 #include <vector>
 
 #include "dpso_utils/error_set.h"
@@ -262,7 +261,7 @@ bool dpsoHistoryExport(
     // format, but is convenient for Notepad users.
     os::StdFileUPtr fp{os::fopen(filePath, "w")};
     if (!fp) {
-        setError("os::fopen(..., \"w\"): {}", std::strerror(errno));
+        setError("os::fopen(..., \"w\"): {}", os::getErrnoMsg(errno));
         return false;
     }
 

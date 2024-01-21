@@ -3,7 +3,6 @@
 
 #include <cerrno>
 #include <chrono>
-#include <cstring>
 #include <string>
 
 #include <fmt/core.h>
@@ -32,7 +31,8 @@ void downloadFile(
     os::StdFileUPtr partFp{os::fopen(partPath.c_str(), "wb")};
     if (!partFp)
         throw Error{fmt::format(
-            "Can't open \"{}\": {}", partPath, std::strerror(errno))};
+            "Can't open \"{}\": {}",
+            partPath, os::getErrnoMsg(errno))};
 
     auto response = makeGetRequest(url, userAgent);
 

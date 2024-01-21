@@ -62,6 +62,14 @@ const char* getFileExt(const char* filePath);
 std::int64_t getFileSize(const char* filePath);
 
 
+// Return the description of the given errno number. This is similar
+// to std::strerror(), except that it's locale-independent and
+// thread-safe, if supported by the platform. If these features are
+// not supported by the platform, then this function may just be a
+// wrapper for std::strerror().
+std::string getErrnoMsg(int errnum);
+
+
 // fopen() that accepts filePath in UTF-8.
 std::FILE* fopen(const char* filePath, const char* mode);
 

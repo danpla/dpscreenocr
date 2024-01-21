@@ -8,6 +8,8 @@
 
 #include <fmt/core.h>
 
+#include "dpso_utils/os.h"
+
 
 // On some hardware, OpenMP multithreading in Tesseract 4 and 5
 // results in dramatically slow recognition. The Tesseract developers
@@ -54,13 +56,16 @@ void uiPrepareEnvironment(char* argv[])
             stderr,
             "setenv(\"{}\", ...): {}\n",
             ompThreadLimit,
-            strerror(errno));
+            dpso::os::getErrnoMsg(errno));
         exit(EXIT_FAILURE);
     }
 
     execvp(*argv, argv);
 
     fmt::print(
-        stderr, "execvp(\"{}\", ...): {}", *argv, strerror(errno));
+        stderr,
+        "execvp(\"{}\", ...): {}",
+        *argv,
+        dpso::os::getErrnoMsg(errno));
     exit(EXIT_FAILURE);
 }

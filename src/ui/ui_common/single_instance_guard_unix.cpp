@@ -4,13 +4,13 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <pwd.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
 #include <string>
 
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/os.h"
 
 
 struct UiSingleInstanceGuard {
@@ -44,7 +44,9 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
         dpso::setError(
             "getpwuid({}): {}",
             uid,
-            errno != 0 ? strerror(errno) : "Can't find the user");
+            errno == 0
+                ? "Can't find the user"
+                : dpso::os::getErrnoMsg(errno));
         return {};
     }
 
@@ -58,7 +60,8 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
         filePath.c_str(), O_WRONLY | O_CREAT, S_IWUSR | S_IRUSR);
     if (fd == -1) {
         dpso::setError(
-            "open(\"{}\", ...): {}", filePath, strerror(errno));
+            "open(\"{}\", ...): {}",
+            filePath, dpso::os::getErrnoMsg(errno));
         return {};
     }
 
@@ -70,7 +73,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     if (errno == EACCES || errno == EAGAIN)
         return new UiSingleInstanceGuard{{}, -1};
 
-    dpso::setError("lockf(): {}", strerror(errno));
+    dpso::setError("lockf(): {}", dpso::os::getErrnoMsg(errno));
     return {};
 }
 

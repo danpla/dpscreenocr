@@ -3,7 +3,6 @@
 
 #include <cctype>
 #include <cerrno>
-#include <cstring>
 #include <queue>
 
 #include <fmt/core.h>
@@ -103,7 +102,7 @@ void saveText(
             "{}: saveText(): os::fopen(\"{}\", \"wb\"): {}\n",
             contextInfo,
             filePath,
-            std::strerror(errno));
+            dpso::os::getErrnoMsg(errno));
 
     try {
         dpso::os::write(fp.get(), text);
@@ -125,7 +124,7 @@ std::string loadText(const char* contextInfo, const char* filePath)
             "{}: loadText(): os::fopen(\"{}\", \"rb\"): {}\n",
             contextInfo,
             filePath,
-            std::strerror(errno));
+            dpso::os::getErrnoMsg(errno));
 
     std::string result;
 

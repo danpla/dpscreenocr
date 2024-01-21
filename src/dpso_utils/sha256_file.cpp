@@ -23,7 +23,7 @@ std::string calcFileSha256(const char* filePath)
     os::StdFileUPtr fp{os::fopen(filePath, "rb")};
     if (!fp)
         throw Sha256FileError{fmt::format(
-            "os::fopen: {}", std::strerror(errno))};
+            "os::fopen: {}", os::getErrnoMsg(errno))};
 
     Sha256 h;
 
@@ -57,7 +57,7 @@ void saveSha256File(
     if (!fp)
         throw Sha256FileError{fmt::format(
             "os::fopen(\"{}\", \"wb\"): {}",
-            sha256FilePath, std::strerror(errno))};
+            sha256FilePath, os::getErrnoMsg(errno))};
 
     try {
         fmt::print(
@@ -136,7 +136,7 @@ std::string loadSha256File(const char* digestSourceFilePath)
 
         throw Sha256FileError{fmt::format(
             "os::fopen(\"{}\", \"rb\"): {}",
-            sha256FilePath, std::strerror(errno))};
+            sha256FilePath, os::getErrnoMsg(errno))};
     }
 
     try {

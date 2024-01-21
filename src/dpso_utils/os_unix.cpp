@@ -3,6 +3,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <locale.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -20,7 +21,7 @@ namespace {
 void throwErrno(const char* description)
 {
     const auto message =
-        std::string{description} + ": " + strerror(errno);
+        std::string{description} + ": " + getErrnoMsg(errno);
 
     switch (errno) {
     case ENOENT:
@@ -58,6 +59,27 @@ PathParts splitPath(const char* path)
 }
 
 
+struct LocaleFreer {
+    using pointer = locale_t;
+
+    void operator()(locale_t locobj) const
+    {
+        if (locobj)
+            freelocale(locobj);
+    }
+};
+
+
+using LocaleUPtr = std::unique_ptr<locale_t, LocaleFreer>;
+
+
+LocaleUPtr newLocale(
+    int categoryMask, const char* locale, locale_t base)
+{
+    return LocaleUPtr{newlocale(categoryMask, locale, base)};
+}
+
+
 }
 
 
@@ -91,6 +113,14 @@ std::int64_t getFileSize(const char* filePath)
         throwErrno("stat()");
 
     return st.st_size;
+}
+
+
+std::string getErrnoMsg(int errnum)
+{
+    static const auto cLocale = newLocale(LC_ALL_MASK, "C", nullptr);
+    return cLocale
+        ? strerror_l(errnum, cLocale.get()) : strerror(errnum);
 }
 
 

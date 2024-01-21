@@ -3,7 +3,6 @@
 
 #include <cerrno>
 #include <cstdio>
-#include <cstring>
 #include <string>
 #include <utility>
 #include <vector>
@@ -46,7 +45,8 @@ static bool loadData(const char* filePath, std::string& data)
 
     os::StdFileUPtr fp{os::fopen(filePath, "rb")};
     if (!fp) {
-        setError("os::fopen(..., \"rb\"): {}", std::strerror(errno));
+        setError(
+            "os::fopen(..., \"rb\"): {}", os::getErrnoMsg(errno));
         return false;
     }
 
@@ -118,7 +118,8 @@ static os::StdFileUPtr openSync(
     os::StdFileUPtr fp{os::fopen(filePath, mode)};
     if (!fp) {
         setError(
-            "os::fopen(..., \"{}\"): {}", mode, std::strerror(errno));
+            "os::fopen(..., \"{}\"): {}",
+            mode, os::getErrnoMsg(errno));
         return nullptr;
     }
 

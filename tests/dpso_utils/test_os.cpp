@@ -1,6 +1,5 @@
 
 #include <cerrno>
-#include <cstring>
 #include <string>
 #include <vector>
 
@@ -210,7 +209,7 @@ void testFopen()
         test::failure(
             "os::fopen(\"{}\"): {}\n",
             testUnicodeFileName,
-            std::strerror(errno));
+            dpso::os::getErrnoMsg(errno));
         return;
     }
 
@@ -252,7 +251,7 @@ void testReadLine()
             test::fatalError(
                 "os::fopen(\"{}\"): {}\n",
                 fileName,
-                std::strerror(errno));
+                dpso::os::getErrnoMsg(errno));
 
         std::string line{"initial line content"};
 
@@ -411,7 +410,7 @@ void testSyncFile()
     if (!fp)
         test::fatalError(
             "testSyncFile: os::fopen(\"{}\"): {}\n",
-            fileName, std::strerror(errno));
+            fileName, dpso::os::getErrnoMsg(errno));
 
     try {
         dpso::os::syncFile(fp.get());
