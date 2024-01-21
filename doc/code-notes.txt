@@ -12,7 +12,7 @@
 
 * When a CPP file implements a function from a C header, copy the
   signature verbatim to the CPP file. This includes the case when a C
-  type from the signature is available in the std:: namespace, e.g.
+  type from the signature is available in the std namespace, e.g.
   size_t (<stddef.h>) vs std::size_t (<cstddef>).
 
 * In both C and C++ code, a pointer is not expected to be null (unless
@@ -68,16 +68,18 @@
   dangerous when the size comes from a constant that may one day
   become N times larger.
 
-* Don't use routines from <ctype.h>.
+* Don't use locale-dependent routines.
 
-  The behavior of <ctype.h> routines is undefined if the argument is
-  neither equal to EOF nor presentable as unsigned char. Although you
-  can cast "char" to "unsigned char" as a workaround, it's easy to
-  forget to do so.
+  * Use functions from "dpso_utils/str.h" instead of <ctype.h>.
 
-  Another reason is that <ctype.h> routines are locale-dependent,
-  while our code assumes UTF-8 and needs such character routines to
-  work only with the ASCII subset.
+  * Use the fmt library instead of printf() functions or anything that
+    depends on them, like std::to_string().
+
+  * Use std::from_chars() for int-to-string conversion instead of C
+    library functions like strto*() or anything that depends on them,
+    like std::sto*() from <string>.
+
+  * Use getErrnoMsg() from "dpso_utils/os.h" instead of strerror().
 
 * Don't use C99/C++11 strftime() format specifiers in cross-platform
   code. They are not supported by old MSVCRT versions, and MinGW
