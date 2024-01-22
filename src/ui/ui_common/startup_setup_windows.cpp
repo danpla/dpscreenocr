@@ -132,6 +132,12 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
         | FOF_NOERRORUI
         | FOFX_EARLYFAILURE
         | FOF_SILENT);
+    if (FAILED(hresult)) {
+        dpso::setError(
+            "IFileOperation::SetOperationFlags(): {}",
+            dpso::windows::getHresultMessage(hresult));
+        return false;
+    }
 
     hresult = fileOp->PerformOperations();
     if (FAILED(hresult)) {
