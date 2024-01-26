@@ -393,7 +393,7 @@ def gen_main_page_content(root_url, page_lang, translator):
         '{app_name} is a program to recognize text on the screen. '
         'Powered by <a {tesseract_link}>Tesseract</a>, it supports '
         'more than 100 languages and can split independent text '
-        'blocks, such as columns. Read <a {manual_link}>the manual'
+        'blocks, such as columns. Read the <a {manual_link}>manual'
         '</a> for instructions on installing, configuring, and using '
         'the program.').format(
             app_name=APP_NAME,
