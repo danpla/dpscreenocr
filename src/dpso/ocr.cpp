@@ -103,7 +103,7 @@ struct DpsoOcr {
     std::thread thread;
 
     std::vector<std::uint8_t> imgBuffers[3];
-    bool dumpDebugImage;
+    bool dumpDebugImages;
 
     std::vector<JobResult> fetchedResults;
     std::vector<DpsoOcrJobResult> returnedResults;
@@ -206,12 +206,12 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
 
     ocr->thread = std::thread(threadLoop, std::ref(*ocr));
 
-    const auto* dumpDebugImageEnvVar = std::getenv(
-        "DPSO_DUMP_DEBUG_IMAGE");
-    ocr->dumpDebugImage =
-        dumpDebugImageEnvVar
-        && *dumpDebugImageEnvVar
-        && std::strcmp(dumpDebugImageEnvVar, "0") != 0;
+    const auto* dumpDebugImagesEnvVar = std::getenv(
+        "DPSO_DUMP_DEBUG_IMAGES");
+    ocr->dumpDebugImages =
+        dumpDebugImagesEnvVar
+        && *dumpDebugImagesEnvVar
+        && std::strcmp(dumpDebugImagesEnvVar, "0") != 0;
 
     return ocr.release();
 }
@@ -348,7 +348,8 @@ static std::string createTimestamp()
 static dpso::ocr::OcrImage prepareScreenshot(
     const dpso::backend::Screenshot& screenshot,
     std::vector<std::uint8_t> (&imgBuffers)[3],
-    dpso::ProgressTracker& progressTracker)
+    dpso::ProgressTracker& progressTracker,
+    bool dumpDebugImages)
 {
     const auto scale = 4;
     const auto bufferW = screenshot.getWidth() * scale;
@@ -366,6 +367,14 @@ static dpso::ocr::OcrImage prepareScreenshot(
         "screenshot.getGrayscaleData ({}x{} px)",
         screenshot.getWidth(), screenshot.getHeight());
 
+    if (dumpDebugImages)
+        dpso::img::savePgm(
+            "dpso_debug_1_original.pgm",
+            imgBuffers[0].data(),
+            screenshot.getWidth(),
+            screenshot.getHeight(),
+            bufferPitch);
+
     dpso::ProgressTracker localProgressTracker(2, &progressTracker);
 
     localProgressTracker.advanceJob();
@@ -382,6 +391,11 @@ static dpso::ocr::OcrImage prepareScreenshot(
         screenshot.getWidth(), screenshot.getHeight(),
         bufferW, bufferH,
         scale);
+
+    if (dumpDebugImages)
+        dpso::img::savePgm(
+            "dpso_debug_2_resize.pgm",
+            imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
 
     const auto unsharpMaskRadius = 10;
     const auto unsharpMaskAmount = 1.0f;
@@ -403,6 +417,11 @@ static dpso::ocr::OcrImage prepareScreenshot(
 
     localProgressTracker.finish();
 
+    if (dumpDebugImages)
+        dpso::img::savePgm(
+            "dpso_debug_3_unsharp_mask.pgm",
+            imgBuffers[0].data(), bufferW, bufferH, bufferPitch);
+
     return {imgBuffers[0].data(), bufferW, bufferH, bufferPitch};
 }
 
@@ -419,13 +438,10 @@ static void processJob(DpsoOcr& ocr, const Job& job)
 
     progressTracker.advanceJob();
     const auto ocrImage = prepareScreenshot(
-        *job.screenshot, ocr.imgBuffers, progressTracker);
-
-    if (ocr.dumpDebugImage)
-        dpso::img::savePgm(
-            "dpso_debug.pgm",
-            ocrImage.data,
-            ocrImage.width, ocrImage.height, ocrImage.pitch);
+        *job.screenshot,
+        ocr.imgBuffers,
+        progressTracker,
+        ocr.dumpDebugImages);
 
     progressTracker.advanceJob();
 
