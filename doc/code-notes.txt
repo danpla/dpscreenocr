@@ -72,8 +72,16 @@
 
   * Use functions from "dpso_utils/str.h" instead of <ctype.h>.
 
-  * Use the fmt library instead of printf() functions or anything that
-    depends on them, like std::to_string().
+  * Use the fmt library or toStr() from "dpso_utils/str.h" instead of
+    printf() functions or anything that depends on them, like
+    std::to_string().
+
+    Even though std::to_string() overloads for integers are not locale
+    dependent, we still forbid them to avoid the possibility of
+    accidentally using overloads for floating-point types. We can
+    switch back to std::to_string() once we have C++26: since C++26,
+    all std::to_string() work as std::format("{}", v) and thus don't
+    depend on the locale.
 
   * Use std::from_chars() for int-to-string conversion instead of C
     library functions like strto*() or anything that depends on them,

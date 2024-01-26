@@ -7,8 +7,7 @@
 #include <iterator>
 #include <string>
 
-#include <fmt/core.h>
-
+#include "dpso_utils/str.h"
 #include "dpso_utils/windows/utf.h"
 
 
@@ -76,9 +75,13 @@ const auto atomNamePrefixLen = std::wcslen(atomNamePrefix);
 
 static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
 {
-    const auto str = fmt::format(
-        "{}", sentinelBit | (hotkey.key << modsBits) | hotkey.mods);
-    return atomNamePrefix + dpso::windows::utf8ToUtf16(str.c_str());
+    return
+        atomNamePrefix
+        + dpso::windows::utf8ToUtf16(
+            str::toStr(
+                sentinelBit
+                | (hotkey.key << modsBits)
+                | hotkey.mods).c_str());
 }
 
 

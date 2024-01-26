@@ -12,6 +12,7 @@
 #include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
+#include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
 
 #include "lang_manager/install_mode.h"
@@ -239,7 +240,7 @@ bool LangManagerPageRemove::performAction(
                 "Remove {count} selected language?",
                 "Remove {count} selected languages?",
                 langCodes.size()),
-            {{"count", std::to_string(langCodes.size()).c_str()}});
+            {{"count", dpso::str::toStr(langCodes.size()).c_str()}});
 
     if (!confirmDestructiveAction(
             this, questionText, _("Cancel"), _("Remove")))

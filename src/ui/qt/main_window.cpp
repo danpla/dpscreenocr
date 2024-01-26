@@ -21,6 +21,7 @@
 
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
+#include "dpso_utils/str.h"
 
 #include "about.h"
 #include "action_chooser.h"
@@ -34,6 +35,9 @@
 
 
 #define _(S) gettext(S)
+
+
+using dpso::str::toStr;
 
 
 namespace ui::qt {
@@ -723,12 +727,9 @@ void MainWindow::updateStatus()
             dpsoStrNFormat(
                 progressStatusFmt.c_str(),
                 {
-                    {"progress",
-                        std::to_string(totalProgress).c_str()},
-                    {"current_job",
-                        std::to_string(progress.curJob).c_str()},
-                    {"total_jobs",
-                        std::to_string(progress.totalJobs).c_str()}
+                    {"progress", toStr(totalProgress).c_str()},
+                    {"current_job", toStr(progress.curJob).c_str()},
+                    {"total_jobs", toStr(progress.totalJobs).c_str()}
                 }));
 
         uiTaskbarSetProgress(taskbar.get(), totalProgress);

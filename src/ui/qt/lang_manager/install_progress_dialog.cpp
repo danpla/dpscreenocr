@@ -1,8 +1,6 @@
 
 #include "lang_manager/install_progress_dialog.h"
 
-#include <string>
-
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QFontMetrics>
@@ -14,12 +12,16 @@
 
 #include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"
+#include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
 
 #include "utils.h"
 
 
 #define _(S) gettext(S)
+
+
+using dpso::str::toStr;
 
 
 namespace ui::qt::langManager {
@@ -184,8 +186,8 @@ void InstallProgressDialog::timerEvent(QTimerEvent* event)
                 "({current}/{total})"),
         {
             {"name", *langName ? gettext(langName) : langCode},
-            {"current", std::to_string(progress.curLangNum).c_str()},
-            {"total", std::to_string(progress.totalLangs).c_str()}}));
+            {"current", toStr(progress.curLangNum).c_str()},
+            {"total", toStr(progress.totalLangs).c_str()}}));
 }
 
 

@@ -1,7 +1,9 @@
 
 #include "str.h"
 
+#include <charconv>
 #include <cstring>
+#include <limits>
 
 
 namespace dpso::str {
@@ -48,6 +50,57 @@ int cmpSubStr(
     }
 
     return str[subStrLen] == 0 ? 0 : 1;
+}
+
+
+template<typename T>
+static std::string intToStr(T v)
+{
+    // Add extra 2 for:
+    // * +1 for numeric_limits::digits10. For example, digits10 is 2
+    //   for a 8-bit unsigned, because it can represent any two-digit
+    //   number, but not 256-999.
+    // * +1 for a possible minus sign.
+    char buf[std::numeric_limits<T>::digits10 + 2];
+    const auto r = std::to_chars(buf, buf + sizeof(buf), v, 10);
+    // to_chars() can only fail with std::errc::value_too_large.
+    return {buf, r.ptr};
+}
+
+
+std::string toStr(int v)
+{
+    return intToStr(v);
+}
+
+
+std::string toStr(unsigned v)
+{
+    return intToStr(v);
+}
+
+
+std::string toStr(long v)
+{
+    return intToStr(v);
+}
+
+
+std::string toStr(unsigned long v)
+{
+    return intToStr(v);
+}
+
+
+std::string toStr(long long v)
+{
+    return intToStr(v);
+}
+
+
+std::string toStr(unsigned long long v)
+{
+    return intToStr(v);
 }
 
 
