@@ -21,6 +21,30 @@ struct Point {
 };
 
 
+bool operator==(const Point& a, const Point& b);
+bool operator!=(const Point& a, const Point& b);
+
+
+struct Size {
+    int w{};
+    int h{};
+
+    Size() = default;
+
+    Size(int w, int h)
+        : w{w}
+        , h{h}
+    {
+    }
+};
+
+
+bool operator==(const Size& a, const Size& b);
+bool operator!=(const Size& a, const Size& b);
+
+bool isEmpty(const Size& size);
+
+
 struct Rect {
     int x{};
     int y{};
@@ -37,6 +61,11 @@ struct Rect {
     {
     }
 
+    Rect(const Point& pos, const Size& size)
+        : Rect{pos.x, pos.y, size.w, size.h}
+    {
+    }
+
     explicit Rect(const DpsoRect& cRect)
         : Rect{cRect.x, cRect.y, cRect.w, cRect.h}
     {
@@ -45,6 +74,12 @@ struct Rect {
     static Rect betweenPoints(const Point& a, const Point& b);
 };
 
+
+bool operator==(const Rect& a, const Rect& b);
+bool operator!=(const Rect& a, const Rect& b);
+
+Point getPos(const Rect& rect);
+Size getSize(const Rect& rect);
 
 DpsoRect toCRect(const Rect& rect);
 bool isEmpty(const Rect& rect);

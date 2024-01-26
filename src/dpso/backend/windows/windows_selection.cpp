@@ -136,7 +136,7 @@ static int getDpi(const Point& point)
 }
 
 
-static Point getMousePosition()
+static Point getMousePos()
 {
     POINT point;
     GetCursorPos(&point);
@@ -244,8 +244,8 @@ void WindowsSelection::setIsEnabled(bool newIsEnabled)
     if (isEnabled) {
         const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
-        origin = getMousePosition();
-        setGeometry({origin.x, origin.y, 0, 0});
+        origin = getMousePos();
+        setGeometry({origin, {}});
     }
 
     ShowWindow(window.get(), isEnabled ? SW_SHOWNA : SW_HIDE);
@@ -281,7 +281,7 @@ void WindowsSelection::update()
 
     const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
-    auto newGeom = Rect::betweenPoints(origin, getMousePosition());
+    auto newGeom = Rect::betweenPoints(origin, getMousePos());
     // The maximum cursor position is 1 pixel less than the size of
     // the display.
     ++newGeom.w;
@@ -417,8 +417,8 @@ void WindowsSelection::updateWindowRegion()
 
 void WindowsSelection::setGeometry(const Rect& newGeom)
 {
-    const auto newSize = newGeom.w != geom.w || newGeom.h != geom.h;
-    if (!newSize && newGeom.x == geom.x && newGeom.y == geom.y)
+    const auto newSize = getSize(newGeom) != getSize(geom);
+    if (!newSize && getPos(newGeom) == getPos(geom))
         return;
 
     geom = newGeom;

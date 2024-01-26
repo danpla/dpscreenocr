@@ -18,12 +18,9 @@ std::string toStr(const Point& p)
 }
 
 
-void testEqual(const Point& a, const Point& b, int lineNum)
+std::string toStr(const Size& s)
 {
-    if (a.x == b.x && a.y == b.y)
-        return;
-
-    test::failure("line {}: {} != {}\n", lineNum, toStr(a), toStr(b));
+    return fmt::format("Size{{{}, {}}}", s.w, s.h);
 }
 
 
@@ -33,12 +30,11 @@ std::string toStr(const Rect& r)
 }
 
 
-void testEqual(const Rect& a, const Rect& b, int lineNum)
+template<typename T>
+void testEqual(const T& a, const T& b, int lineNum)
 {
-    #define CMP(N) a.N == b.N
-    if (CMP(x) && CMP(y) && CMP(w) && CMP(h))
+    if (a == b)
         return;
-    #undef CMP
 
     test::failure("line {}: {} != {}\n", lineNum, toStr(a), toStr(b));
 }
@@ -47,20 +43,21 @@ void testEqual(const Rect& a, const Rect& b, int lineNum)
 #define TEST_EQUAL(a, b) testEqual(a, b, __LINE__)
 
 
-void testEmpty(const Rect& r, bool expectEmpty, int lineNum)
+template<typename T>
+void testEmpty(const T& v, bool expectEmpty, int lineNum)
 {
-    if (isEmpty(r) == expectEmpty)
+    if (isEmpty(v) == expectEmpty)
         return;
 
     test::failure(
         "line {}: {} is expected to be {}empty\n",
         lineNum,
-        toStr(r),
+        toStr(v),
         expectEmpty ? "" : "non-");
 }
 
 
-#define TEST_EMPTY(r, expectEmpty) testEmpty(r, expectEmpty, __LINE__)
+#define TEST_EMPTY(v, expectEmpty) testEmpty(v, expectEmpty, __LINE__)
 
 
 void testPoint()
@@ -69,9 +66,27 @@ void testPoint()
 }
 
 
+void testSize()
+{
+    TEST_EQUAL(Size(), Size(0, 0));
+
+    TEST_EMPTY(Size(), true);
+    TEST_EMPTY(Size(-1, 0), true);
+    TEST_EMPTY(Size(-1, 1), true);
+    TEST_EMPTY(Size(0, -1), true);
+    TEST_EMPTY(Size(1, -1), true);
+    TEST_EMPTY(Size(1, 0), true);
+    TEST_EMPTY(Size(0, 1), true);
+
+    TEST_EMPTY(Size(1, 1), false);
+}
+
+
 void testRect()
 {
     TEST_EQUAL(Rect(), Rect(0, 0, 0, 0));
+
+    TEST_EQUAL(Rect({1, 2}, {3, 4}), Rect(1, 2, 3, 4));
 
     TEST_EQUAL(
         Rect::betweenPoints({0, 0}, Point{1, 1}), Rect(0, 0, 1, 1));
@@ -88,7 +103,11 @@ void testRect()
     TEST_EMPTY(Rect(0, 0, 0, 1), true);
     TEST_EMPTY(Rect(0, 0, 0, -1), true);
     TEST_EMPTY(Rect(0, 0, -1, -1), true);
+
     TEST_EMPTY(Rect(0, 0, 1, 1), false);
+
+    TEST_EQUAL(getPos(Rect(1, 2, 3, 4)), Point(1, 2));
+    TEST_EQUAL(getSize(Rect(1, 2, 3, 4)), Size(3, 4));
 
     const Rect r(0, 0, 2, 2);
     TEST_EQUAL(getIntersection(r, r), r);
@@ -105,6 +124,7 @@ void testRect()
 void testGeometry()
 {
     testPoint();
+    testSize();
     testRect();
 }
 

@@ -18,7 +18,7 @@
 namespace dpso::backend {
 
 
-static Point getMousePosition(Display* display)
+static Point getMousePos(Display* display)
 {
     Window rootWindow, childWindow;
     int rootX, rootY;
@@ -151,8 +151,8 @@ void X11Selection::setIsEnabled(bool newIsEnabled)
 
     isEnabled = newIsEnabled;
     if (isEnabled) {
-        origin = getMousePosition(display);
-        setGeometry({origin.x, origin.y, 0, 0});
+        origin = getMousePos(display);
+        setGeometry({origin, {}});
         // We raise the window as a workaround for qtile, which as of
         // version 0.21.0 honors neither override_redirect nor
         // _NET_WM_STATE_ABOVE.
@@ -175,8 +175,7 @@ void X11Selection::updateStart()
     if (!isEnabled)
         return;
 
-    auto newGeom = Rect::betweenPoints(
-        origin, getMousePosition(display));
+    auto newGeom = Rect::betweenPoints(origin, getMousePos(display));
 
     // The maximum cursor position is 1 pixel less than the size
     // of the display.
@@ -278,8 +277,8 @@ void X11Selection::updateWindowShape()
 
 void X11Selection::setGeometry(const Rect& newGeom)
 {
-    const auto newSize = newGeom.w != geom.w || newGeom.h != geom.h;
-    if (!newSize && newGeom.x == geom.x && newGeom.y == geom.y)
+    const auto newSize = getSize(newGeom) != getSize(geom);
+    if (!newSize && getPos(newGeom) == getPos(geom))
         return;
 
     geom = newGeom;
