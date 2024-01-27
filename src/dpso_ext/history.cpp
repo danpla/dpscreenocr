@@ -27,8 +27,8 @@ struct DpsoHistory {
     };
 
     std::string filePath;
-    std::vector<Entry> entries;
     os::StdFileUPtr fp;
+    std::vector<Entry> entries;
 };
 
 
@@ -64,19 +64,37 @@ static bool loadData(const char* filePath, std::string& data)
 
 
 static bool createEntries(
-    const char* data, std::vector<DpsoHistory::Entry>& entries)
+    const char* data,
+    std::vector<DpsoHistory::Entry>& entries,
+    std::size_t& validDataSize)
 {
     entries.clear();
+    validDataSize = 0;
+
+    // Note that we don't treat truncation as an error. Since the
+    // history is append-only, we assume that the data is most likely
+    // truncated due to a partial write (e.g., lack of disk space or
+    // power loss), so the best strategy is to restore successfully
+    // written entries.
 
     for (const auto* s = data; *s;) {
         const auto* timestampBegin = s;
         while (*s && *s != '\n')
             ++s;
 
-        if (*s != '\n' || s[1] != '\n') {
+        if (!*s)
+            // Truncated timestamp.
+            break;
+
+        if (!s[1])
+            // Truncated \n\n terminator.
+            break;
+
+        if (s[1] != '\n') {
             setError(
-                "No \\n\\n terminator for timestamp at {}\n",
-                timestampBegin - data);
+                "Unexpected {:#04x} instead of \\n at {} for "
+                "timestamp at {}",
+                s[1],  s - data, timestampBegin - data);
             return false;
         }
 
@@ -93,18 +111,25 @@ static bool createEntries(
 
         entries.push_back(std::move(e));
 
+        validDataSize = s - data;
+
         if (*s == '\f') {
+            if (!s[1])
+                // Truncated \f\n terminator.
+                break;
+
             if (s[1] != '\n') {
                 setError(
-                    "Unexpected {:#04x} after \\f at {}",
-                    s[1], s - data);
+                    "Unexpected {:#04x} instead of \\n at {} for "
+                    "text at {}",
+                    s[1], s - data, textBegin - data);
                 return false;
             }
 
-            if (!s[2]) {
-                setError("\\f\\n at end of file");
-                return false;
-            }
+            if (!s[2])
+                // \f\n at the end of the file is a truncated
+                // subsequent entry.
+                break;
 
             s += 2;
         }
@@ -143,10 +168,17 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
     auto history = std::make_unique<DpsoHistory>();
     history->filePath = filePath;
 
-    if (std::string data;
-            !loadData(filePath, data)
-            || !createEntries(data.c_str(), history->entries))
+    std::string data;
+    std::size_t validDataSize{};
+
+    if (!loadData(filePath, data)
+            || !createEntries(
+                data.c_str(), history->entries, validDataSize))
         return nullptr;
+
+    if (validDataSize != data.size())
+        // Don't open the file to "restore" the error state.
+        return history.release();
 
     history->fp = openSync(filePath, "ab");
     if (!history->fp)
@@ -168,10 +200,6 @@ int dpsoHistoryCount(const DpsoHistory* history)
 }
 
 
-const auto* const failureStateErrorMsg =
-    "History is in failure state and is read-only";
-
-
 bool dpsoHistoryAppend(
     DpsoHistory* history, const DpsoHistoryEntry* entry)
 {
@@ -186,7 +214,7 @@ bool dpsoHistoryAppend(
     }
 
     if (!history->fp) {
-        setError("{}", failureStateErrorMsg);
+        setError("History is in the error state and is read-only");
         return false;
     }
 
@@ -256,13 +284,10 @@ bool dpsoHistoryClear(DpsoHistory* history)
         return false;
     }
 
-    if (!history->fp) {
-        setError("{}", failureStateErrorMsg);
-        return false;
-    }
+    // Note that we allow clearing while in the error state.
 
-    history->entries.clear();
     history->fp.reset();
+    history->entries.clear();
 
     history->fp = openSync(history->filePath.c_str(), "wb");
     return history->fp != nullptr;

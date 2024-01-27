@@ -20,8 +20,8 @@ typedef struct DpsoHistoryEntry {
  *
  * Editing the history will result in immediate modification of the
  * underlying file. In case of IO error, the history is set to the
- * failure state: it becomes read-only, and all further modification
- * attempts will be rejected.
+ * error state: it becomes read-only, and all further modification
+ * attempts except dpsoHistoryClear() will be rejected.
  */
 typedef struct DpsoHistory DpsoHistory;
 
@@ -55,7 +55,7 @@ int dpsoHistoryCount(const DpsoHistory* history);
  * false. Reasons include:
  *   * history or entry is null
  *   * IO error
- *   * History is in failure state
+ *   * History is in the error state
  */
 bool dpsoHistoryAppend(
     DpsoHistory* history, const DpsoHistoryEntry* entry);
@@ -79,7 +79,6 @@ void dpsoHistoryGet(
  * false. Reasons include:
  *   * history is null
  *   * IO error
- *   * History is in failure state
  */
 bool dpsoHistoryClear(DpsoHistory* history);
 

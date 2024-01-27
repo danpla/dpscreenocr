@@ -1,6 +1,7 @@
 
 #include <cstring>
 #include <iterator>
+#include <vector>
 
 #include "dpso_ext/history.h"
 #include "dpso_utils/error_get.h"
@@ -12,7 +13,7 @@
 namespace {
 
 
-void cmpFields(
+void cmpField(
     const char* name, const char* a, const char* b, int lineNum)
 {
     if (std::strcmp(a, b) == 0)
@@ -30,7 +31,7 @@ void cmpFields(
 void cmpEntries(
     const DpsoHistoryEntry& a, const DpsoHistoryEntry& b, int lineNum)
 {
-    #define CMP(name) cmpFields(#name, a.name, b.name, lineNum)
+    #define CMP(name) cmpField(#name, a.name, b.name, lineNum)
 
     CMP(timestamp);
     CMP(text);
@@ -42,17 +43,18 @@ void cmpEntries(
 #define CMP_ENTRIES(a, b) cmpEntries(a, b, __LINE__)
 
 
-void testCount(const DpsoHistory* history, int expected, int lineNum)
+bool testCount(const DpsoHistory* history, int expected, int lineNum)
 {
     const auto got = dpsoHistoryCount(history);
     if (got == expected)
-        return;
+        return true;
 
     test::failure(
         "line {}: dpsoHistoryCount(): Expected {}, got {}\n",
         lineNum,
         expected,
         got);
+    return false;
 }
 
 
@@ -63,7 +65,26 @@ void testCount(const DpsoHistory* history, int expected, int lineNum)
 const auto* const historyFileName = "test_history.txt";
 
 
-void testIO(bool append)
+enum class IoTestMode {
+    write,
+    read
+};
+
+
+std::string toStr(IoTestMode mode)
+{
+    switch (mode) {
+    case IoTestMode::write:
+        return "IoTestMode::write";
+    case IoTestMode::read:
+        return "IoTestMode::read";
+    }
+
+    return {};
+}
+
+
+void testIo(IoTestMode mode)
 {
     const struct Test {
         DpsoHistoryEntry inEntry;
@@ -85,24 +106,25 @@ void testIO(bool append)
     if (!history) {
         test::utils::removeFile(historyFileName);
         test::fatalError(
-            "testlIO({}append): dpsoHistoryOpen(\"{}\"): {}\n",
-            append ? "" : "!",
+            "testlIO({}): dpsoHistoryOpen(\"{}\"): {}\n",
+            toStr(mode),
             historyFileName,
             dpsoGetError());
     }
 
-    TEST_COUNT(history.get(), append ? 0 : numTests);
+    TEST_COUNT(
+        history.get(), mode == IoTestMode::write ? 0 : numTests);
 
     for (int i = 0; i < static_cast<int>(numTests); ++i) {
         const auto& test = tests[i];
 
-        if (append) {
+        if (mode == IoTestMode::write) {
             if (!dpsoHistoryAppend(history.get(), &test.inEntry)) {
                 history.reset();
                 test::utils::removeFile(historyFileName);
 
                 test::fatalError(
-                    "testIO(true): dpsoHistoryAppend(): {}\n",
+                    "testIo(true): dpsoHistoryAppend(): {}\n",
                     dpsoGetError());
             }
 
@@ -122,17 +144,68 @@ void testIO(bool append)
 }
 
 
+void testTruncatedData()
+{
+    const struct Test {
+        const char* description;
+        const char* data;
+        std::vector<DpsoHistoryEntry> expectedEntries;
+    } tests[] = {
+        {"No timestamp terminator (first entry)", "a", {}},
+        {
+            "No timestamp terminator (second entry)",
+            "a\n\nb\f\nc",
+            {{"a", "b"}}},
+        {"Truncated timestamp terminator (first entry)", "a\n", {}},
+        {
+            "Truncated timestamp terminator (second entry)",
+            "a\n\nb\f\nc\n", {{"a", "b"}}},
+        {"Truncated entry separator", "a\n\nb\f", {{"a", "b"}}},
+        {"Trailing entry separator", "a\n\nb\f\n", {{"a", "b"}}},
+    };
+
+    for (const auto& test : tests) {
+        test::utils::saveText(
+            "testTruncatedData", historyFileName, test.data);
+
+        dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
+        if (!history) {
+            test::failure(
+                "testTruncatedData(): dpsoHistoryOpen() failed in "
+                "the \"{}\" case: {}\n",
+                test.description, dpsoGetError());
+            continue;
+        }
+
+        if (!TEST_COUNT(history.get(), test.expectedEntries.size()))
+            continue;
+
+        for (int i = 0; i < dpsoHistoryCount(history.get()); ++i) {
+            DpsoHistoryEntry entry;
+            dpsoHistoryGet(history.get(), i, &entry);
+
+            CMP_ENTRIES(entry, test.expectedEntries[i]);
+        }
+
+        if (DpsoHistoryEntry entry{"a", "b"};
+                dpsoHistoryAppend(history.get(), &entry))
+            test::failure(
+                "testTruncatedData(): dpsoHistoryAppend() succeeded "
+                "after loading truncated data\n");
+    }
+
+    test::utils::removeFile(historyFileName);
+}
+
+
 void testInvalidData()
 {
     const struct Test {
         const char* description;
         const char* data;
     } tests[] = {
-        {"No timestamp terminator", "a"},
         {"Invalid timestamp terminator", "a\nb"},
-        {"Truncated entry separator", "a\n\nb\f"},
-        {"Invalid entry separator", "a\n\nb\f*a\n\nb\f\n"},
-        {"Trailing entry separator", "a\n\nb\f\n"},
+        {"Invalid entry separator", "a\n\nb\f*a\n\nb"},
     };
 
     for (const auto& test : tests) {
@@ -140,11 +213,7 @@ void testInvalidData()
             "testInvalidData", historyFileName, test.data);
 
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
-        const auto opened = history != nullptr;
-        history.reset();
-        test::utils::removeFile(historyFileName);
-
-        if (!opened)
+        if (!history)
             continue;
 
         test::failure(
@@ -152,13 +221,16 @@ void testInvalidData()
             "the \"{}\" case\n",
             test.description);
     }
+
+    test::utils::removeFile(historyFileName);
 }
 
 
 void testHistory()
 {
-    testIO(true);
-    testIO(false);
+    testIo(IoTestMode::write);
+    testIo(IoTestMode::read);
+    testTruncatedData();
     testInvalidData();
 }
 
