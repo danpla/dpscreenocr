@@ -8,11 +8,15 @@
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/windows/error.h"
+#include "dpso_utils/windows/handle.h"
 #include "dpso_utils/windows/utf.h"
 
 
+using namespace dpso;
+
+
 struct UiSingleInstanceGuard {
-    HANDLE mutex;
+    windows::Handle<windows::InvalidHandleType::null> mutex;
 };
 
 
@@ -20,9 +24,9 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
 {
     std::wstring idUtf16;
     try {
-        idUtf16 = dpso::windows::utf8ToUtf16(id);
+        idUtf16 = windows::utf8ToUtf16(id);
     } catch (std::runtime_error& e) {
-        dpso::setError("Can't convert id to UTF-16: {}", e.what());
+        setError("Can't convert id to UTF-16: {}", e.what());
         return {};
     }
 
@@ -41,29 +45,25 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
 
     const auto mutexName = L"Local\\" + idUtf16 + L"_instance_mutex";
 
-    const auto mutex = CreateMutexW(
-        nullptr, false, mutexName.c_str());
+    windows::Handle<windows::InvalidHandleType::null> mutex{
+        CreateMutexW(nullptr, false, mutexName.c_str())};
     if (!mutex) {
-        dpso::setError(
+        setError(
             "CreateMutexW(..., \"{}\"): {}",
-            dpso::windows::utf16ToUtf8(mutexName.c_str()),
-            dpso::windows::getErrorMessage(GetLastError()));
+            windows::utf16ToUtf8(mutexName.c_str()),
+            windows::getErrorMessage(GetLastError()));
         return {};
     }
 
-    return new UiSingleInstanceGuard{
-        GetLastError() == ERROR_ALREADY_EXISTS ? nullptr : mutex};
+    if (GetLastError() == ERROR_ALREADY_EXISTS)
+        mutex = {};
+
+    return new UiSingleInstanceGuard{std::move(mutex)};
 }
 
 
 void uiSingleInstanceGuardDelete(UiSingleInstanceGuard* guard)
 {
-    if (!guard)
-        return;
-
-    if (guard->mutex)
-        CloseHandle(guard->mutex);
-
     delete guard;
 }
 
