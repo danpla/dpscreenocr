@@ -89,12 +89,23 @@ void testIo(IoTestMode mode)
     const struct Test {
         DpsoHistoryEntry inEntry;
         DpsoHistoryEntry outEntry;
+
+        Test(const DpsoHistoryEntry& entry)
+            : Test{entry, entry}
+        {}
+
+        Test(
+                const DpsoHistoryEntry& inEntry,
+                const DpsoHistoryEntry& outEntry)
+            : inEntry{inEntry}
+            , outEntry{outEntry}
+        {}
     } tests[] = {
-        {{"ts1", "text1 \n\t\r line \n\t\r line \n\t\r "}, {}},
-        {{"", ""}, {}},
-        {{"", "text2"}, {}},
-        {{"ts3", ""}, {}},
-        {{"ts4", "text4"}, {}},
+        {{"ts1", "text1 \n\t\r line \n\t\r line \n\t\r "}},
+        {{"", ""}},
+        {{"", "text2"}},
+        {{"ts3", ""}},
+        {{"ts4", "text4"}},
         {
             {"ts5 \n\n\f\n a \f\n", "text5 \n\n\f\n line \f\n"},
             {"ts5   \f  a \f ", "text5 \n\n \n line  \n"}},
@@ -131,37 +142,53 @@ void testIo(IoTestMode mode)
             TEST_COUNT(history.get(), i + 1);
         }
 
-        auto expectedOutEntry = test.outEntry;
-        if (!expectedOutEntry.text)
-            expectedOutEntry.text = test.inEntry.text;
-        if (!expectedOutEntry.timestamp)
-            expectedOutEntry.timestamp = test.inEntry.timestamp;
-
         DpsoHistoryEntry outEntry;
         dpsoHistoryGet(history.get(), i, &outEntry);
-        CMP_ENTRIES(outEntry, expectedOutEntry);
+        CMP_ENTRIES(outEntry, test.outEntry);
     }
 }
 
 
 void testTruncatedData()
 {
+    const DpsoHistoryEntry extraEntry{"extraTs", "extraText"};
+
     const struct Test {
         const char* description;
         const char* data;
         std::vector<DpsoHistoryEntry> expectedEntries;
+        const char* finalData;  // After appending extraEntry.
     } tests[] = {
-        {"No timestamp terminator (first entry)", "a", {}},
+        {
+            "No timestamp terminator (first entry)",
+            "ts1",
+            {},
+            "extraTs\n\nextraText"},
         {
             "No timestamp terminator (second entry)",
-            "a\n\nb\f\nc",
-            {{"a", "b"}}},
-        {"Truncated timestamp terminator (first entry)", "a\n", {}},
+            "ts1\n\ntext1\f\nts2",
+            {{"ts1", "text1"}},
+            "ts1\n\ntext1\f\nextraTs\n\nextraText"},
+        {
+            "Truncated timestamp terminator (first entry)",
+            "ts1\n",
+            {},
+            "extraTs\n\nextraText"},
         {
             "Truncated timestamp terminator (second entry)",
-            "a\n\nb\f\nc\n", {{"a", "b"}}},
-        {"Truncated entry separator", "a\n\nb\f", {{"a", "b"}}},
-        {"Trailing entry separator", "a\n\nb\f\n", {{"a", "b"}}},
+            "ts1\n\ntext1\f\nts2\n",
+            {{"ts1", "text1"}},
+            "ts1\n\ntext1\f\nextraTs\n\nextraText"},
+        {
+            "Truncated entry separator",
+            "ts1\n\ntext1\f",
+            {{"ts1", "text1"}},
+            "ts1\n\ntext1\f\nextraTs\n\nextraText"},
+        {
+            "Trailing entry separator",
+            "ts1\n\ntext1\f\n",
+            {{"ts1", "text1"}},
+            "ts1\n\ntext1\f\nextraTs\n\nextraText"},
     };
 
     for (const auto& test : tests) {
@@ -187,11 +214,24 @@ void testTruncatedData()
             CMP_ENTRIES(entry, test.expectedEntries[i]);
         }
 
-        if (DpsoHistoryEntry entry{"a", "b"};
-                dpsoHistoryAppend(history.get(), &entry))
+        if (!dpsoHistoryAppend(history.get(), &extraEntry)) {
             test::failure(
-                "testTruncatedData(): dpsoHistoryAppend() succeeded "
+                "testTruncatedData(): dpsoHistoryAppend() failed "
                 "after loading truncated data\n");
+            continue;
+        }
+
+        history.reset();
+
+        const auto finalData = test::utils::loadText(
+            "testTruncatedData", historyFileName);
+        if (finalData == test.finalData)
+            continue;
+
+        test::failure(
+            "testTruncatedData(): Unexpected final data\n");
+        test::utils::printFirstDifference(
+            test.finalData, finalData.c_str());
     }
 
     test::utils::removeFile(historyFileName);
@@ -204,8 +244,8 @@ void testInvalidData()
         const char* description;
         const char* data;
     } tests[] = {
-        {"Invalid timestamp terminator", "a\nb"},
-        {"Invalid entry separator", "a\n\nb\f*a\n\nb"},
+        {"Invalid timestamp terminator", "ts1\nb"},
+        {"Invalid entry separator", "ts1\n\ntext1\f*ts2\n\ntext2"},
     };
 
     for (const auto& test : tests) {

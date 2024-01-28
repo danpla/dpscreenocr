@@ -177,8 +177,12 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
         return nullptr;
 
     if (validDataSize != data.size())
-        // Don't open the file to "restore" the error state.
-        return history.release();
+        try {
+            os::resizeFile(filePath, validDataSize);
+        } catch (os::Error& e) {
+            setError("os::resizeFile(): {}", e.what());
+            return nullptr;
+        }
 
     history->fp = openSync(filePath, "ab");
     if (!history->fp)

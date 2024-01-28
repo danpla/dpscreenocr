@@ -116,6 +116,13 @@ std::int64_t getFileSize(const char* filePath)
 }
 
 
+void resizeFile(const char* filePath, std::int64_t newSize)
+{
+    if (truncate(filePath, newSize) != 0)
+        throwErrno("truncate()");
+}
+
+
 std::string getErrnoMsg(int errnum)
 {
     static const auto cLocale = newLocale(LC_ALL_MASK, "C", nullptr);

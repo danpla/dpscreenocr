@@ -173,11 +173,16 @@ void testGetFileSize()
     test::utils::saveText(
         "testGetFileSize", fileName, std::string(size, '1').c_str());
 
-    const auto gotSize = dpso::os::getFileSize(fileName);
-    if (gotSize != size)
+    try {
+        const auto gotSize = dpso::os::getFileSize(fileName);
+        if (gotSize != size)
+            test::failure(
+                "os::getFileSize(\"{}\"): expected {}, got {}\n",
+                fileName, size, gotSize);
+    } catch (dpso::os::Error& e) {
         test::failure(
-            "os::getFileSize(\"{}\"): expected {}, got {}\n",
-            fileName, size, gotSize);
+            "os::getFileSize(\"{}\"): {}\n", fileName, e.what());
+    }
 
     test::utils::removeFile(fileName);
 
@@ -190,6 +195,62 @@ void testGetFileSize()
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::getFileSize() for a nonexistent file threw an error "
+            "(\"{}\") of class other than FileNotFoundError\n",
+            e.what());
+    }
+}
+
+
+void testResizeFile(
+    const char* actionName,
+    const char* fileName,
+    std::int64_t newSize)
+{
+    try {
+        dpso::os::resizeFile(fileName, newSize);
+    } catch (dpso::os::Error& e) {
+        test::failure(
+            "os::resizeFile(\"{}\", {}) ({}): {}\n",
+            fileName, newSize, actionName, e.what());
+    }
+
+    std::int64_t actualSize{};
+    try {
+        actualSize = dpso::os::getFileSize(fileName);
+    } catch (dpso::os::Error& e) {
+        test::fatalError(
+            "testResizeFile: os::getFileSize(\"{}\"): {}",
+            fileName, e.what());
+    }
+
+    if (actualSize != newSize)
+        test::failure(
+            "os::resizeFile(\"{}\", {}) ({}): Unexpected size ({}) "
+            "after resizing\n",
+            fileName, newSize, actionName, actualSize);
+}
+
+
+void testResizeFile()
+{
+    const auto* fileName = "test_resize_file.txt";
+    test::utils::saveText(
+        "testResizeFile", fileName, std::string(10, '1').c_str());
+
+    testResizeFile("shrink", fileName, 5);
+    testResizeFile("expand", fileName, 20);
+
+    test::utils::removeFile(fileName);
+
+    try {
+        dpso::os::resizeFile("nonexistent_file", 10);
+        test::failure(
+            "os::resizeFile() for a nonexistent file didn't threw an "
+            "error\n");
+    } catch (dpso::os::FileNotFoundError&) {
+    } catch (dpso::os::Error& e) {
+        test::failure(
+            "os::resizeFile() for a nonexistent file threw an error "
             "(\"{}\") of class other than FileNotFoundError\n",
             e.what());
     }
@@ -430,8 +491,7 @@ void testSyncDir()
     try {
         dpso::os::syncDir(dirPath);
     } catch (dpso::os::Error& e) {
-        test::fatalError(
-            "os::syncDir(\"{}\"): {}\n", dirPath, e.what());
+        test::failure("os::syncDir(\"{}\"): {}\n", dirPath, e.what());
     }
 }
 
@@ -441,6 +501,7 @@ void testOs()
     testPathSplit();
     testGetFileExt();
     testGetFileSize();
+    testResizeFile();
     testFopen();
     testReadLine();
     testRemoveFile();

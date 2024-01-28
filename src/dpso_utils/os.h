@@ -58,8 +58,17 @@ const char* getFileExt(const char* filePath);
 
 // Return size of filePath in bytes. The behavior is platform-specific
 // if the filePath points to anything other than a regular file.
+//
 // Throws os::Error.
 std::int64_t getFileSize(const char* filePath);
+
+
+// Change the file size. If the file was larger than newSize, the
+// extra data is lost. If the file was smaller, the content of the
+// new area is platform-dependent (filled with zeros on most systems).
+//
+// Throws os::Error.
+void resizeFile(const char* filePath, std::int64_t newSize);
 
 
 // Return the description of the given errno number. This is similar
