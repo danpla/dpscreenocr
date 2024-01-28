@@ -15,7 +15,7 @@
 #include "windows/cmdline.h"
 #include "windows/com.h"
 #include "windows/error.h"
-#include "windows/utf.h"
+#include "windows/handle.h"
 #include "windows/utf.h"
 
 #include "str.h"
@@ -159,8 +159,7 @@ std::string getBaseName(const char* path)
 
 
 // Returns the checked result of WideCharToMultiByte(), always > 0.
-static int utf16ToAcp(
-    const wchar_t* utf16Str, char* dst, int dstSize)
+static int utf16ToAcp(const wchar_t* utf16Str, char* dst, int dstSize)
 {
     BOOL defaultCharUsed{};
 
@@ -214,6 +213,32 @@ std::int64_t getFileSize(const char* filePath)
     return
         (static_cast<std::uint64_t>(attrs.nFileSizeHigh) << 32)
         | attrs.nFileSizeLow;
+}
+
+
+void resizeFile(const char* filePath, std::int64_t newSize)
+{
+    windows::Handle<windows::InvalidHandleType::value> file{
+        CreateFileW(
+            DPSO_WIN_TO_UTF16(filePath).c_str(),
+            GENERIC_WRITE,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            nullptr,
+            OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL,
+            nullptr)};
+
+    if (!file)
+        throwLastError("CreateFileW()");
+
+    LARGE_INTEGER sizeLi;
+    sizeLi.QuadPart = newSize;
+
+    if (!SetFilePointerEx(file, sizeLi, nullptr, FILE_BEGIN))
+        throwLastError("SetFilePointerEx()");
+
+    if (!SetEndOfFile(file))
+        throwLastError("SetEndOfFile()");
 }
 
 
