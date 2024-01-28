@@ -421,10 +421,14 @@ void exec(
     if (!ShellExecuteExW(&si))
         throwLastError("ShellExecuteExW()");
 
-    if (WaitForSingleObject(si.hProcess, INFINITE) == WAIT_FAILED)
-        throwLastError("WaitForSingleObject()");
+    const windows::Handle<windows::InvalidHandleType::null> process{
+        si.hProcess};
 
-    CloseHandle(si.hProcess);
+    // hProcess can be NULL even if ShellExecuteExW() with
+    // SEE_MASK_NOCLOSEPROCESS succeeds.
+    if (process
+            && WaitForSingleObject(process, INFINITE) == WAIT_FAILED)
+        throwLastError("WaitForSingleObject()");
 }
 
 
