@@ -82,11 +82,11 @@ struct ObjectSelector {
             SelectObject(dc, oldObject);
     }
 
-    ObjectSelector(const ObjectSelector& other) = delete;
-    ObjectSelector& operator=(const ObjectSelector& other) = delete;
+    ObjectSelector(const ObjectSelector&) = delete;
+    ObjectSelector& operator=(const ObjectSelector&) = delete;
 
-    ObjectSelector(ObjectSelector&& other) = delete;
-    ObjectSelector& operator=(ObjectSelector&& other) = delete;
+    ObjectSelector(ObjectSelector&&) = delete;
+    ObjectSelector& operator=(ObjectSelector&&) = delete;
 private:
     HDC dc;
     HGDIOBJ oldObject;

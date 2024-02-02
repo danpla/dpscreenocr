@@ -72,8 +72,8 @@ public:
     DpsoInitializer();
     ~DpsoInitializer();
 
-    DpsoInitializer(const DpsoInitializer& other) = delete;
-    DpsoInitializer& operator=(const DpsoInitializer& other) = delete;
+    DpsoInitializer(const DpsoInitializer&) = delete;
+    DpsoInitializer& operator=(const DpsoInitializer&) = delete;
 
     DpsoInitializer(DpsoInitializer&& other) noexcept;
     DpsoInitializer& operator=(DpsoInitializer&& other) noexcept;

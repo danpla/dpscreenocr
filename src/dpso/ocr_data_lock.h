@@ -23,8 +23,8 @@ public:
 
     ~DataLock();
 
-    DataLock(const DataLock& other) = delete;
-    DataLock& operator=(const DataLock& other) = delete;
+    DataLock(const DataLock&) = delete;
+    DataLock& operator=(const DataLock&) = delete;
 
     DataLock(DataLock&& other) noexcept;
     DataLock& operator=(DataLock&& other) noexcept;
@@ -45,9 +45,8 @@ public:
 
     ~DataLockObserver();
 
-    DataLockObserver(const DataLockObserver& other) = delete;
-    DataLockObserver& operator=(
-        const DataLockObserver& other) = delete;
+    DataLockObserver(const DataLockObserver&) = delete;
+    DataLockObserver& operator=(const DataLockObserver&) = delete;
 
     DataLockObserver(DataLockObserver&& other) noexcept;
     DataLockObserver& operator=(DataLockObserver&& other) noexcept;

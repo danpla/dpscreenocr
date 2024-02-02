@@ -45,6 +45,6 @@ std::string buildUserAgent()
 
 const char* uiGetUserAgent(void)
 {
-    static const std::string userAgent{buildUserAgent()};
+    static const auto userAgent = buildUserAgent();
     return userAgent.c_str();
 }

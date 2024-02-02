@@ -30,6 +30,12 @@ public:
     {
     }
 
+    ~Handle()
+    {
+        if (h != getInvalidValue())
+            CloseHandle(h);
+    }
+
     Handle(const Handle&) = delete;
     Handle& operator=(const Handle&) = delete;
 
@@ -50,12 +56,6 @@ public:
         }
 
         return *this;
-    }
-
-    ~Handle()
-    {
-        if (h != getInvalidValue())
-            CloseHandle(h);
     }
 
     explicit operator bool() const

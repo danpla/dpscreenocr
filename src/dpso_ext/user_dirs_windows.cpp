@@ -20,14 +20,13 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
 
     wchar_t* appDataPathUtf16{};
     const auto hresult = SHGetKnownFolderPath(
-            FOLDERID_LocalAppData,
-            KF_FLAG_CREATE,
-            nullptr,
-            &appDataPathUtf16);
+        FOLDERID_LocalAppData,
+        KF_FLAG_CREATE,
+        nullptr,
+        &appDataPathUtf16);
     if (FAILED(hresult)) {
         dpso::setError(
-            "SHGetKnownFolderPath() with FOLDERID_LocalAppData "
-            "failed: {}",
+            "SHGetKnownFolderPath(FOLDERID_LocalAppData, ...): {}",
             dpso::windows::getHresultMessage(hresult));
         // Docs say that we should call CoTaskMemFree() even if
         // SHGetKnownFolderPath() fails.

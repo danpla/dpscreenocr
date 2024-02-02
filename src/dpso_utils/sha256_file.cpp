@@ -23,7 +23,7 @@ std::string calcFileSha256(const char* filePath)
     os::StdFileUPtr fp{os::fopen(filePath, "rb")};
     if (!fp)
         throw Sha256FileError{fmt::format(
-            "os::fopen: {}", os::getErrnoMsg(errno))};
+            "os::fopen(): {}", os::getErrnoMsg(errno))};
 
     Sha256 h;
 

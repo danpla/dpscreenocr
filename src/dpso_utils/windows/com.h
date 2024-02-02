@@ -40,8 +40,8 @@ struct CoInitializer {
         finalize();
     }
 
-    CoInitializer(const CoInitializer& other) = delete;
-    CoInitializer& operator=(const CoInitializer& other) = delete;
+    CoInitializer(const CoInitializer&) = delete;
+    CoInitializer& operator=(const CoInitializer&) = delete;
 
     CoInitializer(CoInitializer&& other) noexcept
     {
