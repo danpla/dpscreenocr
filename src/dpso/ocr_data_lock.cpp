@@ -11,8 +11,8 @@ namespace {
 
 
 struct ObserverData {
-    std::function<void()> lockAboutToBeCreated;
-    std::function<void()> lockRemoved;
+    std::function<void()> beforeLockCreated;
+    std::function<void()> afterLockRemoved;
 };
 
 
@@ -81,7 +81,7 @@ struct DataLock::Impl {
             throw DataLock::DataLockedError{"Data is already locked"};
 
         for (auto& observerData : sd->observerDatas)
-            if (auto& fn = observerData.get().lockAboutToBeCreated)
+            if (auto& fn = observerData.get().beforeLockCreated)
                 fn();
 
         sd->isDataLocked = true;
@@ -93,7 +93,7 @@ struct DataLock::Impl {
         sd->isDataLocked = false;
 
         for (auto& observerData : sd->observerDatas)
-            if (auto& fn = observerData.get().lockRemoved)
+            if (auto& fn = observerData.get().afterLockRemoved)
                 fn();
     }
 };
@@ -120,10 +120,10 @@ struct DataLockObserver::Impl {
     Impl(
             const char* engineId,
             const char* dataDir,
-            const std::function<void()>& lockAboutToBeCreated,
-            const std::function<void()>& lockRemoved)
+            const std::function<void()>& beforeLockCreated,
+            const std::function<void()>& afterLockRemoved)
         : sd{SharedData::get(engineId, dataDir)}
-        , data{lockAboutToBeCreated, lockRemoved}
+        , data{beforeLockCreated, afterLockRemoved}
     {
         sd->observerDatas.push_back(data);
     }
@@ -147,10 +147,10 @@ DataLockObserver::DataLockObserver() = default;
 DataLockObserver::DataLockObserver(
         const char* engineId,
         const char* dataDir,
-        const std::function<void()>& lockAboutToBeCreated,
-        const std::function<void()>& lockRemoved)
+        const std::function<void()>& beforeLockCreated,
+        const std::function<void()>& afterLockRemoved)
     : impl{std::make_unique<Impl>(
-        engineId, dataDir, lockAboutToBeCreated, lockRemoved)}
+        engineId, dataDir, beforeLockCreated, afterLockRemoved)}
 {
 }
 

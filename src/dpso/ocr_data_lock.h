@@ -40,8 +40,8 @@ public:
     DataLockObserver(
         const char* engineId,
         const char* dataDir,
-        const std::function<void()>& lockAboutToBeCreated,
-        const std::function<void()>& lockRemoved);
+        const std::function<void()>& beforeLockCreated,
+        const std::function<void()>& afterLockRemoved);
 
     ~DataLockObserver();
 
