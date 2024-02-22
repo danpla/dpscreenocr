@@ -1,8 +1,6 @@
 
 #include "os.h"
 
-#include <cerrno>
-#include <cstring>
 #include <initializer_list>
 #include <io.h>
 
@@ -141,6 +139,14 @@ PathParts splitPath(const char* path)
 }
 
 
+std::string getErrnoMsg(int errnum)
+{
+    // On Windows, strerror() does not depend on the locale and is
+    // documented to return a pointer to a thread-local storage.
+    return std::strerror(errnum);
+}
+
+
 const char* const dirSeparators = "\\/";
 
 
@@ -242,14 +248,6 @@ void resizeFile(const char* filePath, std::int64_t newSize)
 }
 
 
-std::string getErrnoMsg(int errnum)
-{
-    // On Windows, strerror() does not depend on the locale and is
-    // documented to return a pointer to a thread-local storage.
-    return std::strerror(errnum);
-}
-
-
 FILE* fopen(const char* filePath, const char* mode)
 {
     try {
@@ -337,12 +335,10 @@ void syncFile(FILE* fp)
 {
     const auto fd = _fileno(fp);
     if (fd == -1)
-        throw Error{fmt::format(
-            "_fileno(): {}", std::strerror(errno))};
+        throwErrno("_fileno()", errno);
 
     if (_commit(fd) == -1)
-        throw Error{fmt::format(
-            "_commit(): {}", std::strerror(errno))};
+        throwErrno("_commit()", errno)};
 }
 
 

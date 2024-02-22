@@ -1,13 +1,13 @@
 
 #include "sha256_file.h"
 
-#include <cerrno>
-#include <cstdio>
 #include <cstring>
-#include <system_error>
+#include <optional>
 
 #include <fmt/core.h>
 
+#include "file.h"
+#include "line_reader.h"
 #include "os.h"
 #include "sha256.h"
 
@@ -20,10 +20,13 @@ const char* const sha256FileExt = ".sha256";
 
 std::string calcFileSha256(const char* filePath)
 {
-    os::StdFileUPtr fp{os::fopen(filePath, "rb")};
-    if (!fp)
+    std::optional<File> file;
+    try {
+        file.emplace(filePath, File::Mode::read);
+    } catch (os::Error& e) {
         throw Sha256FileError{fmt::format(
-            "os::fopen(): {}", os::getErrnoMsg(errno))};
+            "File(..., Mode::read): {}", e.what())};
+    }
 
     Sha256 h;
 
@@ -31,10 +34,10 @@ std::string calcFileSha256(const char* filePath)
     while (true) {
         std::size_t numRead{};
         try {
-            numRead = os::readSome(fp.get(), buf, sizeof(buf));
+            numRead = file->readSome(buf, sizeof(buf));
         } catch (os::Error& e) {
             throw Sha256FileError{fmt::format(
-                "os::readSome(): {}", e.what())};
+                "File::readSome(): {}", e.what())};
         }
 
         h.update(buf, numRead);
@@ -53,34 +56,40 @@ void saveSha256File(
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
 
-    os::StdFileUPtr fp{os::fopen(sha256FilePath.c_str(), "wb")};
-    if (!fp)
+    std::optional<File> file;
+    try {
+        file.emplace(sha256FilePath.c_str(), File::Mode::write);
+    } catch (os::Error& e) {
         throw Sha256FileError{fmt::format(
-            "os::fopen(\"{}\", \"wb\"): {}",
-            sha256FilePath, os::getErrnoMsg(errno))};
+            "File(\"{}\", Mode::write): {}",
+            sha256FilePath, e.what())};
+    }
 
     try {
-        fmt::print(
-            fp.get(),
-            "{} *{}\n",
-            digest,
-            os::getBaseName(digestSourceFilePath));
-    } catch (std::system_error& e) {
+        write(
+            *file,
+            fmt::format(
+                "{} *{}\n",
+                digest,
+                os::getBaseName(digestSourceFilePath)));
+    } catch (os::Error& e) {
         throw Sha256FileError{fmt::format(
-            "fmt::print() to \"{}\": {}", sha256FilePath, e.what())};
+            "File::write() to \"{}\": {}", sha256FilePath, e.what())};
     }
 }
 
 
 static std::string loadDigestFromSha256File(
-    std::FILE* fp, const char* expectedFileName)
+    File& file, const char* expectedFileName)
 {
     std::string line;
 
     try {
-        os::readLine(fp, line);
+        LineReader lineReader{file};
 
-        if (std::string extraLine; os::readLine(fp, extraLine))
+        lineReader.readLine(line);
+
+        if (std::string extraLine; lineReader.readLine(extraLine))
             throw Sha256FileError{
                 "File has more than one line, but only one hash "
                 "definition is expected."};
@@ -129,19 +138,20 @@ std::string loadSha256File(const char* digestSourceFilePath)
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
 
-    os::StdFileUPtr fp{os::fopen(sha256FilePath.c_str(), "rb")};
-    if (!fp) {
-        if (errno == ENOENT)
-            return {};
-
+    std::optional<File> file;
+    try {
+        file.emplace(sha256FilePath.c_str(), File::Mode::read);
+    } catch (os::FileNotFoundError&) {
+        return {};
+    } catch (os::Error& e) {
         throw Sha256FileError{fmt::format(
-            "os::fopen(\"{}\", \"rb\"): {}",
-            sha256FilePath, os::getErrnoMsg(errno))};
+            "File(\"{}\", Mode::read): {}",
+            sha256FilePath, e.what())};
     }
 
     try {
         return loadDigestFromSha256File(
-            fp.get(), os::getBaseName(digestSourceFilePath).c_str());
+            *file, os::getBaseName(digestSourceFilePath).c_str());
     } catch (Sha256FileError& e) {
         throw Sha256FileError{fmt::format(
             "\"{}\": {}", sha256FilePath, e.what())};

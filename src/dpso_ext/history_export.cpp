@@ -1,11 +1,11 @@
 
 #include "history_export.h"
 
-#include <cerrno>
-#include <cstdio>
+#include <optional>
 #include <vector>
 
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
@@ -16,30 +16,32 @@ using namespace dpso;
 namespace {
 
 
-void writePlainText(std::FILE* fp, const DpsoHistory* history)
+void writePlainText(File& file, const DpsoHistory* history)
 {
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
-            os::write(fp, "\n\n\n");
+            write(
+                file,
+                DPSO_OS_NEWLINE DPSO_OS_NEWLINE DPSO_OS_NEWLINE);
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        os::write(fp, "=== ");
-        os::write(fp, e.timestamp);
-        os::write(fp, " ===\n\n");
-        os::write(fp, e.text);
+        write(file, "=== ");
+        write(file, e.timestamp);
+        write(file, " ===" DPSO_OS_NEWLINE DPSO_OS_NEWLINE);
+        write(file, e.text);
     }
 
-    os::write(fp, "\n");
+    write(file, DPSO_OS_NEWLINE);
 }
 
 
 void writeEscapedHtml(
-    std::FILE* fp, const char* indent, const char* text)
+    File& file, const char* indent, const char* text)
 {
     for (const auto* s = text; *s;) {
-        os::write(fp, indent);
+        write(file, indent);
 
         while (*s) {
             const auto c = *s++;
@@ -50,24 +52,24 @@ void writeEscapedHtml(
                 // add an empty line when rendered in browsers), we
                 // still add it so that we can restore the original
                 // text from the resulting HTML.
-                os::write(fp, "<br>");
+                write(file, "<br>");
                 break;
             case '<':
-                os::write(fp, "&lt;");
+                write(file, "&lt;");
                 break;
             case '>':
-                os::write(fp, "&gt;");
+                write(file, "&gt;");
                 break;
             case '&':
-                os::write(fp, "&amp;");
+                write(file, "&amp;");
                 break;
             default:
-                os::write(fp, c);
+                write(file, c);
                 break;
             }
 
             if (c == '\n') {
-                os::write(fp, c);
+                write(file, DPSO_OS_NEWLINE);
                 break;
             }
         }
@@ -76,71 +78,71 @@ void writeEscapedHtml(
 
 
 // W3C Markup Validator: https://validator.w3.org/
-void writeHtml(std::FILE* fp, const DpsoHistory* history)
+void writeHtml(File& file, const DpsoHistory* history)
 {
-    os::write(
-        fp,
-        "<!DOCTYPE html>\n"
-        "<html>\n"
-        "<head>\n"
-        "  <meta charset=\"utf-8\">\n"
-        "  <title>History</title>\n"
-        "  <style>\n"
-        "    .text {\n"
-        "      margin: 1em 1em 2em;\n"
-        "      line-height: 1.6;\n"
-        "    }\n"
-        "  </style>\n"
-        "</head>\n"
-        "<body>\n");
+    write(
+        file,
+        "<!DOCTYPE html>"            DPSO_OS_NEWLINE
+        "<html>"                     DPSO_OS_NEWLINE
+        "<head>"                     DPSO_OS_NEWLINE
+        "  <meta charset=\"utf-8\">" DPSO_OS_NEWLINE
+        "  <title>History</title>"   DPSO_OS_NEWLINE
+        "  <style>"                  DPSO_OS_NEWLINE
+        "    .text {"                DPSO_OS_NEWLINE
+        "      margin: 1em 1em 2em;" DPSO_OS_NEWLINE
+        "      line-height: 1.6;"    DPSO_OS_NEWLINE
+        "    }"                      DPSO_OS_NEWLINE
+        "  </style>"                 DPSO_OS_NEWLINE
+        "</head>"                    DPSO_OS_NEWLINE
+        "<body>"                     DPSO_OS_NEWLINE);
 
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
-            os::write(fp, "  <hr>\n");
+            write(file, "  <hr>" DPSO_OS_NEWLINE);
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        os::write(fp, "  <p class=\"timestamp\"><b>");
-        writeEscapedHtml(fp, "", e.timestamp);
-        os::write(fp, "</b></p>\n");
+        write(file, "  <p class=\"timestamp\"><b>");
+        writeEscapedHtml(file, "", e.timestamp);
+        write(file, "</b></p>" DPSO_OS_NEWLINE);
 
-        os::write(fp, "  <p class=\"text\">\n");
-        writeEscapedHtml(fp, "    ", e.text);
-        os::write(fp, "\n  </p>\n");
+        write(file, "  <p class=\"text\">" DPSO_OS_NEWLINE);
+        writeEscapedHtml(file, "    ", e.text);
+        write(file, DPSO_OS_NEWLINE "  </p>" DPSO_OS_NEWLINE);
     }
 
-    os::write(
-        fp,
-        "</body>\n"
-        "</html>\n");
+    write(
+        file,
+        "</body>" DPSO_OS_NEWLINE
+        "</html>" DPSO_OS_NEWLINE);
 }
 
 
-void writeEscapedJson(std::FILE* fp, const char* text)
+void writeEscapedJson(File& file, const char* text)
 {
     for (const auto* s = text; *s; ++s)
         switch (const auto c = *s) {
         case '\b':
-            os::write(fp, "\\b");
+            write(file, "\\b");
             break;
         case '\f':
-            os::write(fp, "\\f");
+            write(file, "\\f");
             break;
         case '\n':
-            os::write(fp, "\\n");
+            write(file, "\\n");
             break;
         case '\r':
-            os::write(fp, "\\r");
+            write(file, "\\r");
             break;
         case '\t':
-            os::write(fp, "\\t");
+            write(file, "\\t");
             break;
         default:
             if (c == '\\' || c == '/' || c == '"')
-                os::write(fp, '\\');
+                write(file, '\\');
 
-            os::write(fp, c);
+            write(file, c);
             break;
         }
 }
@@ -148,37 +150,39 @@ void writeEscapedJson(std::FILE* fp, const char* text)
 
 // To validate JSON:
 //   python3 -m json.tool *.json > /dev/null
-void writeJson(std::FILE* fp, const DpsoHistory* history)
+void writeJson(File& file, const DpsoHistory* history)
 {
-    os::write(fp, "[\n");
+    write(file, "[" DPSO_OS_NEWLINE);
 
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        os::write(fp,
-            "  {\n"
+        write(
+            file,
+            "  {" DPSO_OS_NEWLINE
             "    \"timestamp\": \"");
-        writeEscapedJson(fp, e.timestamp);
-        os::write(fp, "\",\n");
+        writeEscapedJson(file, e.timestamp);
+        write(file, "\"," DPSO_OS_NEWLINE);
 
-        os::write(fp, "    \"text\": \"");
-        writeEscapedJson(fp, e.text);
-        os::write(fp,
-            "\"\n"
+        write(file, "    \"text\": \"");
+        writeEscapedJson(file, e.text);
+        write(
+            file,
+            "\"" DPSO_OS_NEWLINE
             "  }");
 
         if (i + 1 < dpsoHistoryCount(history))
-            os::write(fp, ',');
-        os::write(fp, '\n');
+            write(file, ',');
+        write(file, DPSO_OS_NEWLINE);
     }
 
-    os::write(fp, "]\n");
+    write(file, "]" DPSO_OS_NEWLINE);
 }
 
 
 struct ExportFormatInfo {
-    using WriteFn = void (&)(std::FILE*, const DpsoHistory*);
+    using WriteFn = void (&)(File&, const DpsoHistory*);
 
     const char* name;
     std::vector<const char*> extensions;
@@ -256,17 +260,16 @@ bool dpsoHistoryExport(
         return false;
     }
 
-    // We intentionally use fopen() without 'b' flag, enabling CRLF
-    // line endings on Windows. This is not required by any export
-    // format, but is convenient for Notepad users.
-    os::StdFileUPtr fp{os::fopen(filePath, "w")};
-    if (!fp) {
-        setError("os::fopen(..., \"w\"): {}", os::getErrnoMsg(errno));
+    std::optional<File> file;
+    try {
+        file.emplace(filePath, File::Mode::write);
+    } catch (os::Error& e) {
+        setError("File(..., Mode::write): {}", e.what());
         return false;
     }
 
     try {
-        exportFormatInfos[exportFormat].writeFn(fp.get(), history);
+        exportFormatInfos[exportFormat].writeFn(*file, history);
     } catch (os::Error& e) {
         setError("{}", e.what());
         return false;

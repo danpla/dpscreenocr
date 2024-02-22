@@ -2,16 +2,17 @@
 #include "cfg.h"
 
 #include <algorithm>
-#include <cerrno>
 #include <charconv>
-#include <cstdio>
 #include <cstring>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include <fmt/core.h>
 
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/file.h"
+#include "dpso_utils/line_reader.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
@@ -138,24 +139,25 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
     cfg->keyValues.clear();
 
-    os::StdFileUPtr fp{os::fopen(filePath, "rb")};
-    if (!fp) {
-        if (errno == ENOENT)
-            return true;
-
-        setError(
-            "os::fopen(..., \"rb\"): {}", os::getErrnoMsg(errno));
+    std::optional<File> file;
+    try {
+        file.emplace(filePath, File::Mode::read);
+    } catch (os::FileNotFoundError&) {
+        return true;
+    } catch (os::Error& e) {
+        setError("File(..., Mode::read): {}", e.what());
         return false;
     }
 
+    LineReader lineReader{*file};
     std::string line;
     DpsoCfg::KeyValue kv;
     while (true) {
         try {
-            if (!os::readLine(fp.get(), line))
+            if (!lineReader.readLine(line))
                 break;
         } catch (os::Error& e) {
-            setError("os::readLine(): {}", e.what());
+            setError("LineReader::readLine(): {}", e.what());
             cfg->keyValues.clear();
             return false;
         }
@@ -170,43 +172,38 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
 
 static void writeKeyValue(
-    std::FILE* fp, const DpsoCfg::KeyValue& kv, std::size_t maxKeyLen)
+    File& file, const DpsoCfg::KeyValue& kv, std::size_t maxKeyLen)
 {
-    os::write(fp, fmt::format("{:{}} ", kv.key, maxKeyLen));
+    write(file, fmt::format("{:{}} ", kv.key, maxKeyLen));
 
     if (!kv.value.empty() && kv.value.front() == ' ')
-        os::write(fp, '\\');
+        write(file, '\\');
 
     for (const auto* s = kv.value.c_str(); *s; ++s)
         switch (const auto c = *s) {
         case '\n':
-            os::write(fp, "\\n");
+            write(file, "\\n");
             break;
         case '\r':
-            os::write(fp, "\\r");
+            write(file, "\\r");
             break;
         case '\t':
-            os::write(fp, "\\t");
+            write(file, "\\t");
             break;
         case '\\':
-            os::write(fp, "\\\\");
+            write(file, "\\\\");
             break;
         default:
-            os::write(fp, c);
+            write(file, c);
             break;
         }
 
     // If we have a single space, it's already escaped, but we still
     // append \ to make the end visible.
     if (!kv.value.empty() && kv.value.back() == ' ')
-        os::write(fp, '\\');
+        write(file, '\\');
 
-    // Use CRLF on Windows to make Notepad users happy.
-    #ifdef _WIN32
-    os::write(fp, '\r');
-    #endif
-
-    os::write(fp, '\n');
+    write(file, DPSO_OS_NEWLINE);
 }
 
 
@@ -217,10 +214,11 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
         return false;
     }
 
-    os::StdFileUPtr fp{os::fopen(filePath, "wb")};
-    if (!fp) {
-        setError(
-            "os::fopen(..., \"wb\"): {}", os::getErrnoMsg(errno));
+    std::optional<File> file;
+    try {
+        file.emplace(filePath, File::Mode::write);
+    } catch (os::Error& e) {
+        setError("File(..., Mode::write): {}", e.what());
         return false;
     }
 
@@ -230,7 +228,7 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
 
     try {
         for (const auto& kv : cfg->keyValues)
-            writeKeyValue(fp.get(), kv, maxKeyLen);
+            writeKeyValue(*file, kv, maxKeyLen);
     } catch (os::Error& e) {
         setError("{}", e.what());
         return false;

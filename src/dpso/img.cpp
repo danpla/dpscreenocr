@@ -3,13 +3,13 @@
 
 #include <algorithm>
 #include <cassert>
-#include <cstdio>
 
 #include <fmt/core.h>
 
 #include "stb_image_resize.h"
 #include "stb_image_resize_progress.h"
 
+#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/progress_tracker.h"
 
@@ -255,16 +255,13 @@ void savePgm(
     if (w < 1 || h < 1 || pitch < w)
         return;
 
-    os::StdFileUPtr fp{os::fopen(filePath, "wb")};
-    if (!fp)
-        return;
-
     try {
-        fmt::print(fp.get(), "P5\n{} {}\n255\n", w, h);
+        File file{filePath, File::Mode::write};
+        write(file, fmt::format("P5\n{} {}\n255\n", w, h));
 
         for (int y = 0; y < h; ++y)
-            os::write(fp.get(), data + y * pitch, w);
-    } catch (std::runtime_error&) {
+            file.write(data + y * pitch, w);
+    } catch (os::Error&) {
     }
 }
 

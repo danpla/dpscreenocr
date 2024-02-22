@@ -21,6 +21,26 @@ class FileNotFoundError : public Error {
 };
 
 
+#ifdef _WIN32
+    #define DPSO_OS_NEWLINE "\r\n"
+#else
+    #define DPSO_OS_NEWLINE "\n"
+#endif
+
+
+// Return the description of the given errno number. This is similar
+// to std::strerror(), except that it's locale-independent and
+// thread-safe, if supported by the platform. If these features are
+// not supported by the platform, then this function may just be a
+// wrapper for std::strerror().
+std::string getErrnoMsg(int errnum);
+
+
+// Throws the given errno number as os::Error.
+[[noreturn]]
+void throwErrno(const char* description, int errnum);
+
+
 // Directory separators for the current platform. The primary one is
 // the first in the list.
 extern const char* const dirSeparators;
@@ -71,14 +91,6 @@ std::int64_t getFileSize(const char* filePath);
 void resizeFile(const char* filePath, std::int64_t newSize);
 
 
-// Return the description of the given errno number. This is similar
-// to std::strerror(), except that it's locale-independent and
-// thread-safe, if supported by the platform. If these features are
-// not supported by the platform, then this function may just be a
-// wrapper for std::strerror().
-std::string getErrnoMsg(int errnum);
-
-
 // fopen() that accepts filePath in UTF-8.
 std::FILE* fopen(const char* filePath, const char* mode);
 
@@ -94,37 +106,6 @@ struct StdFileCloser {
 
 
 using StdFileUPtr = std::unique_ptr<std::FILE, StdFileCloser>;
-
-
-// Read up to dstSize bytes from a file. Returns the number of bytes
-// read, which may be less than dstSize if the end of the file is
-// reached.
-//
-// Throws os::Error.
-std::size_t readSome(std::FILE* fp, void* dst, std::size_t dstSize);
-
-
-// Read the given number of bytes from a file.
-//
-// Throws os::Error
-void read(std::FILE* fp, void* dst, std::size_t dstSize);
-
-
-// Read the next line from a file, terminating on either line break
-// (\r, \n, or \r\n) or the end of the file. Returns false if the line
-// cannot be read because the end of the file is reached.
-//
-// The function clears the line before performing any action.
-//
-// Throws os::Error.
-bool readLine(std::FILE* fp, std::string& line);
-
-
-// Write data to a file. Throws os::Error.
-void write(std::FILE* fp, const void* data, std::size_t dataSize);
-void write(std::FILE* fp, const std::string& str);
-void write(std::FILE* fp, const char* str);
-void write(std::FILE* fp, char c);
 
 
 // Remove a regular file. The behavior is platform-specific if

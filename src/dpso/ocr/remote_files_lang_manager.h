@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <vector>
 
-
 #include "ocr/lang_manager.h"
 
 

@@ -1,12 +1,12 @@
 
 #include "download_file.h"
 
-#include <cerrno>
 #include <chrono>
 #include <string>
 
 #include <fmt/core.h>
 
+#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
 
 #include "error.h"
@@ -28,11 +28,13 @@ void downloadFile(
 {
     const auto partPath = std::string{filePath} + ".part";
 
-    os::StdFileUPtr partFp{os::fopen(partPath.c_str(), "wb")};
-    if (!partFp)
+    std::optional<File> partFile;
+    try {
+        partFile.emplace(partPath.c_str(), File::Mode::write);
+    } catch (os::Error& e) {
         throw Error{fmt::format(
-            "Can't open \"{}\": {}",
-            partPath, os::getErrnoMsg(errno))};
+            "File(\"{}\", Mode::write): {}", partPath, e.what())};
+    }
 
     auto response = makeGetRequest(url, userAgent);
 
@@ -53,10 +55,10 @@ void downloadFile(
             break;
 
         try {
-            os::write(partFp.get(), buf, numRead);
+            partFile->write(buf, numRead);
         } catch (os::Error& e) {
             throw Error{fmt::format(
-                "os::write() to \"{}\": {}", partPath, e.what())};
+                "File::write() to \"{}\": {}", partPath, e.what())};
         }
 
         partSize += numRead;
@@ -73,7 +75,7 @@ void downloadFile(
         lastProgressReportTime = curTime;
 
         if (!progressHandler(partSize, fileSize)) {
-            partFp.reset();
+            partFile.reset();
 
             try {
                 os::removeFile(partPath.c_str());
@@ -84,18 +86,14 @@ void downloadFile(
         }
     }
 
-    if (std::fflush(partFp.get()) == EOF)
-        throw Error{fmt::format(
-            "fflush() for \"{}\" failed", partPath)};
-
     try {
-        os::syncFile(partFp.get());
+        partFile->sync();
     } catch (os::Error& e) {
         throw Error{fmt::format(
-            "os::syncFile() for \"{}\": {}", partPath, e.what())};
+            "File::sync() for \"{}\": {}", partPath, e.what())};
     }
 
-    partFp.reset();
+    partFile.reset();
 
     try {
         os::replace(partPath.c_str(), filePath);

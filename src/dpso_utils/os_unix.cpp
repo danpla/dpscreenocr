@@ -20,15 +20,7 @@ namespace {
 [[noreturn]]
 void throwErrno(const char* description)
 {
-    const auto message =
-        std::string{description} + ": " + getErrnoMsg(errno);
-
-    switch (errno) {
-    case ENOENT:
-        throw FileNotFoundError{message};
-    default:
-        throw Error{message};
-    }
+    os::throwErrno(description, errno);
 }
 
 
@@ -83,6 +75,14 @@ LocaleUPtr newLocale(
 }
 
 
+std::string getErrnoMsg(int errnum)
+{
+    static const auto cLocale = newLocale(LC_ALL_MASK, "C", nullptr);
+    return cLocale
+        ? strerror_l(errnum, cLocale.get()) : strerror(errnum);
+}
+
+
 const char* const dirSeparators = "/";
 
 
@@ -120,14 +120,6 @@ void resizeFile(const char* filePath, std::int64_t newSize)
 {
     if (truncate(filePath, newSize) != 0)
         throwErrno("truncate()");
-}
-
-
-std::string getErrnoMsg(int errnum)
-{
-    static const auto cLocale = newLocale(LC_ALL_MASK, "C", nullptr);
-    return cLocale
-        ? strerror_l(errnum, cLocale.get()) : strerror(errnum);
 }
 
 

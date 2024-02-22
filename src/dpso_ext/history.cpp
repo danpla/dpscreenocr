@@ -2,13 +2,13 @@
 #include "history.h"
 
 #include <algorithm>
-#include <cerrno>
-#include <cstdio>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
 
 
@@ -27,7 +27,7 @@ struct DpsoHistory {
     };
 
     std::string filePath;
-    os::StdFileUPtr fp;
+    std::optional<File> file;
     std::vector<Entry> entries;
 };
 
@@ -45,17 +45,18 @@ static bool loadData(const char* filePath, std::string& data)
         return false;
     }
 
-    os::StdFileUPtr fp{os::fopen(filePath, "rb")};
-    if (!fp) {
-        setError(
-            "os::fopen(..., \"rb\"): {}", os::getErrnoMsg(errno));
+    std::optional<File> file;
+    try {
+        file.emplace(filePath, File::Mode::read);
+    } catch (os::Error& e) {
+        setError("File(..., Mode::read): {}", e.what());
         return false;
     }
 
     try {
-        os::read(fp.get(), data.data(), data.size());
+        read(*file, data.data(), data.size());
     } catch (os::Error& e) {
-        setError("os::read(): {}", e.what());
+        setError("read(file, ...): {}", e.what());
         return false;
     }
 
@@ -139,15 +140,13 @@ static bool createEntries(
 }
 
 
-static os::StdFileUPtr openSync(
-    const char* filePath, const char* mode)
+static void openSync(
+    std::optional<File>& file, const char* filePath, File::Mode mode)
 {
-    os::StdFileUPtr fp{os::fopen(filePath, mode)};
-    if (!fp) {
-        setError(
-            "os::fopen(..., \"{}\"): {}",
-            mode, os::getErrnoMsg(errno));
-        return nullptr;
+    try {
+        file.emplace(filePath, mode);
+    } catch (os::Error& e) {
+        setError("File(..., {}): {}", toStr(mode), e.what());
     }
 
     const auto fileDir = os::getDirName(filePath);
@@ -156,10 +155,8 @@ static os::StdFileUPtr openSync(
         os::syncDir(fileDir.empty() ? "." : fileDir.c_str());
     } catch (os::Error& e) {
         setError("os::syncDir(): {}", e.what());
-        return nullptr;
+        file.reset();
     }
-
-    return fp;
 }
 
 
@@ -184,8 +181,8 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
             return nullptr;
         }
 
-    history->fp = openSync(filePath, "ab");
-    if (!history->fp)
+    openSync(history->file, filePath, File::Mode::append);
+    if (!history->file)
         return nullptr;
 
     return history.release();
@@ -217,7 +214,7 @@ bool dpsoHistoryAppend(
         return false;
     }
 
-    if (!history->fp) {
+    if (!history->file) {
         setError("History is in the error state and is read-only");
         return false;
     }
@@ -227,32 +224,26 @@ bool dpsoHistoryAppend(
     std::replace(e.timestamp.begin(), e.timestamp.end(), '\n', ' ');
     std::replace(e.text.begin(), e.text.end(), '\f', ' ');
 
-    auto* fp = history->fp.get();
+    auto& file = *history->file;
 
     try {
         if (!history->entries.empty())
-            os::write(fp, "\f\n");
+            write(file, "\f\n");
 
-        os::write(fp, e.timestamp);
-        os::write(fp, "\n\n");
-        os::write(fp, e.text);
+        write(file, e.timestamp);
+        write(file, "\n\n");
+        write(file, e.text);
     } catch (os::Error& e) {
-        setError("os::write(): {}", e.what());
-        history->fp.reset();
-        return false;
-    }
-
-    if (std::fflush(fp) == EOF) {
-        setError("fflush() failed");
-        history->fp.reset();
+        setError("write(file, ...): {}", e.what());
+        history->file.reset();
         return false;
     }
 
     try {
-        os::syncFile(fp);
+        file.sync();
     } catch (os::Error& e) {
-        setError("os::syncFile(): {}", e.what());
-        history->fp.reset();
+        setError("File::sync(): {}", e.what());
+        history->file.reset();
         return false;
     }
 
@@ -290,9 +281,10 @@ bool dpsoHistoryClear(DpsoHistory* history)
 
     // Note that we allow clearing while in the error state.
 
-    history->fp.reset();
+    history->file.reset();
     history->entries.clear();
 
-    history->fp = openSync(history->filePath.c_str(), "wb");
-    return history->fp != nullptr;
+    openSync(
+        history->file, history->filePath.c_str(), File::Mode::write);
+    return history->file.has_value();
 }

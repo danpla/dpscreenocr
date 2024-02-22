@@ -12,6 +12,8 @@ add_library(
     dpso_utils
 
     error.cpp
+    file.cpp
+    line_reader.cpp
     os_c.cpp
     os_common.cpp
     progress_tracker.cpp

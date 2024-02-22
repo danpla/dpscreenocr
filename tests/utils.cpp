@@ -2,13 +2,14 @@
 #include "utils.h"
 
 #include <cctype>
-#include <cerrno>
+#include <optional>
 #include <queue>
 
 #include <fmt/core.h>
 
 #include "flow.h"
 
+#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
 
 
@@ -74,18 +75,11 @@ std::string toStr(const std::string& str)
 
 std::string lfToNativeNewline(const char* str)
 {
-    const auto* nativeNewline =
-        #ifdef _WIN32
-        "\r\n";
-        #else
-        "\n";
-        #endif
-
     std::string result;
 
     for (const auto* s = str; *s; ++s)
         if (*s == '\n')
-            result += nativeNewline;
+            result += DPSO_OS_NEWLINE;
         else
             result += *s;
 
@@ -96,19 +90,22 @@ std::string lfToNativeNewline(const char* str)
 void saveText(
     const char* contextInfo, const char* filePath, const char* text)
 {
-    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "wb")};
-    if (!fp)
-        test::fatalError(
-            "{}: saveText(): os::fopen(\"{}\", \"wb\"): {}\n",
-            contextInfo,
-            filePath,
-            dpso::os::getErrnoMsg(errno));
-
+    std::optional<dpso::File> file;
     try {
-        dpso::os::write(fp.get(), text);
+        file.emplace(filePath, dpso::File::Mode::write);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: saveText(): os::write() to \"{}\": {}\n",
+            "{}: saveText(): File(\"{}\", Mode::write): {}\n",
+            contextInfo,
+            filePath,
+            e.what());
+    }
+
+    try {
+        dpso::write(*file, text);
+    } catch (dpso::os::Error& e) {
+        test::fatalError(
+            "{}: saveText(): write(file, ...) to \"{}\": {}\n",
             contextInfo,
             filePath,
             e.what());
@@ -118,13 +115,16 @@ void saveText(
 
 std::string loadText(const char* contextInfo, const char* filePath)
 {
-    dpso::os::StdFileUPtr fp{dpso::os::fopen(filePath, "rb")};
-    if (!fp)
+    std::optional<dpso::File> file;
+    try {
+        file.emplace(filePath, dpso::File::Mode::read);
+    } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: loadText(): os::fopen(\"{}\", \"rb\"): {}\n",
+            "{}: loadText(): File(\"{}\", Mode::read): {}\n",
             contextInfo,
             filePath,
-            dpso::os::getErrnoMsg(errno));
+            e.what());
+    }
 
     std::string result;
 
@@ -132,10 +132,10 @@ std::string loadText(const char* contextInfo, const char* filePath)
     while (true) {
         std::size_t numRead{};
         try {
-            numRead = dpso::os::readSome(fp.get(), buf, sizeof(buf));
+            numRead = file->readSome(buf, sizeof(buf));
         } catch (dpso::os::Error& e) {
             test::fatalError(
-                "{}: loadText(): os::readSome() from \"{}\": {}\n",
+                "{}: loadText(): File::readSome() from \"{}\": {}\n",
                 contextInfo,
                 filePath,
                 e.what());
