@@ -5,6 +5,8 @@
 #include <cstring>
 #include <limits>
 
+#include "os.h"
+
 
 namespace dpso::str {
 
@@ -50,6 +52,20 @@ int cmpSubStr(
     }
 
     return str[subStrLen] == 0 ? 0 : 1;
+}
+
+
+std::string lfToNativeNewline(const char* str)
+{
+    std::string result;
+
+    for (const auto* s = str; *s; ++s)
+        if (*s == '\n')
+            result += DPSO_OS_NEWLINE;
+        else
+            result += *s;
+
+    return result;
 }
 
 

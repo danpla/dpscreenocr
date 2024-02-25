@@ -48,11 +48,6 @@ std::string toStr(T begin, T end)
 }
 
 
-// Convert all line feeds (\n) to native line endings for the current
-// platform.
-std::string lfToNativeNewline(const char* str);
-
-
 // In failure, calls tests::fatalError() using contextInfo as a part
 // of the error message.
 void saveText(

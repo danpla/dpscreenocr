@@ -28,9 +28,9 @@ void writePlainText(File& file, const DpsoHistory* history)
         dpsoHistoryGet(history, i, &e);
 
         write(file, "=== ");
-        write(file, e.timestamp);
+        write(file, str::lfToNativeNewline(e.timestamp));
         write(file, " ===" DPSO_OS_NEWLINE DPSO_OS_NEWLINE);
-        write(file, e.text);
+        write(file, str::lfToNativeNewline(e.text));
     }
 
     write(file, DPSO_OS_NEWLINE);

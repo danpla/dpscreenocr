@@ -8,6 +8,7 @@
 
 #include "dpso/dpso.h"
 #include "dpso_utils/error_get.h"
+#include "dpso_utils/str.h"
 #include "dpso_ext/cfg.h"
 #include "dpso_ext/cfg_ext.h"
 
@@ -571,7 +572,7 @@ void testSavedValueFormat()
         Test(const char* val, const char* expectedValData)
             : val{val}
             , expectedData{
-                test::utils::lfToNativeNewline(
+                dpso::str::lfToNativeNewline(
                     fmt::format("key {}\n", expectedValData).c_str())}
         {
         }

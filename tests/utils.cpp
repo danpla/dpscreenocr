@@ -73,20 +73,6 @@ std::string toStr(const std::string& str)
 }
 
 
-std::string lfToNativeNewline(const char* str)
-{
-    std::string result;
-
-    for (const auto* s = str; *s; ++s)
-        if (*s == '\n')
-            result += DPSO_OS_NEWLINE;
-        else
-            result += *s;
-
-    return result;
-}
-
-
 void saveText(
     const char* contextInfo, const char* filePath, const char* text)
 {
