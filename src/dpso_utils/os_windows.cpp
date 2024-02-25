@@ -338,7 +338,7 @@ void syncFile(FILE* fp)
         throwErrno("_fileno()", errno);
 
     if (_commit(fd) == -1)
-        throwErrno("_commit()", errno)};
+        throwErrno("_commit()", errno);
 }
 
 
