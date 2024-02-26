@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-09-20 01:25+0200\n"
-"PO-Revision-Date: 2023-07-14 19:52+0000\n"
-"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
+"PO-Revision-Date: 2024-02-27 17:16+0000\n"
+"Last-Translator: Ys413 <2020172007@stu.mdjnu.edu.cn>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "dpscreenocr/dpscreenocr-website/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -17,13 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.5-dev\n"
 
-#, fuzzy
 msgid "Language"
 msgstr "语言"
 
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "{app_name} is a program to recognize text on the screen. Powered by "
 "<a {tesseract_link}>Tesseract</a>, it supports more than 100 languages and "
@@ -31,9 +30,9 @@ msgid ""
 ">manual</a> for instructions on installing, configuring, and using the "
 "program."
 msgstr ""
-"{app_name}是一款屏幕文本识别应用。文本识别引擎为 <a {tesseract_link}"
-">Tesseract</a>，它支持100种语言并且支持区块识别，例如以列为单位进行区块识别。"
-"阅读 <a {manual_link}>手册</a> 安装、配置和使用手册。"
+"{app_name}是承认屏幕上文字的方案。 由<a {tesseract_link}>Tesseract</a>授权,它"
+"支持100多种语文,并可分立独立的文字区,如栏目。 阅读<a {manual_link}>manual "
+"</a>,以指示安装、配置和使用该方案."
 
 msgid "https://en.wikipedia.org/wiki/Tesseract_(software)"
 msgstr "https://zh.wikipedia.org/wiki/Tesseract"
@@ -43,32 +42,37 @@ msgid ""
 "<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
 "<a {license_link}>license</a>):"
 msgstr ""
+"<b>下载</b> 版本 {version_number} (<a {changelog_link}>版本变换</a>, <a "
+"{license_link}>许可证</a>):"
 
 #, python-brace-format
 msgid ""
 "Download {file}, which works on most "
 "systems, or choose a package for your distribution:"
-msgstr ""
+msgstr "下载量{file},这些系统在大多数系统运作,或选择供你分发的包裹:"
 
 msgid "Ubuntu and derivatives"
-msgstr ""
+msgstr "乌班图和衍生工具"
 
 #, python-brace-format
 msgid ""
 "Windows 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
+"Windows 7 或者更新的版本: <a {installer_link}>安装包 </a> 或者 <a "
+"{zip_archive_link}>ZIP archive </a>"
 
 msgid "Source code (tar.gz)"
-msgstr ""
+msgstr "源代码(tar.gz)"
 
 #, python-brace-format
 msgid ""
 "<b>Contribute</b> by taking part in <a {translations_link}>translation</a> "
 "or <a {development_link}>development</a>."
-msgstr ""
+msgstr "<b> 参与贡献</b><a {translations_link}> 传输</a>或<a "
+"{development_link}>开发</a>"
 
 #. Translators: This is the target language name to be shown in the
 #. language selection menu.
 msgid "LANGUAGE_NAME"
-msgstr ""
+msgstr "LANGUAGE_NAME"
