@@ -24,7 +24,7 @@ up MSYS2.
 
 MSYS2 provides several shells. Pick a MinGW shell depending on whether
 you want to build a 32-bit or 64-bit version of the program, e.g.
-"MSYS2 MinGW x86" or "MSYS2 MinGW x64". You will never need the MSYS
+"MSYS2 MINGW32" or "MSYS2 MINGW64". You will never need the MSYS
 shell ("MSYS2 MSYS").
 
 
