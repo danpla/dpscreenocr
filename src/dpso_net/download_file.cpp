@@ -6,8 +6,8 @@
 
 #include <fmt/core.h>
 
-#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
+#include "dpso_utils/stream/file_stream.h"
 
 #include "error.h"
 #include "request.h"
@@ -28,12 +28,13 @@ void downloadFile(
 {
     const auto partPath = std::string{filePath} + ".part";
 
-    std::optional<File> partFile;
+    std::optional<FileStream> partFile;
     try {
-        partFile.emplace(partPath.c_str(), File::Mode::write);
+        partFile.emplace(partPath.c_str(), FileStream::Mode::write);
     } catch (os::Error& e) {
         throw Error{fmt::format(
-            "File(\"{}\", Mode::write): {}", partPath, e.what())};
+            "FileStream(\"{}\", Mode::write): {}",
+            partPath, e.what())};
     }
 
     auto response = makeGetRequest(url, userAgent);
@@ -56,9 +57,10 @@ void downloadFile(
 
         try {
             partFile->write(buf, numRead);
-        } catch (os::Error& e) {
+        } catch (StreamError& e) {
             throw Error{fmt::format(
-                "File::write() to \"{}\": {}", partPath, e.what())};
+                "FileStream::write() to \"{}\": {}",
+                partPath, e.what())};
         }
 
         partSize += numRead;

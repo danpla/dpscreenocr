@@ -9,8 +9,9 @@
 
 #include "flow.h"
 
-#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
+#include "dpso_utils/stream/file_stream.h"
+#include "dpso_utils/stream/utils.h"
 
 
 namespace test::utils {
@@ -73,15 +74,29 @@ std::string toStr(const std::string& str)
 }
 
 
+std::string lfToNativeNewline(const char* str)
+{
+    std::string result;
+
+    for (const auto* s = str; *s; ++s)
+        if (*s == '\n')
+            result += DPSO_OS_NEWLINE;
+        else
+            result += *s;
+
+    return result;
+}
+
+
 void saveText(
     const char* contextInfo, const char* filePath, const char* text)
 {
-    std::optional<dpso::File> file;
+    std::optional<dpso::FileStream> file;
     try {
-        file.emplace(filePath, dpso::File::Mode::write);
+        file.emplace(filePath, dpso::FileStream::Mode::write);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: saveText(): File(\"{}\", Mode::write): {}\n",
+            "{}: saveText(): FileStream(\"{}\", Mode::write): {}\n",
             contextInfo,
             filePath,
             e.what());
@@ -89,7 +104,7 @@ void saveText(
 
     try {
         dpso::write(*file, text);
-    } catch (dpso::os::Error& e) {
+    } catch (dpso::StreamError& e) {
         test::fatalError(
             "{}: saveText(): write(file, ...) to \"{}\": {}\n",
             contextInfo,
@@ -101,12 +116,12 @@ void saveText(
 
 std::string loadText(const char* contextInfo, const char* filePath)
 {
-    std::optional<dpso::File> file;
+    std::optional<dpso::FileStream> file;
     try {
-        file.emplace(filePath, dpso::File::Mode::read);
+        file.emplace(filePath, dpso::FileStream::Mode::read);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: loadText(): File(\"{}\", Mode::read): {}\n",
+            "{}: loadText(): FileStream(\"{}\", Mode::read): {}\n",
             contextInfo,
             filePath,
             e.what());
@@ -119,9 +134,10 @@ std::string loadText(const char* contextInfo, const char* filePath)
         std::size_t numRead{};
         try {
             numRead = file->readSome(buf, sizeof(buf));
-        } catch (dpso::os::Error& e) {
+        } catch (dpso::StreamError& e) {
             test::fatalError(
-                "{}: loadText(): File::readSome() from \"{}\": {}\n",
+                "{}: loadText(): FileStream::readSome() from \"{}\": "
+                "{}\n",
                 contextInfo,
                 filePath,
                 e.what());

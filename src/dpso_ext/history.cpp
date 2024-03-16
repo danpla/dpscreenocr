@@ -8,8 +8,9 @@
 #include <vector>
 
 #include "dpso_utils/error_set.h"
-#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
+#include "dpso_utils/stream/file_stream.h"
+#include "dpso_utils/stream/utils.h"
 
 
 using namespace dpso;
@@ -27,7 +28,7 @@ struct DpsoHistory {
     };
 
     std::string filePath;
-    std::optional<File> file;
+    std::optional<FileStream> file;
     std::vector<Entry> entries;
 };
 
@@ -45,17 +46,17 @@ static bool loadData(const char* filePath, std::string& data)
         return false;
     }
 
-    std::optional<File> file;
+    std::optional<FileStream> file;
     try {
-        file.emplace(filePath, File::Mode::read);
+        file.emplace(filePath, FileStream::Mode::read);
     } catch (os::Error& e) {
-        setError("File(..., Mode::read): {}", e.what());
+        setError("FileStream(..., Mode::read): {}", e.what());
         return false;
     }
 
     try {
         read(*file, data.data(), data.size());
-    } catch (os::Error& e) {
+    } catch (StreamError& e) {
         setError("read(file, ...): {}", e.what());
         return false;
     }
@@ -141,12 +142,14 @@ static bool createEntries(
 
 
 static void openSync(
-    std::optional<File>& file, const char* filePath, File::Mode mode)
+    std::optional<FileStream>& file,
+    const char* filePath,
+    FileStream::Mode mode)
 {
     try {
         file.emplace(filePath, mode);
     } catch (os::Error& e) {
-        setError("File(..., {}): {}", toStr(mode), e.what());
+        setError("FileStream(..., {}): {}", toStr(mode), e.what());
     }
 
     const auto fileDir = os::getDirName(filePath);
@@ -181,7 +184,7 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
             return nullptr;
         }
 
-    openSync(history->file, filePath, File::Mode::append);
+    openSync(history->file, filePath, FileStream::Mode::append);
     if (!history->file)
         return nullptr;
 
@@ -233,7 +236,7 @@ bool dpsoHistoryAppend(
         write(file, e.timestamp);
         write(file, "\n\n");
         write(file, e.text);
-    } catch (os::Error& e) {
+    } catch (StreamError& e) {
         setError("write(file, ...): {}", e.what());
         history->file.reset();
         return false;
@@ -285,6 +288,9 @@ bool dpsoHistoryClear(DpsoHistory* history)
     history->entries.clear();
 
     openSync(
-        history->file, history->filePath.c_str(), File::Mode::write);
+        history->file,
+        history->filePath.c_str(),
+        FileStream::Mode::write);
+
     return history->file.has_value();
 }

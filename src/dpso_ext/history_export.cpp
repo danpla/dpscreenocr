@@ -5,9 +5,11 @@
 #include <vector>
 
 #include "dpso_utils/error_set.h"
-#include "dpso_utils/file.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
+#include "dpso_utils/stream/file_stream.h"
+#include "dpso_utils/stream/out_newline_conversion_stream.h"
+#include "dpso_utils/stream/utils.h"
 
 
 using namespace dpso;
@@ -16,32 +18,30 @@ using namespace dpso;
 namespace {
 
 
-void writePlainText(File& file, const DpsoHistory* history)
+void writePlainText(Stream& stream, const DpsoHistory* history)
 {
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
-            write(
-                file,
-                DPSO_OS_NEWLINE DPSO_OS_NEWLINE DPSO_OS_NEWLINE);
+            write(stream, "\n\n\n");
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        write(file, "=== ");
-        write(file, str::lfToNativeNewline(e.timestamp));
-        write(file, " ===" DPSO_OS_NEWLINE DPSO_OS_NEWLINE);
-        write(file, str::lfToNativeNewline(e.text));
+        write(stream, "=== ");
+        write(stream, e.timestamp);
+        write(stream, " ===\n\n");
+        write(stream, e.text);
     }
 
-    write(file, DPSO_OS_NEWLINE);
+    write(stream, '\n');
 }
 
 
 void writeEscapedHtml(
-    File& file, const char* indent, const char* text)
+    Stream& stream, const char* indent, const char* text)
 {
     for (const auto* s = text; *s;) {
-        write(file, indent);
+        write(stream, indent);
 
         while (*s) {
             const auto c = *s++;
@@ -52,24 +52,24 @@ void writeEscapedHtml(
                 // add an empty line when rendered in browsers), we
                 // still add it so that we can restore the original
                 // text from the resulting HTML.
-                write(file, "<br>");
+                write(stream, "<br>");
                 break;
             case '<':
-                write(file, "&lt;");
+                write(stream, "&lt;");
                 break;
             case '>':
-                write(file, "&gt;");
+                write(stream, "&gt;");
                 break;
             case '&':
-                write(file, "&amp;");
+                write(stream, "&amp;");
                 break;
             default:
-                write(file, c);
+                write(stream, c);
                 break;
             }
 
             if (c == '\n') {
-                write(file, DPSO_OS_NEWLINE);
+                write(stream, c);
                 break;
             }
         }
@@ -78,71 +78,71 @@ void writeEscapedHtml(
 
 
 // W3C Markup Validator: https://validator.w3.org/
-void writeHtml(File& file, const DpsoHistory* history)
+void writeHtml(Stream& stream, const DpsoHistory* history)
 {
     write(
-        file,
-        "<!DOCTYPE html>"            DPSO_OS_NEWLINE
-        "<html>"                     DPSO_OS_NEWLINE
-        "<head>"                     DPSO_OS_NEWLINE
-        "  <meta charset=\"utf-8\">" DPSO_OS_NEWLINE
-        "  <title>History</title>"   DPSO_OS_NEWLINE
-        "  <style>"                  DPSO_OS_NEWLINE
-        "    .text {"                DPSO_OS_NEWLINE
-        "      margin: 1em 1em 2em;" DPSO_OS_NEWLINE
-        "      line-height: 1.6;"    DPSO_OS_NEWLINE
-        "    }"                      DPSO_OS_NEWLINE
-        "  </style>"                 DPSO_OS_NEWLINE
-        "</head>"                    DPSO_OS_NEWLINE
-        "<body>"                     DPSO_OS_NEWLINE);
+        stream,
+        "<!DOCTYPE html>\n"
+        "<html>\n"
+        "<head>\n"
+        "  <meta charset=\"utf-8\">\n"
+        "  <title>History</title>\n"
+        "  <style>\n"
+        "    .text {\n"
+        "      margin: 1em 1em 2em;\n"
+        "      line-height: 1.6;\n"
+        "    }\n"
+        "  </style>\n"
+        "</head>\n"
+        "<body>\n");
 
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
-            write(file, "  <hr>" DPSO_OS_NEWLINE);
+            write(stream, "  <hr>\n");
 
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        write(file, "  <p class=\"timestamp\"><b>");
-        writeEscapedHtml(file, "", e.timestamp);
-        write(file, "</b></p>" DPSO_OS_NEWLINE);
+        write(stream, "  <p class=\"timestamp\"><b>");
+        writeEscapedHtml(stream, "", e.timestamp);
+        write(stream, "</b></p>\n");
 
-        write(file, "  <p class=\"text\">" DPSO_OS_NEWLINE);
-        writeEscapedHtml(file, "    ", e.text);
-        write(file, DPSO_OS_NEWLINE "  </p>" DPSO_OS_NEWLINE);
+        write(stream, "  <p class=\"text\">\n");
+        writeEscapedHtml(stream, "    ", e.text);
+        write(stream, "\n  </p>\n");
     }
 
     write(
-        file,
-        "</body>" DPSO_OS_NEWLINE
-        "</html>" DPSO_OS_NEWLINE);
+        stream,
+        "</body>\n"
+        "</html>\n");
 }
 
 
-void writeEscapedJson(File& file, const char* text)
+void writeEscapedJson(Stream& stream, const char* text)
 {
     for (const auto* s = text; *s; ++s)
         switch (const auto c = *s) {
         case '\b':
-            write(file, "\\b");
+            write(stream, "\\b");
             break;
         case '\f':
-            write(file, "\\f");
+            write(stream, "\\f");
             break;
         case '\n':
-            write(file, "\\n");
+            write(stream, "\\n");
             break;
         case '\r':
-            write(file, "\\r");
+            write(stream, "\\r");
             break;
         case '\t':
-            write(file, "\\t");
+            write(stream, "\\t");
             break;
         default:
             if (c == '\\' || c == '/' || c == '"')
-                write(file, '\\');
+                write(stream, '\\');
 
-            write(file, c);
+            write(stream, c);
             break;
         }
 }
@@ -150,39 +150,39 @@ void writeEscapedJson(File& file, const char* text)
 
 // To validate JSON:
 //   python3 -m json.tool *.json > /dev/null
-void writeJson(File& file, const DpsoHistory* history)
+void writeJson(Stream& stream, const DpsoHistory* history)
 {
-    write(file, "[" DPSO_OS_NEWLINE);
+    write(stream, "[\n");
 
     for (int i = 0; i < dpsoHistoryCount(history); ++i) {
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
         write(
-            file,
-            "  {" DPSO_OS_NEWLINE
+            stream,
+            "  {\n"
             "    \"timestamp\": \"");
-        writeEscapedJson(file, e.timestamp);
-        write(file, "\"," DPSO_OS_NEWLINE);
+        writeEscapedJson(stream, e.timestamp);
+        write(stream, "\",\n");
 
-        write(file, "    \"text\": \"");
-        writeEscapedJson(file, e.text);
+        write(stream, "    \"text\": \"");
+        writeEscapedJson(stream, e.text);
         write(
-            file,
-            "\"" DPSO_OS_NEWLINE
+            stream,
+            "\"\n"
             "  }");
 
         if (i + 1 < dpsoHistoryCount(history))
-            write(file, ',');
-        write(file, DPSO_OS_NEWLINE);
+            write(stream, ',');
+        write(stream, '\n');
     }
 
-    write(file, "]" DPSO_OS_NEWLINE);
+    write(stream, "]\n");
 }
 
 
 struct ExportFormatInfo {
-    using WriteFn = void (&)(File&, const DpsoHistory*);
+    using WriteFn = void (&)(Stream&, const DpsoHistory*);
 
     const char* name;
     std::vector<const char*> extensions;
@@ -260,17 +260,23 @@ bool dpsoHistoryExport(
         return false;
     }
 
-    std::optional<File> file;
+    std::optional<FileStream> file;
     try {
-        file.emplace(filePath, File::Mode::write);
+        file.emplace(filePath, FileStream::Mode::write);
     } catch (os::Error& e) {
-        setError("File(..., Mode::write): {}", e.what());
+        setError("FileStream(..., Mode::write): {}", e.what());
         return false;
     }
 
+    // None of the export formats require a particular line ending
+    // style, so use the OS newline to make Windows Notepad users
+    // happy.
+    OutNewlineConversionStream newlineConversionStream{*file};
+
     try {
-        exportFormatInfos[exportFormat].writeFn(*file, history);
-    } catch (os::Error& e) {
+        exportFormatInfos[exportFormat].writeFn(
+            newlineConversionStream, history);
+    } catch (StreamError& e) {
         setError("{}", e.what());
         return false;
     }

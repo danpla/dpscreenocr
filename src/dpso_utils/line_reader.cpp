@@ -3,14 +3,14 @@
 
 #include <cassert>
 
-#include "file.h"
+#include "stream/stream.h"
 
 
 namespace dpso {
 
 
-LineReader::LineReader(File& file)
-    : file{file}
+LineReader::LineReader(Stream& stream)
+    : stream{stream}
     , bufFill{}
     , bufPos{}
 {
@@ -27,7 +27,7 @@ bool LineReader::readLine(std::string& line)
         assert(bufPos <= bufFill);
 
         if (bufPos == bufFill) {
-            bufFill = file.readSome(buf, sizeof(buf));
+            bufFill = stream.readSome(buf, sizeof(buf));
             bufPos = 0;
 
             if (bufFill == 0)

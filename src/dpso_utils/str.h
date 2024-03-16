@@ -51,11 +51,6 @@ inline int cmp(
 }
 
 
-// Convert line feeds (\n) to native line endings for the current
-// platform.
-std::string lfToNativeNewline(const char* str);
-
-
 // toStr() functions are locale-independent replacements for
 // std::to_string(). They all have the same effect as
 // fmt::format("{}", v), but are shorter and and don't require

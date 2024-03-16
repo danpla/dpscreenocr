@@ -2,9 +2,9 @@
 #include <optional>
 #include <vector>
 
-#include "dpso_utils/file.h"
 #include "dpso_utils/line_reader.h"
 #include "dpso_utils/os.h"
+#include "dpso_utils/stream/file_stream.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -40,12 +40,13 @@ void testLineReader()
         test::utils::saveText(
             "testReadLine", fileName, test.text);
 
-        std::optional<dpso::File> file;
+        std::optional<dpso::FileStream> file;
         try {
-            file.emplace(fileName, dpso::File::Mode::read);
+            file.emplace(fileName, dpso::FileStream::Mode::read);
         } catch (dpso::os::Error& e) {
             test::fatalError(
-                "File(\"{}\", Mode::read): {}\n", fileName, e.what());
+                "FileStream(\"{}\", Mode::read): {}\n",
+                fileName, e.what());
         }
 
         std::string line{"initial line content"};
@@ -55,7 +56,7 @@ void testLineReader()
         try {
             while (lineReader.readLine(line))
                 lines.push_back(line);
-        } catch (dpso::os::Error& e) {
+        } catch (dpso::StreamError& e) {
             test::fatalError(
                 "LineReader::readLine(): {}\n", e.what());
         }

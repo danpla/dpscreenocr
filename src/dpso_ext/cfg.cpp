@@ -11,10 +11,11 @@
 #include <fmt/core.h>
 
 #include "dpso_utils/error_set.h"
-#include "dpso_utils/file.h"
 #include "dpso_utils/line_reader.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
+#include "dpso_utils/stream/file_stream.h"
+#include "dpso_utils/stream/utils.h"
 
 
 using namespace dpso;
@@ -139,13 +140,13 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
     cfg->keyValues.clear();
 
-    std::optional<File> file;
+    std::optional<FileStream> file;
     try {
-        file.emplace(filePath, File::Mode::read);
+        file.emplace(filePath, FileStream::Mode::read);
     } catch (os::FileNotFoundError&) {
         return true;
     } catch (os::Error& e) {
-        setError("File(..., Mode::read): {}", e.what());
+        setError("FileStream(..., Mode::read): {}", e.what());
         return false;
     }
 
@@ -156,7 +157,7 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
         try {
             if (!lineReader.readLine(line))
                 break;
-        } catch (os::Error& e) {
+        } catch (StreamError& e) {
             setError("LineReader::readLine(): {}", e.what());
             cfg->keyValues.clear();
             return false;
@@ -172,38 +173,40 @@ bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
 
 
 static void writeKeyValue(
-    File& file, const DpsoCfg::KeyValue& kv, std::size_t maxKeyLen)
+    Stream& stream,
+    const DpsoCfg::KeyValue& kv,
+    std::size_t maxKeyLen)
 {
-    write(file, fmt::format("{:{}} ", kv.key, maxKeyLen));
+    write(stream, fmt::format("{:{}} ", kv.key, maxKeyLen));
 
     if (!kv.value.empty() && kv.value.front() == ' ')
-        write(file, '\\');
+        write(stream, '\\');
 
     for (const auto* s = kv.value.c_str(); *s; ++s)
         switch (const auto c = *s) {
         case '\n':
-            write(file, "\\n");
+            write(stream, "\\n");
             break;
         case '\r':
-            write(file, "\\r");
+            write(stream, "\\r");
             break;
         case '\t':
-            write(file, "\\t");
+            write(stream, "\\t");
             break;
         case '\\':
-            write(file, "\\\\");
+            write(stream, "\\\\");
             break;
         default:
-            write(file, c);
+            write(stream, c);
             break;
         }
 
     // If we have a single space, it's already escaped, but we still
     // append \ to make the end visible.
     if (!kv.value.empty() && kv.value.back() == ' ')
-        write(file, '\\');
+        write(stream, '\\');
 
-    write(file, DPSO_OS_NEWLINE);
+    write(stream, DPSO_OS_NEWLINE);
 }
 
 
@@ -214,11 +217,11 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
         return false;
     }
 
-    std::optional<File> file;
+    std::optional<FileStream> file;
     try {
-        file.emplace(filePath, File::Mode::write);
+        file.emplace(filePath, FileStream::Mode::write);
     } catch (os::Error& e) {
-        setError("File(..., Mode::write): {}", e.what());
+        setError("FileStream(..., Mode::write): {}", e.what());
         return false;
     }
 
@@ -229,7 +232,7 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
     try {
         for (const auto& kv : cfg->keyValues)
             writeKeyValue(*file, kv, maxKeyLen);
-    } catch (os::Error& e) {
+    } catch (StreamError& e) {
         setError("{}", e.what());
         return false;
     }

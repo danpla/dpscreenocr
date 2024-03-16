@@ -6,7 +6,6 @@
 #include "dpso_ext/history.h"
 #include "dpso_ext/history_export.h"
 #include "dpso_utils/error_get.h"
-#include "dpso_utils/str.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -119,11 +118,11 @@ void testExport()
             : description{description}
             , entries{std::move(entries)}
             , exportedData{
-                dpso::str::lfToNativeNewline(txtData),
-                dpso::str::lfToNativeNewline(htmlBegin)
-                    + dpso::str::lfToNativeNewline(htmlBodyData)
-                    + dpso::str::lfToNativeNewline(htmlEnd),
-                dpso::str::lfToNativeNewline(jsonData)}
+                test::utils::lfToNativeNewline(txtData),
+                test::utils::lfToNativeNewline(htmlBegin)
+                    + test::utils::lfToNativeNewline(htmlBodyData)
+                    + test::utils::lfToNativeNewline(htmlEnd),
+                test::utils::lfToNativeNewline(jsonData)}
         {
             if (exportedData.size() != dpsoNumHistoryExportFormats)
                 test::fatalError(

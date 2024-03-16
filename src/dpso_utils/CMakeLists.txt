@@ -12,7 +12,6 @@ add_library(
     dpso_utils
 
     error.cpp
-    file.cpp
     line_reader.cpp
     os_c.cpp
     os_common.cpp
@@ -20,6 +19,10 @@ add_library(
     sha256.cpp
     sha256_file.cpp
     str.cpp
+    stream/file_stream.cpp
+    stream/out_newline_conversion_stream.cpp
+    stream/string_stream.cpp
+    stream/utils.cpp
     strftime.cpp
     timing.cpp)
 

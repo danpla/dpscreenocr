@@ -30,6 +30,11 @@ std::string toStr(const char* str);
 std::string toStr(const std::string& str);
 
 
+// Convert line feeds (\n) to native line endings for the current
+// platform.
+std::string lfToNativeNewline(const char* str);
+
+
 template<typename T>
 std::string toStr(T begin, T end)
 {

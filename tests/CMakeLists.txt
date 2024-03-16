@@ -13,8 +13,10 @@ add_executable(
     dpso_ext/test_history.cpp
     dpso_ext/test_history_export.cpp
     dpso_ext/test_str_nformat.cpp
-    dpso_utils/test_os.cpp
+    dpso_utils/stream/test_out_newline_conversion_stream.cpp
+    dpso_utils/stream/test_string_stream.cpp
     dpso_utils/test_line_reader.cpp
+    dpso_utils/test_os.cpp
     dpso_utils/test_progress_tracker.cpp
     dpso_utils/test_sha256.cpp
     dpso_utils/test_sha256_file.cpp

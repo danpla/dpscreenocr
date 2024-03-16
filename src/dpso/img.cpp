@@ -9,9 +9,9 @@
 #include "stb_image_resize.h"
 #include "stb_image_resize_progress.h"
 
-#include "dpso_utils/file.h"
-#include "dpso_utils/os.h"
 #include "dpso_utils/progress_tracker.h"
+#include "dpso_utils/stream/file_stream.h"
+#include "dpso_utils/stream/utils.h"
 
 
 namespace dpso::img {
@@ -256,12 +256,12 @@ void savePgm(
         return;
 
     try {
-        File file{filePath, File::Mode::write};
+        FileStream file{filePath, FileStream::Mode::write};
         write(file, fmt::format("P5\n{} {}\n255\n", w, h));
 
         for (int y = 0; y < h; ++y)
             file.write(data + y * pitch, w);
-    } catch (os::Error&) {
+    } catch (std::runtime_error&) {  // os::Error, StreamError
     }
 }
 
