@@ -44,7 +44,7 @@ RemoteFilesLangManager::RemoteFilesLangManager(
 {
     langInfos.reserve(localLangCodes.size());
     for (const auto& langCode : localLangCodes)
-        langInfos.push_back({langCode, LangState::installed, {}, {}});
+        langInfos.push_back({langCode, LangState::installed, {}});
 }
 
 
@@ -136,7 +136,6 @@ void RemoteFilesLangManager::installLang(
 
     auto& langInfo = langInfos[langIdx];
 
-    assert(!langInfo.remoteSha256.empty());
     assert(!langInfo.url.empty());
 
     const auto filePath = getFilePath(langInfo.code);
@@ -162,17 +161,17 @@ void RemoteFilesLangManager::installLang(
 
     langInfo.state = LangState::installed;
 
-    // Even though we know the digest in advance, we cannot save it
-    // before the language file is downloaded, as this would
-    // prematurely overwrite the existing digest file in case of a
-    // language update.
+    // Remove a no longer relevant SHA-256 file in case we did an
+    // update; it will be created if necessary the next time we check
+    // if the language file is up to date.
+    //
+    // Note that we can't assume that the SHA-256 from the JSON info
+    // is still relevant to the downloaded language, because the files
+    // on the remote server can change at any time after the JSON info
+    // is fetched.
     try {
-        saveSha256File(
-            filePath.c_str(), langInfo.remoteSha256.c_str());
+        removeSha256File(filePath.c_str());
     } catch (Sha256FileError&) {
-        // Ignore errors, as the language file is already downloaded
-        // anyway, and the previous one is overwritten in case of an
-        // update.
     }
 }
 
@@ -268,7 +267,6 @@ void RemoteFilesLangManager::clearRemoteLangs()
         }
 
         iter->state = LangState::installed;
-        iter->remoteSha256.clear();
         iter->url.clear();
 
         ++iter;
@@ -283,10 +281,8 @@ void RemoteFilesLangManager::mergeRemoteLang(
 
     // Old remote langs should be cleared before adding new ones.
     assert(langInfo.state == LangState::installed);
-    assert(langInfo.remoteSha256.empty());
     assert(langInfo.url.empty());
 
-    langInfo.remoteSha256 = remoteLangInfo.sha256;
     langInfo.url = remoteLangInfo.url;
 
     const auto filePath = getFilePath(langInfo.code);
@@ -306,7 +302,7 @@ void RemoteFilesLangManager::mergeRemoteLang(
 
     try {
         if (getSha256HexDigestWithCaching(filePath.c_str())
-                != langInfo.remoteSha256)
+                != remoteLangInfo.sha256)
             langInfo.state = LangState::updateAvailable;
     } catch (Sha256FileError& e) {
         throw LangManagerError{fmt::format(
@@ -328,7 +324,6 @@ void RemoteFilesLangManager::addRemoteLang(
         {
             remoteLangInfo.code,
             LangState::notInstalled,
-            remoteLangInfo.sha256,
             remoteLangInfo.url});
 }
 

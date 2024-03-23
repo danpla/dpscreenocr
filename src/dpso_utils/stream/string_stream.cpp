@@ -10,7 +10,7 @@ namespace dpso {
 
 
 StringStream::StringStream(const char* str)
-    :str{str}
+    : str{str}
 {
 }
 
