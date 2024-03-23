@@ -245,7 +245,7 @@ bool dpsoHistoryAppend(
     try {
         file.sync();
     } catch (os::Error& e) {
-        setError("File::sync(): {}", e.what());
+        setError("FileStream::sync(): {}", e.what());
         history->file.reset();
         return false;
     }

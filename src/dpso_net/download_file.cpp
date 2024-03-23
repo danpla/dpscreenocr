@@ -92,7 +92,7 @@ void downloadFile(
         partFile->sync();
     } catch (os::Error& e) {
         throw Error{fmt::format(
-            "File::sync() for \"{}\": {}", partPath, e.what())};
+            "FileStream::sync() for \"{}\": {}", partPath, e.what())};
     }
 
     partFile.reset();
