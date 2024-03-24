@@ -43,7 +43,7 @@ void testPrettifyText()
                 "expected \"{}\", got \"{}\"\n",
                 test::utils::escapeStr(test.original),
                 test::utils::escapeStr(test.prettified),
-                test::utils::escapeStr(str.c_str()));
+                test::utils::escapeStr(str));
 
         if (strLen != std::strlen(str.c_str()))
             test::failure(

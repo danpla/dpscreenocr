@@ -141,8 +141,8 @@ void testGetFileExt()
                 test::failure(
                     "os::getFileExt(\"{}\"): expected \"{}\", "
                     "got null\n",
-                    test::utils::escapeStr(test.path.c_str()),
-                    test::utils::escapeStr(test.expectedExt.c_str()));
+                    test::utils::escapeStr(test.path),
+                    test::utils::escapeStr(test.expectedExt));
 
             continue;
         }
@@ -158,8 +158,8 @@ void testGetFileExt()
 
         test::failure(
             "os::getFileExt(\"{}\"): expected \"{}\", got \"{}\"\n",
-            test::utils::escapeStr(test.path.c_str()),
-            test::utils::escapeStr(expected.c_str()),
+            test::utils::escapeStr(test.path),
+            test::utils::escapeStr(expected),
             test::utils::escapeStr(ext));
     }
 }

@@ -2,6 +2,7 @@
 #include "utils.h"
 
 #include <cctype>
+#include <cstring>
 #include <optional>
 #include <queue>
 
@@ -17,12 +18,18 @@
 namespace test::utils {
 
 
-std::string escapeStr(const char* str)
+// escapeStr() that takes the length so that we can include embedded
+// nulls from std::string.
+static std::string escapeStr(const char* str, std::size_t strLen)
 {
     std::string result;
+    result.reserve(strLen);
 
-    while (*str)
-        switch (const auto c = *str++) {
+    for (std::size_t i = 0; i < strLen; ++i)
+        switch (const auto c = str[i]) {
+        case 0:
+            result += "\\0";
+            break;
         case '\b':
             result += "\\b";
             break;
@@ -53,6 +60,18 @@ std::string escapeStr(const char* str)
 }
 
 
+std::string escapeStr(const char* str)
+{
+    return escapeStr(str, std::strlen(str));
+}
+
+
+std::string escapeStr(const std::string& str)
+{
+    return escapeStr(str.c_str(), str.size());
+}
+
+
 std::string toStr(bool b)
 {
     return b ? "true" : "false";
@@ -70,7 +89,7 @@ std::string toStr(const char* str)
 
 std::string toStr(const std::string& str)
 {
-    return toStr(str.c_str());
+    return '"' + escapeStr(str) + '"';
 }
 
 
@@ -196,12 +215,12 @@ void printFirstDifference(const char* expected, const char* actual)
                 fmt::print(
                     stderr,
                     " |{}\n",
-                    escapeStr(contextLines.front().c_str()));
+                    escapeStr(contextLines.front()));
                 contextLines.pop();
             }
 
-            fmt::print(stderr, "e|{}\n", escapeStr(el.c_str()));
-            fmt::print(stderr, "a|{}\n", escapeStr(al.c_str()));
+            fmt::print(stderr, "e|{}\n", escapeStr(el));
+            fmt::print(stderr, "a|{}\n", escapeStr(al));
             break;
         }
 

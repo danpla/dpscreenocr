@@ -9,6 +9,7 @@ namespace test::utils {
 
 // Escape non-printable characters with C-style sequences.
 std::string escapeStr(const char* str);
+std::string escapeStr(const std::string& str);
 
 
 // The toStr() family of functions are the helpers intended to format

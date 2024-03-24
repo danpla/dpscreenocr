@@ -40,7 +40,7 @@ void testUtfConversion(const char* utf8Str)
             "  Original:  {}\n"
             "  Converted: {}\n",
             test::utils::escapeStr(utf8Str),
-            test::utils::escapeStr(utf16ToUtf8Result.c_str()));
+            test::utils::escapeStr(utf16ToUtf8Result));
 }
 
 

@@ -15,6 +15,23 @@ StringStream::StringStream(const char* str)
 }
 
 
+StringStream::StringStream(StringStream&& other) noexcept
+{
+    *this = std::move(other);
+}
+
+
+StringStream& StringStream::operator=(StringStream&& other) noexcept
+{
+    if (this != &other) {
+        str = std::exchange(other.str, {});
+        pos = std::exchange(other.pos, {});
+    }
+
+    return *this;
+}
+
+
 const std::string& StringStream::getStr() const
 {
     return str;

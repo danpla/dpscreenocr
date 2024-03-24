@@ -1,4 +1,6 @@
 
+#include <utility>
+
 #include "flow.h"
 #include "utils.h"
 
@@ -30,22 +32,92 @@ void testEqual(
 #define TEST_EQUAL(a, b) testEqual(a, b, __LINE__)
 
 
-void testStringStream()
+void testReadWrite()
 {
     dpso::StringStream stream{"abcdef"};
 
     TEST_EQUAL(readSome(stream, 2), "ab");
-    dpso::write(stream, "12");
+    dpso::write(stream, "01");
 
     TEST_EQUAL(readSome(stream, 2), "ef");
-    dpso::write(stream, "34");
+    dpso::write(stream, "23");
 
-    TEST_EQUAL(stream.getStr(), "ab12ef34");
-    TEST_EQUAL(stream.takeStr(), "ab12ef34");
+    TEST_EQUAL(stream.getStr(), "ab01ef23");
+    TEST_EQUAL(stream.takeStr(), "ab01ef23");
     TEST_EQUAL(stream.getStr(), "");
 
-    dpso::write(stream, "56");
-    TEST_EQUAL(stream.getStr(), "56");
+    dpso::write(stream, "45");
+    TEST_EQUAL(stream.getStr(), "45");
+}
+
+
+void testCopy()
+{
+    dpso::StringStream stream;
+    dpso::write(stream, "a");
+
+    auto stream2{stream};
+
+    TEST_EQUAL(stream.getStr(), "a");
+    TEST_EQUAL(readSome(stream, 1), "");
+    dpso::write(stream, "b");
+    TEST_EQUAL(stream.getStr(), "ab");
+
+    TEST_EQUAL(stream2.getStr(), "a");
+    TEST_EQUAL(readSome(stream2, 1), "");
+    dpso::write(stream2, "b");
+    TEST_EQUAL(stream2.getStr(), "ab");
+
+    auto stream3 = stream2;
+
+    TEST_EQUAL(stream2.getStr(), "ab");
+    TEST_EQUAL(readSome(stream2, 1), "");
+    dpso::write(stream2, "c");
+    TEST_EQUAL(stream2.getStr(), "abc");
+
+    TEST_EQUAL(stream3.getStr(), "ab");
+    TEST_EQUAL(readSome(stream3, 1), "");
+    dpso::write(stream3, "c");
+    TEST_EQUAL(stream3.getStr(), "abc");
+}
+
+
+void testMove()
+{
+    dpso::StringStream stream;
+    dpso::write(stream, "a");
+
+    auto stream2{std::move(stream)};
+
+    TEST_EQUAL(stream.getStr(), "");
+    TEST_EQUAL(readSome(stream, 1), "");
+    dpso::write(stream, "a2");
+    TEST_EQUAL(stream.getStr(), "a2");
+
+    TEST_EQUAL(stream2.getStr(), "a");
+    TEST_EQUAL(readSome(stream2, 1), "");
+    dpso::write(stream2, "b");
+    TEST_EQUAL(stream2.getStr(), "ab");
+
+    auto stream3 = std::move(stream2);
+
+    TEST_EQUAL(stream2.getStr(), "");
+    TEST_EQUAL(readSome(stream2, 1), "");
+    dpso::write(stream2, "ab2");
+    TEST_EQUAL(stream2.getStr(), "ab2");
+
+    TEST_EQUAL(stream3.getStr(), "ab");
+    TEST_EQUAL(readSome(stream3, 1), "");
+    dpso::write(stream3, "c");
+    TEST_EQUAL(stream3.getStr(), "abc");
+}
+
+
+void testStringStream()
+{
+    testReadWrite();
+    testCopy();
+    testMove();
 }
 
 
