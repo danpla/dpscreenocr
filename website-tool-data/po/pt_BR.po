@@ -1,0 +1,68 @@
+# Portuguese translations for dpScreenOCR package.
+# Copyright (C) 2024 THE dpScreenOCR'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the dpScreenOCR package.
+# Automatically generated, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dpScreenOCR Website\n"
+"Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
+"POT-Creation-Date: 2024-03-25 20:41+0100\n"
+"PO-Revision-Date: 2024-03-25 20:33+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Language"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"{app_name} is a program to recognize text on the screen. Powered by <a "
+"{tesseract_link}>Tesseract</a>, it supports more than 100 languages and can "
+"split independent text blocks, such as columns. Read the <a {manual_link}"
+">manual</a> for instructions on installing, configuring, and using the "
+"program."
+msgstr ""
+
+msgid "https://en.wikipedia.org/wiki/Tesseract_(software)"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
+"<a {license_link}>license</a>):"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Download {file}, which works on most systems, or choose a package for your "
+"distribution:"
+msgstr ""
+
+msgid "Ubuntu and derivatives"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Windows 7 or newer: <a {installer_link}>installer</a> or <a "
+"{zip_archive_link}>ZIP archive</a>"
+msgstr ""
+
+msgid "Source code (tar.gz)"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"<b>Contribute</b> by taking part in <a {translations_link}>translation</a> "
+"or <a {development_link}>development</a>."
+msgstr ""
+
+#. Translators: This is the target language name to be shown in the
+#. language selection menu.
+msgid "LANGUAGE_NAME"
+msgstr ""
