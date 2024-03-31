@@ -57,7 +57,7 @@ endif()
 target_include_directories(dpso_utils PRIVATE . PUBLIC ..)
 
 target_compile_definitions(
-    dpso PUBLIC DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>)
+    dpso_utils PUBLIC DPSO_FORCE_TIMING=$<BOOL:${DPSO_FORCE_TIMING}>)
 
 if(NOT TARGET fmt)
     add_subdirectory(
