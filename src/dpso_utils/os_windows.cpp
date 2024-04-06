@@ -1,14 +1,13 @@
 
 #include "os.h"
 
+#include <cstring>
 #include <initializer_list>
 #include <io.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <shellapi.h>
-
-#include <fmt/core.h>
 
 #include "windows/cmdline.h"
 #include "windows/com.h"
