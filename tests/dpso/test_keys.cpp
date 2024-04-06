@@ -32,7 +32,7 @@ void testHotkeyToString()
 
         test::failure(
             "testHotkeyToString: \"{}\" wasn't successfully parsed "
-            "by dpsoHotkeyFromString())\n",
+            "by dpsoHotkeyFromString())",
             str);
     }
 }
@@ -98,7 +98,7 @@ void testHotkeyFromString()
 
         test::failure(
             "testHotkeyFromString: dpsoHotkeyFromString(\"{}\"): "
-            "expected \"{}\", got \"{}\"\n",
+            "expected \"{}\", got \"{}\"",
             test.str,
             toStr(test.expectedHotkey),
             toStr(got));

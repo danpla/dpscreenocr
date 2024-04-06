@@ -15,7 +15,7 @@ int main()
             runner;
             runner = runner->getNext()) {
         std::printf(
-            "%4i/%i: %s\n",
+            "%2i/%i: %s\n",
             ++curRunnerNum, test::Runner::getNumRunners(),
             runner->getName());
         // Flush to make sure that failure() messages (written to

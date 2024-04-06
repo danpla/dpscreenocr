@@ -67,6 +67,7 @@ void failure(const char* fmt, std::initializer_list<const char*> args)
 {
     ++numFailures;
     std::fputs(dpso::str::format(fmt, args).c_str(), stderr);
+    std::fputc('\n', stderr);
 }
 
 
@@ -81,6 +82,7 @@ void fatalError(
 {
     std::fputs("FATAL ERROR\n", stderr);
     std::fputs(dpso::str::format(fmt, args).c_str(), stderr);
+    std::fputc('\n', stderr);
     std::exit(EXIT_FAILURE);
 }
 

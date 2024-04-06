@@ -34,7 +34,7 @@ void testDetectExportFormat(
 
     test::failure(
         "dpsoHistoryDetectExportFormat(\"{}\", {}): "
-        "expected {}, got {}\n",
+        "expected {}, got {}",
         filePath,
         toStr(defaultExportFormat),
         toStr(expectedExportFormat),
@@ -128,7 +128,7 @@ void testExport()
                 test::fatalError(
                     "Unexpected number of exportedData entries. "
                     "Seems like some export formats were added or "
-                    "removed, so exportedData should be adjusted.\n");
+                    "removed, so exportedData should be adjusted.");
         }
     } tests[] = {
         {
@@ -344,18 +344,17 @@ void testExport()
         dpso::HistoryUPtr history{dpsoHistoryOpen(historyFileName)};
         if (!history)
             test::fatalError(
-                "dpsoHistoryOpen(\"{}\"): {}\n",
-                historyFileName,
-                dpsoGetError());
+                "dpsoHistoryOpen(\"{}\"): {}",
+                historyFileName, dpsoGetError());
 
         if (!dpsoHistoryClear(history.get()))
             test::fatalError(
-                "dpsoHistoryClear(): {}\n", dpsoGetError());
+                "dpsoHistoryClear(): {}", dpsoGetError());
 
         for (const auto& entry : test.entries)
             if (!dpsoHistoryAppend(history.get(), &entry))
                 test::fatalError(
-                    "dpsoHistoryAppend(): {}\n", dpsoGetError());
+                    "dpsoHistoryAppend(): {}", dpsoGetError());
 
         for (int i = 0; i < dpsoNumHistoryExportFormats; ++i) {
             const auto exportFormat =
@@ -375,9 +374,8 @@ void testExport()
                     exportedFileName.c_str(),
                     exportFormat))
                 test::fatalError(
-                    "dpsoHistoryExport(..., \"{}\", {})\n",
-                    exportedFileName,
-                    toStr(exportFormat));
+                    "dpsoHistoryExport(..., \"{}\", {})",
+                    exportedFileName, toStr(exportFormat));
 
             const auto& expectedData =
                 test.exportedData[exportFormat];
@@ -387,7 +385,7 @@ void testExport()
             if (gotData != expectedData) {
                 test::failure(
                     "testExport(): Unexpected exported {} data "
-                    "for the \"{}\" case\n",
+                    "for the \"{}\" case",
                     toStr(exportFormat),
                     test.description);
                 test::utils::printFirstDifference(

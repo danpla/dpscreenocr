@@ -94,8 +94,7 @@ void testPathSplit()
         const auto dirName = dpso::os::getDirName(test.path);
         if (dirName != test.dirName)
             test::failure(
-                "os::getDirName(\"{}\"): Expected \"{}\", got "
-                "\"{}\"\n",
+                "os::getDirName(\"{}\"): Expected \"{}\", got \"{}\"",
                 test.path,
                 test.dirName,
                 dirName);
@@ -104,7 +103,7 @@ void testPathSplit()
         if (baseName != test.baseName)
             test::failure(
                 "os::getBaseName(\"{}\"): Expected \"{}\", got "
-                "\"{}\"\n",
+                "\"{}\"",
                 test.path,
                 test.baseName,
                 baseName);
@@ -139,10 +138,9 @@ void testGetFileExt()
         if (!ext) {
             if (!test.expectedExt.empty())
                 test::failure(
-                    "os::getFileExt(\"{}\"): expected \"{}\", "
-                    "got null\n",
-                    test::utils::escapeStr(test.path),
-                    test::utils::escapeStr(test.expectedExt));
+                    "os::getFileExt(): expected {}, got null",
+                    test::utils::toStr(test.path),
+                    test::utils::toStr(test.expectedExt));
 
             continue;
         }
@@ -157,10 +155,10 @@ void testGetFileExt()
             expected = std::string{"\""} + test.expectedExt + '"';
 
         test::failure(
-            "os::getFileExt(\"{}\"): expected \"{}\", got \"{}\"\n",
-            test::utils::escapeStr(test.path),
-            test::utils::escapeStr(expected),
-            test::utils::escapeStr(ext));
+            "os::getFileExt({}): expected {}, got {}",
+            test::utils::toStr(test.path),
+            test::utils::toStr(expected),
+            test::utils::toStr(ext));
     }
 }
 
@@ -177,11 +175,11 @@ void testGetFileSize()
         const auto gotSize = dpso::os::getFileSize(fileName);
         if (gotSize != size)
             test::failure(
-                "os::getFileSize(\"{}\"): expected {}, got {}\n",
+                "os::getFileSize(\"{}\"): expected {}, got {}",
                 fileName, size, gotSize);
     } catch (dpso::os::Error& e) {
         test::failure(
-            "os::getFileSize(\"{}\"): {}\n", fileName, e.what());
+            "os::getFileSize(\"{}\"): {}", fileName, e.what());
     }
 
     test::utils::removeFile(fileName);
@@ -195,7 +193,7 @@ void testGetFileSize()
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::getFileSize() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError\n",
+            "(\"{}\") of class other than FileNotFoundError",
             e.what());
     }
 }
@@ -210,7 +208,7 @@ void testResizeFile(
         dpso::os::resizeFile(fileName, newSize);
     } catch (dpso::os::Error& e) {
         test::failure(
-            "os::resizeFile(\"{}\", {}) ({}): {}\n",
+            "os::resizeFile(\"{}\", {}) ({}): {}",
             fileName, newSize, actionName, e.what());
     }
 
@@ -226,7 +224,7 @@ void testResizeFile(
     if (actualSize != newSize)
         test::failure(
             "os::resizeFile(\"{}\", {}) ({}): Unexpected size ({}) "
-            "after resizing\n",
+            "after resizing",
             fileName, newSize, actionName, actualSize);
 }
 
@@ -246,12 +244,12 @@ void testResizeFile()
         dpso::os::resizeFile("nonexistent_file", 10);
         test::failure(
             "os::resizeFile() for a nonexistent file didn't threw an "
-            "error\n");
+            "error");
     } catch (dpso::os::FileNotFoundError&) {
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::resizeFile() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError\n",
+            "(\"{}\") of class other than FileNotFoundError",
             e.what());
     }
 }
@@ -268,7 +266,7 @@ void testFopen()
         dpso::os::fopen(testUnicodeFileName, "wb")};
     if (!fp) {
         test::failure(
-            "os::fopen(\"{}\"): {}\n",
+            "os::fopen(\"{}\"): {}",
             testUnicodeFileName,
             dpso::os::getErrnoMsg(errno));
         return;
@@ -288,7 +286,7 @@ void testRemoveFile()
         dpso::os::removeFile(testUnicodeFileName);
     } catch (dpso::os::Error& e) {
         test::failure(
-            "os::removeFile(\"{}\"): {}\n",
+            "os::removeFile(\"{}\"): {}",
             testUnicodeFileName,
             e.what());
     }
@@ -297,12 +295,12 @@ void testRemoveFile()
         dpso::os::removeFile("nonexistent_file");
         test::failure(
             "os::removeFile() for a nonexistent file didn't threw an "
-            "error\n");
+            "error");
     } catch (dpso::os::FileNotFoundError&) {
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::removeFile() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError\n",
+            "(\"{}\") of class other than FileNotFoundError",
             e.what());
     }
 }
@@ -329,7 +327,7 @@ void testReplaceSrcExists(bool dstExists)
         dpso::os::replace(srcFilePath, dstFilePath);
     } catch (dpso::os::Error& e) {
         test::failure(
-            "os::replace(\"{}\", \"{}\"): {}\n",
+            "os::replace(\"{}\", \"{}\"): {}",
             srcFilePath, dstFilePath, e.what());
         return;
     }
@@ -337,7 +335,7 @@ void testReplaceSrcExists(bool dstExists)
     if (dpso::os::StdFileUPtr{dpso::os::fopen(srcFilePath, "r")})
         test::failure(
             "os::replace(\"{}\", \"{}\") didn't failed, but the "
-            "source file still exists\n",
+            "source file still exists",
             srcFilePath, dstFilePath);
 
     if (!dstExists
@@ -345,7 +343,7 @@ void testReplaceSrcExists(bool dstExists)
                 dpso::os::fopen(dstFilePath, "r")}) {
         test::failure(
             "os::replace(\"{}\", \"{}\") didn't created the "
-            "destination file\n",
+            "destination file",
             srcFilePath, dstFilePath);
         return;
     }
@@ -357,7 +355,7 @@ void testReplaceSrcExists(bool dstExists)
         test::failure(
             "os::replace(\"{}\", \"{}\"): the destination file "
             "contents (\"{}\") are not the same as in source "
-            "(\"{}\")\n",
+            "(\"{}\")",
             srcFilePath, dstFilePath, dstText, srcFilePath);
 }
 
@@ -373,7 +371,7 @@ void testReplaceNoSrc()
     } catch (dpso::os::Error& e) {
         test::failure(
             "os::replace() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError\n",
+            "(\"{}\") of class other than FileNotFoundError",
             e.what());
     }
 }
@@ -394,13 +392,13 @@ void testSyncFile()
     dpso::os::StdFileUPtr fp{dpso::os::fopen(fileName, "wb")};
     if (!fp)
         test::fatalError(
-            "testSyncFile: os::fopen(\"{}\"): {}\n",
+            "testSyncFile: os::fopen(\"{}\"): {}",
             fileName, dpso::os::getErrnoMsg(errno));
 
     try {
         dpso::os::syncFile(fp.get());
     } catch (dpso::os::Error& e) {
-        test::failure("os::syncFile(): {}\n", e.what());
+        test::failure("os::syncFile(): {}", e.what());
     }
 
     fp.reset();
@@ -415,7 +413,7 @@ void testSyncDir()
     try {
         dpso::os::syncDir(dirPath);
     } catch (dpso::os::Error& e) {
-        test::failure("os::syncDir(\"{}\"): {}\n", dirPath, e.what());
+        test::failure("os::syncDir(\"{}\"): {}", dirPath, e.what());
     }
 }
 

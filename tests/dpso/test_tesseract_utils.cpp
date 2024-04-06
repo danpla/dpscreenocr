@@ -39,17 +39,17 @@ void testPrettifyText()
 
         if (std::strcmp(str.c_str(), test.prettified) != 0)
             test::failure(
-                "tesseract::prettifyText(\"{}\"): "
-                "expected \"{}\", got \"{}\"\n",
-                test::utils::escapeStr(test.original),
-                test::utils::escapeStr(test.prettified),
-                test::utils::escapeStr(str));
+                "tesseract::prettifyText({}): "
+                "expected {}, got {}",
+                test::utils::toStr(test.original),
+                test::utils::toStr(test.prettified),
+                test::utils::toStr(str));
 
         if (strLen != std::strlen(str.c_str()))
             test::failure(
-                "tesseract::prettifyText(\"{}\"): "
-                "expected string length {}, got {}\n",
-                test::utils::escapeStr(test.original),
+                "tesseract::prettifyText({}): "
+                "expected string length {}, got {}",
+                test::utils::toStr(test.original),
                 std::strlen(str.c_str()),
                 strLen);
     }

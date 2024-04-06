@@ -26,8 +26,7 @@ static void testStrftime()
         const auto result = dpso::strftime(test.format, &tm);
         if (result != test.result)
             test::failure(
-                "dpso::strftime(\"{}\"): "
-                "Expected \"{}\", got \"{}\"\n",
+                "dpso::strftime(\"{}\"): Expected \"{}\", got \"{}\"",
                 test.format,
                 test.result,
                 result);

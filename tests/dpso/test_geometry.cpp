@@ -36,7 +36,7 @@ void testEqual(const T& a, const T& b, int lineNum)
     if (a == b)
         return;
 
-    test::failure("line {}: {} != {}\n", lineNum, toStr(a), toStr(b));
+    test::failure("line {}: {} != {}", lineNum, toStr(a), toStr(b));
 }
 
 
@@ -50,7 +50,7 @@ void testEmpty(const T& v, bool expectEmpty, int lineNum)
         return;
 
     test::failure(
-        "line {}: {} is expected to be {}empty\n",
+        "line {}: {} is expected to be {}empty",
         lineNum,
         toStr(v),
         expectEmpty ? "" : "non-");

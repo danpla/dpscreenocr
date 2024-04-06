@@ -18,8 +18,8 @@ void testUtfConversion(const char* utf8Str)
         utf16Str = utf8ToUtf16(utf8Str);
     } catch (std::runtime_error& e) {
         test::failure(
-            "utf8ToUtf16(\"{}\"): {}\n",
-            test::utils::escapeStr(utf8Str), e.what());
+            "utf8ToUtf16({}): {}",
+            test::utils::toStr(utf8Str), e.what());
         return;
     }
 
@@ -29,8 +29,8 @@ void testUtfConversion(const char* utf8Str)
     } catch (std::runtime_error& e) {
         test::failure(
             "utf16ToUtf8() failed to convert result of "
-            "utf8ToUtf16(\"{}\"): {}\n",
-            test::utils::escapeStr(utf8Str), e.what());
+            "utf8ToUtf16({}): {}",
+            test::utils::toStr(utf8Str), e.what());
         return;
     }
 
@@ -38,9 +38,9 @@ void testUtfConversion(const char* utf8Str)
         test::failure(
             "utf8ToUtf16() <=> utf16ToUtf8() conversion failed.\n"
             "  Original:  {}\n"
-            "  Converted: {}\n",
-            test::utils::escapeStr(utf8Str),
-            test::utils::escapeStr(utf16ToUtf8Result));
+            "  Converted: {}",
+            test::utils::toStr(utf8Str),
+            test::utils::toStr(utf16ToUtf8Result));
 }
 
 
@@ -90,8 +90,8 @@ void testInvalidUtf8()
         try {
             dpso::windows::utf8ToUtf16(s);
             test::failure(
-                "utf8ToUtf16(\"{}\") doesn't throw\n",
-                test::utils::escapeStr(s));
+                "utf8ToUtf16({}) doesn't throw",
+                test::utils::toStr(s));
         } catch (std::runtime_error& e) {
         }
     }
@@ -115,7 +115,7 @@ void testInvalidUtf16()
         try {
             dpso::windows::utf16ToUtf8(s);
             test::failure(
-                "utf16ToUtf8() doesn't throw on invalid UTF-16\n");
+                "utf16ToUtf8() doesn't throw on invalid UTF-16");
         } catch (std::runtime_error& e) {
         }
     }

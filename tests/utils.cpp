@@ -119,7 +119,7 @@ void saveText(
         file.emplace(filePath, dpso::FileStream::Mode::write);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: saveText(): FileStream(\"{}\", Mode::write): {}\n",
+            "{}: saveText(): FileStream(\"{}\", Mode::write): {}",
             contextInfo,
             filePath,
             e.what());
@@ -129,7 +129,7 @@ void saveText(
         dpso::write(*file, text);
     } catch (dpso::StreamError& e) {
         test::fatalError(
-            "{}: saveText(): write(file, ...) to \"{}\": {}\n",
+            "{}: saveText(): write(file, ...) to \"{}\": {}",
             contextInfo,
             filePath,
             e.what());
@@ -144,7 +144,7 @@ std::string loadText(const char* contextInfo, const char* filePath)
         file.emplace(filePath, dpso::FileStream::Mode::read);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: loadText(): FileStream(\"{}\", Mode::read): {}\n",
+            "{}: loadText(): FileStream(\"{}\", Mode::read): {}",
             contextInfo,
             filePath,
             e.what());
@@ -160,7 +160,7 @@ std::string loadText(const char* contextInfo, const char* filePath)
         } catch (dpso::StreamError& e) {
             test::fatalError(
                 "{}: loadText(): FileStream::readSome() from \"{}\": "
-                "{}\n",
+                "{}",
                 contextInfo,
                 filePath,
                 e.what());

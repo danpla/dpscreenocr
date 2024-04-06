@@ -48,7 +48,7 @@ void testGetStr(
         return;
 
     test::failure(
-        "dpsoGetStr(\"{}\", {}): expected {}, got {}\n",
+        "dpsoGetStr(\"{}\", {}): expected {}, got {}",
         key,
         test::utils::toStr(defaultVal),
         test::utils::toStr(expectedVal),
@@ -67,7 +67,7 @@ void testGetInt(
         return;
 
     test::failure(
-        "dpsoGetInt(\"{}\", {}): expected {}, got {}\n",
+        "dpsoGetInt(\"{}\", {}): expected {}, got {}",
         key,
         defaultVal,
         expectedVal,
@@ -86,7 +86,7 @@ void testGetBool(
         return;
 
     test::failure(
-        "dpsoGetBool(\"{}\", {}): expected {}, got {}\n",
+        "dpsoGetBool(\"{}\", {}): expected {}, got {}",
         key,
         test::utils::toStr(defaultVal),
         test::utils::toStr(expectedVal),
@@ -215,8 +215,7 @@ void testGetHotkey(
         return;
 
     test::failure(
-        "dpsoCfgGetHotkey(\"{}\", &, [{}]): "
-        "expected [{}], got [{}]\n",
+        "dpsoCfgGetHotkey(\"{}\", &, [{}]): expected [{}], got [{}]",
         key,
         toStr(defaultVal),
         toStr(expectedVal),
@@ -270,18 +269,16 @@ void reload(DpsoCfg* cfg)
 {
     if (!dpsoCfgSave(cfg, cfgFileName))
         test::fatalError(
-            "reload(): dpsoCfgSave(cfg, \"{}\"): {}\n",
-            cfgFileName,
-            dpsoGetError());
+            "reload(): dpsoCfgSave(cfg, \"{}\"): {}",
+            cfgFileName, dpsoGetError());
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     test::utils::removeFile(cfgFileName);
 
     if (!loaded)
         test::fatalError(
-            "reload(): dpsoCfgLoad(cfg, \"{}\"): {}\n",
-            cfgFileName,
-            dpsoGetError());
+            "reload(): dpsoCfgLoad(cfg, \"{}\"): {}",
+            cfgFileName, dpsoGetError());
 }
 
 
@@ -294,9 +291,8 @@ void loadCfgData(DpsoCfg* cfg, const char* cfgData)
 
     if (!loaded)
         test::fatalError(
-            "loadCfgData(): dpsoCfgLoad(cfg, \"{}\"): {}\n",
-            cfgFileName,
-            dpsoGetError());
+            "loadCfgData(): dpsoCfgLoad(cfg, \"{}\"): {}",
+            cfgFileName, dpsoGetError());
 }
 
 
@@ -547,9 +543,9 @@ void testKeyValidity(DpsoCfg* cfg)
             continue;
 
         test::failure(
-            "testKeyValidity: Key \"{}\" is expected to be {} and "
-            "{} be set\n",
-            test::utils::escapeStr(test.key),
+            "testKeyValidity: Key {} is expected to be {} and "
+            "{} be set",
+            test::utils::toStr(test.key),
             test.isValid ? "valid" : "invalid",
             test.isValid ? "should" : "should not");
     }
@@ -559,7 +555,7 @@ void testKeyCaseInsensitivity(DpsoCfg* cfg)
 {
     dpsoCfgSetStr(cfg, "Case_Insensitivity_TEST", "");
     if (!dpsoCfgKeyExists(cfg, "case_insensitivity_test"))
-        test::failure("testKeyCaseInsensitivity failed\n");
+        test::failure("testKeyCaseInsensitivity failed");
 }
 
 
@@ -590,7 +586,7 @@ void testSavedValueFormat()
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
         test::fatalError(
-            "testSavedValueFormat(): dpsoCfgCreate(): {}\n",
+            "testSavedValueFormat(): dpsoCfgCreate(): {}",
             dpsoGetError());
 
     for (const auto& test : tests) {
@@ -598,9 +594,8 @@ void testSavedValueFormat()
         if (!dpsoCfgSave(cfg.get(), cfgFileName))
             test::fatalError(
                 "testSavedValueFormat(): dpsoCfgSave(cfg, \"{}\"): "
-                "{}\n",
-                cfgFileName,
-                dpsoGetError());
+                "{}",
+                cfgFileName, dpsoGetError());
 
         const auto gotData = test::utils::loadText(
             "testSavedValueFormat", cfgFileName);
@@ -608,7 +603,7 @@ void testSavedValueFormat()
             continue;
 
         test::failure(
-            "testSavedValueFormat(): Unexpected value format\n");
+            "testSavedValueFormat(): Unexpected value format");
         test::utils::printFirstDifference(
             test.expectedData.c_str(), gotData.c_str());
     }
@@ -621,7 +616,7 @@ void testCfg()
 {
     dpso::CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
-        test::fatalError("dpsoCfgCreate(): {}\n", dpsoGetError());
+        test::fatalError("dpsoCfgCreate(): {}", dpsoGetError());
 
     setBasicTypes(cfg.get());
     setHotkey(cfg.get());

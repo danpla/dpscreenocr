@@ -86,13 +86,13 @@ void testCmpSubStr()
 
         test::failure(
             "testCmpSubStr: cmpSubStr(\"{}\", \"{}\", {}, {}): "
-            "expected {}, got {}\n",
+            "expected {}, got {}",
             test.str,
             test.subStr,
             test.subStrLen,
             test.cmpOptions,
-            toStr(test.expectedOrder),
-            toStr(gotOrder));
+            test.expectedOrder,
+            gotOrder);
     }
 }
 
@@ -105,7 +105,7 @@ void testStr(
 {
     if (callResult != expected)
         test::failure(
-            "line {}: {}: expected {}, got {}\n",
+            "line {}: {}: expected {}, got {}",
             lineNum,
             callStr,
             test::utils::toStr(expected),

@@ -27,8 +27,7 @@ std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 
     if (!argv)
         test::fatalError(
-            "CommandLineToArgvW({}) failed with error {}.\n",
-            cmdLine, GetLastError());
+            "CommandLineToArgvW({}): {}", cmdLine, GetLastError());
 
     std::vector<std::string> result;
     result.reserve(argc);
@@ -55,7 +54,7 @@ void testArgv(std::initializer_list<const char*> argv)
             "CommandLineTogotArgvW({}) returned a different number "
             "of arguments: {} (was {} in original array). "
             "Returned array:\n"
-            "  {}\n",
+            "  {}",
             cmdLine,
             gotArgv.size(),
             argv.size(),
@@ -72,7 +71,7 @@ void testArgv(std::initializer_list<const char*> argv)
             "  Original argv passed to createCmdLine():\n"
             "    {}\n"
             "  CommandLineTogotArgvW() from createCmdLine() string:\n"
-            "    {}\n",
+            "    {}",
             cmdLine,
             test::utils::toStr(argv.begin(), argv.end()),
             test::utils::toStr(gotArgv.begin(), gotArgv.end()));

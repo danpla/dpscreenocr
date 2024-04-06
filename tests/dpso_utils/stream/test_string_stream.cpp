@@ -24,7 +24,7 @@ void testEqual(
 {
     if (a != b)
         test::failure(
-            "line {}: {} != {}\n",
+            "line {}: {} != {}",
             lineNum, test::utils::toStr(a), test::utils::toStr(b));
 }
 

@@ -27,7 +27,7 @@ void testCalcFileSha256()
         calculatedDigest = dpso::calcFileSha256(testFileName);
     } catch (dpso::Sha256FileError& e) {
         test::failure(
-            "calcFileSha256(\"{}\"): {}\n", testFileName, e.what());
+            "calcFileSha256(\"{}\"): {}", testFileName, e.what());
 
         test::utils::removeFile(testFileName);
         return;
@@ -38,7 +38,7 @@ void testCalcFileSha256()
     if (calculatedDigest == digest)
         return;
 
-    test::failure("calcFileSha256(): Wrong digest\n");
+    test::failure("calcFileSha256(): Wrong digest");
     test::utils::printFirstDifference(
         digest, calculatedDigest.c_str());
 }
@@ -58,7 +58,7 @@ void testSaveSha256File()
             testFileName.c_str(), digest.c_str());
     } catch (dpso::Sha256FileError& e) {
         test::failure(
-            "saveSha256File(\"{}\", ...): {}\n",
+            "saveSha256File(\"{}\", ...): {}",
             testFileName, e.what());
         return;
     }
@@ -73,7 +73,7 @@ void testSaveSha256File()
     if (gotData == expectedData)
         return;
 
-    test::failure("saveSha256File(): Unexpected content\n");
+    test::failure("saveSha256File(): Unexpected content");
     test::utils::printFirstDifference(
         expectedData.c_str(), gotData.c_str());
 }
@@ -87,7 +87,7 @@ void testLoadNonexistentSha256File()
     } catch (dpso::Sha256FileError& e) {
         test::failure(
             "loadSha256File() threw an exception for a nonexistent "
-            "file: {}\n",
+            "file: {}",
             e.what());
         return;
     }
@@ -95,7 +95,7 @@ void testLoadNonexistentSha256File()
     if (!digest.empty())
         test::failure(
             "loadSha256File() returned a non-empty digest \"{}\" for "
-            "a nonexistent file\n",
+            "a nonexistent file",
             digest.c_str());
 }
 
@@ -140,7 +140,7 @@ void testLoadValidSha256File()
         } catch (dpso::Sha256FileError& e) {
             test::failure(
                 "loadSha256File() threw an exception for the \"{}\" "
-                "case: {}\n",
+                "case: {}",
                 test.description, e.what());
             continue;
         }
@@ -149,7 +149,7 @@ void testLoadValidSha256File()
             continue;
 
         test::failure(
-            "loadSha256File() returned an invalid digest\n");
+            "loadSha256File() returned an invalid digest");
         test::utils::printFirstDifference(
             digest.c_str(), loadedDigest.c_str());
     }
@@ -206,7 +206,7 @@ void testLoadInvalidSha256File()
         }
 
         test::failure(
-            "loadSha256File() didn't failed for the \"{}\" case\n",
+            "loadSha256File() didn't failed for the \"{}\" case",
             test.description);
     }
 

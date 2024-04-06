@@ -80,7 +80,7 @@ static void testSha256()
             continue;
 
         test::failure(
-            "SHA-256 failed for \"{}\" (repeats: {})\n{}\n{}\n",
+            "SHA-256 failed for \"{}\" (repeats: {})\n{}\n{}",
             test.str,
             test.numRepeats,
             test.digest,

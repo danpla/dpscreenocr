@@ -45,7 +45,7 @@ void testLineReader()
             file.emplace(fileName, dpso::FileStream::Mode::read);
         } catch (dpso::os::Error& e) {
             test::fatalError(
-                "FileStream(\"{}\", Mode::read): {}\n",
+                "FileStream(\"{}\", Mode::read): {}",
                 fileName, e.what());
         }
 
@@ -57,31 +57,30 @@ void testLineReader()
             while (lineReader.readLine(line))
                 lines.push_back(line);
         } catch (dpso::StreamError& e) {
-            test::fatalError(
-                "LineReader::readLine(): {}\n", e.what());
+            test::fatalError("LineReader::readLine(): {}", e.what());
         }
 
         if (!line.empty())
             test::failure(
                 "LineReader::readLine() didn't cleared the line "
-                "after finishing reading\n");
+                "after finishing reading");
 
         line = "content for an extra LineReader::readLine()";
         if (lineReader.readLine(line))
             test::failure(
                 "An extra LineReader::readLine() returned true after "
-                "reading was finished\n");
+                "reading was finished");
 
         if (!line.empty())
             test::failure(
                 "An extra LineReader::readLine() didn't cleared the "
-                "line\n");
+                "line");
 
         if (lines != test.expectedLines)
             test::failure(
                 "Unexpected lines from LineReader::readLine() for "
-                "\"{}\": expected {}, got {}\n",
-                test::utils::escapeStr(test.text),
+                "{}: expected {}, got {}",
+                test::utils::toStr(test.text),
                 test::utils::toStr(
                     test.expectedLines.begin(),
                     test.expectedLines.end()),

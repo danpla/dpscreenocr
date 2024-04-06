@@ -20,11 +20,11 @@ void cmpField(
         return;
 
     test::failure(
-        "line {}: DpsoHistoryEntry::{}: \"{}\" != \"{}\"\n",
+        "line {}: DpsoHistoryEntry::{}: {} != {}",
         lineNum,
         name,
-        test::utils::escapeStr(a),
-        test::utils::escapeStr(b));
+        test::utils::toStr(a),
+        test::utils::toStr(b));
 }
 
 
@@ -50,7 +50,7 @@ bool testCount(const DpsoHistory* history, int expected, int lineNum)
         return true;
 
     test::failure(
-        "line {}: dpsoHistoryCount(): Expected {}, got {}\n",
+        "line {}: dpsoHistoryCount(): Expected {}, got {}",
         lineNum,
         expected,
         got);
@@ -117,10 +117,8 @@ void testIo(IoTestMode mode)
     if (!history) {
         test::utils::removeFile(historyFileName);
         test::fatalError(
-            "testlIO({}): dpsoHistoryOpen(\"{}\"): {}\n",
-            toStr(mode),
-            historyFileName,
-            dpsoGetError());
+            "testlIO({}): dpsoHistoryOpen(\"{}\"): {}",
+            mode, historyFileName, dpsoGetError());
     }
 
     TEST_COUNT(
@@ -135,7 +133,7 @@ void testIo(IoTestMode mode)
                 test::utils::removeFile(historyFileName);
 
                 test::fatalError(
-                    "testIo(true): dpsoHistoryAppend(): {}\n",
+                    "testIo(true): dpsoHistoryAppend(): {}",
                     dpsoGetError());
             }
 
@@ -199,7 +197,7 @@ void testTruncatedData()
         if (!history) {
             test::failure(
                 "testTruncatedData(): dpsoHistoryOpen() failed in "
-                "the \"{}\" case: {}\n",
+                "the \"{}\" case: {}",
                 test.description, dpsoGetError());
             continue;
         }
@@ -217,7 +215,7 @@ void testTruncatedData()
         if (!dpsoHistoryAppend(history.get(), &extraEntry)) {
             test::failure(
                 "testTruncatedData(): dpsoHistoryAppend() failed "
-                "after loading truncated data\n");
+                "after loading truncated data");
             continue;
         }
 
@@ -229,7 +227,7 @@ void testTruncatedData()
             continue;
 
         test::failure(
-            "testTruncatedData(): Unexpected final data\n");
+            "testTruncatedData(): Unexpected final data");
         test::utils::printFirstDifference(
             test.finalData, finalData.c_str());
     }
@@ -258,7 +256,7 @@ void testInvalidData()
 
         test::failure(
             "testInvalidData(): dpsoHistoryOpen() doesn't fail in "
-            "the \"{}\" case\n",
+            "the \"{}\" case",
             test.description);
     }
 

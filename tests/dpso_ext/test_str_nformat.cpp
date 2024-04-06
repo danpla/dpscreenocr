@@ -77,7 +77,7 @@ static void testStrNFormat()
 
         test::failure(
             "dpsoStrNFormat(\"{}\", {}): "
-            "expected \"{}\", got \"{}\"\n",
+            "expected \"{}\", got \"{}\"",
             test.str,
             test::utils::toStr(test.args.begin(), test.args.end()),
             test.expected,

@@ -34,7 +34,7 @@ void testOutNewlineConversionStream()
 
         if (strStream.getStr() != test.expected)
             test::failure(
-                "Converting {} to {} newlines: expected {}, got {}\n",
+                "Converting {} to {} newlines: expected {}, got {}",
                 test::utils::toStr(input),
                 test.outNewline
                     ? test::utils::toStr(test.outNewline) : "OS",
