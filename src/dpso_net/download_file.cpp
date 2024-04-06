@@ -4,9 +4,8 @@
 #include <chrono>
 #include <string>
 
-#include <fmt/core.h>
-
 #include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
 #include "dpso_utils/stream/file_stream.h"
 
 #include "error.h"
@@ -32,7 +31,7 @@ void downloadFile(
     try {
         partFile.emplace(partPath.c_str(), FileStream::Mode::write);
     } catch (os::Error& e) {
-        throw Error{fmt::format(
+        throw Error{str::format(
             "FileStream(\"{}\", Mode::write): {}",
             partPath, e.what())};
     }
@@ -58,7 +57,7 @@ void downloadFile(
         try {
             partFile->write(buf, numRead);
         } catch (StreamError& e) {
-            throw Error{fmt::format(
+            throw Error{str::format(
                 "FileStream::write() to \"{}\": {}",
                 partPath, e.what())};
         }
@@ -91,7 +90,7 @@ void downloadFile(
     try {
         partFile->sync();
     } catch (os::Error& e) {
-        throw Error{fmt::format(
+        throw Error{str::format(
             "FileStream::sync() for \"{}\": {}", partPath, e.what())};
     }
 
@@ -100,7 +99,7 @@ void downloadFile(
     try {
         os::replace(partPath.c_str(), filePath);
     } catch (os::Error& e) {
-        throw Error{fmt::format(
+        throw Error{str::format(
             "os::replace(\"{}\", \"{}\"): {}",
             partPath, filePath, e.what())};
     }

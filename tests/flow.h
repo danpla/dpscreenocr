@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include "dpso_utils/str.h"
 
 
 namespace test {
@@ -34,12 +34,13 @@ static test::Runner FN ## TestRunner(#FN, FN)
 
 // Report a test case failure, increment the failure counter, and
 // continue.
-void vFailure(fmt::string_view format, fmt::format_args args);
+void failure(
+    const char* fmt, std::initializer_list<const char*> args);
 
-template<typename... T>
-void failure(fmt::format_string<T...> format, T&&... args)
+template<typename... Args>
+void failure(const char* fmt, const Args&... args)
 {
-    vFailure(format, fmt::make_format_args(args...));
+    failure(fmt, {dpso::str::formatArg::get(args)...});
 }
 
 
@@ -51,13 +52,14 @@ int getNumFailures();
 // errors that are not directly related to test cases, e.g. an IO
 // error when setting up a test.
 [[noreturn]]
-void vFatalError(fmt::string_view format, fmt::format_args args);
+void fatalError(
+    const char* fmt, std::initializer_list<const char*> args);
 
-template<typename... T>
+template<typename... Args>
 [[noreturn]]
-void fatalError(fmt::format_string<T...> format, T&&... args)
+void fatalError(const char* fmt, const Args&... args)
 {
-    vFatalError(format, fmt::make_format_args(args...));
+    fatalError(fmt, {dpso::str::formatArg::get(args)...});
 }
 
 

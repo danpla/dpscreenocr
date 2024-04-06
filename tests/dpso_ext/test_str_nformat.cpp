@@ -3,9 +3,8 @@
 #include <initializer_list>
 #include <string>
 
-#include <fmt/core.h>
-
 #include "dpso_ext/str_nformat.h"
+#include "dpso_utils/str.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -13,7 +12,7 @@
 
 static std::string toStr(const DpsoStrNFormatArg& arg)
 {
-    return fmt::format("{\"{}\": \"{}\"}", arg.name, arg.str);
+    return dpso::str::format("{\"{}\": \"{}\"}", arg.name, arg.str);
 }
 
 

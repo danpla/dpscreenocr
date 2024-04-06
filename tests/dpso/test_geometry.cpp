@@ -1,7 +1,7 @@
 
 #include "dpso/geometry.h"
 
-#include <fmt/core.h>
+#include "dpso_utils/str.h"
 
 #include "flow.h"
 
@@ -14,19 +14,19 @@ namespace {
 
 std::string toStr(const Point& p)
 {
-    return fmt::format("Point{{{}, {}}}", p.x, p.y);
+    return str::format("Point{{{}, {}}}", p.x, p.y);
 }
 
 
 std::string toStr(const Size& s)
 {
-    return fmt::format("Size{{{}, {}}}", s.w, s.h);
+    return str::format("Size{{{}, {}}}", s.w, s.h);
 }
 
 
 std::string toStr(const Rect& r)
 {
-    return fmt::format("Rect{{{}, {}, {}, {}}}", r.x, r.y, r.w, r.h);
+    return str::format("Rect{{{}, {}, {}, {}}}", r.x, r.y, r.w, r.h);
 }
 
 

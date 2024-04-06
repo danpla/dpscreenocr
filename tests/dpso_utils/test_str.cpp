@@ -2,6 +2,7 @@
 #include "dpso_utils/str.h"
 
 #include "flow.h"
+#include "utils.h"
 
 
 namespace {
@@ -96,9 +97,74 @@ void testCmpSubStr()
 }
 
 
+void testStr(
+    const char* callStr,
+    const std::string& callResult,
+    const char* expected,
+    int lineNum)
+{
+    if (callResult != expected)
+        test::failure(
+            "line {}: {}: expected {}, got {}\n",
+            lineNum,
+            callStr,
+            test::utils::toStr(expected),
+            test::utils::toStr(callResult));
+}
+
+#define TEST_STR(CALL, EXPECTED) \
+    testStr(#CALL, CALL, EXPECTED, __LINE__)
+
+
+void testJustify()
+{
+    using dpso::str::leftJustify;
+    using dpso::str::rightJustify;
+
+    TEST_STR(leftJustify("x", 4), "x   ");
+    TEST_STR(rightJustify("x", 4), "   x");
+
+    TEST_STR(leftJustify("x", 4, '-'), "x---");
+    TEST_STR(rightJustify("x", 4, '-'), "---x");
+
+    TEST_STR(leftJustify("abcd", 2), "abcd");
+    TEST_STR(rightJustify("abcd", 2), "abcd");
+}
+
+
+void testToStr()
+{
+    using dpso::str::toStr;
+
+    TEST_STR(toStr(123), "123");
+    TEST_STR(toStr(-123), "-123");
+
+    TEST_STR(toStr(123, 2), "1111011");
+    TEST_STR(toStr(-123, 2), "-1111011");
+
+    TEST_STR(toStr(123, 8), "173");
+    TEST_STR(toStr(-123, 8), "-173");
+
+    TEST_STR(toStr(123, 10), "123");
+    TEST_STR(toStr(-123, 10), "-123");
+
+    TEST_STR(toStr(123, 16), "7b");
+    TEST_STR(toStr(-123, 16), "-7b");
+
+    TEST_STR(toStr(1.0), "1");
+    TEST_STR(toStr(-1.0), "-1");
+    TEST_STR(toStr(1.0101), "1.0101");
+    TEST_STR(toStr(-1.0101), "-1.0101");
+    TEST_STR(toStr(123.456), "123.456");
+    TEST_STR(toStr(-123.456), "-123.456");
+}
+
+
 void testStr()
 {
     testCmpSubStr();
+    testJustify();
+    testToStr();
 }
 
 

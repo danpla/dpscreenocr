@@ -3,8 +3,9 @@
 
 #include <cassert>
 
-#include <fmt/core.h>
 #include <X11/Xutil.h>
+
+#include "dpso_utils/str.h"
 
 #include "backend/screenshot_error.h"
 #include "geometry.h"
@@ -180,7 +181,7 @@ void X11Screenshot::getGrayscaleData(
             makeExpander(image->depth == 16 ? 6 : 5),
             makeExpander(5));
     } else
-        throw ScreenshotError(fmt::format(
+        throw ScreenshotError(str::format(
             "Bit depth {} is not supported", image->bits_per_pixel));
 }
 

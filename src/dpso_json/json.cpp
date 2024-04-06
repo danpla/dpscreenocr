@@ -3,8 +3,9 @@
 
 #include <cassert>
 
-#include <fmt/core.h>
 #include <jansson.h>
+
+#include "dpso_utils/str.h"
 
 
 namespace dpso::json {
@@ -80,11 +81,11 @@ HandleUPtr loadJson(const char* data, JsonType type)
     HandleUPtr result{json_loads(data, 0, &error)};
 
     if (!result)
-        throw Error{fmt::format(
+        throw Error{str::format(
             "{}:{}: {}", error.line, error.column, error.text)};
 
     if (getType(result.get()) != type)
-        throw Error{fmt::format("Root is not {}", getName(type))};
+        throw Error{str::format("Root is not {}", getName(type))};
 
     return result;
 }
@@ -122,13 +123,13 @@ static json_t* get(
 
     auto* val = json_object_get(object, key);
     if (!val)
-        throw Error{fmt::format("No \"{}\"", key)};
+        throw Error{str::format("No \"{}\"", key)};
 
     if (getType(val) == JsonType::null)
-        throw Error{fmt::format("\"{}\" is null", key)};
+        throw Error{str::format("\"{}\" is null", key)};
 
     if (getType(val) != type)
-        throw Error{fmt::format(
+        throw Error{str::format(
             "\"{}\" is not {}", key, getName(type))};
 
     return val;
@@ -199,7 +200,7 @@ static json_t* get(
 
     const auto size = json_array_size(array);
     if (idx >= size)
-        throw Error{fmt::format(
+        throw Error{str::format(
             "Index {} is out of bounds [0, {})", idx, size)};
 
     auto* val = json_array_get(array, idx);
@@ -210,10 +211,10 @@ static json_t* get(
     assert(val);
 
     if (getType(val) == JsonType::null)
-        throw Error{fmt::format("Value at index {} is null", idx)};
+        throw Error{str::format("Value at index {} is null", idx)};
 
     if (getType(val) != type)
-        throw Error{fmt::format(
+        throw Error{str::format(
             "Value at index {} is not {}", idx, getName(type))};
 
     return val;

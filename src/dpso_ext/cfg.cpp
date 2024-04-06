@@ -8,8 +8,6 @@
 #include <string>
 #include <vector>
 
-#include <fmt/core.h>
-
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/line_reader.h"
 #include "dpso_utils/os.h"
@@ -177,7 +175,7 @@ static void writeKeyValue(
     const DpsoCfg::KeyValue& kv,
     std::size_t maxKeyLen)
 {
-    write(stream, fmt::format("{:{}} ", kv.key, maxKeyLen));
+    write(stream, str::leftJustify(kv.key, maxKeyLen + 1));
 
     if (!kv.value.empty() && kv.value.front() == ' ')
         write(stream, '\\');

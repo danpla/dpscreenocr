@@ -11,8 +11,7 @@
 #include <windows.h>
 #include <wininet.h>
 
-#include <fmt/core.h>
-
+#include "dpso_utils/str.h"
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/utf.h"
 
@@ -39,7 +38,7 @@ using InternetUPtr = std::unique_ptr<HINTERNET, InternetCloser>;
 [[noreturn]]
 void throwLastError(const char* info)
 {
-    const auto message = fmt::format(
+    const auto message = str::format(
         "{}: {} ({})",
         info,
         windows::getErrorMessage(
@@ -216,7 +215,7 @@ std::unique_ptr<Response> makeGetRequest(
     try {
         userAgentUtf16 = windows::utf8ToUtf16(userAgent);
     } catch (std::runtime_error& e) {
-        throw Error{fmt::format(
+        throw Error{str::format(
             "Can't convert userAgent to UTF-16: {}", e.what())};
     }
 
@@ -233,7 +232,7 @@ std::unique_ptr<Response> makeGetRequest(
     try {
         urlUtf16 = windows::utf8ToUtf16(url);
     } catch (std::runtime_error& e) {
-        throw Error{fmt::format(
+        throw Error{str::format(
             "Can't convert URL to UTF-16: {}", e.what())};
     }
 
@@ -256,7 +255,7 @@ std::unique_ptr<Response> makeGetRequest(
 
     const auto statusCode = getStatusCode(hConnection.get());
     if (statusCode != 200)
-        throw Error{fmt::format("HTTP status code {}", statusCode)};
+        throw Error{str::format("HTTP status code {}", statusCode)};
 
     return std::make_unique<WindowsResponse>(
         std::move(hInternet),

@@ -4,15 +4,17 @@
 #include <initializer_list>
 #include <string>
 
-#include <fmt/core.h>
-
 #include "dpso/dpso.h"
-#include "dpso_utils/error_get.h"
 #include "dpso_ext/cfg.h"
 #include "dpso_ext/cfg_ext.h"
+#include "dpso_utils/error_get.h"
+#include "dpso_utils/str.h"
 
 #include "flow.h"
 #include "utils.h"
+
+
+using namespace dpso;
 
 
 namespace {
@@ -130,9 +132,9 @@ const std::initializer_list<BasicTypesTest> boolTests{
 };
 
 
-const std::string makeCfgKeyForChar(char c)
+std::string makeCfgKeyForChar(char c)
 {
-    return fmt::format("str_char_{:02x}", c);
+    return "str_char_" + str::rightJustify(str::toStr(c, 16), 2, '0');
 }
 
 
@@ -367,8 +369,8 @@ void testIntParsing(DpsoCfg* cfg)
         {"int_minus_0", "-0", 0, 1},
         {"int_123", "123", 123, 0},
         {"int_minus_123", "-123", -123, 0},
-        {"int_min", fmt::format("{}", INT_MIN), INT_MIN, 0},
-        {"int_max", fmt::format("{}", INT_MAX), INT_MAX, 0},
+        {"int_min", str::toStr(INT_MIN), INT_MIN, 0},
+        {"int_max", str::toStr(INT_MAX), INT_MAX, 0},
         {"int_too_big", "9999999999999999999", 1, 1},
         {"int_too_small", "-9999999999999999999", 1, 1},
         {"int_leading_0x", "0x01", 5, 5},
@@ -572,7 +574,7 @@ void testSavedValueFormat()
             : val{val}
             , expectedData{
                 test::utils::lfToNativeNewline(
-                    fmt::format("key {}\n", expectedValData).c_str())}
+                    str::format("key {}\n", expectedValData).c_str())}
         {
         }
     } tests[] = {

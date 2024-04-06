@@ -9,6 +9,8 @@
 #include <cstdio>
 #include <ratio>
 
+#include "str.h"
+
 
 namespace dpso::timing {
 
@@ -22,14 +24,16 @@ float getTime()
 }
 
 
-void vReport(
-    float startTime, fmt::string_view format, fmt::format_args args)
+void report(
+    float startTime,
+    const char* fmt,
+    std::initializer_list<const char*> args)
 {
     const auto duration = getTime() - startTime;
 
-    fmt::print("Timing: ");
-    fmt::vprint(format, args);
-    fmt::print(": {} ms\n", duration);
+    std::fputs("Timing: ", stdout);
+    std::fputs(str::format(fmt, args).c_str(), stdout);
+    std::fputs(str::format(": {} ms\n", duration).c_str(), stdout);
 
     std::fflush(stdout);
 }

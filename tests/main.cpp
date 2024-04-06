@@ -1,7 +1,8 @@
 
 #include <cstdlib>
+#include <cstdio>
 
-#include <fmt/core.h>
+#include "dpso_utils/str.h"
 
 #include "flow.h"
 
@@ -13,8 +14,8 @@ int main()
     for (const auto* runner = test::Runner::getFirst();
             runner;
             runner = runner->getNext()) {
-        fmt::print(
-            "{:3}/{}: {}\n",
+        std::printf(
+            "%4i/%i: %s\n",
             ++curRunnerNum, test::Runner::getNumRunners(),
             runner->getName());
         // Flush to make sure that failure() messages (written to
@@ -23,13 +24,13 @@ int main()
         runner->run();
     }
 
-    fmt::print("===\n");
+    std::printf("===\n");
     const auto numFailures = test::getNumFailures();
     if (numFailures == 0)
-        fmt::print("Everything is OK\n");
+        std::printf("Everything is OK\n");
     else
-        fmt::print(
-            "{} failure{}\n",
+        std::printf(
+            "%i failure%s\n",
             numFailures,
             numFailures > 1 ? "s" : "");
 

@@ -15,18 +15,18 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     target_compile_options(dpso_json PRIVATE -Wall -Wextra -pedantic)
 endif()
 
-target_include_directories(dpso_json PRIVATE . PUBLIC ..)
-
-if(NOT TARGET fmt)
-    add_subdirectory(
-        ../thirdparty/fmt "${CMAKE_BINARY_DIR}/src/thirdparty/fmt")
-endif()
-
 find_package(PkgConfig REQUIRED)
 
 # json_string_length() was added in 2.7.
 pkg_search_module(JANSSON REQUIRED jansson>=2.7)
 
-target_include_directories(dpso_json PRIVATE ${JANSSON_INCLUDE_DIRS})
+if(NOT TARGET dpso_utils)
+    add_subdirectory(
+        ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
+endif()
 
-target_link_libraries(dpso_json PRIVATE fmt ${JANSSON_LIBRARIES})
+target_include_directories(
+    dpso_json PUBLIC .. PRIVATE . ${JANSSON_INCLUDE_DIRS})
+
+target_link_libraries(
+    dpso_json PRIVATE dpso_utils ${JANSSON_LIBRARIES})

@@ -28,7 +28,7 @@ void throwLastError(const char* description)
 {
     const auto lastError = GetLastError();
 
-    const auto message = fmt::format(
+    const auto message = str::format(
         "{}: {}", description, windows::getErrorMessage(lastError));
 
     switch (lastError) {
@@ -45,7 +45,7 @@ std::wstring toUtf16(const char* str, const char* varName)
     try {
         return windows::utf8ToUtf16(str);
     } catch (std::runtime_error& e) {
-        throw Error{fmt::format(
+        throw Error{str::format(
             "Can't convert {} to UTF-16: {}", varName, e.what())};
     }
 }
@@ -180,7 +180,7 @@ static int utf16ToAcp(const wchar_t* utf16Str, char* dst, int dstSize)
         throwLastError("WideCharToMultiByte(CP_ACP, ...)");
 
     if (defaultCharUsed)
-        throw Error{fmt::format(
+        throw Error{str::format(
             "UTF-16 string contains characters that cannot be "
             "represented by the current code page (cp{})",
             GetACP())};

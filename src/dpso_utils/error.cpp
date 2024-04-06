@@ -20,9 +20,10 @@ const char* dpsoGetError(void)
 namespace dpso {
 
 
-void vSetError(fmt::string_view format, fmt::format_args args)
+void setError(
+    const char* fmt, std::initializer_list<const char*> args)
 {
-    error = fmt::vformat(format, args);
+    error = str::format(fmt, args);
 }
 
 

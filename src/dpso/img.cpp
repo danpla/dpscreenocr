@@ -4,12 +4,11 @@
 #include <algorithm>
 #include <cassert>
 
-#include <fmt/core.h>
-
 #include "stb_image_resize.h"
 #include "stb_image_resize_progress.h"
 
 #include "dpso_utils/progress_tracker.h"
+#include "dpso_utils/str.h"
 #include "dpso_utils/stream/file_stream.h"
 #include "dpso_utils/stream/utils.h"
 
@@ -257,7 +256,7 @@ void savePgm(
 
     try {
         FileStream file{filePath, FileStream::Mode::write};
-        write(file, fmt::format("P5\n{} {}\n255\n", w, h));
+        write(file, str::format("P5\n{} {}\n255\n", w, h));
 
         for (int y = 0; y < h; ++y)
             file.write(data + y * pitch, w);

@@ -1,7 +1,7 @@
 
 #include "ocr/lang_code_validator.h"
 
-#include <fmt/core.h>
+#include "dpso_utils/str.h"
 
 
 namespace dpso::ocr {
@@ -26,7 +26,7 @@ void validateLangCode(const char* langCode)
 
     for (const auto* s = langCode; *s; ++s)
         if (!isValidLangCodeChar(*s))
-            throw InvalidLangCodeError{fmt::format(
+            throw InvalidLangCodeError{str::format(
                 "Invalid character at position {}", langCode - s)};
 }
 

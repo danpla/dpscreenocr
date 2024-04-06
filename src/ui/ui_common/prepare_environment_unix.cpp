@@ -2,11 +2,10 @@
 #include "prepare_environment.h"
 
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#include <fmt/core.h>
 
 #include "dpso_utils/os.h"
 
@@ -52,20 +51,20 @@ void uiPrepareEnvironment(char* argv[])
 
     if (setenv(
             ompThreadLimit, ompThreadLimitRequiredVal, true) == -1) {
-        fmt::print(
+        fprintf(
             stderr,
-            "setenv(\"{}\", ...): {}\n",
+            "setenv(\"%s\", ...): %s\n",
             ompThreadLimit,
-            dpso::os::getErrnoMsg(errno));
+            dpso::os::getErrnoMsg(errno).c_str());
         exit(EXIT_FAILURE);
     }
 
     execvp(*argv, argv);
 
-    fmt::print(
+    fprintf(
         stderr,
-        "execvp(\"{}\", ...): {}",
+        "execvp(\"%s\", ...): %s",
         *argv,
-        dpso::os::getErrnoMsg(errno));
+        dpso::os::getErrnoMsg(errno).c_str());
     exit(EXIT_FAILURE);
 }

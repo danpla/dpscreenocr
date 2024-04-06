@@ -2,6 +2,7 @@
 #include "flow.h"
 
 #include <cstdlib>
+#include <cstdio>
 #include <cstring>
 
 
@@ -62,10 +63,10 @@ void Runner::run() const
 static int numFailures;
 
 
-void vFailure(fmt::string_view format, fmt::format_args args)
+void failure(const char* fmt, std::initializer_list<const char*> args)
 {
     ++numFailures;
-    fmt::vprint(stderr, format, args);
+    std::fputs(dpso::str::format(fmt, args).c_str(), stderr);
 }
 
 
@@ -75,10 +76,11 @@ int getNumFailures()
 }
 
 
-void vFatalError(fmt::string_view format, fmt::format_args args)
+void fatalError(
+    const char* fmt, std::initializer_list<const char*> args)
 {
-    fmt::print(stderr, "FATAL ERROR\n");
-    fmt::vprint(stderr, format, args);
+    std::fputs("FATAL ERROR\n", stderr);
+    std::fputs(dpso::str::format(fmt, args).c_str(), stderr);
     std::exit(EXIT_FAILURE);
 }
 

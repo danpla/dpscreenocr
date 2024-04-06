@@ -149,7 +149,7 @@ static void openSync(
     try {
         file.emplace(filePath, mode);
     } catch (os::Error& e) {
-        setError("FileStream(..., {}): {}", toStr(mode), e.what());
+        setError("FileStream(..., {}): {}", mode, e.what());
     }
 
     const auto fileDir = os::getDirName(filePath);

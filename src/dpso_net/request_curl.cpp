@@ -7,7 +7,6 @@
 #include <string>
 
 #include <curl/curl.h>
-#include <fmt/core.h>
 
 #include "dpso_utils/str.h"
 
@@ -55,7 +54,7 @@ public:
 
         const auto code = libCurl->global_init(CURL_GLOBAL_ALL);
         if (code != CURLE_OK)
-            errorText = fmt::format(
+            errorText = str::format(
                 "curl_global_init: {}", libCurl->easy_strerror(code));
     }
 
@@ -256,7 +255,7 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
         performTransferStep();
 
     if (statusCode != 200)
-        throw Error{fmt::format("HTTP status code {}", statusCode)};
+        throw Error{str::format("HTTP status code {}", statusCode)};
 }
 
 
@@ -265,7 +264,7 @@ void CurlResponse::throwError(const char* description, CURLcode code)
 {
     assert(code != CURLE_OK);
 
-    const auto message = fmt::format(
+    const auto message = str::format(
         "{}: {}",
         description,
         *curlError ? curlError : libCurl.easy_strerror(code));
@@ -291,7 +290,7 @@ void CurlResponse::throwError(const char* description, CURLcode code)
 void CurlResponse::throwError(const char* description, CURLMcode code)
 {
     assert(code != CURLM_OK);
-    throw Error{fmt::format(
+    throw Error{str::format(
         "{}: {}", description, libCurl.multi_strerror(code))};
 }
 

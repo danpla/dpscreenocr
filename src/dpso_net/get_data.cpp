@@ -3,7 +3,7 @@
 
 #include <limits>
 
-#include <fmt/core.h>
+#include "dpso_utils/str.h"
 
 #include "error.h"
 #include "request.h"
@@ -22,7 +22,7 @@ std::string getData(
 
     if (const auto size = response->getSize();
             size && *size > sizeLimit)
-        throw Error{fmt::format(
+        throw Error{str::format(
             "Response data size ({}) exceeds limit ({})",
             *size, sizeLimit)};
 
@@ -38,7 +38,7 @@ std::string getData(
                     < numRead
                 || static_cast<std::int64_t>(result.size() + numRead)
                     > sizeLimit)
-            throw Error{fmt::format(
+            throw Error{str::format(
                 "Response data size exceeds limit ({})", sizeLimit)};
 
         result.append(buf, numRead);

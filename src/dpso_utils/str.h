@@ -51,19 +51,71 @@ inline int cmp(
 }
 
 
+std::string leftJustify(
+    std::string s, std::size_t width, char fill = ' ');
+
+
+std::string rightJustify(
+    std::string s, std::size_t width, char fill = ' ');
+
+
 // toStr() functions are locale-independent replacements for
-// std::to_string(). They all have the same effect as
-// fmt::format("{}", v), but are shorter and and don't require
-// including <fmt/*> headers.
-//
-// Since C++26, std::to_string() is the same as std::format("{}", v),
-// so these functions will be unnecessary once we have C++26.
-std::string toStr(int v);
-std::string toStr(unsigned v);
-std::string toStr(long v);
-std::string toStr(unsigned long v);
-std::string toStr(long long v);
-std::string toStr(unsigned long long v);
+// std::to_string(). Since C++26, std::to_string() is the same as
+// std::format("{}", v), so these functions will be unnecessary once
+// we have C++26.
+std::string toStr(int v, int base = 10);
+std::string toStr(unsigned v, int base = 10);
+std::string toStr(long v, int base = 10);
+std::string toStr(unsigned long v, int base = 10);
+std::string toStr(long long v, int base = 10);
+std::string toStr(unsigned long long v, int base = 10);
+
+std::string toStr(float v);
+std::string toStr(double v);
+
+
+namespace formatArg {
+
+
+// The "char*" overload is necessary because the template version of
+// get() has a higher priority than the "const char*" overload.
+const char* get(char* v);
+const char* get(const char* v);
+const char* get(const std::string& v);
+
+
+struct ConvertedStr {
+    std::string s;
+
+    operator const char*() const {
+        return s.c_str();
+    }
+};
+
+
+ConvertedStr get(char c);
+
+
+template<typename T>
+ConvertedStr get(const T& v)
+{
+    return {toStr(v)};
+}
+
+
+}
+
+
+// Python-style brace string formatting. Only positional arguments are
+// supported.
+std::string format(
+    const char* fmt, std::initializer_list<const char*> args);
+
+template<typename... Args>
+std::string format(const char* fmt, const Args&... args)
+{
+    return format(fmt, {formatArg::get(args)...});
+}
 
 
 }

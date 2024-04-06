@@ -6,11 +6,10 @@
 #include <optional>
 #include <queue>
 
-#include <fmt/core.h>
-
 #include "flow.h"
 
 #include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
 #include "dpso_utils/stream/file_stream.h"
 #include "dpso_utils/stream/utils.h"
 
@@ -52,7 +51,12 @@ static std::string escapeStr(const char* str, std::size_t strLen)
             if (std::isprint(static_cast<unsigned char>(c)))
                 result += c;
             else
-                result += fmt::format("\\x{:02x}", c);
+                result +=
+                    "\\x"
+                    + dpso::str::rightJustify(
+                        dpso::str::toStr(c, 16),
+                        2,
+                        '0');
             break;
         }
 
@@ -202,25 +206,25 @@ void printFirstDifference(const char* expected, const char* actual)
         const auto al = getNextLine(a);
 
         if (el != al) {
-            fmt::print(
+            std::fprintf(
                 stderr,
                 "First difference between expected (e) and actual "
-                "(a) data, with {} preceding\n"
-                "line{}. Non-printable characters are escaped with "
+                "(a) data, with %zu preceding\n"
+                "line%s. Non-printable characters are escaped with "
                 "C-style sequences.\n",
                 contextLines.size(),
                 contextLines.size() == 1 ? "" : "s");
 
             while (!contextLines.empty()) {
-                fmt::print(
+                std::fprintf(
                     stderr,
-                    " |{}\n",
-                    escapeStr(contextLines.front()));
+                    " |%s\n",
+                    escapeStr(contextLines.front()).c_str());
                 contextLines.pop();
             }
 
-            fmt::print(stderr, "e|{}\n", escapeStr(el));
-            fmt::print(stderr, "a|{}\n", escapeStr(al));
+            std::fprintf(stderr, "e|%s\n", escapeStr(el).c_str());
+            std::fprintf(stderr, "a|%s\n", escapeStr(al).c_str());
             break;
         }
 

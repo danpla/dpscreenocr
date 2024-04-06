@@ -1,20 +1,21 @@
 
 #pragma once
 
-#include <fmt/core.h>
+#include "str.h"
 
 
 namespace dpso {
 
 
 // Set an error message to be returned by dpsoGetError().
-void vSetError(fmt::string_view format, fmt::format_args args);
+void setError(
+    const char* fmt, std::initializer_list<const char*> args);
 
 
-template<typename... T>
-void setError(fmt::format_string<T...> format, T&&... args)
+template<typename... Args>
+void setError(const char* fmt, const Args&... args)
 {
-    vSetError(format, fmt::make_format_args(args...));
+    setError(fmt, {str::formatArg::get(args)...});
 }
 
 

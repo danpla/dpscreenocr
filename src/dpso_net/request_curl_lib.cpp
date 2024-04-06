@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include <fmt/core.h>
+#include "dpso_utils/str.h"
 
 #include "error.h"
 
@@ -87,7 +87,7 @@ LibInfo loadLib()
 
     for (auto v = minSoVersion; v <= maxSoVersion; ++v)
         for (const auto* name : names) {
-            const auto soName = fmt::format("{}.so.{}", name, v);
+            const auto soName = str::format("{}.so.{}", name, v);
             if (auto* handle = dlopen(
                     soName.c_str(), RTLD_NOW | RTLD_LOCAL))
                 return {soName, DlHandleUPtr{handle}};
@@ -98,11 +98,11 @@ LibInfo loadLib()
         if (!triedSoNames.empty())
             triedSoNames += ", ";
 
-        triedSoNames += fmt::format(
+        triedSoNames += str::format(
             "{}.so.[{}-{}]", name, minSoVersion, maxSoVersion);
     }
 
-    throw Error{fmt::format(
+    throw Error{str::format(
         "Can't load libcurl. Tried names: {}. Last error: {}",
         triedSoNames, dlerror())};
 }
@@ -115,7 +115,7 @@ void* loadFn(const char* name)
     if (auto* result = dlsym(libInfo.handle.get(), name))
         return result;
 
-    throw Error{fmt::format(
+    throw Error{str::format(
         "dlsym for \"{}\" from \"{}\": {}",
         name, libInfo.name, dlerror())};
 }
