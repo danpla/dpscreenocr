@@ -79,7 +79,7 @@ static void testStrNFormat()
             "dpsoStrNFormat(\"{}\", {}): "
             "expected \"{}\", got \"{}\"",
             test.str,
-            test::utils::toStr(test.args.begin(), test.args.end()),
+            test::utils::toStr(test.args),
             test.expected,
             got);
     }

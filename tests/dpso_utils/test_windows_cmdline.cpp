@@ -58,7 +58,7 @@ void testArgv(std::initializer_list<const char*> argv)
             cmdLine,
             gotArgv.size(),
             argv.size(),
-            test::utils::toStr(gotArgv.begin(), gotArgv.end()));
+            test::utils::toStr(gotArgv));
         return;
     }
 
@@ -73,8 +73,8 @@ void testArgv(std::initializer_list<const char*> argv)
             "  CommandLineTogotArgvW() from createCmdLine() string:\n"
             "    {}",
             cmdLine,
-            test::utils::toStr(argv.begin(), argv.end()),
-            test::utils::toStr(gotArgv.begin(), gotArgv.end()));
+            test::utils::toStr(argv),
+            test::utils::toStr(gotArgv));
 }
 
 

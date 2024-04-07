@@ -54,6 +54,13 @@ std::string toStr(T begin, T end)
 }
 
 
+template<typename T>
+auto toStr(const T& v) -> decltype(toStr(v.begin(), v.end()))
+{
+    return toStr(v.begin(), v.end());
+}
+
+
 // In failure, calls tests::fatalError() using contextInfo as a part
 // of the error message.
 void saveText(

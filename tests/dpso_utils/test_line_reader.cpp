@@ -81,10 +81,8 @@ void testLineReader()
                 "Unexpected lines from LineReader::readLine() for "
                 "{}: expected {}, got {}",
                 test::utils::toStr(test.text),
-                test::utils::toStr(
-                    test.expectedLines.begin(),
-                    test.expectedLines.end()),
-                test::utils::toStr(lines.begin(), lines.end()));
+                test::utils::toStr(test.expectedLines),
+                test::utils::toStr(lines));
     }
 
     test::utils::removeFile(fileName);

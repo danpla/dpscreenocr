@@ -160,11 +160,51 @@ void testToStr()
 }
 
 
+void testFormat()
+{
+    const struct Test {
+        const char* str;
+        std::initializer_list<const char*> args;
+        const char* expected;
+    } tests[] = {
+        // Normal
+        {"1: {}, 2: {}", {"a", "b"}, "1: a, 2: b"},
+        // Nonexistent arg
+        {"1: {}, 2: {}, 3: {}", {"a", "b"}, "1: a, 2: b, 3: {}"},
+        // String within {}
+        {"1: {x}, 2: {}", {"a", "b"}, "1: {x}, 2: a"},
+        // Brace substitution
+        {"1: {{}} {{ }}", {"a"}, "1: {} { }"},
+        // Stray }
+        {"1: {}, 2: {{}, 3: {}", {"a", "b"}, "1: a, 2: {}, 3: {}"},
+        // { within name
+        {"1: {}, 2: { {}, 3: {}", {"a", "b"}, "1: a, 2: { {}, 3: {}"},
+        // No closing }
+        {"1: {}, 2: { ", {"a", "b"}, "1: a, 2: { "},
+    };
+
+    for (const auto& test : tests) {
+        const auto got = dpso::str::format(test.str, test.args);
+        if (got == test.expected)
+            continue;
+
+        test::failure(
+            "str::format(\"{}\", {}): "
+            "expected \"{}\", got \"{}\"",
+            test.str,
+            test::utils::toStr(test.args),
+            test.expected,
+            got);
+    }
+}
+
+
 void testStr()
 {
     testCmpSubStr();
     testJustify();
     testToStr();
+    testFormat();
 }
 
 
