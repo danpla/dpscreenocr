@@ -15,7 +15,7 @@ class OutNewlineConversionStream : public Stream {
 public:
     // The newline can be any string. If null, the native newline for
     // the current platform is used.
-    OutNewlineConversionStream(
+    explicit OutNewlineConversionStream(
         Stream& base, const char* newline = nullptr);
 
     std::size_t readSome(void* dst, std::size_t dstSize) override;
