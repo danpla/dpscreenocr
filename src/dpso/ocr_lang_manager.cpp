@@ -89,17 +89,16 @@ void clearExternalLangs(std::vector<Lang>& langs)
 }
 
 
-class LangOpCanceled : public std::runtime_error {
-public:
-    LangOpCanceled()
-        : std::runtime_error("")
-    {
-    }
-};
-
-
 class LangOpExecutor {
 public:
+    class OpCanceled : public std::runtime_error {
+    public:
+        OpCanceled()
+            : std::runtime_error("")
+        {
+        }
+    };
+
     class Control {
     public:
         Control() = default;
@@ -169,7 +168,7 @@ public:
             {
                 try {
                     fn(*cancelFlag);
-                } catch (std::exception& e) {
+                } catch (std::runtime_error& e) {
                     return {catchAsStatusCode(), e.what()};
                 }
 
@@ -186,11 +185,11 @@ private:
     {
         try {
             throw;
-        } catch (LangOpCanceled&) {
+        } catch (LangOpExecutor::OpCanceled&) {
             return DpsoOcrLangOpStatusCodeNone;
         } catch (dpso::ocr::LangManagerNetworkConnectionError&) {
             return DpsoOcrLangOpStatusCodeNetworkConnectionError;
-        } catch (std::exception&) {
+        } catch (std::runtime_error&) {
             // dpso::ocr::LangManagerError and other exceptions
             return DpsoOcrLangOpStatusCodeGenericError;
         } catch (...) {
@@ -476,7 +475,7 @@ static void installLangs(
 {
     for (std::size_t i = 0; i < langIndices.size(); ++i) {
         if (*cancelRequested.getLock())
-            throw LangOpCanceled{};
+            throw LangOpExecutor::OpCanceled{};
 
         const auto langIdx = langIndices[i];
         auto& lang = langManager.langs[langIdx];
@@ -618,7 +617,7 @@ bool dpsoOcrLangManagerRemoveLang(
     // available ones from LangManager. Since we rejected the language
     // with the "not installed" state, we now have a guarantee that
     // LangManager includes all languages from the
-    // DpsoOcrLangManager::langs list, even there was no
+    // DpsoOcrLangManager::langs list, even if there was no
     // dpsoOcrLangManagerLoadFetchedExternalLangs() call.
     assert(baseLangIdx);
 
