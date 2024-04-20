@@ -61,10 +61,10 @@ msgstr "Ubuntu и производные"
 
 #, python-brace-format
 msgid ""
-"Windows 7 or newer: <a {installer_link}>installer</a> or <a "
+"<b>Windows</b> 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
-"Windows 7 или новее: <a {installer_link}>установщик</a> или <a "
+"<b>Windows</b> 7 или новее: <a {installer_link}>установщик</a> или <a "
 "{zip_archive_link}>ZIP-архив</a>"
 
 msgid "Source code (tar.gz)"

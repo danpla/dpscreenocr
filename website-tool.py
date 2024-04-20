@@ -434,7 +434,7 @@ def gen_main_page_content(root_url, page_lang, translator):
 
     download_list = gen_unordered_list((
         (
-            'GNU/Linux<br>'
+            '<b>GNU/Linux</b><br>'
             + translator.gettext(
                 'Download {file}, which works on most systems, or '
                 'choose a package for your distribution:').format(
@@ -452,7 +452,7 @@ def gen_main_page_content(root_url, page_lang, translator):
             )
         ),
         translator.gettext(
-                'Windows 7 or newer: '
+                '<b>Windows</b> 7 or newer: '
                 '<a {installer_link}>installer</a> or '
                 '<a {zip_archive_link}>ZIP archive</a>').format(
             installer_link=(

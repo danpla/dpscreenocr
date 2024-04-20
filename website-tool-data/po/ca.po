@@ -58,10 +58,10 @@ msgstr "Ubuntu i distribucions derivades"
 
 #, python-brace-format
 msgid ""
-"Windows 7 or newer: <a {installer_link}>installer</a> or <a "
+"<b>Windows</b> 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
-"Windows 7 o més recent: <a {installer_link}>instal·lador</a> o <a "
+"<b>Windows</b> 7 o més recent: <a {installer_link}>instal·lador</a> o <a "
 "{zip_archive_link}>arxiu ZIP</a>"
 
 msgid "Source code (tar.gz)"

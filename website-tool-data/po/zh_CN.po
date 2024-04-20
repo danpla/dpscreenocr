@@ -56,11 +56,11 @@ msgstr "乌班图和衍生工具"
 
 #, python-brace-format
 msgid ""
-"Windows 7 or newer: <a {installer_link}>installer</a> or <a "
+"<b>Windows</b> 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
-"Windows 7 或者更新的版本: <a {installer_link}>安装包 </a> 或者 <a "
-"{zip_archive_link}>ZIP archive </a>"
+"<b>Windows</b> 7 或者更新的版本: <a {installer_link}>安装包 </a> 或者 <a "
+"{zip_archive_link}>ZIP archive</a>"
 
 msgid "Source code (tar.gz)"
 msgstr "源代码(tar.gz)"

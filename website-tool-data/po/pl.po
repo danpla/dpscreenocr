@@ -50,7 +50,7 @@ msgstr ""
 
 #, python-brace-format
 msgid ""
-"Windows 7 or newer: <a {installer_link}>installer</a> or <a "
+"<b>Windows</b> 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
 
