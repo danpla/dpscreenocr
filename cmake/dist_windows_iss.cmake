@@ -11,8 +11,6 @@ function(gen_inno_setup_config)
             "Unexpected CMAKE_SIZEOF_VOID_P (${CMAKE_SIZEOF_VOID_P})")
     endif()
 
-    set(APP_USES_NLS "${DPSO_ENABLE_NLS}")
-
     set(APP_UI "${DPSO_UI}")
     if(DPSO_UI STREQUAL "qt")
         set(APP_UI "${APP_UI}${DPSO_QT_VERSION}")
@@ -59,14 +57,6 @@ function(gen_inno_setup_language_list)
     set(ISL_zh_CN "Unofficial\\ChineseSimplified")
 
     set(OUT_FILE "${CMAKE_BINARY_DIR}/inno_setup_languages.isi")
-
-    if(NOT DPSO_ENABLE_NLS)
-        file(
-            WRITE
-            "${OUT_FILE}"
-            "; No languages since NLS was disabled")
-        return()
-    endif()
 
     file(REMOVE "${OUT_FILE}")
 

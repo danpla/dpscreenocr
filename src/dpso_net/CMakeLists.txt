@@ -6,8 +6,7 @@ add_library(
     dpso_net
 
     download_file.cpp
-    get_data.cpp
-)
+    get_data.cpp)
 
 include(CMakeDependentOption)
 

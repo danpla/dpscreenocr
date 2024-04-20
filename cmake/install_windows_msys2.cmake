@@ -34,14 +34,12 @@ if(DPSO_UI STREQUAL "qt")
         "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/plugins"
         "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/plugins")
 
-    if(DPSO_ENABLE_NLS)
-        include(get_linguas)
-        get_linguas(LANGS)
+    include(get_linguas)
+    get_linguas(LANGS)
 
-        copy_qt_translations(
-            "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/translations"
-            "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
-            LANGUAGES ${LANGS}
-            COMPONENTS qt qtbase)
-    endif()
+    copy_qt_translations(
+        "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/translations"
+        "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
+        LANGUAGES ${LANGS}
+        COMPONENTS qt qtbase)
 endif()

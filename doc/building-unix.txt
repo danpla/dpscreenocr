@@ -12,15 +12,12 @@ Required:
   * pkg-config to find libtesseract
   * libx11
   * libxext - for X11 Nonrectangular Window Shape Extension
+  * libintl. On some systems libintl is a part of GNU C library and
+    doesn't need to be installed separately.
+  * gettext tools >= 0.19 (msgfmt is needed to compile gettext message
+    catalogs).
 
 Optional:
-
-  * libintl for translated user interface. On some systems libintl is
-    a part of GNU C library and doesn't need to be installed
-    separately. DPSO_ENABLE_NLS CMake option.
-
-  * gettext tools >= 0.19 (msgfmt is needed to compile gettext message
-    catalogs). DPSO_ENABLE_NLS CMake option.
 
   * pandoc to generate HTML manual. DPSO_GEN_HTML_MANUAL CMake
     option.

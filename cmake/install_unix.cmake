@@ -6,7 +6,7 @@ install(
     DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 include(gen_desktop_entry)
-gen_desktop_entry("${CMAKE_BINARY_DIR}" ${DPSO_ENABLE_NLS})
+gen_desktop_entry("${CMAKE_BINARY_DIR}")
 install(
     FILES "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}.desktop"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
@@ -28,15 +28,13 @@ install(
     SCRIPT
     "${CMAKE_BINARY_DIR}/install_unix_hicolor_icons.cmake")
 
-if(DPSO_ENABLE_NLS)
-    include(compile_po)
-    compile_po("${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}")
+include(compile_po)
+compile_po("${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}")
 
-    install(
-        # Note the trailing slash.
-        DIRECTORY "${CMAKE_BINARY_DIR}/locale/"
-        DESTINATION "${CMAKE_INSTALL_LOCALEDIR}")
-endif()
+install(
+    # Note the trailing slash.
+    DIRECTORY "${CMAKE_BINARY_DIR}/locale/"
+    DESTINATION "${CMAKE_INSTALL_LOCALEDIR}")
 
 if(DPSO_GEN_HTML_MANUAL)
     include(gen_manual)

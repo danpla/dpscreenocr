@@ -32,13 +32,11 @@ if(DPSO_UI STREQUAL "qt")
         DESTINATION "qt${DPSO_QT_VERSION}"
         COMPONENT Required)
 
-    if(DPSO_ENABLE_NLS)
-        install(
-            DIRECTORY
-                "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
-            DESTINATION "qt${DPSO_QT_VERSION}"
-            COMPONENT localization)
-    endif()
+    install(
+        DIRECTORY
+            "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
+        DESTINATION "qt${DPSO_QT_VERSION}"
+        COMPONENT localization)
 
     string(
         JOIN "\n" QT_CONF
@@ -72,15 +70,13 @@ else()
         "Tesseract data manually")
 endif()
 
-if(DPSO_ENABLE_NLS)
-    include(compile_po)
-    compile_po("${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}")
+include(compile_po)
+compile_po("${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}")
 
-    install(
-        DIRECTORY "${CMAKE_BINARY_DIR}/locale"
-        DESTINATION .
-        COMPONENT localization)
-endif()
+install(
+    DIRECTORY "${CMAKE_BINARY_DIR}/locale"
+    DESTINATION .
+    COMPONENT localization)
 
 include(line_endings_conversion)
 

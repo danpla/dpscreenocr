@@ -110,10 +110,6 @@
   undefined macro may be set to a default value in the source code,
   and that default may not match the CMake option.
 
-* Define ENABLE_NLS=1 to enable gettext. If you use dpso_utils/intl.h,
-  this can be done with the DPSO_ENABLE_NLS CMake option (enabled by
-  default). If you use your own gettext.h, set ENABLE_NLS manually.
-
 * When creating translatable strings with plural forms, don't format
   the singular form especially, like:
 

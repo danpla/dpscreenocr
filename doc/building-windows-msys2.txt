@@ -42,12 +42,12 @@ Required:
   * Qt 5.3.2 - 6. DPSO_QT_VERSION CMake option.
   * tesseract >= 4.1.0
   * jansson >= 2.7
+  * gettext >= 0.21
   * pkg-config (recent MSYS2 uses a compatible pkgconf tool)
   * dos2unix
 
 Optional:
 
-  * gettext >= 0.21. DPSO_ENABLE_NLS CMake option.
   * pandoc to generate HTML manual. DPSO_GEN_HTML_MANUAL CMake option.
 
 To install all dependencies except Pandoc, run in a MinGW shell:
@@ -120,8 +120,8 @@ Setup instead.
 There is inno_setup.iss in the build directory to create an installer
 with Inno Setup.
 
-Unless you disable the DPSO_ENABLE_NLS option, you will need some
-unofficial language files listed in inno_setup_languages.isi. Download
-them from the Inno Setup website or source code repository
-(Files/Languages/Unofficial/) to the "Languages/Unofficial/" directory
-in the root of your Inno Setup installation.
+You will need some unofficial language files listed in
+inno_setup_languages.isi. Download them from the Inno Setup website or
+source code repository (Files/Languages/Unofficial/) to the
+"Languages/Unofficial/" directory in the root of your Inno Setup
+installation.

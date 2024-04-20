@@ -1,9 +1,6 @@
 
 #include "bindtextdomain_utf8.h"
 
-
-#if ENABLE_NLS
-
 #include <libintl.h>
 
 
@@ -55,16 +52,3 @@ void bindtextdomainUtf8(const char* domainName, const char* dirName)
 
 
 #endif // !_WIN32
-
-
-#else  // ENABLE_NLS
-
-
-void bindtextdomainUtf8(const char* domainName, const char* dirName)
-{
-    (void)domainName;
-    (void)dirName;
-}
-
-
-#endif  // !ENABLE_NLS

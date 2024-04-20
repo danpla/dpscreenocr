@@ -21,7 +21,6 @@ set(CMAKE_SOURCE_DIR "@CMAKE_SOURCE_DIR@")
 set(APP_FILE_NAME "@APP_FILE_NAME@")
 
 set(DPSO_UI "@DPSO_UI@")
-set(DPSO_ENABLE_NLS "@DPSO_ENABLE_NLS@")
 
 
 function(validate_build_settings)
@@ -416,10 +415,7 @@ set_up_third_party_licenses_dir()
 
 if(DPSO_UI STREQUAL "qt")
     create_qt_conf()
-
-    if(DPSO_ENABLE_NLS)
-        bundle_qt_translations()
-    endif()
+    bundle_qt_translations()
 
     # Plugins are handled in bundle_libs().
 endif()

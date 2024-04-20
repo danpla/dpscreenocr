@@ -70,11 +70,9 @@ Source: "doc\*"; \
 Source: "icons\*"; \
   DestDir: "{app}\icons"; \
   Flags: ignoreversion recursesubdirs
-#if APP_USES_NLS
 Source: "locale\*"; \
   DestDir: "{app}\locale"; \
   Flags: ignoreversion recursesubdirs
-#endif
 
 #define TESSDATA_DIR "tessdata"
 #define TESSERACT_DATA_DIR \
@@ -116,11 +114,9 @@ Source: "qt.conf"; \
 Source: "{#APP_UI}\plugins\*"; \
   DestDir: "{app}\{#APP_UI}\plugins"; \
   Flags: ignoreversion recursesubdirs
-#if APP_USES_NLS
 Source: "{#APP_UI}\translations\*"; \
   DestDir: "{app}\{#APP_UI}\translations"; \
   Flags: ignoreversion recursesubdirs
-#endif
 #endif
 
 [Icons]
@@ -129,9 +125,7 @@ Name: "{autoprograms}\{#APP_NAME}"; \
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
-#if APP_USES_NLS
 #include "inno_setup_languages.isi"
-#endif
 
 [Code]
 

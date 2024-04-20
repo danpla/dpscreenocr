@@ -9,4 +9,3 @@
 #cmakedefine APP_URL "@APP_URL@"
 #cmakedefine APP_VERSION "@APP_VERSION@"
 #cmakedefine01 APP_IS_64_BIT
-#cmakedefine01 APP_USES_NLS
