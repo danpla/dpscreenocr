@@ -43,7 +43,12 @@ static void installQtTranslations(QApplication& app)
 
 int main(int argc, char* argv[])
 {
-    uiPrepareEnvironment(argv);
+    // If uiInit() fails, postpone displaying a message box until
+    // QApplication is ready. Actually, we can call uiInit() after
+    // QApplication has been constructed, but on some platforms
+    // uiInit() can restart the executable, so we want to avoid
+    // unnecessary QApplication initialization in this case.
+    const auto uiInitOk = uiInit(argc, argv);
 
     // High DPI support is enabled by default in Qt 6.
     #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -62,21 +67,19 @@ int main(int argc, char* argv[])
 
     QApplication app(argc, argv);
 
-    // We want the message boxes below to use the proper application
-    // icon. On platforms that don't use icons themes, getThemeIcon()
-    // falls back to the application data dir, so we need to
-    // initialize app dirs before anything else.
-    if (!uiInitAppDirs(argv[0])) {
+    if (!uiInitOk) {
         QMessageBox::critical(
             nullptr,
             uiAppName,
-            QString("uiInitAppDirs(): ") + dpsoGetError());
+            QString("uiInit(): ") + dpsoGetError());
         return EXIT_FAILURE;
     }
 
+    // On platforms that don't use icon themes, getThemeIcon() loads
+    // icons from the application data dir (uiGetAppDir()), and should
+    // therefore only be called after a successful uiInit().
     app.setWindowIcon(ui::qt::getThemeIcon(uiAppFileName));
 
-    uiInitIntl();
     installQtTranslations(app);
 
     const ui::SingleInstanceGuardUPtr singleInstanceGuard{

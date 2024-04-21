@@ -13,6 +13,7 @@
 // to the hardcoded install prefix.
 
 #include "app_dirs.h"
+#include "init_app_dirs.h"
 
 #include <errno.h>
 #include <stdlib.h>

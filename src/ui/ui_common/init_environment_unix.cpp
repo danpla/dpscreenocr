@@ -1,5 +1,5 @@
 
-#include "prepare_environment.h"
+#include "init_environment.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -7,6 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
 
 
@@ -32,12 +33,12 @@
 // some special name, e.g., ending with a "-bin" suffix) may confuse
 // users running programs from the command line. Instead, we set the
 // variable and restart the program directly from the executable. As
-// such, uiPrepareEnvironment() should be the first call in main().
+// such, uiInitEnvironment() should be the first call in main().
 //
 // [1] https://github.com/tesseract-ocr/tesstrain/issues/259
 
 
-void uiPrepareEnvironment(char* argv[])
+bool uiInitEnvironment(char* argv[])
 {
     const auto* ompThreadLimit = "OMP_THREAD_LIMIT";
     const auto* ompThreadLimitRequiredVal = "1";
@@ -47,24 +48,20 @@ void uiPrepareEnvironment(char* argv[])
             && strcmp(
                 ompThreadLimitEnvVar,
                 ompThreadLimitRequiredVal) == 0)
-        return;
+        return true;
 
     if (setenv(
             ompThreadLimit, ompThreadLimitRequiredVal, true) == -1) {
-        fprintf(
-            stderr,
-            "setenv(\"%s\", ...): %s\n",
-            ompThreadLimit,
-            dpso::os::getErrnoMsg(errno).c_str());
-        exit(EXIT_FAILURE);
+        dpso::setError(
+            "setenv(\"{}\", ...): {}",
+            ompThreadLimit, dpso::os::getErrnoMsg(errno));
+        return false;
     }
 
     execvp(*argv, argv);
 
-    fprintf(
-        stderr,
-        "execvp(\"%s\", ...): %s",
-        *argv,
-        dpso::os::getErrnoMsg(errno).c_str());
-    exit(EXIT_FAILURE);
+    dpso::setError(
+        "execvp(\"{}\", ...): {}",
+        *argv, dpso::os::getErrnoMsg(errno));
+    return false;
 }

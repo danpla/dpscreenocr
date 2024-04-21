@@ -4,6 +4,7 @@ add_library(
 
     cfg_default_values.cpp
     cfg_keys.cpp
+    init.cpp
     init_intl.cpp
     ocr_data_utils.cpp
     user_agent.cpp)
@@ -46,9 +47,9 @@ else()
 endif()
 
 if(UNIX AND NOT APPLE)
-    target_sources(ui_common PRIVATE prepare_environment_unix.cpp)
+    target_sources(ui_common PRIVATE init_environment_unix.cpp)
 else()
-    target_sources(ui_common PRIVATE prepare_environment_null.cpp)
+    target_sources(ui_common PRIVATE init_environment_null.cpp)
 endif()
 
 foreach(IN_SRC ${IN_SRCS})

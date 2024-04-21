@@ -1,5 +1,6 @@
 
 #include "app_dirs.h"
+#include "init_app_dirs.h"
 
 #include <string>
 
