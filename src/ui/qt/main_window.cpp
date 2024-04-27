@@ -769,8 +769,8 @@ void MainWindow::updateStatus()
 void MainWindow::checkResults()
 {
     // Check if jobs are completed before fetching results, since new
-    // jobs may finish right after dpsoOcrFetchResults() and before
-    // dpsoOcrGetJobsPending() call.
+    // jobs can finish between dpsoOcrFetchResults() and
+    // dpsoOcrHasPendingJobs() calls.
     const auto jobsCompleted = !dpsoOcrHasPendingJobs(ocr.get());
 
     DpsoOcrJobResults results;
