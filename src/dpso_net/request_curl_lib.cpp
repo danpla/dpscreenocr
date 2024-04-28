@@ -50,7 +50,8 @@ namespace {
 struct DlHandleCloser {
     void operator()(void* handle) const
     {
-        dlclose(handle);
+        if (handle)
+            dlclose(handle);
     }
 };
 
