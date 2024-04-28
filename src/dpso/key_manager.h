@@ -12,36 +12,36 @@ extern "C" {
 
 
 /**
- * Get whether hotkeys are enabled.
+ * Get whether key manager is enabled.
  *
- * Enabling and disabling hotkeys only affects
- * dpsoGetLastHotkeyAction(), which will always return
- * dpsoNoHotkeyAction if hotkeys are disabled.
+ * Enabling and disabling the key manager only affects
+ * dpsoKeyManagerGetLastHotkeyAction(), which will always return
+ * dpsoNoHotkeyAction if disabled.
  *
- * Hotkeys are disabled by default.
+ * The key manager is disabled by default.
  */
-bool dpsoGetHotkeysEnabled(void);
+bool dpsoKeyManagerGetIsEnabled(void);
 
 
 /**
- * Set whether hotkeys are enabled.
+ * Set whether key manager is enabled.
  */
-void dpsoSetHotkeysEnabled(bool newHotkeysEnabled);
+void dpsoKeyManagerSetIsEnabled(bool newIsEnabled);
 
 
 /**
  * Get action of the pressed hotkey.
  *
- * dpsoGetLastHotkeyAction() returns the action if a bound hotkey
- * that matches the recently pressed key combination. The function
- * returns dpsoNoHotkeyAction if hotkeys are disabled (see
- * dpsoGetHotkeysEnabled()), no keys are pressed, or there is no
- * hotkey for the pressed combination.
+ * dpsoKeyManagerGetLastHotkeyAction() returns the action if a bound
+ * hotkey that matches the recently pressed key combination. The
+ * function returns dpsoNoHotkeyAction if the key manager is disabled,
+ * no keys are pressed, or there is no hotkey for the pressed
+ * combination.
  *
- * It's safe to call dpsoGetLastHotkeyAction() many times per update,
- * since the input event handling is done in dpsoUpdate().
+ * It's safe to call dpsoKeyManagerGetLastHotkeyAction() several times
+ * per update, since the input event handling is done in dpsoUpdate().
  */
-DpsoHotkeyAction dpsoGetLastHotkeyAction(void);
+DpsoHotkeyAction dpsoKeyManagerGetLastHotkeyAction(void);
 
 
 /**
@@ -49,20 +49,20 @@ DpsoHotkeyAction dpsoGetLastHotkeyAction(void);
  *
  * If the hotkey is already bound, its action will be updated.
  */
-void dpsoBindHotkey(
+void dpsoKeyManagerBindHotkey(
     const DpsoHotkey* hotkey, DpsoHotkeyAction action);
 
 
 /**
  * Unbind hotkey.
  */
-void dpsoUnbindHotkey(const DpsoHotkey* hotkey);
+void dpsoKeyManagerUnbindHotkey(const DpsoHotkey* hotkey);
 
 
 /**
  * Remove all hotkeys bound to this action.
  */
-void dpsoUnbindAction(DpsoHotkeyAction action);
+void dpsoKeyManagerUnbindAction(DpsoHotkeyAction action);
 
 
 /**
@@ -74,7 +74,7 @@ void dpsoUnbindAction(DpsoHotkeyAction action);
  * If multiple hotkeys are bound to the same action, which one is
  * returned depends on the implementation.
  */
-void dpsoFindActionHotkey(
+void dpsoKeyManagerFindActionHotkey(
     DpsoHotkeyAction action, DpsoHotkey* hotkey);
 
 
@@ -83,7 +83,8 @@ void dpsoFindActionHotkey(
  *
  * Returns dpsoNoHotkeyAction if the hotkey is not bound.
  */
-DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey);
+DpsoHotkeyAction dpsoKeyManagerFindHotkeyAction(
+    const DpsoHotkey* hotkey);
 
 
 #ifdef __cplusplus

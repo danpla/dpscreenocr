@@ -53,7 +53,8 @@ public slots:
     /**
      * Bind the current hotkey.
      *
-     * Calls dpsoUnbindAction() and dpsoBindHotkey().
+     * Calls dpsoKeyManagerUnbindAction() and
+     * dpsoKeyManagerBindHotkey().
      */
     void bind();
 private slots:

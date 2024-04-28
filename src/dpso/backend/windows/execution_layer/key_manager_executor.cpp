@@ -19,15 +19,15 @@ KeyManagerExecutor::KeyManagerExecutor(
 }
 
 
-bool KeyManagerExecutor::getHotkeysEnabled() const
+bool KeyManagerExecutor::getIsEnabled() const
 {
-    return EXECUTE(getHotkeysEnabled());
+    return EXECUTE(getIsEnabled());
 }
 
 
-void KeyManagerExecutor::setHotkeysEnabled(bool newHotkeysEnabled)
+void KeyManagerExecutor::setIsEnabled(bool newIsEnabled)
 {
-    EXECUTE(setHotkeysEnabled(newHotkeysEnabled));
+    EXECUTE(setIsEnabled(newIsEnabled));
 }
 
 

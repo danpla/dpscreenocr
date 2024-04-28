@@ -142,28 +142,28 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 
 WindowsKeyManager::~WindowsKeyManager()
 {
-    setHotkeysEnabled(false);  // Unregister all hotkeys.
+    setIsEnabled(false);  // Unregister all hotkeys.
 }
 
 
-bool WindowsKeyManager::getHotkeysEnabled() const
+bool WindowsKeyManager::getIsEnabled() const
 {
-    return hotkeysEnabled;
+    return isEnabled;
 }
 
 
-void WindowsKeyManager::setHotkeysEnabled(bool newHotkeysEnabled)
+void WindowsKeyManager::setIsEnabled(bool newIsEnabled)
 {
-    if (newHotkeysEnabled == hotkeysEnabled)
+    if (newIsEnabled == isEnabled)
         return;
 
-    hotkeysEnabled = newHotkeysEnabled;
+    isEnabled = newIsEnabled;
 
-    if (!hotkeysEnabled)
+    if (!isEnabled)
         hotkeyAction = dpsoNoHotkeyAction;
 
     for (const auto& binding : bindings)
-        changeHotkeyState(binding.hotkey, hotkeysEnabled);
+        changeHotkeyState(binding.hotkey, isEnabled);
 }
 
 
@@ -187,7 +187,7 @@ void WindowsKeyManager::bindHotkey(
 
     bindings.push_back({hotkey, action});
 
-    if (hotkeysEnabled)
+    if (isEnabled)
         changeHotkeyState(hotkey, true);
 }
 
@@ -206,7 +206,7 @@ HotkeyBinding WindowsKeyManager::getBinding(int idx) const
 
 void WindowsKeyManager::removeBinding(int idx)
 {
-    if (hotkeysEnabled)
+    if (isEnabled)
         changeHotkeyState(bindings[idx].hotkey, false);
 
     if (idx + 1 < static_cast<int>(bindings.size()))
@@ -226,7 +226,7 @@ void WindowsKeyManager::handleWmHotkey(const MSG& msg)
 {
     assert(msg.message == WM_HOTKEY);
 
-    if (!hotkeysEnabled)
+    if (!isEnabled)
         return;
 
     const auto id = static_cast<int>(msg.wParam);

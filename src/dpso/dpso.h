@@ -42,7 +42,7 @@ void dpsoShutdown(void);
  * Update the library.
  *
  * dpsoUpdate() process system events, like mouse motion, key press,
- * etc., for hotkeys handling (hotkeys.h) and interactive selection
+ * etc., for hotkey handling (key_manager.h) and interactive selection
  * (selection.h). Call this function at a frequency close to the
  * monitor refresh rate, which is usually 60 times per second.
  */

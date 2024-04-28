@@ -15,7 +15,7 @@ struct HotkeyBinding {
 
 // Key manager.
 //
-// See hotkeys.h for more information. Preconditions:
+// See key_manager.h for more information. Preconditions:
 //
 // * bindHotkey():
 //     * hotkey.key >= 0 and < dpsoNumKeys
@@ -26,16 +26,16 @@ class KeyManager {
 public:
     virtual ~KeyManager() = default;
 
-    // See dpsoGetHotkeysEnabled()
-    virtual bool getHotkeysEnabled() const = 0;
+    // See dpsoKeyManagerGetIsEnabled()
+    virtual bool getIsEnabled() const = 0;
 
-    // See dpsoSetHotkeysEnabled()
-    virtual void setHotkeysEnabled(bool newHotkeysEnabled) = 0;
+    // See dpsoKeyManagerSetIsEnabled()
+    virtual void setIsEnabled(bool newIsEnabled) = 0;
 
-    // See dpsoGetLastHotkeyAction()
+    // See dpsoKeyManagerGetLastHotkeyAction()
     virtual DpsoHotkeyAction getLastHotkeyAction() const = 0;
 
-    // See dpsoBindHotkey()
+    // See dpsoKeyManagerBindHotkey()
     virtual void bindHotkey(
         const DpsoHotkey& hotkey, DpsoHotkeyAction action) = 0;
 

@@ -40,9 +40,9 @@ static void setupHotkeys(void)
         dpsoKeyGrave, dpsoKeyModCtrl
     };
 
-    dpsoSetHotkeysEnabled(true);
+    dpsoKeyManagerSetIsEnabled(true);
 
-    dpsoBindHotkey(
+    dpsoKeyManagerBindHotkey(
         &toggleSelectionHotkey, hotkeyActionToggleSelection);
 
     printf(
@@ -85,28 +85,27 @@ static void checkResults(DpsoOcr* ocr)
 
 static void checkHotkeyActions(DpsoOcr* ocr)
 {
-    const DpsoHotkeyAction hotkeyAction = dpsoGetLastHotkeyAction();
+    const DpsoHotkeyAction hotkeyAction =
+        dpsoKeyManagerGetLastHotkeyAction();
     if (hotkeyAction != hotkeyActionToggleSelection)
         return;
 
-    if (!dpsoGetSelectionIsEnabled()) {
-        dpsoSetSelectionIsEnabled(true);
+    if (!dpsoSelectionGetIsEnabled()) {
+        dpsoSelectionSetIsEnabled(true);
         return;
     }
 
-    dpsoSetSelectionIsEnabled(false);
+    dpsoSelectionSetIsEnabled(false);
 
     DpsoOcrJobArgs jobArgs;
-    dpsoGetSelectionGeometry(&jobArgs.screenRect);
+    dpsoSelectionGetGeometry(&jobArgs.screenRect);
     if (dpsoRectIsEmpty(&jobArgs.screenRect))
         return;
 
     jobArgs.flags = dpsoOcrJobTextSegmentation;
 
     if (!dpsoOcrQueueJob(ocr, &jobArgs))
-        fprintf(
-            stderr,
-            "dpsoQueueJob() error: %s\n", dpsoGetError());
+        fprintf(stderr, "dpsoQueueJob() error: %s\n", dpsoGetError());
 }
 
 
@@ -123,8 +122,7 @@ static void sigintHandler(int signum)
 int main(void)
 {
     if (!dpsoInit()) {
-        fprintf(
-            stderr, "dpsoInit() error: %s\n", dpsoGetError());
+        fprintf(stderr, "dpsoInit() error: %s\n", dpsoGetError());
         return EXIT_FAILURE;
     }
 

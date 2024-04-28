@@ -20,18 +20,18 @@ public:
 
     virtual ~Selection() = default;
 
-    // See dpsoGetSelectionIsEnabled()
+    // See dpsoSelectionGetIsEnabled()
     virtual bool getIsEnabled() const = 0;
 
-    // See dpsoSetSelectionIsEnabled()
+    // See dpsoSelectionSetIsEnabled()
     virtual void setIsEnabled(bool newIsEnabled) = 0;
 
-    // See dpsoSetSelectionBorderWidth()
+    // See dpsoSelectionSetBorderWidth()
     //
     // The method is always called with newBorderWidth > 0.
     virtual void setBorderWidth(int newBorderWidth) = 0;
 
-    // See dpsoGetSelectionGeometry()
+    // See dpsoSelectionGetGeometry()
     virtual Rect getGeometry() const = 0;
 };
 

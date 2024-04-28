@@ -23,8 +23,8 @@ public:
     explicit X11KeyManager(Display* display);
     ~X11KeyManager();
 
-    bool getHotkeysEnabled() const override;
-    void setHotkeysEnabled(bool newHotkeysEnabled) override;
+    bool getIsEnabled() const override;
+    void setIsEnabled(bool newIsEnabled) override;
     DpsoHotkeyAction getLastHotkeyAction() const override;
 
     void bindHotkey(
@@ -38,8 +38,8 @@ public:
     void handleEvent(const XEvent& event) override;
 private:
     Display* display;
+    bool isEnabled{};
     std::vector<X11HotkeyBinding> x11bindings;
-    bool hotkeysEnabled{};
     DpsoHotkeyAction hotkeyAction{dpsoNoHotkeyAction};
 };
 

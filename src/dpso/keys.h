@@ -213,10 +213,10 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey);
  * Hotkey action.
  *
  * Hotkey action is an integral action id you associate with a hotkey
- * on dpsoBindHotkey() call. Actions >= 0 are for the user. -1
- * (dpsoNoHotkeyAction) is used to report various conditions, like
- * "no hotkey was pressed" for dpsoGetLastHotkeyAction(), or "hotkey
- * is not bound" for dpsoFindHotkeyAction().
+ * on dpsoKeyManagerBindHotkey() call. Actions >= 0 are for the user.
+ * -1 (dpsoNoHotkeyAction) is used to report various conditions, like
+ * "no hotkey was pressed" for dpsoKeyManagerGetLastHotkeyAction(), or
+ * "hotkey is not bound" for dpsoKeyManagerFindHotkeyAction().
  *
  * Routines that take DpsoHotkeyAction will do nothing if the action
  * is < 0.

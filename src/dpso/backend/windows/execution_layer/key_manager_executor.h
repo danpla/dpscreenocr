@@ -15,8 +15,8 @@ public:
     KeyManagerExecutor(
         KeyManager& keyManager, ActionExecutor& actionExecutor);
 
-    bool getHotkeysEnabled() const override;
-    void setHotkeysEnabled(bool newHotkeysEnabled) override;
+    bool getIsEnabled() const override;
+    void setIsEnabled(bool newIsEnabled) override;
     DpsoHotkeyAction getLastHotkeyAction() const override;
 
     void bindHotkey(

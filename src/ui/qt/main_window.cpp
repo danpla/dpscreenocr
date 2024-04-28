@@ -113,7 +113,7 @@ MainWindow::MainWindow()
             + "\" engine: "
             + dpsoGetError());
 
-    dpsoSetHotkeysEnabled(true);
+    dpsoKeyManagerSetIsEnabled(true);
 
     createQActions();
 
@@ -174,7 +174,7 @@ void MainWindow::timerEvent(QTimerEvent* event)
 
     // The selection doesn't block keyboard and mouse interaction, so
     // disable it once it no longer makes sense.
-    if (dpsoGetSelectionIsEnabled() && !canStartSelection())
+    if (dpsoSelectionGetIsEnabled() && !canStartSelection())
         setSelectionIsEnabled(false);
 
     updateStatus();
@@ -217,7 +217,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
             QString("Can't save \"%1\": %2").arg(
                 cfgFilePath.c_str(), dpsoGetError()));
 
-    dpsoSetHotkeysEnabled(false);
+    dpsoKeyManagerSetIsEnabled(false);
 
     event->accept();
     qApp->quit();
@@ -244,7 +244,7 @@ void MainWindow::changeEvent(QEvent* event)
 void MainWindow::openLangManager()
 {
     setSelectionIsEnabled(false);
-    dpsoSetHotkeysEnabled(false);
+    dpsoKeyManagerSetIsEnabled(false);
 
     langManager::runLangManager(ocrEngineIdx, ocrDataDirPath, this);
     langBrowser->reloadLangs();
@@ -253,7 +253,7 @@ void MainWindow::openLangManager()
     // last) language.
     statusValid = false;
 
-    dpsoSetHotkeysEnabled(true);
+    dpsoKeyManagerSetIsEnabled(true);
 }
 
 
@@ -517,7 +517,7 @@ void MainWindow::loadState(const DpsoCfg* cfg)
         cfgKeyHotkeyToggleSelection,
         &toggleSelectionHotkey,
         &cfgDefaultValueHotkeyToggleSelection);
-    dpsoBindHotkey(
+    dpsoKeyManagerBindHotkey(
         &toggleSelectionHotkey, hotkeyActionToggleSelection);
 
     hotkeyEditor->assignHotkey();
@@ -572,8 +572,8 @@ void MainWindow::loadState(const DpsoCfg* cfg)
     selectionBorderWidth = dpsoCfgGetInt(
         cfg,
         cfgKeySelectionBorderWidth,
-        dpsoGetSelectionDefaultBorderWidth());
-    dpsoSetSelectionBorderWidth(selectionBorderWidth);
+        dpsoSelectionGetDefaultBorderWidth());
+    dpsoSelectionSetBorderWidth(selectionBorderWidth);
 }
 
 
@@ -587,7 +587,7 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         splitTextBlocksCheck->isChecked());
 
     DpsoHotkey toggleSelectionHotkey;
-    dpsoFindActionHotkey(
+    dpsoKeyManagerFindActionHotkey(
         hotkeyActionToggleSelection, &toggleSelectionHotkey);
     dpsoCfgSetHotkey(
         cfg, cfgKeyHotkeyToggleSelection, &toggleSelectionHotkey);
@@ -636,23 +636,23 @@ bool MainWindow::canStartSelection() const
 }
 
 
-// Calls dpsoSetSelectionIsEnabled() and also manages
+// Calls dpsoSelectionSetIsEnabled() and also manages
 // hotkeyActionCancelSelection.
 void MainWindow::setSelectionIsEnabled(bool isEnabled)
 {
-    dpsoSetSelectionIsEnabled(isEnabled);
+    dpsoSelectionSetIsEnabled(isEnabled);
 
     if (!isEnabled) {
-        dpsoUnbindAction(hotkeyActionCancelSelection);
+        dpsoKeyManagerUnbindAction(hotkeyActionCancelSelection);
         return;
     }
 
     DpsoHotkey toggleSelectionHotkey;
-    dpsoFindActionHotkey(
+    dpsoKeyManagerFindActionHotkey(
         hotkeyActionToggleSelection, &toggleSelectionHotkey);
 
     if (cancelSelectionHotkey != toggleSelectionHotkey)
-        dpsoBindHotkey(
+        dpsoKeyManagerBindHotkey(
             &cancelSelectionHotkey, hotkeyActionCancelSelection);
 }
 
@@ -815,9 +815,9 @@ void MainWindow::checkResults()
 
 void MainWindow::checkHotkeyActions()
 {
-    switch(dpsoGetLastHotkeyAction()) {
+    switch(dpsoKeyManagerGetLastHotkeyAction()) {
     case hotkeyActionToggleSelection: {
-        if (!dpsoGetSelectionIsEnabled()) {
+        if (!dpsoSelectionGetIsEnabled()) {
             if (canStartSelection())
                 setSelectionIsEnabled(true);
 
@@ -828,7 +828,7 @@ void MainWindow::checkHotkeyActions()
 
         DpsoOcrJobArgs jobArgs{};
 
-        dpsoGetSelectionGeometry(&jobArgs.screenRect);
+        dpsoSelectionGetGeometry(&jobArgs.screenRect);
         if (dpsoRectIsEmpty(&jobArgs.screenRect))
             break;
 

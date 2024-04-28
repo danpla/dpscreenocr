@@ -8,26 +8,26 @@
 static dpso::backend::Selection* selection;
 
 
-bool dpsoGetSelectionIsEnabled(void)
+bool dpsoSelectionGetIsEnabled(void)
 {
     return selection ? selection->getIsEnabled() : false;
 }
 
 
-void dpsoSetSelectionIsEnabled(bool newSelectionIsEnabled)
+void dpsoSelectionSetIsEnabled(bool newIsEnabled)
 {
     if (selection)
-        selection->setIsEnabled(newSelectionIsEnabled);
+        selection->setIsEnabled(newIsEnabled);
 }
 
 
-int dpsoGetSelectionDefaultBorderWidth(void)
+int dpsoSelectionGetDefaultBorderWidth(void)
 {
     return dpso::backend::Selection::defaultBorderWidth;
 }
 
 
-void dpsoSetSelectionBorderWidth(int newBorderWidth)
+void dpsoSelectionSetBorderWidth(int newBorderWidth)
 {
     if (!selection)
         return;
@@ -39,7 +39,7 @@ void dpsoSetSelectionBorderWidth(int newBorderWidth)
 }
 
 
-void dpsoGetSelectionGeometry(DpsoRect* rect)
+void dpsoSelectionGetGeometry(DpsoRect* rect)
 {
     if (!rect)
         return;

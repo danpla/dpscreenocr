@@ -19,7 +19,7 @@ HotkeyEditor::HotkeyEditor(
     layout->setContentsMargins({});
 
     DpsoHotkey hotkey;
-    dpsoFindActionHotkey(action, &hotkey);
+    dpsoKeyManagerFindActionHotkey(action, &hotkey);
 
     const auto keySelected = hotkey.key != dpsoNoKey;
 
@@ -65,7 +65,7 @@ HotkeyEditor::HotkeyEditor(
 void HotkeyEditor::assignHotkey(bool emitChanged)
 {
     DpsoHotkey hotkey;
-    dpsoFindActionHotkey(action, &hotkey);
+    dpsoKeyManagerFindActionHotkey(action, &hotkey);
 
     auto hotkeyChanged = false;
 
@@ -104,8 +104,8 @@ void HotkeyEditor::bind()
         if (modChecks[i]->isChecked())
             hotkey.mods |= dpsoGetKeyModAt(i);
 
-    dpsoUnbindAction(action);
-    dpsoBindHotkey(&hotkey, action);
+    dpsoKeyManagerUnbindAction(action);
+    dpsoKeyManagerBindHotkey(&hotkey, action);
 }
 
 

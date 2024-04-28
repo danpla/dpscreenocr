@@ -71,28 +71,28 @@ X11KeyManager::X11KeyManager(Display* display)
 X11KeyManager::~X11KeyManager()
 {
     // Make sure we ungrab everything.
-    setHotkeysEnabled(false);
+    setIsEnabled(false);
 }
 
 
-bool X11KeyManager::getHotkeysEnabled() const
+bool X11KeyManager::getIsEnabled() const
 {
-    return hotkeysEnabled;
+    return isEnabled;
 }
 
 
-void X11KeyManager::setHotkeysEnabled(bool newHotkeysEnabled)
+void X11KeyManager::setIsEnabled(bool newIsEnabled)
 {
-    if (newHotkeysEnabled == hotkeysEnabled)
+    if (newIsEnabled == isEnabled)
         return;
 
-    hotkeysEnabled = newHotkeysEnabled;
+    isEnabled = newIsEnabled;
 
-    if (!hotkeysEnabled)
+    if (!isEnabled)
         hotkeyAction = dpsoNoHotkeyAction;
 
     for (const auto& x11binding : x11bindings)
-        changeBindingGrab(display, x11binding, hotkeysEnabled);
+        changeBindingGrab(display, x11binding, isEnabled);
 }
 
 
@@ -117,7 +117,7 @@ void X11KeyManager::bindHotkey(
 
     x11bindings.push_back({{hotkey, action}, keyCode});
 
-    if (hotkeysEnabled)
+    if (isEnabled)
         changeBindingGrab(display, x11bindings.back(), true);
 }
 
@@ -136,7 +136,7 @@ HotkeyBinding X11KeyManager::getBinding(int idx) const
 
 void X11KeyManager::removeBinding(int idx)
 {
-    if (hotkeysEnabled)
+    if (isEnabled)
         changeBindingGrab(display, x11bindings[idx], false);
 
     if (idx + 1 < static_cast<int>(x11bindings.size()))
@@ -154,7 +154,7 @@ void X11KeyManager::updateStart()
 
 void X11KeyManager::handleEvent(const XEvent& event)
 {
-    if (!hotkeysEnabled
+    if (!isEnabled
             || event.type != KeyPress
             || event.xkey.window != XDefaultRootWindow(display))
         return;

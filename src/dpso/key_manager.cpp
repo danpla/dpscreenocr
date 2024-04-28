@@ -8,27 +8,28 @@
 static dpso::backend::KeyManager* keyManager;
 
 
-bool dpsoGetHotkeysEnabled(void)
+bool dpsoKeyManagerGetIsEnabled(void)
 {
-    return keyManager ? keyManager->getHotkeysEnabled() : false;
+    return keyManager ? keyManager->getIsEnabled() : false;
 }
 
 
-void dpsoSetHotkeysEnabled(bool newHotkeysEnabled)
+void dpsoKeyManagerSetIsEnabled(bool newIsEnabled)
 {
     if (keyManager)
-        keyManager->setHotkeysEnabled(newHotkeysEnabled);
+        keyManager->setIsEnabled(newIsEnabled);
 }
 
 
-DpsoHotkeyAction dpsoGetLastHotkeyAction(void)
+DpsoHotkeyAction dpsoKeyManagerGetLastHotkeyAction(void)
 {
     return keyManager
         ? keyManager->getLastHotkeyAction() : dpsoNoHotkeyAction;
 }
 
 
-void dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action)
+void dpsoKeyManagerBindHotkey(
+    const DpsoHotkey* hotkey, DpsoHotkeyAction action)
 {
     if (keyManager
             && hotkey
@@ -39,7 +40,7 @@ void dpsoBindHotkey(const DpsoHotkey* hotkey, DpsoHotkeyAction action)
 }
 
 
-void dpsoUnbindHotkey(const DpsoHotkey* hotkey)
+void dpsoKeyManagerUnbindHotkey(const DpsoHotkey* hotkey)
 {
     if (!keyManager || !hotkey)
         return;
@@ -52,7 +53,7 @@ void dpsoUnbindHotkey(const DpsoHotkey* hotkey)
 }
 
 
-void dpsoUnbindAction(DpsoHotkeyAction action)
+void dpsoKeyManagerUnbindAction(DpsoHotkeyAction action)
 {
     if (!keyManager)
         return;
@@ -65,7 +66,8 @@ void dpsoUnbindAction(DpsoHotkeyAction action)
 }
 
 
-void dpsoFindActionHotkey(DpsoHotkeyAction action, DpsoHotkey* hotkey)
+void dpsoKeyManagerFindActionHotkey(
+    DpsoHotkeyAction action, DpsoHotkey* hotkey)
 {
     if (!hotkey)
         return;
@@ -85,7 +87,8 @@ void dpsoFindActionHotkey(DpsoHotkeyAction action, DpsoHotkey* hotkey)
 }
 
 
-DpsoHotkeyAction dpsoFindHotkeyAction(const DpsoHotkey* hotkey)
+DpsoHotkeyAction dpsoKeyManagerFindHotkeyAction(
+    const DpsoHotkey* hotkey)
 {
     if (!keyManager || !hotkey)
         return dpsoNoHotkeyAction;

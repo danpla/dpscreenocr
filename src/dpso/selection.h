@@ -16,7 +16,7 @@ extern "C" {
  *
  * The selection is disabled by default.
  */
-bool dpsoGetSelectionIsEnabled(void);
+bool dpsoSelectionGetIsEnabled(void);
 
 
 /**
@@ -31,7 +31,7 @@ bool dpsoGetSelectionIsEnabled(void);
  * point; to do this, you have to explicitly disable end enable it
  * back.
  */
-void dpsoSetSelectionIsEnabled(bool newSelectionIsEnabled);
+void dpsoSelectionSetIsEnabled(bool newIsEnabled);
 
 
 /**
@@ -40,7 +40,7 @@ void dpsoSetSelectionIsEnabled(bool newSelectionIsEnabled);
  * This is the width that is set by default for backends that support
  * a custom border width.
  */
-int dpsoGetSelectionDefaultBorderWidth(void);
+int dpsoSelectionGetDefaultBorderWidth(void);
 
 
 /**
@@ -55,7 +55,7 @@ int dpsoGetSelectionDefaultBorderWidth(void);
  *
  * Values < 1 will be clamped to 1.
  */
-void dpsoSetSelectionBorderWidth(int newBorderWidth);
+void dpsoSelectionSetBorderWidth(int newBorderWidth);
 
 
 /**
@@ -65,7 +65,7 @@ void dpsoSetSelectionBorderWidth(int newBorderWidth);
  * case it will return the geometry at the moment the selection was
  * disabled.
  */
-void dpsoGetSelectionGeometry(DpsoRect* rect);
+void dpsoSelectionGetGeometry(DpsoRect* rect);
 
 
 #ifdef __cplusplus
