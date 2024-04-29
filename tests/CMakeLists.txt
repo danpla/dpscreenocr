@@ -28,8 +28,8 @@ if(WIN32)
         tests
         PRIVATE
         dpso/test_windows_action_executor.cpp
-        dpso_utils/test_windows_cmdline.cpp
-        dpso_utils/test_windows_utf.cpp)
+        dpso_utils/windows/test_cmdline.cpp
+        dpso_utils/windows/test_utf.cpp)
 endif()
 
 set_target_properties(
