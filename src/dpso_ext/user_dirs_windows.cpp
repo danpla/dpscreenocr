@@ -40,7 +40,7 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
     pathUtf16 += L'\\';
     try {
         pathUtf16 += dpso::windows::utf8ToUtf16(appName);
-    } catch (std::runtime_error& e) {
+    } catch (dpso::windows::CharConversionError& e) {
         dpso::setError(
             "Can't convert appName to UTF-16: {}", e.what());
         return nullptr;
@@ -49,7 +49,7 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
     static std::string path;
     try {
         path = dpso::windows::utf16ToUtf8(pathUtf16.c_str());
-    } catch (std::runtime_error& e) {
+    } catch (dpso::windows::CharConversionError& e) {
         dpso::setError("Can't convert path to UTF-8: {}", e.what());
         return nullptr;
     }

@@ -16,7 +16,7 @@ void testUtfConversion(const char* utf8Str)
 
     try {
         utf16Str = utf8ToUtf16(utf8Str);
-    } catch (std::runtime_error& e) {
+    } catch (CharConversionError& e) {
         test::failure(
             "utf8ToUtf16({}): {}",
             test::utils::toStr(utf8Str), e.what());
@@ -26,7 +26,7 @@ void testUtfConversion(const char* utf8Str)
     std::string utf16ToUtf8Result;
     try {
         utf16ToUtf8Result = utf16ToUtf8(utf16Str.c_str());
-    } catch (std::runtime_error& e) {
+    } catch (CharConversionError& e) {
         test::failure(
             "utf16ToUtf8() failed to convert result of "
             "utf8ToUtf16({}): {}",
@@ -59,8 +59,6 @@ void testUtfConversions()
 
 void testInvalidUtf8()
 {
-    using namespace dpso::windows;
-
     const char* const strings[]{
         // Invalid start byte 0x80 - 0xbf
         "\x80",
@@ -92,7 +90,7 @@ void testInvalidUtf8()
             test::failure(
                 "utf8ToUtf16({}) doesn't throw",
                 test::utils::toStr(s));
-        } catch (std::runtime_error& e) {
+        } catch (dpso::windows::CharConversionError& e) {
         }
     }
 }
@@ -116,7 +114,7 @@ void testInvalidUtf16()
             dpso::windows::utf16ToUtf8(s);
             test::failure(
                 "utf16ToUtf8() doesn't throw on invalid UTF-16");
-        } catch (std::runtime_error& e) {
+        } catch (dpso::windows::CharConversionError& e) {
         }
     }
 }

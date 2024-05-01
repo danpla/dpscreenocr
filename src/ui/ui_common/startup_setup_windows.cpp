@@ -172,7 +172,7 @@ bool setupEntry(
         try {
             srcPathUtf8 = dpso::windows::utf16ToUtf8(srcPath.c_str());
             dstDirUtf8 = dpso::windows::utf16ToUtf8(dstDir);
-        } catch (std::runtime_error& e) {
+        } catch (dpso::windows::CharConversionError& e) {
         }
 
         dpso::setError(
@@ -196,7 +196,7 @@ bool setupOcrData(
         try {
             dirName = dpso::windows::utf8ToUtf16(
                 uiGetOcrDataDirName(&ocrEngineInfo));
-        } catch (std::runtime_error& e) {
+        } catch (dpso::windows::CharConversionError& e) {
         }
 
         if (!dirName.empty() &&
@@ -214,7 +214,7 @@ int setupUserData(const wchar_t* userDataDir)
     try {
         srcDataDir = dpso::windows::utf8ToUtf16(
             uiGetAppDir(UiAppDirData));
-    } catch (std::runtime_error& e) {
+    } catch (dpso::windows::CharConversionError& e) {
         dpso::setError(
             "Can't convert UiAppDirData to UTF-16: {}", e.what());
         return false;
@@ -241,7 +241,7 @@ bool uiStartupSetup(void)
     std::wstring userDataDirUtf16;
     try {
         userDataDirUtf16 = dpso::windows::utf8ToUtf16(userDataDir);
-    } catch (std::runtime_error& e) {
+    } catch (dpso::windows::CharConversionError& e) {
         dpso::setError(
             "Can't convert userDataDir to UTF-16: {}", e.what());
         return false;

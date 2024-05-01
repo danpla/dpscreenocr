@@ -43,7 +43,7 @@ std::wstring toUtf16(const char* str, const char* varName)
 {
     try {
         return windows::utf8ToUtf16(str);
-    } catch (std::runtime_error& e) {
+    } catch (windows::CharConversionError& e) {
         throw Error{str::format(
             "Can't convert {} to UTF-16: {}", varName, e.what())};
     }
@@ -253,7 +253,7 @@ FILE* fopen(const char* filePath, const char* mode)
         return _wfopen(
             DPSO_WIN_TO_UTF16(filePath).c_str(),
             DPSO_WIN_TO_UTF16(mode).c_str());
-    } catch (std::runtime_error&) {
+    } catch (Error&) {
         errno = EINVAL;
         return nullptr;
     }

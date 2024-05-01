@@ -15,7 +15,7 @@ static int utf8ToUtf16(const char* utf8Str, wchar_t* dst, int dstSize)
     const auto sizeWithNull = MultiByteToWideChar(
         CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1, dst, dstSize);
     if (sizeWithNull <= 0)
-        throw std::runtime_error(getErrorMessage(GetLastError()));
+        throw CharConversionError(getErrorMessage(GetLastError()));
 
     return sizeWithNull;
 }
@@ -39,7 +39,7 @@ static int utf16ToUtf8(
         dst, dstSize,
         nullptr, nullptr);
     if (sizeWithNull <= 0)
-        throw std::runtime_error(getErrorMessage(GetLastError()));
+        throw CharConversionError(getErrorMessage(GetLastError()));
 
     return sizeWithNull;
 }

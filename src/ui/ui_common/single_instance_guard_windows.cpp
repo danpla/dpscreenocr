@@ -25,7 +25,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     std::wstring idUtf16;
     try {
         idUtf16 = windows::utf8ToUtf16(id);
-    } catch (std::runtime_error& e) {
+    } catch (windows::CharConversionError& e) {
         setError("Can't convert id to UTF-16: {}", e.what());
         return {};
     }

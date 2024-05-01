@@ -214,7 +214,7 @@ std::unique_ptr<Response> makeGetRequest(
     std::wstring userAgentUtf16;
     try {
         userAgentUtf16 = windows::utf8ToUtf16(userAgent);
-    } catch (std::runtime_error& e) {
+    } catch (windows::CharConversionError& e) {
         throw Error{str::format(
             "Can't convert userAgent to UTF-16: {}", e.what())};
     }
@@ -231,7 +231,7 @@ std::unique_ptr<Response> makeGetRequest(
     std::wstring urlUtf16;
     try {
         urlUtf16 = windows::utf8ToUtf16(url);
-    } catch (std::runtime_error& e) {
+    } catch (windows::CharConversionError& e) {
         throw Error{str::format(
             "Can't convert URL to UTF-16: {}", e.what())};
     }
