@@ -23,9 +23,9 @@ std::vector<std::string> getLocalLangs(const char* dataDir)
 }
 
 
-class TesseractLangManager : public RemoteFilesLangManager {
+class LangManager : public RemoteFilesLangManager {
 public:
-    TesseractLangManager(
+    LangManager(
             const char* dataDir,
             const char* userAgent,
             const char* infoFileUrl)
@@ -64,12 +64,12 @@ bool hasLangManager()
 }
 
 
-std::unique_ptr<LangManager> createLangManager(
+std::unique_ptr<ocr::LangManager> createLangManager(
     const char* dataDir,
     const char* userAgent,
     const char* infoFileUrl)
 {
-    return std::make_unique<TesseractLangManager>(
+    return std::make_unique<LangManager>(
         dataDir, userAgent, infoFileUrl);
 }
 

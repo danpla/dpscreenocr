@@ -21,9 +21,9 @@ namespace dpso::ocr::tesseract {
 namespace {
 
 
-class TesseractRecognizer : public Recognizer {
+class Recognizer : public ocr::Recognizer {
 public:
-    explicit TesseractRecognizer(const char* dataDir)
+    explicit Recognizer(const char* dataDir)
         : dataDir{dataDir}
     {
         reloadLangCodes();
@@ -129,7 +129,7 @@ bool isVertical(const char* langCode)
 }
 
 
-OcrResult TesseractRecognizer::recognize(
+OcrResult Recognizer::recognize(
     const OcrImage& image,
     const std::vector<int>& langIndices,
     OcrFeatures ocrFeatures,
@@ -211,9 +211,9 @@ OcrResult TesseractRecognizer::recognize(
 }
 
 
-std::unique_ptr<Recognizer> createRecognizer(const char* dataDir)
+std::unique_ptr<ocr::Recognizer> createRecognizer(const char* dataDir)
 {
-    return std::make_unique<TesseractRecognizer>(dataDir);
+    return std::make_unique<Recognizer>(dataDir);
 }
 
 

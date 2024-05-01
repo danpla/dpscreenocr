@@ -45,9 +45,9 @@ EngineInfo::DataDirPreference getDataDirPreference()
 }
 
 
-class TesseractEngine : public Engine {
+class Engine : public ocr::Engine {
 public:
-    TesseractEngine()
+    Engine()
         : info{
             "tesseract_" + getMajorVersionString(),
             "Tesseract",
@@ -86,9 +86,9 @@ private:
 }
 
 
-const Engine& getEngine()
+const ocr::Engine& getEngine()
 {
-    static TesseractEngine engine;
+    static Engine engine;
     return engine;
 }
 
