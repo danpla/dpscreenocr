@@ -12,10 +12,10 @@ namespace dpso {
 struct Rect;
 
 
-namespace backend {
+namespace backend::windows {
 
 
-std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect);
+std::unique_ptr<Screenshot> takeScreenshot(const Rect& rect);
 
 
 }

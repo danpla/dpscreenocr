@@ -57,10 +57,10 @@ elseif(WIN32)
         backend/windows/execution_layer/backend_executor.cpp
         backend/windows/execution_layer/key_manager_executor.cpp
         backend/windows/execution_layer/selection_executor.cpp
-        backend/windows/windows_backend.cpp
-        backend/windows/windows_key_manager.cpp
-        backend/windows/windows_screenshot.cpp
-        backend/windows/windows_selection.cpp)
+        backend/windows/backend.cpp
+        backend/windows/key_manager.cpp
+        backend/windows/screenshot.cpp
+        backend/windows/selection.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()

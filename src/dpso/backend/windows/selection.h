@@ -9,12 +9,12 @@
 #include "dpso_utils/windows/window.h"
 
 
-namespace dpso::backend {
+namespace dpso::backend::windows {
 
 
-class WindowsSelection : public Selection {
+class Selection : public backend::Selection {
 public:
-    explicit WindowsSelection(HINSTANCE instance);
+    explicit Selection(HINSTANCE instance);
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
@@ -32,10 +32,10 @@ private:
     Point origin;
     Rect geom;
 
-    windows::WindowUPtr window;
+    dpso::windows::WindowUPtr window;
 
     DWORD dashPenPattern[2]{};
-    windows::ObjectUPtr<HPEN> pens[2];
+    dpso::windows::ObjectUPtr<HPEN> pens[2];
 
     static LRESULT CALLBACK wndProc(
         HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam);

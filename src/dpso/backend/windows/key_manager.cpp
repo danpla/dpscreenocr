@@ -1,5 +1,5 @@
 
-#include "backend/windows/windows_key_manager.h"
+#include "backend/windows/key_manager.h"
 
 #include <cassert>
 #include <charconv>
@@ -11,7 +11,7 @@
 #include "dpso_utils/windows/utf.h"
 
 
-namespace dpso::backend {
+namespace dpso::backend::windows {
 
 
 // The RegisterHotKey() documentation says that an application must
@@ -107,8 +107,8 @@ static DpsoHotkey atomNameToHotkey(const wchar_t* name)
 }
 
 
-static UINT dpsoKeyToWinKey(DpsoKey key);
-static UINT dpsoModsToWinMods(DpsoKeyMods mods);
+static UINT toWinKey(DpsoKey key);
+static UINT toWinMods(DpsoKeyMods mods);
 
 
 static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
@@ -127,9 +127,9 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
         return;
     }
 
-    const auto winKey = dpsoKeyToWinKey(hotkey.key);
+    const auto winKey = toWinKey(hotkey.key);
     assert(winKey != 0);  // We already checked this in bindHotkey().
-    const auto winMods = dpsoModsToWinMods(hotkey.mods);
+    const auto winMods = toWinMods(hotkey.mods);
 
     if (atom == 0)
         atom = GlobalAddAtomW(atomName.c_str());
@@ -140,19 +140,19 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 }
 
 
-WindowsKeyManager::~WindowsKeyManager()
+KeyManager::~KeyManager()
 {
     setIsEnabled(false);  // Unregister all hotkeys.
 }
 
 
-bool WindowsKeyManager::getIsEnabled() const
+bool KeyManager::getIsEnabled() const
 {
     return isEnabled;
 }
 
 
-void WindowsKeyManager::setIsEnabled(bool newIsEnabled)
+void KeyManager::setIsEnabled(bool newIsEnabled)
 {
     if (newIsEnabled == isEnabled)
         return;
@@ -167,13 +167,13 @@ void WindowsKeyManager::setIsEnabled(bool newIsEnabled)
 }
 
 
-DpsoHotkeyAction WindowsKeyManager::getLastHotkeyAction() const
+DpsoHotkeyAction KeyManager::getLastHotkeyAction() const
 {
     return hotkeyAction;
 }
 
 
-void WindowsKeyManager::bindHotkey(
+void KeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
     if (auto* existingBinding = findBinding(hotkey)) {
@@ -181,7 +181,7 @@ void WindowsKeyManager::bindHotkey(
         return;
     }
 
-    if (dpsoKeyToWinKey(hotkey.key) == 0)
+    if (toWinKey(hotkey.key) == 0)
         // There is no virtual key for the given DpsoKey.
         return;
 
@@ -192,19 +192,19 @@ void WindowsKeyManager::bindHotkey(
 }
 
 
-int WindowsKeyManager::getNumBindings() const
+int KeyManager::getNumBindings() const
 {
     return bindings.size();
 }
 
 
-HotkeyBinding WindowsKeyManager::getBinding(int idx) const
+HotkeyBinding KeyManager::getBinding(int idx) const
 {
     return bindings[idx];
 }
 
 
-void WindowsKeyManager::removeBinding(int idx)
+void KeyManager::removeBinding(int idx)
 {
     if (isEnabled)
         changeHotkeyState(bindings[idx].hotkey, false);
@@ -216,13 +216,13 @@ void WindowsKeyManager::removeBinding(int idx)
 }
 
 
-void WindowsKeyManager::clearLastHotkeyAction()
+void KeyManager::clearLastHotkeyAction()
 {
     hotkeyAction = dpsoNoHotkeyAction;
 }
 
 
-void WindowsKeyManager::handleWmHotkey(const MSG& msg)
+void KeyManager::handleWmHotkey(const MSG& msg)
 {
     assert(msg.message == WM_HOTKEY);
 
@@ -251,8 +251,7 @@ void WindowsKeyManager::handleWmHotkey(const MSG& msg)
 }
 
 
-HotkeyBinding* WindowsKeyManager::findBinding(
-    const DpsoHotkey& hotkey)
+HotkeyBinding* KeyManager::findBinding(const DpsoHotkey& hotkey)
 {
     for (auto& binding : bindings)
         if (binding.hotkey == hotkey)
@@ -369,7 +368,7 @@ const UINT keyToVk[] = {
 static_assert(std::size(keyToVk) == dpsoNumKeys);
 
 
-static UINT dpsoKeyToWinKey(DpsoKey key)
+static UINT toWinKey(DpsoKey key)
 {
     if (key < 0 || key >= dpsoNumKeys)
         return 0;
@@ -378,7 +377,7 @@ static UINT dpsoKeyToWinKey(DpsoKey key)
 }
 
 
-static UINT dpsoModsToWinMods(DpsoKeyMods mods)
+static UINT toWinMods(DpsoKeyMods mods)
 {
     UINT winMods = MOD_NOREPEAT;
 

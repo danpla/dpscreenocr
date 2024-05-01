@@ -9,18 +9,19 @@
 #include "backend/backend_error.h"
 #include "backend/backend.h"
 #include "backend/windows/execution_layer/backend_executor.h"
-#include "backend/windows/windows_key_manager.h"
-#include "backend/windows/windows_screenshot.h"
-#include "backend/windows/windows_selection.h"
+#include "backend/windows/key_manager.h"
+#include "backend/windows/screenshot.h"
+#include "backend/windows/selection.h"
 
 
 namespace dpso::backend {
+namespace windows {
 namespace {
 
 
-class WindowsBackend : public Backend {
+class Backend : public backend::Backend {
 public:
-    WindowsBackend();
+    Backend();
 
     KeyManager& getKeyManager() override;
     Selection& getSelection() override;
@@ -31,31 +32,28 @@ public:
 private:
     HINSTANCE instance;
 
-    std::unique_ptr<WindowsKeyManager> keyManager;
-    std::unique_ptr<WindowsSelection> selection;
+    std::unique_ptr<KeyManager> keyManager;
+    std::unique_ptr<Selection> selection;
 };
 
 
-}
-
-
-WindowsBackend::WindowsBackend()
+Backend::Backend()
     : instance{GetModuleHandleW(nullptr)}
 {
     if (!instance)
         throw BackendError(
             "GetModuleHandle(): "
-            + windows::getErrorMessage(GetLastError()));
+            + dpso::windows::getErrorMessage(GetLastError()));
 
     try {
-        keyManager = std::make_unique<WindowsKeyManager>();
+        keyManager = std::make_unique<KeyManager>();
     } catch (BackendError& e) {
         throw BackendError(
             std::string("Can't create key manager: ") + e.what());
     }
 
     try {
-        selection = std::make_unique<WindowsSelection>(instance);
+        selection = std::make_unique<Selection>(instance);
     } catch (BackendError& e) {
         throw BackendError(
             std::string("Can't create selection: ") + e.what());
@@ -63,26 +61,26 @@ WindowsBackend::WindowsBackend()
 }
 
 
-KeyManager& WindowsBackend::getKeyManager()
+KeyManager& Backend::getKeyManager()
 {
     return *keyManager;
 }
 
 
-Selection& WindowsBackend::getSelection()
+Selection& Backend::getSelection()
 {
     return *selection;
 }
 
 
-std::unique_ptr<Screenshot> WindowsBackend::takeScreenshot(
+std::unique_ptr<Screenshot> Backend::takeScreenshot(
     const Rect& rect)
 {
-    return takeWindowsScreenshot(rect);
+    return windows::takeScreenshot(rect);
 }
 
 
-void WindowsBackend::update()
+void Backend::update()
 {
     keyManager->clearLastHotkeyAction();
     // Update the selection before handling events so that we
@@ -100,6 +98,10 @@ void WindowsBackend::update()
 }
 
 
+}
+}
+
+
 std::unique_ptr<Backend> Backend::create()
 {
     // We can't do anything in the main thread because its messages
@@ -109,7 +111,7 @@ std::unique_ptr<Backend> Backend::create()
         createBgThreadActionExecutor(),
         *[]() -> std::unique_ptr<Backend>
         {
-            return std::make_unique<WindowsBackend>();
+            return std::make_unique<windows::Backend>();
         });
 }
 

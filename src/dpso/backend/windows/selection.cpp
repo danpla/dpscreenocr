@@ -1,5 +1,5 @@
 
-#include "backend/windows/windows_selection.h"
+#include "backend/windows/selection.h"
 
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/module.h"
@@ -67,17 +67,18 @@
 // that use DPI virtualization.
 
 
-namespace dpso::backend {
+namespace dpso::backend::windows {
+namespace {
 
 
-static windows::ModuleUPtr user32Dll{LoadLibraryW(L"user32")};
-static windows::ModuleUPtr shcoreDll{LoadLibraryW(L"shcore")};
+dpso::windows::ModuleUPtr user32Dll{LoadLibraryW(L"user32")};
+dpso::windows::ModuleUPtr shcoreDll{LoadLibraryW(L"shcore")};
 
-static DPSO_WIN_DLL_FN(
+DPSO_WIN_DLL_FN(
     user32Dll.get(),
     SetThreadDpiAwarenessContext,
     DPI_AWARENESS_CONTEXT (WINAPI *)(DPI_AWARENESS_CONTEXT));
-static DPSO_WIN_DLL_FN(
+DPSO_WIN_DLL_FN(
     shcoreDll.get(),
     GetDpiForMonitor,
     HRESULT (WINAPI *)(HMONITOR, int, UINT*, UINT*));
@@ -112,7 +113,7 @@ const auto baseDpi = 96;
 
 
 // Get DPI of monitor containing the point.
-static int getDpi(const Point& point)
+int getDpi(const Point& point)
 {
     // Windows 10 has GetDpiForWindow(), but we use GetDpiForMonitor()
     // for Windows 8.1 support.
@@ -129,14 +130,14 @@ static int getDpi(const Point& point)
             return xDpi;
     }
 
-    if (auto dc = windows::getDc(nullptr))
+    if (auto dc = dpso::windows::getDc(nullptr))
         return GetDeviceCaps(dc.get(), LOGPIXELSX);
 
     return baseDpi;
 }
 
 
-static Point getMousePos()
+Point getMousePos()
 {
     POINT point;
     GetCursorPos(&point);
@@ -145,18 +146,18 @@ static Point getMousePos()
 
 
 [[noreturn]]
-static void throwLastError(const char* description)
+void throwLastError(const char* description)
 {
     throw BackendError(
         std::string(description) + ": "
-        + windows::getErrorMessage(GetLastError()));
+        + dpso::windows::getErrorMessage(GetLastError()));
 }
 
 
 const auto* const windowClassName = L"DpsoSelectionWindow";
 
 
-static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
+void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 {
     static bool registered;
     if (registered)
@@ -183,10 +184,13 @@ static void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 }
 
 
-WindowsSelection::WindowsSelection(HINSTANCE instance)
+}
+
+
+Selection::Selection(HINSTANCE instance)
     : dpi{baseDpi}
 {
-    registerWindowClass(instance, WindowsSelection::wndProc);
+    registerWindowClass(instance, Selection::wndProc);
 
     const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
@@ -228,13 +232,13 @@ WindowsSelection::WindowsSelection(HINSTANCE instance)
 }
 
 
-bool WindowsSelection::getIsEnabled() const
+bool Selection::getIsEnabled() const
 {
     return isEnabled;
 }
 
 
-void WindowsSelection::setIsEnabled(bool newIsEnabled)
+void Selection::setIsEnabled(bool newIsEnabled)
 {
     if (newIsEnabled == isEnabled)
         return;
@@ -252,7 +256,7 @@ void WindowsSelection::setIsEnabled(bool newIsEnabled)
 }
 
 
-void WindowsSelection::setBorderWidth(int newBorderWidth)
+void Selection::setBorderWidth(int newBorderWidth)
 {
     if (newBorderWidth == baseBorderWidth)
         return;
@@ -268,13 +272,13 @@ void WindowsSelection::setBorderWidth(int newBorderWidth)
 }
 
 
-Rect WindowsSelection::getGeometry() const
+Rect Selection::getGeometry() const
 {
     return geom;
 }
 
 
-void WindowsSelection::update()
+void Selection::update()
 {
     if (!isEnabled)
         return;
@@ -291,10 +295,10 @@ void WindowsSelection::update()
 }
 
 
-LRESULT CALLBACK WindowsSelection::wndProc(
+LRESULT CALLBACK Selection::wndProc(
     HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    auto* windowsSelection = static_cast<WindowsSelection*>(
+    auto* windowsSelection = static_cast<Selection*>(
         GetPropW(wnd, L"this"));
     if (!windowsSelection)
         // The window is just created; we don't reach SetProp() call
@@ -305,7 +309,7 @@ LRESULT CALLBACK WindowsSelection::wndProc(
 }
 
 
-LRESULT WindowsSelection::processMessage(
+LRESULT Selection::processMessage(
     UINT msg, WPARAM wParam, LPARAM lParam)
 {
     // We don't need a ThreadDpiAwarenessContextGuard guard here,
@@ -351,7 +355,7 @@ LRESULT WindowsSelection::processMessage(
 }
 
 
-void WindowsSelection::updateBorderWidth()
+void Selection::updateBorderWidth()
 {
     borderWidth = static_cast<float>(baseBorderWidth)
         * dpi / baseDpi + 0.5f;
@@ -360,7 +364,7 @@ void WindowsSelection::updateBorderWidth()
 }
 
 
-void WindowsSelection::updatePens()
+void Selection::updatePens()
 {
     const auto commonStyle =
         PS_GEOMETRIC | PS_ENDCAP_FLAT | PS_JOIN_MITER;
@@ -385,7 +389,7 @@ void WindowsSelection::updatePens()
 }
 
 
-void WindowsSelection::updateWindowGeometry()
+void Selection::updateWindowGeometry()
 {
     SetWindowPos(
         window.get(), nullptr,
@@ -395,14 +399,14 @@ void WindowsSelection::updateWindowGeometry()
 }
 
 
-void WindowsSelection::updateWindowRegion()
+void Selection::updateWindowRegion()
 {
-    windows::ObjectUPtr<HRGN> region{CreateRectRgn(
+    dpso::windows::ObjectUPtr<HRGN> region{CreateRectRgn(
         0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2)};
     if (!region)
         return;
 
-    windows::ObjectUPtr<HRGN> holeRegion{CreateRectRgn(
+    dpso::windows::ObjectUPtr<HRGN> holeRegion{CreateRectRgn(
         borderWidth, borderWidth,
         borderWidth + geom.w, borderWidth + geom.h)};
     if (!holeRegion)
@@ -415,7 +419,7 @@ void WindowsSelection::updateWindowRegion()
 }
 
 
-void WindowsSelection::setGeometry(const Rect& newGeom)
+void Selection::setGeometry(const Rect& newGeom)
 {
     const auto newSize = getSize(newGeom) != getSize(geom);
     if (!newSize && getPos(newGeom) == getPos(geom))
@@ -430,7 +434,7 @@ void WindowsSelection::setGeometry(const Rect& newGeom)
 }
 
 
-void WindowsSelection::draw(HDC dc)
+void Selection::draw(HDC dc)
 {
     const auto rectLeft = borderWidth / 2;
     const auto rectTop = borderWidth / 2;
@@ -440,13 +444,14 @@ void WindowsSelection::draw(HDC dc)
     const auto rectRight = rectLeft + geom.w + borderWidth + 1;
     const auto rectBottom = rectTop + geom.h + borderWidth + 1;
 
-    const windows::ObjectSelector brushSelector{
+    const dpso::windows::ObjectSelector brushSelector{
         dc, GetStockObject(NULL_BRUSH)};
     for (const auto& pen : pens) {
         if (!pen)
             continue;
 
-        const windows::ObjectSelector penSelector{dc, pen.get()};
+        const dpso::windows::ObjectSelector penSelector{
+            dc, pen.get()};
         Rectangle(dc, rectLeft, rectTop, rectRight, rectBottom);
     }
 }

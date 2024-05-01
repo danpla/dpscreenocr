@@ -9,13 +9,13 @@
 #include "backend/key_manager.h"
 
 
-namespace dpso::backend {
+namespace dpso::backend::windows {
 
 
-class WindowsKeyManager : public KeyManager {
+class KeyManager : public backend::KeyManager {
 public:
-    WindowsKeyManager() = default;
-    ~WindowsKeyManager();
+    KeyManager() = default;
+    ~KeyManager();
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;

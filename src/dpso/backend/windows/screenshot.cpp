@@ -1,5 +1,5 @@
 
-#include "backend/windows/windows_screenshot.h"
+#include "backend/windows/screenshot.h"
 
 #include <cassert>
 #include <utility>
@@ -15,16 +15,16 @@
 #include "img.h"
 
 
-namespace dpso::backend {
+namespace dpso::backend::windows {
 namespace {
 
 
 using DataUPtr = std::unique_ptr<std::uint8_t[]>;
 
 
-class WindowsScreenshot : public Screenshot {
+class Screenshot : public backend::Screenshot {
 public:
-    WindowsScreenshot(DataUPtr data, int w, int h, int pitch);
+    Screenshot(DataUPtr data, int w, int h, int pitch);
 
     int getWidth() const override;
     int getHeight() const override;
@@ -39,10 +39,7 @@ private:
 };
 
 
-}
-
-
-WindowsScreenshot::WindowsScreenshot(
+Screenshot::Screenshot(
         DataUPtr data, int w, int h, int pitch)
     : data{std::move(data)}
     , w{w}
@@ -56,19 +53,19 @@ WindowsScreenshot::WindowsScreenshot(
 }
 
 
-int WindowsScreenshot::getWidth() const
+int Screenshot::getWidth() const
 {
     return w;
 }
 
 
-int WindowsScreenshot::getHeight() const
+int Screenshot::getHeight() const
 {
     return h;
 }
 
 
-void WindowsScreenshot::getGrayscaleData(
+void Screenshot::getGrayscaleData(
     std::uint8_t* buf, int pitch) const
 {
     for (int y = 0; y < h; ++y) {
@@ -84,7 +81,10 @@ void WindowsScreenshot::getGrayscaleData(
 }
 
 
-std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
+}
+
+
+std::unique_ptr<backend::Screenshot> takeScreenshot(const Rect& rect)
 {
     const Rect virtualScreenRect{
         GetSystemMetrics(SM_XVIRTUALSCREEN),
@@ -96,17 +96,18 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
     if (isEmpty(captureRect))
         throw ScreenshotError("Rect is outside screen bounds");
 
-    auto screenDc = windows::getDc(nullptr);
+    auto screenDc = dpso::windows::getDc(nullptr);
     if (!screenDc)
         throw ScreenshotError("GetDC(nullptr) failed");
 
-    auto imageDc = windows::createCompatibleDc(screenDc.get());
+    auto imageDc = dpso::windows::createCompatibleDc(screenDc.get());
     if (!imageDc)
         throw ScreenshotError(
             "CreateCompatibleDC() for screen DC failed");
 
-    windows::ObjectUPtr<HBITMAP> imageBitmap(CreateCompatibleBitmap(
-        screenDc.get(), captureRect.w, captureRect.h));
+    dpso::windows::ObjectUPtr<HBITMAP> imageBitmap(
+        CreateCompatibleBitmap(
+            screenDc.get(), captureRect.w, captureRect.h));
     if (!imageBitmap)
         throw ScreenshotError(
             "CreateCompatibleBitmap() for screen DC failed");
@@ -114,7 +115,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
     // The GetDIBits() docs say that the bitmap must not be selected
     // into a DC when calling the function.
     {
-        const windows::ObjectSelector bitmapSelector(
+        const dpso::windows::ObjectSelector bitmapSelector(
             imageDc.get(), imageBitmap.get());
 
         if (!BitBlt(
@@ -123,7 +124,7 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
                 SRCCOPY))
             throw ScreenshotError(
                 "BitBlt(): "
-                + windows::getErrorMessage(GetLastError()));
+                + dpso::windows::getErrorMessage(GetLastError()));
     }
 
     BITMAPINFOHEADER bi;
@@ -152,9 +153,9 @@ std::unique_ptr<Screenshot> takeWindowsScreenshot(const Rect& rect)
             DIB_RGB_COLORS))
         throw ScreenshotError(
             "GetDIBits(): "
-            + windows::getErrorMessage(GetLastError()));
+            + dpso::windows::getErrorMessage(GetLastError()));
 
-    return std::make_unique<WindowsScreenshot>(
+    return std::make_unique<Screenshot>(
         std::move(data), captureRect.w, captureRect.h, pitch);
 }
 
