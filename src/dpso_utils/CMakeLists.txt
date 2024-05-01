@@ -4,7 +4,7 @@ project(dpso_utils)
 
 option(
     DPSO_FORCE_TIMING
-    "Force code timing (dpso::CodeTimer) even in release mode"
+    "Force code timing (timing.h) even in release mode"
     NO)
 mark_as_advanced(DPSO_FORCE_TIMING)
 
