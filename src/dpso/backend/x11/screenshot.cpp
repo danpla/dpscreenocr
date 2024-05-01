@@ -1,5 +1,5 @@
 
-#include "backend/x11/x11_screenshot.h"
+#include "backend/x11/screenshot.h"
 
 #include <cassert>
 
@@ -31,7 +31,7 @@
 // capturing small areas, which is more common in our case.
 
 
-namespace dpso::backend {
+namespace dpso::backend::x11 {
 namespace {
 
 
@@ -39,10 +39,10 @@ namespace {
 using XPixel = unsigned long;
 
 
-class X11Screenshot : public Screenshot {
+class Screenshot : public backend::Screenshot {
 public:
-    explicit X11Screenshot(XImage* image);
-    ~X11Screenshot();
+    explicit Screenshot(XImage* image);
+    ~Screenshot();
 
     int getWidth() const override;
     int getHeight() const override;
@@ -57,7 +57,7 @@ private:
 }
 
 
-X11Screenshot::X11Screenshot(XImage* image)
+Screenshot::Screenshot(XImage* image)
     : image{image}
 {
     assert(image);
@@ -66,19 +66,19 @@ X11Screenshot::X11Screenshot(XImage* image)
 }
 
 
-X11Screenshot::~X11Screenshot()
+Screenshot::~Screenshot()
 {
     XDestroyImage(image);
 }
 
 
-int X11Screenshot::getWidth() const
+int Screenshot::getWidth() const
 {
     return image->width;
 }
 
 
-int X11Screenshot::getHeight() const
+int Screenshot::getHeight() const
 {
     return image->height;
 }
@@ -155,7 +155,7 @@ static void getGrayscaleDataImpl(
 }
 
 
-void X11Screenshot::getGrayscaleData(
+void Screenshot::getGrayscaleData(
     std::uint8_t* buf, int pitch) const
 {
     if (image->bits_per_pixel == 32) {
@@ -186,7 +186,7 @@ void X11Screenshot::getGrayscaleData(
 }
 
 
-std::unique_ptr<Screenshot> takeX11Screenshot(
+std::unique_ptr<backend::Screenshot> takeScreenshot(
     Display* display, const Rect& rect)
 {
     auto* screen = XDefaultScreenOfDisplay(display);
@@ -209,7 +209,7 @@ std::unique_ptr<Screenshot> takeX11Screenshot(
     if (!image)
         throw ScreenshotError("XGetImage() failed");
 
-    return std::make_unique<X11Screenshot>(image);
+    return std::make_unique<Screenshot>(image);
 }
 
 

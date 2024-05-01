@@ -1,5 +1,5 @@
 
-#include "backend/x11/x11_selection.h"
+#include "backend/x11/selection.h"
 
 #include <charconv>
 #include <cstring>
@@ -15,7 +15,7 @@
 // either switch to windowed mode or minimize their windows.
 
 
-namespace dpso::backend {
+namespace dpso::backend::x11 {
 
 
 static Point getMousePos(Display* display)
@@ -73,7 +73,7 @@ static int getDpi(Display* display)
 }
 
 
-X11Selection::X11Selection(Display* display)
+Selection::Selection(Display* display)
     : display{display}
 {
     XSetWindowAttributes windowAttrs;
@@ -112,20 +112,20 @@ X11Selection::X11Selection(Display* display)
 }
 
 
-X11Selection::~X11Selection()
+Selection::~Selection()
 {
     XFreeGC(display, gc);
     XDestroyWindow(display, window);
 }
 
 
-bool X11Selection::getIsEnabled() const
+bool Selection::getIsEnabled() const
 {
     return isEnabled;
 }
 
 
-void X11Selection::setBorderWidth(int newBorderWidth)
+void Selection::setBorderWidth(int newBorderWidth)
 {
     if (newBorderWidth == baseBorderWidth)
         return;
@@ -144,7 +144,7 @@ void X11Selection::setBorderWidth(int newBorderWidth)
 }
 
 
-void X11Selection::setIsEnabled(bool newIsEnabled)
+void Selection::setIsEnabled(bool newIsEnabled)
 {
     if (newIsEnabled == isEnabled)
         return;
@@ -164,13 +164,13 @@ void X11Selection::setIsEnabled(bool newIsEnabled)
 }
 
 
-Rect X11Selection::getGeometry() const
+Rect Selection::getGeometry() const
 {
     return geom;
 }
 
 
-void X11Selection::updateStart()
+void Selection::updateStart()
 {
     if (!isEnabled)
         return;
@@ -186,7 +186,7 @@ void X11Selection::updateStart()
 }
 
 
-void X11Selection::handleEvent(const XEvent& event)
+void Selection::handleEvent(const XEvent& event)
 {
     if (event.type == Expose
             && event.xexpose.window == window
@@ -195,7 +195,7 @@ void X11Selection::handleEvent(const XEvent& event)
 }
 
 
-void X11Selection::updateBorderWidth()
+void Selection::updateBorderWidth()
 {
     borderWidth = static_cast<float>(baseBorderWidth)
         * getDpi(display) / baseDpi + 0.5f;
@@ -204,7 +204,7 @@ void X11Selection::updateBorderWidth()
 }
 
 
-void X11Selection::updateWindowGeometry()
+void Selection::updateWindowGeometry()
 {
     XMoveResizeWindow(
         display,
@@ -216,7 +216,7 @@ void X11Selection::updateWindowGeometry()
 }
 
 
-void X11Selection::updateWindowShape()
+void Selection::updateWindowShape()
 {
     const auto sideH = geom.h;
     const auto windowW = geom.w + borderWidth * 2;
@@ -275,7 +275,7 @@ void X11Selection::updateWindowShape()
 }
 
 
-void X11Selection::setGeometry(const Rect& newGeom)
+void Selection::setGeometry(const Rect& newGeom)
 {
     const auto newSize = getSize(newGeom) != getSize(geom);
     if (!newSize && getPos(newGeom) == getPos(geom))
@@ -290,7 +290,7 @@ void X11Selection::setGeometry(const Rect& newGeom)
 }
 
 
-void X11Selection::draw()
+void Selection::draw()
 {
     XDrawRectangle(
         display,

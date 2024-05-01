@@ -14,10 +14,10 @@ namespace dpso {
 struct Rect;
 
 
-namespace backend {
+namespace backend::x11 {
 
 
-std::unique_ptr<Screenshot> takeX11Screenshot(
+std::unique_ptr<Screenshot> takeScreenshot(
     Display* display, const Rect& rect);
 
 

@@ -4,16 +4,16 @@
 #include <X11/Xlib.h>
 
 #include "backend/selection.h"
-#include "backend/x11/x11_backend_component.h"
+#include "backend/x11/backend_component.h"
 
 
-namespace dpso::backend {
+namespace dpso::backend::x11 {
 
 
-class X11Selection : public Selection, public X11BackendComponent {
+class Selection : public backend::Selection, public BackendComponent {
 public:
-    explicit X11Selection(Display* display);
-    ~X11Selection();
+    explicit Selection(Display* display);
+    ~Selection();
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;

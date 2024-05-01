@@ -1,12 +1,12 @@
 
-#include "backend/x11/x11_key_manager.h"
+#include "backend/x11/key_manager.h"
 
 #include <iterator>
 
 #include <X11/keysym.h>
 
 
-namespace dpso::backend {
+namespace dpso::backend::x11 {
 
 
 // Mod1Mask - Alt
@@ -17,19 +17,127 @@ namespace dpso::backend {
 
 
 static KeyCode keyToKeyCode(Display* display, DpsoKey key);
-static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods);
-static unsigned dpsoModsToX11Mods(DpsoKeyMods dpsoMods);
+static DpsoKeyMods toDpsoMods(unsigned x11Mods);
+static unsigned toX11Mods(DpsoKeyMods dpsoMods);
 
 
-static void changeBindingGrab(
+KeyManager::KeyManager(Display* display)
+    : display{display}
+{
+}
+
+
+KeyManager::~KeyManager()
+{
+    // Make sure we ungrab everything.
+    setIsEnabled(false);
+}
+
+
+bool KeyManager::getIsEnabled() const
+{
+    return isEnabled;
+}
+
+
+void KeyManager::setIsEnabled(bool newIsEnabled)
+{
+    if (newIsEnabled == isEnabled)
+        return;
+
+    isEnabled = newIsEnabled;
+
+    if (!isEnabled)
+        hotkeyAction = dpsoNoHotkeyAction;
+
+    for (const auto& x11binding : x11bindings)
+        changeGrab(display, x11binding, isEnabled);
+}
+
+
+DpsoHotkeyAction KeyManager::getLastHotkeyAction() const
+{
+    return hotkeyAction;
+}
+
+
+void KeyManager::bindHotkey(
+    const DpsoHotkey& hotkey, DpsoHotkeyAction action)
+{
+    for (auto& x11binding : x11bindings)
+        if (x11binding.binding.hotkey == hotkey) {
+            x11binding.binding.action = action;
+            return;
+        }
+
+    const auto keyCode = keyToKeyCode(display, hotkey.key);
+    if (keyCode == 0)
+        return;
+
+    x11bindings.push_back({{hotkey, action}, keyCode});
+
+    if (isEnabled)
+        changeGrab(display, x11bindings.back(), true);
+}
+
+
+int KeyManager::getNumBindings() const
+{
+    return x11bindings.size();
+}
+
+
+HotkeyBinding KeyManager::getBinding(int idx) const
+{
+    return x11bindings[idx].binding;
+}
+
+
+void KeyManager::removeBinding(int idx)
+{
+    if (isEnabled)
+        changeGrab(display, x11bindings[idx], false);
+
+    if (idx + 1 < static_cast<int>(x11bindings.size()))
+        x11bindings[idx] = x11bindings.back();
+
+    x11bindings.pop_back();
+}
+
+
+void KeyManager::updateStart()
+{
+    hotkeyAction = dpsoNoHotkeyAction;
+}
+
+
+void KeyManager::handleEvent(const XEvent& event)
+{
+    if (!isEnabled
+            || event.type != KeyPress
+            || event.xkey.window != XDefaultRootWindow(display))
+        return;
+
+    const auto mods = toDpsoMods(event.xkey.state);
+
+    for (const auto& x11binding : x11bindings)
+        if (x11binding.keyCode == event.xkey.keycode
+                && x11binding.binding.hotkey.mods == mods) {
+            hotkeyAction = x11binding.binding.action;
+            break;
+        }
+}
+
+
+void KeyManager::changeGrab(
     Display* display, const X11HotkeyBinding& x11binding, bool grab)
 {
-    const auto x11Mods = dpsoModsToX11Mods(
+    const auto x11Mods = toX11Mods(
         x11binding.binding.hotkey.mods);
 
     // X11 treats lock keys as modifiers, so we need to register not
     // only the given hotkey, but also its variants with all possible
-    // combinations of the lock keys. Since x11ModsToDpsoMods() will
+    // combinations of the lock keys. Since toDpsoMods() will
     // skip the lock keys, all the additional helper hotkeys will map
     // to the original one.
     for (int i = 0; i < 16; ++i) {
@@ -59,114 +167,6 @@ static void changeBindingGrab(
                 x11Mods | ignoredX11Mods,
                 XDefaultRootWindow(display));
     }
-}
-
-
-X11KeyManager::X11KeyManager(Display* display)
-    : display{display}
-{
-}
-
-
-X11KeyManager::~X11KeyManager()
-{
-    // Make sure we ungrab everything.
-    setIsEnabled(false);
-}
-
-
-bool X11KeyManager::getIsEnabled() const
-{
-    return isEnabled;
-}
-
-
-void X11KeyManager::setIsEnabled(bool newIsEnabled)
-{
-    if (newIsEnabled == isEnabled)
-        return;
-
-    isEnabled = newIsEnabled;
-
-    if (!isEnabled)
-        hotkeyAction = dpsoNoHotkeyAction;
-
-    for (const auto& x11binding : x11bindings)
-        changeBindingGrab(display, x11binding, isEnabled);
-}
-
-
-DpsoHotkeyAction X11KeyManager::getLastHotkeyAction() const
-{
-    return hotkeyAction;
-}
-
-
-void X11KeyManager::bindHotkey(
-    const DpsoHotkey& hotkey, DpsoHotkeyAction action)
-{
-    for (auto& x11binding : x11bindings)
-        if (x11binding.binding.hotkey == hotkey) {
-            x11binding.binding.action = action;
-            return;
-        }
-
-    const auto keyCode = keyToKeyCode(display, hotkey.key);
-    if (keyCode == 0)
-        return;
-
-    x11bindings.push_back({{hotkey, action}, keyCode});
-
-    if (isEnabled)
-        changeBindingGrab(display, x11bindings.back(), true);
-}
-
-
-int X11KeyManager::getNumBindings() const
-{
-    return x11bindings.size();
-}
-
-
-HotkeyBinding X11KeyManager::getBinding(int idx) const
-{
-    return x11bindings[idx].binding;
-}
-
-
-void X11KeyManager::removeBinding(int idx)
-{
-    if (isEnabled)
-        changeBindingGrab(display, x11bindings[idx], false);
-
-    if (idx + 1 < static_cast<int>(x11bindings.size()))
-        x11bindings[idx] = x11bindings.back();
-
-    x11bindings.pop_back();
-}
-
-
-void X11KeyManager::updateStart()
-{
-    hotkeyAction = dpsoNoHotkeyAction;
-}
-
-
-void X11KeyManager::handleEvent(const XEvent& event)
-{
-    if (!isEnabled
-            || event.type != KeyPress
-            || event.xkey.window != XDefaultRootWindow(display))
-        return;
-
-    const auto mods = x11ModsToDpsoMods(event.xkey.state);
-
-    for (const auto& x11binding : x11bindings)
-        if (x11binding.keyCode == event.xkey.keycode
-                && x11binding.binding.hotkey.mods == mods) {
-            hotkeyAction = x11binding.binding.action;
-            break;
-        }
 }
 
 
@@ -298,7 +298,7 @@ static const struct {
 static_assert(std::size(modMap) == dpsoNumKeyMods);
 
 
-static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods)
+static DpsoKeyMods toDpsoMods(unsigned x11Mods)
 {
     DpsoKeyMods dpsoMods = dpsoNoKeyMods;
 
@@ -310,7 +310,7 @@ static DpsoKeyMods x11ModsToDpsoMods(unsigned x11Mods)
 }
 
 
-static unsigned dpsoModsToX11Mods(DpsoKeyMods dpsoMods)
+static unsigned toX11Mods(DpsoKeyMods dpsoMods)
 {
     unsigned x11Mods = 0;
 

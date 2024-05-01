@@ -4,12 +4,12 @@
 #include <X11/Xlib.h>
 
 
-namespace dpso::backend {
+namespace dpso::backend::x11 {
 
 
-class X11BackendComponent {
+class BackendComponent {
 public:
-    virtual ~X11BackendComponent() = default;
+    virtual ~BackendComponent() = default;
 
     virtual void updateStart() {}
     virtual void handleEvent(const XEvent& event) { (void)event; }

@@ -7,18 +7,19 @@
 
 #include "backend/backend.h"
 #include "backend/backend_error.h"
-#include "backend/x11/x11_key_manager.h"
-#include "backend/x11/x11_screenshot.h"
-#include "backend/x11/x11_selection.h"
+#include "backend/x11/key_manager.h"
+#include "backend/x11/screenshot.h"
+#include "backend/x11/selection.h"
 
 
 namespace dpso::backend {
+namespace x11 {
 namespace {
 
 
-class X11Backend : public Backend {
+class Backend : public backend::Backend {
 public:
-    X11Backend();
+    Backend();
 
     KeyManager& getKeyManager() override;
     Selection& getSelection() override;
@@ -29,17 +30,14 @@ public:
 private:
     std::unique_ptr<Display, decltype(&XCloseDisplay)> display;
 
-    std::unique_ptr<X11KeyManager> keyManager;
-    std::unique_ptr<X11Selection> selection;
+    std::unique_ptr<KeyManager> keyManager;
+    std::unique_ptr<Selection> selection;
 
-    X11BackendComponent* components[2];
+    BackendComponent* components[2];
 };
 
 
-}
-
-
-X11Backend::X11Backend()
+Backend::Backend()
     : display{XOpenDisplay(nullptr), XCloseDisplay}
 {
     if (!display)
@@ -47,34 +45,34 @@ X11Backend::X11Backend()
             std::string("Can't connect to X display ")
             + XDisplayName(nullptr));
 
-    keyManager = std::make_unique<X11KeyManager>(display.get());
-    selection = std::make_unique<X11Selection>(display.get());
+    keyManager = std::make_unique<KeyManager>(display.get());
+    selection = std::make_unique<Selection>(display.get());
 
     components[0] = keyManager.get();
     components[1] = selection.get();
 }
 
 
-KeyManager& X11Backend::getKeyManager()
+KeyManager& Backend::getKeyManager()
 {
     return *keyManager;
 }
 
 
-Selection& X11Backend::getSelection()
+Selection& Backend::getSelection()
 {
     return *selection;
 }
 
 
-std::unique_ptr<Screenshot> X11Backend::takeScreenshot(
+std::unique_ptr<Screenshot> Backend::takeScreenshot(
     const Rect& rect)
 {
-    return takeX11Screenshot(display.get(), rect);
+    return x11::takeScreenshot(display.get(), rect);
 }
 
 
-void X11Backend::update()
+void Backend::update()
 {
     for (auto* component : components)
         component->updateStart();
@@ -89,6 +87,10 @@ void X11Backend::update()
 
     for (auto* component : components)
         component->updateEnd();
+}
+
+
+}
 }
 
 
@@ -110,7 +112,7 @@ std::unique_ptr<Backend> Backend::create()
             "Wayland is not supported. Please switch to the X11/Xorg "
             "session.");
 
-    return std::make_unique<X11Backend>();
+    return std::make_unique<x11::Backend>();
 }
 
 

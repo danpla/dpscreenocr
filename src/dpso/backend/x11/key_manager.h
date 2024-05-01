@@ -6,22 +6,18 @@
 #include <X11/Xlib.h>
 
 #include "backend/key_manager.h"
-#include "backend/x11/x11_backend_component.h"
+#include "backend/x11/backend_component.h"
 
 
-namespace dpso::backend {
+namespace dpso::backend::x11 {
 
 
-struct X11HotkeyBinding {
-    HotkeyBinding binding;
-    KeyCode keyCode;
-};
-
-
-class X11KeyManager : public KeyManager, public X11BackendComponent {
+class KeyManager
+    : public backend::KeyManager
+    , public BackendComponent {
 public:
-    explicit X11KeyManager(Display* display);
-    ~X11KeyManager();
+    explicit KeyManager(Display* display);
+    ~KeyManager();
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
@@ -39,8 +35,19 @@ public:
 private:
     Display* display;
     bool isEnabled{};
+
+    struct X11HotkeyBinding {
+        HotkeyBinding binding;
+        KeyCode keyCode;
+    };
     std::vector<X11HotkeyBinding> x11bindings;
+
     DpsoHotkeyAction hotkeyAction{dpsoNoHotkeyAction};
+
+    static void changeGrab(
+        Display* display,
+        const X11HotkeyBinding& x11binding,
+        bool grab);
 };
 
 
