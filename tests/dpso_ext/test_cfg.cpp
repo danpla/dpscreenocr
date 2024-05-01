@@ -141,7 +141,7 @@ std::string makeCfgKeyForChar(char c)
 void setStrByteChars(DpsoCfg* cfg)
 {
     for (int c = 1; c < 256; ++c) {
-        const char val[2] = {static_cast<char>(c), 0};
+        const char val[]{static_cast<char>(c), 0};
         dpsoCfgSetStr(cfg, makeCfgKeyForChar(c).c_str(), val);
     }
 }
@@ -150,7 +150,7 @@ void setStrByteChars(DpsoCfg* cfg)
 void getStrByteChars(const DpsoCfg* cfg)
 {
     for (int c = 1; c < 256; ++c) {
-        const char val[2] = {static_cast<char>(c), 0};
+        const char val[]{static_cast<char>(c), 0};
         testGetStr(cfg, makeCfgKeyForChar(c).c_str(), val, "");
     }
 }
@@ -235,7 +235,7 @@ struct HotkeyTest {
 }
 
 
-const HotkeyTest hotkeyTests[] = {
+const HotkeyTest hotkeyTests[]{
     {"hotkey_none", {dpsoNoKey, dpsoNoKeyMods}},
     {
         "hotkey_mods_only",
@@ -311,7 +311,7 @@ void testStrParsing(DpsoCfg* cfg)
         const char* key;
         const char* valInFile;
         const char* expectedVal;
-    } tests[] = {
+    } tests[]{
         {"space", " ", ""},
         {"line_feed", "\n", ""},
         {"carriage_return", "\r", ""},
@@ -361,7 +361,7 @@ void testIntParsing(DpsoCfg* cfg)
         std::string valInFile;
         int expectedVal;
         int defaultVal;
-    } tests[] = {
+    } tests[]{
         {"int_minus_0", "-0", 0, 1},
         {"int_123", "123", 123, 0},
         {"int_minus_123", "-123", -123, 0},
@@ -389,7 +389,7 @@ void testBoolParsing(DpsoCfg* cfg)
         const char* valInFile;
         bool expectedVal;
         bool defaultVal;
-    } tests[] = {
+    } tests[]{
         {"bool_True", "True", true, false},
         {"bool_TRUE", "TRUE", true, false},
         {"bool_TRUE_x", "TRUE x", false, false},
@@ -413,7 +413,7 @@ void testHotkeyParsing(DpsoCfg* cfg)
         const char* valInFile;
         DpsoHotkey expectedVal;
         DpsoHotkey defaultVal;
-    } tests[] = {
+    } tests[]{
         {
             "hotkey_empty",
             "",
@@ -521,7 +521,7 @@ void testKeyValidity(DpsoCfg* cfg)
     const struct Test {
         const char* key;
         bool isValid;
-    } tests[] = {
+    } tests[]{
         {"", false},
         {" ", false},
         {" a", false},
@@ -573,7 +573,7 @@ void testSavedValueFormat()
                     str::format("key {}\n", expectedValData).c_str())}
         {
         }
-    } tests[] = {
+    } tests[]{
         {"", ""},
         {" ", "\\ \\"},
         {" a", "\\ a"},

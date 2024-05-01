@@ -29,7 +29,7 @@ std::size_t prettifyText(char* text)
     };
 
     // Note that ::from must be >= ::to.
-    static const Replacement replacements[] = {
+    static const Replacement replacements[]{
         // Tesseract doesn't seem to generate ligatures other than
         // fi and fl.
         {"\357\254\201", "fi"},

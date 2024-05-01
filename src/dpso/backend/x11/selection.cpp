@@ -222,7 +222,7 @@ void Selection::updateWindowShape()
     const auto windowW = geom.w + borderWidth * 2;
     const auto windowH = geom.h + borderWidth * 2;
 
-    XRectangle boundingRects[4] = {
+    XRectangle boundingRects[4]{
         {
             0,
             0,

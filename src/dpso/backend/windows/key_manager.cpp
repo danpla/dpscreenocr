@@ -261,7 +261,7 @@ HotkeyBinding* KeyManager::findBinding(const DpsoHotkey& hotkey)
 }
 
 
-const UINT keyToVk[] = {
+const UINT keyToVk[]{
     VK_F1,
     VK_F2,
     VK_F3,

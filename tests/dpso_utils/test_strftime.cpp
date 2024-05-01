@@ -17,7 +17,7 @@ static void testStrftime()
     const struct Test {
         const char* format;
         const char* result;
-    } tests[] = {
+    } tests[]{
         {"", ""},
         {"%Y-%m-%d %H:%M:%S", "2022-11-17 23:58:59"},
     };

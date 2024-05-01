@@ -190,7 +190,7 @@ struct ExportFormatInfo {
 };
 
 
-const ExportFormatInfo exportFormatInfos[] = {
+const ExportFormatInfo exportFormatInfos[]{
     {"TXT", {".txt"}, writePlainText},
     {"HTML", {".html", ".htm"}, writeHtml},
     {"JSON", {".json"}, writeJson},

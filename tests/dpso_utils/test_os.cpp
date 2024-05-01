@@ -19,7 +19,7 @@ void testPathSplit()
         const char* path;
         const char* dirName;
         const char* baseName;
-    } tests[] = {
+    } tests[]{
         #ifdef _WIN32
 
         {"", "", ""},

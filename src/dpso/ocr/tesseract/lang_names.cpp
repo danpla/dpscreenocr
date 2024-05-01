@@ -30,7 +30,7 @@ struct LangInfo {
 // https://iso639-3.sil.org/code_tables/download_tables
 //
 // "equ" and "osd" are not included.
-const LangInfo names[] = {
+const LangInfo names[]{
     {"afr",          N_("Afrikaans")},
     {"amh",          N_("Amharic")},
     {"ara",          N_("Arabic")},

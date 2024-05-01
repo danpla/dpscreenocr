@@ -52,7 +52,7 @@ void testCmpSubStr()
         std::size_t subStrLen;
         unsigned cmpOptions;
         Order expectedOrder;
-    } tests[] = {
+    } tests[]{
         {"", "", 0, cmpNormal, Order::equal},
         {"", "", 1, cmpNormal, Order::equal},
         {"", "", 2, cmpNormal, Order::equal},
@@ -166,7 +166,7 @@ void testFormat()
         const char* str;
         std::initializer_list<const char*> args;
         const char* expected;
-    } tests[] = {
+    } tests[]{
         // Normal
         {"1: {}, 2: {}", {"a", "b"}, "1: a, 2: b"},
         // Nonexistent arg

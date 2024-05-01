@@ -59,7 +59,7 @@ bool LangListSortFilterProxy::filterAcceptsRow(
     if (filterText.isEmpty())
         return true;
 
-    static const int filterableColumnIndices[] = {
+    static const int filterableColumnIndices[]{
         LangList::columnIdxName, LangList::columnIdxCode
     };
 

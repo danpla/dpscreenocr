@@ -46,7 +46,7 @@ void testUtfConversion(const char* utf8Str)
 
 void testUtfConversions()
 {
-    const char* const utf8Strings[] = {
+    const char* const utf8Strings[]{
         "",
         // Юникод
         "\320\256\320\275\320\270\320\272\320\276\320\264"
@@ -61,7 +61,7 @@ void testInvalidUtf8()
 {
     using namespace dpso::windows;
 
-    const char* const strings[] = {
+    const char* const strings[]{
         // Invalid start byte 0x80 - 0xbf
         "\x80",
         "\xbf",
@@ -100,7 +100,7 @@ void testInvalidUtf8()
 
 void testInvalidUtf16()
 {
-    const wchar_t* const strings[] = {
+    const wchar_t* const strings[]{
         L"\xd800",  // min leading
         L"\xdbff",  // max leading
         L"\xdc00",  // min trailing

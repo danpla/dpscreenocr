@@ -18,7 +18,7 @@ void testLineReader()
     const struct Test {
         const char* text;
         std::vector<std::string> expectedLines;
-    } tests[] = {
+    } tests[]{
         {"", {}},
         {" ", {" "}},
         {"\r", {""}},

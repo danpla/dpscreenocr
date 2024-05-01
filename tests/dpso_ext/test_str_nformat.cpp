@@ -22,7 +22,7 @@ static void testStrNFormat()
         const char* str;
         std::initializer_list<DpsoStrNFormatArg> args;
         const char* expected;
-    } tests[] = {
+    } tests[]{
         {
             // Normal
             "1: {a1}, 2: {a2}",

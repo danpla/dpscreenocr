@@ -9,7 +9,7 @@
 namespace dpso::ocr {
 
 
-static const Engine* const engines[] = {
+static const Engine* const engines[]{
     &tesseract::getEngine()
 };
 

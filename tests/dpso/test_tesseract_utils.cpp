@@ -16,7 +16,7 @@ void testPrettifyText()
     const struct Test {
         const char* original;
         const char* prettified;
-    } tests[] = {
+    } tests[]{
         // Trim whitespace
         {" \n\t\r", ""},
         {" \n\t\ra", "a"},

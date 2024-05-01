@@ -112,7 +112,7 @@ void testLoadValidSha256File()
     const struct Test {
         const char* description;
         std::string data;
-    } tests[] = {
+    } tests[]{
         {
             "Normal",
             digest + " *" + testFileName + "\n"},
@@ -170,7 +170,7 @@ void testLoadInvalidSha256File()
     const struct Test {
         const char* description;
         std::string data;
-    } tests[] = {
+    } tests[]{
         {"Leading spaces", " " + digest + " *" + testFileName},
         {"Trailing spaces", digest + " *" + testFileName + " "},
         {"Extra digest separators", digest + "   *" + testFileName},

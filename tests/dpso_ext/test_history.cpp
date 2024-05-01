@@ -100,7 +100,7 @@ void testIo(IoTestMode mode)
             : inEntry{inEntry}
             , outEntry{outEntry}
         {}
-    } tests[] = {
+    } tests[]{
         {{"ts1", "text1 \n\t\r line \n\t\r line \n\t\r "}},
         {{"", ""}},
         {{"", "text2"}},
@@ -156,7 +156,7 @@ void testTruncatedData()
         const char* data;
         std::vector<DpsoHistoryEntry> expectedEntries;
         const char* finalData;  // After appending extraEntry.
-    } tests[] = {
+    } tests[]{
         {
             "No timestamp terminator (first entry)",
             "ts1",
@@ -241,7 +241,7 @@ void testInvalidData()
     const struct Test {
         const char* description;
         const char* data;
-    } tests[] = {
+    } tests[]{
         {"Invalid timestamp terminator", "ts1\nb"},
         {"Invalid entry separator", "ts1\n\ntext1\f*ts2\n\ntext2"},
     };

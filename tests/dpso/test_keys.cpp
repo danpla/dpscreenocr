@@ -15,7 +15,7 @@ const auto allMods =
 
 void testHotkeyToString()
 {
-    const DpsoHotkey hotkeys[] = {
+    const DpsoHotkey hotkeys[]{
         {dpsoNoKey, dpsoKeyModCtrl},
         {dpsoKeyY, dpsoNoKeyMods},
         {dpsoKeyY, allMods},
@@ -49,7 +49,7 @@ void testHotkeyFromString()
     const struct Test {
         const char* str;
         DpsoHotkey expectedHotkey;
-    } tests[] = {
+    } tests[]{
         {"", dpsoEmptyHotkey},
         {"???", dpsoEmptyHotkey},
         {"Ctrl + ???", dpsoEmptyHotkey},

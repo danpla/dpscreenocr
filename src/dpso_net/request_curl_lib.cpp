@@ -80,7 +80,7 @@ LibInfo loadLib()
     // introduced in them won't affect the functions we load.
     const auto maxSoVersion = minSoVersion + 5;
 
-    const char* names[] = {
+    const char* names[]{
         "libcurl",
         "libcurl-gnutls",
         "libcurl-nss",

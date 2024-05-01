@@ -41,7 +41,7 @@ struct Module {
 
 #define MODULE(NAME) {#NAME, dpso::NAME::init, dpso::NAME::shutdown}
 
-const Module modules[] = {
+const Module modules[]{
     MODULE(keyManager),
     MODULE(ocr),
     MODULE(selection),

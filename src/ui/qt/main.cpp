@@ -30,7 +30,7 @@ static void installQtTranslations(QApplication& app)
 
     const auto localeName = QLocale::system().name();
 
-    const QString translations[] = {"qt", "qtbase"};
+    const QString translations[]{"qt", "qtbase"};
 
     for (const auto& translation : translations) {
         auto* translator = new QTranslator(&app);

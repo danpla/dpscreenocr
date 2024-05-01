@@ -48,7 +48,7 @@ void testDetectExportFormat()
         std::vector<const char*> extensions;
         DpsoHistoryExportFormat exportFormat;
         DpsoHistoryExportFormat defaultExportFormat;
-    } tests[] = {
+    } tests[]{
         {
             {".txt", ".Txt", ".TXT"},
             dpsoHistoryExportFormatPlainText,
@@ -130,7 +130,7 @@ void testExport()
                     "Seems like some export formats were added or "
                     "removed, so exportedData should be adjusted.");
         }
-    } tests[] = {
+    } tests[]{
         {
             "No entries",
             {},

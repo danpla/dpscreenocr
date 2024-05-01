@@ -13,7 +13,7 @@ const DpsoHotkey dpsoEmptyHotkey{dpsoNoKey, dpsoNoKeyMods};
 
 DpsoKeyMod dpsoGetKeyModAt(int idx)
 {
-    static const DpsoKeyMod keyModsOrder[] = {
+    static const DpsoKeyMod keyModsOrder[]{
         // Apple order (Control, Option, Shift, Command) matches
         // our enum:
         // https://developer.apple.com/design/human-interface-guidelines/macos/user-interaction/keyboard/
@@ -31,7 +31,7 @@ DpsoKeyMod dpsoGetKeyModAt(int idx)
 }
 
 
-const char* const keyNames[] = {
+const char* const keyNames[]{
     "F1",
     "F2",
     "F3",
@@ -204,7 +204,7 @@ struct ModNameInfo {
 }
 
 
-const ModNameInfo modNameInfos[] = {
+const ModNameInfo modNameInfos[]{
     {dpsoKeyModCtrl, "Ctrl", {}},
     {
         dpsoKeyModAlt,

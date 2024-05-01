@@ -81,7 +81,7 @@ void testArgv(std::initializer_list<const char*> argv)
 void testWindowsCmdLine()
 {
     const auto* programName = "program name";
-    const std::initializer_list<const char*> argvs[] = {
+    const std::initializer_list<const char*> argvs[]{
         {programName, "a\\\\b", "de fg", "h"},
         {programName, "a\\\"b", "c", "d"},
         {programName, "a\\\\b c", "d", "e"},

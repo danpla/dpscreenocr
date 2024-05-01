@@ -170,7 +170,7 @@ void KeyManager::changeGrab(
 }
 
 
-const KeySym keyToKeySym[] = {
+const KeySym keyToKeySym[]{
     XK_F1,
     XK_F2,
     XK_F3,
@@ -289,7 +289,7 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
 static const struct {
     unsigned x11Mod;
     DpsoKeyMod dpsoMod;
-} modMap[] = {
+} modMap[]{
     {ShiftMask, dpsoKeyModShift},
     {ControlMask, dpsoKeyModCtrl},
     {Mod1Mask, dpsoKeyModAlt},

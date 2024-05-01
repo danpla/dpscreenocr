@@ -18,7 +18,7 @@ static void testSha256()
         std::string str;
         const char* digest;
         int numRepeats;
-    } tests[] = {
+    } tests[]{
         {
             "abc",
             "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61"
