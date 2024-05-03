@@ -306,6 +306,8 @@ def gen_lang_menu(langs, page_lang, page_suburl):
         else:
             lang_name = translator.gettext(GETTEXT_LANGUAGE_NAME_KEY)
 
+        lang_name = lang_name.replace(' ', '&nbsp;')
+
         lang_name_to_code[lang_name] = lang_code
 
     items = []
