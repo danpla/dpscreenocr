@@ -15,6 +15,7 @@ LangListSortFilterProxy::LangListSortFilterProxy(
     : QSortFilterProxyModel{parent}
     , langGroup{langGroup}
 {
+    setSortLocaleAware(true);
 }
 
 
