@@ -10,7 +10,7 @@ add_library(
     user_agent.cpp)
 
 # Files for configure_file()
-set(IN_SRCS app_info.cpp file_names.cpp icon_names.cpp)
+set(IN_SRCS app_info.cpp file_names.cpp)
 
 if(UNIX AND NOT APPLE)
     target_sources(
