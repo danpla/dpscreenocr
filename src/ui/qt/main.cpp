@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
     // On platforms that don't use icon themes, getThemeIcon() loads
     // icons from the application data dir (uiGetAppDir()), and should
     // therefore only be called after a successful uiInit().
-    app.setWindowIcon(ui::qt::getThemeIcon(uiAppFileName));
+    app.setWindowIcon(ui::qt::getThemeIcon(uiIconNameApp));
 
     installQtTranslations(app);
 

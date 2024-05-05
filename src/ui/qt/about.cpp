@@ -88,7 +88,7 @@ About::About()
 
     auto* iconLabel = new QLabel();
     iconLabel->setPixmap(
-        getIcon(uiAppFileName).pixmap(fontHeight * 4));
+        getIcon(uiIconNameApp).pixmap(fontHeight * 4));
 
     auto* infoTextLabel = new QLabel();
     infoTextLabel->setTextFormat(Qt::RichText);
