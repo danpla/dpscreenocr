@@ -1,5 +1,5 @@
 
-#include "init_environment.h"
+#include "init_extra.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -9,6 +9,9 @@
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
+
+
+namespace ui {
 
 
 // On some hardware, OpenMP multithreading in Tesseract 4 and 5
@@ -32,14 +35,15 @@
 // However, two executables (the script and the actual binary with
 // some special name, e.g., ending with a "-bin" suffix) may confuse
 // users running programs from the command line. Instead, we set the
-// variable and restart the program directly from the executable. As
-// such, uiInitEnvironment() should be the first call in main().
+// variable and restart the program directly from the executable.
 //
 // [1] https://github.com/tesseract-ocr/tesstrain/issues/259
 
 
-bool uiInitEnvironment(char* argv[])
+bool initStart(int argc, char* argv[])
 {
+    (void)argc;
+
     const auto* ompThreadLimit = "OMP_THREAD_LIMIT";
     const auto* ompThreadLimitRequiredVal = "1";
 
@@ -64,4 +68,16 @@ bool uiInitEnvironment(char* argv[])
         "execvp(\"{}\", ...): {}",
         *argv, dpso::os::getErrnoMsg(errno));
     return false;
+}
+
+
+bool initEnd(int argc, char* argv[])
+{
+    (void)argc;
+    (void)argv;
+
+    return true;
+}
+
+
 }

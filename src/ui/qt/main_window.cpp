@@ -62,10 +62,6 @@ MainWindow::MainWindow()
     if (!dpsoInitializer)
         throw Error(dpsoGetError());
 
-    if (!uiStartupSetup())
-        throw Error(
-            std::string("Startup setup failed: ") + dpsoGetError());
-
     const auto* cfgPath = dpsoGetUserDir(
         DpsoUserDirConfig, uiAppFileName);
     if (!cfgPath)

@@ -12,11 +12,17 @@
 #include "file_names.h"
 
 
-void uiInitIntl(void)
+namespace ui {
+
+
+void initIntl(void)
 {
     setlocale(LC_ALL, "");
 
     bindtextdomainUtf8(uiAppFileName, uiGetAppDir(UiAppDirLocale));
     bind_textdomain_codeset(uiAppFileName, "UTF-8");
     textdomain(uiAppFileName);
+}
+
+
 }

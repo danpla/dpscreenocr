@@ -14,7 +14,7 @@ set(IN_SRCS app_info.cpp file_names.cpp)
 
 if(UNIX AND NOT APPLE)
     target_sources(
-        ui_common PRIVATE app_dirs_unix.cpp startup_setup_null.cpp)
+        ui_common PRIVATE app_dirs_unix.cpp init_extra_unix.cpp)
 
     include(GNUInstallDirs)
     list(APPEND IN_SRCS app_dirs_unix_cfg.h)
@@ -23,7 +23,7 @@ elseif(WIN32)
         ui_common
         PRIVATE
         app_dirs_windows.cpp
-        startup_setup_windows.cpp)
+        init_extra_windows.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
@@ -44,12 +44,6 @@ elseif(WIN32)
         ui_common PRIVATE single_instance_guard_windows.cpp)
 else()
     target_sources(ui_common PRIVATE single_instance_guard_null.cpp)
-endif()
-
-if(UNIX AND NOT APPLE)
-    target_sources(ui_common PRIVATE init_environment_unix.cpp)
-else()
-    target_sources(ui_common PRIVATE init_environment_null.cpp)
 endif()
 
 foreach(IN_SRC ${IN_SRCS})

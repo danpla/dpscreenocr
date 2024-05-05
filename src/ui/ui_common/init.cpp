@@ -2,7 +2,7 @@
 #include "init.h"
 
 #include "init_app_dirs.h"
-#include "init_environment.h"
+#include "init_extra.h"
 #include "init_intl.h"
 
 #include "dpso_utils/error_get.h"
@@ -11,10 +11,8 @@
 
 bool uiInit(int argc, char* argv[])
 {
-    (void)argc;
-
-    if (!uiInitEnvironment(argv)) {
-        dpso::setError("uiInitEnvironment: {}", dpsoGetError());
+    if (!ui::initStart(argc, argv)) {
+        dpso::setError("ui::initStart: {}", dpsoGetError());
         return false;
     }
 
@@ -23,7 +21,12 @@ bool uiInit(int argc, char* argv[])
         return false;
     }
 
-    uiInitIntl();
+    ui::initIntl();
+
+    if (!ui::initEnd(argc, argv)) {
+        dpso::setError("ui::initEnd: {}", dpsoGetError());
+        return false;
+    }
 
     return true;
 }

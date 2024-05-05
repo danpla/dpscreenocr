@@ -1,5 +1,5 @@
 
-#include "startup_setup.h"
+#include "init_extra.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -19,6 +19,7 @@
 #include "ocr_data_utils.h"
 
 
+namespace ui {
 namespace {
 
 
@@ -227,8 +228,20 @@ int setupUserData(const wchar_t* userDataDir)
 }
 
 
-bool uiStartupSetup(void)
+bool initStart(int argc, char* argv[])
 {
+    (void)argc;
+    (void)argv;
+
+    return true;
+}
+
+
+bool initEnd(int argc, char* argv[])
+{
+    (void)argc;
+    (void)argv;
+
     registerApplicationRestart();
 
     const auto* userDataDir = dpsoGetUserDir(
@@ -247,5 +260,13 @@ bool uiStartupSetup(void)
         return false;
     }
 
-    return setupUserData(userDataDirUtf16.c_str());
+    if (!setupUserData(userDataDirUtf16.c_str())) {
+        dpso::setError("setupUserData: {}", dpsoGetError());
+        return false;
+    }
+
+    return true;
+}
+
+
 }

@@ -9,6 +9,5 @@
 #include "init.h"
 #include "ocr_data_utils.h"
 #include "single_instance_guard.h"
-#include "startup_setup.h"
 #include "taskbar.h"
 #include "user_agent.h"
