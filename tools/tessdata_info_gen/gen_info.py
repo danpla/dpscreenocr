@@ -145,7 +145,7 @@ class InfoDb:
             if not silent:
                 print(
                     'Special case: {} remapped to {}'.format(
-                        data_name, special.iso_639_3, special.names))
+                        data_name, special.iso_639_3))
             return special
 
         name_id, *info_ids = data_name.split('_')
@@ -193,7 +193,7 @@ def _main():
     parser = argparse.ArgumentParser(
         description=(
             'Generate a JSON file containing information about the '
-            'given Tesseract data names. The program requires  ISO '
+            'given Tesseract data names. The program requires ISO '
             '639-3 code tables from '
             'https://iso639-3.sil.org/code_tables/download_tables.'),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)

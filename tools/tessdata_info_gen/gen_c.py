@@ -7,7 +7,7 @@ import json
 
 def format_line(info, max_data_name_len):
     formatted_data_name = '"{}",'.format(info['data_name'])
-    # Include 2 quotes and a comma
+    # + 3 for 2 quotes and a comma
     formatted_data_name_fill_len = max_data_name_len + 3
 
     name = '; '.join(info['names'])
