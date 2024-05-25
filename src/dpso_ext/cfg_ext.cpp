@@ -1,17 +1,9 @@
 
 #include "cfg_ext.h"
 
-#include <cstring>
 #include <string>
 
 #include "dpso_utils/str.h"
-
-
-static void disableAllLangs(DpsoOcr* ocr)
-{
-    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i)
-        dpsoOcrSetLangIsActive(ocr, i, false);
-}
 
 
 static void enableLang(DpsoOcr* ocr, const char* langCode)
@@ -21,7 +13,7 @@ static void enableLang(DpsoOcr* ocr, const char* langCode)
 }
 
 
-const char langSeparator = ',';
+const auto langSeparator = ',';
 
 
 void dpsoCfgLoadActiveLangs(
@@ -30,7 +22,8 @@ void dpsoCfgLoadActiveLangs(
     DpsoOcr* ocr,
     const char* fallbackLangCode)
 {
-    disableAllLangs(ocr);
+    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i)
+        dpsoOcrSetLangIsActive(ocr, i, false);
 
     const auto* s = dpsoCfgGetStr(cfg, key, nullptr);
 
@@ -99,8 +92,6 @@ void dpsoCfgGetHotkey(
 void dpsoCfgSetHotkey(
     DpsoCfg* cfg, const char* key, const DpsoHotkey* hotkey)
 {
-    if (!hotkey)
-        return;
-
-    dpsoCfgSetStr(cfg, key, dpsoHotkeyToString(hotkey));
+    if (hotkey)
+        dpsoCfgSetStr(cfg, key, dpsoHotkeyToString(hotkey));
 }
