@@ -2,7 +2,6 @@
 #include "error_get.h"
 #include "error_set.h"
 
-#include <cstdarg>
 #include <string>
 
 #include "str.h"
