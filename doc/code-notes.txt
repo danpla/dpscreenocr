@@ -72,7 +72,7 @@
 
   * Use functions from "dpso_utils/str.h" instead of <ctype.h>.
 
-  * Use the fmt library or toStr() from "dpso_utils/str.h" instead of
+  * Use format() and toStr() from "dpso_utils/str.h" instead of
     printf() functions or anything that depends on them, like
     std::to_string().
 
