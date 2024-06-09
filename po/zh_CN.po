@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-10-09 18:24+0200\n"
+"POT-Creation-Date: 2024-06-09 13:58+0200\n"
 "PO-Revision-Date: 2023-08-22 09:52+0000\n"
 "Last-Translator: poi <erbaotao@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -593,68 +593,73 @@ msgstr "所有文件"
 msgid "Export history"
 msgstr "导出历史记录"
 
-#: src/ui/qt/history.cpp:157
+#: src/ui/qt/history.cpp:156
 msgid "Clear the history?"
 msgstr "清空历史记录？"
 
-#: src/ui/qt/history.cpp:157 src/ui/qt/lang_manager/lang_manager_page.cpp:247
+#: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:277
 #: src/ui/qt/main_window.cpp:187
 msgid "Cancel"
 msgstr "取消"
 
-#: src/ui/qt/history.cpp:157
+#: src/ui/qt/history.cpp:156
 msgid "Clear"
 msgstr "清空"
 
-#: src/ui/qt/lang_browser.cpp:65 src/ui/qt/lang_manager/lang_list.cpp:90
+#: src/ui/qt/lang_browser.cpp:65 src/ui/qt/lang_manager/lang_list.cpp:107
 msgctxt "language"
 msgid "Name"
 msgstr "名称"
 
-#: src/ui/qt/lang_browser.cpp:66 src/ui/qt/lang_manager/lang_list.cpp:92
+#: src/ui/qt/lang_browser.cpp:66 src/ui/qt/lang_manager/lang_list.cpp:109
 msgctxt "language"
 msgid "Code"
 msgstr "代号"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:113
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:115
 msgid "Cancel…"
 msgstr "取消…"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:130
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Are you sure you want to cancel the installation?"
 msgstr "您确定不更新了吗？"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:131
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
 msgid "Continue installation"
 msgstr "继续安装"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
 msgid "Cancel installation"
 msgstr "取消安装"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:136
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
 msgid "Are you sure you want to cancel the update?"
 msgstr "您确定不安装了吗？"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:137
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:139
 msgid "Continue updating"
 msgstr "继续更新"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:140
 msgid "Cancel update"
 msgstr "取消更新"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:181
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
 msgid "Installing “{name}” ({current}/{total})"
 msgstr "安装“{name}”（{current} / {total}）"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:185
 msgid "Updating “{name}” ({current}/{total})"
 msgstr "更新“{name}”（{current} / {total}）"
 
 #: src/ui/qt/lang_manager/lang_fetch_progress_dialog.cpp:48
 msgid "Fetching the language list…"
 msgstr "查询语言名录…"
+
+#: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp:32
+msgctxt "digital_data"
+msgid "Size"
+msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:50
 msgid "An error occurred while fetching the list of languages"
@@ -665,51 +670,60 @@ msgid "Language manager"
 msgstr "语言管理器"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:99
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:152
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:184
 msgid "Install"
 msgstr "安装"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:100
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:152
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:184
 msgid "Update"
 msgstr "更新"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:101
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:248
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:277
 msgid "Remove"
 msgstr "卸载"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:114
+#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:122
 msgid "Close"
 msgstr "关闭"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:61
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:64
 msgctxt "noun"
 msgid "Filter"
 msgstr "查找"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:194
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:125
+msgid "No languages selected."
+msgstr ""
+
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:139
+msgid "{count} language selected ({size})."
+msgid_plural "{count} languages selected ({size})."
+msgstr[0] ""
+
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:226
 msgid "An error occurred while installing languages"
 msgstr "安装可识别的语言时出问题了"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:195
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:227
 msgid "An error occurred while updating languages"
 msgstr "更新可识别的语言时出问题了"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:209
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:241
 msgid "Remove…"
 msgstr "卸载…"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:234
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:266
 msgid "Remove “{name}”?"
 msgstr "卸载“{name}”？"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:239
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:271
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] "卸载这 {count} 个可识别的语言？"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:267
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:296
 msgid "Some languages were not removed"
 msgstr "一些语言没卸载掉"
 
@@ -717,11 +731,11 @@ msgstr "一些语言没卸载掉"
 msgid "Check your network connection and try again."
 msgstr "看一下网络连没连上，再试一次。"
 
-#: src/ui/qt/main.cpp:99
+#: src/ui/qt/main.cpp:101
 msgid "{app_name} is already running"
 msgstr "{app_name} 已经打开了"
 
-#: src/ui/qt/main_window.cpp:54
+#: src/ui/qt/main_window.cpp:58
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "已识别 {progress}% ({current_job}/{total_jobs})"
 
@@ -778,18 +792,18 @@ msgstr "操作"
 msgid "Hotkey"
 msgstr "快捷键"
 
-#: src/ui/qt/main_window.cpp:752
+#: src/ui/qt/main_window.cpp:749
 msgid "Please install languages"
 msgstr "需安装要识别的语言"
 
-#: src/ui/qt/main_window.cpp:754
+#: src/ui/qt/main_window.cpp:751
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:756
+#: src/ui/qt/main_window.cpp:753
 msgid "Please select actions"
 msgstr "请选择操作"
 
-#: src/ui/qt/main_window.cpp:761
+#: src/ui/qt/main_window.cpp:758
 msgid "{app_name} is ready for recognition"
 msgstr "{app_name} 目前没在识别"
