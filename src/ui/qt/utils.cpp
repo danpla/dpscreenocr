@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFont>
+#include <QLocale>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QtGlobal>
@@ -17,6 +18,13 @@
 
 
 namespace ui::qt {
+
+
+QString formatDataSize(qint64 size)
+{
+    return QLocale::system().formattedDataSize(
+        size, 1, QLocale::DataSizeSIFormat);
+}
 
 
 QString joinInLayoutDirection(

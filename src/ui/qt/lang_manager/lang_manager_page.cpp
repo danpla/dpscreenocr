@@ -2,6 +2,7 @@
 #include "lang_manager/lang_manager_page.h"
 
 #include <QHeaderView>
+#include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
@@ -48,6 +49,7 @@ private slots:
 private:
     LangList* langList;
     QTreeView* treeView;
+    QLabel* selectionInfoLabel;
     QPushButton* actionButton;
 };
 
@@ -87,7 +89,7 @@ LangManagerPage::LangManagerPage(
 
     treeView->setModel(sortFilterProxyModel);
 
-    treeView->hideColumn(LangList::columnIdxState);
+    selectionInfoLabel = new QLabel();
 
     actionButton = new QPushButton(actionName);
     actionButton->setAutoDefault(false);
@@ -103,17 +105,46 @@ LangManagerPage::LangManagerPage(
         this,
         &LangManagerPage::selectionChanged);
 
+    selectionChanged();  // Initialize selectionInfoLabel text.
+
     auto* layout = new QVBoxLayout(this);
     layout->addWidget(filterLineEdit);
     layout->addWidget(treeView, 1);
+    layout->addWidget(selectionInfoLabel);
     layout->addWidget(actionButton);
 }
 
 
 void LangManagerPage::selectionChanged()
 {
-    actionButton->setEnabled(
-        treeView->selectionModel()->hasSelection());
+    const auto* selectionModel = treeView->selectionModel();
+
+    actionButton->setEnabled(selectionModel->hasSelection());
+
+    if (!selectionModel->hasSelection()) {
+        selectionInfoLabel->setText(_("No languages selected."));
+        return;
+    }
+
+    const auto selectedRows = selectionModel->selectedRows(
+        LangListSortFilterProxy::columnIdxSize);
+
+    int64_t totalSize{};
+    for (const auto& row : selectedRows)
+        totalSize += row.data(Qt::UserRole).value<int64_t>();
+
+    selectionInfoLabel->setText(
+        dpsoStrNFormat(
+            ngettext(
+                "{count} language selected ({size}).",
+                "{count} languages selected ({size}).",
+                selectedRows.size()),
+            {
+                {
+                    "count",
+                    dpso::str::toStr(selectedRows.size()).c_str()},
+                {"size", formatDataSize(totalSize).toUtf8().data()}
+            }));
 }
 
 
@@ -121,7 +152,7 @@ void LangManagerPage::actionActivated()
 {
     const auto selectedRows =
         treeView->selectionModel()->selectedRows(
-            LangList::columnIdxCode);
+            LangListSortFilterProxy::columnIdxCode);
 
     QList<QByteArray> langCodes;
     langCodes.reserve(selectedRows.size());
@@ -131,11 +162,11 @@ void LangManagerPage::actionActivated()
     if (!performAction(langList->getLangManager(), langCodes))
         return;
 
-    // The QItemSelectionModel::selectionChanged signal is not emitted
-    // when the model is reset, so disable the button manually.
-    actionButton->setEnabled(false);
-
     langList->reloadLangs();
+
+    // The QItemSelectionModel::selectionChanged signal is not emitted
+    // when the model is reset, so refresh things manually.
+    selectionChanged();
 }
 
 

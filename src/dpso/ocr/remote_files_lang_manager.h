@@ -16,6 +16,7 @@ public:
     // See dpsoOcrLangManagerCreate() for the details.
     RemoteFilesLangManager(
         const char* dataDir,
+        const char* fileExt,
         const char* userAgent,
         const char* infoFileUrl,
         const std::vector<std::string>& localLangCodes);
@@ -24,8 +25,6 @@ public:
     // should be excluded from the LangManager list. The default
     // implementation returns false.
     virtual bool shouldIgnoreLang(const char* langCode) const;
-
-    virtual std::string getFileName(const char* langCode) const = 0;
 
     virtual std::string getLangName(const char* langCode) const = 0;
 
@@ -37,6 +36,8 @@ public:
 
     LangState getLangState(int langIdx) const override;
 
+    LangSize getLangSize(int langIdx) const override;
+
     void fetchExternalLangs() override;
 
     void installLang(
@@ -47,6 +48,7 @@ private:
     struct LangInfo {
         std::string code;
         LangState state;
+        LangSize size;
         std::string url;
     };
 
@@ -58,6 +60,7 @@ private:
     };
 
     std::string dataDir;
+    std::string fileExt;
     std::string userAgent;
     std::string infoFileUrl;
     std::vector<LangInfo> langInfos;

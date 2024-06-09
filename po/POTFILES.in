@@ -7,6 +7,7 @@ src/ui/qt/lang_browser.cpp
 src/ui/qt/lang_manager/install_progress_dialog.cpp
 src/ui/qt/lang_manager/lang_fetch_progress_dialog.cpp
 src/ui/qt/lang_manager/lang_list.cpp
+src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp
 src/ui/qt/lang_manager/lang_manager.cpp
 src/ui/qt/lang_manager/lang_manager_page.cpp
 src/ui/qt/lang_manager/lang_op_status_error.cpp

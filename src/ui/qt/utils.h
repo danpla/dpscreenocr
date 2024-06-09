@@ -11,6 +11,9 @@ class QWidget;
 namespace ui::qt {
 
 
+QString formatDataSize(qint64 size);
+
+
 QString joinInLayoutDirection(
     const QString& separator, const QStringList& list);
 

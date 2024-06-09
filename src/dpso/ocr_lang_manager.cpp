@@ -42,9 +42,10 @@ DpsoOcrLangOpStatus toPublic(const LangOpStatus& status)
 struct Lang {
     std::string code;
     std::string name;
-    // State is the only field that can be changed from the background
-    // thread (during installation).
+    // State and size are the only fields that can be changed from the
+    // background thread (during installation).
     dpso::Synchronized<LangState> state;
+    dpso::Synchronized<dpso::ocr::LangManager::LangSize> size;
     bool installMark;
 };
 
@@ -62,6 +63,7 @@ void reloadLangs(
                 langManager.getLangCode(i),
                 langManager.getLangName(i),
                 langManager.getLangState(i),
+                langManager.getLangSize(i),
                 false});
 
     std::sort(
@@ -83,6 +85,7 @@ void clearExternalLangs(std::vector<Lang>& langs)
 
         iter->installMark = false;
         iter->state = LangState::installed;
+        iter->size.getLock()->external = -1;
 
         ++iter;
     }
@@ -353,6 +356,20 @@ DpsoOcrLangState dpsoOcrLangManagerGetLangState(
 }
 
 
+void dpsoOcrLangManagerGetLangSize(
+    const DpsoOcrLangManager* langManager,
+    int langIdx,
+    DpsoOcrLangSize* langSize)
+{
+    const auto* lang = getLang(langManager, langIdx);
+    if (!lang || !langSize)
+        return;
+
+    const auto size = *lang->size.getLock();
+    *langSize = {size.external, size.local};
+}
+
+
 bool dpsoOcrLangOpStatusIsError(DpsoOcrLangOpStatusCode code)
 {
     return code >= DpsoOcrLangOpStatusCodeGenericError;
@@ -498,6 +515,8 @@ static void installLangs(
             });
 
         lang.state = langManager.langManager->getLangState(
+            *baseLangIdx);
+        lang.size = langManager.langManager->getLangSize(
             *baseLangIdx);
     }
 }

@@ -32,18 +32,36 @@ static void rethrowNetErrorAsLangManagerError(const char* message)
 }
 
 
+static std::int64_t getFileSize(const std::string& filePath)
+{
+    try {
+        return os::getFileSize(filePath.c_str());
+    } catch (os::Error& e) {
+        throw LangManagerError{str::format(
+            "Can't get size of \"{}\": {}", filePath, e.what())};
+    }
+}
+
+
 RemoteFilesLangManager::RemoteFilesLangManager(
         const char* dataDir,
+        const char* fileExt,
         const char* userAgent,
         const char* infoFileUrl,
         const std::vector<std::string>& localLangCodes)
     : dataDir{dataDir}
+    , fileExt{fileExt}
     , userAgent{userAgent}
     , infoFileUrl{infoFileUrl}
 {
     langInfos.reserve(localLangCodes.size());
     for (const auto& langCode : localLangCodes)
-        langInfos.push_back({langCode, LangState::installed, {}});
+        langInfos.push_back(
+            {
+                langCode,
+                LangState::installed,
+                {-1, getFileSize(getFilePath(langCode))},
+                {}});
 }
 
 
@@ -77,6 +95,13 @@ LangManager::LangState RemoteFilesLangManager::getLangState(
     int langIdx) const
 {
     return langInfos[langIdx].state;
+}
+
+
+RemoteFilesLangManager::LangSize
+RemoteFilesLangManager::getLangSize(int langIdx) const
+{
+    return langInfos[langIdx].size;
 }
 
 
@@ -160,14 +185,15 @@ void RemoteFilesLangManager::installLang(
 
     langInfo.state = LangState::installed;
 
+    // Note that we can't assume that the file size or SHA-256 from
+    // the JSON info is still relevant to the downloaded language,
+    // because the files on the remote server can change at any time
+    // after the JSON info is fetched.
+    langInfo.size.local = getFileSize(filePath);
+
     // Remove a no longer relevant SHA-256 file in case we did an
     // update; it will be created if necessary the next time we check
     // if the language file is up to date.
-    //
-    // Note that we can't assume that the SHA-256 from the JSON info
-    // is still relevant to the downloaded language, because the files
-    // on the remote server can change at any time after the JSON info
-    // is fetched.
     try {
         removeSha256File(filePath.c_str());
     } catch (Sha256FileError&) {
@@ -186,9 +212,10 @@ void RemoteFilesLangManager::removeLang(int langIdx)
             "Can't remove \"{}\": {}", filePath, e.what())};
     }
 
-    if (auto& langInfo = langInfos[langIdx]; !langInfo.url.empty())
+    if (auto& langInfo = langInfos[langIdx]; !langInfo.url.empty()) {
         langInfo.state = LangState::notInstalled;
-    else
+        langInfo.size.local = -1;
+    } else
         langInfos.erase(langInfos.begin() + langIdx);
 
     try {
@@ -266,6 +293,7 @@ void RemoteFilesLangManager::clearRemoteLangs()
         }
 
         iter->state = LangState::installed;
+        iter->size.external = -1;
         iter->url.clear();
 
         ++iter;
@@ -280,23 +308,20 @@ void RemoteFilesLangManager::mergeRemoteLang(
 
     // Old remote langs should be cleared before adding new ones.
     assert(langInfo.state == LangState::installed);
-    assert(langInfo.url.empty());
 
+    assert(langInfo.size.external == -1);
+    langInfo.size.external = remoteLangInfo.size;
+
+    assert(langInfo.url.empty());
     langInfo.url = remoteLangInfo.url;
 
     const auto filePath = getFilePath(langInfo.code);
 
     // As an optimization, don't calculate SHA-256 if file sizes are
     // different.
-    try {
-        if (os::getFileSize(filePath.c_str())
-                != remoteLangInfo.size) {
-            langInfo.state = LangState::updateAvailable;
-            return;
-        }
-    } catch (os::Error& e) {
-        throw LangManagerError{str::format(
-            "Can't get size of \"{}\": {}", filePath, e.what())};
+    if (langInfo.size.local != remoteLangInfo.size) {
+        langInfo.state = LangState::updateAvailable;
+        return;
     }
 
     try {
@@ -323,6 +348,7 @@ void RemoteFilesLangManager::addRemoteLang(
         {
             remoteLangInfo.code,
             LangState::notInstalled,
+            {remoteLangInfo.size, -1},
             remoteLangInfo.url});
 }
 
@@ -330,8 +356,7 @@ void RemoteFilesLangManager::addRemoteLang(
 std::string RemoteFilesLangManager::getFilePath(
     const std::string& langCode) const
 {
-    return
-        dataDir + *os::dirSeparators + getFileName(langCode.c_str());
+    return dataDir + *os::dirSeparators + langCode + fileExt;
 }
 
 

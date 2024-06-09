@@ -17,6 +17,8 @@ public:
         columnIdxName,
         columnIdxCode,
         columnIdxState,
+        columnIdxExternalSize,
+        columnIdxLocalSize,
     };
 
     explicit LangList(
@@ -47,6 +49,7 @@ private:
         QString name;
         QString code;
         DpsoOcrLangState state;
+        DpsoOcrLangSize size;
     };
     QList<LangInfo> langInfos;
 };

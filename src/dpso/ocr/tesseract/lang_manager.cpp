@@ -31,6 +31,7 @@ public:
             const char* infoFileUrl)
         : RemoteFilesLangManager{
             dataDir,
+            traineddataExt,
             userAgent,
             infoFileUrl,
             getLocalLangs(dataDir)}
@@ -40,11 +41,6 @@ public:
     bool shouldIgnoreLang(const char* langCode) const override
     {
         return isIgnoredLang(langCode);
-    }
-
-    std::string getFileName(const char* langCode) const override
-    {
-        return std::string{langCode} + traineddataExt;
     }
 
     std::string getLangName(const char* langCode) const override

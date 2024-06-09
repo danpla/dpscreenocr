@@ -2,6 +2,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 
 
 #ifdef __cplusplus
@@ -137,6 +138,34 @@ typedef enum {
 
 DpsoOcrLangState dpsoOcrLangManagerGetLangState(
     const DpsoOcrLangManager* langManager, int langIdx);
+
+
+/**
+ * A language size in bytes.
+ */
+typedef struct DpsoOcrLangSize {
+    /**
+     * The size of an external language.
+     *
+     * -1 if the external size is unknown, i.e. either no external
+     * languages were loaded or a manually installed language was not
+     * in the list of external languages.
+     */
+    int64_t external;
+
+    /**
+     * The size of an installed language.
+     *
+     * -1 if the language is not installed.
+     */
+    int64_t local;
+} DpsoOcrLangSize;
+
+
+void dpsoOcrLangManagerGetLangSize(
+    const DpsoOcrLangManager* langManager,
+    int langIdx,
+    DpsoOcrLangSize* langSize);
 
 
 typedef enum {

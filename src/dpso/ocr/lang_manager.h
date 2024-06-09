@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <functional>
 #include <string>
 
@@ -17,13 +18,6 @@ public:
     // Returns false to terminate installation.
     using ProgressHandler = std::function<bool(int progress)>;
 
-    // See DpsoOcrLangState
-    enum class LangState {
-        notInstalled,
-        installed,
-        updateAvailable
-    };
-
     virtual ~LangManager() = default;
 
     virtual int getNumLangs() const = 0;
@@ -32,7 +26,22 @@ public:
 
     virtual std::string getLangName(int langIdx) const = 0;
 
+    // See DpsoOcrLangState
+    enum class LangState {
+        notInstalled,
+        installed,
+        updateAvailable
+    };
+
     virtual LangState getLangState(int langIdx) const = 0;
+
+    // See DpsoOcrLangSize
+    struct LangSize {
+        std::int64_t external;
+        std::int64_t local;
+    };
+
+    virtual LangSize getLangSize(int langIdx) const = 0;
 
     // See dpsoOcrLangManagerStartFetchExternalLangs() and
     // dpsoOcrLangManagerLoadFetchedExternalLangs().
