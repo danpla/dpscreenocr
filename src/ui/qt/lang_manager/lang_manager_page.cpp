@@ -71,12 +71,6 @@ LangManagerPage::LangManagerPage(
     treeView->sortByColumn(0, Qt::AscendingOrder);
     treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    // We don't use ResizeToContents since we don't want column widths
-    // to change during filtering.
-    treeView->header()->setSectionResizeMode(
-        QHeaderView::Interactive);
-    treeView->header()->setSectionsMovable(false);
-
     auto* sortFilterProxyModel = new LangListSortFilterProxy(
         langGroup, this);
     sortFilterProxyModel->setSourceModel(&langList);
@@ -88,6 +82,16 @@ LangManagerPage::LangManagerPage(
         &LangListSortFilterProxy::setFilterText);
 
     treeView->setModel(sortFilterProxyModel);
+
+    treeView->header()->setSectionsMovable(false);
+    treeView->header()->setStretchLastSection(false);
+    treeView->header()->setSectionResizeMode(
+        QHeaderView::ResizeToContents);
+    treeView->header()->setSectionResizeMode(
+        LangListSortFilterProxy::columnIdxName, QHeaderView::Stretch);
+
+    treeView->setSizeAdjustPolicy(
+        QAbstractScrollArea::AdjustToContents);
 
     selectionInfoLabel = new QLabel();
 
