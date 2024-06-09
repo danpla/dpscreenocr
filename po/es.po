@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-06-09 13:58+0200\n"
-"PO-Revision-Date: 2023-08-05 17:51+0000\n"
+"PO-Revision-Date: 2024-06-10 17:21+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/es/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0-dev\n"
+"X-Generator: Weblate 5.6-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -659,7 +659,7 @@ msgstr "Recuperando la lista de idiomas…"
 #: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp:32
 msgctxt "digital_data"
 msgid "Size"
-msgstr ""
+msgstr "Tamaño"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:50
 msgid "An error occurred while fetching the list of languages"
@@ -695,13 +695,13 @@ msgstr "Filtrar"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:125
 msgid "No languages selected."
-msgstr ""
+msgstr "No hay idiomas seleccionados."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:139
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{count} idioma seleccionado ({size})."
+msgstr[1] "{count} idiomas seleccionados ({size})."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:226
 msgid "An error occurred while installing languages"
