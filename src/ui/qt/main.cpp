@@ -1,7 +1,7 @@
 
 #include <cstddef>
 #include <cstdlib>
-#include <memory>
+#include <optional>
 
 #include <QApplication>
 #include <QLibraryInfo>
@@ -103,10 +103,13 @@ int main(int argc, char* argv[])
         return EXIT_SUCCESS;
     }
 
-    std::unique_ptr<ui::qt::MainWindow> mainWindow;
+    // Wrap MainWindow in optional to catch ui::qt::Error only from
+    // the constructor and exclude QApplication::exec() from try-catch
+    // as the other methods are not expected to throw.
+    std::optional<ui::qt::MainWindow> mainWindow;
 
     try {
-        mainWindow = std::make_unique<ui::qt::MainWindow>();
+        mainWindow.emplace();
     } catch (ui::qt::Error& e) {
         QMessageBox::critical(nullptr, uiAppName, e.what());
         return EXIT_FAILURE;
