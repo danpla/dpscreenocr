@@ -65,6 +65,7 @@ LangManagerPage::LangManagerPage(
     filterLineEdit->setClearButtonEnabled(true);
 
     treeView = new QTreeView();
+    treeView->setUniformRowHeights(true);
     treeView->setAllColumnsShowFocus(true);
     treeView->setRootIsDecorated(false);
     treeView->setSortingEnabled(true);

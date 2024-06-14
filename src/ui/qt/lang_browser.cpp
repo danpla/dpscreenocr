@@ -65,6 +65,7 @@ LangBrowser::LangBrowser(DpsoOcr* ocr)
         pgettext("language", "Name"),
         pgettext("language", "Code")});
 
+    setUniformRowHeights(true);
     setSortingEnabled(true);
     sortByColumn(columnIdxName, Qt::AscendingOrder);
 
