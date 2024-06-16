@@ -213,10 +213,6 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
             throwError("curl_easy_setopt() " #OPT, code); \
     } while (false)
 
-    #ifndef NDEBUG
-    SETOPT(CURLOPT_VERBOSE, 1l);
-    #endif
-
     SETOPT(CURLOPT_ERRORBUFFER, curlError);
 
     SETOPT(CURLOPT_URL, url);
