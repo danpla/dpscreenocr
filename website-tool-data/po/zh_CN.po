@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2023-09-20 01:25+0200\n"
-"PO-Revision-Date: 2024-05-31 18:09+0000\n"
+"PO-Revision-Date: 2024-06-23 19:09+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "dpscreenocr/dpscreenocr-website/zh_Hans/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.6-rc\n"
 
 msgid "Language"
 msgstr "语言"
@@ -54,13 +54,13 @@ msgstr "下载量{file},这些系统在大多数系统运作,或选择供你分�
 msgid "Ubuntu and derivatives"
 msgstr "乌班图和衍生工具"
 
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid ""
 "<b>Windows</b> 7 or newer: <a {installer_link}>installer</a> or <a "
 "{zip_archive_link}>ZIP archive</a>"
 msgstr ""
 "<b>Windows</b> 7 或者更新的版本: <a {installer_link}>安装包 </a> 或者 <a "
-"{zip_archive_link}>ZIP archive</a>"
+"{zip_archive_link}>ZIP 压缩包</a>"
 
 msgid "Source code (tar.gz)"
 msgstr "源代码(tar.gz)"
