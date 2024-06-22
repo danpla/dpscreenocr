@@ -6,6 +6,7 @@ add_library(
     cfg_keys.cpp
     init.cpp
     init_intl.cpp
+    init_startup_args.cpp
     ocr_data_utils.cpp
     user_agent.cpp)
 

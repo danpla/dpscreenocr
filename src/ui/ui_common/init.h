@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+#include "startup_args.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +17,7 @@ extern "C" {
  * On failure, sets an error message (dpsoGetError()) and returns
  * false.
  */
-bool uiInit(int argc, char* argv[]);
+bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs);
 
 
 #ifdef __cplusplus

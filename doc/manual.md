@@ -283,6 +283,18 @@ that another program is already using it. In this case, try another
 key combination.
 
 
+# Command-line options
+
+Since version 1.5, dpScreenOCR supports several command-line options.
+Use `-help` to see them all.
+
+The `-hide` option is useful when adding dpScreenOCR to the autostart.
+It was added as a better alternative to the combination of the
+`ui_window_minimize_on_start` and `ui_window_minimize_to_tray` options
+from the [settings file][Tweaking], which was the only way to start
+the program with the hidden window in versions prior to 1.5.
+
+
 # Program files
 
 This section describes what files dpScreenOCR stores on your system
@@ -405,9 +417,12 @@ settings file:
     in the notification area.
 
 *   `ui_window_minimize_on_start` (`false` by default) whether to
-    minimize the window on program startup. In combination with
-    `ui_window_minimize_to_tray`, this option is useful when adding
-    dpScreenOCR to autostart.
+    minimize the window on program startup.
+
+    In combination with `ui_window_minimize_to_tray`, this option can
+    be useful when adding dpScreenOCR to the autostart, but the
+    `-hide` command-line option may be a better alternative if you
+    want the usual window behavior when starting the program manually.
 
 *   `ui_window_minimize_to_tray` (`false` by default) whether to hide
     the window to the notification area when minimizing. This option

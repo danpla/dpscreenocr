@@ -53,7 +53,7 @@ enum : DpsoHotkeyAction {
 const auto ocrEngineIdx = 0;
 
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(const UiStartupArgs& startupArgs)
     : progressStatusFmt{_(
         "Recognition {progress}% ({current_job}/{total_jobs})")}
 {
@@ -133,9 +133,10 @@ MainWindow::MainWindow()
 
     loadState(cfg.get());
 
-    if (!minimizeOnStart)
+    if (!minimizeOnStart && !startupArgs.hide)
         show();
-    else if (trayIcon->isVisible() && minimizeToTray)
+    else if (trayIcon->isVisible()
+            && (minimizeToTray || startupArgs.hide))
         visibilityAction->setChecked(false);
     else
         showMinimized();

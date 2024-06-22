@@ -35,7 +35,7 @@ class StatusIndicator;
 class MainWindow : public QWidget {
     Q_OBJECT
 public:
-    MainWindow();
+    explicit MainWindow(const UiStartupArgs& startupArgs);
 protected:
     void timerEvent(QTimerEvent* event) override;
     void closeEvent(QCloseEvent* event) override;

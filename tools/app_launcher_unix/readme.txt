@@ -87,6 +87,19 @@ Where the first path is a symbolic link to libstdc++.so.6.0.28,
 relative to the "lib/fallback/libstdc++.so.6" directory.
 
 
+LAUNCHER_ARGV0 environment variable
+-----------------------------------
+
+Your executable can use the LAUNCHER_ARGV0 environment variable in
+cases where you need the launcher's argv[0] instead of the one passed
+to the launched executable.
+
+If LAUNCHER_ARGV0 is already set, the launcher will leave it
+unchanged. If the ARGV0 environment variable is set, its value is used
+for LAUNCHER_ARGV0 (this is for AppImage support). Otherwise,
+LAUNCHER_ARGV0 is set to the launcher's actual argv[0].
+
+
 Debugging
 ---------
 

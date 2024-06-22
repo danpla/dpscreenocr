@@ -1,5 +1,4 @@
 
-#include <cstddef>
 #include <cstdlib>
 #include <optional>
 
@@ -43,12 +42,14 @@ static void installQtTranslations(QApplication& app)
 
 int main(int argc, char* argv[])
 {
+    UiStartupArgs startupArgs;
+
     // If uiInit() fails, postpone displaying a message box until
     // QApplication is ready. Actually, we can call uiInit() after
     // QApplication has been constructed, but on some platforms
     // uiInit() can restart the executable, so we want to avoid
     // unnecessary QApplication initialization in this case.
-    const auto uiInitOk = uiInit(argc, argv);
+    const auto uiInitOk = uiInit(argc, argv, &startupArgs);
 
     // High DPI support is enabled by default in Qt 6.
     #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -109,7 +110,7 @@ int main(int argc, char* argv[])
     std::optional<ui::qt::MainWindow> mainWindow;
 
     try {
-        mainWindow.emplace();
+        mainWindow.emplace(startupArgs);
     } catch (ui::qt::Error& e) {
         QMessageBox::critical(nullptr, uiAppName, e.what());
         return EXIT_FAILURE;

@@ -221,27 +221,69 @@ static char* getExePath(ErrorCtx* errorCtx)
 }
 
 
+static bool setEnv(
+    const char* name,
+    const char* val,
+    bool overwrite,
+    ErrorCtx* errorCtx)
+{
+    if (setenv(name, val, overwrite) == 0)
+        return true;
+
+    errorCtxSetText(
+        errorCtx,
+        "setenv(\"%s\", \"%s\", %i): %s",
+        name, val, overwrite, strerror(errno));
+    return false;
+}
+
+
 static const char* const ldLibraryPathEnv = "LD_LIBRARY_PATH";
 
 
 static bool prependToColonSeparatedEnv(
-    const char* envVar, const char* val, ErrorCtx* errorCtx)
+    const char* name, const char* val, ErrorCtx* errorCtx)
 {
-    const char* oldVal = getenv(envVar);
+    const char* oldVal = getenv(name);
     if (!oldVal)
         oldVal = "";
 
     CLEANUP_STR char* newVal = xAsprintf(
         "%s%s%s", val, *oldVal ? ":" : "", oldVal);
 
-    if (setenv(envVar, newVal, 1) == 0)
-        return true;
+    return setEnv(name, newVal, true, errorCtx);
+}
 
-    errorCtxSetText(
-        errorCtx,
-        "setenv(\"%s\", \"%s\", 1): %s",
-        envVar, newVal, strerror(errno));
-    return false;
+
+static const char* const launcherArgv0Env = "LAUNCHER_ARGV0";
+
+
+static bool setupLauncherArgv0(
+    const char* realArgv0, ErrorCtx* errorCtx)
+{
+    const char* launcherArgv0 = getenv(launcherArgv0Env);
+    if (launcherArgv0 && *launcherArgv0) {
+        logMsg(
+            logDebug,
+            "%s is already set (\"%s\")",
+            launcherArgv0Env, launcherArgv0);
+        return true;
+    }
+
+    // Check ARGV0 for AppImage support.
+    const char* const argv0Env = "ARGV0";
+
+    const char* argv0 = getenv(argv0Env);
+    if (argv0 && *argv0) {
+        logMsg(
+            logDebug,
+            "Using %s (\"%s\") for %s",
+            argv0Env, argv0, launcherArgv0Env);
+        launcherArgv0 = argv0;
+    } else
+        launcherArgv0 = realArgv0;
+
+    return setEnv(launcherArgv0Env, launcherArgv0, true, errorCtx);
 }
 
 
@@ -920,6 +962,14 @@ int main(int argc, char* argv[])
 
     CLEANUP_ERROR_CTX ErrorCtx* errorCtx = errorCtxCreate();
 
+    if (!setupLauncherArgv0(argv[0], errorCtx)) {
+        logMsg(
+            logError,
+            "Can't set up the %s environment variable: %s",
+            launcherArgv0Env, errorCtxGetText(errorCtx));
+        return EXIT_FAILURE;
+    }
+
     CLEANUP_LAUNCHER_PATHS LauncherPaths launcherPaths = {0};
     if (!loadLauncherPaths(&launcherPaths, errorCtx)) {
         logMsg(
@@ -936,8 +986,7 @@ int main(int argc, char* argv[])
         logMsg(
             logError,
             "Can't set up libraries from \"%s\": %s",
-            launcherPaths.libDir,
-            errorCtxGetText(errorCtx));
+            launcherPaths.libDir, errorCtxGetText(errorCtx));
         return EXIT_FAILURE;
     }
 
