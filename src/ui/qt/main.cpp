@@ -24,8 +24,13 @@
 
 static void installQtTranslations(QApplication& app)
 {
-    const auto translationsPath = QLibraryInfo::location(
-        QLibraryInfo::TranslationsPath);
+    const auto translationsPath =
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        QLibraryInfo::path(
+        #else
+        QLibraryInfo::location(
+        #endif
+            QLibraryInfo::TranslationsPath);
 
     const auto localeName = QLocale::system().name();
 
