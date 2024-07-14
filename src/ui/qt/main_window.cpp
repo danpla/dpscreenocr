@@ -514,10 +514,22 @@ QWidget* MainWindow::createSettingsTab()
 
     minimizeToTrayCheck = new QCheckBox(
         _("Minimize to notification area"));
+    minimizeToTrayCheck->setToolTip(
+        dpsoStrNFormat(
+            _(
+                "Minimizing the window will hide {app_name}. Use the "
+                "notification area icon to show it again."),
+            {{"app_name", uiAppName}}));
     minimizeToTrayCheck->setEnabled(false);
     trayIconSubordinateLayout->addWidget(minimizeToTrayCheck);
 
     closeToTrayCheck = new QCheckBox(_("Close to notification area"));
+    closeToTrayCheck->setToolTip(
+        dpsoStrNFormat(
+            _(
+                "Closing the window will hide {app_name}. Use the "
+                "notification area icon to show it again."),
+            {{"app_name", uiAppName}}));
     closeToTrayCheck->setEnabled(false);
     trayIconSubordinateLayout->addWidget(closeToTrayCheck);
 
