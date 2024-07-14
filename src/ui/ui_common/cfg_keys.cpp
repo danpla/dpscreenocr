@@ -46,6 +46,8 @@ const char* const cfgKeyUiWindowMinimizeOnStart =
     "ui_window_minimize_on_start";
 const char* const cfgKeyUiWindowMinimizeToTray =
     "ui_window_minimize_to_tray";
+const char* const cfgKeyUiWindowCloseToTray =
+    "ui_window_close_to_tray";
 const char* const cfgKeyUiWindowWidth =
     "ui_window_width";
 const char* const cfgKeyUiWindowX =

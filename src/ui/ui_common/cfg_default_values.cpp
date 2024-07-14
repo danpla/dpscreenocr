@@ -28,3 +28,5 @@ int const cfgDefaultValueUiWindowMinimizeOnStart =
     false;
 int const cfgDefaultValueUiWindowMinimizeToTray =
     false;
+int const cfgDefaultValueUiWindowCloseToTray =
+    false;

@@ -70,6 +70,7 @@ private:
 
     QAction* visibilityAction;
     QAction* quitAction;
+    bool quitRequested{};
 
     QTabWidget* tabs;
 
@@ -94,11 +95,13 @@ private:
     QCheckBox* startMinimizedCheck;
     QCheckBox* showTrayIconCheck;
     QCheckBox* minimizeToTrayCheck;
+    QCheckBox* closeToTrayCheck;
 
     QSystemTrayIcon* trayIcon;
     QIcon trayIconNormal;
     QIcon trayIconBusy;
     QIcon trayIconError;
+
 
     ui::TaskbarUPtr taskbar;
 

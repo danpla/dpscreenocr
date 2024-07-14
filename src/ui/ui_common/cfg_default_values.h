@@ -18,3 +18,4 @@ extern int const cfgDefaultValueOcrSplitTextBlocks;
 extern int const cfgDefaultValueUiTrayIconVisible;
 extern int const cfgDefaultValueUiWindowMinimizeOnStart;
 extern int const cfgDefaultValueUiWindowMinimizeToTray;
+extern int const cfgDefaultValueUiWindowCloseToTray;

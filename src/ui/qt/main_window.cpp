@@ -194,6 +194,16 @@ static bool confirmQuitWhileOcrIsActive(QWidget* parent)
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
+    if (!quitRequested
+            && trayIcon->isVisible()
+            && closeToTrayCheck->isChecked()) {
+        visibilityAction->setChecked(false);
+        event->ignore();
+        return;
+    }
+
+    quitRequested = false;
+
     if (dpsoOcrHasPendingJobs(ocr.get())
             && !confirmQuitWhileOcrIsActive(this)) {
         event->ignore();
@@ -377,7 +387,13 @@ void MainWindow::createQActions()
 
     quitAction = new QAction(_("Quit"), this);
     connect(
-        quitAction, &QAction::triggered, this, &MainWindow::close);
+        quitAction,
+        &QAction::triggered,
+        [&]()
+        {
+            quitRequested = true;
+            close();
+        });
 }
 
 
@@ -490,9 +506,11 @@ QWidget* MainWindow::createSettingsTab()
             if (!isChecked) {
                 visibilityAction->setChecked(true);
                 minimizeToTrayCheck->setChecked(false);
+                closeToTrayCheck->setChecked(false);
             }
 
             minimizeToTrayCheck->setEnabled(isChecked);
+            closeToTrayCheck->setEnabled(isChecked);
         });
     interfaceGroupLayout->addWidget(showTrayIconCheck);
 
@@ -505,6 +523,10 @@ QWidget* MainWindow::createSettingsTab()
         _("Minimize to notification area"));
     minimizeToTrayCheck->setEnabled(false);
     trayIconSubordinateLayout->addWidget(minimizeToTrayCheck);
+
+    closeToTrayCheck = new QCheckBox(_("Close to notification area"));
+    closeToTrayCheck->setEnabled(false);
+    trayIconSubordinateLayout->addWidget(closeToTrayCheck);
 
     auto* tab = new QWidget();
     auto* tabLayout = new QVBoxLayout(tab);
@@ -557,6 +579,11 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfgKeyOcrSplitTextBlocks,
             cfgDefaultValueOcrSplitTextBlocks));
 
+    copyToClipboardTextSeparator = dpsoCfgGetStr(
+        cfg,
+        cfgKeyActionCopyToClipboardTextSeparator,
+        cfgDefaultValueActionCopyToClipboardTextSeparator);
+
     DpsoHotkey toggleSelectionHotkey;
     dpsoCfgGetHotkey(
         cfg,
@@ -591,11 +618,12 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfg,
             cfgKeyUiWindowMinimizeToTray,
             cfgDefaultValueUiWindowMinimizeToTray));
-
-    copyToClipboardTextSeparator = dpsoCfgGetStr(
-        cfg,
-        cfgKeyActionCopyToClipboardTextSeparator,
-        cfgDefaultValueActionCopyToClipboardTextSeparator);
+    closeToTrayCheck->setChecked(
+        trayIcon->isVisible()
+        && dpsoCfgGetBool(
+            cfg,
+            cfgKeyUiWindowCloseToTray,
+            cfgDefaultValueUiWindowCloseToTray));
 
     tabs->setCurrentIndex(dpsoCfgGetInt(cfg, cfgKeyUiActiveTab, 0));
 
@@ -635,6 +663,11 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         cfgKeyOcrSplitTextBlocks,
         splitTextBlocksCheck->isChecked());
 
+    dpsoCfgSetStr(
+        cfg,
+        cfgKeyActionCopyToClipboardTextSeparator,
+        copyToClipboardTextSeparator.toUtf8().data());
+
     DpsoHotkey toggleSelectionHotkey;
     dpsoKeyManagerFindActionHotkey(
         hotkeyActionToggleSelection, &toggleSelectionHotkey);
@@ -654,11 +687,10 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         cfg,
         cfgKeyUiWindowMinimizeToTray,
         minimizeToTrayCheck->isChecked());
-
-    dpsoCfgSetStr(
+    dpsoCfgSetBool(
         cfg,
-        cfgKeyActionCopyToClipboardTextSeparator,
-        copyToClipboardTextSeparator.toUtf8().data());
+        cfgKeyUiWindowCloseToTray,
+        closeToTrayCheck->isChecked());
 
     dpsoCfgSetInt(cfg, cfgKeyUiActiveTab, tabs->currentIndex());
 

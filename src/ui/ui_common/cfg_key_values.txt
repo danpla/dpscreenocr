@@ -19,6 +19,7 @@ ui_window_height
 ui_window_maximized
 ui_window_minimize_on_start             | int         | false
 ui_window_minimize_to_tray              | int         | false
+ui_window_close_to_tray                 | int         | false
 ui_window_width
 ui_window_x
 ui_window_y
