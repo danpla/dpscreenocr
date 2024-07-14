@@ -37,6 +37,7 @@ LOCALE_TO_BCP47 = {
     'es': 'es',
     'fr': 'fr',
     'hr': 'hr',
+    'it': 'it',
     'nb_NO': 'nb',
     'pa_PK': 'pa',
     'pl': 'pl',
