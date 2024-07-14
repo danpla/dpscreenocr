@@ -5,6 +5,7 @@
 
 
 class QFont;
+class QMargins;
 class QWidget;
 
 
@@ -16,6 +17,9 @@ QString formatDataSize(qint64 size);
 
 QString joinInLayoutDirection(
     const QString& separator, const QStringList& list);
+
+
+QMargins makeSubordinateControlMargins();
 
 
 QIcon getIcon(const QString &name);

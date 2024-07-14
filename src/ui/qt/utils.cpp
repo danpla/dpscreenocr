@@ -6,9 +6,11 @@
 #include <QFileInfo>
 #include <QFont>
 #include <QLocale>
+#include <QMargins>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QtGlobal>
+#include <QStyle>
 
 #include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"
@@ -40,6 +42,25 @@ QString joinInLayoutDirection(
 
         result.insert(rtl ? 0 : result.size(), list[i]);
     }
+
+    return result;
+}
+
+
+QMargins makeSubordinateControlMargins()
+{
+    const auto* style = QApplication::style();
+    Q_ASSERT(style);
+
+    const auto margin =
+        style->pixelMetric(QStyle::PM_IndicatorWidth)
+        + style->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
+
+    QMargins result;
+    if (QApplication::isRightToLeft())
+        result.setRight(margin);
+    else
+        result.setLeft(margin);
 
     return result;
 }

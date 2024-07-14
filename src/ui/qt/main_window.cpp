@@ -116,6 +116,7 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
     tabs = new QTabWidget();
     tabs->addTab(createMainTab(), pgettext("ui_tab", "Main"));
     tabs->addTab(createHistoryTab(), _("History"));
+    tabs->addTab(createSettingsTab(), _("Settings"));
     tabs->addTab(createAboutTab(), _("About"));
 
     auto* mainLayout = new QVBoxLayout(this);
@@ -133,10 +134,11 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
 
     loadState(cfg.get());
 
-    if (!minimizeOnStart && !startupArgs.hide)
+    if (!startMinimizedCheck->isChecked() && !startupArgs.hide)
         show();
     else if (trayIcon->isVisible()
-            && (minimizeToTray || startupArgs.hide))
+            && (minimizeToTrayCheck->isChecked()
+                    || startupArgs.hide))
         visibilityAction->setChecked(false);
     else
         showMinimized();
@@ -226,7 +228,7 @@ void MainWindow::changeEvent(QEvent* event)
     if (event->type() == QEvent::WindowStateChange
             && isMinimized()
             && trayIcon->isVisible()
-            && minimizeToTray
+            && minimizeToTrayCheck->isChecked()
             // The tray icon is unresponsive when a modal window is
             // active, so it will be impossible to unhide the
             // application in desktop environments where the modal
@@ -248,7 +250,7 @@ void MainWindow::openLangManager()
 
     // Refresh status in case we installed the first (or removed the
     // last) language.
-    statusValid = false;
+    invalidateStatus();
 
     dpsoKeyManagerSetIsEnabled(true);
 }
@@ -427,22 +429,11 @@ QWidget* MainWindow::createMainTab()
 
     actionsGroupLayout->addWidget(actionChooser);
 
-    auto* hotkeyGroup = new QGroupBox(_("Hotkey"));
-    auto* hotkeyGroupLayout = new QVBoxLayout(hotkeyGroup);
-
-    hotkeyEditor = new HotkeyEditor(
-        hotkeyActionToggleSelection, true);
-    connect(
-        hotkeyEditor, &HotkeyEditor::changed,
-        hotkeyEditor, &HotkeyEditor::bind);
-    hotkeyGroupLayout->addWidget(hotkeyEditor);
-
     auto* tab = new QWidget();
     auto* tabLayout = new QVBoxLayout(tab);
     tabLayout->addWidget(statusGroup);
     tabLayout->addWidget(ocrGroup);
     tabLayout->addWidget(actionsGroup);
-    tabLayout->addWidget(hotkeyGroup);
 
     return tab;
 }
@@ -462,6 +453,64 @@ QWidget* MainWindow::createHistoryTab()
     auto* tab = new QWidget();
     auto* tabLayout = new QVBoxLayout(tab);
     tabLayout->addWidget(history);
+
+    return tab;
+}
+
+
+QWidget* MainWindow::createSettingsTab()
+{
+    auto* hotkeyGroup = new QGroupBox(_("Hotkey"));
+    auto* hotkeyGroupLayout = new QVBoxLayout(hotkeyGroup);
+
+    hotkeyEditor = new HotkeyEditor(
+        hotkeyActionToggleSelection, true);
+    connect(
+        hotkeyEditor, &HotkeyEditor::changed,
+        hotkeyEditor, &HotkeyEditor::bind);
+    connect(
+        hotkeyEditor, &HotkeyEditor::changed,
+        this, &MainWindow::invalidateStatus);
+    hotkeyGroupLayout->addWidget(hotkeyEditor);
+
+    auto* interfaceGroup = new QGroupBox(_("Interface"));
+    auto* interfaceGroupLayout = new QVBoxLayout(interfaceGroup);
+
+    startMinimizedCheck = new QCheckBox(_("Minimize on startup"));
+    interfaceGroupLayout->addWidget(startMinimizedCheck);
+
+    showTrayIconCheck = new QCheckBox(
+        _("Show notification area icon"));
+    connect(
+        showTrayIconCheck, &QCheckBox::toggled,
+        [&](bool isChecked)
+        {
+            trayIcon->setVisible(isChecked);
+
+            if (!isChecked) {
+                visibilityAction->setChecked(true);
+                minimizeToTrayCheck->setChecked(false);
+            }
+
+            minimizeToTrayCheck->setEnabled(isChecked);
+        });
+    interfaceGroupLayout->addWidget(showTrayIconCheck);
+
+    auto* trayIconSubordinateLayout = new QVBoxLayout();
+    trayIconSubordinateLayout->setContentsMargins(
+        makeSubordinateControlMargins());
+    interfaceGroupLayout->addLayout(trayIconSubordinateLayout);
+
+    minimizeToTrayCheck = new QCheckBox(
+        _("Minimize to notification area"));
+    minimizeToTrayCheck->setEnabled(false);
+    trayIconSubordinateLayout->addWidget(minimizeToTrayCheck);
+
+    auto* tab = new QWidget();
+    auto* tabLayout = new QVBoxLayout(tab);
+    tabLayout->addWidget(hotkeyGroup);
+    tabLayout->addWidget(interfaceGroup);
+    tabLayout->addStretch();
 
     return tab;
 }
@@ -525,6 +574,24 @@ void MainWindow::loadState(const DpsoCfg* cfg)
         &cancelSelectionHotkey,
         &cfgDefaultValueHotkeyCancelSelection);
 
+    startMinimizedCheck->setChecked(
+        dpsoCfgGetBool(
+            cfg,
+            cfgKeyUiWindowMinimizeOnStart,
+            cfgDefaultValueUiWindowMinimizeOnStart));
+    trayIcon->setVisible(
+        dpsoCfgGetBool(
+            cfg,
+            cfgKeyUiTrayIconVisible,
+            cfgDefaultValueUiTrayIconVisible));
+    showTrayIconCheck->setChecked(trayIcon->isVisible());
+    minimizeToTrayCheck->setChecked(
+        trayIcon->isVisible()
+        && dpsoCfgGetBool(
+            cfg,
+            cfgKeyUiWindowMinimizeToTray,
+            cfgDefaultValueUiWindowMinimizeToTray));
+
     copyToClipboardTextSeparator = dpsoCfgGetStr(
         cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
@@ -550,21 +617,6 @@ void MainWindow::loadState(const DpsoCfg* cfg)
     langBrowser->loadState(cfg);
     actionChooser->loadState(cfg);
     history->loadState(cfg);
-
-    trayIcon->setVisible(
-        dpsoCfgGetBool(
-            cfg,
-            cfgKeyUiTrayIconVisible,
-            cfgDefaultValueUiTrayIconVisible));
-    minimizeToTray = dpsoCfgGetBool(
-        cfg,
-        cfgKeyUiWindowMinimizeToTray,
-        cfgDefaultValueUiWindowMinimizeToTray);
-
-    minimizeOnStart = dpsoCfgGetBool(
-        cfg,
-        cfgKeyUiWindowMinimizeOnStart,
-        cfgDefaultValueUiWindowMinimizeOnStart);
 
     selectionBorderWidth = dpsoCfgGetInt(
         cfg,
@@ -592,6 +644,17 @@ void MainWindow::saveState(DpsoCfg* cfg) const
     dpsoCfgSetHotkey(
         cfg, cfgKeyHotkeyCancelSelection, &cancelSelectionHotkey);
 
+    dpsoCfgSetBool(
+        cfg,
+        cfgKeyUiWindowMinimizeOnStart,
+        startMinimizedCheck->isChecked());
+    dpsoCfgSetBool(
+        cfg, cfgKeyUiTrayIconVisible, trayIcon->isVisible());
+    dpsoCfgSetBool(
+        cfg,
+        cfgKeyUiWindowMinimizeToTray,
+        minimizeToTrayCheck->isChecked());
+
     dpsoCfgSetStr(
         cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
@@ -612,13 +675,6 @@ void MainWindow::saveState(DpsoCfg* cfg) const
     actionChooser->saveState(cfg);
     history->saveState(cfg);
 
-    dpsoCfgSetBool(
-        cfg, cfgKeyUiTrayIconVisible, trayIcon->isVisible());
-    dpsoCfgSetBool(cfg, cfgKeyUiWindowMinimizeToTray, minimizeToTray);
-
-    dpsoCfgSetBool(
-        cfg, cfgKeyUiWindowMinimizeOnStart, minimizeOnStart);
-
     dpsoCfgSetInt(
         cfg, cfgKeySelectionBorderWidth, selectionBorderWidth);
 }
@@ -638,6 +694,7 @@ bool MainWindow::canStartSelection() const
 void MainWindow::setSelectionIsEnabled(bool isEnabled)
 {
     dpsoSelectionSetIsEnabled(isEnabled);
+    invalidateStatus();
 
     if (!isEnabled) {
         dpsoKeyManagerUnbindAction(hotkeyActionCancelSelection);
@@ -752,12 +809,23 @@ void MainWindow::updateStatus()
         setStatus(Status::error, _("Please select languages"));
     else if (!actionChooser->getSelectedActions())
         setStatus(Status::error, _("Please select actions"));
-    else
+    else {
+        DpsoHotkey toggleSelectionHotkey;
+        dpsoKeyManagerFindActionHotkey(
+            hotkeyActionToggleSelection, &toggleSelectionHotkey);
+
         setStatus(
             Status::ok,
             dpsoStrNFormat(
-                _("{app_name} is ready for recognition"),
-                {{"app_name", uiAppName}}));
+                !dpsoSelectionGetIsEnabled()
+                    ? _("Press {hotkey} to start area selection")
+                    : _("Press {hotkey} to finish selection"),
+                {
+                    {
+                        "hotkey",
+                        dpsoHotkeyToString(&toggleSelectionHotkey)}
+                }));
+    }
 
     statusValid = true;
 }

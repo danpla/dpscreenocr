@@ -6,7 +6,6 @@
 #include <cstring>
 
 #include "app_info.h"
-#include "file_names.h"
 
 
 namespace ui {

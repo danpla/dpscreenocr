@@ -82,7 +82,6 @@ private:
     LangBrowser* langBrowser;
     QPushButton* langManagerButton;
     ActionChooser* actionChooser;
-    HotkeyEditor* hotkeyEditor;
     DpsoHotkey cancelSelectionHotkey{};
 
     QString clipboardText;
@@ -91,13 +90,15 @@ private:
 
     History* history;
 
+    HotkeyEditor* hotkeyEditor;
+    QCheckBox* startMinimizedCheck;
+    QCheckBox* showTrayIconCheck;
+    QCheckBox* minimizeToTrayCheck;
+
     QSystemTrayIcon* trayIcon;
     QIcon trayIconNormal;
     QIcon trayIconBusy;
     QIcon trayIconError;
-
-    bool minimizeToTray{};
-    bool minimizeOnStart{};
 
     ui::TaskbarUPtr taskbar;
 
@@ -108,6 +109,7 @@ private:
     QWidget* createMainTab();
     QWidget* createActionsTab();
     QWidget* createHistoryTab();
+    QWidget* createSettingsTab();
     QWidget* createAboutTab();
 
     void createTrayIcon();
