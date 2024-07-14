@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <QSystemTrayIcon>
+#include <QIcon>
 #include <QWidget>
 
 #include "dpso/dpso.h"
@@ -18,6 +18,7 @@ class QCheckBox;
 class QLabel;
 class QPushButton;
 class QSessionManager;
+class QSystemTrayIcon;
 class QSystemTrayIcon;
 class QTabWidget;
 
@@ -44,7 +45,6 @@ private slots:
     void openLangManager();
     void invalidateStatus();
     void setVisibility(bool vilible);
-    void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void commitData(QSessionManager& sessionManager);
 private:
     dpso::DpsoInitializer dpsoInitializer;
@@ -101,7 +101,6 @@ private:
     QIcon trayIconNormal;
     QIcon trayIconBusy;
     QIcon trayIconError;
-
 
     ui::TaskbarUPtr taskbar;
 

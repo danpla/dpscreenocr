@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSessionManager>
+#include <QSystemTrayIcon>
 #include <QTabWidget>
 #include <QTimerEvent>
 #include <QVBoxLayout>
@@ -287,14 +288,6 @@ void MainWindow::setVisibility(bool visible)
 }
 
 
-void MainWindow::trayIconActivated(
-    QSystemTrayIcon::ActivationReason reason)
-{
-    if (reason == QSystemTrayIcon::Trigger)
-        visibilityAction->toggle();
-}
-
-
 void MainWindow::commitData(QSessionManager& sessionManager)
 {
     // Our main goal here is to save settings. Still, we also try to
@@ -563,8 +556,13 @@ void MainWindow::createTrayIcon()
     trayIcon->setContextMenu(menu);
 
     connect(
-        trayIcon, &QSystemTrayIcon::activated,
-        this, &MainWindow::trayIconActivated);
+        trayIcon,
+        &QSystemTrayIcon::activated,
+        [&](QSystemTrayIcon::ActivationReason reason)
+        {
+            if (reason == QSystemTrayIcon::Trigger)
+                visibilityAction->toggle();
+        });
 }
 
 
