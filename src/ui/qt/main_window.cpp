@@ -625,16 +625,15 @@ void MainWindow::loadState(const DpsoCfg* cfg)
 
     tabs->setCurrentIndex(dpsoCfgGetInt(cfg, cfgKeyUiActiveTab, 0));
 
-    const auto windowWidth = dpsoCfgGetInt(
-        cfg, cfgKeyUiWindowWidth, 0);
-    const auto windowHeight = dpsoCfgGetInt(
-        cfg, cfgKeyUiWindowHeight, 0);
+    const QSize windowSize{
+        dpsoCfgGetInt(cfg, cfgKeyUiWindowWidth, 0),
+        dpsoCfgGetInt(cfg, cfgKeyUiWindowHeight, 0)};
 
-    if (windowWidth > 0 && windowHeight > 0) {
+    if (!windowSize.isEmpty()) {
         move(
             dpsoCfgGetInt(cfg, cfgKeyUiWindowX, x()),
             dpsoCfgGetInt(cfg, cfgKeyUiWindowY, y()));
-        resize(windowWidth, windowHeight);
+        resize(windowSize);
     }
 
     if (dpsoCfgGetBool(cfg, cfgKeyUiWindowMaximized, false))
