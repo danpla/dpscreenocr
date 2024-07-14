@@ -4,29 +4,29 @@
 #include "cfg_default_values.h"
 
 
-int const cfgDefaultValueActionAddToHistory =
+bool const cfgDefaultValueActionAddToHistory =
     true;
-int const cfgDefaultValueActionCopyToClipboard =
+bool const cfgDefaultValueActionCopyToClipboard =
     false;
 const char* const cfgDefaultValueActionCopyToClipboardTextSeparator =
     "\n\n\n";
-int const cfgDefaultValueActionRunExecutable =
+bool const cfgDefaultValueActionRunExecutable =
     false;
-int const cfgDefaultValueHistoryWrapWords =
+bool const cfgDefaultValueHistoryWrapWords =
     true;
 DpsoHotkey const cfgDefaultValueHotkeyCancelSelection =
     {dpsoKeyEscape, dpsoNoKeyMods};
 DpsoHotkey const cfgDefaultValueHotkeyToggleSelection =
     {dpsoKeyGrave, dpsoKeyModCtrl};
-int const cfgDefaultValueOcrAllowQueuing =
+bool const cfgDefaultValueOcrAllowQueuing =
     true;
-int const cfgDefaultValueOcrSplitTextBlocks =
+bool const cfgDefaultValueOcrSplitTextBlocks =
     true;
-int const cfgDefaultValueUiTrayIconVisible =
+bool const cfgDefaultValueUiTrayIconVisible =
     true;
-int const cfgDefaultValueUiWindowMinimizeOnStart =
+bool const cfgDefaultValueUiWindowMinimizeOnStart =
     false;
-int const cfgDefaultValueUiWindowMinimizeToTray =
+bool const cfgDefaultValueUiWindowMinimizeToTray =
     false;
-int const cfgDefaultValueUiWindowCloseToTray =
+bool const cfgDefaultValueUiWindowCloseToTray =
     false;

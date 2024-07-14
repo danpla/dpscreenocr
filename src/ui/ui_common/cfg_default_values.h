@@ -3,19 +3,21 @@
 
 #pragma once
 
+#include <stdbool.h>
+
 #include "dpso/dpso.h"
 
 
-extern int const cfgDefaultValueActionAddToHistory;
-extern int const cfgDefaultValueActionCopyToClipboard;
+extern bool const cfgDefaultValueActionAddToHistory;
+extern bool const cfgDefaultValueActionCopyToClipboard;
 extern const char* const cfgDefaultValueActionCopyToClipboardTextSeparator;
-extern int const cfgDefaultValueActionRunExecutable;
-extern int const cfgDefaultValueHistoryWrapWords;
+extern bool const cfgDefaultValueActionRunExecutable;
+extern bool const cfgDefaultValueHistoryWrapWords;
 extern DpsoHotkey const cfgDefaultValueHotkeyCancelSelection;
 extern DpsoHotkey const cfgDefaultValueHotkeyToggleSelection;
-extern int const cfgDefaultValueOcrAllowQueuing;
-extern int const cfgDefaultValueOcrSplitTextBlocks;
-extern int const cfgDefaultValueUiTrayIconVisible;
-extern int const cfgDefaultValueUiWindowMinimizeOnStart;
-extern int const cfgDefaultValueUiWindowMinimizeToTray;
-extern int const cfgDefaultValueUiWindowCloseToTray;
+extern bool const cfgDefaultValueOcrAllowQueuing;
+extern bool const cfgDefaultValueOcrSplitTextBlocks;
+extern bool const cfgDefaultValueUiTrayIconVisible;
+extern bool const cfgDefaultValueUiWindowMinimizeOnStart;
+extern bool const cfgDefaultValueUiWindowMinimizeToTray;
+extern bool const cfgDefaultValueUiWindowCloseToTray;
