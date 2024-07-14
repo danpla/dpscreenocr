@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-06-09 13:58+0200\n"
+"POT-Creation-Date: 2024-07-14 18:27+0200\n"
 "PO-Revision-Date: 2024-06-10 17:21+0000\n"
 "Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
 "org>\n"
@@ -578,7 +578,7 @@ msgstr "导出为…"
 msgid "Clear…"
 msgstr "清空…"
 
-#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:118
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:119
 msgid "History"
 msgstr "历史记录"
 
@@ -598,8 +598,8 @@ msgstr "导出历史记录"
 msgid "Clear the history?"
 msgstr "清空历史记录？"
 
-#: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:277
-#: src/ui/qt/main_window.cpp:187
+#: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:282
+#: src/ui/qt/main_window.cpp:191
 msgid "Cancel"
 msgstr "取消"
 
@@ -666,26 +666,26 @@ msgstr "尺寸"
 msgid "An error occurred while fetching the list of languages"
 msgstr "查询语言总列表时出问题了"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:406
+#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:418
 msgid "Language manager"
 msgstr "语言管理器"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:99
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:184
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:189
 msgid "Install"
 msgstr "安装"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:100
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:184
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:189
 msgid "Update"
 msgstr "更新"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:101
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:277
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:282
 msgid "Remove"
 msgstr "卸载"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:122
+#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:143
 msgid "Close"
 msgstr "关闭"
 
@@ -694,37 +694,37 @@ msgctxt "noun"
 msgid "Filter"
 msgstr "查找"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:125
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:130
 msgid "No languages selected."
 msgstr "未选择语言。"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:139
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:144
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
 msgstr[0] "选中了 {count} 种语言 ({size})."
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:226
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:231
 msgid "An error occurred while installing languages"
 msgstr "安装可识别的语言时出问题了"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:227
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:232
 msgid "An error occurred while updating languages"
 msgstr "更新可识别的语言时出问题了"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:241
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:246
 msgid "Remove…"
 msgstr "卸载…"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:266
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:271
 msgid "Remove “{name}”?"
 msgstr "卸载“{name}”？"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:271
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:276
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] "卸载这 {count} 个可识别的语言？"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:296
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:301
 msgid "Some languages were not removed"
 msgstr "一些语言没卸载掉"
 
@@ -732,79 +732,119 @@ msgstr "一些语言没卸载掉"
 msgid "Check your network connection and try again."
 msgstr "看一下网络连没连上，再试一次。"
 
-#: src/ui/qt/main.cpp:101
+#: src/ui/qt/main.cpp:107
 msgid "{app_name} is already running"
 msgstr "{app_name} 已经打开了"
 
-#: src/ui/qt/main_window.cpp:58
+#: src/ui/qt/main_window.cpp:59
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "已识别 {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:117
+#: src/ui/qt/main_window.cpp:118
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "主页"
 
-#: src/ui/qt/main_window.cpp:119
+#: src/ui/qt/main_window.cpp:120
+msgid "Settings"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:121
 msgid "About"
 msgstr "关于软件"
 
-#: src/ui/qt/main_window.cpp:186
+#: src/ui/qt/main_window.cpp:190
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "识别还没完成。真的要退出吗？"
 
-#: src/ui/qt/main_window.cpp:188 src/ui/qt/main_window.cpp:375
+#: src/ui/qt/main_window.cpp:192 src/ui/qt/main_window.cpp:381
 msgid "Quit"
 msgstr "退出"
 
-#: src/ui/qt/main_window.cpp:367
+#: src/ui/qt/main_window.cpp:373
 msgid "Show {app_name}"
 msgstr "显示 {app_name}"
 
-#: src/ui/qt/main_window.cpp:383
+#: src/ui/qt/main_window.cpp:395
 msgid "Status"
 msgstr "状态"
 
-#: src/ui/qt/main_window.cpp:393
+#: src/ui/qt/main_window.cpp:405
 msgid "Character recognition"
 msgstr "字符识别"
 
-#: src/ui/qt/main_window.cpp:397
+#: src/ui/qt/main_window.cpp:409
 msgid "Split text blocks"
 msgstr "识别分块的文本"
 
-#: src/ui/qt/main_window.cpp:399
+#: src/ui/qt/main_window.cpp:411
 msgid "Split independent text blocks, such as columns"
 msgstr "识别出独立的文本块，比如分栏的文本"
 
-#: src/ui/qt/main_window.cpp:402
+#: src/ui/qt/main_window.cpp:414
 msgid "Languages:"
 msgstr "语言："
 
-#: src/ui/qt/main_window.cpp:408
+#: src/ui/qt/main_window.cpp:420
 msgid "Install, update, and remove languages"
 msgstr "安装、更新、卸载可识别的语言"
 
-#: src/ui/qt/main_window.cpp:419
+#: src/ui/qt/main_window.cpp:431
 msgid "Actions"
 msgstr "操作"
 
-#: src/ui/qt/main_window.cpp:429
+#: src/ui/qt/main_window.cpp:472
 msgid "Hotkey"
 msgstr "快捷键"
 
-#: src/ui/qt/main_window.cpp:749
+#: src/ui/qt/main_window.cpp:485
+msgid "Interface"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:488
+msgid "Minimize on startup"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:492
+msgid "Show notification area icon"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:516
+msgid "Minimize to notification area"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:520
+msgid ""
+"Minimizing the window will hide {app_name}. Use the notification area icon "
+"to show it again."
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:526
+msgid "Close to notification area"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:530
+msgid ""
+"Closing the window will hide {app_name}. Use the notification area icon to "
+"show it again."
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:848
 msgid "Please install languages"
 msgstr "需安装要识别的语言"
 
-#: src/ui/qt/main_window.cpp:751
+#: src/ui/qt/main_window.cpp:850
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:753
+#: src/ui/qt/main_window.cpp:852
 msgid "Please select actions"
 msgstr "请选择操作"
 
-#: src/ui/qt/main_window.cpp:758
-msgid "{app_name} is ready for recognition"
-msgstr "{app_name} 目前没在识别"
+#: src/ui/qt/main_window.cpp:862
+msgid "Press {hotkey} to start area selection"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:863
+msgid "Press {hotkey} to finish selection"
+msgstr ""

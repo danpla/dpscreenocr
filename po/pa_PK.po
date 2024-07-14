@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-06-09 13:58+0200\n"
+"POT-Creation-Date: 2024-07-14 18:27+0200\n"
 "PO-Revision-Date: 2022-12-16 23:49+0000\n"
 "Last-Translator: bgo-eiu <huyaqoob+toolforge@gmail.com>\n"
 "Language-Team: Punjabi (Pakistan) <https://hosted.weblate.org/projects/"
@@ -578,7 +578,7 @@ msgstr "ایکسپورٹ کرو"
 msgid "Clear…"
 msgstr "ہٹاؤ"
 
-#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:118
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:119
 msgid "History"
 msgstr "تریخ"
 
@@ -598,8 +598,8 @@ msgstr ""
 msgid "Clear the history?"
 msgstr ""
 
-#: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:277
-#: src/ui/qt/main_window.cpp:187
+#: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:282
+#: src/ui/qt/main_window.cpp:191
 msgid "Cancel"
 msgstr "رد کرو"
 
@@ -666,26 +666,26 @@ msgstr ""
 msgid "An error occurred while fetching the list of languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:406
+#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:418
 msgid "Language manager"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:99
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:184
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:189
 msgid "Install"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:100
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:184
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:189
 msgid "Update"
 msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:101
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:277
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:282
 msgid "Remove"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:122
+#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:143
 msgid "Close"
 msgstr ""
 
@@ -694,39 +694,39 @@ msgctxt "noun"
 msgid "Filter"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:125
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:130
 msgid "No languages selected."
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:139
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:144
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:226
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:231
 msgid "An error occurred while installing languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:227
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:232
 msgid "An error occurred while updating languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:241
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:246
 msgid "Remove…"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:266
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:271
 msgid "Remove “{name}”?"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:271
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:276
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:296
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:301
 msgid "Some languages were not removed"
 msgstr ""
 
@@ -734,80 +734,119 @@ msgstr ""
 msgid "Check your network connection and try again."
 msgstr ""
 
-#: src/ui/qt/main.cpp:101
+#: src/ui/qt/main.cpp:107
 msgid "{app_name} is already running"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:58
+#: src/ui/qt/main_window.cpp:59
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:117
+#: src/ui/qt/main_window.cpp:118
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "مکھ"
 
-#: src/ui/qt/main_window.cpp:119
+#: src/ui/qt/main_window.cpp:120
+msgid "Settings"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:121
 msgid "About"
 msgstr "بارے"
 
-#: src/ui/qt/main_window.cpp:186
+#: src/ui/qt/main_window.cpp:190
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:188 src/ui/qt/main_window.cpp:375
+#: src/ui/qt/main_window.cpp:192 src/ui/qt/main_window.cpp:381
 msgid "Quit"
 msgstr "بند کرو"
 
-#: src/ui/qt/main_window.cpp:367
+#: src/ui/qt/main_window.cpp:373
 msgid "Show {app_name}"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:383
+#: src/ui/qt/main_window.cpp:395
 msgid "Status"
 msgstr "حالت"
 
-#: src/ui/qt/main_window.cpp:393
+#: src/ui/qt/main_window.cpp:405
 msgid "Character recognition"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:397
+#: src/ui/qt/main_window.cpp:409
 msgid "Split text blocks"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:399
+#: src/ui/qt/main_window.cpp:411
 msgid "Split independent text blocks, such as columns"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:402
+#: src/ui/qt/main_window.cpp:414
 msgid "Languages:"
 msgstr "بولیاں:"
 
-#: src/ui/qt/main_window.cpp:408
+#: src/ui/qt/main_window.cpp:420
 msgid "Install, update, and remove languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:419
+#: src/ui/qt/main_window.cpp:431
 msgid "Actions"
 msgstr "کاروائیاں"
 
-#: src/ui/qt/main_window.cpp:429
+#: src/ui/qt/main_window.cpp:472
 msgid "Hotkey"
 msgstr "کنجی"
 
-#: src/ui/qt/main_window.cpp:749
+#: src/ui/qt/main_window.cpp:485
+msgid "Interface"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:488
+msgid "Minimize on startup"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:492
+msgid "Show notification area icon"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:516
+msgid "Minimize to notification area"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:520
+msgid ""
+"Minimizing the window will hide {app_name}. Use the notification area icon "
+"to show it again."
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:526
+msgid "Close to notification area"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:530
+msgid ""
+"Closing the window will hide {app_name}. Use the notification area icon to "
+"show it again."
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:848
 msgid "Please install languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:751
+#: src/ui/qt/main_window.cpp:850
 msgid "Please select languages"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:753
+#: src/ui/qt/main_window.cpp:852
 msgid "Please select actions"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:758
-#, fuzzy
-msgid "{app_name} is ready for recognition"
-msgstr "تیار اے"
+#: src/ui/qt/main_window.cpp:862
+msgid "Press {hotkey} to start area selection"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:863
+msgid "Press {hotkey} to finish selection"
+msgstr ""
