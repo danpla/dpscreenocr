@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-07-14 18:27+0200\n"
-"PO-Revision-Date: 2024-06-10 17:21+0000\n"
+"PO-Revision-Date: 2024-07-15 18:09+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/es/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -748,7 +748,7 @@ msgstr "Principal"
 
 #: src/ui/qt/main_window.cpp:120
 msgid "Settings"
-msgstr ""
+msgstr "Ajustes"
 
 #: src/ui/qt/main_window.cpp:121
 msgid "About"
@@ -800,35 +800,39 @@ msgstr "Atajo de teclado"
 
 #: src/ui/qt/main_window.cpp:485
 msgid "Interface"
-msgstr ""
+msgstr "Interfaz"
 
 #: src/ui/qt/main_window.cpp:488
 msgid "Minimize on startup"
-msgstr ""
+msgstr "Minimizar al iniciar"
 
 #: src/ui/qt/main_window.cpp:492
 msgid "Show notification area icon"
-msgstr ""
+msgstr "Mostrar icono en el área de notificación"
 
 #: src/ui/qt/main_window.cpp:516
 msgid "Minimize to notification area"
-msgstr ""
+msgstr "Minimizar en el área de notificaciones"
 
 #: src/ui/qt/main_window.cpp:520
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr ""
+"Minimizar la ventana ocultará {app_name}. Utilice el icono del área de "
+"notificación para volver a mostrarla."
 
 #: src/ui/qt/main_window.cpp:526
 msgid "Close to notification area"
-msgstr ""
+msgstr "Cerrar el área de notificación"
 
 #: src/ui/qt/main_window.cpp:530
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr ""
+"Al cerrar la ventana se ocultará {app_name}. Utilice el icono del área de "
+"notificación para volver a mostrarla."
 
 #: src/ui/qt/main_window.cpp:848
 msgid "Please install languages"
@@ -844,8 +848,8 @@ msgstr "Seleccione acciones"
 
 #: src/ui/qt/main_window.cpp:862
 msgid "Press {hotkey} to start area selection"
-msgstr ""
+msgstr "Pulse {hotkey} para iniciar la selección de área"
 
 #: src/ui/qt/main_window.cpp:863
 msgid "Press {hotkey} to finish selection"
-msgstr ""
+msgstr "Pulse {hotkey} para finalizar la selección"
