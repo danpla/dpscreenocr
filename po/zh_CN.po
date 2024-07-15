@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-07-14 18:27+0200\n"
-"PO-Revision-Date: 2024-06-10 17:21+0000\n"
+"PO-Revision-Date: 2024-07-15 18:09+0000\n"
 "Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
 "org>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -747,7 +747,7 @@ msgstr "主页"
 
 #: src/ui/qt/main_window.cpp:120
 msgid "Settings"
-msgstr ""
+msgstr "设置"
 
 #: src/ui/qt/main_window.cpp:121
 msgid "About"
@@ -799,35 +799,35 @@ msgstr "快捷键"
 
 #: src/ui/qt/main_window.cpp:485
 msgid "Interface"
-msgstr ""
+msgstr "界面"
 
 #: src/ui/qt/main_window.cpp:488
 msgid "Minimize on startup"
-msgstr ""
+msgstr "启动时最小化"
 
 #: src/ui/qt/main_window.cpp:492
 msgid "Show notification area icon"
-msgstr ""
+msgstr "显示通知区域图标"
 
 #: src/ui/qt/main_window.cpp:516
 msgid "Minimize to notification area"
-msgstr ""
+msgstr "最小化到通知区域"
 
 #: src/ui/qt/main_window.cpp:520
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
-msgstr ""
+msgstr "最小化窗口会隐藏 {app_name}。使用通知区域图标再次显示它。"
 
 #: src/ui/qt/main_window.cpp:526
 msgid "Close to notification area"
-msgstr ""
+msgstr "关闭到通知区域"
 
 #: src/ui/qt/main_window.cpp:530
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
-msgstr ""
+msgstr "关闭窗口会隐藏 {app_name}。使用通知区域图标再次显示它。"
 
 #: src/ui/qt/main_window.cpp:848
 msgid "Please install languages"
@@ -843,8 +843,8 @@ msgstr "请选择操作"
 
 #: src/ui/qt/main_window.cpp:862
 msgid "Press {hotkey} to start area selection"
-msgstr ""
+msgstr "按下{hotkey} 启动区域选择"
 
 #: src/ui/qt/main_window.cpp:863
 msgid "Press {hotkey} to finish selection"
-msgstr ""
+msgstr "按下 {hotkey} 完成选择"
