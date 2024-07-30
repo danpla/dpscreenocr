@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-07-14 18:27+0200\n"
-"PO-Revision-Date: 2024-05-02 21:07+0000\n"
+"PO-Revision-Date: 2024-07-30 10:07+0000\n"
 "Last-Translator: Fernando Lopes <118869201+plasmus777@users.noreply.github."
 "com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5.3-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -660,7 +660,7 @@ msgstr "Buscando a lista de idiomas…"
 #: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp:32
 msgctxt "digital_data"
 msgid "Size"
-msgstr ""
+msgstr "Tamanho"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:50
 msgid "An error occurred while fetching the list of languages"
@@ -696,13 +696,13 @@ msgstr "Filtro"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:130
 msgid "No languages selected."
-msgstr ""
+msgstr "Nenhum idioma selecionado."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:144
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{count} idioma selecionado ({size})."
+msgstr[1] "{count} idiomas selecionados ({size})."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:231
 msgid "An error occurred while installing languages"
@@ -749,7 +749,7 @@ msgstr "Principal"
 
 #: src/ui/qt/main_window.cpp:120
 msgid "Settings"
-msgstr ""
+msgstr "Configurações"
 
 #: src/ui/qt/main_window.cpp:121
 msgid "About"
@@ -801,35 +801,39 @@ msgstr "Tecla de atalho"
 
 #: src/ui/qt/main_window.cpp:485
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 #: src/ui/qt/main_window.cpp:488
 msgid "Minimize on startup"
-msgstr ""
+msgstr "Minimizar ao iniciar"
 
 #: src/ui/qt/main_window.cpp:492
 msgid "Show notification area icon"
-msgstr ""
+msgstr "Exibir ícone na área de notificações"
 
 #: src/ui/qt/main_window.cpp:516
 msgid "Minimize to notification area"
-msgstr ""
+msgstr "Minimizar para a área de notificações"
 
 #: src/ui/qt/main_window.cpp:520
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr ""
+"Minimizar a janela esconderá o {app_name}. Use o ícone na área de "
+"notificações para exibí-lo novamente."
 
 #: src/ui/qt/main_window.cpp:526
 msgid "Close to notification area"
-msgstr ""
+msgstr "Fechar para a área de notificações"
 
 #: src/ui/qt/main_window.cpp:530
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr ""
+"Fechar a janela esconderá o {app_name}. Use o ícone na área de notificações "
+"para exibí-lo novamente."
 
 #: src/ui/qt/main_window.cpp:848
 msgid "Please install languages"
@@ -845,8 +849,8 @@ msgstr "Selecione as ações"
 
 #: src/ui/qt/main_window.cpp:862
 msgid "Press {hotkey} to start area selection"
-msgstr ""
+msgstr "Pressione {hotkey} para iniciar a seleção em área"
 
 #: src/ui/qt/main_window.cpp:863
 msgid "Press {hotkey} to finish selection"
-msgstr ""
+msgstr "Pressione {hotkey} para concluir a seleção"
