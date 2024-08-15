@@ -85,10 +85,10 @@ void testCmpSubStr()
             continue;
 
         test::failure(
-            "testCmpSubStr: cmpSubStr(\"{}\", \"{}\", {}, {}): "
+            "testCmpSubStr: cmpSubStr({}, {}, {}, {}): "
             "expected {}, got {}",
-            test.str,
-            test.subStr,
+            test::utils::toStr(test.str),
+            test::utils::toStr(test.subStr),
             test.subStrLen,
             test.cmpOptions,
             test.expectedOrder,
@@ -189,13 +189,22 @@ void testFormat()
             continue;
 
         test::failure(
-            "str::format(\"{}\", {}): "
-            "expected \"{}\", got \"{}\"",
-            test.str,
+            "str::format({}, {}): "
+            "expected {}, got {}",
+            test::utils::toStr(test.str),
             test::utils::toStr(test.args),
-            test.expected,
-            got);
+            test::utils::toStr(test.expected),
+            test::utils::toStr(got));
     }
+
+    using dpso::str::format;
+
+    // Test argument conversion.
+    TEST_STR(
+        format(
+            "{} {} {} {} {} {}",
+            1, 2.0f, 12.34f, 56.78, 'c', std::string{"str"}),
+        "1 2 12.34 56.78 c str");
 }
 
 

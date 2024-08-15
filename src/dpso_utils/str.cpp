@@ -184,7 +184,7 @@ const char* get(const std::string& v)
 
 ConvertedStr get(char c)
 {
-    return {std::string{1, c}};
+    return {std::string(1, c)};
 }
 
 
