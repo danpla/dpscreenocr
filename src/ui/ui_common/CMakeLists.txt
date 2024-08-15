@@ -43,8 +43,6 @@ if(UNIX AND NOT APPLE)
 elseif(WIN32)
     target_sources(
         ui_common PRIVATE single_instance_guard_windows.cpp)
-else()
-    target_sources(ui_common PRIVATE single_instance_guard_null.cpp)
 endif()
 
 foreach(IN_SRC ${IN_SRCS})
