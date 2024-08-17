@@ -112,6 +112,14 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
 
     dpsoKeyManagerSetIsEnabled(true);
 
+    UiAutostartArgs autostartArgs;
+    uiAutostartGetDefaultArgs(&autostartArgs);
+    autostart.reset(uiAutostartCreate(&autostartArgs));
+    if (!autostart)
+        throw Error(
+            std::string("Can't create autostart handler: ")
+            + dpsoGetError());
+
     createQActions();
 
     tabs = new QTabWidget();
@@ -533,10 +541,49 @@ QWidget* MainWindow::createSettingsTab()
     closeToTrayCheck->setEnabled(false);
     trayIconSubordinateLayout->addWidget(closeToTrayCheck);
 
+    auto* behaviorGroup = new QGroupBox(_("Behavior"));
+    auto* behaviorGroupLayout = new QVBoxLayout(behaviorGroup);
+
+    autostartCheck = new QCheckBox(_("Run at system logon"));
+    autostartCheck->setToolTip(
+        dpsoStrNFormat(
+            _(
+                "{app_name} will start automatically when you log on "
+                "to the system. The program will be hidden to the "
+                "notification area if the notification area icon is "
+                "enabled, or minimized if the icon is disabled."),
+            {{"app_name", uiAppName}}));
+    Q_ASSERT(autostart);
+    autostartCheck->setChecked(
+        uiAutostartGetIsEnabled(autostart.get()));
+    connect(
+        autostartCheck, &QCheckBox::toggled,
+        [&](bool isChecked)
+        {
+            if (uiAutostartSetIsEnabled(autostart.get(), isChecked))
+                return;
+
+            // uiAutostartSetIsEnabled() failure will not change the
+            // autostart state, so setChecked() will not result in an
+            // infinite recursion as the next lambda call will be
+            // no-op.
+            autostartCheck->setChecked(
+                uiAutostartGetIsEnabled(autostart.get()));
+
+            QMessageBox::critical(
+                this,
+                uiAppName,
+                QString("Can't %1 autostart: %2").arg(
+                    isChecked ? "enable" : "disable",
+                    dpsoGetError()));
+        });
+    behaviorGroupLayout->addWidget(autostartCheck);
+
     auto* tab = new QWidget();
     auto* tabLayout = new QVBoxLayout(tab);
     tabLayout->addWidget(hotkeyGroup);
     tabLayout->addWidget(interfaceGroup);
+    tabLayout->addWidget(behaviorGroup);
     tabLayout->addStretch();
 
     return tab;

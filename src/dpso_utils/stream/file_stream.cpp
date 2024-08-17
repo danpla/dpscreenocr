@@ -75,9 +75,9 @@ const char* toStr(FileStream::Mode mode)
             return "FileStream::Mode" #M
 
     switch (mode) {
-        CASE(read);
-        CASE(write);
-        CASE(append);
+    CASE(read);
+    CASE(write);
+    CASE(append);
     }
 
     #undef CASE

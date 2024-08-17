@@ -15,81 +15,22 @@
 #include "app_dirs.h"
 #include "init_app_dirs.h"
 
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
 #include <string>
-#include <unistd.h>
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
+#include "dpso_utils/unix/exe_path.h"
 
 #include "app_dirs_unix_cfg.h"
-
-
-static std::string findExeInPath(const char* exeName)
-{
-    const auto* p = getenv("PATH");
-    if (!p || !*p)
-        return {};
-
-    while (true) {
-        const auto* pathBegin = p;
-        while (*p && *p != ':')
-            ++p;
-        const auto* pathEnd = p;
-
-        std::string path{pathBegin, pathEnd};
-
-        // An empty path is a legacy feature indicating the current
-        // working directory. It can appear as two colons in the
-        // middle of the list, as well a colon at the beginning or end
-        // of the list.
-        if (!path.empty() && path.back() != '/')
-            path += '/';
-
-        path += exeName;
-
-        if (access(path.c_str(), X_OK) == 0)
-            return path;
-
-        if (!*p)
-            break;
-
-        ++p;
-    }
-
-    return {};
-}
+#include "exe_path.h"
 
 
 static std::string baseDirPath;
 
 
-bool uiInitAppDirs(const char* argv0)
+bool uiInitAppDirs(void)
 {
-    std::string path;
-
-    if (strchr(argv0, '/'))
-        path = argv0;
-    else {
-        path = findExeInPath(argv0);
-        if (path.empty()) {
-            dpso::setError("Can't find \"{}\" in $PATH", argv0);
-            return false;
-        }
-    }
-
-    auto* realPath = realpath(path.c_str(), nullptr);
-    if (!realPath) {
-        dpso::setError(
-            "realpath(\"{}\"): {}",
-            path, dpso::os::getErrnoMsg(errno));
-        return false;
-    }
-
-    baseDirPath = realPath;
-    free(realPath);
+    baseDirPath = ui::getExePath();
 
     // Skip the executable and the parent dir (bin).
     for (auto i = 0; i < 2; ++i) {

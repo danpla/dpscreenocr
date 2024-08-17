@@ -1,6 +1,7 @@
 
 #include "init.h"
 
+#include "exe_path.h"
 #include "init_app_dirs.h"
 #include "init_extra.h"
 #include "init_intl.h"
@@ -20,7 +21,12 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
         return false;
     }
 
-    if (!uiInitAppDirs(argv[0])) {
+    if (!ui::initExePath(argv[0])) {
+        dpso::setError("ui::initExePath: {}", dpsoGetError());
+        return false;
+    }
+
+    if (!uiInitAppDirs()) {
         dpso::setError("uiInitAppDirs: {}", dpsoGetError());
         return false;
     }

@@ -30,7 +30,10 @@ if(UNIX)
     target_sources(
         dpso_utils
         PRIVATE
-        os_unix.cpp)
+        os_unix.cpp
+        unix/exe_path.cpp
+        unix/path_env_search.cpp
+        unix/xdg_dirs.cpp)
 elseif(WIN32)
     target_sources(
         dpso_utils

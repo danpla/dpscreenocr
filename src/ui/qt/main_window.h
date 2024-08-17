@@ -97,6 +97,9 @@ private:
     QCheckBox* minimizeToTrayCheck;
     QCheckBox* closeToTrayCheck;
 
+    ui::AutostartUPtr autostart;
+    QCheckBox* autostartCheck;
+
     QSystemTrayIcon* trayIcon;
     QIcon trayIconNormal;
     QIcon trayIconBusy;

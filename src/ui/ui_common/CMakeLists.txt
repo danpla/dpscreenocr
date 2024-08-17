@@ -2,12 +2,15 @@
 add_library(
     ui_common STATIC
 
+    autostart_default_args.cpp
     cfg_default_values.cpp
     cfg_keys.cpp
+    cmdline_opts.cpp
     init.cpp
     init_intl.cpp
     init_startup_args.cpp
     ocr_data_utils.cpp
+    toplevel_argv0.cpp
     user_agent.cpp)
 
 # Files for configure_file()
@@ -15,7 +18,12 @@ set(IN_SRCS app_info.cpp file_names.cpp)
 
 if(UNIX AND NOT APPLE)
     target_sources(
-        ui_common PRIVATE app_dirs_unix.cpp init_extra_unix.cpp)
+        ui_common
+        PRIVATE
+        app_dirs_unix.cpp
+        autostart_unix.cpp
+        exe_path_unix.cpp
+        init_extra_unix.cpp)
 
     include(GNUInstallDirs)
     list(APPEND IN_SRCS app_dirs_unix_cfg.h)
