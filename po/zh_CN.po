@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-08-17 21:12+0200\n"
-"PO-Revision-Date: 2024-07-15 18:09+0000\n"
+"PO-Revision-Date: 2024-08-18 20:09+0000\n"
 "Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
 "org>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7-dev\n"
+"X-Generator: Weblate 5.7\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -831,18 +831,19 @@ msgstr "关闭窗口会隐藏 {app_name}。使用通知区域图标再次显示�
 
 #: src/ui/qt/main_window.cpp:544
 msgid "Behavior"
-msgstr ""
+msgstr "行为"
 
 #: src/ui/qt/main_window.cpp:547
 msgid "Run at system logon"
-msgstr ""
+msgstr "系统登录时运行"
 
 #: src/ui/qt/main_window.cpp:551
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
 "icon is enabled, or minimized if the icon is disabled."
-msgstr ""
+msgstr "当你登录系统时，{app_name} 会自动启动。如果启用通知区域图标，程序会隐藏至通知"
+"区域；如果禁用图标，程序窗口会被最小化。"
 
 #: src/ui/qt/main_window.cpp:895
 msgid "Please install languages"
