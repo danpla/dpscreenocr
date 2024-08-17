@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-07-14 18:27+0200\n"
+"POT-Creation-Date: 2024-08-17 21:12+0200\n"
 "PO-Revision-Date: 2024-07-30 10:07+0000\n"
 "Last-Translator: Fernando Lopes <118869201+plasmus777@users.noreply.github."
 "com>\n"
@@ -578,7 +578,7 @@ msgstr "Exportar…"
 msgid "Clear…"
 msgstr "Limpar…"
 
-#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:119
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:127
 msgid "History"
 msgstr "Histórico"
 
@@ -599,7 +599,7 @@ msgid "Clear the history?"
 msgstr "Limpar histórico?"
 
 #: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:282
-#: src/ui/qt/main_window.cpp:191
+#: src/ui/qt/main_window.cpp:199
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -666,7 +666,7 @@ msgstr "Tamanho"
 msgid "An error occurred while fetching the list of languages"
 msgstr "Ocorreu um erro ao buscar a lista de idiomas"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:418
+#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:426
 msgid "Language manager"
 msgstr "Gerenciador de idiomas"
 
@@ -742,80 +742,80 @@ msgstr "{app_name} já está em execução"
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Reconhecimento {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:118
+#: src/ui/qt/main_window.cpp:126
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "Principal"
 
-#: src/ui/qt/main_window.cpp:120
+#: src/ui/qt/main_window.cpp:128
 msgid "Settings"
 msgstr "Configurações"
 
-#: src/ui/qt/main_window.cpp:121
+#: src/ui/qt/main_window.cpp:129
 msgid "About"
 msgstr "Sobre"
 
-#: src/ui/qt/main_window.cpp:190
+#: src/ui/qt/main_window.cpp:198
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "O reconhecimento ainda não terminou. Sair mesmo assim?"
 
-#: src/ui/qt/main_window.cpp:192 src/ui/qt/main_window.cpp:381
+#: src/ui/qt/main_window.cpp:200 src/ui/qt/main_window.cpp:389
 msgid "Quit"
 msgstr "Sair"
 
-#: src/ui/qt/main_window.cpp:373
+#: src/ui/qt/main_window.cpp:381
 msgid "Show {app_name}"
 msgstr "Exibir {app_name}"
 
-#: src/ui/qt/main_window.cpp:395
+#: src/ui/qt/main_window.cpp:403
 msgid "Status"
 msgstr "Status"
 
-#: src/ui/qt/main_window.cpp:405
+#: src/ui/qt/main_window.cpp:413
 msgid "Character recognition"
 msgstr "Reconhecimento de caracteres"
 
-#: src/ui/qt/main_window.cpp:409
+#: src/ui/qt/main_window.cpp:417
 msgid "Split text blocks"
 msgstr "Dividir blocos de texto"
 
-#: src/ui/qt/main_window.cpp:411
+#: src/ui/qt/main_window.cpp:419
 msgid "Split independent text blocks, such as columns"
 msgstr "Dividir blocos de texto independentes, como colunas"
 
-#: src/ui/qt/main_window.cpp:414
+#: src/ui/qt/main_window.cpp:422
 msgid "Languages:"
 msgstr "Idiomas:"
 
-#: src/ui/qt/main_window.cpp:420
+#: src/ui/qt/main_window.cpp:428
 msgid "Install, update, and remove languages"
 msgstr "Instalar, atualizar e remover idiomas"
 
-#: src/ui/qt/main_window.cpp:431
+#: src/ui/qt/main_window.cpp:439
 msgid "Actions"
 msgstr "Ações"
 
-#: src/ui/qt/main_window.cpp:472
+#: src/ui/qt/main_window.cpp:480
 msgid "Hotkey"
 msgstr "Tecla de atalho"
 
-#: src/ui/qt/main_window.cpp:485
+#: src/ui/qt/main_window.cpp:493
 msgid "Interface"
 msgstr "Interface"
 
-#: src/ui/qt/main_window.cpp:488
+#: src/ui/qt/main_window.cpp:496
 msgid "Minimize on startup"
 msgstr "Minimizar ao iniciar"
 
-#: src/ui/qt/main_window.cpp:492
+#: src/ui/qt/main_window.cpp:500
 msgid "Show notification area icon"
 msgstr "Exibir ícone na área de notificações"
 
-#: src/ui/qt/main_window.cpp:516
+#: src/ui/qt/main_window.cpp:524
 msgid "Minimize to notification area"
 msgstr "Minimizar para a área de notificações"
 
-#: src/ui/qt/main_window.cpp:520
+#: src/ui/qt/main_window.cpp:528
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -823,11 +823,11 @@ msgstr ""
 "Minimizar a janela esconderá o {app_name}. Use o ícone na área de "
 "notificações para exibí-lo novamente."
 
-#: src/ui/qt/main_window.cpp:526
+#: src/ui/qt/main_window.cpp:534
 msgid "Close to notification area"
 msgstr "Fechar para a área de notificações"
 
-#: src/ui/qt/main_window.cpp:530
+#: src/ui/qt/main_window.cpp:538
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -835,22 +835,37 @@ msgstr ""
 "Fechar a janela esconderá o {app_name}. Use o ícone na área de notificações "
 "para exibí-lo novamente."
 
-#: src/ui/qt/main_window.cpp:848
+#: src/ui/qt/main_window.cpp:544
+msgid "Behavior"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:547
+msgid "Run at system logon"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:551
+msgid ""
+"{app_name} will start automatically when you log on to the system. The "
+"program will be hidden to the notification area if the notification area "
+"icon is enabled, or minimized if the icon is disabled."
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:895
 msgid "Please install languages"
 msgstr "Por favor, instale idiomas"
 
-#: src/ui/qt/main_window.cpp:850
+#: src/ui/qt/main_window.cpp:897
 msgid "Please select languages"
 msgstr "Por favor, selecione idiomas"
 
-#: src/ui/qt/main_window.cpp:852
+#: src/ui/qt/main_window.cpp:899
 msgid "Please select actions"
 msgstr "Selecione as ações"
 
-#: src/ui/qt/main_window.cpp:862
+#: src/ui/qt/main_window.cpp:909
 msgid "Press {hotkey} to start area selection"
 msgstr "Pressione {hotkey} para iniciar a seleção em área"
 
-#: src/ui/qt/main_window.cpp:863
+#: src/ui/qt/main_window.cpp:910
 msgid "Press {hotkey} to finish selection"
 msgstr "Pressione {hotkey} para concluir a seleção"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-07-14 18:27+0200\n"
+"POT-Creation-Date: 2024-08-17 21:12+0200\n"
 "PO-Revision-Date: 2024-07-15 18:09+0000\n"
 "Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
 "org>\n"
@@ -578,7 +578,7 @@ msgstr "导出为…"
 msgid "Clear…"
 msgstr "清空…"
 
-#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:119
+#: src/ui/qt/history.cpp:64 src/ui/qt/main_window.cpp:127
 msgid "History"
 msgstr "历史记录"
 
@@ -599,7 +599,7 @@ msgid "Clear the history?"
 msgstr "清空历史记录？"
 
 #: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:282
-#: src/ui/qt/main_window.cpp:191
+#: src/ui/qt/main_window.cpp:199
 msgid "Cancel"
 msgstr "取消"
 
@@ -666,7 +666,7 @@ msgstr "尺寸"
 msgid "An error occurred while fetching the list of languages"
 msgstr "查询语言总列表时出问题了"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:418
+#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:426
 msgid "Language manager"
 msgstr "语言管理器"
 
@@ -740,111 +740,126 @@ msgstr "{app_name} 已经打开了"
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "已识别 {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:118
+#: src/ui/qt/main_window.cpp:126
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "主页"
 
-#: src/ui/qt/main_window.cpp:120
+#: src/ui/qt/main_window.cpp:128
 msgid "Settings"
 msgstr "设置"
 
-#: src/ui/qt/main_window.cpp:121
+#: src/ui/qt/main_window.cpp:129
 msgid "About"
 msgstr "关于软件"
 
-#: src/ui/qt/main_window.cpp:190
+#: src/ui/qt/main_window.cpp:198
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "识别还没完成。真的要退出吗？"
 
-#: src/ui/qt/main_window.cpp:192 src/ui/qt/main_window.cpp:381
+#: src/ui/qt/main_window.cpp:200 src/ui/qt/main_window.cpp:389
 msgid "Quit"
 msgstr "退出"
 
-#: src/ui/qt/main_window.cpp:373
+#: src/ui/qt/main_window.cpp:381
 msgid "Show {app_name}"
 msgstr "显示 {app_name}"
 
-#: src/ui/qt/main_window.cpp:395
+#: src/ui/qt/main_window.cpp:403
 msgid "Status"
 msgstr "状态"
 
-#: src/ui/qt/main_window.cpp:405
+#: src/ui/qt/main_window.cpp:413
 msgid "Character recognition"
 msgstr "字符识别"
 
-#: src/ui/qt/main_window.cpp:409
+#: src/ui/qt/main_window.cpp:417
 msgid "Split text blocks"
 msgstr "识别分块的文本"
 
-#: src/ui/qt/main_window.cpp:411
+#: src/ui/qt/main_window.cpp:419
 msgid "Split independent text blocks, such as columns"
 msgstr "识别出独立的文本块，比如分栏的文本"
 
-#: src/ui/qt/main_window.cpp:414
+#: src/ui/qt/main_window.cpp:422
 msgid "Languages:"
 msgstr "语言："
 
-#: src/ui/qt/main_window.cpp:420
+#: src/ui/qt/main_window.cpp:428
 msgid "Install, update, and remove languages"
 msgstr "安装、更新、卸载可识别的语言"
 
-#: src/ui/qt/main_window.cpp:431
+#: src/ui/qt/main_window.cpp:439
 msgid "Actions"
 msgstr "操作"
 
-#: src/ui/qt/main_window.cpp:472
+#: src/ui/qt/main_window.cpp:480
 msgid "Hotkey"
 msgstr "快捷键"
 
-#: src/ui/qt/main_window.cpp:485
+#: src/ui/qt/main_window.cpp:493
 msgid "Interface"
 msgstr "界面"
 
-#: src/ui/qt/main_window.cpp:488
+#: src/ui/qt/main_window.cpp:496
 msgid "Minimize on startup"
 msgstr "启动时最小化"
 
-#: src/ui/qt/main_window.cpp:492
+#: src/ui/qt/main_window.cpp:500
 msgid "Show notification area icon"
 msgstr "显示通知区域图标"
 
-#: src/ui/qt/main_window.cpp:516
+#: src/ui/qt/main_window.cpp:524
 msgid "Minimize to notification area"
 msgstr "最小化到通知区域"
 
-#: src/ui/qt/main_window.cpp:520
+#: src/ui/qt/main_window.cpp:528
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr "最小化窗口会隐藏 {app_name}。使用通知区域图标再次显示它。"
 
-#: src/ui/qt/main_window.cpp:526
+#: src/ui/qt/main_window.cpp:534
 msgid "Close to notification area"
 msgstr "关闭到通知区域"
 
-#: src/ui/qt/main_window.cpp:530
+#: src/ui/qt/main_window.cpp:538
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr "关闭窗口会隐藏 {app_name}。使用通知区域图标再次显示它。"
 
-#: src/ui/qt/main_window.cpp:848
+#: src/ui/qt/main_window.cpp:544
+msgid "Behavior"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:547
+msgid "Run at system logon"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:551
+msgid ""
+"{app_name} will start automatically when you log on to the system. The "
+"program will be hidden to the notification area if the notification area "
+"icon is enabled, or minimized if the icon is disabled."
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:895
 msgid "Please install languages"
 msgstr "需安装要识别的语言"
 
-#: src/ui/qt/main_window.cpp:850
+#: src/ui/qt/main_window.cpp:897
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:852
+#: src/ui/qt/main_window.cpp:899
 msgid "Please select actions"
 msgstr "请选择操作"
 
-#: src/ui/qt/main_window.cpp:862
+#: src/ui/qt/main_window.cpp:909
 msgid "Press {hotkey} to start area selection"
 msgstr "按下{hotkey} 启动区域选择"
 
-#: src/ui/qt/main_window.cpp:863
+#: src/ui/qt/main_window.cpp:910
 msgid "Press {hotkey} to finish selection"
 msgstr "按下 {hotkey} 完成选择"
