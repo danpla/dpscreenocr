@@ -32,6 +32,8 @@ elseif(WIN32)
         ui_common
         PRIVATE
         app_dirs_windows.cpp
+        autostart_windows.cpp
+        exe_path_windows.cpp
         init_extra_windows.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
