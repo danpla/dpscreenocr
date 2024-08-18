@@ -1,15 +1,14 @@
-﻿
+
 #include "inno_setup_config.isi"
 
 [Setup]
 #if APP_IS_64_BIT
-ArchitecturesInstallIn64BitMode=x64
-ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64compatible
+ArchitecturesAllowed=x64compatible
 #endif
 
-; Windows 7. The program should also work on Vista (6.0), but this was
-; not tested.
-MinVersion=6.1
+; Windows 7 with Service Pack 1.
+MinVersion=6.1sp1
 
 AppName={#APP_NAME}
 AppVersion={#APP_VERSION}

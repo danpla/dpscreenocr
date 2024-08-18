@@ -117,8 +117,8 @@ Setup instead.
 3.2 Inno Setup
 --------------
 
-There is inno_setup.iss in the build directory to create an installer
-with Inno Setup.
+CMake will generate inno_setup.iss in the build directory to create an
+installer with Inno Setup >= 6.3.
 
 You will need some unofficial language files listed in
 inno_setup_languages.isi. Download them from the Inno Setup website or
