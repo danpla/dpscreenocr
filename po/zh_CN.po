@@ -5,17 +5,17 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-08-17 21:12+0200\n"
-"PO-Revision-Date: 2024-08-18 20:09+0000\n"
-"Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
-"org>\n"
-"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
-"dpscreenocr/dpscreenocr/zh_Hans/>\n"
+"PO-Revision-Date: 2024-09-07 14:09+0000\n"
+"Last-Translator: \"https://medium.com/@porkifiableoinking\" <erbaotao@outlook"
+".com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/dpscreenocr/dpscreenocr/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -660,7 +660,7 @@ msgstr "查询语言名录…"
 #: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp:32
 msgctxt "digital_data"
 msgid "Size"
-msgstr "尺寸"
+msgstr "大小"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:50
 msgid "An error occurred while fetching the list of languages"
@@ -807,7 +807,7 @@ msgstr "启动时最小化"
 
 #: src/ui/qt/main_window.cpp:500
 msgid "Show notification area icon"
-msgstr "显示通知区域图标"
+msgstr "在通知区域显示图标"
 
 #: src/ui/qt/main_window.cpp:524
 msgid "Minimize to notification area"
@@ -817,7 +817,7 @@ msgstr "最小化到通知区域"
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
-msgstr "最小化窗口会隐藏 {app_name}。使用通知区域图标再次显示它。"
+msgstr "最小化窗口会隐藏 {app_name}。在通知区域图标处可以调出窗口。"
 
 #: src/ui/qt/main_window.cpp:534
 msgid "Close to notification area"
@@ -827,7 +827,7 @@ msgstr "关闭到通知区域"
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
-msgstr "关闭窗口会隐藏 {app_name}。使用通知区域图标再次显示它。"
+msgstr "关闭窗口会隐藏 {app_name}。在通知区域图标处可以调出窗口。"
 
 #: src/ui/qt/main_window.cpp:544
 msgid "Behavior"
@@ -835,7 +835,7 @@ msgstr "行为"
 
 #: src/ui/qt/main_window.cpp:547
 msgid "Run at system logon"
-msgstr "系统登录时运行"
+msgstr "登录系统时启动"
 
 #: src/ui/qt/main_window.cpp:551
 msgid ""
@@ -859,8 +859,8 @@ msgstr "请选择操作"
 
 #: src/ui/qt/main_window.cpp:909
 msgid "Press {hotkey} to start area selection"
-msgstr "按下{hotkey} 启动区域选择"
+msgstr "按下 {hotkey} 开始选择区域"
 
 #: src/ui/qt/main_window.cpp:910
 msgid "Press {hotkey} to finish selection"
-msgstr "按下 {hotkey} 完成选择"
+msgstr "按下 {hotkey} 框选完成"
