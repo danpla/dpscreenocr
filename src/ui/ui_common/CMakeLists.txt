@@ -5,6 +5,7 @@ add_library(
     autostart_default_args.cpp
     cfg_default_values.cpp
     cfg_keys.cpp
+    cmdline_cmd_autostart.cpp
     cmdline_opts.cpp
     init.cpp
     init_intl.cpp
