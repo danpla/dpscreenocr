@@ -91,7 +91,7 @@ public:
     }
 
     Synchronized(const Synchronized& other)
-        : v{(std::lock_guard{other.mutex}, other.v)}
+        : v{((void)std::lock_guard{other.mutex}, other.v)}
     {
     }
 
@@ -106,7 +106,7 @@ public:
     }
 
     Synchronized(Synchronized&& other) noexcept
-        : v{(std::lock_guard{other.mutex}, std::move(other.v))}
+        : v{((void)std::lock_guard{other.mutex}, std::move(other.v))}
     {
     }
 
