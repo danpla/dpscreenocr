@@ -1,6 +1,11 @@
 
 #include "inno_setup_config.isi"
 
+; ExecAndLogOutput() was added in 6.3.
+#if VER < EncodeVer(6, 3, 0)
+  #error Inno Setup version 6.3 or newer is required
+#endif
+
 [Setup]
 #if APP_IS_64_BIT
 ArchitecturesInstallIn64BitMode=x64compatible
@@ -233,6 +238,66 @@ begin
       + '\{#APP_FILE_NAME}\{#TESSERACT_DATA_DIR}');
 end;
 
+var
+  OurExecCache: String;
+
+procedure OurExecLogFn(
+  const S: String; const Error, FirstLine: Boolean);
+begin
+  if OurExecCache <> '' then
+    OurExecCache := OurExecCache + #13#10;
+
+  OurExecCache := OurExecCache + S;
+end;
+
+function OurExecAndGetOutput(
+  const LogScope,
+  Filename,
+  Params: String;
+  var Output: String): Boolean;
+var
+  ExecResultCode: Integer;
+begin
+  Result := False;
+
+  Output := '';
+  OurExecCache := '';
+
+  if not ExecAndLogOutput(
+    Filename,
+    Params,
+    '',
+    SW_HIDE,
+    ewWaitUntilTerminated,
+    ExecResultCode,
+    @OurExecLogFn) then
+  begin
+    OurLog(LogScope, format(
+      'Can''t execute "%s" with params "%s": %s (code %d)'
+      , [Filename, Params, SysErrorMessage(ExecResultCode),
+      ExecResultCode]));
+    exit;
+  end;
+
+  if ExecResultCode <> 0 then
+  begin
+    OurLog(LogScope, format(
+      '"%s" with params "%s" exited with a code %d and output "%s"'
+      , [Filename, Params, ExecResultCode, OurExecCache]));
+    exit;
+  end;
+
+  Output := OurExecCache;
+  Result := True;
+end;
+
+function OurExec(const LogScope, Filename, Params: String): Boolean;
+var
+  Output: String;
+begin
+  Result := OurExecAndGetOutput(LogScope, Filename, Params, Output);
+end;
+
 function LocateRootRegKey(
   const RootKey32, RootKey64: Integer;
   const SubKeyName: String;
@@ -381,7 +446,6 @@ procedure NsisUninstallExisting(const UninstallerPath: String);
 var
   LogScope: String;
   UninstallerDir: String;
-  ExecResultCode: Integer;
 begin
   LogScope := 'NsisUninstallExisting';
 
@@ -390,16 +454,9 @@ begin
 
   UninstallerDir := ExtractFileDir(UninstallerPath);
 
-  if not Exec(
-    UninstallerPath, '/S _?=' + UninstallerDir, '',
-    SW_HIDE, ewWaitUntilTerminated, ExecResultCode) then
-  begin
-    OurLog(LogScope, format(
-      'Can''t execute "%s /S _?=%s": %s (code %d)'
-      , [UninstallerPath, UninstallerDir,
-      SysErrorMessage(ExecResultCode), ExecResultCode]));
+  if not OurExec(
+      LogScope, UninstallerPath, '/S _?=' + UninstallerDir) then
     exit;
-  end;
 
   if not DeleteFile(UninstallerPath) then
   begin
@@ -415,6 +472,134 @@ begin
 
   OurLog(LogScope, format(
     'Uninstalled existing via "%s"', [UninstallerPath]));
+end;
+
+const
+  UninstallRegPath =
+    'Software\Microsoft\Windows\CurrentVersion\Uninstall\' +
+    '{#APP_NAME}_is1';
+
+function IsAutostartEnabled(): Boolean;
+var
+  LogScope: String;
+  RootRegKey: Integer;
+  InstallLocation: String;
+  InstalledAppPath: String;
+  MinAppVersion: Int64;
+  InstalledAppVersionStr: String;
+  InstalledAppVersion: Int64;
+  AutostartParams: String;
+  AutostartState: String;
+begin
+  LogScope := 'IsAutostartEnabled';
+
+  Result := False;
+
+  if IsAdminInstallMode() then
+    exit;
+
+  if not LocateRootRegKey(
+      HKA32, HKA64, UninstallRegPath, RootRegKey) then
+    exit;
+
+  // This is the first version of our application to introduce the
+  // command line interface and the "autostart" command in particular.
+  // The previous versions simply ignored command line arguments.
+  MinAppVersion := PackVersionComponents(1, 5, 0, 0);
+
+  // We can also get the version from MajorVersion/MinorVersion, or
+  // extract it from the executable using GetPackedVersion().
+  if not RegQueryStringValue(
+    RootRegKey,
+    UninstallRegPath,
+    'DisplayVersion',
+    InstalledAppVersionStr) then
+  begin
+    OurLog(LogScope, format(
+      'No DisplayVersion in %s', [UninstallRegPath]));
+    exit;
+  end;
+
+  if not StrToVersion(
+    InstalledAppVersionStr, InstalledAppVersion) then
+  begin
+    OurLog(LogScope, format(
+      'Can''t convert DisplayVersion "%s" to a version number'
+      , [InstalledAppVersionStr]));
+    exit;
+  end;
+
+  if ComparePackedVersion(InstalledAppVersion, MinAppVersion) < 0 then
+  begin
+    OurLog(LogScope, format(
+      'Installed app version %s is less than %s where autostart '
+      + 'was added'
+      , [VersionToStr(InstalledAppVersion),
+      VersionToStr(MinAppVersion)]));
+    exit;
+  end;
+
+  // We don't want to assume that UsePreviousAppDir is enabled, so we
+  // extract the path from the registry instead of using {app}.
+  if not RegQueryStringValue(
+    RootRegKey,
+    UninstallRegPath,
+    'InstallLocation',
+    InstallLocation) then
+  begin
+    OurLog(LogScope, format(
+      'No InstallLocation in %s', [UninstallRegPath]));
+    exit;
+  end;
+
+  InstalledAppPath :=
+    AddBackslash(InstallLocation) + '{#APP_FILE_NAME}.exe';
+
+  AutostartParams := 'autostart query';
+  if not OurExecAndGetOutput(
+      LogScope,
+      InstalledAppPath,
+      AutostartParams,
+      AutostartState) then
+    exit;
+
+  if AutostartState = 'on' then
+    Result := True
+  else if AutostartState <> 'off' then
+    OurLog(LogScope, format(
+      'Unexpected "%s" output of "%s": %s'
+      , [AutostartParams, InstalledAppPath, AutostartState]));
+end;
+
+// Unlike IsAutostartEnabled(), this function is always called for the
+// executable that is being handled by this installer version, so we
+// don't need to extract the executable path from the registry or do
+// version checks.
+procedure SetAutostartIsEnabled(IsEnabled: Boolean);
+var
+  LogScope: String;
+  InstalledAppPath: String;
+  AutostartState: String;
+begin
+  LogScope := 'SetAutostartIsEnabled';
+
+  if IsAdminInstallMode() then
+    exit;
+
+  InstalledAppPath := ExpandConstant('{app}/{#APP_FILE_NAME}.exe');
+
+  if IsEnabled then
+    AutostartState := 'on'
+  else
+    AutostartState := 'off';
+
+  if not OurExec(
+      LogScope, InstalledAppPath, 'autostart ' + AutostartState) then
+    exit;
+
+  OurLog(LogScope, format(
+    'Set autostart to "%s" via "%s"'
+    , [AutostartState, InstalledAppPath]));
 end;
 
 const
@@ -469,14 +654,9 @@ procedure UninstallExisting();
 var
   LogScope: String;
   RootRegKey: Integer;
-  UninstallRegPath: String;
   UninstallString: String;
-  ExecResultCode: Integer;
 begin
   LogScope := 'UninstallExisting';
-  UninstallRegPath :=
-    'Software\Microsoft\Windows\CurrentVersion\Uninstall\' +
-    '{#APP_NAME}_is1';
 
   if not LocateRootRegKey(
       HKA32, HKA64, UninstallRegPath, RootRegKey) then
@@ -487,18 +667,12 @@ begin
       UninstallStringKey, UninstallString) then
     exit;
 
-  if not Exec(
-    '>',
-    UninstallString + ' /VERYSILENT /SUPPRESSMSGBOXES /NORESTART',
-    '',
-    SW_HIDE, ewWaitUntilTerminated, ExecResultCode) then
-  begin
-    OurLog(LogScope, format(
-      'Can''t execute "%s": %s (code %d)'
-      , [UninstallString,
-      SysErrorMessage(ExecResultCode), ExecResultCode]));
+  if not OurExec(
+      LogScope,
+      '>',
+      UninstallString
+        + ' /VERYSILENT /SUPPRESSMSGBOXES /NORESTART') then
     exit;
-  end;
 
   if not WaitForMutex(UninstallerMutexName, 10000) then
     OurLog(LogScope, 'Uninstaller didn''t release the mutex');
@@ -518,12 +692,22 @@ begin
   Result := True;
 end;
 
+var
+  ShouldRestoreAutostart: Boolean;
+
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssInstall then
   begin
     NsisUninstallExisting(NsisUninstallerPath);
+
+    ShouldRestoreAutostart := IsAutostartEnabled();
     UninstallExisting();
+  end
+  else if CurStep = ssPostInstall then
+  begin
+    if ShouldRestoreAutostart then
+      SetAutostartIsEnabled(True);
   end;
 end;
 
@@ -531,4 +715,10 @@ function InitializeUninstall(): Boolean;
 begin
   CreateMutex(UninstallerMutexName);
   Result := True;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usUninstall then
+    SetAutostartIsEnabled(False);
 end;
