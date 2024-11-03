@@ -110,6 +110,14 @@ LangManagerPage::LangManagerPage(
         this,
         &LangManagerPage::selectionChanged);
 
+    // The QItemSelectionModel::selectionChanged signal is not emitted
+    // when the model is reset.
+    connect(
+        &langList,
+        &QAbstractItemModel::modelReset,
+        this,
+        &LangManagerPage::selectionChanged);
+
     selectionChanged();  // Initialize selectionInfoLabel text.
 
     auto* layout = new QVBoxLayout(this);
@@ -168,10 +176,6 @@ void LangManagerPage::actionActivated()
         return;
 
     langList->reloadLangs();
-
-    // The QItemSelectionModel::selectionChanged signal is not emitted
-    // when the model is reset, so refresh things manually.
-    selectionChanged();
 }
 
 
