@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-08-17 21:12+0200\n"
+"POT-Creation-Date: 2024-11-03 19:53+0100\n"
 "PO-Revision-Date: 2024-09-09 23:09+0000\n"
 "Last-Translator: Fernando Lopes <118869201+plasmus777@users.noreply.github."
 "com>\n"
@@ -734,7 +734,7 @@ msgstr "Alguns idiomas não foram removidos"
 msgid "Check your network connection and try again."
 msgstr "Verifique sua conexão de rede e tente novamente."
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:108
 msgid "{app_name} is already running"
 msgstr "{app_name} já está em execução"
 
@@ -803,19 +803,15 @@ msgstr "Tecla de atalho"
 msgid "Interface"
 msgstr "Interface"
 
-#: src/ui/qt/main_window.cpp:496
-msgid "Minimize on startup"
-msgstr "Minimizar ao iniciar"
-
-#: src/ui/qt/main_window.cpp:500
+#: src/ui/qt/main_window.cpp:497
 msgid "Show notification area icon"
 msgstr "Exibir ícone na área de notificações"
 
-#: src/ui/qt/main_window.cpp:524
+#: src/ui/qt/main_window.cpp:521
 msgid "Minimize to notification area"
 msgstr "Minimizar para a área de notificações"
 
-#: src/ui/qt/main_window.cpp:528
+#: src/ui/qt/main_window.cpp:525
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -823,11 +819,11 @@ msgstr ""
 "Minimizar a janela esconderá o {app_name}. Use o ícone na área de "
 "notificações para exibí-lo novamente."
 
-#: src/ui/qt/main_window.cpp:534
+#: src/ui/qt/main_window.cpp:531
 msgid "Close to notification area"
 msgstr "Fechar para a área de notificações"
 
-#: src/ui/qt/main_window.cpp:538
+#: src/ui/qt/main_window.cpp:535
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -835,15 +831,15 @@ msgstr ""
 "Fechar a janela esconderá o {app_name}. Use o ícone na área de notificações "
 "para exibí-lo novamente."
 
-#: src/ui/qt/main_window.cpp:544
+#: src/ui/qt/main_window.cpp:541
 msgid "Behavior"
 msgstr "Comportamento"
 
-#: src/ui/qt/main_window.cpp:547
+#: src/ui/qt/main_window.cpp:544
 msgid "Run at system logon"
 msgstr "Executar ao iniciar o sistema"
 
-#: src/ui/qt/main_window.cpp:551
+#: src/ui/qt/main_window.cpp:548
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -853,22 +849,22 @@ msgstr ""
 "programa ficará oculto na área de notificação se o ícone da área de "
 "notificação estiver ativado ou minimizado se o ícone estiver desativado."
 
-#: src/ui/qt/main_window.cpp:895
+#: src/ui/qt/main_window.cpp:891
 msgid "Please install languages"
 msgstr "Por favor, instale idiomas"
 
-#: src/ui/qt/main_window.cpp:897
+#: src/ui/qt/main_window.cpp:893
 msgid "Please select languages"
 msgstr "Por favor, selecione idiomas"
 
-#: src/ui/qt/main_window.cpp:899
+#: src/ui/qt/main_window.cpp:895
 msgid "Please select actions"
 msgstr "Selecione as ações"
 
-#: src/ui/qt/main_window.cpp:909
+#: src/ui/qt/main_window.cpp:905
 msgid "Press {hotkey} to start area selection"
 msgstr "Pressione {hotkey} para iniciar a seleção em área"
 
-#: src/ui/qt/main_window.cpp:910
+#: src/ui/qt/main_window.cpp:906
 msgid "Press {hotkey} to finish selection"
 msgstr "Pressione {hotkey} para concluir a seleção"

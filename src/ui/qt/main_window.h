@@ -92,7 +92,6 @@ private:
     History* history;
 
     HotkeyEditor* hotkeyEditor;
-    QCheckBox* startMinimizedCheck;
     QCheckBox* showTrayIconCheck;
     QCheckBox* minimizeToTrayCheck;
     QCheckBox* closeToTrayCheck;
@@ -107,6 +106,7 @@ private:
 
     ui::TaskbarUPtr taskbar;
 
+    bool minimizeOnStart{};
     int selectionBorderWidth{};
 
     void createQActions();

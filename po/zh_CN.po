@@ -4,10 +4,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-08-17 21:12+0200\n"
+"POT-Creation-Date: 2024-11-03 19:53+0100\n"
 "PO-Revision-Date: 2024-09-07 14:09+0000\n"
-"Last-Translator: \"https://medium.com/@porkifiableoinking\" <erbaotao@outlook"
-".com>\n"
+"Last-Translator: \"https://medium.com/@porkifiableoinking\" "
+"<erbaotao@outlook.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/dpscreenocr/dpscreenocr/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -732,7 +732,7 @@ msgstr "一些语言没卸载掉"
 msgid "Check your network connection and try again."
 msgstr "看一下网络连没连上，再试一次。"
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:108
 msgid "{app_name} is already running"
 msgstr "{app_name} 已经打开了"
 
@@ -801,66 +801,63 @@ msgstr "快捷键"
 msgid "Interface"
 msgstr "界面"
 
-#: src/ui/qt/main_window.cpp:496
-msgid "Minimize on startup"
-msgstr "启动时最小化"
-
-#: src/ui/qt/main_window.cpp:500
+#: src/ui/qt/main_window.cpp:497
 msgid "Show notification area icon"
 msgstr "在通知区域显示图标"
 
-#: src/ui/qt/main_window.cpp:524
+#: src/ui/qt/main_window.cpp:521
 msgid "Minimize to notification area"
 msgstr "最小化到通知区域"
 
-#: src/ui/qt/main_window.cpp:528
+#: src/ui/qt/main_window.cpp:525
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr "最小化窗口会隐藏 {app_name}。在通知区域图标处可以调出窗口。"
 
-#: src/ui/qt/main_window.cpp:534
+#: src/ui/qt/main_window.cpp:531
 msgid "Close to notification area"
 msgstr "关闭到通知区域"
 
-#: src/ui/qt/main_window.cpp:538
+#: src/ui/qt/main_window.cpp:535
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr "关闭窗口会隐藏 {app_name}。在通知区域图标处可以调出窗口。"
 
-#: src/ui/qt/main_window.cpp:544
+#: src/ui/qt/main_window.cpp:541
 msgid "Behavior"
 msgstr "行为"
 
-#: src/ui/qt/main_window.cpp:547
+#: src/ui/qt/main_window.cpp:544
 msgid "Run at system logon"
 msgstr "登录系统时启动"
 
-#: src/ui/qt/main_window.cpp:551
+#: src/ui/qt/main_window.cpp:548
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
 "icon is enabled, or minimized if the icon is disabled."
-msgstr "当你登录系统时，{app_name} 会自动启动。如果启用通知区域图标，程序会隐藏至通知"
+msgstr ""
+"当你登录系统时，{app_name} 会自动启动。如果启用通知区域图标，程序会隐藏至通知"
 "区域；如果禁用图标，程序窗口会被最小化。"
 
-#: src/ui/qt/main_window.cpp:895
+#: src/ui/qt/main_window.cpp:891
 msgid "Please install languages"
 msgstr "需安装要识别的语言"
 
-#: src/ui/qt/main_window.cpp:897
+#: src/ui/qt/main_window.cpp:893
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:899
+#: src/ui/qt/main_window.cpp:895
 msgid "Please select actions"
 msgstr "请选择操作"
 
-#: src/ui/qt/main_window.cpp:909
+#: src/ui/qt/main_window.cpp:905
 msgid "Press {hotkey} to start area selection"
 msgstr "按下 {hotkey} 开始选择区域"
 
-#: src/ui/qt/main_window.cpp:910
+#: src/ui/qt/main_window.cpp:906
 msgid "Press {hotkey} to finish selection"
 msgstr "按下 {hotkey} 框选完成"

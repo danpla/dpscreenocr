@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-08-17 21:12+0200\n"
+"POT-Creation-Date: 2024-11-03 19:53+0100\n"
 "PO-Revision-Date: 2023-08-06 19:25+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Bulgarian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -745,7 +745,7 @@ msgstr ""
 msgid "Check your network connection and try again."
 msgstr ""
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:108
 msgid "{app_name} is already running"
 msgstr ""
 
@@ -815,66 +815,62 @@ msgstr "Бърз клавиш"
 msgid "Interface"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:496
-msgid "Minimize on startup"
-msgstr ""
-
-#: src/ui/qt/main_window.cpp:500
+#: src/ui/qt/main_window.cpp:497
 msgid "Show notification area icon"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:524
+#: src/ui/qt/main_window.cpp:521
 msgid "Minimize to notification area"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:528
+#: src/ui/qt/main_window.cpp:525
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:534
+#: src/ui/qt/main_window.cpp:531
 msgid "Close to notification area"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:538
+#: src/ui/qt/main_window.cpp:535
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:544
+#: src/ui/qt/main_window.cpp:541
 msgid "Behavior"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:547
+#: src/ui/qt/main_window.cpp:544
 msgid "Run at system logon"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:551
+#: src/ui/qt/main_window.cpp:548
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
 "icon is enabled, or minimized if the icon is disabled."
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:895
+#: src/ui/qt/main_window.cpp:891
 msgid "Please install languages"
 msgstr "Моля, инсталирайте езици"
 
-#: src/ui/qt/main_window.cpp:897
+#: src/ui/qt/main_window.cpp:893
 msgid "Please select languages"
 msgstr "Моля, изберете езици"
 
-#: src/ui/qt/main_window.cpp:899
+#: src/ui/qt/main_window.cpp:895
 #, fuzzy
 msgid "Please select actions"
 msgstr "Моля, изберете действия"
 
-#: src/ui/qt/main_window.cpp:909
+#: src/ui/qt/main_window.cpp:905
 msgid "Press {hotkey} to start area selection"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:910
+#: src/ui/qt/main_window.cpp:906
 msgid "Press {hotkey} to finish selection"
 msgstr ""

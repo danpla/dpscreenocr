@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-08-17 21:12+0200\n"
+"POT-Creation-Date: 2024-11-03 19:53+0100\n"
 "PO-Revision-Date: 2024-08-24 15:09+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -736,7 +736,7 @@ msgstr "Neki jezici nisu uklonjeni"
 msgid "Check your network connection and try again."
 msgstr "Provjeri mrežnu vezu i pokušaj ponovo."
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:108
 msgid "{app_name} is already running"
 msgstr "Program {app_name} je već pokrenut"
 
@@ -805,19 +805,15 @@ msgstr "Tipkovnički prečac"
 msgid "Interface"
 msgstr "Sučelje"
 
-#: src/ui/qt/main_window.cpp:496
-msgid "Minimize on startup"
-msgstr "Sakrij pri pokretanju"
-
-#: src/ui/qt/main_window.cpp:500
+#: src/ui/qt/main_window.cpp:497
 msgid "Show notification area icon"
 msgstr "Pokaži ikonu područja obavijesti"
 
-#: src/ui/qt/main_window.cpp:524
+#: src/ui/qt/main_window.cpp:521
 msgid "Minimize to notification area"
 msgstr "Sakrij u područje obavijesti"
 
-#: src/ui/qt/main_window.cpp:528
+#: src/ui/qt/main_window.cpp:525
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -825,11 +821,11 @@ msgstr ""
 "Skrivanjem prozora će se {app_name} sakriti. Koristi ikonu područja "
 "obavijesti za ponovno prikazivanje."
 
-#: src/ui/qt/main_window.cpp:534
+#: src/ui/qt/main_window.cpp:531
 msgid "Close to notification area"
 msgstr "Zatvori u područje obavijesti"
 
-#: src/ui/qt/main_window.cpp:538
+#: src/ui/qt/main_window.cpp:535
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -837,15 +833,15 @@ msgstr ""
 "Zatvaranjem prozora će se {app_name} sakriti. Koristi ikonu područja "
 "obavijesti za ponovno prikazivanje."
 
-#: src/ui/qt/main_window.cpp:544
+#: src/ui/qt/main_window.cpp:541
 msgid "Behavior"
 msgstr "Ponašanje"
 
-#: src/ui/qt/main_window.cpp:547
+#: src/ui/qt/main_window.cpp:544
 msgid "Run at system logon"
 msgstr "Pokreni prilikom prijavljivanja na sustav"
 
-#: src/ui/qt/main_window.cpp:551
+#: src/ui/qt/main_window.cpp:548
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -855,22 +851,22 @@ msgstr ""
 "se sakriti u području obavijesti ako je ikona područja obavijesti aktivirana "
 "ili smanjiti ako je ikona deaktivirana."
 
-#: src/ui/qt/main_window.cpp:895
+#: src/ui/qt/main_window.cpp:891
 msgid "Please install languages"
 msgstr "Instaliraj jezike"
 
-#: src/ui/qt/main_window.cpp:897
+#: src/ui/qt/main_window.cpp:893
 msgid "Please select languages"
 msgstr "Odaberi jezike"
 
-#: src/ui/qt/main_window.cpp:899
+#: src/ui/qt/main_window.cpp:895
 msgid "Please select actions"
 msgstr "Odaberi radnje"
 
-#: src/ui/qt/main_window.cpp:909
+#: src/ui/qt/main_window.cpp:905
 msgid "Press {hotkey} to start area selection"
 msgstr "Pritisni {hotkey} za početak biranja područja"
 
-#: src/ui/qt/main_window.cpp:910
+#: src/ui/qt/main_window.cpp:906
 msgid "Press {hotkey} to finish selection"
 msgstr "Pritisni {hotkey} za kraj biranja područja"

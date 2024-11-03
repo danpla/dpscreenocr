@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-08-17 21:12+0200\n"
+"POT-Creation-Date: 2024-11-03 19:53+0100\n"
 "PO-Revision-Date: 2024-08-18 20:09+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -739,7 +739,7 @@ msgstr "Некоторые языки не были удалены"
 msgid "Check your network connection and try again."
 msgstr "Проверьте ваше сетевое соединение и попробуйте снова."
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:108
 msgid "{app_name} is already running"
 msgstr "{app_name} уже запущен"
 
@@ -808,19 +808,15 @@ msgstr "Горячая клавиша"
 msgid "Interface"
 msgstr "Интерфейс"
 
-#: src/ui/qt/main_window.cpp:496
-msgid "Minimize on startup"
-msgstr "Сворачивать при запуске"
-
-#: src/ui/qt/main_window.cpp:500
+#: src/ui/qt/main_window.cpp:497
 msgid "Show notification area icon"
 msgstr "Показать значок в области уведомлений"
 
-#: src/ui/qt/main_window.cpp:524
+#: src/ui/qt/main_window.cpp:521
 msgid "Minimize to notification area"
 msgstr "Сворачивать в область уведомлений"
 
-#: src/ui/qt/main_window.cpp:528
+#: src/ui/qt/main_window.cpp:525
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -828,11 +824,11 @@ msgstr ""
 "Сворачивание окна приведет к скрытию {app_name}. Используйте значок в "
 "области уведомлений, чтобы показать его снова."
 
-#: src/ui/qt/main_window.cpp:534
+#: src/ui/qt/main_window.cpp:531
 msgid "Close to notification area"
 msgstr "Закрывать в область уведомлений"
 
-#: src/ui/qt/main_window.cpp:538
+#: src/ui/qt/main_window.cpp:535
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -840,15 +836,15 @@ msgstr ""
 "Закрытие окна приведет к скрытию {app_name}. Используйте значок в области "
 "уведомлений, чтобы показать его снова."
 
-#: src/ui/qt/main_window.cpp:544
+#: src/ui/qt/main_window.cpp:541
 msgid "Behavior"
 msgstr "Поведение"
 
-#: src/ui/qt/main_window.cpp:547
+#: src/ui/qt/main_window.cpp:544
 msgid "Run at system logon"
 msgstr "Запускать при входе в систему"
 
-#: src/ui/qt/main_window.cpp:551
+#: src/ui/qt/main_window.cpp:548
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -858,22 +854,22 @@ msgstr ""
 "скрыта в область уведомлений, если значок в области уведомлений включен, или "
 "свернута, если значок отключен."
 
-#: src/ui/qt/main_window.cpp:895
+#: src/ui/qt/main_window.cpp:891
 msgid "Please install languages"
 msgstr "Пожалуйста, установите языки"
 
-#: src/ui/qt/main_window.cpp:897
+#: src/ui/qt/main_window.cpp:893
 msgid "Please select languages"
 msgstr "Пожалуйста, выберите языки"
 
-#: src/ui/qt/main_window.cpp:899
+#: src/ui/qt/main_window.cpp:895
 msgid "Please select actions"
 msgstr "Пожалуйста, выберите действия"
 
-#: src/ui/qt/main_window.cpp:909
+#: src/ui/qt/main_window.cpp:905
 msgid "Press {hotkey} to start area selection"
 msgstr "Нажмите {hotkey}, чтобы начать выделение области"
 
-#: src/ui/qt/main_window.cpp:910
+#: src/ui/qt/main_window.cpp:906
 msgid "Press {hotkey} to finish selection"
 msgstr "Нажмите {hotkey}, чтобы завершить выделение"

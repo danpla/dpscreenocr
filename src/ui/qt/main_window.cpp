@@ -143,7 +143,7 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
 
     loadState(cfg.get());
 
-    if (!startMinimizedCheck->isChecked() && !startupArgs.hide)
+    if (!minimizeOnStart && !startupArgs.hide)
         show();
     else if (trayIcon->isVisible()
             && (minimizeToTrayCheck->isChecked()
@@ -493,9 +493,6 @@ QWidget* MainWindow::createSettingsTab()
     auto* interfaceGroup = new QGroupBox(_("Interface"));
     auto* interfaceGroupLayout = new QVBoxLayout(interfaceGroup);
 
-    startMinimizedCheck = new QCheckBox(_("Minimize on startup"));
-    interfaceGroupLayout->addWidget(startMinimizedCheck);
-
     showTrayIconCheck = new QCheckBox(
         _("Show notification area icon"));
     connect(
@@ -658,11 +655,6 @@ void MainWindow::loadState(const DpsoCfg* cfg)
         &cancelSelectionHotkey,
         &cfgDefaultValueHotkeyCancelSelection);
 
-    startMinimizedCheck->setChecked(
-        dpsoCfgGetBool(
-            cfg,
-            cfgKeyUiWindowMinimizeOnStart,
-            cfgDefaultValueUiWindowMinimizeOnStart));
     trayIcon->setVisible(
         dpsoCfgGetBool(
             cfg,
@@ -702,6 +694,11 @@ void MainWindow::loadState(const DpsoCfg* cfg)
     actionChooser->loadState(cfg);
     history->loadState(cfg);
 
+    minimizeOnStart = dpsoCfgGetBool(
+        cfg,
+        cfgKeyUiWindowMinimizeOnStart,
+        cfgDefaultValueUiWindowMinimizeOnStart);
+
     selectionBorderWidth = dpsoCfgGetInt(
         cfg,
         cfgKeySelectionBorderWidth,
@@ -734,10 +731,6 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         cfg, cfgKeyHotkeyCancelSelection, &cancelSelectionHotkey);
 
     dpsoCfgSetBool(
-        cfg,
-        cfgKeyUiWindowMinimizeOnStart,
-        startMinimizedCheck->isChecked());
-    dpsoCfgSetBool(
         cfg, cfgKeyUiTrayIconVisible, trayIcon->isVisible());
     dpsoCfgSetBool(
         cfg,
@@ -762,6 +755,9 @@ void MainWindow::saveState(DpsoCfg* cfg) const
     langBrowser->saveState(cfg);
     actionChooser->saveState(cfg);
     history->saveState(cfg);
+
+    dpsoCfgSetBool(
+        cfg, cfgKeyUiWindowMinimizeOnStart, minimizeOnStart);
 
     dpsoCfgSetInt(
         cfg, cfgKeySelectionBorderWidth, selectionBorderWidth);
@@ -968,7 +964,7 @@ void MainWindow::checkResults()
 
 void MainWindow::checkHotkeyActions()
 {
-    switch(dpsoKeyManagerGetLastHotkeyAction()) {
+    switch (dpsoKeyManagerGetLastHotkeyAction()) {
     case hotkeyActionToggleSelection: {
         if (!dpsoSelectionGetIsEnabled()) {
             if (canStartSelection())
