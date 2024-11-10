@@ -10,11 +10,7 @@ set_target_properties(
     C_STANDARD_REQUIRED YES
     C_EXTENSIONS NO)
 
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
-        OR CMAKE_C_COMPILER_ID MATCHES "Clang")
-    target_compile_options(
-        launcher
-        PRIVATE -Wall -Wextra -pedantic -Wstrict-prototypes)
-endif()
+target_compile_options(
+    launcher PRIVATE -Wall -Wextra -pedantic -Wstrict-prototypes)
 
 target_link_libraries(launcher dl)
