@@ -5,10 +5,10 @@
 
 #include <X11/Xutil.h>
 
+#include "dpso_utils/geometry.h"
 #include "dpso_utils/str.h"
 
 #include "backend/screenshot_error.h"
-#include "geometry.h"
 #include "img.h"
 
 

@@ -6,7 +6,6 @@ add_executable(
     main.cpp
     utils.cpp
 
-    dpso/test_geometry.cpp
     dpso/test_keys.cpp
     dpso/test_tesseract_utils.cpp
     dpso_ext/test_cfg.cpp
@@ -15,6 +14,7 @@ add_executable(
     dpso_ext/test_str_nformat.cpp
     dpso_utils/stream/test_out_newline_conversion_stream.cpp
     dpso_utils/stream/test_string_stream.cpp
+    dpso_utils/test_geometry.cpp
     dpso_utils/test_line_reader.cpp
     dpso_utils/test_os.cpp
     dpso_utils/test_progress_tracker.cpp

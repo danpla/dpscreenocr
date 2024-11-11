@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/geometry.h"
 #include "dpso_utils/progress_tracker.h"
 #include "dpso_utils/strftime.h"
 #include "dpso_utils/synchronized.h"
@@ -24,8 +25,6 @@
 #include "backend/backend.h"
 #include "backend/screenshot.h"
 #include "backend/screenshot_error.h"
-#include "geometry.h"
-#include "geometry_c.h"
 #include "img.h"
 #include "ocr/engine.h"
 #include "ocr/recognizer.h"

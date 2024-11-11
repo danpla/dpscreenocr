@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include "geometry_c.h"
+
 
 namespace dpso {
 namespace {
@@ -79,6 +81,12 @@ bool operator==(const Rect& a, const Rect& b)
 bool operator!=(const Rect& a, const Rect& b)
 {
     return !(a == b);
+}
+
+
+Rect::Rect(const DpsoRect& cRect)
+    : Rect{cRect.x, cRect.y, cRect.w, cRect.h}
+{
 }
 
 

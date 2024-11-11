@@ -1,7 +1,8 @@
 
 #pragma once
 
-#include "geometry_c.h"
+
+struct DpsoRect;
 
 
 namespace dpso {
@@ -66,10 +67,7 @@ struct Rect {
     {
     }
 
-    explicit Rect(const DpsoRect& cRect)
-        : Rect{cRect.x, cRect.y, cRect.w, cRect.h}
-    {
-    }
+    explicit Rect(const DpsoRect& cRect);
 
     static Rect betweenPoints(const Point& a, const Point& b);
 };

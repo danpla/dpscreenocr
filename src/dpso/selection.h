@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include "geometry_c.h"
+#include "dpso_utils/geometry_c.h"
 
 
 #ifdef __cplusplus

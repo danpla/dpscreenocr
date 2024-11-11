@@ -12,6 +12,8 @@ add_library(
     dpso_utils
 
     error.cpp
+    geometry.cpp
+    geometry_c.cpp
     line_reader.cpp
     os_c.cpp
     os_common.cpp

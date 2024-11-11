@@ -22,8 +22,6 @@ add_library(
     dpso
 
     dpso.cpp
-    geometry.cpp
-    geometry_c.cpp
     img.cpp
     key_manager.cpp
     keys.cpp
@@ -122,7 +120,8 @@ find_package(Threads REQUIRED)
 
 target_link_libraries(
     dpso
-    PRIVATE dpso_utils stb_image_resize ${CMAKE_THREAD_LIBS_INIT})
+    PUBLIC dpso_utils
+    PRIVATE stb_image_resize ${CMAKE_THREAD_LIBS_INIT})
 
 if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)
