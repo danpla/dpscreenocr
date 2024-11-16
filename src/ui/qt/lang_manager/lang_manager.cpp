@@ -9,8 +9,10 @@
 #include <QVBoxLayout>
 
 #include "dpso/dpso.h"
+#include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
+#include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
 
 #include "lang_manager/lang_fetch_progress_dialog.h"
@@ -62,6 +64,23 @@ static void fetchExternalLangs(
 }
 
 
+static QString getUpdateTabTitle(
+    const DpsoOcrLangManager* langManager)
+{
+    int numUpdatable{};
+
+    const auto numLangs = dpsoOcrLangManagerGetNumLangs(langManager);
+    for (int i = 0; i < numLangs; ++i)
+        if (dpsoOcrLangManagerGetLangState(langManager, i)
+                == DpsoOcrLangStateUpdateAvailable)
+            ++numUpdatable;
+
+    return dpsoStrNFormat(
+            _("Update ({count})"),
+            {{"count", dpso::str::toStr(numUpdatable).c_str()}});
+}
+
+
 void runLangManager(
     int ocrEngineIdx, const std::string& dataDir, QWidget* parent)
 {
@@ -97,8 +116,22 @@ void runLangManager(
     auto* tabs = new QTabWidget();
     tabs->addTab(
         createLangManagerInstallPage(*langList), _("Install"));
-    tabs->addTab(createLangManagerUpdatePage(*langList), _("Update"));
+    const auto updateTabIdx = tabs->addTab(
+        createLangManagerUpdatePage(*langList), {});
     tabs->addTab(createLangManagerRemovePage(*langList), _("Remove"));
+
+    const auto refreshUpdateTabTitle = [&]()
+    {
+        tabs->setTabText(
+            updateTabIdx, getUpdateTabTitle(langManager.get()));
+    };
+
+    refreshUpdateTabTitle();
+
+    QObject::connect(
+        langList,
+        &QAbstractItemModel::modelReset,
+        refreshUpdateTabTitle);
 
     auto* buttonBox = new QDialogButtonBox();
     QObject::connect(

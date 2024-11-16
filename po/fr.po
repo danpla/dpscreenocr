@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-11-03 19:53+0100\n"
+"POT-Creation-Date: 2024-11-16 15:17+0100\n"
 "PO-Revision-Date: 2023-01-13 10:56+0000\n"
 "Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -598,7 +598,7 @@ msgstr "Exporter l'historique"
 msgid "Clear the history?"
 msgstr "Effacer l'historique ?"
 
-#: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:282
+#: src/ui/qt/history.cpp:156 src/ui/qt/lang_manager/lang_manager_page.cpp:286
 #: src/ui/qt/main_window.cpp:199
 msgid "Cancel"
 msgstr "Annuler"
@@ -662,30 +662,29 @@ msgctxt "digital_data"
 msgid "Size"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:50
+#: src/ui/qt/lang_manager/lang_manager.cpp:52
 msgid "An error occurred while fetching the list of languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:426
+#: src/ui/qt/lang_manager/lang_manager.cpp:79
+msgid "Update ({count})"
+msgstr ""
+
+#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:426
 msgid "Language manager"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:99
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:189
+#: src/ui/qt/lang_manager/lang_manager.cpp:118
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:193
 msgid "Install"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:100
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:189
-msgid "Update"
-msgstr ""
-
-#: src/ui/qt/lang_manager/lang_manager.cpp:101
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:282
+#: src/ui/qt/lang_manager/lang_manager.cpp:121
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:286
 msgid "Remove"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:143
+#: src/ui/qt/lang_manager/lang_manager.cpp:142 src/ui/qt/utils.cpp:143
 msgid "Close"
 msgstr ""
 
@@ -694,39 +693,43 @@ msgctxt "noun"
 msgid "Filter"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:130
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:138
 msgid "No languages selected."
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:144
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:152
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:231
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:193
+msgid "Update"
+msgstr ""
+
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:235
 msgid "An error occurred while installing languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:232
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:236
 msgid "An error occurred while updating languages"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:246
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:250
 msgid "Remove…"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:271
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:275
 msgid "Remove “{name}”?"
 msgstr ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:276
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:280
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:301
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:305
 msgid "Some languages were not removed"
 msgstr ""
 
