@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-11-03 19:53+0100\n"
-"PO-Revision-Date: 2020-03-26 15:46+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2024-11-16 14:04+0000\n"
+"Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "dpscreenocr/dpscreenocr/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 5.9-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -106,20 +106,20 @@ msgstr ""
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:56
 msgid "Danish"
-msgstr ""
+msgstr "Dansk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:57
 msgid "Danish (Fraktur)"
-msgstr ""
+msgstr "Dansk (Fraktur)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:58
 msgid "German"
-msgstr ""
+msgstr "Tysk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:59
 #: src/dpso/ocr/tesseract/lang_names.cpp:73
 msgid "German (Fraktur)"
-msgstr ""
+msgstr "Tysk (Fraktur)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:60
 msgid "Dhivehi; Divehi; Maldivian"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:63
 msgid "English"
-msgstr ""
+msgstr "Engelsk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:64
 msgid "English, Middle (1100-1500)"
@@ -167,11 +167,11 @@ msgstr ""
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:71
 msgid "Finnish"
-msgstr ""
+msgstr "Finsk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:72
 msgid "French"
-msgstr ""
+msgstr "Fransk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:74
 msgid "French, Middle (ca. 1400-1600)"
@@ -235,15 +235,15 @@ msgstr ""
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:89
 msgid "Icelandic"
-msgstr ""
+msgstr "Islandsk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:90
 msgid "Italian"
-msgstr ""
+msgstr "Italiensk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:91
 msgid "Italian (old)"
-msgstr ""
+msgstr "Italiensk (gammel)"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:92
 msgid "Javanese"
@@ -359,7 +359,7 @@ msgstr ""
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:120
 msgid "Norwegian"
-msgstr ""
+msgstr "Norsk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:121
 msgid "Occitan (post 1500)"
@@ -451,7 +451,7 @@ msgstr ""
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:143
 msgid "Swedish"
-msgstr ""
+msgstr "Svensk"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:144
 msgid "Syriac"
@@ -527,15 +527,15 @@ msgstr ""
 
 #: src/ui/qt/about.cpp:58
 msgid "Website"
-msgstr ""
+msgstr "Nettsted"
 
 #: src/ui/qt/about.cpp:68
 msgid "User manual"
-msgstr ""
+msgstr "Brukermanual"
 
 #: src/ui/qt/about.cpp:71
 msgid "Changes"
-msgstr ""
+msgstr "Endringer"
 
 #: src/ui/qt/about.cpp:73
 msgid "License"
@@ -543,7 +543,7 @@ msgstr "Lisens"
 
 #: src/ui/qt/about.cpp:79
 msgid "Third-party licenses"
-msgstr ""
+msgstr "Tredjepartslisenser"
 
 #: src/ui/qt/about.cpp:105 data/dpscreenocr.desktop:9
 msgid "Program to recognize text on screen"
@@ -570,9 +570,8 @@ msgid "Choose an executable"
 msgstr "Velg en kjørbar fil"
 
 #: src/ui/qt/history.cpp:42
-#, fuzzy
 msgid "Export…"
-msgstr "Lagre som…"
+msgstr "Eksporter…"
 
 #: src/ui/qt/history.cpp:47
 msgid "Clear…"
@@ -584,16 +583,15 @@ msgstr "Historikk"
 
 #: src/ui/qt/history.cpp:81
 msgid "Plain text"
-msgstr "Klartekst"
+msgstr "Ren tekst"
 
 #: src/ui/qt/history.cpp:116
 msgid "All files"
 msgstr "Alle filer"
 
 #: src/ui/qt/history.cpp:121
-#, fuzzy
 msgid "Export history"
-msgstr "Lagre historikk"
+msgstr "Eksporter historikk"
 
 #: src/ui/qt/history.cpp:156
 msgid "Clear the history?"
@@ -620,75 +618,75 @@ msgstr "Kode"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:115
 msgid "Cancel…"
-msgstr ""
+msgstr "Avbryt…"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Are you sure you want to cancel the installation?"
-msgstr ""
+msgstr "Er du sikker på at du vil avbryte installeringen?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
 msgid "Continue installation"
-msgstr ""
+msgstr "Fortsett installering"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
 msgid "Cancel installation"
-msgstr ""
+msgstr "Avbryt installering"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
 msgid "Are you sure you want to cancel the update?"
-msgstr ""
+msgstr "Er du sikker på at du vil avbryte oppdateringen?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:139
 msgid "Continue updating"
-msgstr ""
+msgstr "Fortsett oppdatering"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:140
 msgid "Cancel update"
-msgstr ""
+msgstr "Avbryt oppdatering"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
 msgid "Installing “{name}” ({current}/{total})"
-msgstr ""
+msgstr "Installerer “{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:185
 msgid "Updating “{name}” ({current}/{total})"
-msgstr ""
+msgstr "Oppdaterer “{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/lang_fetch_progress_dialog.cpp:48
 msgid "Fetching the language list…"
-msgstr ""
+msgstr "Henter språklisten…"
 
 #: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp:32
 msgctxt "digital_data"
 msgid "Size"
-msgstr ""
+msgstr "Størrelse"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:50
 msgid "An error occurred while fetching the list of languages"
-msgstr ""
+msgstr "En feil oppstod under henting av språklisten"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:93 src/ui/qt/main_window.cpp:426
 msgid "Language manager"
-msgstr ""
+msgstr "Språkbehandling"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:99
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:189
 msgid "Install"
-msgstr ""
+msgstr "Installer"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:100
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:189
 msgid "Update"
-msgstr ""
+msgstr "Oppdater"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:101
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:282
 msgid "Remove"
-msgstr ""
+msgstr "Fjern"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:109 src/ui/qt/utils.cpp:143
 msgid "Close"
-msgstr ""
+msgstr "Lukk"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:64
 msgctxt "noun"
@@ -697,47 +695,47 @@ msgstr ""
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:130
 msgid "No languages selected."
-msgstr ""
+msgstr "Ingen språk valgt."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:144
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{count} språk valgt ({size})."
+msgstr[1] "{count} språk valgt ({size})."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:231
 msgid "An error occurred while installing languages"
-msgstr ""
+msgstr "En feil oppstod under installering av språk"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:232
 msgid "An error occurred while updating languages"
-msgstr ""
+msgstr "En feil oppstod under oppdatering av språk"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:246
 msgid "Remove…"
-msgstr ""
+msgstr "Fjern…"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:271
 msgid "Remove “{name}”?"
-msgstr ""
+msgstr "Fjerne “{name}”?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:276
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Fjerne {count} valgt språk?"
+msgstr[1] "Fjerne {count} valgte språk?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:301
 msgid "Some languages were not removed"
-msgstr ""
+msgstr "Noen språk ble ikke fjernet"
 
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp:33
 msgid "Check your network connection and try again."
-msgstr ""
+msgstr "Sjekk internettforbindelsen din og prøv igjen."
 
 #: src/ui/qt/main.cpp:108
 msgid "{app_name} is already running"
-msgstr ""
+msgstr "{app_name} kjører allerede"
 
 #: src/ui/qt/main_window.cpp:59
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
@@ -746,11 +744,11 @@ msgstr "Gjenkjenning {progress}% ({current_job}/{total_jobs})"
 #: src/ui/qt/main_window.cpp:126
 msgctxt "ui_tab"
 msgid "Main"
-msgstr "Grunnleggende"
+msgstr "Generelt"
 
 #: src/ui/qt/main_window.cpp:128
 msgid "Settings"
-msgstr ""
+msgstr "Innstillinger"
 
 #: src/ui/qt/main_window.cpp:129
 msgid "About"
@@ -766,7 +764,7 @@ msgstr "Avslutt"
 
 #: src/ui/qt/main_window.cpp:381
 msgid "Show {app_name}"
-msgstr ""
+msgstr "Vis {app_name}"
 
 #: src/ui/qt/main_window.cpp:403
 msgid "Status"
@@ -791,7 +789,7 @@ msgstr "Språk:"
 
 #: src/ui/qt/main_window.cpp:428
 msgid "Install, update, and remove languages"
-msgstr ""
+msgstr "Installer, oppdater og fjern språk"
 
 #: src/ui/qt/main_window.cpp:439
 msgid "Actions"
@@ -803,39 +801,43 @@ msgstr "Hurtigtast"
 
 #: src/ui/qt/main_window.cpp:493
 msgid "Interface"
-msgstr ""
+msgstr "Brukerflate"
 
 #: src/ui/qt/main_window.cpp:497
 msgid "Show notification area icon"
-msgstr ""
+msgstr "Vis ikon i systemfeltet"
 
 #: src/ui/qt/main_window.cpp:521
 msgid "Minimize to notification area"
-msgstr ""
+msgstr "Minimer til systemfeltet"
 
 #: src/ui/qt/main_window.cpp:525
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr ""
+"Minimering av vinduet vil skjule {app_name}. Bruk ikonet i systemfeltet for "
+"å vise det igjen."
 
 #: src/ui/qt/main_window.cpp:531
 msgid "Close to notification area"
-msgstr ""
+msgstr "Lukk til systemfelt"
 
 #: src/ui/qt/main_window.cpp:535
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr ""
+"Lukking av vinduet vil skjule {app_name}. Bruk ikonet i systemfeltet for å "
+"vise det igjen."
 
 #: src/ui/qt/main_window.cpp:541
 msgid "Behavior"
-msgstr ""
+msgstr "Virkemåte"
 
 #: src/ui/qt/main_window.cpp:544
 msgid "Run at system logon"
-msgstr ""
+msgstr "Kjør ved systeminnlogging"
 
 #: src/ui/qt/main_window.cpp:548
 msgid ""
@@ -843,6 +845,9 @@ msgid ""
 "program will be hidden to the notification area if the notification area "
 "icon is enabled, or minimized if the icon is disabled."
 msgstr ""
+"{app_name} starter automatisk når du logger deg på systemet. Programmet "
+"skjules i systemfeltet hvis ikonet for systemfeltet er aktivert eller "
+"minimeres hvis ikonet er deaktivert."
 
 #: src/ui/qt/main_window.cpp:891
 msgid "Please install languages"
@@ -853,14 +858,13 @@ msgid "Please select languages"
 msgstr "Velg språk"
 
 #: src/ui/qt/main_window.cpp:895
-#, fuzzy
 msgid "Please select actions"
-msgstr "Velg handlinge"
+msgstr "Velg handlinger"
 
 #: src/ui/qt/main_window.cpp:905
 msgid "Press {hotkey} to start area selection"
-msgstr ""
+msgstr "Trykk {hotkey} for å starte områdevalg"
 
 #: src/ui/qt/main_window.cpp:906
 msgid "Press {hotkey} to finish selection"
-msgstr ""
+msgstr "Trykk {hotkey} for å fullføre utvalg"
