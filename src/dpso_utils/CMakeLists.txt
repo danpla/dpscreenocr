@@ -26,7 +26,8 @@ add_library(
     stream/string_stream.cpp
     stream/utils.cpp
     strftime.cpp
-    timing.cpp)
+    timing.cpp
+    version_cmp.cpp)
 
 if(UNIX)
     target_sources(
