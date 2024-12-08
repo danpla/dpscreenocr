@@ -21,7 +21,7 @@ class LangFetchProgressDialog : public QDialog {
     Q_OBJECT
 public:
     LangFetchProgressDialog(
-        const DpsoOcrLangManager* langManager, QWidget* parent);
+        QWidget* parent, const DpsoOcrLangManager* langManager);
 
     void reject() override
     {
@@ -35,11 +35,8 @@ private:
 
 
 LangFetchProgressDialog::LangFetchProgressDialog(
-        const DpsoOcrLangManager* langManager,
-        QWidget* parent)
-    : QDialog{
-        parent,
-        Qt::CustomizeWindowHint | Qt::WindowTitleHint}
+        QWidget* parent, const DpsoOcrLangManager* langManager)
+    : QDialog{parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint}
     , langManager{langManager}
 {
     setWindowTitle(uiAppName);
@@ -77,10 +74,9 @@ void LangFetchProgressDialog::timerEvent(QTimerEvent* event)
 
 
 void runFetchLangsProgressDialog(
-    const DpsoOcrLangManager* langManager,
-    QWidget* parent)
+    QWidget* parent, const DpsoOcrLangManager* langManager)
 {
-    LangFetchProgressDialog dialog(langManager, parent);
+    LangFetchProgressDialog dialog(parent, langManager);
     dialog.exec();
 }
 

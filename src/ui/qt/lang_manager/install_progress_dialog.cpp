@@ -72,9 +72,9 @@ class InstallProgressDialog : public QDialog {
     Q_OBJECT
 public:
     InstallProgressDialog(
+        QWidget* parent,
         DpsoOcrLangManager* langManager,
-        InstallMode installMode,
-        QWidget* parent);
+        InstallMode installMode);
 
     void reject() override;
 protected:
@@ -90,9 +90,9 @@ private:
 
 
 InstallProgressDialog::InstallProgressDialog(
+            QWidget* parent,
             DpsoOcrLangManager* langManager,
-            InstallMode installMode,
-            QWidget* parent)
+            InstallMode installMode)
     : QDialog{
         parent,
         Qt::WindowTitleHint
@@ -195,11 +195,11 @@ void InstallProgressDialog::timerEvent(QTimerEvent* event)
 
 
 void runInstallProgressDialog(
+    QWidget* parent,
     DpsoOcrLangManager* langManager,
-    InstallMode installMode,
-    QWidget* parent)
+    InstallMode installMode)
 {
-    InstallProgressDialog dialog(langManager, installMode, parent);
+    InstallProgressDialog dialog(parent, langManager, installMode);
     dialog.exec();
 }
 

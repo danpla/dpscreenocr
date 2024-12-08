@@ -30,7 +30,7 @@ class UpdateCheckProgressDialog : public QDialog {
     Q_OBJECT
 public:
     UpdateCheckProgressDialog(
-        const UiUpdateChecker* updateChecker, QWidget* parent);
+        QWidget* parent, const UiUpdateChecker* updateChecker);
 
     void reject() override
     {
@@ -44,11 +44,8 @@ private:
 
 
 UpdateCheckProgressDialog::UpdateCheckProgressDialog(
-        const UiUpdateChecker* updateChecker,
-        QWidget* parent)
-    : QDialog{
-        parent,
-        Qt::CustomizeWindowHint | Qt::WindowTitleHint}
+        QWidget* parent, const UiUpdateChecker* updateChecker)
+    : QDialog{parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint}
     , updateChecker{updateChecker}
 {
     setWindowTitle(uiAppName);
@@ -81,9 +78,9 @@ void UpdateCheckProgressDialog::timerEvent(QTimerEvent* event)
 
 
 void runUpdateCheckProgressDialog(
-    const UiUpdateChecker* updateChecker, QWidget* parent)
+    QWidget* parent, const UiUpdateChecker* updateChecker)
 {
-    UpdateCheckProgressDialog dialog(updateChecker, parent);
+    UpdateCheckProgressDialog dialog(parent, updateChecker);
     dialog.exec();
 }
 

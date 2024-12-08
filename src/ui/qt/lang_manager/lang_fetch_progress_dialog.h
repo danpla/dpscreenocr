@@ -11,8 +11,7 @@ namespace ui::qt::langManager {
 
 
 void runFetchLangsProgressDialog(
-    const DpsoOcrLangManager* langManager,
-    QWidget* parent);
+    QWidget* parent, const DpsoOcrLangManager* langManager);
 
 
 }

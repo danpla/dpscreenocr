@@ -13,9 +13,9 @@ namespace ui::qt::langManager {
 
 
 void runInstallProgressDialog(
+    QWidget* parent,
     DpsoOcrLangManager* langManager,
-    InstallMode installMode,
-    QWidget* parent);
+    InstallMode installMode);
 
 
 }

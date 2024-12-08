@@ -223,7 +223,7 @@ bool LangManagerPageInstall::performAction(
         return false;
     }
 
-    runInstallProgressDialog(langManager, installMode, this);
+    runInstallProgressDialog(this, langManager, installMode);
 
     DpsoOcrLangOpStatus installStatus;
     dpsoOcrLangManagerGetInstallStatus(langManager, &installStatus);

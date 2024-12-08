@@ -277,7 +277,7 @@ void MainWindow::checkUpdates()
     }
 
     uiUpdateCheckerStartCheck(updateChecker.get());
-    runUpdateCheckProgressDialog(updateChecker.get(), this);
+    runUpdateCheckProgressDialog(this, updateChecker.get());
 
     UiUpdateCheckerUpdateInfo updateInfo;
     const auto status = uiUpdateCheckerGetUpdateInfo(
@@ -295,7 +295,7 @@ void MainWindow::openLangManager()
     setSelectionIsEnabled(false);
     dpsoKeyManagerSetIsEnabled(false);
 
-    langManager::runLangManager(ocrEngineIdx, ocrDataDirPath, this);
+    langManager::runLangManager(this, ocrEngineIdx, ocrDataDirPath);
     langBrowser->reloadLangs();
 
     // Refresh status in case we installed the first (or removed the

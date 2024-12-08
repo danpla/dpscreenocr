@@ -11,7 +11,7 @@ namespace ui::qt {
 
 
 void runUpdateCheckProgressDialog(
-    const UiUpdateChecker* updateChecker, QWidget* parent);
+    QWidget* parent, const UiUpdateChecker* updateChecker);
 
 
 // Does nothing if the code is not an error.

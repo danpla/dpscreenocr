@@ -11,7 +11,7 @@ namespace ui::qt::langManager {
 
 
 void runLangManager(
-    int ocrEngineIdx, const std::string& dataDir, QWidget* parent);
+    QWidget* parent, int ocrEngineIdx, const std::string& dataDir);
 
 
 }

@@ -29,7 +29,7 @@ namespace ui::qt::langManager {
 
 
 static void fetchExternalLangs(
-    DpsoOcrLangManager* langManager, QWidget* parent)
+    QWidget* parent, DpsoOcrLangManager* langManager)
 {
     if (!dpsoOcrLangManagerStartFetchExternalLangs(langManager)) {
         QMessageBox::critical(
@@ -40,7 +40,7 @@ static void fetchExternalLangs(
         return;
     }
 
-    runFetchLangsProgressDialog(langManager, parent);
+    runFetchLangsProgressDialog(parent, langManager);
 
     DpsoOcrLangOpStatus status;
     dpsoOcrLangManagerGetFetchExternalLangsStatus(
@@ -82,7 +82,7 @@ static QString getUpdateTabTitle(
 
 
 void runLangManager(
-    int ocrEngineIdx, const std::string& dataDir, QWidget* parent)
+    QWidget* parent, int ocrEngineIdx, const std::string& dataDir)
 {
     DpsoOcrEngineInfo ocrEngineInfo;
     dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
@@ -102,7 +102,7 @@ void runLangManager(
         return;
     }
 
-    fetchExternalLangs(langManager.get(), parent);
+    fetchExternalLangs(parent, langManager.get());
 
     QDialog dialog(
         parent,
