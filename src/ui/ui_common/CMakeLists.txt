@@ -1,4 +1,17 @@
 
+# We want the default configuration on Unix-like systems to be
+# suitable for building the app for system package managers. In this
+# case, the package manager will check for updates, and our internal
+# update checking is unnecessary.
+if(NOT DEFINED DPSO_ENABLE_UPDATE_CHECKER AND UNIX AND NOT APPLE)
+    set(DPSO_ENABLE_UPDATE_CHECKER NO CACHE BOOL "")
+endif()
+
+option(
+    DPSO_ENABLE_UPDATE_CHECKER
+    "Enable functionality to check for new app versions"
+    YES)
+
 add_library(
     ui_common STATIC
 
@@ -12,7 +25,8 @@ add_library(
     init_startup_args.cpp
     ocr_data_utils.cpp
     toplevel_argv0.cpp
-    user_agent.cpp)
+    user_agent.cpp
+    update_checker_utils.cpp)
 
 # Files for configure_file()
 set(IN_SRCS app_info.cpp file_names.cpp)
@@ -54,6 +68,32 @@ if(UNIX AND NOT APPLE)
 elseif(WIN32)
     target_sources(
         ui_common PRIVATE single_instance_guard_windows.cpp)
+endif()
+
+if(DPSO_ENABLE_UPDATE_CHECKER)
+    target_sources(ui_common PRIVATE update_checker.cpp)
+
+    if(WIN32)
+        target_sources(
+            ui_common PRIVATE update_checker_platform_windows.cpp)
+    else()
+        target_sources(
+            ui_common PRIVATE update_checker_platform_generic.cpp)
+    endif()
+
+    if(NOT TARGET dpso_json)
+        add_subdirectory(
+            ../dpso_json "${CMAKE_BINARY_DIR}/src/dpso_json")
+    endif()
+
+    if(NOT TARGET dpso_net)
+        add_subdirectory(
+            ../dpso_net "${CMAKE_BINARY_DIR}/src/dpso_net")
+    endif()
+
+    target_link_libraries(ui_common PRIVATE dpso_json dpso_net)
+else()
+    target_sources(dpso PRIVATE update_checker_null.cpp)
 endif()
 
 foreach(IN_SRC ${IN_SRCS})

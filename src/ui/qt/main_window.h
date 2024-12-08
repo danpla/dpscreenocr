@@ -42,6 +42,7 @@ protected:
     void closeEvent(QCloseEvent* event) override;
     void changeEvent(QEvent* event) override;
 private slots:
+    void checkUpdates();
     void openLangManager();
     void invalidateStatus();
     void setVisibility(bool vilible);

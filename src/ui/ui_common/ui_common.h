@@ -12,4 +12,6 @@
 #include "ocr_data_utils.h"
 #include "single_instance_guard.h"
 #include "taskbar.h"
+#include "update_checker.h"
+#include "update_checker_utils.h"
 #include "user_agent.h"

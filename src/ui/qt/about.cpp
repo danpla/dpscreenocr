@@ -8,7 +8,9 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileInfo>
+#include <QHBoxLayout>
 #include <QLabel>
+#include <QPushButton>
 #include <QStringList>
 #include <QTextEdit>
 #include <QToolTip>
@@ -121,6 +123,17 @@ About::About()
     setMonospace(textEditFont);
     textEdit->setCurrentFont(textEditFont);
 
+    auto* checkUpdatesButton = new QPushButton(
+        _("Check for updates"));
+    checkUpdatesButton->setVisible(uiUpdateCheckerIsAvailable());
+    connect(
+        checkUpdatesButton, &QPushButton::clicked,
+        this, &About::checkUpdates);
+
+    auto* buttonsLayout = new QHBoxLayout();
+    buttonsLayout->addWidget(checkUpdatesButton);
+    buttonsLayout->addStretch();
+
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins({});
 
@@ -128,6 +141,7 @@ About::About()
     layout->addWidget(infoTextLabel);
     layout->addWidget(textEdit, 1);
     layout->addStretch();
+    layout->addLayout(buttonsLayout);
 }
 
 
