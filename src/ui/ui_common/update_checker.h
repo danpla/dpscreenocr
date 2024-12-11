@@ -50,7 +50,8 @@ typedef struct UiUpdateChecker UiUpdateChecker;
  *
  * infoFileUrl is an HTTPS URL of a JSON file containing information
  * about available new versions. The root of the JSON is an array of
- * objects (usually at least one) containing the following keys:
+ * arbitrary ordered objects (usually at least one) containing the
+ * following keys:
  *
  * * version - a version number string.
  *
@@ -60,13 +61,10 @@ typedef struct UiUpdateChecker UiUpdateChecker;
  *
  *   * For "windows" platform ID, it contains a "windows-version" key
  *     that maps to a Windows version number string in the
- *     "major.minor.build" format. The "build" part is optional,
- *     except in cases where it's the only way to distinguish between
- *     Windows versions, e.g., both Windows 10 and 11 have version
- *     "10.0", so you need to use "10.0.22000" to specify Windows 11
- *     or never.
+ *     "major.minor.build" format. See:
  *
- *     See https://learn.microsoft.com/en-us/windows/win32/sysinfo/operating-system-version
+ *     https://learn.microsoft.com/en-us/windows/win32/sysinfo/operating-system-version
+ *     https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions
  *
  *   * For "generic" platform ID, the "requirements" object is ignored
  *     and can be empty.
