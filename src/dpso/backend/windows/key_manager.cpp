@@ -95,7 +95,7 @@ static DpsoHotkey atomNameToHotkey(const wchar_t* name)
 
     ATOM atom{};
     const auto [ptr, ec] = std::from_chars(
-        str.data(), str.data() + str.size(), atom, 10);
+        str.data(), str.data() + str.size(), atom);
     if (ec != std::errc{}
             || ptr != str.data() + str.size()
             || atom < 1)

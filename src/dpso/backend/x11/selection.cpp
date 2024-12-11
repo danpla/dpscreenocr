@@ -65,8 +65,7 @@ static int getDpi(Display* display)
     if (int dpi{}; std::from_chars(
             dpiStr,
             dpiStr + std::strlen(dpiStr),
-            dpi,
-            10).ec == std::errc{})
+            dpi).ec == std::errc{})
         return dpi;
 
     return baseDpi;

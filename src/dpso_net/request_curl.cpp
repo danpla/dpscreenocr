@@ -323,8 +323,7 @@ std::size_t CurlResponse::curlHeaderFn(
 
         if (const auto spacePos = std::find(data, dataEnd, ' ');
                 spacePos != dataEnd)
-            std::from_chars(
-                spacePos + 1, dataEnd, resp.statusCode, 10);
+            std::from_chars(spacePos + 1, dataEnd, resp.statusCode);
     } else if (const auto colonPos = std::find(data, dataEnd, ':');
             colonPos != dataEnd
             && str::cmpSubStr(
@@ -352,7 +351,7 @@ std::size_t CurlResponse::curlHeaderFn(
 
         std::int64_t contentLength{};
         const auto [ptr, ec] = std::from_chars(
-            valBegin, valEnd, contentLength, 10);
+            valBegin, valEnd, contentLength);
         if (ec == std::errc{} && ptr == valEnd && contentLength >= 0)
             resp.contentLength = contentLength;
     }

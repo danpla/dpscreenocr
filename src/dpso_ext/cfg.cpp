@@ -300,7 +300,7 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
     int result{};
 
     const auto* strEnd = str + std::strlen(str);
-    const auto [ptr, ec] = std::from_chars(str, strEnd, result, 10);
+    const auto [ptr, ec] = std::from_chars(str, strEnd, result);
     if (ec == std::errc{} && ptr == strEnd)
         return result;
 
