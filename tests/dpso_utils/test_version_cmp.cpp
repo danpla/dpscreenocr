@@ -7,7 +7,7 @@
 
 static void testVersionCmp()
 {
-    const struct Test {
+    const struct {
         const char* strA;
         const char* strB;
         bool isLess;

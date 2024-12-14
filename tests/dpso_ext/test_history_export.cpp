@@ -44,7 +44,7 @@ void testDetectExportFormat(
 
 void testDetectExportFormat()
 {
-    const struct Test {
+    const struct {
         std::vector<const char*> extensions;
         DpsoHistoryExportFormat exportFormat;
         DpsoHistoryExportFormat defaultExportFormat;

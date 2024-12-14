@@ -46,7 +46,7 @@ void testCmpSubStr()
 {
     using namespace dpso::str;
 
-    const struct Test {
+    const struct {
         const char* str;
         const char* subStr;
         std::size_t subStrLen;
@@ -162,7 +162,7 @@ void testToStr()
 
 void testFormat()
 {
-    const struct Test {
+    const struct {
         const char* str;
         std::initializer_list<const char*> args;
         const char* expected;

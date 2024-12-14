@@ -151,7 +151,7 @@ void testTruncatedData()
 {
     const DpsoHistoryEntry extraEntry{"extraTs", "extraText"};
 
-    const struct Test {
+    const struct {
         const char* description;
         const char* data;
         std::vector<DpsoHistoryEntry> expectedEntries;
@@ -238,7 +238,7 @@ void testTruncatedData()
 
 void testInvalidData()
 {
-    const struct Test {
+    const struct {
         const char* description;
         const char* data;
     } tests[]{

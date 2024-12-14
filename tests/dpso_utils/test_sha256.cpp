@@ -14,7 +14,7 @@
 
 static void testSha256()
 {
-    const struct Test {
+    const struct {
         std::string str;
         const char* digest;
         int numRepeats;

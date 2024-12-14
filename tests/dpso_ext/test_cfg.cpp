@@ -223,19 +223,10 @@ void testGetHotkey(
 }
 
 
-namespace {
-
-
-struct HotkeyTest {
+const struct {
     const char* key;
     DpsoHotkey hotkey;
-};
-
-
-}
-
-
-const HotkeyTest hotkeyTests[]{
+} hotkeyTests[]{
     {"hotkey_none", {dpsoNoKey, dpsoNoKeyMods}},
     {
         "hotkey_mods_only",
@@ -307,7 +298,7 @@ void testValueOverridingOnLoad(DpsoCfg* cfg)
 
 void testStrParsing(DpsoCfg* cfg)
 {
-    const struct Test {
+    const struct {
         const char* key;
         const char* valInFile;
         const char* expectedVal;
@@ -356,7 +347,7 @@ void testStrParsing(DpsoCfg* cfg)
 
 void testIntParsing(DpsoCfg* cfg)
 {
-    const struct Test {
+    const struct {
         const char* key;
         std::string valInFile;
         int expectedVal;
@@ -384,7 +375,7 @@ void testIntParsing(DpsoCfg* cfg)
 
 void testBoolParsing(DpsoCfg* cfg)
 {
-    const struct Test {
+    const struct {
         const char* key;
         const char* valInFile;
         bool expectedVal;
@@ -408,7 +399,7 @@ void testBoolParsing(DpsoCfg* cfg)
 
 void testHotkeyParsing(DpsoCfg* cfg)
 {
-    const struct Test {
+    const struct {
         const char* key;
         const char* valInFile;
         DpsoHotkey expectedVal;
@@ -518,7 +509,7 @@ void testHotkeyParsing(DpsoCfg* cfg)
 
 void testKeyValidity(DpsoCfg* cfg)
 {
-    const struct Test {
+    const struct {
         const char* key;
         bool isValid;
     } tests[]{

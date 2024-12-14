@@ -15,7 +15,7 @@ namespace {
 
 void testPathSplit()
 {
-    const struct Test {
+    const struct {
         const char* path;
         const char* dirName;
         const char* baseName;

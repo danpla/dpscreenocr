@@ -18,7 +18,7 @@ static std::string toStr(const DpsoStrNFormatArg& arg)
 
 static void testStrNFormat()
 {
-    const struct Test {
+    const struct {
         const char* str;
         std::initializer_list<DpsoStrNFormatArg> args;
         const char* expected;

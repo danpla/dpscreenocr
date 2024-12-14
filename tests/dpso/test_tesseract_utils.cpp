@@ -13,7 +13,7 @@ namespace {
 
 void testPrettifyText()
 {
-    const struct Test {
+    const struct {
         const char* original;
         const char* prettified;
     } tests[]{

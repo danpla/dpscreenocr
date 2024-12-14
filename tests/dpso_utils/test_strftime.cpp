@@ -14,7 +14,7 @@ static void testStrftime()
     tm.tm_min = 58;
     tm.tm_sec = 59;
 
-    const struct Test {
+    const struct {
         const char* format;
         const char* result;
     } tests[]{

@@ -109,7 +109,7 @@ void testLoadValidSha256File()
     const auto testSha256FileName =
         testFileName + dpso::sha256FileExt;
 
-    const struct Test {
+    const struct {
         const char* description;
         std::string data;
     } tests[]{
@@ -167,7 +167,7 @@ void testLoadInvalidSha256File()
     const auto testSha256FileName =
         testFileName + dpso::sha256FileExt;
 
-    const struct Test {
+    const struct {
         const char* description;
         std::string data;
     } tests[]{

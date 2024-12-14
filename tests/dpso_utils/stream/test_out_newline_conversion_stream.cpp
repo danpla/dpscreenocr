@@ -15,7 +15,7 @@ void testOutNewlineConversionStream()
 {
     const auto* input = " \n \r \r\n ";
 
-    const struct Test {
+    const struct {
         const char* outNewline;
         const char* expected;
     } tests[]{

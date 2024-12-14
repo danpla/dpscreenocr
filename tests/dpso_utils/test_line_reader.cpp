@@ -15,7 +15,7 @@ namespace {
 
 void testLineReader()
 {
-    const struct Test {
+    const struct {
         const char* text;
         std::vector<std::string> expectedLines;
     } tests[]{

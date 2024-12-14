@@ -46,7 +46,7 @@ std::string toStr(const DpsoHotkey& hotkey)
 
 void testHotkeyFromString()
 {
-    const struct Test {
+    const struct {
         const char* str;
         DpsoHotkey expectedHotkey;
     } tests[]{
