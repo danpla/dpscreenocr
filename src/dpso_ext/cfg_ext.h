@@ -54,6 +54,23 @@ void dpsoCfgSetHotkey(
     DpsoCfg* cfg, const char* key, const DpsoHotkey* hotkey);
 
 
+struct tm;
+
+
+/**
+ * Get time.
+ *
+ * Returns false and leaves the tm struct unchanged if the value does
+ * not represent time in the "YYYY-MM-DD HH:MM:SS" format.
+ */
+bool dpsoCfgGetTime(
+    const DpsoCfg* cfg, const char* key, struct tm* time);
+
+
+void dpsoCfgSetTime(
+    DpsoCfg* cfg, const char* key, const struct tm* time);
+
+
 #ifdef __cplusplus
 }
 #endif

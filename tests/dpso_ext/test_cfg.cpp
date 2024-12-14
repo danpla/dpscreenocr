@@ -2,6 +2,7 @@
 #include <climits>
 #include <cstring>
 #include <initializer_list>
+#include <optional>
 #include <string>
 
 #include "dpso/dpso.h"
@@ -9,6 +10,7 @@
 #include "dpso_ext/cfg_ext.h"
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/str.h"
+#include "dpso_utils/strftime.h"
 
 #include "flow.h"
 #include "utils.h"
@@ -250,6 +252,106 @@ void getHotkey(const DpsoCfg* cfg)
     testGetHotkey(cfg, nonexistentKey, defaultHotkey, defaultHotkey);
     for (const auto& test : hotkeyTests)
         testGetHotkey(cfg, test.key, test.hotkey, defaultHotkey);
+}
+
+
+std::string toStr(const std::tm& time)
+{
+    return dpso::strftime("%Y-%m-%d %H:%M:%S", &time);
+}
+
+
+bool isEqual(const std::tm& a, const std::tm& b)
+{
+    #define CMP(N) a.N == b.N
+
+    return CMP(tm_year)
+        && CMP(tm_mon)
+        && CMP(tm_mday)
+        && CMP(tm_hour)
+        && CMP(tm_min)
+        && CMP(tm_sec);
+
+    #undef CMP
+}
+
+
+std::tm makeTime(int year, int month, int day, int h, int m, int s)
+{
+    std::tm result{};
+
+    result.tm_year = year - 1900;
+    result.tm_mon = month - 1;
+    result.tm_mday = day;
+    result.tm_hour = h;
+    result.tm_min = m;
+    result.tm_sec = s;
+
+    std::mktime(&result);
+
+    return result;
+}
+
+
+void testGetTime(
+    const DpsoCfg* cfg,
+    const char* key,
+    const std::optional<std::tm>& expectedVal)
+{
+    std::tm gotVal;
+    if (!dpsoCfgGetTime(cfg, key, &gotVal)) {
+        if (expectedVal)
+            test::failure(
+                "dpsoCfgGetTime(\"{}\", ...) failed (string \"{}\", "
+                "expected \"{}\")",
+                key,
+                test::utils::toStr(dpsoCfgGetStr(cfg, key, "")),
+                toStr(*expectedVal));
+
+        return;
+    }
+
+    if (!expectedVal) {
+        test::failure(
+            "dpsoCfgGetTime(\"{}\", ...) expected to fail for string "
+            "\"{}\", but returned \"{}\"",
+            key,
+            test::utils::toStr(dpsoCfgGetStr(cfg, key, "")),
+            toStr(gotVal));
+        return;
+    }
+
+    if (isEqual(gotVal, *expectedVal))
+        return;
+
+    test::failure(
+        "dpsoCfgGetTime(\"{}\", ...): expected \"{}\", got \"{}\"",
+        key,
+        toStr(*expectedVal),
+        toStr(gotVal));
+}
+
+
+const struct {
+    const char* key;
+    std::optional<std::tm> time;
+}  timeTests[]{
+    {"time", makeTime(2024, 12, 14, 17, 45, 55)},
+};
+
+
+void setTime(DpsoCfg* cfg)
+{
+    for (const auto& test : timeTests)
+        if (test.time)
+            dpsoCfgSetTime(cfg, test.key, &*test.time);
+}
+
+
+void getTime(const DpsoCfg* cfg)
+{
+    for (const auto& test : timeTests)
+        testGetTime(cfg, test.key, test.time);
 }
 
 
@@ -507,6 +609,96 @@ void testHotkeyParsing(DpsoCfg* cfg)
 }
 
 
+void testTimeParsing(DpsoCfg* cfg)
+{
+    const struct {
+        const char* key;
+        const char* valInFile;
+        std::optional<std::tm> expectedVal{};
+    } tests[]{
+        {
+            "time_empty", ""},
+        {
+            "time_normal",
+            "2024-12-14 18:22:30",
+            makeTime(2024, 12, 14, 18, 22, 30)},
+        {
+            "time_leading_zeros",
+            "0024-01-02 03:04:05",
+            makeTime(24, 1, 2, 3, 4, 5)},
+        {
+            "time_min",
+            "0-1-1 0:0:0",
+            makeTime(0, 1, 1, 0, 0, 0)},
+        {
+            "time_max",
+            "99999-12-31 23:59:59",
+            makeTime(99999, 12, 31, 23, 59, 59)},
+        {
+            "time_no_leading_zeros",
+            "24-1-2 3:4:5",
+            makeTime(24, 1, 2, 3, 4, 5)},
+        {
+            "time_min_year",
+            "0-12-14 18:22:30",
+            makeTime(0, 12, 14, 18, 22, 30)},
+        {
+            "time_year_out_of_min_range",
+            "-1-12-14 18:22:30"},
+        {
+            "time_max_year",
+            "99999-12-14 18:22:30",
+            makeTime(99999, 12, 14, 18, 22, 30)},
+        {
+            "time_year_out_of_max_range",
+            "100000-12-14 18:22:30"},
+        {
+            "time_month_out_of_range",
+            "2024-13-14 18:22:30"},
+        {
+            "time_day_out_of_range",
+            "2024-12-32 18:22:30"},
+        {
+            "time_hours_out_of_range",
+            "2024-12-14 24:22:30"},
+        {
+            "time_minutes_out_of_range",
+            "2024-12-14 18:60:30"},
+        {
+            "time_seconds_out_of_range",
+            "2024-12-14 18:22:62"},
+        {
+            "time_invalid_year_separator",
+            "2024:12-14 18:22:30"},
+        {
+            "time_invalid_month_separator",
+            "2024-12:14 18:22:30"},
+        {
+            "time_invalid_day_separator",
+            "2024-12-14-18:22:30"},
+        {
+            "time_tab_day_separator",
+            "2024-12-14\t18:22:30"},
+        {
+            "time_multiple_day_separators",
+            "2024-12-14   18:22:30"},
+        {
+            "time_invalid_hour_separator",
+            "2024-12-14 18-22:30"},
+        {
+            "time_invalid_minute_separator",
+            "2024-12-14 18:22-30"},
+    };
+
+    for (const auto& test : tests) {
+        loadCfgData(
+            cfg,
+            (std::string{test.key} + " " + test.valInFile).c_str());
+        testGetTime(cfg, test.key, test.expectedVal);
+    }
+}
+
+
 void testKeyValidity(DpsoCfg* cfg)
 {
     const struct {
@@ -611,17 +803,20 @@ void testCfg()
 
     setBasicTypes(cfg.get());
     setHotkey(cfg.get());
+    setTime(cfg.get());
 
     reload(cfg.get());
 
     getBasicTypes(cfg.get());
     getHotkey(cfg.get());
+    getTime(cfg.get());
 
     testValueOverridingOnLoad(cfg.get());
     testStrParsing(cfg.get());
     testIntParsing(cfg.get());
     testBoolParsing(cfg.get());
     testHotkeyParsing(cfg.get());
+    testTimeParsing(cfg.get());
 
     testKeyValidity(cfg.get());
     testKeyCaseInsensitivity(cfg.get());
