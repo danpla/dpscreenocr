@@ -53,7 +53,7 @@ RTL_OSVERSIONINFOW getWindowsVersion()
 
 RTL_OSVERSIONINFOW getVersionFromStr(const std::string& str)
 {
-    const auto parseNum = [](
+    const auto parse = [](
         ULONG& result,
         const char*& str,
         const char* strEnd)
@@ -82,11 +82,11 @@ RTL_OSVERSIONINFOW getVersionFromStr(const std::string& str)
     const auto* s = str.c_str();
     const auto* sEnd = s + str.size();
 
-    if (parseNum(result.dwMajorVersion, s, sEnd)
+    if (parse(result.dwMajorVersion, s, sEnd)
             && consume('.', s, sEnd)
-            && parseNum(result.dwMinorVersion, s, sEnd)
+            && parse(result.dwMinorVersion, s, sEnd)
             && consume('.', s, sEnd)
-            && parseNum(result.dwBuildNumber, s, sEnd)
+            && parse(result.dwBuildNumber, s, sEnd)
             && s == sEnd)
         return result;
 
@@ -95,8 +95,7 @@ RTL_OSVERSIONINFOW getVersionFromStr(const std::string& str)
 }
 
 
-bool isLessThan(
-    const RTL_OSVERSIONINFOW& a, const RTL_OSVERSIONINFOW& b)
+bool isLess(const RTL_OSVERSIONINFOW& a, const RTL_OSVERSIONINFOW& b)
 {
     #define CMP(N) if (a.N != b.N) return a.N < b.N
 
@@ -161,7 +160,7 @@ std::vector<UnmetRequirement> processRequirements(
             "Invalid \"windows-version\": {}", e.what())};
     }
 
-    if (isLessThan(actualVersion, requiredVersion))
+    if (isLess(actualVersion, requiredVersion))
         return {
             {
                 getWindowsName(requiredVersion),
