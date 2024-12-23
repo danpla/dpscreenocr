@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-12-23 22:04+0100\n"
-"PO-Revision-Date: 2024-12-23 21:26+0000\n"
+"PO-Revision-Date: 2024-12-24 22:00+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/uk/>\n"
@@ -903,7 +903,7 @@ msgstr "Натисніть {hotkey}, щоб закінчити виділенн�
 
 #: src/ui/qt/update_checker.cpp:54
 msgid "Checking for updates…"
-msgstr "Перевірка оновлень…"
+msgstr "Перевірка наявності оновлень…"
 
 #: src/ui/qt/update_checker.cpp:116
 msgid "An error occurred while checking for updates"
