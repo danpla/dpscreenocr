@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-12-23 22:04+0100\n"
-"PO-Revision-Date: 2024-08-18 20:09+0000\n"
+"PO-Revision-Date: 2024-12-23 21:26+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/uk/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.7\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -552,7 +552,7 @@ msgstr "Програма для розпізнавання тексту не е�
 
 #: src/ui/qt/about.cpp:127
 msgid "Check for updates"
-msgstr ""
+msgstr "Перевірити наявність оновлень"
 
 #: src/ui/qt/action_chooser.cpp:25
 msgid "Copy text to clipboard"
@@ -848,7 +848,7 @@ msgstr "Поведінка"
 
 #: src/ui/qt/main_window.cpp:546
 msgid "Check for updates automatically"
-msgstr ""
+msgstr "Перевіряти наявність оновлень автоматично"
 
 #: src/ui/qt/main_window.cpp:552
 msgid "Run at system logon"
@@ -872,8 +872,14 @@ msgid_plural ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} days"
 msgstr[0] ""
+"{app_name} буде автоматично перевіряти наявність оновлень під час запуску, "
+"але не частіше, ніж раз на {count} день"
 msgstr[1] ""
+"{app_name} буде автоматично перевіряти наявність оновлень під час запуску, "
+"але не частіше, ніж раз на {count} дні"
 msgstr[2] ""
+"{app_name} буде автоматично перевіряти наявність оновлень під час запуску, "
+"але не частіше, ніж раз на {count} днів"
 
 #: src/ui/qt/main_window.cpp:926
 msgid "Please install languages"
@@ -897,34 +903,36 @@ msgstr "Натисніть {hotkey}, щоб закінчити виділенн�
 
 #: src/ui/qt/update_checker.cpp:54
 msgid "Checking for updates…"
-msgstr ""
+msgstr "Перевірка оновлень…"
 
 #: src/ui/qt/update_checker.cpp:116
 msgid "An error occurred while checking for updates"
-msgstr ""
+msgstr "Виникла помилка під час перевірки оновлень"
 
 #: src/ui/qt/update_checker.cpp:131
 msgid "{required} (you have {actual})"
-msgstr ""
+msgstr "{required} (у вас {actual})"
 
 #: src/ui/qt/update_checker.cpp:158
 msgid "{app_name} {new_version} is available (you have {current_version})"
-msgstr ""
+msgstr "Доступний {app_name} {new_version} (у вас {current_version})"
 
 #: src/ui/qt/update_checker.cpp:166
 msgid "Visit the website for more information."
-msgstr ""
+msgstr "Відвідайте вебсайт для додаткової інформації."
 
 #: src/ui/qt/update_checker.cpp:170
 msgid "You have the latest version of {app_name}"
-msgstr ""
+msgstr "У вас найновіша версія {app_name}"
 
 #: src/ui/qt/update_checker.cpp:171
 msgid "You have the latest version of {app_name} available for your system"
-msgstr ""
+msgstr "У вас найновіша версія {app_name}, доступна для вашої системи"
 
 #: src/ui/qt/update_checker.cpp:180
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
 msgstr ""
+"Останньою версією є {latest_version}, але ваша система не відповідає "
+"наступним мінімальним вимогам: {requirements}."
