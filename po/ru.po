@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-12-23 22:04+0100\n"
-"PO-Revision-Date: 2024-12-23 21:26+0000\n"
+"PO-Revision-Date: 2024-12-24 22:00+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/ru/>\n"
@@ -876,13 +876,13 @@ msgid_plural ""
 "often than once every {count} days"
 msgstr[0] ""
 "{app_name} будет автоматически проверять наличие обновлений при запуске, но "
-"не чаще чем раз в {count} день"
+"не чаще, чем раз в {count} день"
 msgstr[1] ""
 "{app_name} будет автоматически проверять наличие обновлений при запуске, но "
-"не чаще чем раз в {count} дня"
+"не чаще, чем раз в {count} дня"
 msgstr[2] ""
 "{app_name} будет автоматически проверять наличие обновлений при запуске, но "
-"не чаще чем раз в {count} дней"
+"не чаще, чем раз в {count} дней"
 
 #: src/ui/qt/main_window.cpp:926
 msgid "Please install languages"
@@ -906,7 +906,7 @@ msgstr "Нажмите {hotkey}, чтобы завершить выделени�
 
 #: src/ui/qt/update_checker.cpp:54
 msgid "Checking for updates…"
-msgstr "Проверка обновлений…"
+msgstr "Проверка наличия обновлений…"
 
 #: src/ui/qt/update_checker.cpp:116
 msgid "An error occurred while checking for updates"
