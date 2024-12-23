@@ -132,7 +132,7 @@ static ErrorCtx* errorCtxCreate(void)
 
 static void errorCtxDelete(ErrorCtx* ctx)
 {
-    if (ctx && ctx->text)
+    if (ctx)
         free(ctx->text);
 
     free(ctx);
@@ -158,9 +158,7 @@ static void errorCtxSetText(ErrorCtx* ctx, const char* fmt, ...)
     // don't free it until we create the new one.
     char* newText = xVasprintf(fmt, args);
 
-    if (ctx->text)
-        free(ctx->text);
-
+    free(ctx->text);
     ctx->text = newText;
 }
 
