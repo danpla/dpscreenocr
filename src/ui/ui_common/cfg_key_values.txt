@@ -15,11 +15,14 @@ ui_active_tab
 ui_languages_sort_column
 ui_languages_sort_descending
 ui_tray_icon_visible                    | bool        | true
+ui_window_close_to_tray                 | bool        | false
 ui_window_height
 ui_window_maximized
 ui_window_minimize_on_start             | bool        | false
 ui_window_minimize_to_tray              | bool        | false
-ui_window_close_to_tray                 | bool        | false
 ui_window_width
 ui_window_x
 ui_window_y
+update_check_auto                       | bool        | true
+update_check_auto_interval_days         | int         | 7
+update_check_last_time

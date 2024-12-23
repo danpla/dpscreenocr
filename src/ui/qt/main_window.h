@@ -11,6 +11,7 @@
 #include "ui_common/ui_common.h"
 
 #include "status.h"
+#include "update_checker.h"
 
 
 class QAction;
@@ -42,7 +43,6 @@ protected:
     void closeEvent(QCloseEvent* event) override;
     void changeEvent(QEvent* event) override;
 private slots:
-    void checkUpdates();
     void openLangManager();
     void invalidateStatus();
     void setVisibility(bool vilible);
@@ -96,6 +96,9 @@ private:
     QCheckBox* showTrayIconCheck;
     QCheckBox* minimizeToTrayCheck;
     QCheckBox* closeToTrayCheck;
+
+    UpdateChecker updateChecker;
+    QCheckBox* autoUpdateCheck;
 
     ui::AutostartUPtr autostart;
     QCheckBox* autostartCheck;

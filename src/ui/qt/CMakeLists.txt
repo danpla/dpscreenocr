@@ -20,7 +20,7 @@ add_executable(
     main.cpp
     main_window.cpp
     status_indicator.cpp
-    update_check.cpp
+    update_checker.cpp
     utils.cpp)
 
 if(WIN32)

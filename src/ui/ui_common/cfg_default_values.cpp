@@ -24,9 +24,13 @@ bool const cfgDefaultValueOcrSplitTextBlocks =
     true;
 bool const cfgDefaultValueUiTrayIconVisible =
     true;
+bool const cfgDefaultValueUiWindowCloseToTray =
+    false;
 bool const cfgDefaultValueUiWindowMinimizeOnStart =
     false;
 bool const cfgDefaultValueUiWindowMinimizeToTray =
     false;
-bool const cfgDefaultValueUiWindowCloseToTray =
-    false;
+bool const cfgDefaultValueUpdateCheckAuto =
+    true;
+int const cfgDefaultValueUpdateCheckAutoIntervalDays =
+    7;

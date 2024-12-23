@@ -32,7 +32,6 @@
 #include "lang_browser.h"
 #include "lang_manager/lang_manager.h"
 #include "status_indicator.h"
-#include "update_check.h"
 #include "utils.h"
 
 
@@ -58,6 +57,7 @@ const auto ocrEngineIdx = 0;
 MainWindow::MainWindow(const UiStartupArgs& startupArgs)
     : progressStatusFmt{_(
         "Recognition {progress}% ({current_job}/{total_jobs})")}
+    , updateChecker{this}
 {
     setWindowTitle(uiAppName);
 
@@ -257,36 +257,6 @@ void MainWindow::changeEvent(QEvent* event)
         visibilityAction->setChecked(false);
 
     QWidget::changeEvent(event);
-}
-
-
-void MainWindow::checkUpdates()
-{
-    UpdateCheckerUPtr updateChecker{
-        uiUpdateCheckerCreate(
-            uiAppVersion,
-            uiGetUserAgent(),
-            uiUpdateCheckerGetInfoFileUrl())};
-    if (!updateChecker) {
-        QMessageBox::critical(
-            this,
-            uiAppName,
-            QString("Can't create update checker: ")
-                + dpsoGetError());
-        return;
-    }
-
-    uiUpdateCheckerStartCheck(updateChecker.get());
-    runUpdateCheckProgressDialog(this, updateChecker.get());
-
-    UiUpdateCheckerUpdateInfo updateInfo;
-    const auto status = uiUpdateCheckerGetUpdateInfo(
-        updateChecker.get(), &updateInfo);
-
-    if (status == UiUpdateCheckerStatusSuccess)
-        showUpdateInfo(this, updateInfo);
-    else
-        showUpdateCheckError(this, status);
 }
 
 
@@ -572,6 +542,13 @@ QWidget* MainWindow::createSettingsTab()
     auto* behaviorGroup = new QGroupBox(_("Behavior"));
     auto* behaviorGroupLayout = new QVBoxLayout(behaviorGroup);
 
+    autoUpdateCheck = new QCheckBox(
+        _("Check for updates automatically"));
+    connect(
+        autoUpdateCheck, &QCheckBox::toggled,
+        &updateChecker, &UpdateChecker::setAutoCheckIsEnabled);
+    behaviorGroupLayout->addWidget(autoUpdateCheck);
+
     autostartCheck = new QCheckBox(_("Run at system logon"));
     autostartCheck->setToolTip(
         dpsoStrNFormat(
@@ -622,7 +599,8 @@ QWidget* MainWindow::createAboutTab()
 {
     auto* about = new About();
     connect(
-        about, &About::checkUpdates, this, &MainWindow::checkUpdates);
+        about, &About::checkUpdates,
+        &updateChecker, &UpdateChecker::checkUpdates);
 
     auto* tab = new QWidget();
     auto* tabLayout = new QVBoxLayout(tab);
@@ -709,6 +687,26 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfgKeyUiWindowCloseToTray,
             cfgDefaultValueUiWindowCloseToTray));
 
+    updateChecker.loadState(cfg);
+    autoUpdateCheck->setChecked(
+        updateChecker.getAutoCheckIsEnabled());
+    autoUpdateCheck->setToolTip(
+        dpsoStrNFormat(
+            ngettext(
+                "{app_name} will automatically check for updates at "
+                "startup, but no more often than once every {count} "
+                "day",
+                "{app_name} will automatically check for updates at "
+                "startup, but no more often than once every {count} "
+                "days",
+                updateChecker.getAutoCheckIntervalDays()),
+            {
+                {"app_name", uiAppName},
+                {"count",
+                    toStr(updateChecker.getAutoCheckIntervalDays())
+                        .c_str()}
+            }));
+
     tabs->setCurrentIndex(dpsoCfgGetInt(cfg, cfgKeyUiActiveTab, 0));
 
     const QSize windowSize{
@@ -775,6 +773,8 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         cfg,
         cfgKeyUiWindowCloseToTray,
         closeToTrayCheck->isChecked());
+
+    updateChecker.saveState(cfg);
 
     dpsoCfgSetInt(cfg, cfgKeyUiActiveTab, tabs->currentIndex());
 

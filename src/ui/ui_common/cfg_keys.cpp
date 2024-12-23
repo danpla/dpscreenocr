@@ -38,6 +38,8 @@ const char* const cfgKeyUiLanguagesSortDescending =
     "ui_languages_sort_descending";
 const char* const cfgKeyUiTrayIconVisible =
     "ui_tray_icon_visible";
+const char* const cfgKeyUiWindowCloseToTray =
+    "ui_window_close_to_tray";
 const char* const cfgKeyUiWindowHeight =
     "ui_window_height";
 const char* const cfgKeyUiWindowMaximized =
@@ -46,11 +48,15 @@ const char* const cfgKeyUiWindowMinimizeOnStart =
     "ui_window_minimize_on_start";
 const char* const cfgKeyUiWindowMinimizeToTray =
     "ui_window_minimize_to_tray";
-const char* const cfgKeyUiWindowCloseToTray =
-    "ui_window_close_to_tray";
 const char* const cfgKeyUiWindowWidth =
     "ui_window_width";
 const char* const cfgKeyUiWindowX =
     "ui_window_x";
 const char* const cfgKeyUiWindowY =
     "ui_window_y";
+const char* const cfgKeyUpdateCheckAuto =
+    "update_check_auto";
+const char* const cfgKeyUpdateCheckAutoIntervalDays =
+    "update_check_auto_interval_days";
+const char* const cfgKeyUpdateCheckLastTime =
+    "update_check_last_time";

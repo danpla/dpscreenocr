@@ -1,6 +1,7 @@
 
-#include "update_check.h"
+#include "update_checker.h"
 
+#include <QApplication>
 #include <QDesktopServices>
 #include <QDialog>
 #include <QLabel>
@@ -12,7 +13,7 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-#include "dpso_ext/dpso_ext.h"
+#include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
 
@@ -74,14 +75,23 @@ void UpdateCheckProgressDialog::timerEvent(QTimerEvent* event)
 }
 
 
+UpdateCheckerUPtr createUpdateChecker()
+{
+    return UpdateCheckerUPtr{
+        uiUpdateCheckerCreate(
+            uiAppVersion,
+            uiGetUserAgent(),
+            uiUpdateCheckerGetInfoFileUrl())};
 }
 
 
-void runUpdateCheckProgressDialog(
-    QWidget* parent, const UiUpdateChecker* updateChecker)
+std::optional<std::tm> getCurLocalTime()
 {
-    UpdateCheckProgressDialog dialog(parent, updateChecker);
-    dialog.exec();
+    const auto time = std::time(nullptr);
+    if (const auto* tm = std::localtime(&time))
+        return *tm;
+
+    return {};
 }
 
 
@@ -109,7 +119,7 @@ void showUpdateCheckError(
 }
 
 
-static QString getUnmetRequirementsText(
+QString getUnmetRequirementsText(
     const UiUpdateCheckerUpdateInfo& updateInfo)
 {
     QStringList list;
@@ -135,6 +145,11 @@ static QString getUnmetRequirementsText(
 void showUpdateInfo(
     QWidget* parent, const UiUpdateCheckerUpdateInfo& updateInfo)
 {
+    // Center the update info dialog on the screen if it's shown when
+    // the main window is hidden.
+    if (parent && !parent->isVisible())
+        parent = nullptr;
+
     QString text;
     QString informativeText;
 
@@ -199,4 +214,178 @@ void showUpdateInfo(
 }
 
 
-#include "update_check.moc"
+UpdateChecker::UpdateChecker(QWidget* parent)
+    : QObject(parent)
+    , widgetParent{parent}
+{
+}
+
+
+bool UpdateChecker::getAutoCheckIsEnabled() const
+{
+    return autoCheck;
+}
+
+
+void UpdateChecker::setAutoCheckIsEnabled(bool isEnabled)
+{
+    autoCheck = isEnabled;
+
+    if (!autoCheck)
+        stopAutoCheck();
+
+    // The automatic check should only happen at the application
+    // startup, so do nothing if autoCheck is true.
+}
+
+
+int UpdateChecker::getAutoCheckIntervalDays() const
+{
+    return autoCheckIntervalDays;
+}
+
+
+void UpdateChecker::loadState(const DpsoCfg* cfg)
+{
+    autoCheck = dpsoCfgGetBool(
+        cfg, cfgKeyUpdateCheckAuto, cfgDefaultValueUpdateCheckAuto);
+    autoCheckIntervalDays = qBound(
+        1,
+        dpsoCfgGetInt(
+            cfg,
+            cfgKeyUpdateCheckAutoIntervalDays,
+            cfgDefaultValueUpdateCheckAutoIntervalDays),
+        365);
+
+    lastCheckTime.reset();
+    std::tm time;
+    if (dpsoCfgGetTime(cfg, cfgKeyUpdateCheckLastTime, &time))
+        lastCheckTime = time;
+
+    handleAutoCheck();
+}
+
+
+void UpdateChecker::saveState(DpsoCfg* cfg) const
+{
+    dpsoCfgSetBool(cfg, cfgKeyUpdateCheckAuto, autoCheck);
+    dpsoCfgSetInt(
+        cfg,
+        cfgKeyUpdateCheckAutoIntervalDays,
+        autoCheckIntervalDays);
+    if (lastCheckTime)
+        dpsoCfgSetTime(
+            cfg, cfgKeyUpdateCheckLastTime, &*lastCheckTime);
+}
+
+
+void UpdateChecker::timerEvent(QTimerEvent* event)
+{
+    (void)event;
+
+    Q_ASSERT(autoCheck);
+    Q_ASSERT(autoChecker);
+
+    if (uiUpdateCheckerIsCheckInProgress(autoChecker.get()))
+        return;
+
+    UiUpdateCheckerUpdateInfo updateInfo;
+    const auto status = uiUpdateCheckerGetUpdateInfo(
+        autoChecker.get(), &updateInfo);
+
+    if (status == UiUpdateCheckerStatusSuccess
+            && *updateInfo.newVersion) {
+        // Postpone the report if the user is busy.
+        if (QApplication::activeModalWidget()
+                || QApplication::activePopupWidget()
+                || dpsoSelectionGetIsEnabled())
+            return;
+
+        showUpdateInfo(widgetParent, updateInfo);
+        lastCheckTime = getCurLocalTime();
+    }
+
+    stopAutoCheck();
+}
+
+
+void UpdateChecker::checkUpdates()
+{
+    stopAutoCheck();
+
+    auto checker = createUpdateChecker();
+    if (!checker) {
+        QMessageBox::critical(
+            widgetParent,
+            uiAppName,
+            QString("Can't create update checker: ")
+                + dpsoGetError());
+        return;
+    }
+
+    uiUpdateCheckerStartCheck(checker.get());
+
+    UpdateCheckProgressDialog dialog(widgetParent, checker.get());
+    dialog.exec();
+
+    UiUpdateCheckerUpdateInfo updateInfo;
+    const auto status = uiUpdateCheckerGetUpdateInfo(
+        checker.get(), &updateInfo);
+
+    if (status == UiUpdateCheckerStatusSuccess) {
+        showUpdateInfo(widgetParent, updateInfo);
+        lastCheckTime = getCurLocalTime();
+    } else
+        showUpdateCheckError(widgetParent, status);
+}
+
+
+void UpdateChecker::handleAutoCheck()
+{
+    stopAutoCheck();
+
+    if (!autoCheck || !uiUpdateCheckerIsAvailable())
+        return;
+
+    if (lastCheckTime) {
+        const auto lastTime = std::mktime(&*lastCheckTime);
+        const auto curTime = std::time(nullptr);
+
+        const auto autoCheckIntervalSec =
+            static_cast<double>(autoCheckIntervalDays)
+            * 24 * 60 * 60;
+
+        if (lastTime != -1
+                && curTime != -1
+                && std::difftime(curTime, lastTime)
+                    < autoCheckIntervalSec)
+            return;
+    }
+
+    autoChecker = createUpdateChecker();
+    if (!autoChecker) {
+        qWarning("createUpdateChecker(): %s", dpsoGetError());
+        return;
+    }
+
+    uiUpdateCheckerStartCheck(autoChecker.get());
+
+    timerId = startTimer(3000, Qt::VeryCoarseTimer);
+}
+
+
+void UpdateChecker::stopAutoCheck()
+{
+    if (timerId != 0) {
+        killTimer(timerId);
+        timerId = 0;
+    }
+
+    autoChecker.reset();
+}
+
+
+}
+
+
+#include "update_checker.moc"
