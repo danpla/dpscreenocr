@@ -49,6 +49,13 @@ function(validate_build_settings)
             "DPSO_DYNAMIC_CURL must be enabled for the bundle")
     endif()
 
+    set(DPSO_ENABLE_UPDATE_CHECKER "@DPSO_ENABLE_UPDATE_CHECKER@")
+    if(NOT DPSO_ENABLE_UPDATE_CHECKER)
+        message(
+            FATAL_ERROR
+            "DPSO_ENABLE_UPDATE_CHECKER must be enabled for the bundle")
+    endif()
+
     if(NOT DPSO_UI STREQUAL "qt")
         message(
             FATAL_ERROR

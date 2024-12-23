@@ -31,7 +31,8 @@ cmake \
     -B "$BUILD_DIR" \
     -DCMAKE_BUILD_TYPE=Release \
     -DDPSO_USE_DEFAULT_TESSERACT_DATA_PATH=No \
-    -DDPSO_DYNAMIC_CURL=Yes
+    -DDPSO_DYNAMIC_CURL=Yes \
+    -DDPSO_ENABLE_UPDATE_CHECKER=Yes
 
 # There's no need for --parallel here, because the "bundle_archive"
 # target is already built in the parallel mode under the hood.

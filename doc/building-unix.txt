@@ -96,7 +96,7 @@ The process of creating the bundle is now independent of whether you
 are inside a Docker image: use the steps described in the "Building"
 section, with two important differences:
 
-  * Disable DPSO_USE_DEFAULT_TESSERACT_DATA_PATH and enable
-    DPSO_DYNAMIC_CURL CMake options.
+  * Disable DPSO_USE_DEFAULT_TESSERACT_DATA_PATH, enable
+    DPSO_DYNAMIC_CURL and DPSO_ENABLE_UPDATE_CHECKER CMake options.
 
   * Call "make bundle_archive" instead of "make".
