@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2024-12-23 22:04+0100\n"
-"PO-Revision-Date: 2024-09-07 14:09+0000\n"
-"Last-Translator: \"https://medium.com/@porkifiableoinking\" "
-"<erbaotao@outlook.com>\n"
+"PO-Revision-Date: 2024-12-24 22:00+0000\n"
+"Last-Translator: 大王叫我来巡山 "
+"<hamburger2048@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/dpscreenocr/dpscreenocr/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 #: src/dpso/ocr/tesseract/lang_names.cpp:34
 msgid "Afrikaans"
@@ -552,7 +552,7 @@ msgstr "用于识别屏幕上文字的软件"
 
 #: src/ui/qt/about.cpp:127
 msgid "Check for updates"
-msgstr ""
+msgstr "检查更新"
 
 #: src/ui/qt/action_chooser.cpp:25
 msgid "Copy text to clipboard"
@@ -840,7 +840,7 @@ msgstr "行为"
 
 #: src/ui/qt/main_window.cpp:546
 msgid "Check for updates automatically"
-msgstr ""
+msgstr "自动检查更新"
 
 #: src/ui/qt/main_window.cpp:552
 msgid "Run at system logon"
@@ -862,7 +862,7 @@ msgid ""
 msgid_plural ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} days"
-msgstr[0] ""
+msgstr[0] "{app_name} 会在启动时自动检查更新，但频率不会超过每 {count} 天一次"
 
 #: src/ui/qt/main_window.cpp:926
 msgid "Please install languages"
@@ -886,34 +886,34 @@ msgstr "按下 {hotkey} 框选完成"
 
 #: src/ui/qt/update_checker.cpp:54
 msgid "Checking for updates…"
-msgstr ""
+msgstr "正在检查更新…"
 
 #: src/ui/qt/update_checker.cpp:116
 msgid "An error occurred while checking for updates"
-msgstr ""
+msgstr "检查更新时出错"
 
 #: src/ui/qt/update_checker.cpp:131
 msgid "{required} (you have {actual})"
-msgstr ""
+msgstr "{required}（你有 {actual}）"
 
 #: src/ui/qt/update_checker.cpp:158
 msgid "{app_name} {new_version} is available (you have {current_version})"
-msgstr ""
+msgstr "{app_name} {new_version} 可用（你有{current_version}）"
 
 #: src/ui/qt/update_checker.cpp:166
 msgid "Visit the website for more information."
-msgstr ""
+msgstr "访问网站了解更多信息。"
 
 #: src/ui/qt/update_checker.cpp:170
 msgid "You have the latest version of {app_name}"
-msgstr ""
+msgstr "你有最新版的 {app_name}"
 
 #: src/ui/qt/update_checker.cpp:171
 msgid "You have the latest version of {app_name} available for your system"
-msgstr ""
+msgstr "你的系统可以安装 {app_name} 最新版"
 
 #: src/ui/qt/update_checker.cpp:180
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
-msgstr ""
+msgstr "最新版是 {latest_version}，但你的系统不符合下列最低要求：{requirements}。"
