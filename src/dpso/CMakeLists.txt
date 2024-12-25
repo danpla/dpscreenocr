@@ -110,10 +110,10 @@ if(NOT TARGET dpso_utils)
         ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-if(NOT TARGET stb_image_resize)
+if(NOT TARGET stb_image_resize2)
     add_subdirectory(
-        ../thirdparty/stb_image_resize
-        "${CMAKE_BINARY_DIR}/src/thirdparty/stb_image_resize")
+        ../thirdparty/stb_image_resize2
+        "${CMAKE_BINARY_DIR}/src/thirdparty/stb_image_resize2")
 endif()
 
 find_package(Threads REQUIRED)
@@ -121,7 +121,7 @@ find_package(Threads REQUIRED)
 target_link_libraries(
     dpso
     PUBLIC dpso_utils
-    PRIVATE stb_image_resize ${CMAKE_THREAD_LIBS_INIT})
+    PRIVATE stb_image_resize2 ${CMAKE_THREAD_LIBS_INIT})
 
 if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)

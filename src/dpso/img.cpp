@@ -4,8 +4,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "stb_image_resize.h"
-#include "stb_image_resize_progress.h"
+#include "stb_image_resize2.h"
 
 #include "dpso_utils/progress_tracker.h"
 #include "dpso_utils/str.h"
@@ -16,29 +15,14 @@
 namespace dpso::img {
 
 
-static void resizeProgress(float progress, void* userData)
-{
-    auto* progressTracker = static_cast<ProgressTracker*>(userData);
-    progressTracker->update(progress);
-}
-
-
 void resize(
     const std::uint8_t* src, int srcW, int srcH, int srcPitch,
-    std::uint8_t* dst, int dstW, int dstH, int dstPitch,
-    ProgressTracker* progressTracker)
+    std::uint8_t* dst, int dstW, int dstH, int dstPitch)
 {
-    ProgressTracker localProgressTracker(1, progressTracker);
-    localProgressTracker.advanceJob();
-
-    stbirSetProgressFn(resizeProgress, &localProgressTracker);
-    stbir_resize_uint8(
+    stbir_resize_uint8_linear(
         src, srcW, srcH, srcPitch,
         dst, dstW, dstH, dstPitch,
-        1);
-    stbirSetProgressFn(nullptr, nullptr);
-
-    localProgressTracker.finish();
+        STBIR_1CHANNEL);
 }
 
 

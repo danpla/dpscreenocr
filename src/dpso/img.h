@@ -43,8 +43,7 @@ inline std::uint8_t rgbToGray(
 
 void resize(
     const std::uint8_t* src, int srcW, int srcH, int srcPitch,
-    std::uint8_t* dst, int dstW, int dstH, int dstPitch,
-    ProgressTracker* progressTracker = nullptr);
+    std::uint8_t* dst, int dstW, int dstH, int dstPitch);
 
 
 void unsharpMask(

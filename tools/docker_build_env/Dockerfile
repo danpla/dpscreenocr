@@ -567,10 +567,10 @@ RUN \
     \
     && rm -rf "$BASE"
 
-# Add stb_image_resize license
+# Add stb_image_resize2 license
 RUN \
     wget \
-        --directory-prefix "$MIL_LICENSES_DIR_PATH/stb_image_resize" \
+        --directory-prefix "$MIL_LICENSES_DIR_PATH/stb_image_resize2" \
         "https://raw.githubusercontent.com/nothings/stb/master/LICENSE"
 
 # Tell the linker about new libs in /usr/local/lib.

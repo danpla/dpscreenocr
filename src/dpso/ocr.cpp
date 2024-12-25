@@ -374,16 +374,12 @@ static dpso::ocr::OcrImage prepareScreenshot(
             screenshot.getHeight(),
             bufferPitch);
 
-    dpso::ProgressTracker localProgressTracker(2, &progressTracker);
-
-    localProgressTracker.advanceJob();
     DPSO_START_TIMING(imageResizing);
     dpso::img::resize(
         imgBuffers[0].data(),
         screenshot.getWidth(), screenshot.getHeight(), bufferPitch,
         imgBuffers[1].data(),
-        bufferW, bufferH, bufferPitch,
-        &localProgressTracker);
+        bufferW, bufferH, bufferPitch);
     DPSO_END_TIMING(
         imageResizing,
         "Image resizing ({}x{} px -> {}x{} px, x{})",
@@ -399,7 +395,9 @@ static dpso::ocr::OcrImage prepareScreenshot(
     const auto unsharpMaskRadius = 10;
     const auto unsharpMaskAmount = 1.0f;
 
+    dpso::ProgressTracker localProgressTracker(1, &progressTracker);
     localProgressTracker.advanceJob();
+
     DPSO_START_TIMING(unsharpMasking);
     dpso::img::unsharpMask(
         imgBuffers[1].data(), bufferPitch,
