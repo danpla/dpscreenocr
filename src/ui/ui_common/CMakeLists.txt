@@ -73,7 +73,10 @@ endif()
 if(DPSO_ENABLE_UPDATE_CHECKER)
     target_sources(ui_common PRIVATE update_checker.cpp)
 
-    if(WIN32)
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        target_sources(
+            ui_common PRIVATE update_checker_platform_linux.cpp)
+    elseif(WIN32)
         target_sources(
             ui_common PRIVATE update_checker_platform_windows.cpp)
     else()

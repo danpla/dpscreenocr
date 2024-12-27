@@ -27,12 +27,11 @@ bool uiUpdateCheckerIsAvailable(void);
  * You can use the ID as part of infoFileUrl for
  * uiUpdateCheckerCreate(). Possible values are:
  *
+ *   * "linux"
  *   * "windows"
  *   * "generic" - returned on platforms not listed in the above IDs.
- *     The update checker will only use the version numbers and will
- *     not check any minimum requirements.
- *   * "" - an empty string is returned if the update checker was
- *     disabled at compile time.
+ *   * "" - returned if the update checker was disabled at compile
+ *     time.
  */
 const char* uiUpdateCheckerGetPlatformId(void);
 
@@ -59,15 +58,20 @@ typedef struct UiUpdateChecker UiUpdateChecker;
  *   requirements. The contents and structure of the object depends on
  *   the platform:
  *
- *   * For "windows" platform ID, it contains a "windows-version" key
- *     that maps to a Windows version number string in the
+ *   * For the "linux" platform ID, it contains a "glibc" key that
+ *     maps to a glibc version string. See:
+ *
+ *     https://sourceware.org/glibc/wiki/Glibc%20Timeline
+ *
+ *   * For the "windows" platform ID, it contains a "windows-version"
+ *     key that maps to a Windows version string in the
  *     "major.minor.build" format. See:
  *
  *     https://learn.microsoft.com/en-us/windows/win32/sysinfo/operating-system-version
  *     https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions
  *
- *   * For "generic" platform ID, the "requirements" object is ignored
- *     and can be empty.
+ *   * For the "generic" platform ID, the "requirements" object is
+ *     ignored and can be empty.
  *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null.
