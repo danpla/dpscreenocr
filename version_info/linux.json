@@ -1,0 +1,8 @@
+[
+  {
+    "version": "1.5.0",
+    "requirements": {
+      "glibc": "2.19"
+    }
+  }
+]
