@@ -32,7 +32,7 @@ public slots:
 protected:
     void timerEvent(QTimerEvent* event) override;
 private:
-    QWidget* widgetParent;
+    QWidget* parentWidget;
     int timerId{};
     UpdateCheckerUPtr autoChecker;
     bool autoCheck{};

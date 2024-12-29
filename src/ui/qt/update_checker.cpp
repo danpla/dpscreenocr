@@ -215,8 +215,8 @@ void showUpdateInfo(
 
 
 UpdateChecker::UpdateChecker(QWidget* parent)
-    : QObject(parent)
-    , widgetParent{parent}
+    : QObject{parent}
+    , parentWidget{parent}
 {
 }
 
@@ -301,7 +301,7 @@ void UpdateChecker::timerEvent(QTimerEvent* event)
                 || dpsoSelectionGetIsEnabled())
             return;
 
-        showUpdateInfo(widgetParent, updateInfo);
+        showUpdateInfo(parentWidget, updateInfo);
         lastCheckTime = getCurLocalTime();
     }
 
@@ -316,7 +316,7 @@ void UpdateChecker::checkUpdates()
     auto checker = createUpdateChecker();
     if (!checker) {
         QMessageBox::critical(
-            widgetParent,
+            parentWidget,
             uiAppName,
             QString("Can't create update checker: ")
                 + dpsoGetError());
@@ -325,7 +325,7 @@ void UpdateChecker::checkUpdates()
 
     uiUpdateCheckerStartCheck(checker.get());
 
-    UpdateCheckProgressDialog dialog(widgetParent, checker.get());
+    UpdateCheckProgressDialog dialog(parentWidget, checker.get());
     dialog.exec();
 
     UiUpdateCheckerUpdateInfo updateInfo;
@@ -333,10 +333,10 @@ void UpdateChecker::checkUpdates()
         checker.get(), &updateInfo);
 
     if (status == UiUpdateCheckerStatusSuccess) {
-        showUpdateInfo(widgetParent, updateInfo);
+        showUpdateInfo(parentWidget, updateInfo);
         lastCheckTime = getCurLocalTime();
     } else
-        showUpdateCheckError(widgetParent, status);
+        showUpdateCheckError(parentWidget, status);
 }
 
 
