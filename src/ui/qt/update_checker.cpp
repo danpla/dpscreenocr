@@ -276,6 +276,8 @@ void UpdateChecker::saveState(DpsoCfg* cfg) const
     if (lastCheckTime)
         dpsoCfgSetTime(
             cfg, cfgKeyUpdateCheckLastTime, &*lastCheckTime);
+    else
+        dpsoCfgSetStr(cfg, cfgKeyUpdateCheckLastTime, "");
 }
 
 
