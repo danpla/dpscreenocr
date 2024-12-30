@@ -73,7 +73,7 @@ version.
 
 ### Unix-like systems
 
-On Unix-like systems, the process of installing languages differs
+On Unix-like systems, the language installation process differs
 depending on whether dpScreenOCR was obtained from the package manager
 or as a TAR.XZ archive. Note that languages installed for the former
 will not be visible in the latter, and vice versa.
@@ -116,15 +116,13 @@ dpScreenOCR is easy to use:
 
 1.  Select languages and actions from the Main tab.
 2.  Move the mouse pointer to the area of the screen containing text
-    and press the hotkey shown in the Main tab to start the selection.
+    and press the hotkey shown in the status text of the Main tab to
+    start the selection.
 3.  Move the mouse so that the selection covers the text and press the
     hotkey again.
 
 After these steps, dpScreenOCR will recognize the text from the
 selected area and process it according to the selected actions.
-
-The rest of this chapter describes various settings that you can find
-in the Main tab.
 
 
 ## Character recognition
@@ -283,16 +281,18 @@ that another program is already using it. In this case, try another
 key combination.
 
 
+## Checking for updates
+
+If "Check for updates automatically" is enabled in the "Settings" tab,
+dpScreenOCR will check for new program versions at startup, but no
+more often than once every 7 days. You can also check for updates
+manually using the "Check for updates" button in the "About" tab.
+
+
 # Command-line options
 
 Since version 1.5, dpScreenOCR supports several command-line options.
 Use `-help` to see them all.
-
-The `-hide` option is useful when adding dpScreenOCR to the autostart.
-It was added as a better alternative to the combination of the
-`ui_window_minimize_on_start` and `ui_window_minimize_to_tray` options
-from the [settings file][Tweaking], which was the only way to start
-the program with the hidden window in versions prior to 1.5.
 
 
 # Program files
@@ -392,8 +392,8 @@ settings file:
     lines of text in the history so you don't have to scroll
     horizontally.
 
-*   `hotkey_cancel_selection` (`Escape` by default) hotkey to cancel
-    selection.
+*   `hotkey_cancel_selection` (`Escape` by default) the hotkey to
+    cancel selection.
 
 *   `ocr_allow_queuing` (`true` by default) allows you to queue a new
     selection for recognition without waiting for the previous one to
@@ -405,28 +405,27 @@ settings file:
     recognized texts at once, in which case they will be joined using
     `action_copy_to_clipboard_text_separator` as a separator.
 
-*   `selection_border_width` (`3` by default) width of the selection
-    border.
+*   `selection_border_width` (`3` by default) the width of the
+    selection border.
 
     Depending on the platform, this width can be scaled proportionally
     to DPI, which can be the physical DPI of the display, the virtual
     DPI set by global interface/font scale settings, or a combination
     of both.
 
-*   `ui_tray_icon_visible` (`true` by default) whether to show an icon
-    in the notification area.
-
 *   `ui_window_minimize_on_start` (`false` by default) whether to
     minimize the window on program startup.
 
-    In combination with `ui_window_minimize_to_tray`, this option can
-    be useful when adding dpScreenOCR to the autostart, but the
-    `-hide` command-line option may be a better alternative if you
-    want the usual window behavior when starting the program manually.
+    In dpScreenOCR versions prior to 1.5, this option was useful in
+    combination with `ui_window_minimize_to_tray` when adding the
+    program to the autostart. Starting with the version 1.5, which
+    introduced the "Run at system logon" setting and the `-hide`
+    command-line option, `ui_window_minimize_on_start` is kept mainly
+    for backward compatibility and is only useful if you want the
+    program to minimize on normal (rather than automatic) startup.
 
-*   `ui_window_minimize_to_tray` (`false` by default) whether to hide
-    the window to the notification area when minimizing. This option
-    is only effective if `ui_tray_icon_visible` is enabled.
+*   `update_check_auto_interval_days` (`7` by default) the interval,
+    in days, between the automatic update checks.
 
 
 # Troubleshooting
