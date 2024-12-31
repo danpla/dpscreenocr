@@ -13,7 +13,6 @@ public:
 
     virtual void updateStart() {}
     virtual void handleEvent(const XEvent& event) { (void)event; }
-    virtual void updateEnd() {}
 };
 
 
