@@ -23,7 +23,7 @@ set(APP_VERSION
 set(APP_DESCRIPTION "Program to recognize text on screen")
 
 set(APP_AUTHOR "Daniel Plakhotich")
-set(APP_COPYRIGHT_YEAR "2019-2024")
+set(APP_COPYRIGHT_YEAR "2019-2025")
 set(APP_URL "https://danpla.github.io/dpscreenocr/")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
