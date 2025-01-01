@@ -15,6 +15,7 @@ namespace dpso::backend::windows {
 class Selection : public backend::Selection {
 public:
     explicit Selection(HINSTANCE instance);
+    ~Selection();
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;

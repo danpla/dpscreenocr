@@ -155,6 +155,7 @@ void throwLastError(const char* description)
 
 
 const auto* const windowClassName = L"DpsoSelectionWindow";
+const auto* const thisPropName = L"this";
 
 
 void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
@@ -212,7 +213,7 @@ Selection::Selection(HINSTANCE instance)
     if (!window)
         throwLastError("Can't create selection window");
 
-    if (!SetPropW(window.get(), L"this", this))
+    if (!SetPropW(window.get(), thisPropName, this))
         throwLastError("Can't set window property");
 
     // WM_DPICHANGED is only sent when a window is moved to a display
@@ -229,6 +230,12 @@ Selection::Selection(HINSTANCE instance)
     updatePens();
     updateWindowGeometry();
     updateWindowRegion();
+}
+
+
+Selection::~Selection()
+{
+    RemovePropW(window.get(), thisPropName);
 }
 
 
@@ -298,14 +305,14 @@ void Selection::update()
 LRESULT CALLBACK Selection::wndProc(
     HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    auto* windowsSelection = static_cast<Selection*>(
-        GetPropW(wnd, L"this"));
-    if (!windowsSelection)
+    auto* selection = static_cast<Selection*>(
+        GetPropW(wnd, thisPropName));
+    if (!selection)
         // The window is just created; we don't reach SetProp() call
         // yet.
         return DefWindowProcW(wnd, msg, wParam, lParam);
 
-    return windowsSelection->processMessage(msg, wParam, lParam);
+    return selection->processMessage(msg, wParam, lParam);
 }
 
 
