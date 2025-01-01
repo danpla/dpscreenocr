@@ -53,40 +53,36 @@ RTL_OSVERSIONINFOW getWindowsVersion()
 
 RTL_OSVERSIONINFOW getVersionFromStr(const std::string& str)
 {
-    const auto parse = [](
-        ULONG& result,
-        const char*& str,
-        const char* strEnd)
+    RTL_OSVERSIONINFOW result{};
+
+    const auto* s = str.c_str();
+    const auto* sEnd = s + str.size();
+
+    const auto parse = [&](ULONG& result)
     {
-        const auto [ptr, ec] = std::from_chars(str, strEnd, result);
+        const auto [ptr, ec] = std::from_chars(s, sEnd, result);
         if (ec != std::errc{})
             return false;
 
-        str = ptr;
+        s = ptr;
         return true;
     };
 
-    const auto consume = [](
-        char c, const char*& str, const char* strEnd)
+    const auto consume = [&](char c)
     {
-        if (str < strEnd && *str == c) {
-            ++str;
+        if (s < sEnd && *s == c) {
+            ++s;
             return true;
         }
 
         return false;
     };
 
-    RTL_OSVERSIONINFOW result{};
-
-    const auto* s = str.c_str();
-    const auto* sEnd = s + str.size();
-
-    if (parse(result.dwMajorVersion, s, sEnd)
-            && consume('.', s, sEnd)
-            && parse(result.dwMinorVersion, s, sEnd)
-            && consume('.', s, sEnd)
-            && parse(result.dwBuildNumber, s, sEnd)
+    if (parse(result.dwMajorVersion)
+            && consume('.')
+            && parse(result.dwMinorVersion)
+            && consume('.')
+            && parse(result.dwBuildNumber)
             && s == sEnd)
         return result;
 
