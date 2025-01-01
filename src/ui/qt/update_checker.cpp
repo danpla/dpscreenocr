@@ -295,15 +295,17 @@ void UpdateChecker::timerEvent(QTimerEvent* event)
     const auto status = uiUpdateCheckerGetUpdateInfo(
         autoChecker.get(), &updateInfo);
 
-    if (status == UiUpdateCheckerStatusSuccess
-            && *updateInfo.newVersion) {
-        // Postpone the report if the user is busy.
-        if (QApplication::activeModalWidget()
-                || QApplication::activePopupWidget()
-                || dpsoSelectionGetIsEnabled())
-            return;
+    if (status == UiUpdateCheckerStatusSuccess) {
+        if (*updateInfo.newVersion) {
+            // Postpone the report if the user is busy.
+            if (QApplication::activeModalWidget()
+                    || QApplication::activePopupWidget()
+                    || dpsoSelectionGetIsEnabled())
+                return;
 
-        showUpdateInfo(parentWidget, updateInfo);
+            showUpdateInfo(parentWidget, updateInfo);
+        }
+
         lastCheckTime = getCurLocalTime();
     }
 
