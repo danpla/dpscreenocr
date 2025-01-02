@@ -7,6 +7,7 @@
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QLineEdit>
+#include <QStyle>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -39,7 +40,9 @@ ActionChooser::ActionChooser()
         });
 
     auto* selectExeButton = new QToolButton();
-    selectExeButton->setText("\342\200\246");
+    selectExeButton->setIcon(
+        selectExeButton->style()->standardIcon(
+            QStyle::SP_DialogOpenButton, nullptr, selectExeButton));
     selectExeButton->setEnabled(false);
     connect(
         selectExeButton, &QToolButton::clicked,
