@@ -17,10 +17,10 @@ void testExceptions()
         using runtime_error::runtime_error;
     };
 
-    auto actionExecutor = createBgThreadActionExecutor();
+    ActionExecutor actionExecutor;
 
     try {
-        execute(*actionExecutor, []{ throw TestException{""}; });
+        execute(actionExecutor, []{ throw TestException{""}; });
         test::failure(
             "testExceptions: Exception was not propagated by the "
             "executor");
@@ -32,7 +32,7 @@ void testExceptions()
     // under the hood was not cleared before being rethrown, and thus
     // thrown for all further successful execute() calls.
     try {
-        execute(*actionExecutor, []{});
+        execute(actionExecutor, []{});
     } catch (TestException&) {
         test::failure(
             "testExceptions: The previously propagated exception was "

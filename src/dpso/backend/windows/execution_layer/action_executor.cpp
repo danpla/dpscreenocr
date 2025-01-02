@@ -1,54 +1,24 @@
 
 #include "backend/windows/execution_layer/action_executor.h"
 
-#include <condition_variable>
-#include <exception>
-#include <mutex>
-#include <thread>
-
 
 namespace dpso::backend {
-namespace {
 
 
-class BgThreadActionExecutor : public ActionExecutor {
-public:
-    BgThreadActionExecutor();
-    ~BgThreadActionExecutor();
-
-    void execute(Action& action) override;
-private:
-    std::condition_variable actionSetCondVar;
-    std::condition_variable actionDoneCondVar;
-    std::mutex mutex;
-
-    bool terminate{};
-    Action* currentAction{};
-    std::exception_ptr actionException;
-
-    std::thread thread;
-
-    void threadLoop();
-};
-
-
-}
-
-
-BgThreadActionExecutor::BgThreadActionExecutor()
-    : thread{std::thread(&BgThreadActionExecutor::threadLoop, this)}
+ActionExecutor::ActionExecutor()
+    : thread{&ActionExecutor::threadLoop, this}
 {
 }
 
 
-BgThreadActionExecutor::~BgThreadActionExecutor()
+ActionExecutor::~ActionExecutor()
 {
     backend::execute(*this, [&]{ terminate = true; });
     thread.join();
 }
 
 
-void BgThreadActionExecutor::execute(Action& action)
+void ActionExecutor::execute(Action& action)
 {
     {
         const std::lock_guard guard{mutex};
@@ -68,7 +38,7 @@ void BgThreadActionExecutor::execute(Action& action)
 }
 
 
-void BgThreadActionExecutor::threadLoop()
+void ActionExecutor::threadLoop()
 {
     // No need to protect "terminate" since it's set from within an
     // action.
@@ -89,12 +59,6 @@ void BgThreadActionExecutor::threadLoop()
         lock.unlock();
         actionDoneCondVar.notify_one();
     }
-}
-
-
-std::unique_ptr<ActionExecutor> createBgThreadActionExecutor()
-{
-    return std::make_unique<BgThreadActionExecutor>();
 }
 
 

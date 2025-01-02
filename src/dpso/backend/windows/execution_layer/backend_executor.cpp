@@ -1,8 +1,8 @@
 
 #include "backend/windows/execution_layer/backend_executor.h"
 
-#include "backend/backend_error.h"
 #include "backend/screenshot.h"
+#include "backend/windows/execution_layer/action_executor.h"
 #include "backend/windows/execution_layer/key_manager_executor.h"
 #include "backend/windows/execution_layer/selection_executor.h"
 
@@ -13,9 +13,7 @@ namespace {
 
 class BackendExecutor : public Backend {
 public:
-    BackendExecutor(
-        std::unique_ptr<ActionExecutor> actionExecutor,
-        BackendCreatorFn creatorFn);
+    explicit BackendExecutor(BackendCreatorFn creatorFn);
     ~BackendExecutor();
 
     KeyManager& getKeyManager() override;
@@ -25,7 +23,7 @@ public:
 
     void update() override;
 private:
-    std::unique_ptr<ActionExecutor> actionExecutor;
+    ActionExecutor actionExecutor;
 
     std::unique_ptr<Backend> backend;
 
@@ -37,22 +35,17 @@ private:
 }
 
 
-BackendExecutor::BackendExecutor(
-        std::unique_ptr<ActionExecutor> actionExecutor,
-        BackendCreatorFn creatorFn)
-    : actionExecutor{std::move(actionExecutor)}
-    , backend{execute(*this->actionExecutor, creatorFn)}
-    , keyManagerExecutor{
-        backend->getKeyManager(), *this->actionExecutor}
-    , selectionExecutor{
-        backend->getSelection(), *this->actionExecutor}
+BackendExecutor::BackendExecutor(BackendCreatorFn creatorFn)
+    : backend{execute(actionExecutor, creatorFn)}
+    , keyManagerExecutor{backend->getKeyManager(), actionExecutor}
+    , selectionExecutor{backend->getSelection(), actionExecutor}
 {
 }
 
 
 BackendExecutor::~BackendExecutor()
 {
-    execute(*actionExecutor, [&]{ backend.reset(); });
+    execute(actionExecutor, [&]{ backend.reset(); });
 }
 
 
@@ -71,7 +64,7 @@ Selection& BackendExecutor::getSelection()
 std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
     const Rect& rect)
 {
-    return execute(*actionExecutor, [&]{
+    return execute(actionExecutor, [&]{
         return backend->takeScreenshot(rect);
     });
 }
@@ -79,19 +72,14 @@ std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
 
 void BackendExecutor::update()
 {
-    execute(*actionExecutor, [&]{ backend->update(); });
+    execute(actionExecutor, [&]{ backend->update(); });
 }
 
 
 std::unique_ptr<Backend> createBackendExecutor(
-    std::unique_ptr<ActionExecutor> actionExecutor,
     BackendCreatorFn creatorFn)
 {
-    if (!actionExecutor)
-        throw BackendError("actionExecutor is null");
-
-    return std::make_unique<BackendExecutor>(
-        std::move(actionExecutor), creatorFn);
+    return std::make_unique<BackendExecutor>(creatorFn);
 }
 
 

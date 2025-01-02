@@ -1,7 +1,10 @@
 
 #pragma once
 
-#include <memory>
+#include <condition_variable>
+#include <exception>
+#include <mutex>
+#include <thread>
 #include <type_traits>
 #include <utility>
 
@@ -18,16 +21,26 @@ struct Action {
 
 class ActionExecutor {
 public:
-    virtual ~ActionExecutor() = default;
+    ActionExecutor();
+    ~ActionExecutor();
 
-    virtual void execute(Action& action) = 0;
+    void execute(Action& action);
+private:
+    std::condition_variable actionSetCondVar;
+    std::condition_variable actionDoneCondVar;
+    std::mutex mutex;
+
+    bool terminate{};
+    Action* currentAction{};
+    std::exception_ptr actionException;
+
+    std::thread thread;
+
+    void threadLoop();
 };
 
 
-std::unique_ptr<ActionExecutor> createBgThreadActionExecutor();
-
-
-// execute() handles return values manually to avoid heap allocations
+// execute() manages return values manually to avoid heap allocations
 // made by std::promise/future.
 
 
