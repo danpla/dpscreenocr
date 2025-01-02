@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <QByteArray>
 #include <QFlags>
 #include <QWidget>
 
@@ -29,7 +30,7 @@ public:
     ActionChooser();
 
     Actions getSelectedActions() const;
-    QString getExePath() const;
+    const char* getExePath() const;
 
     void loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;
@@ -42,6 +43,7 @@ private:
     QCheckBox* addToHistoryCheck;
     QCheckBox* runExeCheck;
     QLineEdit* exeLineEdit;
+    QByteArray exePath;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ActionChooser::Actions)

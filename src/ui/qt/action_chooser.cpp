@@ -31,6 +31,12 @@ ActionChooser::ActionChooser()
             "first argument"));
     exeLineEdit = new QLineEdit();
     exeLineEdit->setEnabled(false);
+    connect(
+        exeLineEdit, &QLineEdit::textChanged,
+        [&](const QString& text)
+        {
+            exePath = text.trimmed().toUtf8();
+        });
 
     auto* selectExeButton = new QToolButton();
     selectExeButton->setText("\342\200\246");
@@ -87,9 +93,9 @@ ActionChooser::Actions ActionChooser::getSelectedActions() const
 }
 
 
-QString ActionChooser::getExePath() const
+const char* ActionChooser::getExePath() const
 {
-    return exeLineEdit->text();
+    return exePath.data();
 }
 
 
@@ -130,30 +136,24 @@ void ActionChooser::saveState(DpsoCfg* cfg) const
         cfgKeyActionRunExecutable,
         runExeCheck->isChecked());
     dpsoCfgSetStr(
-        cfg,
-        cfgKeyActionRunExecutablePath,
-        exeLineEdit->text().toUtf8().data());
+        cfg, cfgKeyActionRunExecutablePath, exePath.data());
 }
 
 
 void ActionChooser::chooseExe()
 {
-    auto exePath = QDir::fromNativeSeparators(
-        exeLineEdit->text().trimmed());
-
-    auto exeDir = QFileInfo(exePath).dir().path();
+    auto exeDir = QFileInfo(
+        QDir::fromNativeSeparators(exePath)).dir().path();
     if (exeDir == "." || !QDir(exeDir).exists())
         // exeDir is '.' when QDir is constructed with an empty
-        // string. This happens if the line edit is either empty or
+        // string. This happens if the exe path is either empty or
         // contains just an exe name.
         exeDir = QDir::homePath();
 
-    exePath = QFileDialog::getOpenFileName(
+    const auto path = QFileDialog::getOpenFileName(
         this, _("Choose an executable"), exeDir);
-    if (exePath.isEmpty())
-        return;
-
-    exeLineEdit->setText(QDir::toNativeSeparators(exePath));
+    if (!path.isEmpty())
+        exeLineEdit->setText(QDir::toNativeSeparators(path));
 }
 
 

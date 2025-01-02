@@ -962,11 +962,6 @@ void MainWindow::checkResults()
 
     const auto actions = actionChooser->getSelectedActions();
 
-    QByteArray exePath;
-    if ((actions & ActionChooser::Action::runExe)
-            && results.numItems > 0)
-        exePath = actionChooser->getExePath().toUtf8();
-
     for (int i = 0; i < results.numItems; ++i) {
         const auto& result = results.items[i];
 
@@ -986,7 +981,7 @@ void MainWindow::checkResults()
             history->append(result.timestamp, result.text);
 
         if (actions & ActionChooser::Action::runExe)
-            dpsoExec(exePath.data(), &result.text, 1);
+            dpsoExec(actionChooser->getExePath(), &result.text, 1);
     }
 
     if (jobsCompleted && clipboardTextPending) {
