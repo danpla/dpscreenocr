@@ -384,14 +384,11 @@ void Selection::updatePens()
     // Black dashes.
     lb.lbColor = RGB(0, 0, 0);
 
-    // The docs don't say whether ExtCreatePen() copies the array, so
-    // it's a class member just in case.
-    dashPenPattern[0] = borderWidth * Selection::dashLen;
-    dashPenPattern[1] = borderWidth * Selection::dashLen;
+    const DWORD dashWidth = borderWidth * Selection::dashLen;
+    const DWORD pattern[]{dashWidth, dashWidth};
 
     pens[1].reset(ExtCreatePen(
-        commonStyle | PS_USERSTYLE, borderWidth, &lb,
-        2, dashPenPattern));
+        commonStyle | PS_USERSTYLE, borderWidth, &lb, 2, pattern));
 }
 
 

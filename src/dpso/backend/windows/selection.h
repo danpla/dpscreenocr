@@ -35,7 +35,6 @@ private:
 
     dpso::windows::WindowUPtr window;
 
-    DWORD dashPenPattern[2]{};
     dpso::windows::ObjectUPtr<HPEN> pens[2];
 
     static LRESULT CALLBACK wndProc(
