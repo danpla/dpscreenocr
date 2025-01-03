@@ -20,11 +20,11 @@
 //
 // * Resizing a layered window forces all underlying windows to be
 //   repainted, even under transparent areas. This results in flashing
-//   widgets with some applications.
+//   widgets in some applications.
 //
 //   This is also probably one of the reasons of high CPU load.
 //
-// * Layered window always repaints its background, even with dummy
+// * A layered window always repaints its background, even with dummy
 //   WM_ERASEBKGND that returns 1; if hbrBackground is NULL, the color
 //   is black. During resizing, the background flashes before
 //   WM_PAINT. Setting the background color to LWA_COLORKEY results in
@@ -32,16 +32,16 @@
 //
 //   Moving drawing from WM_PAINT to WM_ERASEBKGND doesn't solve the
 //   issue completely: when the window is enlarged, its right and
-//   bottom portions flash with background color even before
+//   bottom portions flash with the background color even before
 //   WM_ERASEBKGND.
 //
-//   In combination with all previous issues, this also causes
+//   In combination with all previous issues, this also causes the
 //   vertical stuttering.
 //
 // Window regions have no such problems; they work well both with and
 // without Aero.
 //
-// Another good thing is that Windows don't prevent click-trough
+// Another good thing is that Windows don't prevent the click-trough
 // behavior during resizing, at the moments when cursor is on the
 // visible part of the selection; that was not possible on X11 without
 // making the whole window "transparent" for the mouse. In other
@@ -53,7 +53,7 @@
 // ===================
 //
 // On Windows 8.1 and newer, the selection border dynamically scales
-// according to display DPI if a per-monitor DPI awareness is set.
+// according to the display DPI if a per-monitor DPI awareness is set.
 // Since this is a library, we must not permanently set the process
 // DPI awareness; we can only change it temporarily (or permanently
 // for our own thread) with SetThreadDpiAwarenessContext() when
@@ -89,11 +89,11 @@ public:
     ThreadDpiAwarenessContextGuard()
         : oldDpiContext{}
     {
-        // The v2 awareness was added added later (in Windows 10 1703)
-        // than SetThreadDpiAwarenessContext() (added in Windows 10
-        // 1607), so we use v1 to fill the gap. Fortunately, the
-        // selection doesn't have non-client areas, so the v2
-        // improvements are irrelevant in our case.
+        // The v2 awareness was added later (in Windows 10 1703) than
+        // SetThreadDpiAwarenessContext() (added in Windows 10 1607),
+        // so we use v1 to fill the gap. Fortunately, the selection
+        // doesn't have non-client areas, so all v2 improvements are
+        // irrelevant in our case.
         if (SetThreadDpiAwarenessContextFn)
             oldDpiContext = SetThreadDpiAwarenessContextFn(
                 DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
@@ -308,8 +308,7 @@ LRESULT CALLBACK Selection::wndProc(
     auto* selection = static_cast<Selection*>(
         GetPropW(wnd, thisPropName));
     if (!selection)
-        // The window is just created; we don't reach SetProp() call
-        // yet.
+        // The window is just created; we don't reach SetProp() yet.
         return DefWindowProcW(wnd, msg, wParam, lParam);
 
     return selection->processMessage(msg, wParam, lParam);
@@ -328,9 +327,9 @@ LRESULT Selection::processMessage(
     switch (msg) {
     case WM_DPICHANGED:
         // We intentionally ignore the suggested rect from lParam. It
-        // will never be correct in our case, since Windows will just
-        // keep the position and linearly scale the size. As a result,
-        // the origin point of our selection will be shifted and the
+        // will never be correct in our case, since Windows will keep
+        // the position and linearly scale the size. As a result, the
+        // origin point of our selection will be shifted and the
         // opposite point will come out from under the cursor.
         //
         // There is the WM_GETDPISCALEDSIZE event for the v2
