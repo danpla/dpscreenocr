@@ -13,8 +13,12 @@
 
 bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
 {
-    if (startupArgs)
-        *startupArgs = ui::initStartupArgs(argc, argv);
+    if (!startupArgs) {
+        dpso::setError("startupArgs is null");
+        return false;
+    }
+
+    *startupArgs = ui::initStartupArgs(argc, argv);
 
     if (!ui::initStart(argc, argv)) {
         dpso::setError("ui::initStart: {}", dpsoGetError());
