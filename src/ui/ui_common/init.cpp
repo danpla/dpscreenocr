@@ -30,8 +30,8 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
         return false;
     }
 
-    if (!uiInitAppDirs()) {
-        dpso::setError("uiInitAppDirs: {}", dpsoGetError());
+    if (!ui::initAppDirs()) {
+        dpso::setError("ui::initAppDirs: {}", dpsoGetError());
         return false;
     }
 

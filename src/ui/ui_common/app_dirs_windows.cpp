@@ -8,15 +8,21 @@
 static std::string baseDirPath;
 
 
-bool uiInitAppDirs(void)
+namespace ui {
+
+
+bool initAppDirs()
 {
-    baseDirPath = ui::getExePath();
+    baseDirPath = getExePath();
 
     const auto slashPos = baseDirPath.rfind('\\');
     if (slashPos != baseDirPath.npos)
         baseDirPath.resize(slashPos);
 
     return true;
+}
+
+
 }
 
 

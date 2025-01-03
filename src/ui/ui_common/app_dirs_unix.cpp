@@ -28,9 +28,12 @@
 static std::string baseDirPath;
 
 
-bool uiInitAppDirs(void)
+namespace ui {
+
+
+bool initAppDirs()
 {
-    baseDirPath = ui::getExePath();
+    baseDirPath = getExePath();
 
     // Skip the executable and the parent dir (bin).
     for (auto i = 0; i < 2; ++i) {
@@ -40,6 +43,9 @@ bool uiInitAppDirs(void)
     }
 
     return true;
+}
+
+
 }
 
 
