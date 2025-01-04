@@ -6,7 +6,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <shobjidl.h>
-#include <versionhelpers.h>
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/windows/com.h"
@@ -24,12 +23,6 @@ UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
 {
     if (!hwnd) {
         dpso::setError("hwnd is null");
-        return nullptr;
-    }
-
-    if (!IsWindows7OrGreater()) {
-        dpso::setError(
-            "ITaskbarList3 is only available on Windows 7 or newer");
         return nullptr;
     }
 
