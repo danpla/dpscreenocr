@@ -1,6 +1,6 @@
 body {
   margin: 0 auto;
-  padding: 1em 1em 0;
+  padding: 2em 1em 0;
   max-width: 36em;
   font-family: sans-serif;
   line-height: 1.6;
@@ -13,15 +13,14 @@ p {
 
 #logo {
   display: block;
-  height: 5em;
+  height: 6em;
   margin: 0 auto;
 }
 
 #title {
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1.7em;
   font-weight: bold;
-  margin-top: 0.3em;
 }
 
 #screenshot {
