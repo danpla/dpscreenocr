@@ -22,6 +22,35 @@
 #define _(S) gettext(S)
 
 
+// In release mode, suppress debug and warning messages to avoid
+// stderr spam from Qt about its internal stuff that is not under user
+// control. For example, if the bundled Qt 5 is built without ICU
+// support, any invocation of a file dialog gives "Case insensitive
+// sorting unsupported in the posix collation implementation" and
+// "Numeric mode unsupported in the posix collation implementation".
+static void installQtMessageHandler()
+{
+    static QtMessageHandler defaultHandler{};
+
+    defaultHandler = qInstallMessageHandler(
+        []
+        (
+            QtMsgType type,
+            const QMessageLogContext& context,
+            const QString& message)
+        {
+            #ifdef NDEBUG
+            if (type == QtDebugMsg || type == QtWarningMsg)
+                return;
+            #endif
+
+            defaultHandler(type, context, message);
+        });
+
+    Q_ASSERT(defaultHandler);
+}
+
+
 static void installQtTranslations(QApplication& app)
 {
     const auto translationsPath =
@@ -70,6 +99,8 @@ int main(int argc, char* argv[])
     // actually looks better: at least it doesn't result in tiny text
     // on Windows 10 at 150% scale.
     #endif
+
+    installQtMessageHandler();
 
     QApplication app(argc, argv);
 
