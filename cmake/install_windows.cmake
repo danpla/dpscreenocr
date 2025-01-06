@@ -52,8 +52,13 @@ if(DPSO_UI STREQUAL "qt")
         COMPONENT Required)
 endif()
 
+# Copy sounds to the binary dir so that we can test the app without
+# installing.
+file(
+    COPY "${CMAKE_SOURCE_DIR}/data/sounds"
+    DESTINATION "${CMAKE_BINARY_DIR}")
 install(
-    DIRECTORY "${CMAKE_SOURCE_DIR}/data/sounds"
+    DIRECTORY "${CMAKE_BINARY_DIR}/sounds"
     DESTINATION .
     COMPONENT Required)
 

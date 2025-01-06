@@ -6,6 +6,7 @@ add_library(dpso_sound)
 
 if(WIN32)
     target_sources(dpso_sound PRIVATE sound_windows.cpp)
+    target_link_libraries(dpso_sound PRIVATE winmm)
 else()
     target_sources(dpso_sound PRIVATE sound_null.cpp)
 endif()
