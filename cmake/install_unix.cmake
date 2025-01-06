@@ -28,6 +28,10 @@ install(
     SCRIPT
     "${CMAKE_BINARY_DIR}/install_unix_hicolor_icons.cmake")
 
+install(
+    DIRECTORY "${CMAKE_SOURCE_DIR}/data/sounds"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/${APP_FILE_NAME}")
+
 include(compile_po)
 compile_po("${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}")
 

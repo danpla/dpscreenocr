@@ -9,6 +9,7 @@ extern const char* const cfgKeyActionCopyToClipboard;
 extern const char* const cfgKeyActionCopyToClipboardTextSeparator;
 extern const char* const cfgKeyActionRunExecutable;
 extern const char* const cfgKeyActionRunExecutablePath;
+extern const char* const cfgKeyActionsDonePlaySound;
 extern const char* const cfgKeyHistoryExportDir;
 extern const char* const cfgKeyHistoryWrapWords;
 extern const char* const cfgKeyHotkeyCancelSelection;

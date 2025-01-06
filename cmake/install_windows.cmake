@@ -52,6 +52,11 @@ if(DPSO_UI STREQUAL "qt")
         COMPONENT Required)
 endif()
 
+install(
+    DIRECTORY "${CMAKE_SOURCE_DIR}/data/sounds"
+    DESTINATION .
+    COMPONENT Required)
+
 include(tesseract_utils)
 get_tesseract_data_dir_name(TESSERACT_DATA_DIR_NAME)
 if(TESSERACT_DATA_DIR_NAME)

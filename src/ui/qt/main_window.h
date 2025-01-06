@@ -97,6 +97,8 @@ private:
     QCheckBox* minimizeToTrayCheck;
     QCheckBox* closeToTrayCheck;
 
+    QCheckBox* playSoundCheck;
+
     UpdateChecker updateChecker;
     QCheckBox* autoUpdateCheck;
 

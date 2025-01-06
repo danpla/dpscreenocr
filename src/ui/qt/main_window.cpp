@@ -542,6 +542,24 @@ QWidget* MainWindow::createSettingsTab()
     auto* behaviorGroup = new QGroupBox(_("Behavior"));
     auto* behaviorGroupLayout = new QVBoxLayout(behaviorGroup);
 
+    playSoundCheck = new QCheckBox(
+        _("Play sound when recognition is complete"));
+    playSoundCheck->setVisible(uiSoundIsAvailable());
+    connect(
+        playSoundCheck, &QCheckBox::clicked,
+        [&](bool isChecked)
+        {
+            if (!isChecked || uiSoundPlay(UiSoundIdDone))
+                return;
+
+            playSoundCheck->setChecked(false);
+            QMessageBox::critical(
+                this,
+                uiAppName,
+                QString("Can't play sound: ") + dpsoGetError());
+        });
+    behaviorGroupLayout->addWidget(playSoundCheck);
+
     autoUpdateCheck = new QCheckBox(
         _("Check for updates automatically"));
     connect(
@@ -687,6 +705,12 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfgKeyUiWindowCloseToTray,
             cfgDefaultValueUiWindowCloseToTray));
 
+    playSoundCheck->setChecked(
+        dpsoCfgGetBool(
+            cfg,
+            cfgKeyActionsDonePlaySound,
+            cfgDefaultValueActionsDonePlaySound));
+
     updateChecker.loadState(cfg);
     autoUpdateCheck->setChecked(
         updateChecker.getAutoCheckIsEnabled());
@@ -773,6 +797,9 @@ void MainWindow::saveState(DpsoCfg* cfg) const
         cfg,
         cfgKeyUiWindowCloseToTray,
         closeToTrayCheck->isChecked());
+
+    dpsoCfgSetBool(
+        cfg, cfgKeyActionsDonePlaySound, playSoundCheck->isChecked());
 
     updateChecker.saveState(cfg);
 

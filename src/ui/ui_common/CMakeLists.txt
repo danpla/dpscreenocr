@@ -24,9 +24,10 @@ add_library(
     init_intl.cpp
     init_startup_args.cpp
     ocr_data_utils.cpp
+    sound.cpp
     toplevel_argv0.cpp
-    user_agent.cpp
-    update_checker_utils.cpp)
+    update_checker_utils.cpp
+    user_agent.cpp)
 
 # Files for configure_file()
 set(IN_SRCS app_info.cpp file_names.cpp)
@@ -133,6 +134,11 @@ if(NOT TARGET dpso_intl)
         ../../dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
 endif()
 
+if(NOT TARGET dpso_sound)
+    add_subdirectory(
+        ../../dpso_sound "${CMAKE_BINARY_DIR}/src/dpso_sound")
+endif()
+
 if(NOT TARGET dpso_utils)
     add_subdirectory(
         ../../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
@@ -141,4 +147,4 @@ endif()
 target_link_libraries(
     ui_common
     PUBLIC dpso
-    PRIVATE dpso_intl dpso_utils)
+    PRIVATE dpso_intl dpso_sound dpso_utils)
