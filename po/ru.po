@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-12-23 22:04+0100\n"
+"POT-Creation-Date: 2025-01-06 22:51+0100\n"
 "PO-Revision-Date: 2024-12-24 22:00+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -555,25 +555,25 @@ msgstr "Программа для распознавания текста на �
 msgid "Check for updates"
 msgstr "Проверить наличие обновлений"
 
-#: src/ui/qt/action_chooser.cpp:25
+#: src/ui/qt/action_chooser.cpp:26
 msgid "Copy text to clipboard"
 msgstr "Копировать текст в буфер обмена"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp:27
 msgid "Add text to history"
 msgstr "Добавить текст в историю"
 
-#: src/ui/qt/action_chooser.cpp:28
+#: src/ui/qt/action_chooser.cpp:29
 msgid "Run executable:"
 msgstr "Запустить исполняемый файл:"
 
-#: src/ui/qt/action_chooser.cpp:30
+#: src/ui/qt/action_chooser.cpp:31
 msgid "Run an executable with the recognized text as the first argument"
 msgstr ""
 "Запустить исполняемый файл с распознанным текстом в качестве первого "
 "параметра"
 
-#: src/ui/qt/action_chooser.cpp:152
+#: src/ui/qt/action_chooser.cpp:157
 msgid "Choose an executable"
 msgstr "Выберите исполняемый файл"
 
@@ -748,7 +748,7 @@ msgstr "Некоторые языки не были удалены"
 msgid "Check your network connection and try again."
 msgstr "Проверьте ваше сетевое соединение и попробуйте снова."
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:138
 msgid "{app_name} is already running"
 msgstr "{app_name} уже запущен"
 
@@ -850,14 +850,18 @@ msgid "Behavior"
 msgstr "Поведение"
 
 #: src/ui/qt/main_window.cpp:546
+msgid "Play sound when recognition is complete"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:564
 msgid "Check for updates automatically"
 msgstr "Проверять наличие обновлений автоматически"
 
-#: src/ui/qt/main_window.cpp:552
+#: src/ui/qt/main_window.cpp:570
 msgid "Run at system logon"
 msgstr "Запускать при входе в систему"
 
-#: src/ui/qt/main_window.cpp:556
+#: src/ui/qt/main_window.cpp:574
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -867,7 +871,7 @@ msgstr ""
 "скрыта в область уведомлений, если значок в области уведомлений включен, или "
 "свернута, если значок отключен."
 
-#: src/ui/qt/main_window.cpp:696
+#: src/ui/qt/main_window.cpp:720
 msgid ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} day"
@@ -884,23 +888,23 @@ msgstr[2] ""
 "{app_name} будет автоматически проверять наличие обновлений при запуске, но "
 "не чаще, чем раз в {count} дней"
 
-#: src/ui/qt/main_window.cpp:926
+#: src/ui/qt/main_window.cpp:958
 msgid "Please install languages"
 msgstr "Пожалуйста, установите языки"
 
-#: src/ui/qt/main_window.cpp:928
+#: src/ui/qt/main_window.cpp:960
 msgid "Please select languages"
 msgstr "Пожалуйста, выберите языки"
 
-#: src/ui/qt/main_window.cpp:930
+#: src/ui/qt/main_window.cpp:962
 msgid "Please select actions"
 msgstr "Пожалуйста, выберите действия"
 
-#: src/ui/qt/main_window.cpp:940
+#: src/ui/qt/main_window.cpp:972
 msgid "Press {hotkey} to start area selection"
 msgstr "Нажмите {hotkey}, чтобы начать выделение области"
 
-#: src/ui/qt/main_window.cpp:941
+#: src/ui/qt/main_window.cpp:973
 msgid "Press {hotkey} to finish selection"
 msgstr "Нажмите {hotkey}, чтобы завершить выделение"
 

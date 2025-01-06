@@ -4,10 +4,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2024-12-23 22:04+0100\n"
+"POT-Creation-Date: 2025-01-06 22:51+0100\n"
 "PO-Revision-Date: 2024-12-24 22:00+0000\n"
-"Last-Translator: 大王叫我来巡山 "
-"<hamburger2048@users.noreply.hosted.weblate.org>\n"
+"Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
+"org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/dpscreenocr/dpscreenocr/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -554,23 +554,23 @@ msgstr "用于识别屏幕上文字的软件"
 msgid "Check for updates"
 msgstr "检查更新"
 
-#: src/ui/qt/action_chooser.cpp:25
+#: src/ui/qt/action_chooser.cpp:26
 msgid "Copy text to clipboard"
 msgstr "把文本复制到剪贴板"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp:27
 msgid "Add text to history"
 msgstr "将文本添加到历史记录"
 
-#: src/ui/qt/action_chooser.cpp:28
+#: src/ui/qt/action_chooser.cpp:29
 msgid "Run executable:"
 msgstr "运行可执行文件："
 
-#: src/ui/qt/action_chooser.cpp:30
+#: src/ui/qt/action_chooser.cpp:31
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "运行一个可执行文件，把识别的文本作为运行的第一个参数"
 
-#: src/ui/qt/action_chooser.cpp:152
+#: src/ui/qt/action_chooser.cpp:157
 msgid "Choose an executable"
 msgstr "选择可执行文件"
 
@@ -741,7 +741,7 @@ msgstr "一些语言没卸载掉"
 msgid "Check your network connection and try again."
 msgstr "看一下网络连没连上，再试一次。"
 
-#: src/ui/qt/main.cpp:107
+#: src/ui/qt/main.cpp:138
 msgid "{app_name} is already running"
 msgstr "{app_name} 已经打开了"
 
@@ -839,14 +839,18 @@ msgid "Behavior"
 msgstr "行为"
 
 #: src/ui/qt/main_window.cpp:546
+msgid "Play sound when recognition is complete"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:564
 msgid "Check for updates automatically"
 msgstr "自动检查更新"
 
-#: src/ui/qt/main_window.cpp:552
+#: src/ui/qt/main_window.cpp:570
 msgid "Run at system logon"
 msgstr "登录系统时启动"
 
-#: src/ui/qt/main_window.cpp:556
+#: src/ui/qt/main_window.cpp:574
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -855,7 +859,7 @@ msgstr ""
 "当你登录系统时，{app_name} 会自动启动。如果启用通知区域图标，程序会隐藏至通知"
 "区域；如果禁用图标，程序窗口会被最小化。"
 
-#: src/ui/qt/main_window.cpp:696
+#: src/ui/qt/main_window.cpp:720
 msgid ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} day"
@@ -864,23 +868,23 @@ msgid_plural ""
 "often than once every {count} days"
 msgstr[0] "{app_name} 会在启动时自动检查更新，但频率不会超过每 {count} 天一次"
 
-#: src/ui/qt/main_window.cpp:926
+#: src/ui/qt/main_window.cpp:958
 msgid "Please install languages"
 msgstr "需安装要识别的语言"
 
-#: src/ui/qt/main_window.cpp:928
+#: src/ui/qt/main_window.cpp:960
 msgid "Please select languages"
 msgstr "请选择语言"
 
-#: src/ui/qt/main_window.cpp:930
+#: src/ui/qt/main_window.cpp:962
 msgid "Please select actions"
 msgstr "请选择操作"
 
-#: src/ui/qt/main_window.cpp:940
+#: src/ui/qt/main_window.cpp:972
 msgid "Press {hotkey} to start area selection"
 msgstr "按下 {hotkey} 开始选择区域"
 
-#: src/ui/qt/main_window.cpp:941
+#: src/ui/qt/main_window.cpp:973
 msgid "Press {hotkey} to finish selection"
 msgstr "按下 {hotkey} 框选完成"
 
@@ -916,4 +920,5 @@ msgstr "你的系统可以安装 {app_name} 最新版"
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
-msgstr "最新版是 {latest_version}，但你的系统不符合下列最低要求：{requirements}。"
+msgstr ""
+"最新版是 {latest_version}，但你的系统不符合下列最低要求：{requirements}。"
