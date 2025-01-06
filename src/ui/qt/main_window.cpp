@@ -868,7 +868,8 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     statusLabel->setText(text);
 
     trayIcon->setToolTip(title);
-    if (newStatus != lastStatus)
+
+    if (newStatus != lastStatus) {
         switch (newStatus) {
         case Status::ok:
             trayIcon->setIcon(trayIconNormal);
@@ -880,6 +881,10 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
             trayIcon->setIcon(trayIconError);
             break;
         }
+
+        if (lastStatus == Status::busy && playSoundCheck->isChecked())
+            uiSoundPlay(UiSoundIdDone);
+    }
 
     UiTaskbarState tbState{};
     switch (newStatus) {
