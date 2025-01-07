@@ -706,7 +706,8 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfgDefaultValueUiWindowCloseToTray));
 
     playSoundCheck->setChecked(
-        dpsoCfgGetBool(
+        uiSoundIsAvailable()
+        && dpsoCfgGetBool(
             cfg,
             cfgKeyActionsDonePlaySound,
             cfgDefaultValueActionsDonePlaySound));
