@@ -546,6 +546,8 @@ QWidget* MainWindow::createSettingsTab()
         _("Play sound when recognition is complete"));
     playSoundCheck->setVisible(uiSoundIsAvailable());
     connect(
+        // Use clicked() instead of toggled() because this should only
+        // be triggered by an interactive activation.
         playSoundCheck, &QCheckBox::clicked,
         [&](bool isChecked)
         {
