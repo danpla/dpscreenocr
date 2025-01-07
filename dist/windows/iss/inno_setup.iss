@@ -77,6 +77,9 @@ Source: "icons\*"; \
 Source: "locale\*"; \
   DestDir: "{app}\locale"; \
   Flags: ignoreversion recursesubdirs
+Source: "sounds\*"; \
+  DestDir: "{app}\sounds"; \
+  Flags: ignoreversion recursesubdirs
 
 #define TESSDATA_DIR "tessdata"
 #define TESSERACT_DATA_DIR \
