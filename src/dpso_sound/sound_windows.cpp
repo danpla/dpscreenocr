@@ -87,11 +87,8 @@ bool isAvailable()
 }
 
 
-std::unique_ptr<Player> Player::create(
-    const char* appName, const char* filePath)
+std::unique_ptr<Player> Player::create(const char* filePath)
 {
-    (void)appName;
-
     return std::make_unique<WindowsPlayer>(filePath);
 }
 

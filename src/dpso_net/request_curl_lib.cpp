@@ -3,6 +3,7 @@
 
 #if DPSO_DYNAMIC_CURL
 #include <dlfcn.h>
+#include "dpso_utils/unix/dl.h"
 #endif
 
 #include <memory>
@@ -47,21 +48,9 @@ namespace {
 //   "CURL_OPENSSL_3" will not be found.
 
 
-struct DlHandleCloser {
-    void operator()(void* handle) const
-    {
-        if (handle)
-            dlclose(handle);
-    }
-};
-
-
-using DlHandleUPtr = std::unique_ptr<void, DlHandleCloser>;
-
-
 struct LibInfo {
     std::string name;
-    DlHandleUPtr handle;
+    unix::DlHandleUPtr handle;
 };
 
 
@@ -91,7 +80,7 @@ LibInfo loadLib()
             const auto soName = str::format("{}.so.{}", name, v);
             if (auto* handle = dlopen(
                     soName.c_str(), RTLD_NOW | RTLD_LOCAL))
-                return {soName, DlHandleUPtr{handle}};
+                return {soName, unix::DlHandleUPtr{handle}};
         }
 
     std::string triedSoNames;

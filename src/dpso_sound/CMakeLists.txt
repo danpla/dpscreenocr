@@ -4,7 +4,19 @@ project(dpso_sound)
 
 add_library(dpso_sound)
 
-if(WIN32)
+if(UNIX AND NOT APPLE)
+    target_sources(
+        dpso_sound
+        PRIVATE
+        unix/lib_pulse.cpp
+        unix/lib_sndfile.cpp
+        unix/sound.cpp)
+
+    find_package(Threads REQUIRED)
+
+    target_link_libraries(
+        dpso_sound PRIVATE dl ${CMAKE_THREAD_LIBS_INIT})
+elseif(WIN32)
     target_sources(dpso_sound PRIVATE sound_windows.cpp)
     target_link_libraries(dpso_sound PRIVATE winmm)
 else()
@@ -21,6 +33,13 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(dpso_sound PRIVATE -Wall -Wextra -pedantic)
 endif()
+
+include(TestBigEndian)
+test_big_endian(IS_BIG_ENDIAN)
+
+target_compile_definitions(
+    dpso_sound
+    PRIVATE DPSO_SOUND_IS_BIG_ENDIAN=$<BOOL:${IS_BIG_ENDIAN}>)
 
 if(NOT TARGET dpso_utils)
     add_subdirectory(

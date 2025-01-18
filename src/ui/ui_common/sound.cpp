@@ -10,7 +10,6 @@
 #include "dpso_utils/os.h"
 
 #include "app_dirs.h"
-#include "app_info.h"
 
 
 using namespace dpso;
@@ -72,11 +71,11 @@ bool uiSoundPlay(UiSoundId soundId)
 
         try {
             cacheEntry->player = sound::Player::create(
-                uiAppName, soundPath.c_str());
+                soundPath.c_str());
         } catch (sound::Error& e) {
             setError(
-                "sound::Player::create(\"{}\", \"{}\"): {}",
-                uiAppName, soundPath, e.what());
+                "sound::Player::create(\"{}\"): {}",
+                soundPath, e.what());
             return false;
         }
     }
