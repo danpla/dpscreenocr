@@ -95,7 +95,11 @@ if(DPSO_ENABLE_UPDATE_CHECKER)
             ../dpso_net "${CMAKE_BINARY_DIR}/src/dpso_net")
     endif()
 
-    target_link_libraries(ui_common PRIVATE dpso_json dpso_net)
+    find_package(Threads REQUIRED)
+
+    target_link_libraries(
+        ui_common
+        PRIVATE dpso_json dpso_net ${CMAKE_THREAD_LIBS_INIT})
 else()
     target_sources(dpso PRIVATE update_checker_null.cpp)
 endif()
