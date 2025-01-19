@@ -72,7 +72,6 @@ private:
 };
 
 
-
 void Context::play(const AudioData& audioData)
 {
     stop();
@@ -145,7 +144,7 @@ void Context::playTask(
         samplesPerWrite += audioData.numChannels - rem;
 
     std::size_t sampleIdx{};
-    while (true) {
+    while (sampleIdx < audioData.samples.size()) {
         if (stopFuture.wait_for(std::chrono::seconds{})
                 == std::future_status::ready) {
             libPulse.simple_flush(pulseSimple.get(), nullptr);
@@ -154,8 +153,6 @@ void Context::playTask(
 
         const auto numSamples = std::min(
             samplesPerWrite, audioData.samples.size() - sampleIdx);
-        if (numSamples == 0)
-            break;
 
         if (libPulse.simple_write(
                 pulseSimple.get(),
@@ -252,7 +249,6 @@ std::unique_ptr<Player> Player::create(const char* filePath)
 {
     return std::make_unique<PulseAudioPlayer>(filePath);
 }
-
 
 
 }
