@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <optional>
 #include <string>
 
 #include <QIcon>
@@ -86,9 +87,8 @@ private:
     ActionChooser* actionChooser;
     DpsoHotkey cancelSelectionHotkey{};
 
-    QString clipboardText;
-    bool clipboardTextPending{};
-    QString copyToClipboardTextSeparator;
+    std::optional<QString> clipboardText;
+    QString clipboardTextSeparator;
 
     History* history;
 

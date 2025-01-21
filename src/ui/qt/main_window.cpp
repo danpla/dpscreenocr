@@ -666,7 +666,7 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfgKeyOcrSplitTextBlocks,
             cfgDefaultValueOcrSplitTextBlocks));
 
-    copyToClipboardTextSeparator = dpsoCfgGetStr(
+    clipboardTextSeparator = dpsoCfgGetStr(
         cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
         cfgDefaultValueActionCopyToClipboardTextSeparator);
@@ -779,7 +779,7 @@ void MainWindow::saveState(DpsoCfg* cfg) const
     dpsoCfgSetStr(
         cfg,
         cfgKeyActionCopyToClipboardTextSeparator,
-        copyToClipboardTextSeparator.toUtf8().data());
+        clipboardTextSeparator.toUtf8().data());
 
     DpsoHotkey toggleSelectionHotkey;
     dpsoKeyManagerFindActionHotkey(
@@ -997,15 +997,13 @@ void MainWindow::checkResults()
     DpsoOcrJobResult result;
     while (dpsoOcrGetResult(ocr.get(), &result)) {
         if (actions & ActionChooser::Action::copyToClipboard) {
-            // We need the clipboardTextPending flag since the result
-            // text may be empty, yet it should still be copied to the
-            // clipboard and separated from other texts.
-            if (clipboardTextPending)
-                clipboardText += copyToClipboardTextSeparator;
+            if (clipboardText)
+                *clipboardText += clipboardTextSeparator;
+            else
+                clipboardText = QString();
 
-            clipboardText += QString::fromUtf8(
+            *clipboardText += QString::fromUtf8(
                 result.text, result.textLen);
-            clipboardTextPending = true;
         }
 
         if (actions & ActionChooser::Action::addToHistory)
@@ -1015,10 +1013,9 @@ void MainWindow::checkResults()
             dpsoExec(actionChooser->getExePath(), &result.text, 1);
     }
 
-    if (jobsCompleted && clipboardTextPending) {
-        QApplication::clipboard()->setText(clipboardText);
-        clipboardText.clear();
-        clipboardTextPending = false;
+    if (jobsCompleted && clipboardText) {
+        QApplication::clipboard()->setText(*clipboardText);
+        clipboardText.reset();
     }
 }
 
