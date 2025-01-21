@@ -987,19 +987,15 @@ void MainWindow::updateStatus()
 
 void MainWindow::checkResults()
 {
-    // Check if jobs are completed before fetching results, since new
-    // jobs can finish between dpsoOcrFetchResults() and
+    // Check if jobs are completed before getting results, since new
+    // jobs can finish between dpsoOcrGetResult() and
     // dpsoOcrHasPendingJobs() calls.
     const auto jobsCompleted = !dpsoOcrHasPendingJobs(ocr.get());
 
-    DpsoOcrJobResults results;
-    dpsoOcrFetchResults(ocr.get(), &results);
-
     const auto actions = actionChooser->getSelectedActions();
 
-    for (int i = 0; i < results.numItems; ++i) {
-        const auto& result = results.items[i];
-
+    DpsoOcrJobResult result;
+    while (dpsoOcrGetResult(ocr.get(), &result)) {
         if (actions & ActionChooser::Action::copyToClipboard) {
             // We need the clipboardTextPending flag since the result
             // text may be empty, yet it should still be copied to the

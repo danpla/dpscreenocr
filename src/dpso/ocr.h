@@ -203,9 +203,6 @@ void dpsoOcrGetProgress(
 bool dpsoOcrHasPendingJobs(const DpsoOcr* ocr);
 
 
-/**
- * Result of a single OCR job.
- */
 typedef struct DpsoOcrJobResult {
     /**
      * Null-terminated text in UTF-8 encoding.
@@ -227,35 +224,20 @@ typedef struct DpsoOcrJobResult {
 
 
 /**
- * Reference to internal array containing OCR job results.
+ * Get the result of the next completed OCR job.
  *
- * The results remain valid till the next dpsoOcrFetchResults() or
- * dpsoOcrDelete() call.
- *
- * \sa dpsoOcrFetchResults
+ * Returns true if the result is returned. The result remains valid
+ * till the next call to dpsoOcrGetResult(), dpsoOcrTerminateJobs(),
+ * or dpsoOcrDelete(). The previously returned result is invalidated.
  */
-typedef struct DpsoOcrJobResults {
-    const DpsoOcrJobResult* items;
-    int numItems;
-} DpsoOcrJobResults;
-
-
-/**
- * Fetch job results.
- *
- * The function returns a reference to an internal array filled with
- * results of completed OCR jobs; if there are no new completed jobs,
- * the array will be empty. The previously returned results are
- * invalidated.
- */
-void dpsoOcrFetchResults(DpsoOcr* ocr, DpsoOcrJobResults* results);
+bool dpsoOcrGetResult(DpsoOcr* ocr, DpsoOcrJobResult* result);
 
 
 /**
  * Terminate jobs.
  *
  * This function terminates the active job, clears the job queue, and
- * drops all unfetched job results. dpsoOcrTerminateJobs() is
+ * drops all pending job results. dpsoOcrTerminateJobs() is
  * implicitly called on dpsoOcrDelete().
  */
 void dpsoOcrTerminateJobs(DpsoOcr* ocr);

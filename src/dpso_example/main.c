@@ -71,15 +71,9 @@ static void reportProgress(
 
 static void checkResults(DpsoOcr* ocr)
 {
-    DpsoOcrJobResults results;
-    dpsoOcrFetchResults(ocr, &results);
-
-    for (int i = 0; i < results.numItems; ++i) {
-        const DpsoOcrJobResult* result = &results.items[i];
-        printf(
-            "=== %s ===\n%s\n",
-            result->timestamp, result->text);
-    }
+    DpsoOcrJobResult result;
+    while (dpsoOcrGetResult(ocr, &result))
+        printf("=== %s ===\n%s\n", result.timestamp, result.text);
 }
 
 
