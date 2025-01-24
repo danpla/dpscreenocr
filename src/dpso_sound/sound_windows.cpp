@@ -1,50 +1,14 @@
 
 #include "sound.h"
 
-#include <cstdint>
-#include <optional>
-#include <vector>
-
 #include <windows.h>
 
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
-#include "dpso_utils/stream/file_stream.h"
-#include "dpso_utils/stream/utils.h"
 
 
 namespace dpso::sound {
 namespace {
-
-
-std::vector<std::uint8_t> loadData(const char* filePath)
-{
-    std::int64_t fileSize;
-    try {
-        fileSize = os::getFileSize(filePath);
-    } catch (os::Error& e) {
-        throw Error{str::format("os::getFileSize(): {}", e.what())};
-    }
-
-    std::optional<FileStream> file;
-    try {
-        file.emplace(filePath, FileStream::Mode::read);
-    } catch (os::Error& e) {
-        throw Error{str::format(
-            "FileStream(..., Mode::read): {}", e.what())};
-    }
-
-    std::vector<std::uint8_t> result;
-    result.resize(fileSize);
-
-    try {
-        read(*file, result.data(), result.size());
-    } catch (StreamError& e) {
-        throw Error{str::format("read(file, ...): {}", e.what())};
-    }
-
-    return result;
-}
 
 
 class WindowsPlayer : public Player {
@@ -52,9 +16,9 @@ public:
     explicit WindowsPlayer(const char* filePath)
     {
         try {
-            wavData = loadData(filePath);
-        } catch (Error& e) {
-            throw Error{str::format("Can't load data: {}", e.what())};
+            wavData = os::loadData(filePath);
+        } catch (os::Error& e) {
+            throw Error{str::format("os::loadData(): {}", e.what())};
         }
     }
 
@@ -74,7 +38,7 @@ public:
             throw Error{"PlaySoundW() failed"};
     }
 private:
-    std::vector<std::uint8_t> wavData;
+    std::string wavData;
 };
 
 

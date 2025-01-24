@@ -418,6 +418,43 @@ void testSyncDir()
 }
 
 
+void testLoadData()
+{
+    const std::string filePath{"test_load_data.txt"};
+
+    test::utils::saveText(
+        "testLoadData", filePath.c_str(), filePath.c_str());
+
+    std::string data;
+    try {
+        data = dpso::os::loadData(filePath.c_str());
+    } catch (dpso::os::Error& e) {
+        test::failure("os::loadData(\"{}\"): {}", filePath, e.what());
+        return;
+    }
+
+    if (data != filePath) {
+        test::failure(
+            "os::loadData(\"{}\") returned \"{}\" instead of \"{}\"",
+            filePath, data, filePath);
+        return;
+    }
+
+    try {
+        dpso::os::loadData("nonexistent_file");
+        test::failure(
+            "os::loadData() for a nonexistent source file didn't "
+            "threw an error");
+    } catch (dpso::os::FileNotFoundError&) {
+    } catch (dpso::os::Error& e) {
+        test::failure(
+            "os::loadData() for a nonexistent file threw an error "
+            "(\"{}\") of class other than FileNotFoundError",
+            e.what());
+    }
+}
+
+
 void testOs()
 {
     testPathSplit();
@@ -429,6 +466,7 @@ void testOs()
     testReplace();
     testSyncFile();
     testSyncDir();
+    testLoadData();
 }
 
 

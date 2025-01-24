@@ -19,14 +19,13 @@ bool isAvailable();
 // The Player class is intended to play short notification sounds.
 class Player {
 public:
-    // Throws sound:::Error on errors.
+    // Throws sound:::Error.
     static std::unique_ptr<Player> create(const char* filePath);
 
     virtual ~Player() = default;
 
     // play() will stop a currently playing sound, even if it was
-    // started by another Player instance. Throws sound:::Error on
-    // errors.
+    // started by another Player instance. Throws sound:::Error.
     virtual void play() = 0;
 };
 

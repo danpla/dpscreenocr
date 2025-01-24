@@ -2,6 +2,11 @@
 #include "os.h"
 
 #include <cstring>
+#include <optional>
+
+#include "str.h"
+#include "stream/file_stream.h"
+#include "stream/utils.h"
 
 
 namespace dpso::os {
@@ -10,8 +15,8 @@ namespace dpso::os {
 [[noreturn]]
 void throwErrno(const char* description, int errnum)
 {
-    const auto message =
-        std::string{description} + ": " + getErrnoMsg(errnum);
+    const auto message = str::format(
+        "{}: {}", description, getErrnoMsg(errnum));
 
     switch (errnum) {
     case ENOENT:
@@ -41,6 +46,40 @@ const char* getFileExt(const char* filePath)
         return ext;
 
     return nullptr;
+}
+
+
+std::string loadData(const char* filePath)
+{
+    std::int64_t fileSize;
+    try {
+        fileSize = getFileSize(filePath);
+    } catch (FileNotFoundError&) {
+        throw;
+    } catch (Error& e) {
+        throw Error{str::format("os::getFileSize(): {}", e.what())};
+    }
+
+    std::optional<FileStream> file;
+    try {
+        file.emplace(filePath, FileStream::Mode::read);
+    } catch (FileNotFoundError&) {
+        throw;
+    } catch (Error& e) {
+        throw Error{str::format(
+            "FileStream(..., Mode::read): {}", e.what())};
+    }
+
+    std::string result;
+    result.resize(fileSize);
+
+    try {
+        read(*file, result.data(), result.size());
+    } catch (StreamError& e) {
+        throw Error{str::format("read(file, ...): {}", e.what())};
+    }
+
+    return result;
 }
 
 

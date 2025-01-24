@@ -33,38 +33,6 @@ struct DpsoHistory {
 };
 
 
-static bool loadData(const char* filePath, std::string& data)
-{
-    data.clear();
-
-    try {
-        data.resize(os::getFileSize(filePath));
-    } catch (os::FileNotFoundError&) {
-        return true;
-    } catch (os::Error& e) {
-        setError("os::getFileSize(): {}", e.what());
-        return false;
-    }
-
-    std::optional<FileStream> file;
-    try {
-        file.emplace(filePath, FileStream::Mode::read);
-    } catch (os::Error& e) {
-        setError("FileStream(..., Mode::read): {}", e.what());
-        return false;
-    }
-
-    try {
-        read(*file, data.data(), data.size());
-    } catch (StreamError& e) {
-        setError("read(file, ...): {}", e.what());
-        return false;
-    }
-
-    return true;
-}
-
-
 static bool createEntries(
     const char* data,
     std::vector<DpsoHistory::Entry>& entries,
@@ -169,11 +137,16 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
     history->filePath = filePath;
 
     std::string data;
-    std::size_t validDataSize{};
+    try {
+        data = os::loadData(filePath);
+    } catch (os::FileNotFoundError&) {
+    } catch (os::Error& e) {
+        setError("os::loadData(): {}", e.what());
+        return nullptr;
+    }
 
-    if (!loadData(filePath, data)
-            || !createEntries(
-                data.c_str(), history->entries, validDataSize))
+    std::size_t validDataSize{};
+    if (!createEntries(data.c_str(), history->entries, validDataSize))
         return nullptr;
 
     if (validDataSize != data.size())

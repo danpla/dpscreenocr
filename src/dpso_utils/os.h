@@ -149,6 +149,12 @@ void syncFile(std::FILE* fp);
 void syncDir(const char* dirPath);
 
 
+// Read all data from a file.
+//
+// Throws os::Error.
+std::string loadData(const char* filePath);
+
+
 // Run an executable.
 //
 // If supported by the platform, exePath may be just the name of the
