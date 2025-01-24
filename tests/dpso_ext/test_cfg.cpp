@@ -766,7 +766,7 @@ void testSavedValueFormat()
         {"\b\f\v\x01\xff", "\b\f\v\x01\xff"},
     };
 
-    dpso::CfgUPtr cfg{dpsoCfgCreate()};
+    CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
         test::fatalError(
             "testSavedValueFormat(): dpsoCfgCreate(): {}",
@@ -797,7 +797,7 @@ void testSavedValueFormat()
 
 void testCfg()
 {
-    dpso::CfgUPtr cfg{dpsoCfgCreate()};
+    CfgUPtr cfg{dpsoCfgCreate()};
     if (!cfg)
         test::fatalError("dpsoCfgCreate(): {}", dpsoGetError());
 
