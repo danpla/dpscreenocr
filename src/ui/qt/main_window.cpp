@@ -214,7 +214,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
     quitRequested = false;
 
-    if (dpsoOcrHasPendingJobs(ocr.get())
+    if (dpsoOcrHasPendingResults(ocr.get())
             && !confirmQuitWhileOcrIsActive(this)) {
         event->ignore();
         return;
@@ -354,7 +354,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
 
     if (!noInteraction
             && sessionManager.allowsInteraction()
-            && dpsoOcrHasPendingJobs(ocr.get())
+            && dpsoOcrHasPendingResults(ocr.get())
             && !confirmQuitWhileOcrIsActive(this)) {
         sessionManager.cancel();
         return;
@@ -833,7 +833,7 @@ bool MainWindow::canStartSelection() const
 {
     return
         dpsoOcrGetNumActiveLangs(ocr.get()) > 0
-        && (ocrAllowQueuing || !dpsoOcrHasPendingJobs(ocr.get()))
+        && (ocrAllowQueuing || !dpsoOcrHasPendingResults(ocr.get()))
         && actionChooser->getSelectedActions();
 }
 
@@ -871,8 +871,7 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
     statusLabel->setText(text);
 
     trayIcon->setToolTip(title);
-
-    if (newStatus != lastStatus) {
+    if (newStatus != lastStatus)
         switch (newStatus) {
         case Status::ok:
             trayIcon->setIcon(trayIconNormal);
@@ -884,10 +883,6 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
             trayIcon->setIcon(trayIconError);
             break;
         }
-
-        if (lastStatus == Status::busy && playSoundCheck->isChecked())
-            uiSoundPlay(UiSoundIdDone);
-    }
 
     UiTaskbarState tbState{};
     switch (newStatus) {
@@ -910,15 +905,22 @@ void MainWindow::setStatus(Status newStatus, const QString& text)
 
 void MainWindow::updateStatus()
 {
-    DpsoOcrProgress progress;
-    dpsoOcrGetProgress(ocr.get(), &progress);
+    const auto resultsPending = dpsoOcrHasPendingResults(ocr.get());
 
-    actionChooser->setEnabled(progress.totalJobs == 0);
-    langManagerButton->setEnabled(progress.totalJobs == 0);
+    actionChooser->setEnabled(!resultsPending);
+    langManagerButton->setEnabled(!resultsPending);
 
-    if (progress.totalJobs > 0) {
-        // Update status when the progress ends.
+    if (resultsPending) {
+        // Update the status when we are done with the results.
         statusValid = false;
+
+        DpsoOcrProgress progress;
+        dpsoOcrGetProgress(ocr.get(), &progress);
+        if (progress.totalJobs == 0)
+            // If the recognition is complete, but the results have
+            // not yet been processed, leave the status as it is,
+            // effectively preserving the last progress status.
+            return;
 
         if (dpsoOcrProgressEqual(&progress, &lastProgress))
             return;
@@ -987,15 +989,13 @@ void MainWindow::updateStatus()
 
 void MainWindow::checkResults()
 {
-    // Check if jobs are completed before getting results, since new
-    // jobs can finish between dpsoOcrGetResult() and
-    // dpsoOcrHasPendingJobs() calls.
-    const auto jobsCompleted = !dpsoOcrHasPendingJobs(ocr.get());
-
     const auto actions = actionChooser->getSelectedActions();
 
+    bool wasResults{};
     DpsoOcrJobResult result;
     while (dpsoOcrGetResult(ocr.get(), &result)) {
+        wasResults = true;
+
         if (actions & ActionChooser::Action::copyToClipboard) {
             if (clipboardText)
                 *clipboardText += clipboardTextSeparator;
@@ -1013,10 +1013,16 @@ void MainWindow::checkResults()
             dpsoExec(actionChooser->getExePath(), &result.text, 1);
     }
 
-    if (jobsCompleted && clipboardText) {
+    if (!wasResults || dpsoOcrHasPendingResults(ocr.get()))
+        return;
+
+    if (clipboardText) {
         QApplication::clipboard()->setText(*clipboardText);
         clipboardText.reset();
     }
+
+    if (playSoundCheck->isChecked())
+        uiSoundPlay(UiSoundIdDone);
 }
 
 

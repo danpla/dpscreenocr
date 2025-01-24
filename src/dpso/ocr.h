@@ -32,9 +32,6 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir);
 void dpsoOcrDelete(DpsoOcr* ocr);
 
 
-/**
- * Get the number of available languages.
- */
 int dpsoOcrGetNumLangs(const DpsoOcr* ocr);
 
 
@@ -106,9 +103,6 @@ void dpsoOcrSetLangIsActive(
     DpsoOcr* ocr, int langIdx, bool newIsActive);
 
 
-/**
- * Get the number of active languages.
- */
 int dpsoOcrGetNumActiveLangs(const DpsoOcr* ocr);
 
 
@@ -156,7 +150,7 @@ bool dpsoOcrQueueJob(DpsoOcr* ocr, const DpsoOcrJobArgs* jobArgs);
 
 typedef struct DpsoOcrProgress {
     /**
-     * Progress of the current job in percents (0-100).
+     * Progress of the current job in percents.
      */
     int curJobProgress;
 
@@ -170,37 +164,20 @@ typedef struct DpsoOcrProgress {
     /**
      * Total number of jobs.
      *
-     * Can be zero if there are no pending jobs, meaning that all
-     * jobs are completed, or no jobs was queued after
+     * Can be zero if there are no pending jobs, meaning that either
+     * all jobs are completed or no jobs were queued after
      * dpsoOcrCreate().
      */
     int totalJobs;
 } DpsoOcrProgress;
 
 
-/**
- * Check if two DpsoOcrProgress are equal.
- */
 bool dpsoOcrProgressEqual(
     const DpsoOcrProgress* a, const DpsoOcrProgress* b);
 
 
-/**
- * Get jobs progress.
- *
- * If you just need to test if there are pending jobs, consider using
- * dpsoOcrHasPendingJobs().
- */
 void dpsoOcrGetProgress(
     const DpsoOcr* ocr, DpsoOcrProgress* progress);
-
-
-/**
- * Check if there are pending jobs.
- *
- * This is basically the same as testing DpsoOcrProgress::totalJobs.
- */
-bool dpsoOcrHasPendingJobs(const DpsoOcr* ocr);
 
 
 typedef struct DpsoOcrJobResult {
@@ -217,10 +194,21 @@ typedef struct DpsoOcrJobResult {
     size_t textLen;
 
     /**
-     * Timestamp in "YYYY-MM-DD hh:mm:ss" format.
+     * Timestamp in the "YYYY-MM-DD hh:mm:ss" format.
      */
     const char* timestamp;
 } DpsoOcrJobResult;
+
+
+/**
+ * Check for pending results.
+ *
+ * Returns true if at least one result of the job is currently
+ * available or will be available in the future after the job
+ * completes. Returns false if no jobs have been queued or if you have
+ * already received the result of the last queued job.
+ */
+bool dpsoOcrHasPendingResults(const DpsoOcr* ocr);
 
 
 /**
