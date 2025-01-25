@@ -162,6 +162,31 @@ void testGetFileExt()
 }
 
 
+template<typename Fn>
+bool checkFileNotFoundError(Fn fn, const char* fnName)
+{
+    try {
+        fn();
+        test::failure(
+            "{}() for a nonexistent file didn't threw an error",
+            fnName);
+        return false;
+    } catch (os::FileNotFoundError&) {
+    } catch (os::Error& e) {
+        test::failure(
+            "{}() for a nonexistent file threw an error "
+            "(\"{}\") of class other than FileNotFoundError",
+            fnName, e.what());
+    }
+
+    return true;
+}
+
+
+#define CHECK_FILE_NOT_FOUND_ERROR(FN, ...) \
+    checkFileNotFoundError([]{ FN(__VA_ARGS__); }, #FN)
+
+
 void testGetFileSize()
 {
     const auto* fileName = "test_get_file_size.txt";
@@ -183,18 +208,7 @@ void testGetFileSize()
 
     test::utils::removeFile(fileName);
 
-    try {
-        os::getFileSize("nonexistent_file");
-        test::failure(
-            "os::getFileSize() for a nonexistent source file didn't "
-            "threw an error");
-    } catch (os::FileNotFoundError&) {
-    } catch (os::Error& e) {
-        test::failure(
-            "os::getFileSize() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError",
-            e.what());
-    }
+    CHECK_FILE_NOT_FOUND_ERROR(os::getFileSize, "nonexistent_file");
 }
 
 
@@ -239,18 +253,8 @@ void testResizeFile()
 
     test::utils::removeFile(fileName);
 
-    try {
-        os::resizeFile("nonexistent_file", 10);
-        test::failure(
-            "os::resizeFile() for a nonexistent file didn't threw an "
-            "error");
-    } catch (os::FileNotFoundError&) {
-    } catch (os::Error& e) {
-        test::failure(
-            "os::resizeFile() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError",
-            e.what());
-    }
+    CHECK_FILE_NOT_FOUND_ERROR(
+        os::resizeFile, "nonexistent_file", 10);
 }
 
 
@@ -287,18 +291,7 @@ void testRemoveFile()
             testUnicodeFileName, e.what());
     }
 
-    try {
-        os::removeFile("nonexistent_file");
-        test::failure(
-            "os::removeFile() for a nonexistent file didn't threw an "
-            "error");
-    } catch (os::FileNotFoundError&) {
-    } catch (os::Error& e) {
-        test::failure(
-            "os::removeFile() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError",
-            e.what());
-    }
+    CHECK_FILE_NOT_FOUND_ERROR(os::removeFile, "nonexistent_file");
 }
 
 
@@ -356,18 +349,8 @@ void testReplaceSrcExists(bool dstExists)
 
 void testReplaceNoSrc()
 {
-    try {
-        os::replace("nonexistent_file", "dst");
-        test::failure(
-            "os::replace() for a nonexistent source file didn't "
-            "threw an error");
-    } catch (os::FileNotFoundError&) {
-    } catch (os::Error& e) {
-        test::failure(
-            "os::replace() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError",
-            e.what());
-    }
+    CHECK_FILE_NOT_FOUND_ERROR(
+        os::replace, "nonexistent_file", "dst");
 }
 
 
@@ -434,18 +417,7 @@ void testLoadData()
         return;
     }
 
-    try {
-        os::loadData("nonexistent_file");
-        test::failure(
-            "os::loadData() for a nonexistent source file didn't "
-            "threw an error");
-    } catch (os::FileNotFoundError&) {
-    } catch (os::Error& e) {
-        test::failure(
-            "os::loadData() for a nonexistent file threw an error "
-            "(\"{}\") of class other than FileNotFoundError",
-            e.what());
-    }
+    CHECK_FILE_NOT_FOUND_ERROR(os::loadData, "nonexistent_file");
 }
 
 
