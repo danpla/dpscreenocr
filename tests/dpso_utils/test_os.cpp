@@ -170,8 +170,8 @@ bool checkFileNotFoundError(Fn fn, const char* fnName)
         test::failure(
             "{}() for a nonexistent file didn't threw an error",
             fnName);
-        return false;
     } catch (os::FileNotFoundError&) {
+        return true;
     } catch (os::Error& e) {
         test::failure(
             "{}() for a nonexistent file threw an error "
@@ -179,7 +179,7 @@ bool checkFileNotFoundError(Fn fn, const char* fnName)
             fnName, e.what());
     }
 
-    return true;
+    return false;
 }
 
 
