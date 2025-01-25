@@ -7,12 +7,12 @@
 namespace dpso::ocr {
 
 
-class InvalidLangCodeError : public Error {
+class LangCodeError : public Error {
     using Error::Error;
 };
 
 
-// Throws InvalidLangCodeError.
+// Throws LangCodeError.
 void validateLangCode(const char* langCode);
 
 

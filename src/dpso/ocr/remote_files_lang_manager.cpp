@@ -240,7 +240,7 @@ RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
             const auto code = fileInfo.getStr("code");
             try {
                 validateLangCode(code.c_str());
-            } catch (InvalidLangCodeError& e) {
+            } catch (LangCodeError& e) {
                 throw json::Error{str::format(
                     "Invalid code \"{}\": {}", code, e.what())};
             }

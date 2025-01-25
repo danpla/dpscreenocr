@@ -22,12 +22,12 @@ static bool isValidLangCodeChar(char c)
 void validateLangCode(const char* langCode)
 {
     if (!*langCode)
-        throw InvalidLangCodeError{"Language code is empty"};
+        throw LangCodeError{"Language code is empty"};
 
     for (const auto* s = langCode; *s; ++s)
         if (!isValidLangCodeChar(*s))
-            throw InvalidLangCodeError{str::format(
-                "Invalid character at position {}", langCode - s)};
+            throw LangCodeError{str::format(
+                "Invalid character at index {}", langCode - s)};
 }
 
 
