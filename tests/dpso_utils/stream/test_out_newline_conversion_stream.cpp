@@ -17,9 +17,9 @@ void testOutNewlineConversionStream()
 
     const struct {
         const char* outNewline;
-        const char* expected;
+        std::string expected;
     } tests[]{
-        {nullptr, " " DPSO_OS_NEWLINE " \r \r" DPSO_OS_NEWLINE " "},
+        {nullptr, test::utils::lfToNativeNewline(input)},
         {"", "  \r \r "},
         {"\n", input},
         {"abc", " abc \r \rabc "},

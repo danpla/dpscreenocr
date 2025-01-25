@@ -21,13 +21,6 @@ class FileNotFoundError : public Error {
 };
 
 
-#ifdef _WIN32
-    #define DPSO_OS_NEWLINE "\r\n"
-#else
-    #define DPSO_OS_NEWLINE "\n"
-#endif
-
-
 // Return the description of the given errno number. This is similar
 // to std::strerror(), except that it's locale-independent and
 // thread-safe, if supported by the platform. If these features are
@@ -39,6 +32,9 @@ std::string getErrnoMsg(int errnum);
 // Throws the given errno number as os::Error.
 [[noreturn]]
 void throwErrno(const char* description, int errnum);
+
+
+extern const char* const newline;
 
 
 // Directory separators for the current platform. The primary one is

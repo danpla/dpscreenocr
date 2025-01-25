@@ -12,7 +12,7 @@ namespace dpso {
 OutNewlineConversionStream::OutNewlineConversionStream(
         Stream& base, const char* newline)
     : base{base}
-    , newline{newline ? newline : DPSO_OS_NEWLINE}
+    , newline{newline ? newline : os::newline}
 {
 }
 

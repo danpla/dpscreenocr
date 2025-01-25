@@ -146,6 +146,7 @@ std::string getErrnoMsg(int errnum)
 }
 
 
+const char* const newline = "\r\n";
 const char* const dirSeparators = "\\/";
 
 

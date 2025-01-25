@@ -204,7 +204,7 @@ static void writeKeyValue(
     if (!kv.value.empty() && kv.value.back() == ' ')
         write(stream, '\\');
 
-    write(stream, DPSO_OS_NEWLINE);
+    write(stream, os::newline);
 }
 
 

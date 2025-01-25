@@ -103,7 +103,7 @@ std::string lfToNativeNewline(const char* str)
 
     for (const auto* s = str; *s; ++s)
         if (*s == '\n')
-            result += DPSO_OS_NEWLINE;
+            result += dpso::os::newline;
         else
             result += *s;
 
