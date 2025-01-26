@@ -1,4 +1,3 @@
-
 #include "ocr/lang_code_validator.h"
 
 #include "dpso_utils/str.h"

@@ -1,4 +1,3 @@
-
 #include "lang_manager/lang_fetch_progress_dialog.h"
 
 #include <QDialog>

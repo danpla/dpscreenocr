@@ -1,4 +1,3 @@
-
 #include "unix/lib_pulse.h"
 
 #include <dlfcn.h>

@@ -1,4 +1,3 @@
-
 /* This file was automatically generated. Do not edit. */
 
 #include "cfg_default_values.h"

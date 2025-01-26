@@ -1,4 +1,3 @@
-
 #include "init_intl.h"
 
 // On Windows, libintl patches setlocale with a macro that expands to

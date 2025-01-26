@@ -1,4 +1,3 @@
-
 # Get the list of languages from po/LINGUAS.
 function(get_linguas LANGUAGES)
     file(

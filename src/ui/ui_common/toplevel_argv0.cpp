@@ -1,4 +1,3 @@
-
 #include "toplevel_argv0.h"
 
 #include <cstdlib>

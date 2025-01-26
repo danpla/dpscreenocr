@@ -1,4 +1,3 @@
-
 #include "action_chooser.h"
 
 #include <QCheckBox>

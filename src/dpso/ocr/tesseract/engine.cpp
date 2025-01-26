@@ -1,4 +1,3 @@
-
 #include "ocr/tesseract/engine.h"
 
 #include <cstring>

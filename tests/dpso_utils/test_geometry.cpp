@@ -1,4 +1,3 @@
-
 #include "dpso_utils/geometry.h"
 #include "dpso_utils/str.h"
 

@@ -1,4 +1,3 @@
-
 #include "hotkey_editor.h"
 
 #include <QCheckBox>

@@ -1,4 +1,3 @@
-
 # We want the default configuration on Unix-like systems to be
 # suitable for building the app for system package managers. In this
 # case, the package manager will check for updates, and our internal

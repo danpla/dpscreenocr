@@ -1,4 +1,3 @@
-
 #include "version_cmp.h"
 
 #include <cassert>

@@ -1,4 +1,3 @@
-
 find_program(MSGFMT_EXE msgfmt)
 if(NOT MSGFMT_EXE)
     message(SEND_ERROR "msgfmt not found")

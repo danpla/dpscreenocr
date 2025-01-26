@@ -1,4 +1,3 @@
-
 #include "stream/utils.h"
 
 #include <cstring>

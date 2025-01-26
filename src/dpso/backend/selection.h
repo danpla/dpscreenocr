@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "dpso_utils/geometry.h"

@@ -1,4 +1,3 @@
-
 #include "stream/out_newline_conversion_stream.h"
 
 #include <algorithm>

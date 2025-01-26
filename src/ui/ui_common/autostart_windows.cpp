@@ -1,4 +1,3 @@
-
 #include "autostart.h"
 
 #include <stdexcept>
@@ -246,4 +245,3 @@ bool uiAutostartSetIsEnabled(
         return false;
     }
 }
-

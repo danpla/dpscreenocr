@@ -1,4 +1,3 @@
-
 #include "update_checker_platform.h"
 
 #include <gnu/libc-version.h>
@@ -36,4 +35,3 @@ std::vector<UnmetRequirement> processRequirements(
 
 
 }
-

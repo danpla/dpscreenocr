@@ -1,4 +1,3 @@
-
 #include "user_dirs.h"
 
 #include <cassert>

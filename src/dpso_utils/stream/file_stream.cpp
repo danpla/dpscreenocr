@@ -1,4 +1,3 @@
-
 #include "stream/file_stream.h"
 
 #include <cassert>

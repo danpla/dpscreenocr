@@ -1,4 +1,3 @@
-
 // This file contains platform-specific parts of the update checker.
 // The corresponding CPP is also a good place for the definition of
 // uiUpdateCheckerGetPlatformId().

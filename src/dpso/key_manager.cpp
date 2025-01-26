@@ -1,4 +1,3 @@
-
 #include "key_manager.h"
 
 #include "backend/backend.h"

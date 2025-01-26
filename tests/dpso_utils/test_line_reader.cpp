@@ -1,4 +1,3 @@
-
 #include <optional>
 #include <vector>
 

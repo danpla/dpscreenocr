@@ -1,4 +1,3 @@
-
 # dpScreenOCR
 
 dpScreenOCR is a program to recognize text on the screen.

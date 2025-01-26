@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "error_get.h"

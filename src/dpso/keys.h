@@ -1,4 +1,3 @@
-
 #pragma once
 
 
@@ -247,4 +246,3 @@ inline bool operator!=(const DpsoHotkey& a, const DpsoHotkey& b)
 
 
 #endif
-

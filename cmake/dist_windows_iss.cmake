@@ -1,4 +1,3 @@
-
 # Generate inno_setup_config.isi.
 function(gen_inno_setup_config)
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)

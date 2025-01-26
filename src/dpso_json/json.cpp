@@ -1,4 +1,3 @@
-
 #include "json.h"
 
 #include <cassert>

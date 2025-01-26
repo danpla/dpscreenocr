@@ -1,4 +1,3 @@
-
 #include "history.h"
 
 #include <QDir>

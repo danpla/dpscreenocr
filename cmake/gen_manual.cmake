@@ -1,4 +1,3 @@
-
 find_program(PANDOC_EXE pandoc)
 if(NOT PANDOC_EXE)
     message(SEND_ERROR "pandoc not found")

@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "startup_args.h"

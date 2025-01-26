@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "backend/backend_error.h"

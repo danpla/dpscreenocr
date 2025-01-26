@@ -1,4 +1,3 @@
-
 #include "sound.h"
 
 #include <algorithm>

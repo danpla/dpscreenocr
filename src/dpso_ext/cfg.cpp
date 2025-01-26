@@ -1,4 +1,3 @@
-
 #include "cfg.h"
 
 #include <algorithm>

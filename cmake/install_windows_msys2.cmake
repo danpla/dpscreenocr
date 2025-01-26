@@ -1,4 +1,3 @@
-
 # Instructions specific to MSYS2/MinGW.
 
 configure_file(

@@ -1,4 +1,3 @@
-
 #include "stream/string_stream.h"
 
 #include <algorithm>

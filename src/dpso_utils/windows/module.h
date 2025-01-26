@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <memory>
@@ -30,4 +29,3 @@ using ModuleUPtr = std::unique_ptr<HMODULE, LibraryFreer>;
 
 
 }
-

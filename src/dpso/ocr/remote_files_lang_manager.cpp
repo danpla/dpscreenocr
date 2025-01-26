@@ -1,4 +1,3 @@
-
 #include "ocr/remote_files_lang_manager.h"
 
 #include <cassert>

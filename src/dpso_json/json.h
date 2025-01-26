@@ -1,4 +1,3 @@
-
 // This is not a JSON library per se, but rather a thin wrapper for
 // Jansson. Its main purpose is to provide proper exception-based
 // error handling. As a bonus, we also have stricter typing and

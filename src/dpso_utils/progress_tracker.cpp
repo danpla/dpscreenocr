@@ -1,4 +1,3 @@
-
 #include "progress_tracker.h"
 
 #include <cassert>

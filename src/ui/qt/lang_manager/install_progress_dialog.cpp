@@ -1,4 +1,3 @@
-
 #include "lang_manager/install_progress_dialog.h"
 
 #include <QDialog>
@@ -139,7 +138,6 @@ bool InstallProgressDialog::confirmCancellation()
             _("Continue updating"),
             _("Cancel update"));
 }
-
 
 
 void InstallProgressDialog::reject()

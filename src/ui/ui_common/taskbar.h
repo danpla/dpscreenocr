@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "taskbar_config.h"

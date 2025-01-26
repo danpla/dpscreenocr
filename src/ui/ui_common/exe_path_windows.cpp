@@ -1,4 +1,3 @@
-
 #include "exe_path.h"
 
 #include <string>

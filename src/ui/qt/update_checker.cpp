@@ -1,4 +1,3 @@
-
 #include "update_checker.h"
 
 #include <QApplication>

@@ -1,4 +1,3 @@
-
 #include "ocr/tesseract/recognizer.h"
 
 #include <cassert>

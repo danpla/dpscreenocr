@@ -1,4 +1,3 @@
-
 /**
  * \file
  * Main header + library initialization, shutdown, and update

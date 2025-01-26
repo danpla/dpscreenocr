@@ -1,4 +1,3 @@
-
 #include "lang_browser.h"
 
 #include <QHeaderView>

@@ -1,4 +1,3 @@
-
 #include "backend/windows/screenshot.h"
 
 #include <cassert>

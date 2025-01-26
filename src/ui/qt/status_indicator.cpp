@@ -1,4 +1,3 @@
-
 #include "status_indicator.h"
 
 #include <QPainter>

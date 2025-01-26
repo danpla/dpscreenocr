@@ -1,4 +1,3 @@
-
 // This file is used when the language manager is disabled at compile
 // time.
 

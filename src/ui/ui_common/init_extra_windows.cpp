@@ -1,4 +1,3 @@
-
 #include "init_extra.h"
 
 #define WIN32_LEAN_AND_MEAN

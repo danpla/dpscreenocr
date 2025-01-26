@@ -1,4 +1,3 @@
-
 #include "ocr_engine.h"
 
 #include "ocr/engine.h"

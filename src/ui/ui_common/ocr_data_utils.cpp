@@ -1,4 +1,3 @@
-
 #include "ocr_data_utils.h"
 
 #include <cassert>

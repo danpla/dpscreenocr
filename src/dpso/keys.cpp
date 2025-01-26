@@ -1,4 +1,3 @@
-
 #include "keys.h"
 
 #include <cstddef>
@@ -186,7 +185,6 @@ const auto nativeKeyPlatformId =
     KeyPlatformId::generic
     #endif
 ;
-
 
 
 struct ModNameInfo {

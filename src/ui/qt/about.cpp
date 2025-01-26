@@ -1,4 +1,3 @@
-
 #include "about.h"
 
 #include <initializer_list>

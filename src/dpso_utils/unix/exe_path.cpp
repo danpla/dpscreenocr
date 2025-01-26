@@ -1,4 +1,3 @@
-
 #include "unix/exe_path.h"
 
 #include <errno.h>

@@ -1,4 +1,3 @@
-
 #include "lang_manager/lang_list_sort_filter_proxy.h"
 
 #include "dpso/dpso.h"

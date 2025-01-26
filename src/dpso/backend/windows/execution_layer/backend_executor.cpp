@@ -1,4 +1,3 @@
-
 #include "backend/windows/execution_layer/backend_executor.h"
 
 #include "backend/screenshot.h"

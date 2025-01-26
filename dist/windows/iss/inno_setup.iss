@@ -1,4 +1,3 @@
-
 #include "inno_setup_config.isi"
 
 ; ExecAndLogOutput() was added in 6.3.

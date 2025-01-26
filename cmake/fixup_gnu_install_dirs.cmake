@@ -1,4 +1,3 @@
-
 # By default, CMAKE_INSTALL_DOCDIR uses PROJECT_NAME, which is in
 # title case. We don't depend on PROJECT_NAME and use APP_FILE_NAME
 # instead.

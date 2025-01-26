@@ -1,4 +1,3 @@
-
 #include <string>
 
 #include "dpso_utils/sha256_file.h"

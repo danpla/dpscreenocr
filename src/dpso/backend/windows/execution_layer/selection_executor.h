@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "backend/selection.h"

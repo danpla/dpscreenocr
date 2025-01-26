@@ -1,4 +1,3 @@
-
 #include "main_window.h"
 
 #include <QAction>

@@ -1,4 +1,3 @@
-
 #include "autostart_default_args.h"
 
 #include <iterator>

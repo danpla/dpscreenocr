@@ -1,4 +1,3 @@
-
 #include "cmdline_cmd_autostart.h"
 
 #include <cstdio>

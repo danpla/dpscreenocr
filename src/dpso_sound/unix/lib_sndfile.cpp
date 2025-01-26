@@ -1,4 +1,3 @@
-
 #include "unix/lib_sndfile.h"
 
 #include <dlfcn.h>

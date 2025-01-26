@@ -1,4 +1,3 @@
-
 set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 5 or 6")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 5 6)
 

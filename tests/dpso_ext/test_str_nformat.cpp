@@ -1,4 +1,3 @@
-
 #include <cstring>
 #include <initializer_list>
 #include <string>

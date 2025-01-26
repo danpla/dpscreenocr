@@ -1,4 +1,3 @@
-
 #include "update_checker_platform.h"
 
 #include "update_checker.h"
@@ -22,4 +21,3 @@ std::vector<UnmetRequirement> processRequirements(
 
 
 }
-

@@ -1,4 +1,3 @@
-
 #include "backend/x11/key_manager.h"
 
 #include <iterator>

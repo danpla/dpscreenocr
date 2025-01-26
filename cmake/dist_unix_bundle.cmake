@@ -1,4 +1,3 @@
-
 set(BUNDLE_BUILD_SCRIPT "${CMAKE_BINARY_DIR}/build_bundle.cmake")
 
 configure_file(

@@ -1,4 +1,3 @@
-
 #include "ocr/tesseract/utils.h"
 
 #include <cassert>

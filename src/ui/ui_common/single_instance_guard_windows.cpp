@@ -1,4 +1,3 @@
-
 #include "single_instance_guard.h"
 
 #include <string>
@@ -73,4 +72,3 @@ bool uiSingleInstanceGuardIsPrimary(
 {
     return guard && guard->mutex;
 }
-

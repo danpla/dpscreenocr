@@ -1,4 +1,3 @@
-
 #include "ocr_lang_manager.h"
 
 #include <algorithm>

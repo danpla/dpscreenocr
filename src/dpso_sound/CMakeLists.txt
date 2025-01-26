@@ -47,4 +47,3 @@ if(NOT TARGET dpso_utils)
 endif()
 
 target_include_directories(dpso_sound PUBLIC .. PRIVATE .)
-

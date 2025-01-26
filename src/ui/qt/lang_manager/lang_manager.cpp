@@ -1,4 +1,3 @@
-
 #include "lang_manager/lang_manager.h"
 
 #include <QDialog>

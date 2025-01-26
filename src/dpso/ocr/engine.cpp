@@ -1,4 +1,3 @@
-
 #include "ocr/engine.h"
 
 #include <iterator>

@@ -1,4 +1,3 @@
-
 #include "backend/windows/key_manager.h"
 
 #include <cassert>

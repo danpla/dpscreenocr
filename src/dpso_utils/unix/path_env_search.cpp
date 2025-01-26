@@ -1,4 +1,3 @@
-
 #include "unix/path_env_search.h"
 
 #include <stdlib.h>

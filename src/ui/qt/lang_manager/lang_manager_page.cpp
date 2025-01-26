@@ -1,4 +1,3 @@
-
 #include "lang_manager/lang_manager_page.h"
 
 #include <QHeaderView>

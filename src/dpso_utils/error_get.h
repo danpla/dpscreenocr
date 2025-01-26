@@ -1,4 +1,3 @@
-
 /**
  * \file
  * Error message handling for C APIs.

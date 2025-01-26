@@ -1,4 +1,3 @@
-
 #include "ocr/tesseract/lang_utils.h"
 
 #include <algorithm>

@@ -1,4 +1,3 @@
-
 #include "update_checker.h"
 
 #include <cassert>
@@ -155,7 +154,6 @@ struct UiUpdateChecker {
     std::vector<UiUpdateCheckerUnmetRequirement>
         publicUnmentRequirements{};
 };
-
 
 
 bool uiUpdateCheckerIsAvailable(void)

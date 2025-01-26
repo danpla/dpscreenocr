@@ -1,4 +1,3 @@
-
 if(MINGW)
     include(install_windows_msys2)
 endif()

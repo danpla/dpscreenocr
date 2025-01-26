@@ -1,4 +1,3 @@
-
 # Copy icons from "data/icons/sizes" to DST_DIR.
 #
 # build_icons(

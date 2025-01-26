@@ -1,4 +1,3 @@
-
 [dpScreenOCR website]: https://danpla.github.io/dpscreenocr
 
 

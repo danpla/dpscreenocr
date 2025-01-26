@@ -1,4 +1,3 @@
-
 #include "sha256_file.h"
 
 #include <cstring>

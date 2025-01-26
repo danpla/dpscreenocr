@@ -1,4 +1,3 @@
-
 #include "line_reader.h"
 
 #include <cassert>

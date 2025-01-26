@@ -1,4 +1,3 @@
-
 #include "ocr_data_lock.h"
 
 #include <cassert>

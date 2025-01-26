@@ -1,4 +1,3 @@
-
 #include <cmath>
 
 #include "dpso_utils/progress_tracker.h"

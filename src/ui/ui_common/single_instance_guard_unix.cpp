@@ -1,4 +1,3 @@
-
 #include "single_instance_guard.h"
 
 #include <errno.h>

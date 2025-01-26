@@ -1,4 +1,3 @@
-
 #include "str_nformat.h"
 
 #include <cstddef>

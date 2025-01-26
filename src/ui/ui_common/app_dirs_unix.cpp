@@ -1,4 +1,3 @@
-
 // There's no universal way to find the location of the executable on
 // Unix-like systems. Most modern systems provide their own ways for
 // that, like procfs on Linux, KERN_PROC_PATHNAME on FreeBSD, etc.

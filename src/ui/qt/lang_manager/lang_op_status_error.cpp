@@ -1,4 +1,3 @@
-
 #include "lang_manager/lang_op_status_error.h"
 
 #include <QString>

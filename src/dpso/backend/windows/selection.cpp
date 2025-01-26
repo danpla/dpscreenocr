@@ -1,4 +1,3 @@
-
 #include "backend/windows/selection.h"
 
 #include "dpso_utils/windows/error.h"

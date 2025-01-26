@@ -1,4 +1,3 @@
-
 #include "img.h"
 
 #include <algorithm>

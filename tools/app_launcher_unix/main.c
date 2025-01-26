@@ -1,4 +1,3 @@
-
 #ifndef _GNU_SOURCE
     // Required for dlinfo() and some utilities like vasprintf().
     #define _GNU_SOURCE

@@ -1,4 +1,3 @@
-
 #include "autostart.h"
 
 #include <algorithm>

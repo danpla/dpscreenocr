@@ -1,4 +1,3 @@
-
 #include "geometry_c.h"
 
 

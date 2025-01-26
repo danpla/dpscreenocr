@@ -1,4 +1,3 @@
-
 #include "selection.h"
 
 #include "backend/backend.h"

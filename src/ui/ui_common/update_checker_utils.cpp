@@ -1,4 +1,3 @@
-
 #include "update_checker_utils.h"
 
 #include <cassert>

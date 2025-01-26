@@ -1,4 +1,3 @@
-
 #include "dpso.h"
 
 #include <cstddef>

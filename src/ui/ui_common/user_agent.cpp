@@ -1,4 +1,3 @@
-
 #include "user_agent.h"
 
 #include <cstring>

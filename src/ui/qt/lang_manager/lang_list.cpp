@@ -1,4 +1,3 @@
-
 #include "lang_manager/lang_list.h"
 
 #include "dpso_intl/dpso_intl.h"

@@ -1,4 +1,3 @@
-
 #include "windows/cmdline.h"
 
 #include <cstring>

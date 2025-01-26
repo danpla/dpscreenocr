@@ -1,4 +1,3 @@
-
 #include "ocr/tesseract/lang_manager.h"
 
 #include "ocr/lang_manager_error.h"

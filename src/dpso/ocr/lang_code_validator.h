@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "ocr/error.h"

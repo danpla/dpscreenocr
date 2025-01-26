@@ -1,4 +1,3 @@
-
 #include "bindtextdomain_utf8.h"
 
 #include <libintl.h>
@@ -39,7 +38,6 @@ void bindtextdomainUtf8(const char* domainName, const char* dirName)
 
     wbindtextdomain(domainName, utf8ToUtf16(dirName).c_str());
 }
-
 
 
 #else  // _WIN32

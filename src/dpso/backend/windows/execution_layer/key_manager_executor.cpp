@@ -1,4 +1,3 @@
-
 #include "backend/windows/execution_layer/key_manager_executor.h"
 
 #include "backend/windows/execution_layer/action_executor.h"

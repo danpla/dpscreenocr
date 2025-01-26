@@ -1,4 +1,3 @@
-
 #include "backend/x11/selection.h"
 
 #include <charconv>

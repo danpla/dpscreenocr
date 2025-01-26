@@ -1,4 +1,3 @@
-
 # We don't use CMake's configure_file() since NEWLINE_STYLE option
 # cannot be used together with COPYONLY that disables variable
 # substitution.

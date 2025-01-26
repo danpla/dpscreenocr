@@ -1,4 +1,3 @@
-
 #include <cstring>
 #include <iterator>
 #include <vector>

@@ -1,4 +1,3 @@
-
 include(get_linguas)
 
 find_program(MSGFMT_EXE msgfmt)

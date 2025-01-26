@@ -1,4 +1,3 @@
-
 #include "ocr.h"
 
 #include <algorithm>

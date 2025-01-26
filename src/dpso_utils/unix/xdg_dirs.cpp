@@ -1,4 +1,3 @@
-
 #include "unix/xdg_dirs.h"
 
 #include <cassert>

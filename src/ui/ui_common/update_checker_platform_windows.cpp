@@ -1,4 +1,3 @@
-
 #include "update_checker_platform.h"
 
 #include <charconv>
@@ -167,4 +166,3 @@ std::vector<UnmetRequirement> processRequirements(
 
 
 }
-

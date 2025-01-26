@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "ocr/error.h"
@@ -13,4 +12,3 @@ class RecognizerError : public Error {
 
 
 }
-

@@ -1,4 +1,3 @@
-
 #include "dpso_utils/windows/utf.h"
 
 #include "flow.h"
