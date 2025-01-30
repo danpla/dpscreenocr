@@ -918,10 +918,16 @@ void MainWindow::updateStatus()
         if (progress.totalJobs == 0)
             // If the recognition is complete, but the results have
             // not yet been processed, leave the status as it is,
-            // effectively preserving the last progress status.
+            // which effectively preserves the last progress status
+            // (unless the recognition finishes extremely quickly).
+            // There's no point in bothering with a "Processing
+            // actions..." status text: it will disappear almost
+            // immediately, since the next checkResults() will process
+            // all results.
             return;
 
-        if (dpsoOcrProgressEqual(&progress, &lastProgress))
+        if (lastStatus == Status::busy
+                && dpsoOcrProgressEqual(&progress, &lastProgress))
             return;
 
         lastProgress = progress;
