@@ -43,7 +43,7 @@ using dpso::str::toStr;
 namespace ui::qt {
 
 
-enum : DpsoHotkeyAction {
+enum {
     hotkeyActionToggleSelection,
     hotkeyActionCancelSelection
 };
