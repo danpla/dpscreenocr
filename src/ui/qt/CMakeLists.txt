@@ -10,7 +10,6 @@ add_executable(
     hotkey_editor.cpp
     lang_browser.cpp
     lang_manager/install_progress_dialog.cpp
-    lang_manager/lang_fetch_progress_dialog.cpp
     lang_manager/lang_list.cpp
     lang_manager/lang_list_sort_filter_proxy.cpp
     lang_manager/lang_manager.cpp

@@ -14,7 +14,6 @@
 #include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
 
-#include "lang_manager/lang_fetch_progress_dialog.h"
 #include "lang_manager/lang_list.h"
 #include "lang_manager/lang_manager_page.h"
 #include "lang_manager/lang_op_status_error.h"
@@ -39,7 +38,17 @@ static void fetchExternalLangs(
         return;
     }
 
-    runFetchLangsProgressDialog(parent, langManager);
+    showProgressDialog(
+        parent,
+        _("Fetching the language list\342\200\246"),
+        [&]()
+        {
+            DpsoOcrLangOpStatus status;
+            dpsoOcrLangManagerGetFetchExternalLangsStatus(
+                langManager, &status);
+
+            return status.code == DpsoOcrLangOpStatusCodeProgress;
+        });
 
     DpsoOcrLangOpStatus status;
     dpsoOcrLangManagerGetFetchExternalLangsStatus(

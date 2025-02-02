@@ -1,15 +1,19 @@
 #include "utils.h"
 
 #include <QApplication>
+#include <QDialog>
 #include <QDir>
 #include <QFileInfo>
 #include <QFont>
+#include <QLabel>
 #include <QLocale>
 #include <QMargins>
 #include <QMessageBox>
+#include <QProgressBar>
 #include <QPushButton>
-#include <QtGlobal>
 #include <QStyle>
+#include <QVBoxLayout>
+#include <QtGlobal>
 
 #include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"
@@ -98,6 +102,67 @@ QIcon getThemeIcon(const QString &name)
 }
 
 
+namespace {
+
+
+class IndeterminateProgressDialog : public QDialog {
+    Q_OBJECT
+public:
+    IndeterminateProgressDialog(
+            QWidget* parent,
+            const QString& text,
+            const std::function<bool()>& callback)
+        : QDialog{
+            parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint}
+        , callback{callback}
+    {
+        setWindowTitle(uiAppName);
+
+        auto* progressBar = new QProgressBar();
+        progressBar->setRange(0, 0);  // Use the "indeterminate" mode.
+        progressBar->setTextVisible(false);
+
+        auto* layout = new QVBoxLayout(this);
+        layout->addWidget(new QLabel(text));
+        layout->addWidget(progressBar);
+        layout->setSizeConstraint(QLayout::SetFixedSize);
+
+        startTimer(1000 / 30);
+    }
+
+    void reject() override
+    {
+        // Do nothing to prevent the dialog from closing.
+    }
+protected:
+    void timerEvent(QTimerEvent* event) override
+    {
+        (void)event;
+
+        if (!callback || !callback())
+            accept();
+    }
+private:
+    const std::function<bool()>& callback;
+};
+
+
+}
+
+
+void showProgressDialog(
+    QWidget* parent,
+    const QString& text,
+    const std::function<bool()>& callback)
+{
+    if (!callback)
+        return;
+
+    IndeterminateProgressDialog dialog(parent, text, callback);
+    dialog.exec();
+}
+
+
 bool confirmDestructiveAction(
     QWidget* parent,
     const QString& question,
@@ -157,3 +222,6 @@ void setMonospace(QFont& font)
 
 
 }
+
+
+#include "utils.moc"

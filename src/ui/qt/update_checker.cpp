@@ -2,15 +2,11 @@
 
 #include <QApplication>
 #include <QDesktopServices>
-#include <QDialog>
-#include <QLabel>
 #include <QMessageBox>
-#include <QProgressBar>
 #include <QPushButton>
 #include <QString>
 #include <QStringList>
 #include <QUrl>
-#include <QVBoxLayout>
 
 #include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
@@ -24,54 +20,6 @@
 
 namespace ui::qt {
 namespace {
-
-
-class UpdateCheckProgressDialog : public QDialog {
-    Q_OBJECT
-public:
-    UpdateCheckProgressDialog(
-        QWidget* parent, const UiUpdateChecker* updateChecker);
-
-    void reject() override
-    {
-        // Do nothing to prevent the dialog from closing.
-    }
-protected:
-    void timerEvent(QTimerEvent* event) override;
-private:
-    const UiUpdateChecker* updateChecker;
-};
-
-
-UpdateCheckProgressDialog::UpdateCheckProgressDialog(
-        QWidget* parent, const UiUpdateChecker* updateChecker)
-    : QDialog{parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint}
-    , updateChecker{updateChecker}
-{
-    setWindowTitle(uiAppName);
-
-    auto* label = new QLabel(_("Checking for updates\342\200\246"));
-
-    auto* progressBar = new QProgressBar();
-    progressBar->setRange(0, 0);  // Use the "indeterminate" mode.
-    progressBar->setTextVisible(false);
-
-    auto* layout = new QVBoxLayout(this);
-    layout->setSizeConstraint(QLayout::SetFixedSize);
-    layout->addWidget(label);
-    layout->addWidget(progressBar);
-
-    startTimer(1000 / 30);
-}
-
-
-void UpdateCheckProgressDialog::timerEvent(QTimerEvent* event)
-{
-    (void)event;
-
-    if (!uiUpdateCheckerIsCheckInProgress(updateChecker))
-        accept();
-}
 
 
 UpdateCheckerUPtr createUpdateChecker()
@@ -328,8 +276,13 @@ void UpdateChecker::checkUpdates()
 
     uiUpdateCheckerStartCheck(checker.get());
 
-    UpdateCheckProgressDialog dialog(parentWidget, checker.get());
-    dialog.exec();
+    showProgressDialog(
+        parentWidget,
+        _("Checking for updates\342\200\246"),
+        [&]()
+        {
+            return uiUpdateCheckerIsCheckInProgress(checker.get());
+        });
 
     UiUpdateCheckerUpdateInfo updateInfo;
     const auto status = uiUpdateCheckerGetUpdateInfo(
@@ -389,6 +342,3 @@ void UpdateChecker::stopAutoCheck()
 
 
 }
-
-
-#include "update_checker.moc"

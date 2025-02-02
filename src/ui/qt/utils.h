@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include <QIcon>
 
 
@@ -27,6 +29,14 @@ QIcon getIcon(const QString &name);
 // The function is the same as getIcon(), except that on Unix-like
 // systems it first tries to load the icon from the current theme.
 QIcon getThemeIcon(const QString &name);
+
+
+// Display a progress dialog that will be closed when the callback
+// returns false.
+void showProgressDialog(
+    QWidget* parent,
+    const QString& text,
+    const std::function<bool()>& callback);
 
 
 bool confirmDestructiveAction(
