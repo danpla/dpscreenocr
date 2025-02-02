@@ -8,15 +8,9 @@
 namespace dpso {
 
 
-VersionCmp::VersionCmp()
-    : VersionCmp{""}
+VersionCmp::VersionCmp(const char* str)
 {
-}
-
-
-VersionCmp::VersionCmp(const char* versionStr)
-{
-    const auto* s = versionStr;
+    const auto* s = str;
     const auto* sEnd = s + std::strlen(s);
 
     while (s < sEnd) {
@@ -25,7 +19,7 @@ VersionCmp::VersionCmp(const char* versionStr)
         unsigned num;
         const auto [end, ec] = std::from_chars(s, sEnd, num);
         if (ec != std::errc{}) {
-            if (s > versionStr) {
+            if (s > str) {
                 // Make the preceding period a part of the extra
                 // string.
                 --s;

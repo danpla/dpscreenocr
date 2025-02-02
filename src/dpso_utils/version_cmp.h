@@ -18,8 +18,8 @@ namespace dpso {
 //   1.0-rc1 < 1.0-rc2 < 1.0
 class VersionCmp {
 public:
-    VersionCmp();
-    explicit VersionCmp(const char* versionStr);
+    VersionCmp() = default;
+    explicit VersionCmp(const char* str);
 
     bool operator<(const VersionCmp& other) const;
 private:
