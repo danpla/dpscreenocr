@@ -10,7 +10,7 @@ if(UNIX AND NOT APPLE)
         PRIVATE
         unix/lib_pulse.cpp
         unix/lib_sndfile.cpp
-        unix/sound.cpp)
+        unix/sound_pulse.cpp)
 
     find_package(Threads REQUIRED)
 
