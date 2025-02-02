@@ -193,17 +193,16 @@ ConvertedStr get(char c)
 std::string format(
     const char* fmt, std::initializer_list<const char*> args)
 {
-    std::size_t nextIdx{};
+    auto iter = args.begin();
 
     return format(
         fmt,
         [&](const char* /*name*/, std::size_t nameLen) -> const char*
         {
-            if (nameLen != 0)
-                return {};
+            if (nameLen == 0 && iter < args.end())
+                return *iter++;
 
-            const auto idx = nextIdx++;
-            return idx < args.size() ? args.begin()[idx] : nullptr;
+            return {};
         });
 }
 
