@@ -29,24 +29,19 @@ const char* toStr(XdgDir dir)
 static std::string getDir(
     const char* xdgHomeEnv, const char* homeFallbackDir)
 {
-    std::string result;
-
     if (const auto* xdgHome = std::getenv(xdgHomeEnv);
             // According to the specification, a XDG_*_HOME variable:
             // * Should be treated as unset if empty
             // * Invalid if contains a relative path
             xdgHome && *xdgHome == '/')
-        result += xdgHome;
-    else if (const auto* home = std::getenv("HOME")) {
-        result += home;
-        result += '/';
-        result += homeFallbackDir;
-    } else
-        throw os::Error{str::format(
-            "Neither {} nor HOME environment variable is set",
-            xdgHomeEnv)};
+        return xdgHome;
 
-    return result;
+    if (const auto* home = std::getenv("HOME"))
+        return std::string{home} + '/' + homeFallbackDir;
+
+    throw os::Error{str::format(
+        "Neither {} nor HOME environment variable is set",
+        xdgHomeEnv)};
 }
 
 
