@@ -4,5 +4,6 @@ Name=dpScreenOCR
 Exec=dpscreenocr
 Icon=dpscreenocr
 Categories=Graphics;OCR;
+SingleMainWindow=true
 Terminal=false
 Comment=Program to recognize text on screen
