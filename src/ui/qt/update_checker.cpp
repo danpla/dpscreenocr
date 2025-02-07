@@ -22,16 +22,6 @@ namespace ui::qt {
 namespace {
 
 
-UpdateCheckerUPtr createUpdateChecker()
-{
-    return UpdateCheckerUPtr{
-        uiUpdateCheckerCreate(
-            uiAppVersion,
-            uiGetUserAgent(),
-            uiUpdateCheckerGetInfoFileUrl())};
-}
-
-
 std::optional<std::tm> getCurLocalTime()
 {
     const auto time = std::time(nullptr);
@@ -264,7 +254,7 @@ void UpdateChecker::checkUpdates()
 {
     stopAutoCheck();
 
-    auto checker = createUpdateChecker();
+    UpdateCheckerUPtr checker{uiUpdateCheckerCreateDefault()};
     if (!checker) {
         QMessageBox::critical(
             parentWidget,
@@ -318,9 +308,10 @@ void UpdateChecker::handleAutoCheck()
             return;
     }
 
-    autoChecker = createUpdateChecker();
+    autoChecker.reset(uiUpdateCheckerCreateDefault());
     if (!autoChecker) {
-        qWarning("createUpdateChecker(): %s", dpsoGetError());
+        qWarning(
+            "uiUpdateCheckerCreateDefault(): %s", dpsoGetError());
         return;
     }
 

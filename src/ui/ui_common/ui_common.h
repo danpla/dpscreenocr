@@ -13,5 +13,5 @@
 #include "sound.h"
 #include "taskbar.h"
 #include "update_checker.h"
-#include "update_checker_utils.h"
+#include "update_checker_default.h"
 #include "user_agent.h"

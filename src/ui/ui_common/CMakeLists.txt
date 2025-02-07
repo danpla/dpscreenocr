@@ -25,7 +25,7 @@ add_library(
     ocr_data_utils.cpp
     sound.cpp
     toplevel_argv0.cpp
-    update_checker_utils.cpp
+    update_checker_default.cpp
     user_agent.cpp)
 
 # Files for configure_file()
