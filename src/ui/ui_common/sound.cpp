@@ -1,6 +1,5 @@
 #include "sound.h"
 
-#include <cassert>
 #include <string>
 
 #include "dpso_sound/sound.h"
