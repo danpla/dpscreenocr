@@ -7,7 +7,7 @@
 #include "dpso_utils/error_set.h"
 
 #include "autostart.h"
-#include "autostart_default_args.h"
+#include "autostart_default.h"
 #include "exe_path.h"
 
 
@@ -29,16 +29,13 @@ static bool setIsEnabled(UiAutostart* autostart, bool isEnabled)
 
 bool cmdLineCmdAutostart(const char* argv0, const char* action)
 {
-    // uiAutostartGetDefaultArgs() uses the exe path.
+    // uiAutostartCreateDefault() uses the exe path.
     if (!ui::initExePath(argv0)) {
         dpso::setError("ui::initExePath(): {}", dpsoGetError());
         return false;
     }
 
-    UiAutostartArgs autostartArgs;
-    uiAutostartGetDefaultArgs(&autostartArgs);
-
-    AutostartUPtr autostart{uiAutostartCreate(&autostartArgs)};
+    AutostartUPtr autostart{uiAutostartCreateDefault()};
     if (!autostart) {
         dpso::setError(
             "Can't create autostart handler: {}",

@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 
-void uiAutostartGetDefaultArgs(UiAutostartArgs* autostartArgs);
+UiAutostart* uiAutostartCreateDefault(void);
 
 
 #ifdef __cplusplus

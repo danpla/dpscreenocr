@@ -112,9 +112,7 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
 
     dpsoKeyManagerSetIsEnabled(true);
 
-    UiAutostartArgs autostartArgs;
-    uiAutostartGetDefaultArgs(&autostartArgs);
-    autostart.reset(uiAutostartCreate(&autostartArgs));
+    autostart.reset(uiAutostartCreateDefault());
     if (!autostart)
         throw Error(
             std::string("Can't create autostart handler: ")

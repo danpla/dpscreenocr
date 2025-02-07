@@ -14,7 +14,7 @@ option(
 add_library(
     ui_common STATIC
 
-    autostart_default_args.cpp
+    autostart_default.cpp
     cfg_default_values.cpp
     cfg_keys.cpp
     cmdline_cmd_autostart.cpp

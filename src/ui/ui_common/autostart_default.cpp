@@ -1,4 +1,4 @@
-#include "autostart_default_args.h"
+#include "autostart_default.h"
 
 #include <iterator>
 
@@ -8,14 +8,13 @@
 #include "file_names.h"
 
 
-void uiAutostartGetDefaultArgs(UiAutostartArgs* autostartArgs)
+UiAutostart* uiAutostartCreateDefault(void)
 {
-    if (!autostartArgs)
-        return;
-
-    static const char* args[]{
+    const char* args[]{
         ui::getToplevelExePath().c_str(), ui::cmdLineOptHide};
 
-    *autostartArgs = {
+    const UiAutostartArgs autostartArgs{
         uiAppName, uiAppFileName, args, std::size(args)};
+
+    return uiAutostartCreate(&autostartArgs);
 }
