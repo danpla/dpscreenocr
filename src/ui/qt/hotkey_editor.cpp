@@ -10,15 +10,17 @@ namespace ui::qt {
 
 
 HotkeyEditor::HotkeyEditor(
+        DpsoKeyManager* keyManager,
         DpsoHotkeyAction action,
         bool hideNoKey)
-    : action{action}
+    : keyManager{keyManager}
+    , action{action}
 {
     auto* layout = new QHBoxLayout(this);
     layout->setContentsMargins({});
 
     DpsoHotkey hotkey;
-    dpsoKeyManagerFindActionHotkey(action, &hotkey);
+    dpsoKeyManagerFindActionHotkey(keyManager, action, &hotkey);
 
     const auto keySelected = hotkey.key != dpsoNoKey;
 
@@ -64,7 +66,7 @@ HotkeyEditor::HotkeyEditor(
 void HotkeyEditor::assignHotkey(bool emitChanged)
 {
     DpsoHotkey hotkey;
-    dpsoKeyManagerFindActionHotkey(action, &hotkey);
+    dpsoKeyManagerFindActionHotkey(keyManager, action, &hotkey);
 
     auto hotkeyChanged = false;
 
@@ -103,8 +105,8 @@ void HotkeyEditor::bind()
         if (modChecks[i]->isChecked())
             hotkey.mods |= dpsoGetKeyModAt(i);
 
-    dpsoKeyManagerUnbindAction(action);
-    dpsoKeyManagerBindHotkey(&hotkey, action);
+    dpsoKeyManagerUnbindAction(keyManager, action);
+    dpsoKeyManagerBindHotkey(keyManager, &hotkey, action);
 }
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dpso/dpso.h"
+#include "dpso_ocr/dpso_ocr.h"
 
 #include "lang_manager/install_mode.h"
 

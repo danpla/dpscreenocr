@@ -5,12 +5,12 @@ add_executable(
     main.cpp
     utils.cpp
 
-    dpso/test_keys.cpp
-    dpso/test_tesseract_utils.cpp
     dpso_ext/test_cfg.cpp
     dpso_ext/test_history.cpp
     dpso_ext/test_history_export.cpp
     dpso_ext/test_str_nformat.cpp
+    dpso_ocr/test_tesseract_utils.cpp
+    dpso_sys/test_keys.cpp
     dpso_utils/stream/test_out_newline_conversion_stream.cpp
     dpso_utils/stream/test_string_stream.cpp
     dpso_utils/test_geometry.cpp
@@ -27,7 +27,7 @@ if(WIN32)
     target_sources(
         tests
         PRIVATE
-        dpso/test_windows_action_executor.cpp
+        dpso_sys/test_windows_action_executor.cpp
         dpso_utils/windows/test_cmdline.cpp
         dpso_utils/windows/test_utf.cpp)
 endif()
@@ -44,13 +44,19 @@ endif()
 
 target_include_directories(tests PRIVATE .)
 
-if(NOT TARGET dpso)
-    add_subdirectory(../src/dpso "${CMAKE_BINARY_DIR}/src/dpso")
-endif()
-
 if(NOT TARGET dpso_ext)
     add_subdirectory(
         ../src/dpso_ext "${CMAKE_BINARY_DIR}/src/dpso_ext")
+endif()
+
+if(NOT TARGET dpso_ocr)
+    add_subdirectory(
+        ../src/dpso_ocr "${CMAKE_BINARY_DIR}/src/dpso_ocr")
+endif()
+
+if(NOT TARGET dpso_sys)
+    add_subdirectory(
+        ../src/dpso_sys "${CMAKE_BINARY_DIR}/src/dpso_sys")
 endif()
 
 if(NOT TARGET dpso_utils)
@@ -58,7 +64,7 @@ if(NOT TARGET dpso_utils)
         ../src/dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(tests dpso dpso_ext dpso_utils)
+target_link_libraries(tests dpso_ext dpso_ocr dpso_sys dpso_utils)
 
 add_executable(test_c_compilation test_c_compilation.c)
 
@@ -74,6 +80,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         PRIVATE -Wall -Wextra -pedantic -Wstrict-prototypes)
 endif()
 
+if(NOT TARGET dpso_img)
+    add_subdirectory(
+        ../src/dpso_img "${CMAKE_BINARY_DIR}/src/dpso_img")
+endif()
+
 if(NOT TARGET dpso_intl)
     add_subdirectory(
         ../src/dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
@@ -85,4 +96,11 @@ if(NOT TARGET ui_common)
 endif()
 
 target_link_libraries(
-    test_c_compilation dpso dpso_intl dpso_ext dpso_utils ui_common)
+    test_c_compilation
+    dpso_ext
+    dpso_img
+    dpso_intl
+    dpso_ocr
+    dpso_sys
+    dpso_utils
+    ui_common)

@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "dpso/dpso.h"
+#include "dpso_ocr/dpso_ocr.h"
+#include "dpso_sys/dpso_sys.h"
 #include "dpso_utils/dpso_utils.h"
 
 
@@ -34,16 +35,18 @@ enum HotkeyActions {
 };
 
 
-static void setupHotkeys(void)
+static void setupHotkeys(DpsoKeyManager* keyManager)
 {
     const DpsoHotkey toggleSelectionHotkey = {
         dpsoKeyGrave, dpsoKeyModCtrl
     };
 
-    dpsoKeyManagerSetIsEnabled(true);
+    dpsoKeyManagerSetIsEnabled(keyManager, true);
 
     dpsoKeyManagerBindHotkey(
-        &toggleSelectionHotkey, hotkeyActionToggleSelection);
+        keyManager,
+        &toggleSelectionHotkey,
+        hotkeyActionToggleSelection);
 
     printf(
         "Press %s to toggle selection\n",
@@ -77,29 +80,35 @@ static void checkResults(DpsoOcr* ocr)
 }
 
 
-static void checkHotkeyActions(DpsoOcr* ocr)
+static void checkHotkeyActions(DpsoSys* sys, DpsoOcr* ocr)
 {
     const DpsoHotkeyAction hotkeyAction =
-        dpsoKeyManagerGetLastHotkeyAction();
+        dpsoKeyManagerGetLastHotkeyAction(dpsoSysGetKeyManager(sys));
     if (hotkeyAction != hotkeyActionToggleSelection)
         return;
 
-    if (!dpsoSelectionGetIsEnabled()) {
-        dpsoSelectionSetIsEnabled(true);
+    DpsoSelection* selection = dpsoSysGetSelection(sys);
+    if (!dpsoSelectionGetIsEnabled(selection)) {
+        dpsoSelectionSetIsEnabled(selection, true);
         return;
     }
 
-    dpsoSelectionSetIsEnabled(false);
+    dpsoSelectionSetIsEnabled(selection, false);
 
-    DpsoOcrJobArgs jobArgs;
-    dpsoSelectionGetGeometry(&jobArgs.screenRect);
-    if (dpsoRectIsEmpty(&jobArgs.screenRect))
+    DpsoRect screenRect;
+    dpsoSelectionGetGeometry(selection, &screenRect);
+    if (dpsoRectIsEmpty(&screenRect))
         return;
 
-    jobArgs.flags = dpsoOcrJobTextSegmentation;
+    DpsoImg* screenshot = dpsoTakeScreenshot(sys, &screenRect);
+    if (!screenshot) {
+        fprintf(stderr, "dpsoTakeScreenshot(): %s\n", dpsoGetError());
+        return;
+    }
 
-    if (!dpsoOcrQueueJob(ocr, &jobArgs))
-        fprintf(stderr, "dpsoQueueJob() error: %s\n", dpsoGetError());
+    if (!dpsoOcrQueueJob(
+            ocr, &screenshot, dpsoOcrJobTextSegmentation))
+        fprintf(stderr, "dpsoQueueJob(): %s\n", dpsoGetError());
 }
 
 
@@ -115,14 +124,15 @@ static void sigintHandler(int signum)
 
 int main(void)
 {
-    if (!dpsoInit()) {
-        fprintf(stderr, "dpsoInit() error: %s\n", dpsoGetError());
+    DpsoSys* sys = dpsoSysCreate();
+    if (!sys) {
+        fprintf(stderr, "dpsoSysCreate(): %s\n", dpsoGetError());
         return EXIT_FAILURE;
     }
 
     if (dpsoOcrGetNumEngines() == 0) {
         fprintf(stderr, "No OCR engines available\n");
-        dpsoShutdown();
+        dpsoSysDelete(sys);
         exit(EXIT_FAILURE);
     }
 
@@ -138,7 +148,7 @@ int main(void)
             stderr,
             "dpsoOcrCreate() failed to create \"%s\" engine: %s\n",
             ocrEngineInfo.id, dpsoGetError());
-        dpsoShutdown();
+        dpsoSysDelete(sys);
         return EXIT_FAILURE;
     }
 
@@ -148,23 +158,23 @@ int main(void)
         ocrEngineInfo.version);
 
     setupLanguages(ocr);
-    setupHotkeys();
+    setupHotkeys(dpsoSysGetKeyManager(sys));
 
     DpsoOcrProgress lastProgress = {0};
 
     signal(SIGINT, sigintHandler);
     while (!interrupted) {
-        dpsoUpdate();
+        dpsoSysUpdate(sys);
 
         reportProgress(ocr, &lastProgress);
         checkResults(ocr);
-        checkHotkeyActions(ocr);
+        checkHotkeyActions(sys, ocr);
 
         dpsoSleep(1000 / 60);
     }
 
     dpsoOcrDelete(ocr);
-    dpsoShutdown();
+    dpsoSysDelete(sys);
 
     return EXIT_SUCCESS;
 }

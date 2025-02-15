@@ -2,7 +2,7 @@
 
 #include <QWidget>
 
-#include "dpso/dpso.h"
+#include "dpso_sys/dpso_sys.h"
 
 
 class QCheckBox;
@@ -29,7 +29,8 @@ public:
      * \param hideNoKey Hide dpsoNoKey from the key combo box so that
      *     the user cannot explicitly disable the hotkey.
      */
-    explicit HotkeyEditor(
+    HotkeyEditor(
+        DpsoKeyManager* keyManager,
         DpsoHotkeyAction action,
         bool hideNoKey = true);
 signals:
@@ -59,6 +60,7 @@ public slots:
 private slots:
     void keyChanged();
 private:
+    DpsoKeyManager* keyManager;
     DpsoHotkeyAction action;
     QCheckBox* modChecks[dpsoNumKeyMods];
     QComboBox* keyCombo;

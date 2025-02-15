@@ -166,7 +166,7 @@ def main():
     write_sources('cfg_keys', gen_cfg_key_vars(key_values.keys()))
     write_sources(
         'cfg_default_values', gen_cfg_default_value_vars(key_values),
-        header_includes=['<stdbool.h>', '', 'dpso/dpso.h'])
+        header_includes=['<stdbool.h>', '', 'dpso_sys/dpso_sys.h'])
 
 
 if __name__ == '__main__':

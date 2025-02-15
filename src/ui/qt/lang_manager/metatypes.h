@@ -2,7 +2,7 @@
 
 #include <QMetaType>
 
-#include "dpso/dpso.h"
+#include "dpso_ocr/dpso_ocr.h"
 
 
 Q_DECLARE_METATYPE(DpsoOcrLangState)

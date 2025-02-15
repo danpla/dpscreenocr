@@ -1,7 +1,8 @@
 #pragma once
 
 #include "cfg.h"
-#include "dpso/dpso.h"
+#include "dpso_ocr/dpso_ocr.h"
+#include "dpso_sys/dpso_sys.h"
 
 
 #ifdef __cplusplus

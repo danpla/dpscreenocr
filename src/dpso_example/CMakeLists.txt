@@ -17,8 +17,12 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         PRIVATE -Wall -Wextra -pedantic -Wstrict-prototypes)
 endif()
 
-if(NOT TARGET dpso)
-    add_subdirectory(../dpso "${CMAKE_BINARY_DIR}/src/dpso")
+if(NOT TARGET dpso_ocr)
+    add_subdirectory(../dpso_ocr "${CMAKE_BINARY_DIR}/src/dpso_ocr")
+endif()
+
+if(NOT TARGET dpso_sys)
+    add_subdirectory(../dpso_sys "${CMAKE_BINARY_DIR}/src/dpso_sys")
 endif()
 
 if(NOT TARGET dpso_utils)
@@ -26,4 +30,4 @@ if(NOT TARGET dpso_utils)
         ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(dpso_example dpso dpso_utils)
+target_link_libraries(dpso_example dpso_ocr dpso_sys dpso_utils)

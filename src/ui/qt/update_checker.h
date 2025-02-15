@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ctime>
+#include <functional>
 #include <optional>
 
 #include <QObject>
@@ -18,7 +19,11 @@ namespace ui::qt {
 class UpdateChecker : public QObject {
     Q_OBJECT
 public:
-    explicit UpdateChecker(QWidget* parent);
+    // UpdateChecker will not display an update info window while a
+    // modal or popup widget is active. The isBusy() function allows
+    // you to add additional checks for this case.
+    explicit UpdateChecker(
+        QWidget* parent, const std::function<bool()>& isBusy = {});
 
     bool getAutoCheckIsEnabled() const;
     int getAutoCheckIntervalDays() const;
@@ -32,6 +37,7 @@ protected:
     void timerEvent(QTimerEvent* event) override;
 private:
     QWidget* parentWidget;
+    std::function<bool()> isBusy;
     int timerId{};
     UpdateCheckerUPtr autoChecker;
     bool autoCheck{};

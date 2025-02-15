@@ -6,8 +6,9 @@
 #include <QIcon>
 #include <QWidget>
 
-#include "dpso/dpso.h"
 #include "dpso_ext/dpso_ext.h"
+#include "dpso_ocr/dpso_ocr.h"
+#include "dpso_sys/dpso_sys.h"
 #include "ui_common/ui_common.h"
 
 #include "status.h"
@@ -48,7 +49,9 @@ private slots:
     void setVisibility(bool vilible);
     void commitData(QSessionManager& sessionManager);
 private:
-    dpso::DpsoInitializer dpsoInitializer;
+    dpso::SysUPtr sys;
+    DpsoKeyManager* keyManager;
+    DpsoSelection* selection;
 
     std::string progressStatusFmt;
 

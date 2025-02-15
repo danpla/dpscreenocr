@@ -8,8 +8,8 @@
 #include <QStringList>
 #include <QUrl>
 
-#include "dpso/dpso.h"
 #include "dpso_intl/dpso_intl.h"
+#include "dpso_sys/dpso_sys.h"
 #include "dpso_utils/dpso_utils.h"
 
 #include "utils.h"
@@ -151,9 +151,11 @@ void showUpdateInfo(
 }
 
 
-UpdateChecker::UpdateChecker(QWidget* parent)
+UpdateChecker::UpdateChecker(
+        QWidget* parent, const std::function<bool()>& isBusy)
     : QObject{parent}
     , parentWidget{parent}
+    , isBusy{isBusy}
 {
 }
 
@@ -237,7 +239,7 @@ void UpdateChecker::timerEvent(QTimerEvent* event)
             // Postpone the report if the user is busy.
             if (QApplication::activeModalWidget()
                     || QApplication::activePopupWidget()
-                    || dpsoSelectionGetIsEnabled())
+                    || (isBusy && isBusy()))
                 return;
 
             showUpdateInfo(parentWidget, updateInfo);
@@ -269,7 +271,7 @@ void UpdateChecker::checkUpdates()
     showProgressDialog(
         parentWidget,
         _("Checking for updates\342\200\246"),
-        [&]()
+        [&]
         {
             return uiUpdateCheckerIsCheckInProgress(checker.get());
         });

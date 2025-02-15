@@ -7,9 +7,9 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-#include "dpso/dpso.h"
 #include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"
+#include "dpso_ocr/dpso_ocr.h"
 #include "dpso_utils/dpso_utils.h"
 #include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
@@ -41,7 +41,7 @@ static void fetchExternalLangs(
     showProgressDialog(
         parent,
         _("Fetching the language list\342\200\246"),
-        [&]()
+        [&]
         {
             DpsoOcrLangOpStatus status;
             dpsoOcrLangManagerGetFetchExternalLangsStatus(
@@ -128,7 +128,7 @@ void runLangManager(
         createLangManagerUpdatePage(*langList), {});
     tabs->addTab(createLangManagerRemovePage(*langList), _("Remove"));
 
-    const auto refreshUpdateTabTitle = [&]()
+    const auto refreshUpdateTabTitle = [&]
     {
         tabs->setTabText(
             updateTabIdx, getUpdateTabTitle(langManager.get()));

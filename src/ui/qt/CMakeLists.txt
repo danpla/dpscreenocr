@@ -54,10 +54,6 @@ if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     endif()
 endif()
 
-if(NOT TARGET dpso)
-    add_subdirectory(../../dpso "${CMAKE_BINARY_DIR}/src/dpso")
-endif()
-
 if(NOT TARGET dpso_ext)
     add_subdirectory(
         ../../dpso_ext "${CMAKE_BINARY_DIR}/src/dpso_ext")
@@ -66,6 +62,15 @@ endif()
 if(NOT TARGET dpso_intl)
     add_subdirectory(
         ../../dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
+endif()
+
+if(NOT TARGET dpso_ocr)
+    add_subdirectory(../../dpso_ocr "${CMAKE_BINARY_DIR}/src/dpso_ocr")
+endif()
+
+if(NOT TARGET dpso_sys)
+    add_subdirectory(
+        ../../dpso_sys "${CMAKE_BINARY_DIR}/src/dpso_sys")
 endif()
 
 if(NOT TARGET dpso_utils)
@@ -79,7 +84,8 @@ if(NOT TARGET ui_common)
 endif()
 
 target_link_libraries(
-    dpscreenocr_qt dpso dpso_ext dpso_intl dpso_utils ui_common)
+    dpscreenocr_qt
+    dpso_ext dpso_intl dpso_ocr dpso_sys dpso_utils ui_common)
 
 if(NOT DPSO_QT_VERSION EQUAL 5 AND NOT DPSO_QT_VERSION EQUAL 6)
     message(FATAL_ERROR "Invalid Qt version \"${DPSO_QT_VERSION}\"")
