@@ -6,84 +6,18 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#include "dpso_utils/error_get.h"
 #include "dpso_utils/geometry.h"
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/gdi.h"
 
 #include "backend/screenshot_error.h"
-#include "img.h"
 
 
 namespace dpso::backend::windows {
-namespace {
 
 
-using DataUPtr = std::unique_ptr<std::uint8_t[]>;
-
-
-class Screenshot : public backend::Screenshot {
-public:
-    Screenshot(DataUPtr data, int w, int h, int pitch);
-
-    int getWidth() const override;
-    int getHeight() const override;
-
-    void getGrayscaleData(
-        std::uint8_t* buf, int pitch) const override;
-private:
-    DataUPtr data;
-    int w;
-    int h;
-    int pitch;
-};
-
-
-Screenshot::Screenshot(
-        DataUPtr data, int w, int h, int pitch)
-    : data{std::move(data)}
-    , w{w}
-    , h{h}
-    , pitch{pitch}
-{
-    assert(this->data);
-    assert(w > 0);
-    assert(h > 0);
-    assert(pitch >= w);
-}
-
-
-int Screenshot::getWidth() const
-{
-    return w;
-}
-
-
-int Screenshot::getHeight() const
-{
-    return h;
-}
-
-
-void Screenshot::getGrayscaleData(
-    std::uint8_t* buf, int pitch) const
-{
-    for (int y = 0; y < h; ++y) {
-        const auto* srcRow = data.get() + this->pitch * y;
-        auto* dstRow = buf + pitch * y;
-
-        for (int x = 0; x < w; ++x) {
-            dstRow[x] = img::rgbToGray(
-                srcRow[2], srcRow[1], srcRow[0]);
-            srcRow += 4;
-        }
-    }
-}
-
-
-}
-
-
-std::unique_ptr<backend::Screenshot> takeScreenshot(const Rect& rect)
+img::ImgUPtr takeScreenshot(const Rect& rect)
 {
     const Rect virtualScreenRect{
         GetSystemMetrics(SM_XVIRTUALSCREEN),
@@ -139,23 +73,27 @@ std::unique_ptr<backend::Screenshot> takeScreenshot(const Rect& rect)
     bi.biClrUsed = 0;
     bi.biClrImportant = 0;
 
-    // Pitch is called "stride" in Microsoft docs.
-    const auto pitch = (captureRect.w * bi.biBitCount + 31) / 32 * 4;
-    auto data = std::make_unique<std::uint8_t[]>(
-        pitch * captureRect.h);
+    img::ImgUPtr result{
+        dpsoImgCreate(
+            DpsoPxFormatBgra,
+            captureRect.w,
+            captureRect.h,
+            GDI_DIBWIDTHBYTES(bi))};
+    if (!result)
+        throw ScreenshotError(
+            std::string{"dpsoImgCreate(): "} + dpsoGetError());
 
     if (!GetDIBits(
             imageDc.get(), imageBitmap.get(),
             0, captureRect.h,
-            data.get(),
+            dpsoImgGetData(result.get()),
             reinterpret_cast<BITMAPINFO*>(&bi),
             DIB_RGB_COLORS))
         throw ScreenshotError(
             "GetDIBits(): "
             + dpso::windows::getErrorMessage(GetLastError()));
 
-    return std::make_unique<Screenshot>(
-        std::move(data), captureRect.w, captureRect.h, pitch);
+    return result;
 }
 
 

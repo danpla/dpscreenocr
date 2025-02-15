@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "backend/screenshot.h"
+#include "dpso_img/img.h"
 
 
 namespace dpso {
@@ -14,7 +14,7 @@ struct Rect;
 namespace backend::windows {
 
 
-std::unique_ptr<Screenshot> takeScreenshot(const Rect& rect);
+img::ImgUPtr takeScreenshot(const Rect& rect);
 
 
 }

@@ -24,8 +24,7 @@ public:
 
     KeyManager& getKeyManager() override;
     Selection& getSelection() override;
-    std::unique_ptr<Screenshot> takeScreenshot(
-        const Rect& rect) override;
+    img::ImgUPtr takeScreenshot(const Rect& rect) override;
 
     void update() override;
 private:
@@ -72,8 +71,7 @@ Selection& Backend::getSelection()
 }
 
 
-std::unique_ptr<Screenshot> Backend::takeScreenshot(
-    const Rect& rect)
+img::ImgUPtr Backend::takeScreenshot(const Rect& rect)
 {
     return windows::takeScreenshot(rect);
 }

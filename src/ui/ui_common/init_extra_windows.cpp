@@ -6,7 +6,6 @@
 #include <shobjidl.h>
 
 #include "dpso_ext/user_dirs.h"
-#include "dpso/ocr.h"
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/windows/com.h"

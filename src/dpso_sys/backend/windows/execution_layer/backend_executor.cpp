@@ -1,6 +1,5 @@
 #include "backend/windows/execution_layer/backend_executor.h"
 
-#include "backend/screenshot.h"
 #include "backend/windows/execution_layer/action_executor.h"
 #include "backend/windows/execution_layer/key_manager_executor.h"
 #include "backend/windows/execution_layer/selection_executor.h"
@@ -17,8 +16,7 @@ public:
 
     KeyManager& getKeyManager() override;
     Selection& getSelection() override;
-    std::unique_ptr<Screenshot> takeScreenshot(
-        const Rect& rect) override;
+    img::ImgUPtr takeScreenshot(const Rect& rect) override;
 
     void update() override;
 private:
@@ -60,8 +58,7 @@ Selection& BackendExecutor::getSelection()
 }
 
 
-std::unique_ptr<Screenshot> BackendExecutor::takeScreenshot(
-    const Rect& rect)
+img::ImgUPtr BackendExecutor::takeScreenshot(const Rect& rect)
 {
     return execute(actionExecutor, [&]{
         return backend->takeScreenshot(rect);
