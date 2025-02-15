@@ -1,8 +1,5 @@
 #include "backend/windows/screenshot.h"
 
-#include <cassert>
-#include <utility>
-
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 

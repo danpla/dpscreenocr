@@ -1,7 +1,5 @@
 #include "backend/x11/screenshot.h"
 
-#include <cassert>
-
 #include <X11/Xutil.h>
 
 #include "dpso_img/ops.h"

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <X11/Xlib.h>
 
 #include "dpso_img/img.h"

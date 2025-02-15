@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "dpso_img/img.h"
 
 
