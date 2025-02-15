@@ -6,9 +6,6 @@
 #include "stb_image_resize2.h"
 
 #include "dpso_utils/progress_tracker.h"
-#include "dpso_utils/str.h"
-#include "dpso_utils/stream/file_stream.h"
-#include "dpso_utils/stream/utils.h"
 
 
 namespace dpso::img {
@@ -286,24 +283,6 @@ void unsharpMask(
         localProgressTracker);
 
     localProgressTracker.finish();
-}
-
-
-void savePgm(
-    const char* filePath,
-    const std::uint8_t* data, int w, int h, int pitch)
-{
-    if (w < 1 || h < 1 || pitch < w)
-        return;
-
-    try {
-        FileStream file{filePath, FileStream::Mode::write};
-        write(file, str::format("P5\n{} {}\n255\n", w, h));
-
-        for (int y = 0; y < h; ++y)
-            file.write(data + y * pitch, w);
-    } catch (std::runtime_error&) {  // os::Error, StreamError
-    }
 }
 
 

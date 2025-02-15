@@ -7,6 +7,7 @@ add_library(
 
     img.cpp
     ops.cpp
+    pnm.cpp
     px_format.cpp)
 
 set_target_properties(

@@ -15,10 +15,12 @@
 #include <vector>
 
 #include "dpso_img/ops.h"
+#include "dpso_img/pnm.h"
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/geometry.h"
 #include "dpso_utils/progress_tracker.h"
+#include "dpso_utils/str.h"
 #include "dpso_utils/strftime.h"
 #include "dpso_utils/synchronized.h"
 #include "dpso_utils/timing.h"
@@ -381,10 +383,22 @@ static dpso::ocr::OcrImage prepareImage(
         graySrcPitch = bufferPitch;
     }
 
-    if (dumpDebugImages)
-        dpso::img::savePgm(
-            "dpso_debug_1_original.pgm",
+    if (dumpDebugImages) {
+        const auto pxFormat = dpsoImgGetPxFormat(image);
+        dpso::img::savePnm(
+            dpso::str::format(
+                "dpso_debug_1_original_{}{}",
+                dpsoPxFormatToStr(pxFormat),
+                dpso::img::getPnmExt(pxFormat)).c_str(),
+            pxFormat,
+            dpsoImgGetConstData(image),
+            imageW, imageH, dpsoImgGetPitch(image));
+
+        dpso::img::savePnm(
+            "dpso_debug_2_grayscale.pgm",
+            DpsoPxFormatGrayscale,
             graySrc, imageW, imageH, graySrcPitch);
+    }
 
     DPSO_START_TIMING(imageResizing);
     dpso::img::resize(
@@ -396,8 +410,9 @@ static dpso::ocr::OcrImage prepareImage(
         imageW, imageH, bufferW, bufferH, scale);
 
     if (dumpDebugImages)
-        dpso::img::savePgm(
-            "dpso_debug_2_resize.pgm",
+        dpso::img::savePnm(
+            "dpso_debug_3_resize.pgm",
+            DpsoPxFormatGrayscale,
             imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
 
     const auto unsharpMaskRadius = 10;
@@ -423,8 +438,9 @@ static dpso::ocr::OcrImage prepareImage(
     localProgressTracker.finish();
 
     if (dumpDebugImages)
-        dpso::img::savePgm(
-            "dpso_debug_3_unsharp_mask.pgm",
+        dpso::img::savePnm(
+            "dpso_debug_4_unsharp_mask.pgm",
+            DpsoPxFormatGrayscale,
             imgBuffers[0].data(), bufferW, bufferH, bufferPitch);
 
     return {imgBuffers[0].data(), bufferW, bufferH, bufferPitch};

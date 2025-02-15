@@ -63,10 +63,5 @@ void unsharpMask(
     ProgressTracker* progressTracker = nullptr);
 
 
-void savePgm(
-    const char* filePath,
-    const std::uint8_t* data, int w, int h, int pitch);
-
-
 }
 }
