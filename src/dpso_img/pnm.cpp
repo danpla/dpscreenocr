@@ -23,11 +23,9 @@ static std::array<int, 3> getRgbIndices(DpsoPxFormat pxFormat)
     case DpsoPxFormatGrayscale:
         break;
     case DpsoPxFormatRgb:
-        return {0, 1, 2};
-    case DpsoPxFormatBgr:
-        return {2, 1, 0};
     case DpsoPxFormatRgba:
         return {0, 1, 2};
+    case DpsoPxFormatBgr:
     case DpsoPxFormatBgra:
         return {2, 1, 0};
     case DpsoPxFormatArgb:

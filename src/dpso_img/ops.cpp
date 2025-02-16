@@ -49,14 +49,10 @@ void toGray(
             });
         break;
     case DpsoPxFormatRgb:
-        convertRgb(0, 1, 2);
-        break;
-    case DpsoPxFormatBgr:
-        convertRgb(2, 1, 0);
-        break;
     case DpsoPxFormatRgba:
         convertRgb(0, 1, 2);
         break;
+    case DpsoPxFormatBgr:
     case DpsoPxFormatBgra:
         convertRgb(2, 1, 0);
         break;
