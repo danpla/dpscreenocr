@@ -129,15 +129,19 @@ static void boxBlur(
     int numIters,
     ProgressTracker& progressTracker)
 {
+    assert(srcPitch >= w);
+    assert(dstPitch >= w);
+    assert(tmpPitch >= w);
+    assert(w > 0);
+    assert(h > 0);
+    assert(radius > 0);
+    assert(numIters > 0);
+
     const auto numSubpassesPerIter = 2;  // vertical + horizontal
     const auto numJobs = numIters * numSubpassesPerIter;
 
     ProgressTracker localProgressTracker(numJobs, &progressTracker);
 
-    if (w < 1 || h < 1 || radius < 1 || numIters < 1) {
-        localProgressTracker.finish();
-        return;
-    }
     const auto* curSrc = src;
     auto curSrcPitch = srcPitch;
 
@@ -223,6 +227,14 @@ void unsharpMask(
     float amount,
     ProgressTracker* progressTracker)
 {
+    if (srcPitch < w
+            || dstPitch < w
+            || tmpPitch < w
+            || w < 1
+            || h < 1
+            || radius < 1)
+        return;
+
     ProgressTracker localProgressTracker(2, progressTracker);
 
     localProgressTracker.advanceJob();
