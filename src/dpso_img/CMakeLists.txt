@@ -2,13 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(dpso_img)
 
-add_library(
-    dpso_img
-
-    img.cpp
-    ops.cpp
-    pnm.cpp
-    px_format.cpp)
+add_library(dpso_img img.cpp ops.cpp pnm.cpp px_format.cpp)
 
 set_target_properties(
     dpso_img PROPERTIES

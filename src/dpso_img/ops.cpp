@@ -7,6 +7,8 @@
 
 #include "dpso_utils/progress_tracker.h"
 
+#include "ops_utils.h"
+
 
 namespace dpso::img {
 
@@ -77,7 +79,8 @@ void resize(
 }
 
 
-static void hBoxBlur(
+template<Axis axis>
+static void boxBlur(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
     int w, int h,
@@ -92,64 +95,28 @@ static void hBoxBlur(
 
     const auto kernelSize = 1 + radius * 2;
 
-    for (int y = 0; y < h; ++y) {
-        const auto* srcRow = src + y * srcPitch;
+    const auto numLines = getSize<getOpposite(axis)>(w, h);
+    const auto lineSize = getSize<axis>(w, h);
 
-        auto sum = *srcRow * (radius + 1);
-        for (int x = 1; x <= radius; ++x)
-            sum += srcRow[std::min(x, w - 1)];
+    for (int l = 0; l < numLines; ++l) {
+        const auto srcLine = makeLine<axis>(l, src, srcPitch);
 
-        auto* dstRow = dst + y * dstPitch;
-        for (int x = 0; x < w; ++x) {
-            dstRow[x] = sum / kernelSize;
+        auto sum = srcLine[0] * (radius + 1);
+        for (int i = 1; i <= radius; ++i)
+            sum += srcLine[std::min(i, lineSize - 1)];
+
+        auto dstLine = makeLine<axis>(l, dst, dstPitch);
+        for (int i = 0; i < lineSize; ++i) {
+            dstLine[i] = sum / kernelSize;
 
             const auto addPx =
-                srcRow[std::min(x + radius + 1, w - 1)];
-            const auto removePx = srcRow[std::max(x - radius, 0)];
+                srcLine[std::min(i + radius + 1, lineSize - 1)];
+            const auto removePx = srcLine[std::max(i - radius, 0)];
 
             sum += addPx - removePx;
         }
 
-        progressTracker.update(static_cast<float>(y) / h);
-    }
-}
-
-
-static void vBoxBlur(
-    const std::uint8_t* src, int srcPitch,
-    std::uint8_t* dst, int dstPitch,
-    int w, int h,
-    int radius,
-    ProgressTracker& progressTracker)
-{
-    assert(w > 0);
-    assert(h > 0);
-    assert(radius > 0);
-    assert(srcPitch >= w);
-    assert(dstPitch >= w);
-
-    const auto kernelSize = 1 + radius * 2;
-
-    for (int x = 0; x < w; ++x) {
-        const auto* srcCol = src + x;
-
-        auto sum = *srcCol * (radius + 1);
-        for (int y = 1; y <= radius; ++y)
-            sum += srcCol[std::min(y, h - 1) * srcPitch];
-
-        auto* dstCol = dst + x;
-        for (int y = 0; y < h; ++y) {
-            dstCol[y * dstPitch] = sum / kernelSize;
-
-            const auto addPx =
-                srcCol[std::min(y + radius + 1, h - 1) * srcPitch];
-            const auto removePx =
-                srcCol[std::max(y - radius, 0) * srcPitch];
-
-            sum += addPx - removePx;
-        }
-
-        progressTracker.update(static_cast<float>(x) / w);
+        progressTracker.update(static_cast<float>(l) / numLines);
     }
 }
 
@@ -171,18 +138,17 @@ static void boxBlur(
         localProgressTracker.finish();
         return;
     }
-
     const auto* curSrc = src;
     auto curSrcPitch = srcPitch;
 
     for (int i = 0; i < numIters; ++i) {
         localProgressTracker.advanceJob();
-        hBoxBlur(
+        boxBlur<Axis::x>(
             curSrc, curSrcPitch, tmp, tmpPitch, w, h, radius,
             localProgressTracker);
 
         localProgressTracker.advanceJob();
-        vBoxBlur(
+        boxBlur<Axis::y>(
             tmp, tmpPitch, dst, dstPitch, w, h, radius,
             localProgressTracker);
 
