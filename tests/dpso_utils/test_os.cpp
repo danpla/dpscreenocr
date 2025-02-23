@@ -401,20 +401,17 @@ void testLoadData()
     test::utils::saveText(
         "testLoadData", filePath.c_str(), filePath.c_str());
 
-    std::string data;
     try {
-        data = os::loadData(filePath.c_str());
+        const auto data = os::loadData(filePath.c_str());
+        if (data != filePath)
+            test::failure(
+                "os::loadData(\"{}\"): expected \"{}\", got \"{}\"",
+                filePath, data, filePath);
     } catch (os::Error& e) {
         test::failure("os::loadData(\"{}\"): {}", filePath, e.what());
-        return;
     }
 
-    if (data != filePath) {
-        test::failure(
-            "os::loadData(\"{}\") returned \"{}\" instead of \"{}\"",
-            filePath, data, filePath);
-        return;
-    }
+    test::utils::removeFile(filePath.c_str());
 
     CHECK_FILE_NOT_FOUND_ERROR(os::loadData, "nonexistent_file");
 }
