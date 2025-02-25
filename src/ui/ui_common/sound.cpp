@@ -19,6 +19,7 @@ namespace {
 struct CacheEntry {
     UiSoundId soundId;
     const char* soundName;
+    std::string customFilePath{};
     std::unique_ptr<sound::Player> player{};
 } cache[]{
     {UiSoundIdDone, "done"},
@@ -35,15 +36,33 @@ CacheEntry* findCacheEntry(UiSoundId soundId)
 }
 
 
-std::string getSoundPath(const std::string& soundName)
+std::string getSoundPath(const CacheEntry& cacheEntry)
 {
+    if (!cacheEntry.customFilePath.empty())
+        return cacheEntry.customFilePath;
+
     return
         std::string{uiGetAppDir(UiAppDirData)}
         + *os::dirSeparators
         + "sounds"
         + *os::dirSeparators
-        + soundName
+        + cacheEntry.soundName
         + ".wav";
+}
+
+
+bool initPlayer(CacheEntry& cacheEntry)
+{
+    const auto soundPath = getSoundPath(cacheEntry);
+    try {
+        cacheEntry.player = sound::Player::create(soundPath.c_str());
+    } catch (sound::Error& e) {
+        setError(
+            "sound::Player::create(\"{}\"): {}", soundPath, e.what());
+        return false;
+    }
+
+    return true;
 }
 
 
@@ -56,6 +75,20 @@ bool uiSoundIsAvailable(void)
 }
 
 
+bool uiSoundSetFilePath(UiSoundId soundId, const char* filePath)
+{
+    auto* cacheEntry = findCacheEntry(soundId);
+    if (!cacheEntry) {
+        setError("Invalid soundId");
+        return false;
+    }
+
+    cacheEntry->customFilePath = filePath;
+    cacheEntry->player.reset();
+    return initPlayer(*cacheEntry);
+}
+
+
 bool uiSoundPlay(UiSoundId soundId)
 {
     auto* cacheEntry = findCacheEntry(soundId);
@@ -64,26 +97,15 @@ bool uiSoundPlay(UiSoundId soundId)
         return false;
     }
 
-    if (!cacheEntry->player) {
-        const auto soundPath = getSoundPath(cache->soundName);
-
-        try {
-            cacheEntry->player = sound::Player::create(
-                soundPath.c_str());
-        } catch (sound::Error& e) {
-            setError(
-                "sound::Player::create(\"{}\"): {}",
-                soundPath, e.what());
-            return false;
-        }
-    }
+    if (!cacheEntry->player && !initPlayer(*cacheEntry))
+        return false;
 
     try {
         cacheEntry->player->play();
     } catch (sound::Error& e) {
         setError(
             "sound::Player::play() ({}): {}",
-            cacheEntry->soundName, e.what());
+            getSoundPath(*cacheEntry), e.what());
         return false;
     }
 

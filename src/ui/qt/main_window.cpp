@@ -720,6 +720,15 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfg,
             cfgKeyActionsDonePlaySound,
             cfgDefaultValueActionsDonePlaySound));
+    playCustomSound = dpsoCfgGetBool(
+        cfg,
+        cfgKeyActionsDonePlayCustomSound,
+        cfgDefaultValueActionsDonePlayCustomSound);
+    playCustomSoundPath = dpsoCfgGetStr(
+        cfg, cfgKeyActionsDonePlayCustomSoundPath, "");
+    if (playCustomSound)
+        uiSoundSetFilePath(
+            UiSoundIdDone, playCustomSoundPath.c_str());
 
     updateChecker.loadState(cfg);
     autoUpdateCheck->setChecked(
@@ -812,6 +821,12 @@ void MainWindow::saveState(DpsoCfg* cfg) const
 
     dpsoCfgSetBool(
         cfg, cfgKeyActionsDonePlaySound, playSoundCheck->isChecked());
+    dpsoCfgSetBool(
+        cfg, cfgKeyActionsDonePlayCustomSound, playCustomSound);
+    dpsoCfgSetStr(
+        cfg,
+        cfgKeyActionsDonePlayCustomSoundPath,
+        playCustomSoundPath.c_str());
 
     updateChecker.saveState(cfg);
 

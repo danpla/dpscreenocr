@@ -12,6 +12,7 @@ extern bool const cfgDefaultValueActionAddToHistory;
 extern bool const cfgDefaultValueActionCopyToClipboard;
 extern const char* const cfgDefaultValueActionCopyToClipboardTextSeparator;
 extern bool const cfgDefaultValueActionRunExecutable;
+extern bool const cfgDefaultValueActionsDonePlayCustomSound;
 extern bool const cfgDefaultValueActionsDonePlaySound;
 extern bool const cfgDefaultValueHistoryWrapWords;
 extern DpsoHotkey const cfgDefaultValueHotkeyCancelSelection;

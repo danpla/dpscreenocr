@@ -12,6 +12,8 @@ const char* const cfgDefaultValueActionCopyToClipboardTextSeparator =
     "\n\n\n";
 bool const cfgDefaultValueActionRunExecutable =
     false;
+bool const cfgDefaultValueActionsDonePlayCustomSound =
+    false;
 bool const cfgDefaultValueActionsDonePlaySound =
     false;
 bool const cfgDefaultValueHistoryWrapWords =

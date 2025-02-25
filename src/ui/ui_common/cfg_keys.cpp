@@ -14,6 +14,10 @@ const char* const cfgKeyActionRunExecutable =
     "action_run_executable";
 const char* const cfgKeyActionRunExecutablePath =
     "action_run_executable_path";
+const char* const cfgKeyActionsDonePlayCustomSound =
+    "actions_done_play_custom_sound";
+const char* const cfgKeyActionsDonePlayCustomSoundPath =
+    "actions_done_play_custom_sound_path";
 const char* const cfgKeyActionsDonePlaySound =
     "actions_done_play_sound";
 const char* const cfgKeyHistoryExportDir =

@@ -100,6 +100,8 @@ private:
     QCheckBox* closeToTrayCheck;
 
     QCheckBox* playSoundCheck;
+    bool playCustomSound{};
+    std::string playCustomSoundPath;
 
     UpdateChecker updateChecker;
     QCheckBox* autoUpdateCheck;
