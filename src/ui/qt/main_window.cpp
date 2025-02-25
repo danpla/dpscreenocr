@@ -726,9 +726,9 @@ void MainWindow::loadState(const DpsoCfg* cfg)
         cfgDefaultValueActionsDonePlayCustomSound);
     playCustomSoundPath = dpsoCfgGetStr(
         cfg, cfgKeyActionsDonePlayCustomSoundPath, "");
-    if (playCustomSound)
-        uiSoundSetFilePath(
-            UiSoundIdDone, playCustomSoundPath.c_str());
+    uiSoundSetFilePath(
+        UiSoundIdDone,
+        playCustomSound ? playCustomSoundPath.c_str() : "");
 
     updateChecker.loadState(cfg);
     autoUpdateCheck->setChecked(
