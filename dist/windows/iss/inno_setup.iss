@@ -1,8 +1,8 @@
 #include "inno_setup_config.isi"
 
-; ExecAndLogOutput() was added in 6.3.
-#if VER < EncodeVer(6, 3, 0)
-  #error Inno Setup version 6.3 or newer is required
+; ExecAndCaptureOutput() was added in 6.4.
+#if VER < EncodeVer(6, 4, 0)
+  #error Inno Setup version 6.4 or newer is required
 #endif
 
 [Setup]
@@ -240,18 +240,6 @@ begin
       + '\{#APP_FILE_NAME}\{#TESSERACT_DATA_DIR}');
 end;
 
-var
-  OurExecCache: String;
-
-procedure OurExecLogFn(
-  const S: String; const Error, FirstLine: Boolean);
-begin
-  if OurExecCache <> '' then
-    OurExecCache := OurExecCache + #13#10;
-
-  OurExecCache := OurExecCache + S;
-end;
-
 function OurExecAndGetOutput(
   const LogScope,
   Filename,
@@ -259,20 +247,19 @@ function OurExecAndGetOutput(
   var Output: String): Boolean;
 var
   ExecResultCode: Integer;
+  ExecOutput: TExecOutput;
 begin
   Result := False;
-
   Output := '';
-  OurExecCache := '';
 
-  if not ExecAndLogOutput(
+  if not ExecAndCaptureOutput(
     Filename,
     Params,
     '',
     SW_HIDE,
     ewWaitUntilTerminated,
     ExecResultCode,
-    @OurExecLogFn) then
+    ExecOutput) then
   begin
     OurLog(LogScope, format(
       'Can''t execute "%s" with params "%s": %s (code %d)'
@@ -284,12 +271,13 @@ begin
   if ExecResultCode <> 0 then
   begin
     OurLog(LogScope, format(
-      '"%s" with params "%s" exited with a code %d and output "%s"'
-      , [Filename, Params, ExecResultCode, OurExecCache]));
+      '"%s" with params "%s" exited with a code %d and stderr "%s"'
+      , [Filename, Params, ExecResultCode,
+      StringJoin(#13#10, ExecOutput.StdErr)]));
     exit;
   end;
 
-  Output := OurExecCache;
+  Output := StringJoin(#13#10, ExecOutput.StdOut);
   Result := True;
 end;
 
