@@ -11,9 +11,12 @@
 #include "dpso_utils/windows/error.h"
 
 
+using namespace dpso;
+
+
 struct UiTaskbar {
-    dpso::windows::CoInitializer coInitializer;
-    dpso::windows::CoUPtr<ITaskbarList3> tbl;
+    windows::CoInitializer coInitializer;
+    windows::CoUPtr<ITaskbarList3> tbl;
     HWND hwnd;
 };
 
@@ -21,35 +24,33 @@ struct UiTaskbar {
 UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
 {
     if (!hwnd) {
-        dpso::setError("hwnd is null");
+        setError("hwnd is null");
         return nullptr;
     }
 
-    dpso::windows::CoInitializer coInitializer{
-        COINIT_APARTMENTTHREADED};
-    if (!dpso::windows::coInitSuccess(coInitializer.getHresult())) {
-        dpso::setError(
+    windows::CoInitializer coInitializer{COINIT_APARTMENTTHREADED};
+    if (!windows::coInitSuccess(coInitializer.getHresult())) {
+        setError(
             "COM initialization failed: {}",
-            dpso::windows::getHresultMessage(
-                coInitializer.getHresult()));
+            windows::getHresultMessage(coInitializer.getHresult()));
         return nullptr;
     }
 
-    dpso::windows::CoUPtr<ITaskbarList3> tbl;
-    auto hresult = dpso::windows::coCreateInstance(
+    windows::CoUPtr<ITaskbarList3> tbl;
+    auto hresult = windows::coCreateInstance(
         CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, tbl);
     if (FAILED(hresult)) {
-        dpso::setError(
+        setError(
             "CoCreateInstance() for ITaskbarList3 failed: {}",
-            dpso::windows::getHresultMessage(hresult));
+            windows::getHresultMessage(hresult));
         return nullptr;
     }
 
     hresult = tbl->HrInit();
     if (FAILED(hresult)) {
-        dpso::setError(
+        setError(
             "ITaskbarList3::HrInit(): {}",
-            dpso::windows::getHresultMessage(hresult));
+            windows::getHresultMessage(hresult));
         return nullptr;
     }
 

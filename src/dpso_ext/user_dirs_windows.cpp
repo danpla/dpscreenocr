@@ -11,6 +11,9 @@
 #include "dpso_utils/windows/utf.h"
 
 
+using namespace dpso;
+
+
 const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
 {
     // FOLDERID_RoamingAppData is actually better path for config, but
@@ -24,9 +27,9 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
         nullptr,
         &appDataPathUtf16);
     if (FAILED(hresult)) {
-        dpso::setError(
+        setError(
             "SHGetKnownFolderPath(FOLDERID_LocalAppData, ...): {}",
-            dpso::windows::getHresultMessage(hresult));
+            windows::getHresultMessage(hresult));
         // Docs say that we should call CoTaskMemFree() even if
         // SHGetKnownFolderPath() fails.
         CoTaskMemFree(appDataPathUtf16);
@@ -38,26 +41,25 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
 
     pathUtf16 += L'\\';
     try {
-        pathUtf16 += dpso::windows::utf8ToUtf16(appName);
-    } catch (dpso::windows::CharConversionError& e) {
-        dpso::setError(
-            "Can't convert appName to UTF-16: {}", e.what());
+        pathUtf16 += windows::utf8ToUtf16(appName);
+    } catch (windows::CharConversionError& e) {
+        setError("Can't convert appName to UTF-16: {}", e.what());
         return nullptr;
     }
 
     static std::string path;
     try {
-        path = dpso::windows::utf16ToUtf8(pathUtf16.c_str());
-    } catch (dpso::windows::CharConversionError& e) {
-        dpso::setError("Can't convert path to UTF-8: {}", e.what());
+        path = windows::utf16ToUtf8(pathUtf16.c_str());
+    } catch (windows::CharConversionError& e) {
+        setError("Can't convert path to UTF-8: {}", e.what());
         return nullptr;
     }
 
     if (!CreateDirectoryW(pathUtf16.c_str(), nullptr)
             && GetLastError() != ERROR_ALREADY_EXISTS) {
-        dpso::setError(
+        setError(
             "CreateDirectoryW(\"{}\"): {}",
-            path, dpso::windows::getErrorMessage(GetLastError()));
+            path, windows::getErrorMessage(GetLastError()));
         return nullptr;
     }
 

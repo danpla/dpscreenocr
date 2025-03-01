@@ -309,7 +309,7 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
 
 void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val)
 {
-    dpsoCfgSetStr(cfg, key, dpso::str::toStr(val).c_str());
+    dpsoCfgSetStr(cfg, key, str::toStr(val).c_str());
 }
 
 

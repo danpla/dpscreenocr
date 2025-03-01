@@ -3,9 +3,12 @@
 #include "engine/engine.h"
 
 
+using namespace dpso;
+
+
 int dpsoOcrGetNumEngines(void)
 {
-    return dpso::ocr::Engine::getCount();
+    return ocr::Engine::getCount();
 }
 
 
@@ -13,22 +16,22 @@ void dpsoOcrGetEngineInfo(int idx, DpsoOcrEngineInfo* info)
 {
     if (idx < 0
             || static_cast<std::size_t>(idx)
-                >= dpso::ocr::Engine::getCount()
+                >= ocr::Engine::getCount()
             || !info)
         return;
 
-    const auto& internalInfo = dpso::ocr::Engine::get(idx).getInfo();
+    const auto& internalInfo = ocr::Engine::get(idx).getInfo();
 
     DpsoOcrEngineDataDirPreference dataDirPreference{};
     switch (internalInfo.dataDirPreference) {
-    case dpso::ocr::EngineInfo::DataDirPreference::noDataDir:
+    case ocr::EngineInfo::DataDirPreference::noDataDir:
         dataDirPreference = DpsoOcrEngineDataDirPreferenceNoDataDir;
         break;
-    case dpso::ocr::EngineInfo::DataDirPreference::preferDefault:
+    case ocr::EngineInfo::DataDirPreference::preferDefault:
         dataDirPreference =
             DpsoOcrEngineDataDirPreferencePreferDefault;
         break;
-    case dpso::ocr::EngineInfo::DataDirPreference::preferExplicit:
+    case ocr::EngineInfo::DataDirPreference::preferExplicit:
         dataDirPreference =
             DpsoOcrEngineDataDirPreferencePreferExplicit;
         break;

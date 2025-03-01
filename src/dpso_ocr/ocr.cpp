@@ -31,6 +31,9 @@
 #include "engine/recognizer_error.h"
 
 
+using namespace dpso;
+
+
 namespace {
 
 
@@ -47,15 +50,15 @@ struct Lang {
 
 
 struct Job {
-    dpso::img::ImgUPtr image;
+    img::ImgUPtr image;
     std::vector<int> langIndices;
-    dpso::ocr::OcrFeatures ocrFeatures;
+    ocr::OcrFeatures ocrFeatures;
     std::string timestamp;
 };
 
 
 struct JobResult {
-    dpso::ocr::OcrResult ocrResult;
+    ocr::OcrResult ocrResult;
     std::string timestamp;
 };
 
@@ -86,15 +89,15 @@ struct Link {
 
 
 struct DpsoOcr {
-    dpso::ocr::DataLockObserver dataLockObserver;
+    ocr::DataLockObserver dataLockObserver;
 
-    std::unique_ptr<dpso::ocr::Recognizer> recognizer;
+    std::unique_ptr<ocr::Recognizer> recognizer;
 
     std::string defaultLangCode;
     std::vector<Lang> langs;
     int numActiveLangs;
 
-    dpso::Synchronized<Link> link;
+    Synchronized<Link> link;
     std::thread thread;
 
     std::vector<std::uint8_t> imgBuffers[3];
@@ -153,18 +156,18 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
 {
     if (engineIdx < 0
             || static_cast<std::size_t>(engineIdx)
-                >= dpso::ocr::Engine::getCount()) {
-        dpso::setError("engineIdx is out of bounds");
+                >= ocr::Engine::getCount()) {
+        setError("engineIdx is out of bounds");
         return nullptr;
     }
 
-    const auto& ocrEngine = dpso::ocr::Engine::get(engineIdx);
+    const auto& ocrEngine = ocr::Engine::get(engineIdx);
 
     // We don't use OcrUPtr here because dpsoOcrDelete() expects
     // a joinable thread.
     auto ocr = std::make_unique<DpsoOcr>();
 
-    ocr->dataLockObserver = dpso::ocr::DataLockObserver{
+    ocr->dataLockObserver = ocr::DataLockObserver{
         ocrEngine.getInfo().id.c_str(),
         dataDir,
         [&ocr = *ocr]
@@ -175,7 +178,7 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
         {
             try {
                 ocr.recognizer->reloadLangs();
-            } catch (dpso::ocr::RecognizerError&) {
+            } catch (ocr::RecognizerError&) {
                 return;
             }
 
@@ -184,14 +187,14 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
     };
 
     if (ocr->dataLockObserver.getIsDataLocked()) {
-        dpso::setError("OCR data is locked");
+        setError("OCR data is locked");
         return nullptr;
     }
 
     try {
         ocr->recognizer = ocrEngine.createRecognizer(dataDir);
-    } catch (dpso::ocr::RecognizerError& e) {
-        dpso::setError("Can't create recognizer: {}", e.what());
+    } catch (ocr::RecognizerError& e) {
+        setError("Can't create recognizer: {}", e.what());
         return nullptr;
     }
 
@@ -339,10 +342,10 @@ static std::string createTimestamp()
 }
 
 
-static dpso::ocr::OcrImage prepareImage(
+static ocr::OcrImage prepareImage(
     const DpsoImg* image,
     std::vector<std::uint8_t> (&imgBuffers)[3],
-    dpso::ProgressTracker& progressTracker,
+    ProgressTracker& progressTracker,
     bool dumpDebugImages)
 {
     assert(image);
@@ -366,7 +369,7 @@ static dpso::ocr::OcrImage prepareImage(
         graySrcPitch = dpsoImgGetPitch(image);
     } else {
         DPSO_START_TIMING(toGray);
-        dpso::img::toGray(
+        img::toGray(
             dpsoImgGetConstData(image),
             dpsoImgGetPitch(image),
             pxFormat,
@@ -385,23 +388,23 @@ static dpso::ocr::OcrImage prepareImage(
 
     if (dumpDebugImages) {
         const auto pxFormat = dpsoImgGetPxFormat(image);
-        dpso::img::savePnm(
-            dpso::str::format(
+        img::savePnm(
+            str::format(
                 "dpso_debug_1_original_{}{}",
                 dpsoPxFormatToStr(pxFormat),
-                dpso::img::getPnmExt(pxFormat)).c_str(),
+                img::getPnmExt(pxFormat)).c_str(),
             pxFormat,
             dpsoImgGetConstData(image),
             imageW, imageH, dpsoImgGetPitch(image));
 
-        dpso::img::savePnm(
+        img::savePnm(
             "dpso_debug_2_grayscale.pgm",
             DpsoPxFormatGrayscale,
             graySrc, imageW, imageH, graySrcPitch);
     }
 
     DPSO_START_TIMING(imageResizing);
-    dpso::img::resize(
+    img::resize(
         graySrc, imageW, imageH, graySrcPitch,
         imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
     DPSO_END_TIMING(
@@ -410,7 +413,7 @@ static dpso::ocr::OcrImage prepareImage(
         imageW, imageH, bufferW, bufferH, scale);
 
     if (dumpDebugImages)
-        dpso::img::savePnm(
+        img::savePnm(
             "dpso_debug_3_resize.pgm",
             DpsoPxFormatGrayscale,
             imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
@@ -418,11 +421,11 @@ static dpso::ocr::OcrImage prepareImage(
     const auto unsharpMaskRadius = 10;
     const auto unsharpMaskAmount = 1.0f;
 
-    dpso::ProgressTracker localProgressTracker(1, &progressTracker);
+    ProgressTracker localProgressTracker(1, &progressTracker);
     localProgressTracker.advanceJob();
 
     DPSO_START_TIMING(unsharpMasking);
-    dpso::img::unsharpMask(
+    img::unsharpMask(
         imgBuffers[1].data(), bufferPitch,
         imgBuffers[0].data(), bufferPitch,
         imgBuffers[2].data(), bufferPitch,
@@ -438,7 +441,7 @@ static dpso::ocr::OcrImage prepareImage(
     localProgressTracker.finish();
 
     if (dumpDebugImages)
-        dpso::img::savePnm(
+        img::savePnm(
             "dpso_debug_4_unsharp_mask.pgm",
             DpsoPxFormatGrayscale,
             imgBuffers[0].data(), bufferW, bufferH, bufferPitch);
@@ -449,7 +452,7 @@ static dpso::ocr::OcrImage prepareImage(
 
 static void processJob(DpsoOcr& ocr, const Job& job)
 {
-    dpso::ProgressTracker progressTracker{
+    ProgressTracker progressTracker{
         2,
         [&](float progress)
         {
@@ -532,35 +535,35 @@ bool dpsoOcrQueueJob(
     DpsoOcr* ocr, DpsoImg** img, DpsoOcrJobFlags flags)
 {
     if (!img) {
-        dpso::setError("img is null");
+        setError("img is null");
         return false;
     }
 
     if (!*img) {
-        dpso::setError("*img is null");
+        setError("*img is null");
         return false;
     }
 
-    dpso::img::ImgUPtr image{std::exchange(*img, {})};
+    img::ImgUPtr image{std::exchange(*img, {})};
 
     if (!ocr) {
-        dpso::setError("ocr is null");
+        setError("ocr is null");
         return false;
     }
 
     if (ocr->numActiveLangs == 0) {
-        dpso::setError("No active languages");
+        setError("No active languages");
         return false;
     }
 
     if (ocr->dataLockObserver.getIsDataLocked()) {
-        dpso::setError("OCR data is locked");
+        setError("OCR data is locked");
         return false;
     }
 
-    dpso::ocr::OcrFeatures ocrFeatures{};
+    ocr::OcrFeatures ocrFeatures{};
     if (flags & dpsoOcrJobTextSegmentation)
-        ocrFeatures |= dpso::ocr::ocrFeatureTextSegmentation;
+        ocrFeatures |= ocr::ocrFeatureTextSegmentation;
 
     Job job{
         std::move(image),
