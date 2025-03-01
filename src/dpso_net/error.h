@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <stdexcept>
@@ -22,4 +21,3 @@ class ConnectionError : public Error {
 
 
 }
-

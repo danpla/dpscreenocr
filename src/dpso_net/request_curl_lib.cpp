@@ -1,4 +1,3 @@
-
 #include "request_curl_lib.h"
 
 #if DPSO_DYNAMIC_CURL

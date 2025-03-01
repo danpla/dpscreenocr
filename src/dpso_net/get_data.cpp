@@ -1,4 +1,3 @@
-
 #include "get_data.h"
 
 #include <limits>

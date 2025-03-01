@@ -1,4 +1,3 @@
-
 #include "request.h"
 
 #include <algorithm>

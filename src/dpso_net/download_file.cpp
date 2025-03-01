@@ -1,4 +1,3 @@
-
 #include "download_file.h"
 
 #include <chrono>
