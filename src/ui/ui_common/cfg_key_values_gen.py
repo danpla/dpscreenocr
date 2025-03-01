@@ -138,7 +138,7 @@ def write_source(
             filename_root + get_file_ext(file_type), 'w',
             encoding='utf-8', newline='\n') as f:
         f.write(
-            '\n/* This file was automatically generated. '
+            '/* This file was automatically generated. '
             'Do not edit. */\n\n')
 
         f.write(
