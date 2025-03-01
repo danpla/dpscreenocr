@@ -9,13 +9,6 @@
 #include "dpso_utils/strftime.h"
 
 
-static void enableLang(DpsoOcr* ocr, const char* langCode)
-{
-    dpsoOcrSetLangIsActive(
-        ocr, dpsoOcrGetLangIdx(ocr, langCode), true);
-}
-
-
 const auto langSeparator = ',';
 
 
@@ -28,10 +21,16 @@ void dpsoCfgLoadActiveLangs(
     for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i)
         dpsoOcrSetLangIsActive(ocr, i, false);
 
+    const auto enableLang = [&](const char* langCode)
+    {
+        dpsoOcrSetLangIsActive(
+            ocr, dpsoOcrGetLangIdx(ocr, langCode), true);
+    };
+
     const auto* s = dpsoCfgGetStr(cfg, key, nullptr);
 
     if (!s) {
-        enableLang(ocr, fallbackLangCode);
+        enableLang(fallbackLangCode);
         return;
     }
 
@@ -50,7 +49,7 @@ void dpsoCfgLoadActiveLangs(
                 langCodeEnd = s + 1;
 
         langCode.assign(langCodeBegin, langCodeEnd);
-        enableLang(ocr, langCode.c_str());
+        enableLang(langCode.c_str());
     }
 }
 
