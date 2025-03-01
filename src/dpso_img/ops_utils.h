@@ -32,24 +32,13 @@ public:
     {
     }
 
-    const Px& operator[](int px) const
+    Px& operator[](int px) const
     {
-        return get(*this, px);
-    }
-
-    Px& operator[](int px)
-    {
-        return get(*this, px);
+        return line[axis == Axis::x ? px : px * pitch];
     }
 private:
     Px* line;
     int pitch;
-
-    template<typename Self>
-    static Px& get(Self& self, int px)
-    {
-        return self.line[axis == Axis::x ? px : px * self.pitch];
-    }
 };
 
 

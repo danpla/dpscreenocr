@@ -17,22 +17,12 @@ public:
     {
     }
 
-    const T* operator->() const
+    T* operator->() const
     {
         return &v;
     }
 
-    T* operator->()
-    {
-        return &v;
-    }
-
-    const T& operator*() const
-    {
-        return v;
-    }
-
-    T& operator*()
+    T& operator*() const
     {
         return v;
     }

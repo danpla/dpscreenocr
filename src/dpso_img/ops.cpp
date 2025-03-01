@@ -105,7 +105,7 @@ static void boxBlur(
         for (int i = 1; i <= radius; ++i)
             sum += srcLine[std::min(i, lineSize - 1)];
 
-        auto dstLine = makeLine<axis>(l, dst, dstPitch);
+        const auto dstLine = makeLine<axis>(l, dst, dstPitch);
         for (int i = 0; i < lineSize; ++i) {
             dstLine[i] = sum / kernelSize;
 

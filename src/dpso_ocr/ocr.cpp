@@ -219,7 +219,7 @@ void dpsoOcrDelete(DpsoOcr* ocr)
     dpsoOcrTerminateJobs(ocr);
 
     {
-        auto link = ocr->link.getLock();
+        const auto link = ocr->link.getLock();
         link->terminateThread = true;
         link->threadActionCondVar.notify_one();
     }
@@ -517,7 +517,7 @@ static void threadLoop(DpsoOcr& ocr)
 
         processJob(ocr, job);
 
-        auto link = ocr.link.getLock();
+        const auto link = ocr.link.getLock();
 
         link->jobActive = false;
         if (link->jobQueue.empty()) {
@@ -568,7 +568,7 @@ bool dpsoOcrQueueJob(
         ocrFeatures,
         createTimestamp()};
 
-    auto link = ocr->link.getLock();
+    const auto link = ocr->link.getLock();
 
     link->jobQueue.push(std::move(job));
     ++link->progress.totalJobs;
@@ -642,14 +642,14 @@ void dpsoOcrTerminateJobs(DpsoOcr* ocr)
     ocr->results = {};
 
     {
-        auto link = ocr->link.getLock();
+        const auto link = ocr->link.getLock();
         link->jobQueue = {};
         link->terminateJobs = true;
     }
 
     waitJobsToFinish(*ocr);
 
-    auto link = ocr->link.getLock();
+    const auto link = ocr->link.getLock();
     link->results = {};
     link->terminateJobs = false;
 }
