@@ -51,4 +51,5 @@ if(NOT TARGET dpso_utils)
         ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(dpso_ext PUBLIC dpso_ocr PRIVATE dpso_utils)
+target_link_libraries(
+    dpso_ext PUBLIC dpso_ocr dpso_sys PRIVATE dpso_utils)
