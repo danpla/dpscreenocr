@@ -151,7 +151,7 @@ private:
     char curlError[CURL_ERROR_SIZE]{};
     CurlMUPtr curlM;
     CurlUPtr curl;
-    std::unique_ptr<CurlMConnector> curlMConnector;
+    std::optional<CurlMConnector> curlMConnector;
     bool transferDone{};
 
     bool statusLineExpected{true};
@@ -241,8 +241,7 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
     SETOPT(CURLOPT_LOW_SPEED_LIMIT, 1l);
     SETOPT(CURLOPT_LOW_SPEED_TIME, 10l);
 
-    curlMConnector = std::make_unique<CurlMConnector>(
-        libCurl, curlM.get(), curl.get());
+    curlMConnector.emplace(libCurl, curlM.get(), curl.get());
 
     // Fetch the first chunk of the response body explicitly to make
     // sure we handled the header.
@@ -376,7 +375,7 @@ std::size_t CurlResponse::curlWriteFn(
     // curl_multi_perform(), so buf may already be nonempty.
     assert(resp.bufPos == 0);
 
-    // We allow dst to be null of dstSize is zero so that we can use
+    // We allow dst to be null if dstSize is zero so that we can use
     // performTransferStep() from the constructor.
     assert(resp.dstSize == 0 || resp.dst);
 
