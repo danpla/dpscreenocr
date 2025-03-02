@@ -8,13 +8,14 @@
 #include "dpso_ext/user_dirs.h"
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/os.h"
 #include "dpso_utils/windows/com.h"
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/utf.h"
 
 #include "app_dirs.h"
 #include "file_names.h"
-#include "ocr_data_utils.h"
+#include "ocr_default_data_dir.h"
 
 
 using namespace dpso;
@@ -48,13 +49,6 @@ void registerApplicationRestart()
 
     RegisterApplicationRestart(
         cmdLine, RESTART_NO_CRASH | RESTART_NO_HANG);
-}
-
-
-// Returns true if a file system entry (file, dir, etc.) exists.
-bool entryExists(const wchar_t* path)
-{
-    return GetFileAttributesW(path) != INVALID_FILE_ATTRIBUTES;
 }
 
 
@@ -152,33 +146,64 @@ bool shellCopy(const wchar_t* srcPath, const wchar_t* dstDirPath)
 }
 
 
-// Copy the given entry (file or directory) to dstDir if it exists in
-// srcDir but doesn't exist in dstDir.
-bool setupEntry(
-    const wchar_t* entryName,
-    const wchar_t* srcDir,
-    const wchar_t* dstDir)
+bool shellCopy(const char* srcPath, const char* dstDirPath)
 {
+    std::wstring srcPathUtf16;
+    try {
+        srcPathUtf16 = windows::utf8ToUtf16(srcPath);
+    } catch (windows::CharConversionError& e) {
+        setError(
+            "Can't convert srcPath to UTF-16: {}", e.what());
+        return false;
+    }
+
+    std::wstring dstDirPathUtf16;
+    try {
+        dstDirPathUtf16 = windows::utf8ToUtf16(dstDirPath);
+    } catch (windows::CharConversionError& e) {
+        setError(
+            "Can't convert dstDirPath to UTF-16: {}", e.what());
+        return false;
+    }
+
+    return shellCopy(srcPathUtf16.c_str(), dstDirPathUtf16.c_str());
+}
+
+
+// Return true if a file system entry (file, dir, etc.) exists.
+bool entryExists(const char* path)
+{
+    std::wstring pathUtf16;
+    try {
+        pathUtf16 = windows::utf8ToUtf16(path);
+    } catch (windows::CharConversionError& e) {
+        return false;
+    }
+
+    return GetFileAttributesW(pathUtf16.c_str())
+        != INVALID_FILE_ATTRIBUTES;
+}
+
+
+// If a file or directory srcPath exists, copy it to dstDirPath if it
+// doesn't already exist there.
+bool setupEntry(const char* srcPath, const char* dstDirPath)
+{
+    const auto entryName = os::getBaseName(srcPath);
+    if (entryName.empty())
+        return true;
+
     if (entryExists(
-            (std::wstring{dstDir} + L'\\' + entryName).c_str()))
+            (std::string{dstDirPath} + '\\' + entryName).c_str()))
         return true;
 
-    const auto srcPath = std::wstring{srcDir} + L'\\' + entryName;
-    if (!entryExists(srcPath.c_str()))
+    if (!entryExists(srcPath))
         return true;
 
-    if (!shellCopy(srcPath.c_str(), dstDir)) {
-        std::string srcPathUtf8;
-        std::string dstDirUtf8;
-        try {
-            srcPathUtf8 = windows::utf16ToUtf8(srcPath.c_str());
-            dstDirUtf8 = windows::utf16ToUtf8(dstDir);
-        } catch (windows::CharConversionError& e) {
-        }
-
+    if (!shellCopy(srcPath, dstDirPath)) {
         setError(
             "Can't copy \"{}\" to \"{}\": {}",
-            srcPathUtf8, dstDirUtf8, dpsoGetError());
+            srcPath, dstDirPath, dpsoGetError());
         return false;
     }
 
@@ -186,41 +211,35 @@ bool setupEntry(
 }
 
 
-bool setupOcrData(
-    const wchar_t* srcDataDir, const wchar_t* userDataDir)
+bool setupOcrData()
 {
+    const std::string appDataDir{uiGetAppDir(UiAppDirData)};
+
     for (int i = 0; i < dpsoOcrGetNumEngines(); ++i) {
         DpsoOcrEngineInfo ocrEngineInfo;
         dpsoOcrGetEngineInfo(i, &ocrEngineInfo);
 
-        std::wstring dirName;
-        try {
-            dirName = windows::utf8ToUtf16(
-                uiGetOcrDataDirName(&ocrEngineInfo));
-        } catch (windows::CharConversionError& e) {
-        }
+        const auto dataDirPath = getDefaultOcrDataDir(ocrEngineInfo);
+        if (!dataDirPath)
+            return false;
 
-        if (!dirName.empty() &&
-                !setupEntry(dirName.c_str(), srcDataDir, userDataDir))
+        const auto dataDirName = os::getBaseName(
+            dataDirPath->c_str());
+        if (dataDirName.empty())
+            continue;
+
+        const auto dataDirParentPath = os::getDirName(
+            dataDirPath->c_str());
+        if (dataDirParentPath.empty())
+            continue;
+
+        if (!setupEntry(
+                (appDataDir + '\\' + dataDirName).c_str(),
+                dataDirParentPath.c_str()))
             return false;
     }
 
     return true;
-}
-
-
-int setupUserData(const wchar_t* userDataDir)
-{
-    std::wstring srcDataDir;
-    try {
-        srcDataDir = windows::utf8ToUtf16(uiGetAppDir(UiAppDirData));
-    } catch (windows::CharConversionError& e) {
-        setError(
-            "Can't convert UiAppDirData to UTF-16: {}", e.what());
-        return false;
-    }
-
-    return setupOcrData(srcDataDir.c_str(), userDataDir);
 }
 
 
@@ -243,23 +262,8 @@ bool initEnd(int argc, char* argv[])
 
     registerApplicationRestart();
 
-    const auto* userDataDir = dpsoGetUserDir(
-        DpsoUserDirData, uiAppFileName);
-    if (!userDataDir) {
-        setError("Can't get user data dir: {}", dpsoGetError());
-        return false;
-    }
-
-    std::wstring userDataDirUtf16;
-    try {
-        userDataDirUtf16 = windows::utf8ToUtf16(userDataDir);
-    } catch (windows::CharConversionError& e) {
-        setError("Can't convert userDataDir to UTF-16: {}", e.what());
-        return false;
-    }
-
-    if (!setupUserData(userDataDirUtf16.c_str())) {
-        setError("setupUserData: {}", dpsoGetError());
+    if (!setupOcrData()) {
+        setError("setupOcrData(): {}", dpsoGetError());
         return false;
     }
 
