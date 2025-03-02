@@ -24,6 +24,7 @@ add_library(
     init_startup_args.cpp
     ocr_data_utils.cpp
     sound.cpp
+    str_nformat.cpp
     toplevel_argv0.cpp
     update_checker_default.cpp
     user_agent.cpp)
@@ -155,5 +156,5 @@ endif()
 
 target_link_libraries(
     ui_common
-    PUBLIC dpso_ocr dpso_sys
-    PRIVATE dpso_intl dpso_sound dpso_utils)
+    PUBLIC dpso_ocr dpso_sys dpso_utils
+    PRIVATE dpso_intl dpso_sound)

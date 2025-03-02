@@ -2,6 +2,8 @@
 
 #include <functional>
 
+#include "ui_common/ui_common.h"
+
 #include <QIcon>
 
 
@@ -10,7 +12,15 @@ class QMargins;
 class QWidget;
 
 
+// Formatting support for ui::strNFormat().
+std::string toStr(const QString& s);
+
+
 namespace ui::qt {
+
+
+QString strNFormat(
+    const char* str, std::initializer_list<ui::StrNFormatArg> args);
 
 
 QString formatDataSize(qint64 size);

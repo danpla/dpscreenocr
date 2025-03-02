@@ -35,8 +35,8 @@ std::string toStr(const std::string& str);
 std::string lfToNativeNewline(const char* str);
 
 
-template<typename T>
-std::string toStr(T begin, T end)
+template<typename T, typename StrExtractor>
+std::string toStr(T begin, T end, StrExtractor strExtractor)
 {
     std::string result = "{";
 
@@ -44,7 +44,7 @@ std::string toStr(T begin, T end)
         if (iter != begin)
             result += ", ";
 
-        result += toStr(*iter);
+        result += strExtractor(*iter);
     }
 
     result += '}';
@@ -53,10 +53,20 @@ std::string toStr(T begin, T end)
 }
 
 
-template<typename T>
-auto toStr(const T& v) -> decltype(toStr(v.begin(), v.end()))
+struct DefaultStrExtractor {
+    template<typename T>
+    std::string operator()(const T& v) const
+    {
+        return toStr(v);
+    }
+};
+
+
+template<typename T, typename StrExtractor = DefaultStrExtractor>
+auto toStr(const T& v, StrExtractor strExtractor = {})
+    -> decltype(toStr(v.begin(), v.end(), strExtractor))
 {
-    return toStr(v.begin(), v.end());
+    return toStr(v.begin(), v.end(), strExtractor);
 }
 
 

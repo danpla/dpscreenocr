@@ -22,7 +22,20 @@
 #define _(S) gettext(S)
 
 
+std::string toStr(const QString& s)
+{
+    return s.toStdString();
+}
+
+
 namespace ui::qt {
+
+
+QString strNFormat(
+    const char* str, std::initializer_list<StrNFormatArg> args)
+{
+    return QString::fromStdString(ui::strNFormat(str, args));
+}
 
 
 QString formatDataSize(qint64 size)

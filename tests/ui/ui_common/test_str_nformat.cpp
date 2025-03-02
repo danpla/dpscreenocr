@@ -2,14 +2,14 @@
 #include <initializer_list>
 #include <string>
 
-#include "dpso_ext/str_nformat.h"
+#include "ui/ui_common/str_nformat.h"
 #include "dpso_utils/str.h"
 
 #include "flow.h"
 #include "utils.h"
 
 
-static std::string toStr(const DpsoStrNFormatArg& arg)
+static std::string toStr(const ui::StrNFormatArg& arg)
 {
     return dpso::str::format("{\"{}\": \"{}\"}", arg.name, arg.str);
 }
@@ -19,7 +19,7 @@ static void testStrNFormat()
 {
     const struct {
         const char* str;
-        std::initializer_list<DpsoStrNFormatArg> args;
+        std::initializer_list<ui::StrNFormatArg> args;
         const char* expected;
     } tests[]{
         {
@@ -70,15 +70,15 @@ static void testStrNFormat()
     };
 
     for (const auto& test : tests) {
-        const auto* got = dpsoStrNFormat(test.str, test.args);
-        if (std::strcmp(got, test.expected) == 0)
+        const auto got = ui::strNFormat(test.str, test.args);
+        if (got == test.expected)
             continue;
 
         test::failure(
-            "dpsoStrNFormat(\"{}\", {}): "
+            "ui::strNFormat(\"{}\", {}): "
             "expected \"{}\", got \"{}\"",
             test.str,
-            test::utils::toStr(test.args),
+            test::utils::toStr(test.args, toStr),
             test.expected,
             got);
     }

@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
         QMessageBox::information(
             nullptr,
             uiAppName,
-            dpsoStrNFormat(
+            ui::qt::strNFormat(
                 _("{app_name} is already running"),
                 {{"app_name", uiAppName}}));
         return EXIT_SUCCESS;

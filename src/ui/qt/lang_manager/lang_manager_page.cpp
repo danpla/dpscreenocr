@@ -8,11 +8,9 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-#include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_ocr/dpso_ocr.h"
 #include "dpso_utils/dpso_utils.h"
-#include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
 
 #include "lang_manager/install_mode.h"
@@ -146,17 +144,14 @@ void LangManagerPage::selectionChanged()
         totalSize += row.data(Qt::UserRole).value<int64_t>();
 
     selectionInfoLabel->setText(
-        dpsoStrNFormat(
+        strNFormat(
             ngettext(
                 "{count} language selected ({size}).",
                 "{count} languages selected ({size}).",
                 selectedRows.size()),
             {
-                {
-                    "count",
-                    dpso::str::toStr(selectedRows.size()).c_str()},
-                {"size", formatDataSize(totalSize).toUtf8().data()}
-            }));
+                {"count", selectedRows.size()},
+                {"size", formatDataSize(totalSize)}}));
 }
 
 
@@ -270,16 +265,16 @@ bool LangManagerPageRemove::performAction(
         const auto* langName = dpsoOcrLangManagerGetLangName(
             langManager, langIdx);
 
-        questionText = dpsoStrNFormat(
+        questionText = strNFormat(
             _("Remove \342\200\234{name}\342\200\235?"),
             {{"name", *langName ? gettext(langName) : langCode}});
     } else
-        questionText = dpsoStrNFormat(
+        questionText = strNFormat(
             ngettext(
                 "Remove {count} selected language?",
                 "Remove {count} selected languages?",
                 langCodes.size()),
-            {{"count", dpso::str::toStr(langCodes.size()).c_str()}});
+            {{"count", langCodes.size()}});
 
     if (!confirmDestructiveAction(
             this, questionText, _("Cancel"), _("Remove")))

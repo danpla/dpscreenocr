@@ -64,11 +64,9 @@ QString getUnmetRequirementsText(
     for (size_t i = 0; i < updateInfo.numUnmetRequirements; ++i) {
         const auto& ur = updateInfo.unmetRequirements[i];
         if (*ur.actual)
-            list.append(dpsoStrNFormat(
+            list.append(strNFormat(
                 _("{required} (you have {actual})"),
-                {
-                    {"required", ur.required},
-                    {"actual", ur.actual}}));
+                {{"required", ur.required}, {"actual", ur.actual}}));
         else
             list.append(ur.required);
     }
@@ -91,7 +89,7 @@ void showUpdateInfo(
     QString informativeText;
 
     if (*updateInfo.newVersion) {
-        text = dpsoStrNFormat(
+        text = strNFormat(
             _("{app_name} {new_version} is available (you have "
                 "{current_version})"),
             {
@@ -102,7 +100,7 @@ void showUpdateInfo(
         informativeText =
             _("Visit the website for more information.");
     } else
-        text = dpsoStrNFormat(
+        text = strNFormat(
             updateInfo.numUnmetRequirements == 0
                 ? _("You have the latest version of {app_name}")
                 : _("You have the latest version of {app_name} "
@@ -113,7 +111,7 @@ void showUpdateInfo(
         if (!informativeText.isEmpty())
             informativeText += "\n\n";
 
-        informativeText = dpsoStrNFormat(
+        informativeText = strNFormat(
             _("The latest version is {latest_version}, but your "
                 "system does not meet the following minimum "
                 "requirements: {requirements}."),
@@ -121,8 +119,7 @@ void showUpdateInfo(
                 {"latest_version", updateInfo.latestVersion},
                 {
                     "requirements",
-                    getUnmetRequirementsText(updateInfo)
-                        .toUtf8().data()}});
+                    getUnmetRequirementsText(updateInfo)}});
     }
 
     QMessageBox msgBox(

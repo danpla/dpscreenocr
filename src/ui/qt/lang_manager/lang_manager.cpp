@@ -7,11 +7,9 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-#include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_ocr/dpso_ocr.h"
 #include "dpso_utils/dpso_utils.h"
-#include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
 
 #include "lang_manager/lang_list.h"
@@ -83,9 +81,8 @@ static QString getUpdateTabTitle(
                 == DpsoOcrLangStateUpdateAvailable)
             ++numUpdatable;
 
-    return dpsoStrNFormat(
-            _("Update ({count})"),
-            {{"count", dpso::str::toStr(numUpdatable).c_str()}});
+    return strNFormat(
+        _("Update ({count})"), {{"count", numUpdatable}});
 }
 
 

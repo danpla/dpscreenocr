@@ -72,6 +72,12 @@ std::string rightJustify(std::string s, std::size_t width, char fill)
 }
 
 
+std::string toStr(char c)
+{
+    return std::string(1, c);
+}
+
+
 template<typename T>
 static std::string intToStr(T v, int base)
 {
@@ -178,12 +184,6 @@ const char* get(const char* v)
 const char* get(const std::string& v)
 {
     return v.c_str();
-}
-
-
-ConvertedStr get(char c)
-{
-    return {std::string(1, c)};
 }
 
 

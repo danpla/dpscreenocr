@@ -135,6 +135,8 @@ void testToStr()
 {
     using dpso::str::toStr;
 
+    TEST_STR(toStr('c'), "c");
+
     TEST_STR(toStr(123), "123");
     TEST_STR(toStr(-123), "-123");
 

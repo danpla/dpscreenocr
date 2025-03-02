@@ -8,8 +8,7 @@ add_library(
     cfg.cpp
     cfg_ext.cpp
     history.cpp
-    history_export.cpp
-    str_nformat.cpp)
+    history_export.cpp)
 
 if(UNIX AND NOT APPLE)
     target_sources(

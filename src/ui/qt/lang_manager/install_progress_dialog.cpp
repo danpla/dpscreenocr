@@ -9,18 +9,13 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "dpso_ext/dpso_ext.h"
 #include "dpso_intl/dpso_intl.h"
-#include "dpso_utils/str.h"
 #include "ui_common/ui_common.h"
 
 #include "utils.h"
 
 
 #define _(S) gettext(S)
-
-
-using dpso::str::toStr;
 
 
 namespace ui::qt::langManager {
@@ -176,7 +171,7 @@ void InstallProgressDialog::timerEvent(QTimerEvent* event)
     const auto* langName = dpsoOcrLangManagerGetLangName(
         langManager, progress.curLangIdx);
 
-    label->setText(dpsoStrNFormat(
+    label->setText(strNFormat(
         installMode == InstallMode::install
             ? _("Installing \342\200\234{name}\342\200\235 "
                 "({current}/{total})")
@@ -184,8 +179,8 @@ void InstallProgressDialog::timerEvent(QTimerEvent* event)
                 "({current}/{total})"),
         {
             {"name", *langName ? gettext(langName) : langCode},
-            {"current", toStr(progress.curLangNum).c_str()},
-            {"total", toStr(progress.totalLangs).c_str()}}));
+            {"current", progress.curLangNum},
+            {"total", progress.totalLangs}}));
 }
 
 

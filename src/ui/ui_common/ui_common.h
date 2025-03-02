@@ -15,3 +15,7 @@
 #include "update_checker.h"
 #include "update_checker_default.h"
 #include "user_agent.h"
+
+#ifdef __cplusplus
+#include "str_nformat.h"
+#endif

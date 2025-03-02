@@ -21,7 +21,6 @@
 
 #include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
-#include "dpso_utils/str.h"
 
 #include "about.h"
 #include "action_chooser.h"
@@ -35,9 +34,6 @@
 
 
 #define _(S) gettext(S)
-
-
-using dpso::str::toStr;
 
 
 namespace ui::qt {
@@ -383,8 +379,7 @@ void MainWindow::commitData(QSessionManager& sessionManager)
 void MainWindow::createQActions()
 {
     visibilityAction = new QAction(
-        dpsoStrNFormat(
-            _("Show {app_name}"), {{"app_name", uiAppName}}),
+        strNFormat(_("Show {app_name}"), {{"app_name", uiAppName}}),
         this);
     visibilityAction->setCheckable(true);
     visibilityAction->setChecked(true);
@@ -526,7 +521,7 @@ QWidget* MainWindow::createSettingsTab()
     minimizeToTrayCheck = new QCheckBox(
         _("Minimize to notification area"));
     minimizeToTrayCheck->setToolTip(
-        dpsoStrNFormat(
+        strNFormat(
             _(
                 "Minimizing the window will hide {app_name}. Use the "
                 "notification area icon to show it again."),
@@ -536,7 +531,7 @@ QWidget* MainWindow::createSettingsTab()
 
     closeToTrayCheck = new QCheckBox(_("Close to notification area"));
     closeToTrayCheck->setToolTip(
-        dpsoStrNFormat(
+        strNFormat(
             _(
                 "Closing the window will hide {app_name}. Use the "
                 "notification area icon to show it again."),
@@ -576,7 +571,7 @@ QWidget* MainWindow::createSettingsTab()
 
     autostartCheck = new QCheckBox(_("Run at system logon"));
     autostartCheck->setToolTip(
-        dpsoStrNFormat(
+        strNFormat(
             _(
                 "{app_name} will start automatically when you log on "
                 "to the system. The program will be hidden to the "
@@ -734,7 +729,7 @@ void MainWindow::loadState(const DpsoCfg* cfg)
     autoUpdateCheck->setChecked(
         updateChecker.getAutoCheckIsEnabled());
     autoUpdateCheck->setToolTip(
-        dpsoStrNFormat(
+        strNFormat(
             ngettext(
                 "{app_name} will automatically check for updates at "
                 "startup, but no more often than once every {count} "
@@ -745,9 +740,7 @@ void MainWindow::loadState(const DpsoCfg* cfg)
                 updateChecker.getAutoCheckIntervalDays()),
             {
                 {"app_name", uiAppName},
-                {"count",
-                    toStr(updateChecker.getAutoCheckIntervalDays())
-                        .c_str()}
+                {"count", updateChecker.getAutoCheckIntervalDays()}
             }));
 
     tabs->setCurrentIndex(dpsoCfgGetInt(cfg, cfgKeyUiActiveTab, 0));
@@ -969,13 +962,12 @@ void MainWindow::updateStatus()
 
         setStatus(
             Status::busy,
-            dpsoStrNFormat(
+            strNFormat(
                 progressStatusFmt.c_str(),
                 {
-                    {"progress", toStr(totalProgress).c_str()},
-                    {"current_job", toStr(progress.curJob).c_str()},
-                    {"total_jobs", toStr(progress.totalJobs).c_str()}
-                }));
+                    {"progress", totalProgress},
+                    {"current_job", progress.curJob},
+                    {"total_jobs", progress.totalJobs}}));
 
         uiTaskbarSetProgress(taskbar.get(), totalProgress);
 
@@ -1009,7 +1001,7 @@ void MainWindow::updateStatus()
 
         setStatus(
             Status::ok,
-            dpsoStrNFormat(
+            strNFormat(
                 !dpsoSelectionGetIsEnabled(selection)
                     ? _("Press {hotkey} to start area selection")
                     : _("Press {hotkey} to finish selection"),

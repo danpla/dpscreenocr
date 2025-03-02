@@ -8,7 +8,6 @@ add_executable(
     dpso_ext/test_cfg.cpp
     dpso_ext/test_history.cpp
     dpso_ext/test_history_export.cpp
-    dpso_ext/test_str_nformat.cpp
     dpso_ocr/test_tesseract_utils.cpp
     dpso_sys/test_keys.cpp
     dpso_utils/stream/test_out_newline_conversion_stream.cpp
@@ -21,7 +20,8 @@ add_executable(
     dpso_utils/test_sha256_file.cpp
     dpso_utils/test_str.cpp
     dpso_utils/test_strftime.cpp
-    dpso_utils/test_version_cmp.cpp)
+    dpso_utils/test_version_cmp.cpp
+    ui/ui_common/test_str_nformat.cpp)
 
 if(WIN32)
     target_sources(
@@ -64,7 +64,13 @@ if(NOT TARGET dpso_utils)
         ../src/dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-target_link_libraries(tests dpso_ext dpso_ocr dpso_sys dpso_utils)
+if(NOT TARGET ui_common)
+    add_subdirectory(
+        ../src/ui/ui_common "${CMAKE_BINARY_DIR}/src/ui/ui_common")
+endif()
+
+target_link_libraries(
+    tests dpso_ext dpso_ocr dpso_sys dpso_utils ui_common)
 
 add_executable(test_c_compilation test_c_compilation.c)
 
@@ -88,11 +94,6 @@ endif()
 if(NOT TARGET dpso_intl)
     add_subdirectory(
         ../src/dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
-endif()
-
-if(NOT TARGET ui_common)
-    add_subdirectory(
-        ../src/ui/ui_common "${CMAKE_BINARY_DIR}/src/ui/ui_common")
 endif()
 
 target_link_libraries(
