@@ -62,8 +62,6 @@ private:
 
     dpso::CfgUPtr cfg;
 
-    std::string ocrDataDirPath;
-
     int updateTimerId{};
 
     bool ocrAllowQueuing{};

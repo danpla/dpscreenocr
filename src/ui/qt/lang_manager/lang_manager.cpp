@@ -86,18 +86,13 @@ static QString getUpdateTabTitle(
 }
 
 
-void runLangManager(
-    QWidget* parent, int ocrEngineIdx, const std::string& dataDir)
+void runLangManager(QWidget* parent, int ocrEngineIdx)
 {
     DpsoOcrEngineInfo ocrEngineInfo;
     dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
 
     dpso::OcrLangManagerUPtr langManager{
-        dpsoOcrLangManagerCreate(
-            ocrEngineIdx,
-            dataDir.c_str(),
-            uiGetUserAgent(),
-            uiGetOcrDataInfoFileUrl(&ocrEngineInfo))};
+        dpsoOcrLangManagerCreateDefault(ocrEngineIdx)};
     if (!langManager) {
         QMessageBox::critical(
             parent,

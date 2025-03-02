@@ -6,6 +6,7 @@
 #include "app_info.h"
 
 
+namespace ui {
 namespace {
 
 
@@ -27,7 +28,10 @@ void appendAsToken(std::string& result, const char* str)
 }
 
 
-std::string buildUserAgent()
+}
+
+
+std::string getUserAgent()
 {
     std::string result;
 
@@ -39,11 +43,4 @@ std::string buildUserAgent()
 }
 
 
-}
-
-
-const char* uiGetUserAgent(void)
-{
-    static const auto userAgent = buildUserAgent();
-    return userAgent.c_str();
 }

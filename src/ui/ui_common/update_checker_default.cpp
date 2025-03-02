@@ -29,5 +29,7 @@ static std::string getInfoFileUrl()
 UiUpdateChecker* uiUpdateCheckerCreateDefault(void)
 {
     return uiUpdateCheckerCreate(
-        uiAppVersion, uiGetUserAgent(), getInfoFileUrl().c_str());
+        uiAppVersion,
+        ui::getUserAgent().c_str(),
+        getInfoFileUrl().c_str());
 }

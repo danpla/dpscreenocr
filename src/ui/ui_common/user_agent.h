@@ -1,19 +1,14 @@
 #pragma once
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <string>
 
 
-/**
- * Get a string suitable for the User-Agent HTTP header.
- *
- * The string is built from uiAppName and uiAppVersion.
- */
-const char* uiGetUserAgent(void);
+namespace ui {
 
 
-#ifdef __cplusplus
+// Get a string for the User-Agent HTTP header. The string is built
+// from uiAppName and uiAppVersion.
+std::string getUserAgent();
+
+
 }
-#endif

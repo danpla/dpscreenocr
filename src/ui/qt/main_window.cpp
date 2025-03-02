@@ -89,30 +89,13 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
             + "\": "
             + dpsoGetError());
 
-    const auto* dataPath = dpsoGetUserDir(
-        DpsoUserDirData, uiAppFileName);
-    if (!dataPath)
-        throw Error(
-            std::string("Can't get data path: ") + dpsoGetError());
-
     if (dpsoOcrGetNumEngines() == 0)
         throw Error("No OCR engines are available");
 
-    DpsoOcrEngineInfo ocrEngineInfo;
-    dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
-
-    if (const char* dirName = uiGetOcrDataDirName(&ocrEngineInfo);
-            *dirName)
-        ocrDataDirPath =
-            std::string{dataPath} + *dpsoDirSeparators + dirName;
-
-    ocr.reset(dpsoOcrCreate(ocrEngineIdx, ocrDataDirPath.c_str()));
+    ocr.reset(dpsoOcrCreateDefault(ocrEngineIdx));
     if (!ocr)
         throw Error(
-            std::string("Can't create OCR with \"")
-            + ocrEngineInfo.id
-            + "\" engine: "
-            + dpsoGetError());
+            std::string("Can't create OCR: \"") + dpsoGetError());
 
     dpsoKeyManagerSetIsEnabled(keyManager, true);
 
@@ -266,7 +249,7 @@ void MainWindow::openLangManager()
     setSelectionIsEnabled(false);
     dpsoKeyManagerSetIsEnabled(keyManager, false);
 
-    langManager::runLangManager(this, ocrEngineIdx, ocrDataDirPath);
+    langManager::runLangManager(this, ocrEngineIdx);
     langBrowser->reloadLangs();
 
     // Refresh status in case we installed the first (or removed the
