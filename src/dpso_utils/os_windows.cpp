@@ -1,7 +1,6 @@
 #include "os.h"
 
 #include <cstring>
-#include <initializer_list>
 #include <io.h>
 
 #define WIN32_LEAN_AND_MEAN
@@ -14,6 +13,7 @@
 #include "windows/handle.h"
 #include "windows/utf.h"
 
+#include "os_stdio.h"
 #include "str.h"
 
 

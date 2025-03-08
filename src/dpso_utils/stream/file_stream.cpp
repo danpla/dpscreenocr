@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "os.h"
+#include "os_stdio.h"
 
 
 namespace dpso {

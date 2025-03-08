@@ -11,6 +11,8 @@
 
 #include <vector>
 
+#include "os_stdio.h"
+
 
 namespace dpso::os {
 namespace {

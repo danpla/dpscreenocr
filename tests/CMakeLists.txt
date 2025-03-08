@@ -15,6 +15,7 @@ add_executable(
     dpso_utils/test_geometry.cpp
     dpso_utils/test_line_reader.cpp
     dpso_utils/test_os.cpp
+    dpso_utils/test_os_stdio.cpp
     dpso_utils/test_progress_tracker.cpp
     dpso_utils/test_sha256.cpp
     dpso_utils/test_sha256_file.cpp

@@ -262,21 +262,6 @@ const auto* const testUnicodeFileName =
     "\346\261\211\350\257\255.txt";
 
 
-void testFopen()
-{
-    os::StdFileUPtr fp{os::fopen(testUnicodeFileName, "wb")};
-    if (!fp) {
-        test::failure(
-            "os::fopen(\"{}\"): {}",
-            testUnicodeFileName, os::getErrnoMsg(errno));
-        return;
-    }
-
-    fp.reset();
-    test::utils::removeFile(testUnicodeFileName);
-}
-
-
 void testRemoveFile()
 {
     test::utils::saveText(
@@ -320,19 +305,26 @@ void testReplaceSrcExists(bool dstExists)
         return;
     }
 
-    if (os::StdFileUPtr{os::fopen(srcFilePath, "r")})
+    try {
+        (void)os::getFileSize(srcFilePath);
         test::failure(
-            "os::replace(\"{}\", \"{}\") didn't failed, but the "
-            "source file still exists",
+            "os::replace(\"{}\", \"{}\") didn't fail, but the source "
+            "file still exists",
             srcFilePath, dstFilePath);
-
-    if (!dstExists && !os::StdFileUPtr{os::fopen(dstFilePath, "r")}) {
-        test::failure(
-            "os::replace(\"{}\", \"{}\") didn't created the "
-            "destination file",
-            srcFilePath, dstFilePath);
-        return;
+    } catch (os::Error&) {
     }
+
+    if (!dstExists)
+        try {
+            (void)os::getFileSize(dstFilePath);
+        } catch (os::FileNotFoundError&) {
+            test::failure(
+                "os::replace(\"{}\", \"{}\") didn't create the "
+                "destination file",
+                srcFilePath, dstFilePath);
+            return;
+        } catch (os::Error&) {
+        }
 
     const auto dstText = test::utils::loadText(
         "testReplace", dstFilePath);
@@ -358,27 +350,6 @@ void testReplace()
     testReplaceSrcExists(false);
     testReplaceSrcExists(true);
     testReplaceNoSrc();
-}
-
-
-void testSyncFile()
-{
-    const auto* fileName = "test_sync_file.txt";
-
-    os::StdFileUPtr fp{os::fopen(fileName, "wb")};
-    if (!fp)
-        test::fatalError(
-            "testSyncFile: os::fopen(\"{}\"): {}",
-            fileName, os::getErrnoMsg(errno));
-
-    try {
-        os::syncFile(fp.get());
-    } catch (os::Error& e) {
-        test::failure("os::syncFile(): {}", e.what());
-    }
-
-    fp.reset();
-    test::utils::removeFile(fileName);
 }
 
 
@@ -423,10 +394,8 @@ void testOs()
     testGetFileExt();
     testGetFileSize();
     testResizeFile();
-    testFopen();
     testRemoveFile();
     testReplace();
-    testSyncFile();
     testSyncDir();
     testLoadData();
 }

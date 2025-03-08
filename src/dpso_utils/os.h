@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <cstdio>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -86,23 +85,6 @@ std::int64_t getFileSize(const char* filePath);
 void resizeFile(const char* filePath, std::int64_t newSize);
 
 
-// fopen() that accepts filePath in UTF-8.
-std::FILE* fopen(const char* filePath, const char* mode);
-
-
-// Deleter for a FILE* smart pointer.
-struct StdFileCloser {
-    void operator()(std::FILE* fp) const
-    {
-        if (fp)
-            std::fclose(fp);
-    }
-};
-
-
-using StdFileUPtr = std::unique_ptr<std::FILE, StdFileCloser>;
-
-
 // Remove a regular file. The behavior is platform-specific if
 // filePath points to anything other than a regular file.
 // Throws os::Error.
@@ -122,16 +104,6 @@ void replace(const char* src, const char* dst);
 //
 // Throws os::Error. An existing dirPath is not treated as an error.
 void makeDirs(const char* dirPath);
-
-
-// Synchronize file state with storage device.
-//
-// The function transfers all modified data (and possibly file
-// attributes) to the permanent storage device. It should normally be
-// preceded by fflush().
-//
-// Throws os::Error.
-void syncFile(std::FILE* fp);
 
 
 // Synchronize directory with storage device.
