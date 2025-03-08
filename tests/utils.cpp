@@ -138,40 +138,15 @@ void saveText(
 
 std::string loadText(const char* contextInfo, const char* filePath)
 {
-    std::optional<dpso::FileStream> file;
     try {
-        file.emplace(filePath, dpso::FileStream::Mode::read);
+        return dpso::os::loadData(filePath);
     } catch (dpso::os::Error& e) {
         test::fatalError(
-            "{}: loadText(): FileStream(\"{}\", Mode::read): {}",
+            "{}: os::loadData(): {}",
             contextInfo,
             filePath,
             e.what());
     }
-
-    std::string result;
-
-    char buf[4096];
-    while (true) {
-        std::size_t numRead{};
-        try {
-            numRead = file->readSome(buf, sizeof(buf));
-        } catch (dpso::StreamError& e) {
-            test::fatalError(
-                "{}: loadText(): FileStream::readSome() from \"{}\": "
-                "{}",
-                contextInfo,
-                filePath,
-                e.what());
-        }
-
-        result.append(buf, numRead);
-
-        if (numRead < sizeof(buf))
-            break;
-    }
-
-    return result;
 }
 
 
