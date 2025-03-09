@@ -6,10 +6,6 @@
 
 cmake_minimum_required(VERSION "@CMAKE_MINIMUM_REQUIRED_VERSION@")
 
-# Note that we need to support CMake 3.16, while:
-# * COMMAND_ERROR_IS_FATAL in execute_process() was added in 3.19.
-# * REQUIRED in find_program() was added in 3.18.
-
 # Create the variables explicitly so that we don't have to mess with
 # @-substitutions all over the script.
 set(CMAKE_COMMAND "@CMAKE_COMMAND@")
@@ -70,10 +66,7 @@ function(set_up_program)
             "${CMAKE_COMMAND}"
             --build "${CMAKE_BINARY_DIR}"
             --parallel
-        RESULT_VARIABLE EXIT_STATUS)
-    if(NOT EXIT_STATUS EQUAL 0)
-        message(FATAL_ERROR "Can't build \"${CMAKE_BINARY_DIR}\"")
-    endif()
+        COMMAND_ERROR_IS_FATAL ANY)
 
     execute_process(
         COMMAND
@@ -81,13 +74,7 @@ function(set_up_program)
             --install "${CMAKE_BINARY_DIR}"
             --strip
             --prefix "${BUNDLE_DIR}"
-        RESULT_VARIABLE EXIT_STATUS)
-    if(NOT EXIT_STATUS EQUAL 0)
-        message(
-            FATAL_ERROR
-            "Can't install \"${CMAKE_BINARY_DIR}\" to "
-            "\"${BUNDLE_DIR}\"")
-    endif()
+        COMMAND_ERROR_IS_FATAL ANY)
 endfunction()
 
 
@@ -103,20 +90,11 @@ function(set_up_launcher)
             -B "${LAUNCHER_BUILD_DIR}"
             -G "${CMAKE_GENERATOR}"
             "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-        RESULT_VARIABLE EXIT_STATUS)
-    if(NOT EXIT_STATUS EQUAL 0)
-        message(
-            FATAL_ERROR
-            "Can't generate \"${LAUNCHER_BUILD_DIR}\" from "
-            "\"${LAUNCHER_SOURCE_DIR}\"")
-    endif()
+        COMMAND_ERROR_IS_FATAL ANY)
 
     execute_process(
         COMMAND "${CMAKE_COMMAND}" --build "${LAUNCHER_BUILD_DIR}"
-        RESULT_VARIABLE EXIT_STATUS)
-    if(NOT EXIT_STATUS EQUAL 0)
-        message(FATAL_ERROR "Can't build \"${LAUNCHER_BUILD_DIR}\"")
-    endif()
+        COMMAND_ERROR_IS_FATAL ANY)
 
     file(
         INSTALL "${LAUNCHER_BUILD_DIR}/launcher"
@@ -146,7 +124,7 @@ endfunction()
 
 
 function(qmake_query PROP OUT_VAR)
-    find_program(QMAKE_EXE qmake)
+    find_program(QMAKE_EXE qmake RQUIRED)
     if(NOT QMAKE_EXE)
         message(FATAL_ERROR "qmake not found")
     endif()
@@ -155,10 +133,7 @@ function(qmake_query PROP OUT_VAR)
         COMMAND "${QMAKE_EXE}" -query "${PROP}"
         OUTPUT_VARIABLE OUT
         OUTPUT_STRIP_TRAILING_WHITESPACE
-        RESULT_VARIABLE EXIT_STATUS)
-    if(NOT EXIT_STATUS EQUAL 0)
-        message(FATAL_ERROR "\"${QMAKE_EXE} -query ${PROP}\" failed")
-    endif()
+        COMMAND_ERROR_IS_FATAL ANY)
 
     set(${OUT_VAR} "${OUT}" PARENT_SCOPE)
 endfunction()

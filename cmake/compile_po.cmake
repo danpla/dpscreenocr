@@ -1,9 +1,6 @@
 include(get_linguas)
 
-find_program(MSGFMT_EXE msgfmt)
-if(NOT MSGFMT_EXE)
-    message(SEND_ERROR "msgfmt not found")
-endif()
+find_program(MSGFMT_EXE msgfmt REQUIRED)
 
 # The function compiles PO files for languages listed in po/LINGUAS,
 # writing MOs to DST_DIR.

@@ -21,9 +21,6 @@ foreach(FILE ${FILES})
     message(STATUS "Uninstalling: ${FILE_PATH}")
 
     execute_process(
-        COMMAND "@CMAKE_COMMAND@" -E remove "${FILE_PATH}"
-        RESULT_VARIABLE EXIT_STATUS)
-    if(NOT EXIT_STATUS EQUAL 0)
-        message(FATAL_ERROR "Can't remove ${FILE_PATH}")
-    endif()
+        COMMAND "@CMAKE_COMMAND@" -E rm "${FILE_PATH}"
+        COMMAND_ERROR_IS_FATAL ANY)
 endforeach()

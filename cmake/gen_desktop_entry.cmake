@@ -1,7 +1,4 @@
-find_program(MSGFMT_EXE msgfmt)
-if(NOT MSGFMT_EXE)
-    message(SEND_ERROR "msgfmt not found")
-endif()
+find_program(MSGFMT_EXE msgfmt REQUIRED)
 
 # Generates a desktop entry "${APP_FILE_NAME}.desktop" in DST_DIR.
 function(gen_desktop_entry DST_DIR)

@@ -55,9 +55,7 @@ else()
 endif()
 
 install(
-    FILES "${CMAKE_SOURCE_DIR}/doc/changelog.txt"
-    DESTINATION "${CMAKE_INSTALL_DOCDIR}")
-
-install(
-    FILES "${CMAKE_SOURCE_DIR}/LICENSE.txt"
+    FILES
+        "${CMAKE_SOURCE_DIR}/doc/changelog.txt"
+        "${CMAKE_SOURCE_DIR}/LICENSE.txt"
     DESTINATION "${CMAKE_INSTALL_DOCDIR}")

@@ -1,7 +1,4 @@
-find_program(PANDOC_EXE pandoc)
-if(NOT PANDOC_EXE)
-    message(SEND_ERROR "pandoc not found")
-endif()
+find_program(PANDOC_EXE pandoc REQUIRED)
 
 function(gen_html_manual DST_DIR)
     set(DOC_DIR "${CMAKE_SOURCE_DIR}/doc")
