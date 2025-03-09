@@ -90,21 +90,21 @@ if(DPSO_GEN_HTML_MANUAL)
     include(gen_manual)
     gen_html_manual("${CMAKE_BINARY_DIR}/doc")
 else()
-    unix2dos(
-        unix2dos_manual
+    convert_line_endings(
         "${CMAKE_SOURCE_DIR}/doc/manual.md"
-        "${CMAKE_BINARY_DIR}/doc/manual.txt")
+        "${CMAKE_BINARY_DIR}/doc/manual.txt"
+        CRLF)
 endif()
 
-unix2dos(
-    unix2dos_changelog
+convert_line_endings(
     "${CMAKE_SOURCE_DIR}/doc/changelog.txt"
-    "${CMAKE_BINARY_DIR}/doc/changelog.txt")
+    "${CMAKE_BINARY_DIR}/doc/changelog.txt"
+    CRLF)
 
-unix2dos(
-    unix2dos_license
+convert_line_endings(
     "${CMAKE_SOURCE_DIR}/LICENSE.txt"
-    "${CMAKE_BINARY_DIR}/doc/license.txt")
+    "${CMAKE_BINARY_DIR}/doc/license.txt"
+    CRLF)
 
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/doc"

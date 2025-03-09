@@ -44,7 +44,6 @@ Required:
   * jansson >= 2.7
   * gettext >= 0.21
   * pkg-config (recent MSYS2 uses a compatible pkgconf tool)
-  * dos2unix
 
 Optional:
 
@@ -53,7 +52,6 @@ Optional:
 To install all dependencies except Pandoc, run in a MinGW shell:
 
     pacman -S --needed \
-        dos2unix \
         make \
         $MINGW_PACKAGE_PREFIX-cmake \
         $MINGW_PACKAGE_PREFIX-gcc \
