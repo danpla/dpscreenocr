@@ -41,12 +41,5 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
     path += '/';
     path += appName;
 
-    try {
-        os::makeDirs(path.c_str());
-    } catch (os::Error& e) {
-        setError("os::makeDirs(\"{}\"): {}", path, e.what());
-        return {};
-    }
-
     return path.c_str();
 }

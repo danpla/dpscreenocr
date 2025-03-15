@@ -113,13 +113,22 @@ static void openSync(
     const char* filePath,
     FileStream::Mode mode)
 {
+    const auto fileDir = os::getDirName(filePath);
+
+    if (!fileDir.empty())
+        try {
+            os::makeDirs(fileDir.c_str());
+        } catch (os::Error& e) {
+            setError("os::makeDirs(): {}", e.what());
+            return;
+        }
+
     try {
         file.emplace(filePath, mode);
     } catch (os::Error& e) {
         setError("FileStream(..., {}): {}", mode, e.what());
+        return;
     }
-
-    const auto fileDir = os::getDirName(filePath);
 
     try {
         os::syncDir(fileDir.empty() ? "." : fileDir.c_str());

@@ -214,6 +214,15 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
         return false;
     }
 
+    if (const auto fileDir = os::getDirName(filePath);
+            !fileDir.empty())
+        try {
+            os::makeDirs(fileDir.c_str());
+        } catch (os::Error& e) {
+            setError("os::makeDirs(): {}", e.what());
+            return false;
+        }
+
     std::optional<FileStream> file;
     try {
         file.emplace(filePath, FileStream::Mode::write);

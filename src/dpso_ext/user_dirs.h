@@ -13,13 +13,10 @@ typedef enum {
 
 
 /**
- * Get path to a user directory.
+ * Get a path to a user directory.
  *
- * appName becomes a subdirectory of the path. The directory chain is
- * created if not already exists.
- *
- * On failure, and sets an error message (dpsoGetError()) and returns
- * null.
+ * appName becomes a subdirectory of the path. On failure, and sets an
+ * error message (dpsoGetError()) and returns null.
  */
 const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName);
 

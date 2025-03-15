@@ -7,6 +7,7 @@
 #include <windows.h>
 
 #include "dpso_utils/error_set.h"
+#include "dpso_utils/scope_exit.h"
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/utf.h"
 
@@ -21,47 +22,32 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
     (void)userDir;
 
     wchar_t* appDataPathUtf16{};
-    const auto hresult = SHGetKnownFolderPath(
-        FOLDERID_LocalAppData,
-        KF_FLAG_CREATE,
-        nullptr,
-        &appDataPathUtf16);
-    if (FAILED(hresult)) {
+    // Docs say that we should call CoTaskMemFree() even if
+    // SHGetKnownFolderPath() fails.
+    const ScopeExit taskMemFree{
+        [&]{ CoTaskMemFree(appDataPathUtf16); }};
+
+    if (FAILED(SHGetKnownFolderPath(
+            FOLDERID_LocalAppData,
+            KF_FLAG_DONT_VERIFY,
+            nullptr,
+            &appDataPathUtf16))) {
         setError(
             "SHGetKnownFolderPath(FOLDERID_LocalAppData, ...): {}",
             windows::getHresultMessage(hresult));
-        // Docs say that we should call CoTaskMemFree() even if
-        // SHGetKnownFolderPath() fails.
-        CoTaskMemFree(appDataPathUtf16);
-        return nullptr;
-    }
-
-    std::wstring pathUtf16 = appDataPathUtf16;
-    CoTaskMemFree(appDataPathUtf16);
-
-    pathUtf16 += L'\\';
-    try {
-        pathUtf16 += windows::utf8ToUtf16(appName);
-    } catch (windows::CharConversionError& e) {
-        setError("Can't convert appName to UTF-16: {}", e.what());
-        return nullptr;
+        return {};
     }
 
     static std::string path;
     try {
-        path = windows::utf16ToUtf8(pathUtf16.c_str());
+        path = windows::utf16ToUtf8(appDataPathUtf16);
     } catch (windows::CharConversionError& e) {
         setError("Can't convert path to UTF-8: {}", e.what());
-        return nullptr;
+        return {};
     }
 
-    if (!CreateDirectoryW(pathUtf16.c_str(), nullptr)
-            && GetLastError() != ERROR_ALREADY_EXISTS) {
-        setError(
-            "CreateDirectoryW(\"{}\"): {}",
-            path, windows::getErrorMessage(GetLastError()));
-        return nullptr;
-    }
+    path += '\\';
+    path += appName;
 
     return path.c_str();
 }
