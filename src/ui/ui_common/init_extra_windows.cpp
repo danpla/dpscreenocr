@@ -200,6 +200,13 @@ bool setupEntry(const char* srcPath, const char* dstDirPath)
     if (!entryExists(srcPath))
         return true;
 
+    try {
+        os::makeDirs(dstDirPath);
+    } catch (os::Error& e) {
+        setError("os::makeDirs(\"{}\"): {}", dstDirPath, e.what());
+        return false;
+    }
+
     if (!shellCopy(srcPath, dstDirPath)) {
         setError(
             "Can't copy \"{}\" to \"{}\": {}",

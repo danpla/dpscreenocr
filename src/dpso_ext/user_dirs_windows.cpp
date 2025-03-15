@@ -27,11 +27,12 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
     const ScopeExit taskMemFree{
         [&]{ CoTaskMemFree(appDataPathUtf16); }};
 
-    if (FAILED(SHGetKnownFolderPath(
-            FOLDERID_LocalAppData,
-            KF_FLAG_DONT_VERIFY,
-            nullptr,
-            &appDataPathUtf16))) {
+    const auto hresult = SHGetKnownFolderPath(
+        FOLDERID_LocalAppData,
+        KF_FLAG_DONT_VERIFY,
+        nullptr,
+        &appDataPathUtf16);
+    if (FAILED(hresult)) {
         setError(
             "SHGetKnownFolderPath(FOLDERID_LocalAppData, ...): {}",
             windows::getHresultMessage(hresult));
