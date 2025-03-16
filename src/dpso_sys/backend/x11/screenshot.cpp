@@ -12,35 +12,16 @@
 #include "backend/screenshot_error.h"
 
 
-// We support the following XImage depths:
-//   * 32 (ARGB 8-8-8-8)
-//   * 30 (XRGB 2-10-10-10)
-//   * 24 (XRGB 8-8-8-8)
-//   * 16 (RGB 5-6-5)
-//   * 15 (RGB 5-5-5)
-//
-// My system also supports 1, 4, and 8, but with 8 most apps don't
-// display colors correctly, so it's safe to assume that such depths
-// are not common nowadays.
-//
-// We don't use SHM, at least for now. It requires the fixed image
-// size, so it's necessary to read the whole screen to get an area
-// of arbitrary size. Of course SHM is faster than XGetImage()
-// when reading the whole screen (2 times faster on my machine with
-// 1600x900 monitor: 10 vs 20 ms), but XGetImage() is faster for
-// capturing small areas, which is more common in our case.
-
-
 namespace dpso::backend::x11 {
 namespace {
 
 
-// The pixel type implied by XImage::*_mask and XGetPixel().
+// The pixel type implied by XImage::*_mask.
 using XPixel = unsigned long;
 
 
-template<int bytesPerPixel>
-inline XPixel extractPixel(const std::uint8_t* data, int byteOrder)
+template<int bytesPerPixel, int byteOrder>
+XPixel extractPixel(const std::uint8_t* data)
 {
     XPixel px{};
 
@@ -55,18 +36,12 @@ inline XPixel extractPixel(const std::uint8_t* data, int byteOrder)
 }
 
 
-template<
-    int bytesPerPixel,
-    typename RTransformer,
-    typename GTransformer,
-    typename BTransformer>
-void getGrayscaleDataImpl(
+template<int bytesPerPixel, int byteOrder, typename CCTransformer>
+void getRgbData(
     const XImage& image,
     std::uint8_t* buf,
     int pitch,
-    RTransformer rTransformer,
-    GTransformer gTransformer,
-    BTransformer bTransformer)
+    CCTransformer ccTransformer)
 {
     const auto rShift = img::getMaskRightShift(image.red_mask);
     const auto gShift = img::getMaskRightShift(image.green_mask);
@@ -79,64 +54,59 @@ void getGrayscaleDataImpl(
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < image.width; ++x) {
-            const auto px = extractPixel<bytesPerPixel>(
-                srcRow, image.byte_order);
+            const auto px = extractPixel<bytesPerPixel, byteOrder>(
+                srcRow);
             srcRow += bytesPerPixel;
 
-            dstRow[x] = img::rgbToGray(
-                rTransformer((px & image.red_mask) >> rShift),
-                gTransformer((px & image.green_mask) >> gShift),
-                bTransformer((px & image.blue_mask) >> bShift));
+            *dstRow++ = ccTransformer(
+                (px & image.red_mask) >> rShift);
+            *dstRow++ = ccTransformer(
+                (px & image.green_mask) >> gShift);
+            *dstRow++ = ccTransformer(
+                (px & image.blue_mask) >> bShift);
         }
     }
 }
 
 
 template<int bytesPerPixel, typename CCTransformer>
-void getGrayscaleDataImpl(
+void getRgbData(
     const XImage& image,
     std::uint8_t* buf,
     int pitch,
     CCTransformer ccTransformer)
 {
-    getGrayscaleDataImpl<bytesPerPixel>(
-        image,
-        buf,
-        pitch,
-        ccTransformer,
-        ccTransformer,
-        ccTransformer);
+    if (image.byte_order == LSBFirst)
+        getRgbData<bytesPerPixel, LSBFirst>(
+            image, buf, pitch, ccTransformer);
+    else
+        getRgbData<bytesPerPixel, MSBFirst>(
+            image, buf, pitch, ccTransformer);
 }
 
 
-void getGrayscaleData(
-    const XImage& image, std::uint8_t* buf, int pitch)
+void getRgbData(const XImage& image, std::uint8_t* buf, int pitch)
 {
-    if (image.bits_per_pixel == 32) {
-        getGrayscaleDataImpl<4>(
-                image, buf, pitch,
-                image.depth == 30
-                    // XRGB 2-10-10-10
-                    ? [](XPixel c) { return c / 4; }
-                    // 32 (ARGB 8-8-8-8) and 24 (XRGB 8-8-8-8)
-                    : [](XPixel c) { return c; });
-    } else if (image.bits_per_pixel == 16) {
-        const auto makeExpander = [](unsigned numBits)
-        {
-            return [=](XPixel c)
-                {
-                    return img::expandTo8Bit(c, numBits);
-                };
-        };
+    if (image.depth != 24  // XRGB 8-8-8-8
+            && image.depth != 30  // XRGB 2-10-10-10
+            && image.depth != 32)  // ARGB 8-8-8-8
+        // There is no point in supporting 16- and 8-bit formats,
+        // since nobody uses them anymore.
+        throw ScreenshotError{str::format(
+            "Bit depth {} is not supported", image.depth)};
 
-        getGrayscaleDataImpl<2>(
-            image, buf, pitch,
-            makeExpander(5),
-            makeExpander(image.depth == 16 ? 6 : 5),
-            makeExpander(5));
-    } else
-        throw ScreenshotError(str::format(
-            "Bit depth {} is not supported", image.bits_per_pixel));
+    if (image.bits_per_pixel != 32)
+        throw ScreenshotError{str::format(
+            "Unexpected number of bits per pixel {}",
+            image.bits_per_pixel)};
+
+    if (image.depth == 30)
+        // XRGB 2-10-10-10
+        getRgbData<4>(
+            image, buf, pitch, [](XPixel c){ return c / 4; });
+    else
+        // 24 (XRGB 8-8-8-8) and 32 (ARGB 8-8-8-8)
+        getRgbData<4>(image, buf, pitch, [](XPixel c){ return c; });
 }
 
 
@@ -150,7 +120,7 @@ img::ImgUPtr takeScreenshot(Display* display, const Rect& rect)
         0, 0, XWidthOfScreen(screen), XHeightOfScreen(screen)};
     const auto captureRect = getIntersection(rect, screenRect);
     if (isEmpty(captureRect))
-        throw ScreenshotError("Rect is outside screen bounds");
+        throw ScreenshotError{"Rect is outside screen bounds"};
 
     auto* image = XGetImage(
         display,
@@ -163,21 +133,18 @@ img::ImgUPtr takeScreenshot(Display* display, const Rect& rect)
         ZPixmap);
 
     if (!image)
-        throw ScreenshotError("XGetImage() failed");
+        throw ScreenshotError{"XGetImage() failed"};
 
     const ScopeExit destroyImage{[&]{ XDestroyImage(image); }};
 
     img::ImgUPtr result{
         dpsoImgCreate(
-            DpsoPxFormatGrayscale,
-            image->width,
-            image->height,
-            0)};
+            DpsoPxFormatRgb, image->width, image->height, 0)};
     if (!result)
-        throw ScreenshotError(str::format(
-            "dpsoImgCreate(): {}", dpsoGetError()));
+        throw ScreenshotError{str::format(
+            "dpsoImgCreate(): {}", dpsoGetError())};
 
-    getGrayscaleData(
+    getRgbData(
         *image,
         dpsoImgGetData(result.get()),
         dpsoImgGetPitch(result.get()));

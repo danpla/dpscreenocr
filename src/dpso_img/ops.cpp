@@ -13,6 +13,13 @@
 namespace dpso::img {
 
 
+static std::uint8_t rgbToGray(
+    std::uint8_t r, std::uint8_t g, std::uint8_t b)
+{
+    return (r * 2126 + g * 7152 + b * 722) / 10000;
+}
+
+
 void toGray(
     const std::uint8_t* src, int srcPitch, DpsoPxFormat srcPxFormat,
     std::uint8_t* dst, int dstPitch,
