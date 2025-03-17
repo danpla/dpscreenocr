@@ -123,7 +123,7 @@ static void boxBlur(
             sum += addPx - removePx;
         }
 
-        progressTracker.update(static_cast<float>(l) / numLines);
+        progressTracker.update(static_cast<float>(l + 1) / numLines);
     }
 }
 
@@ -197,7 +197,7 @@ static void unsharp(
                 srcRow[x] + static_cast<int>(diff * amount), 0, 255);
         }
 
-        localProgressTracker.update(static_cast<float>(y) / h);
+        localProgressTracker.update(static_cast<float>(y + 1) / h);
     }
 
     localProgressTracker.finish();
