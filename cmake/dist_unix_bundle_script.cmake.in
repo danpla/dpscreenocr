@@ -342,6 +342,13 @@ function(bundle_libs)
 endfunction()
 
 
+function(bundle_tesseract_data)
+    file(
+        COPY "/usr/local/share/tessdata/eng.traineddata"
+        DESTINATION "${BUNDLE_DIR}/share/${APP_FILE_NAME}/tesseract_5_data")
+endfunction()
+
+
 function(bundle_manually_installed_lib_licenses)
     # This directory is intended to be set up inside a Docker
     # environment.
@@ -391,6 +398,8 @@ set_up_program()
 set_up_launcher()
 
 bundle_libs()
+
+bundle_tesseract_data()
 
 bundle_manually_installed_lib_licenses()
 set_up_third_party_licenses_dir()

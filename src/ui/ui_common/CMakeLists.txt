@@ -22,6 +22,7 @@ add_library(
     init.cpp
     init_intl.cpp
     init_startup_args.cpp
+    init_user_data.cpp
     ocr_default.cpp
     ocr_default_data_dir.cpp
     sound.cpp

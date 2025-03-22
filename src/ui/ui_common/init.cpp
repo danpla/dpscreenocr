@@ -5,6 +5,7 @@
 #include "init_extra.h"
 #include "init_intl.h"
 #include "init_startup_args.h"
+#include "init_user_data.h"
 
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/error_set.h"
@@ -35,6 +36,11 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
     }
 
     ui::initIntl();
+
+    if (!ui::initUserData()) {
+        dpso::setError("ui::initUserData: {}", dpsoGetError());
+        return false;
+    }
 
     if (!ui::initEnd(argc, argv)) {
         dpso::setError("ui::initEnd: {}", dpsoGetError());

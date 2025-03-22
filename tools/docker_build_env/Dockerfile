@@ -545,6 +545,14 @@ RUN \
     \
     && rm -rf "$BASE"
 
+# Tesseract default data
+RUN \
+    VERSION="4.1.0" \
+    && wget \
+        --progress=dot:mega \
+        --directory-prefix "/usr/local/share/tessdata" \
+        "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/$VERSION/eng.traineddata"
+
 # Jansson
 RUN \
     VERSION="2.14" \
