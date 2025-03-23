@@ -16,6 +16,13 @@ public:
     // All names are from libsndfile, but without the "sf_" prefix.
 
     enum {
+        FORMAT_FLOAT = 0x0006,
+        FORMAT_DOUBLE = 0x0007,
+
+        FORMAT_SUBMASK = 0x0000FFFF
+    };
+
+    enum {
         C_SET_SCALE_FLOAT_INT_READ = 0x1014,
         C_SET_CLIPPING = 0x10C0
     };

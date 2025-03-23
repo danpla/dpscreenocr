@@ -179,11 +179,21 @@ AudioData loadData(const char* filePath)
         throw Error{str::format(
             "sf_open(): {}", libSndfile.strerror(nullptr))};
 
-    libSndfile.command(
-        sndfile.get(),
-        LibSndfile::C_SET_SCALE_FLOAT_INT_READ,
-        nullptr,
-        true);
+    // The soundfile documentation recommends enabling
+    // SFC_SET_SCALE_FLOAT_INT_READ to properly read shorts from files
+    // containing floating-point samples in the [-1.0, 1.0] range, but
+    // it also affects Vorbis and Opus, making the audio too loud, so
+    // we only enable it explicitly for SF_FORMAT_FLOAT/DOUBLE.
+
+    if (const auto format = info.format & LibSndfile::FORMAT_SUBMASK;
+            format == LibSndfile::FORMAT_FLOAT
+            || format == LibSndfile::FORMAT_DOUBLE)
+        libSndfile.command(
+            sndfile.get(),
+            LibSndfile::C_SET_SCALE_FLOAT_INT_READ,
+            nullptr,
+            true);
+
     libSndfile.command(
         sndfile.get(), LibSndfile::C_SET_CLIPPING, nullptr, true);
 
