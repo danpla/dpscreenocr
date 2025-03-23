@@ -562,6 +562,11 @@ RUN \
     && wget \
         --progress=dot:mega \
         "https://github.com/akheron/jansson/releases/download/v$VERSION/$ARCHIVE" \
+    \
+    && echo "$ARCHIVE_SHA256 *$ARCHIVE" > "$ARCHIVE.sha256" \
+    && sha256sum -c "$ARCHIVE.sha256" \
+    && rm "$ARCHIVE.sha256" \
+    \
     && tar -xf "$ARCHIVE" \
     && rm "$ARCHIVE" \
     && (cd "$BASE" \
