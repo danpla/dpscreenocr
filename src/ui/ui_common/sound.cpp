@@ -1,7 +1,9 @@
 #include "sound.h"
 
+#include <cstddef>
 #include <string>
 
+#include "dpso_sound/error.h"
 #include "dpso_sound/sound.h"
 
 #include "dpso_utils/error_set.h"
@@ -75,6 +77,31 @@ bool uiSoundIsAvailable(void)
 }
 
 
+const char* uiSoundGetSystemSoundsDirPath(void)
+{
+    return sound::getSystemSoundsDirPath();
+}
+
+
+int uiSoundGetNumFormats(void)
+{
+    return sound::getSupportedFormats().size();
+}
+
+
+void uiSoundGetFormatInfo(int idx, UiSoundFormatInfo* info)
+{
+    if (idx < 0 || idx >= uiSoundGetNumFormats() || !info)
+        return;
+
+    const auto& internalInfo = sound::getSupportedFormats()[idx];
+    *info = {
+        internalInfo.name,
+        internalInfo.extensions.data(),
+        static_cast<int>(internalInfo.extensions.size())};
+}
+
+
 bool uiSoundSetFilePath(UiSoundId soundId, const char* filePath)
 {
     auto* cacheEntry = findCacheEntry(soundId);
@@ -82,6 +109,9 @@ bool uiSoundSetFilePath(UiSoundId soundId, const char* filePath)
         setError("Invalid soundId");
         return false;
     }
+
+    if (cacheEntry->customFilePath == filePath)
+        return true;
 
     cacheEntry->customFilePath = filePath;
     cacheEntry->player.reset();

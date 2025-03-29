@@ -18,9 +18,9 @@
 class QAction;
 class QCheckBox;
 class QLabel;
+class QLineEdit;
 class QPushButton;
 class QSessionManager;
-class QSystemTrayIcon;
 class QSystemTrayIcon;
 class QTabWidget;
 
@@ -45,6 +45,7 @@ protected:
     void changeEvent(QEvent* event) override;
 private slots:
     void openLangManager();
+    void chooseSound();
     void invalidateStatus();
     void setVisibility(bool vilible);
     void commitData(QSessionManager& sessionManager);
@@ -98,8 +99,9 @@ private:
     QCheckBox* closeToTrayCheck;
 
     QCheckBox* playSoundCheck;
-    bool playCustomSound{};
-    std::string playCustomSoundPath;
+    QCheckBox* playCustomSoundCheck;
+    QLineEdit* customSoundLineEdit;
+    QString selectedSoundFilter;
 
     UpdateChecker updateChecker;
     QCheckBox* autoUpdateCheck;
@@ -129,6 +131,9 @@ private:
 
     void loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;
+
+    void reloadSound();
+    void testSound();
 
     bool canStartSelection() const;
     void setSelectionIsEnabled(bool isEnabled);

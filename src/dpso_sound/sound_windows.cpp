@@ -50,6 +50,20 @@ bool isAvailable()
 }
 
 
+const char* getSystemSoundsDirPath()
+{
+    return "C:\\Windows\\Media";
+}
+
+
+const std::vector<FormatInfo>& getSupportedFormats()
+{
+    // PlaySoundW() only supports WAV.
+    static const std::vector<FormatInfo> result{{"WAV", {".wav"}}};
+    return result;
+}
+
+
 std::unique_ptr<Player> Player::create(const char* filePath)
 {
     return std::make_unique<WindowsPlayer>(filePath);

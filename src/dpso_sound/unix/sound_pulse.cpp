@@ -6,25 +6,19 @@
 #include <cstring>
 #include <functional>
 #include <future>
-#include <optional>
 #include <utility>
 #include <vector>
 
 #include "dpso_utils/str.h"
 
-#include "unix/lib_pulse.h"
-#include "unix/lib_sndfile.h"
+#include "error.h"
+#include "unix/lib/pulse.h"
+#include "unix/lib/sndfile.h"
+#include "unix/sndfile.h"
 
 
 namespace dpso::sound {
 namespace {
-
-
-struct AudioData {
-    int numChannels;
-    int rate;
-    std::vector<short> samples;
-};
 
 
 class Context {
@@ -167,54 +161,10 @@ void Context::playTask(
 }
 
 
-AudioData loadData(const char* filePath)
-{
-    const auto& libSndfile = LibSndfile::get();
-
-    LibSndfile::INFO info;
-    SndfileUPtr sndfile{
-        libSndfile.open(filePath, LibSndfile::M_READ, &info),
-        SndfileCloser{libSndfile}};
-    if (!sndfile)
-        throw Error{str::format(
-            "sf_open(): {}", libSndfile.strerror(nullptr))};
-
-    // The soundfile documentation recommends enabling
-    // SFC_SET_SCALE_FLOAT_INT_READ to properly read shorts from files
-    // containing floating-point samples in the [-1.0, 1.0] range, but
-    // it also affects Vorbis and Opus, making the audio too loud, so
-    // we only enable it explicitly for SF_FORMAT_FLOAT/DOUBLE.
-
-    if (const auto format = info.format & LibSndfile::FORMAT_SUBMASK;
-            format == LibSndfile::FORMAT_FLOAT
-            || format == LibSndfile::FORMAT_DOUBLE)
-        libSndfile.command(
-            sndfile.get(),
-            LibSndfile::C_SET_SCALE_FLOAT_INT_READ,
-            nullptr,
-            true);
-
-    libSndfile.command(
-        sndfile.get(), LibSndfile::C_SET_CLIPPING, nullptr, true);
-
-    AudioData result{info.channels, info.samplerate, {}};
-
-    result.samples.resize(info.frames * info.channels);
-    if (libSndfile.readf_short(
-                sndfile.get(), result.samples.data(), info.frames)
-            != info.frames)
-        throw Error{str::format(
-            "sf_readf_short(): {}",
-            libSndfile.strerror(sndfile.get()))};
-
-    return result;
-}
-
-
 class PulseAudioPlayer : public Player {
 public:
     explicit PulseAudioPlayer(const char* filePath)
-        : audioData{loadData(filePath)}
+        : audioData{sndfile::loadAudioData(filePath)}
     {
     }
 
@@ -233,24 +183,42 @@ private:
 };
 
 
+bool checkIsAvailable()
+{
+    try {
+        (void)LibPulse::get();
+        (void)LibSndfile::get();
+        return true;
+    } catch (Error&) {
+        return false;
+    }
+}
+
+
 }
 
 
 bool isAvailable()
 {
-    static std::optional<bool> result;
-    if (result)
-        return *result;
+    static const auto result = checkIsAvailable();
+    return result;
+}
 
-    try {
-        (void)LibPulse::get();
-        (void)LibSndfile::get();
-        result = true;
-    } catch (Error&) {
-        result = false;
-    }
 
-    return *result;
+const char* getSystemSoundsDirPath()
+{
+    // The Sound Theme Specification [1] says that theme directories
+    // should be searched under $XDG_DATA_DIRS/sounds, but we should
+    // pick a single folder here.
+    // [1]: https://www.freedesktop.org/wiki/Specifications/sound-theme-spec
+    return "/usr/share/sounds";
+}
+
+
+const std::vector<FormatInfo>& getSupportedFormats()
+{
+    static const auto result = sndfile::getSupportedFormats();
+    return result;
 }
 
 

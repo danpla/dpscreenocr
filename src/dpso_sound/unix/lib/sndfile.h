@@ -16,14 +16,25 @@ public:
     // All names are from libsndfile, but without the "sf_" prefix.
 
     enum {
+        FORMAT_WAV = 0x010000,
+        FORMAT_AIFF = 0x020000,
+        FORMAT_FLAC = 0x170000,
+        FORMAT_CAF = 0x180000,
+        FORMAT_OGG = 0x200000,
+
         FORMAT_FLOAT = 0x0006,
         FORMAT_DOUBLE = 0x0007,
+        FORMAT_VORBIS = 0x0060,
+        FORMAT_OPUS = 0x0064,
+        FORMAT_MPEG_LAYER_III = 0x0082,
 
         FORMAT_SUBMASK = 0x0000FFFF
     };
 
     enum {
         C_SET_SCALE_FLOAT_INT_READ = 0x1014,
+        C_GET_SIMPLE_FORMAT_COUNT = 0x1020,
+        C_GET_SIMPLE_FORMAT = 0x1021,
         C_SET_CLIPPING = 0x10C0
     };
 
@@ -42,6 +53,12 @@ public:
         int format;
         int sections;
         int seekable;
+    };
+
+    struct FORMAT_INFO {
+        int format;
+        const char *name;
+        const char *extension;
     };
 
     SNDFILE* (*open)(const char* path, int mode, INFO* info);

@@ -8,8 +8,9 @@ if(UNIX AND NOT APPLE)
     target_sources(
         dpso_sound
         PRIVATE
-        unix/lib_pulse.cpp
-        unix/lib_sndfile.cpp
+        unix/lib/pulse.cpp
+        unix/lib/sndfile.cpp
+        unix/sndfile.cpp
         unix/sound_pulse.cpp)
 
     find_package(Threads REQUIRED)

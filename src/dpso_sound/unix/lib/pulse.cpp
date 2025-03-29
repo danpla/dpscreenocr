@@ -1,11 +1,11 @@
-#include "unix/lib_sndfile.h"
+#include "unix/lib/pulse.h"
 
 #include <dlfcn.h>
 
 #include "dpso_utils/str.h"
 #include "dpso_utils/unix/dl.h"
 
-#include "sound.h"
+#include "error.h"
 
 
 namespace dpso::sound {
@@ -38,9 +38,16 @@ void* loadFn(const LibInfo& libInfo, const char* name)
 }
 
 
-void* loadLibSndfileFn(const char* name)
+void* loadLibPulseFn(const char* name)
 {
-    static const auto libInfo = loadLib("libsndfile.so.1");
+    static const auto libInfo = loadLib("libpulse.so.0");
+    return loadFn(libInfo, name);
+}
+
+
+void* loadLibPulseSimpleFn(const char* name)
+{
+    static const auto libInfo = loadLib("libpulse-simple.so.0");
     return loadFn(libInfo, name);
 }
 
@@ -48,23 +55,28 @@ void* loadLibSndfileFn(const char* name)
 }
 
 
-const LibSndfile& LibSndfile::get()
+const LibPulse& LibPulse::get()
 {
-    static const LibSndfile lib;
+    static const LibPulse lib;
     return lib;
 }
 
 
 #define LOAD_FN(NAME) \
-    NAME{(decltype(NAME))loadLibSndfileFn("sf_" #NAME)}
+    NAME{(decltype(NAME))loadLibPulseFn("pa_" #NAME)}
+
+#define LOAD_SIMPLE_FN(NAME) \
+    NAME{(decltype(NAME))loadLibPulseSimpleFn("pa_" #NAME)}
 
 
-LibSndfile::LibSndfile()
-    : LOAD_FN(open)
-    , LOAD_FN(command)
-    , LOAD_FN(readf_short)
-    , LOAD_FN(close)
-    , LOAD_FN(strerror)
+LibPulse::LibPulse()
+    : LOAD_FN(strerror)
+    , LOAD_FN(get_binary_name)
+    , LOAD_SIMPLE_FN(simple_new)
+    , LOAD_SIMPLE_FN(simple_free)
+    , LOAD_SIMPLE_FN(simple_write)
+    , LOAD_SIMPLE_FN(simple_drain)
+    , LOAD_SIMPLE_FN(simple_flush)
 {
 }
 

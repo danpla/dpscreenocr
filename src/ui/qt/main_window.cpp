@@ -5,18 +5,24 @@
 #include <QCheckBox>
 #include <QClipboard>
 #include <QCloseEvent>
+#include <QDir>
+#include <QFileDialog>
+#include <QFileInfo>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSessionManager>
+#include <QStringList>
+#include <QStyle>
 #include <QSystemTrayIcon>
 #include <QTabWidget>
 #include <QTimerEvent>
+#include <QToolButton>
 #include <QVBoxLayout>
-#include <QtGlobal>
 #include <QtGlobal>
 
 #include "dpso_intl/dpso_intl.h"
@@ -459,6 +465,94 @@ QWidget* MainWindow::createHistoryTab()
 }
 
 
+void MainWindow::reloadSound()
+{
+    uiSoundSetFilePath(
+        UiSoundIdDone,
+        playCustomSoundCheck->isChecked()
+            ? customSoundLineEdit->text().toUtf8().data() : "");
+}
+
+
+void MainWindow::testSound()
+{
+    if (!uiSoundPlay(UiSoundIdDone))
+        QMessageBox::critical(
+            this,
+            uiAppName,
+            QString("Can't play sound: ") + dpsoGetError());
+}
+
+
+void MainWindow::chooseSound()
+{
+    auto soundDir = QFileInfo(
+        QDir::fromNativeSeparators(
+            customSoundLineEdit->text())).dir().path();
+    if (soundDir == "." || !QDir(soundDir).exists()) {
+        soundDir = uiSoundGetSystemSoundsDirPath();
+        if (soundDir.isEmpty() || !QDir(soundDir).exists())
+            soundDir = QDir::homePath();
+    }
+
+    QStringList nameFilters;
+
+    const auto appendFilters = [](
+        QString& result, const UiSoundFormatInfo& formatInfo)
+    {
+        for (int i = 0; i < formatInfo.numExtensions; ++i) {
+            if (!result.isEmpty())
+                result += ' ';
+
+            result += '*';
+            result += formatInfo.extensions[i];
+        }
+    };
+
+    if (uiSoundGetNumFormats() > 1) {
+        QString nameFilter{_("All supported audio files")};
+
+        nameFilter += " (";
+        for (int i = 0; i < uiSoundGetNumFormats(); ++i) {
+            UiSoundFormatInfo formatInfo;
+            uiSoundGetFormatInfo(i, &formatInfo);
+            appendFilters(nameFilter, formatInfo);
+        }
+        nameFilter += ')';
+
+        nameFilters.append(nameFilter);
+    }
+
+    for (int i = 0; i < uiSoundGetNumFormats(); ++i) {
+        UiSoundFormatInfo formatInfo;
+        uiSoundGetFormatInfo(i, &formatInfo);
+
+        QString nameFilter{formatInfo.name};
+
+        nameFilter += " (";
+        appendFilters(nameFilter, formatInfo);
+        nameFilter += ')';
+
+        nameFilters.append(nameFilter);
+    }
+
+    nameFilters.append(QString(_("All files")) + " (*)");
+
+    const auto path = QFileDialog::getOpenFileName(
+        this,
+        _("Choose an audio file"),
+        soundDir,
+        nameFilters.join(";;"),
+        &selectedSoundFilter);
+    if (path.isEmpty())
+        return;
+
+    customSoundLineEdit->setText(QDir::toNativeSeparators(path));
+    reloadSound();
+    testSound();
+}
+
+
 QWidget* MainWindow::createSettingsTab()
 {
     auto* hotkeyGroup = new QGroupBox(_("Hotkey"));
@@ -528,22 +622,74 @@ QWidget* MainWindow::createSettingsTab()
     playSoundCheck = new QCheckBox(
         _("Play sound when recognition is complete"));
     playSoundCheck->setVisible(uiSoundIsAvailable());
+    behaviorGroupLayout->addWidget(playSoundCheck);
+
+    auto* playSoundSubordinateLayout = new QHBoxLayout();
+    playSoundSubordinateLayout->setContentsMargins(
+        makeSubordinateControlMargins());
+    behaviorGroupLayout->addLayout(playSoundSubordinateLayout);
+
+    playCustomSoundCheck = new QCheckBox(_("Play this audio file:"));
+    playCustomSoundCheck->setEnabled(false);
+    playCustomSoundCheck->setVisible(uiSoundIsAvailable());
+    playSoundSubordinateLayout->addWidget(playCustomSoundCheck);
+
+    customSoundLineEdit = new QLineEdit();
+    customSoundLineEdit->setVisible(uiSoundIsAvailable());
+    customSoundLineEdit->setReadOnly(true);
+    customSoundLineEdit->setEnabled(false);
+    playSoundSubordinateLayout->addWidget(customSoundLineEdit, 1);
+
+    auto* selectSoundButton = new QToolButton();
+    selectSoundButton->setIcon(
+        selectSoundButton->style()->standardIcon(
+            QStyle::SP_DialogOpenButton, nullptr, selectSoundButton));
+    selectSoundButton->setVisible(uiSoundIsAvailable());
+    selectSoundButton->setEnabled(false);
     connect(
-        // Use clicked() instead of toggled() because this should only
-        // be triggered by an interactive activation.
-        playSoundCheck, &QCheckBox::clicked,
-        [&](bool isChecked)
+        selectSoundButton, &QToolButton::clicked,
+        this, &MainWindow::chooseSound);
+    playSoundSubordinateLayout->addWidget(selectSoundButton);
+
+    const auto updateSoundSelector = [=]
+    {
+        const auto isEnabled = playSoundCheck->isChecked()
+            && playCustomSoundCheck->isChecked();
+
+        customSoundLineEdit->setEnabled(isEnabled);
+        selectSoundButton->setEnabled(isEnabled);
+    };
+
+    connect(
+        playSoundCheck, &QCheckBox::toggled,
+        [=](bool isChecked)
         {
-            if (!isChecked || uiSoundPlay(UiSoundIdDone))
+            playCustomSoundCheck->setEnabled(isChecked);
+            updateSoundSelector();
+        });
+    connect(
+        playSoundCheck, &QCheckBox::clicked,
+        [=](bool isChecked)
+        {
+            if (!isChecked)
                 return;
 
-            playSoundCheck->setChecked(false);
-            QMessageBox::critical(
-                this,
-                uiAppName,
-                QString("Can't play sound: ") + dpsoGetError());
+            reloadSound();
+            testSound();
         });
-    behaviorGroupLayout->addWidget(playSoundCheck);
+
+    connect(
+        playCustomSoundCheck, &QCheckBox::toggled,
+        updateSoundSelector);
+    connect(
+        playCustomSoundCheck, &QCheckBox::clicked,
+        [=](bool isChecked)
+        {
+            reloadSound();
+
+            if (!isChecked || !customSoundLineEdit->text().isEmpty())
+                testSound();
+        });
 
     autoUpdateCheck = new QCheckBox(
         _("Check for updates automatically"));
@@ -693,20 +839,19 @@ void MainWindow::loadState(const DpsoCfg* cfg)
             cfgDefaultValueUiWindowCloseToTray));
 
     playSoundCheck->setChecked(
-        uiSoundIsAvailable()
-        && dpsoCfgGetBool(
+        dpsoCfgGetBool(
             cfg,
             cfgKeyActionsDonePlaySound,
             cfgDefaultValueActionsDonePlaySound));
-    playCustomSound = dpsoCfgGetBool(
-        cfg,
-        cfgKeyActionsDonePlaySoundCustom,
-        cfgDefaultValueActionsDonePlaySoundCustom);
-    playCustomSoundPath = dpsoCfgGetStr(
-        cfg, cfgKeyActionsDonePlaySoundCustomPath, "");
-    uiSoundSetFilePath(
-        UiSoundIdDone,
-        playCustomSound ? playCustomSoundPath.c_str() : "");
+    playCustomSoundCheck->setChecked(
+        dpsoCfgGetBool(
+            cfg,
+            cfgKeyActionsDonePlaySoundCustom,
+            cfgDefaultValueActionsDonePlaySoundCustom));
+    customSoundLineEdit->setText(
+        dpsoCfgGetStr(cfg, cfgKeyActionsDonePlaySoundCustomPath, ""));
+    if (playSoundCheck->isChecked())
+        reloadSound();
 
     updateChecker.loadState(cfg);
     autoUpdateCheck->setChecked(
@@ -798,11 +943,13 @@ void MainWindow::saveState(DpsoCfg* cfg) const
     dpsoCfgSetBool(
         cfg, cfgKeyActionsDonePlaySound, playSoundCheck->isChecked());
     dpsoCfgSetBool(
-        cfg, cfgKeyActionsDonePlaySoundCustom, playCustomSound);
+        cfg,
+        cfgKeyActionsDonePlaySoundCustom,
+        playCustomSoundCheck->isChecked());
     dpsoCfgSetStr(
         cfg,
         cfgKeyActionsDonePlaySoundCustomPath,
-        playCustomSoundPath.c_str());
+        customSoundLineEdit->text().toUtf8().data());
 
     updateChecker.saveState(cfg);
 
@@ -1033,7 +1180,7 @@ void MainWindow::checkResults()
         clipboardText.reset();
     }
 
-    if (playSoundCheck->isChecked())
+    if (playSoundCheck->isChecked() && uiSoundIsAvailable())
         uiSoundPlay(UiSoundIdDone);
 }
 
