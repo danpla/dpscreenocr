@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2025-03-29 22:06+0100\n"
-"PO-Revision-Date: 2025-01-07 23:04+0000\n"
+"PO-Revision-Date: 2025-03-30 22:05+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/uk/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:33
 msgid "Afrikaans"
@@ -808,11 +808,11 @@ msgstr "Дії"
 
 #: src/ui/qt/main_window.cpp:513
 msgid "All supported audio files"
-msgstr ""
+msgstr "Всі підтримувані аудіофайли"
 
 #: src/ui/qt/main_window.cpp:543
 msgid "Choose an audio file"
-msgstr ""
+msgstr "Виберіть аудіофайл"
 
 #: src/ui/qt/main_window.cpp:558
 msgid "Hotkey"
@@ -860,7 +860,7 @@ msgstr "Відтворити звук при завершенні розпізн
 
 #: src/ui/qt/main_window.cpp:632
 msgid "Play this audio file:"
-msgstr ""
+msgstr "Відтворювати цей аудіофайл:"
 
 #: src/ui/qt/main_window.cpp:695
 msgid "Check for updates automatically"
