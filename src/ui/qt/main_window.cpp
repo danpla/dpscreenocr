@@ -693,6 +693,7 @@ QWidget* MainWindow::createSettingsTab()
 
     autoUpdateCheck = new QCheckBox(
         _("Check for updates automatically"));
+    autoUpdateCheck->setVisible(uiUpdateCheckerIsAvailable());
     connect(
         autoUpdateCheck, &QCheckBox::toggled,
         &updateChecker, &UpdateChecker::setAutoCheckIsEnabled);

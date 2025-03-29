@@ -103,7 +103,7 @@ if(DPSO_ENABLE_UPDATE_CHECKER)
         ui_common
         PRIVATE dpso_json dpso_net ${CMAKE_THREAD_LIBS_INIT})
 else()
-    target_sources(dpso PRIVATE update_checker_null.cpp)
+    target_sources(ui_common PRIVATE update_checker_null.cpp)
 endif()
 
 foreach(IN_SRC ${IN_SRCS})
