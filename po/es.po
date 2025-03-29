@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2025-02-15 20:45+0100\n"
+"POT-Creation-Date: 2025-03-29 22:06+0100\n"
 "PO-Revision-Date: 2024-08-18 20:09+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -525,7 +525,7 @@ msgstr "Yidis"
 msgid "Yoruba"
 msgstr "Yoruba"
 
-#: src/ui/qt/about.cpp:59 src/ui/qt/update_checker.cpp:140
+#: src/ui/qt/about.cpp:59 src/ui/qt/update_checker.cpp:137
 msgid "Website"
 msgstr "Sitio web"
 
@@ -581,7 +581,7 @@ msgstr "Exportar…"
 msgid "Clear…"
 msgstr "Vaciar…"
 
-#: src/ui/qt/history.cpp:62 src/ui/qt/main_window.cpp:133
+#: src/ui/qt/history.cpp:62 src/ui/qt/main_window.cpp:118
 msgid "History"
 msgstr "Historial"
 
@@ -589,7 +589,7 @@ msgstr "Historial"
 msgid "Plain text"
 msgstr "Texto sin formato"
 
-#: src/ui/qt/history.cpp:114
+#: src/ui/qt/history.cpp:114 src/ui/qt/main_window.cpp:539
 msgid "All files"
 msgstr "Todos los archivos"
 
@@ -601,8 +601,8 @@ msgstr "Exportar el historial"
 msgid "Clear the history?"
 msgstr "¿Quiere vaciar el historial?"
 
-#: src/ui/qt/history.cpp:154 src/ui/qt/lang_manager/lang_manager_page.cpp:285
-#: src/ui/qt/main_window.cpp:205
+#: src/ui/qt/history.cpp:154 src/ui/qt/lang_manager/lang_manager_page.cpp:280
+#: src/ui/qt/main_window.cpp:190
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -620,39 +620,39 @@ msgctxt "language"
 msgid "Code"
 msgstr "Código"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:114
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:109
 msgid "Cancel…"
 msgstr "Cancelar…"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:131
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:126
 msgid "Are you sure you want to cancel the installation?"
 msgstr "¿Confirma que quiere cancelar la instalación?"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:127
 msgid "Continue installation"
 msgstr "Continuar con la instalación"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:128
 msgid "Cancel installation"
 msgstr "Cancelar la instalación"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:137
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Are you sure you want to cancel the update?"
 msgstr "¿Confirma que quiere cancelar la actualización?"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:138
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
 msgid "Continue updating"
 msgstr "Continuar actualizando"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:139
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
 msgid "Cancel update"
 msgstr "Cancelar la actualización"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:181
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:176
 msgid "Installing “{name}” ({current}/{total})"
 msgstr "Instalando «{name}» ({current}/{total})"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:183
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp:178
 msgid "Updating “{name}” ({current}/{total})"
 msgstr "Actualizando «{name}» ({current}/{total})"
 
@@ -661,79 +661,79 @@ msgctxt "digital_data"
 msgid "Size"
 msgstr "Tamaño"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:43
+#: src/ui/qt/lang_manager/lang_manager.cpp:41
 msgid "Fetching the language list…"
 msgstr "Recuperando la lista de idiomas…"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:60
+#: src/ui/qt/lang_manager/lang_manager.cpp:58
 msgid "An error occurred while fetching the list of languages"
 msgstr "Se ha producido un error al obtener la lista de los idiomas"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:87
+#: src/ui/qt/lang_manager/lang_manager.cpp:85
 msgid "Update ({count})"
 msgstr "Actualizar ({count})"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:120 src/ui/qt/main_window.cpp:432
+#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:416
 msgid "Language manager"
 msgstr "Gestor de idiomas"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:126
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:192
+#: src/ui/qt/lang_manager/lang_manager.cpp:118
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:187
 msgid "Install"
 msgstr "Instalar"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:129
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:285
+#: src/ui/qt/lang_manager/lang_manager.cpp:121
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:280
 msgid "Remove"
 msgstr "Quitar"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:150 src/ui/qt/update_checker.cpp:142
-#: src/ui/qt/utils.cpp:207
+#: src/ui/qt/lang_manager/lang_manager.cpp:142 src/ui/qt/update_checker.cpp:139
+#: src/ui/qt/utils.cpp:220
 msgid "Close"
 msgstr "Cerrar"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:63
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:61
 msgctxt "noun"
 msgid "Filter"
 msgstr "Filtrar"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:137
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:135
 msgid "No languages selected."
 msgstr "No hay idiomas seleccionados."
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:151
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:149
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
 msgstr[0] "{count} idioma seleccionado ({size})."
 msgstr[1] "{count} idiomas seleccionados ({size})."
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:192
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:187
 msgid "Update"
 msgstr "Actualizar"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:234
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:229
 msgid "An error occurred while installing languages"
 msgstr "Se ha producido un error al instalar los idiomas"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:235
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:230
 msgid "An error occurred while updating languages"
 msgstr "Se ha producido un error al actualizar los idiomas"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:249
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:244
 msgid "Remove…"
 msgstr "Eliminar…"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:274
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:269
 msgid "Remove “{name}”?"
 msgstr "¿Quiere quitar «{name}»?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:279
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:274
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] "¿Eliminar {count} idioma seleccionado?"
 msgstr[1] "¿Eliminar {count} idiomas seleccionados?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:304
+#: src/ui/qt/lang_manager/lang_manager_page.cpp:299
 msgid "Some languages were not removed"
 msgstr "Algunos idiomas no se han eliminado"
 
@@ -746,80 +746,88 @@ msgstr "Compruebe la conexión a Internet y vuelva a intentarlo."
 msgid "{app_name} is already running"
 msgstr "{app_name} ya se está ejecutando"
 
-#: src/ui/qt/main_window.cpp:58
+#: src/ui/qt/main_window.cpp:60
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Reconocimiento al {progress} % ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:132
+#: src/ui/qt/main_window.cpp:117
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "Principal"
 
-#: src/ui/qt/main_window.cpp:134
+#: src/ui/qt/main_window.cpp:119
 msgid "Settings"
 msgstr "Ajustes"
 
-#: src/ui/qt/main_window.cpp:135
+#: src/ui/qt/main_window.cpp:120
 msgid "About"
 msgstr "Acerca de"
 
-#: src/ui/qt/main_window.cpp:204
+#: src/ui/qt/main_window.cpp:189
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "No ha finalizado el reconocimiento. ¿Quiere salir de todos modos?"
 
-#: src/ui/qt/main_window.cpp:206 src/ui/qt/main_window.cpp:395
+#: src/ui/qt/main_window.cpp:191 src/ui/qt/main_window.cpp:379
 msgid "Quit"
 msgstr "Salir"
 
-#: src/ui/qt/main_window.cpp:387
+#: src/ui/qt/main_window.cpp:371
 msgid "Show {app_name}"
 msgstr "Mostrar {app_name}"
 
-#: src/ui/qt/main_window.cpp:409
+#: src/ui/qt/main_window.cpp:393
 msgid "Status"
 msgstr "Estado"
 
-#: src/ui/qt/main_window.cpp:419
+#: src/ui/qt/main_window.cpp:403
 msgid "Character recognition"
 msgstr "Reconocimiento de caracteres"
 
-#: src/ui/qt/main_window.cpp:423
+#: src/ui/qt/main_window.cpp:407
 msgid "Split text blocks"
 msgstr "Dividir bloques de texto"
 
-#: src/ui/qt/main_window.cpp:425
+#: src/ui/qt/main_window.cpp:409
 msgid "Split independent text blocks, such as columns"
 msgstr "Dividir en bloques independientes de texto, por ejemplo, columnas"
 
-#: src/ui/qt/main_window.cpp:428
+#: src/ui/qt/main_window.cpp:412
 msgid "Languages:"
 msgstr "Idiomas:"
 
-#: src/ui/qt/main_window.cpp:434
+#: src/ui/qt/main_window.cpp:418
 msgid "Install, update, and remove languages"
 msgstr "Instalar, actualizar y eliminar los idiomas"
 
-#: src/ui/qt/main_window.cpp:445
+#: src/ui/qt/main_window.cpp:429
 msgid "Actions"
 msgstr "Acciones"
 
-#: src/ui/qt/main_window.cpp:486
+#: src/ui/qt/main_window.cpp:513
+msgid "All supported audio files"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:543
+msgid "Choose an audio file"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:558
 msgid "Hotkey"
 msgstr "Atajo de teclado"
 
-#: src/ui/qt/main_window.cpp:499
+#: src/ui/qt/main_window.cpp:571
 msgid "Interface"
 msgstr "Interfaz"
 
-#: src/ui/qt/main_window.cpp:503
+#: src/ui/qt/main_window.cpp:575
 msgid "Show notification area icon"
 msgstr "Mostrar icono en el área de notificación"
 
-#: src/ui/qt/main_window.cpp:527
+#: src/ui/qt/main_window.cpp:599
 msgid "Minimize to notification area"
 msgstr "Minimizar en el área de notificaciones"
 
-#: src/ui/qt/main_window.cpp:531
+#: src/ui/qt/main_window.cpp:603
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -827,11 +835,11 @@ msgstr ""
 "Minimizar la ventana ocultará {app_name}. Utilice el icono del área de "
 "notificación para volver a mostrarla."
 
-#: src/ui/qt/main_window.cpp:537
+#: src/ui/qt/main_window.cpp:609
 msgid "Close to notification area"
 msgstr "Cerrar el área de notificación"
 
-#: src/ui/qt/main_window.cpp:541
+#: src/ui/qt/main_window.cpp:613
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -839,23 +847,27 @@ msgstr ""
 "Al cerrar la ventana se ocultará {app_name}. Utilice el icono del área de "
 "notificación para volver a mostrarla."
 
-#: src/ui/qt/main_window.cpp:547
+#: src/ui/qt/main_window.cpp:619
 msgid "Behavior"
 msgstr "Comportamiento"
 
-#: src/ui/qt/main_window.cpp:551
+#: src/ui/qt/main_window.cpp:623
 msgid "Play sound when recognition is complete"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:571
+#: src/ui/qt/main_window.cpp:632
+msgid "Play this audio file:"
+msgstr ""
+
+#: src/ui/qt/main_window.cpp:695
 msgid "Check for updates automatically"
 msgstr ""
 
-#: src/ui/qt/main_window.cpp:577
+#: src/ui/qt/main_window.cpp:702
 msgid "Run at system logon"
 msgstr "Ejecutar al iniciar sesión en el sistema"
 
-#: src/ui/qt/main_window.cpp:581
+#: src/ui/qt/main_window.cpp:706
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -865,7 +877,7 @@ msgstr ""
 "El programa se ocultará en el área de notificación si el icono del área de "
 "notificación está activado, o se minimizará si el icono está desactivado."
 
-#: src/ui/qt/main_window.cpp:730
+#: src/ui/qt/main_window.cpp:863
 msgid ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} day"
@@ -875,23 +887,23 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/ui/qt/main_window.cpp:983
+#: src/ui/qt/main_window.cpp:1121
 msgid "Please install languages"
 msgstr "Instale idiomas"
 
-#: src/ui/qt/main_window.cpp:985
+#: src/ui/qt/main_window.cpp:1123
 msgid "Please select languages"
 msgstr "Seleccione idiomas"
 
-#: src/ui/qt/main_window.cpp:987
+#: src/ui/qt/main_window.cpp:1125
 msgid "Please select actions"
 msgstr "Seleccione acciones"
 
-#: src/ui/qt/main_window.cpp:999
+#: src/ui/qt/main_window.cpp:1137
 msgid "Press {hotkey} to start area selection"
 msgstr "Pulse {hotkey} para iniciar la selección de área"
 
-#: src/ui/qt/main_window.cpp:1000
+#: src/ui/qt/main_window.cpp:1138
 msgid "Press {hotkey} to finish selection"
 msgstr "Pulse {hotkey} para finalizar la selección"
 
@@ -903,28 +915,28 @@ msgstr ""
 msgid "{required} (you have {actual})"
 msgstr ""
 
-#: src/ui/qt/update_checker.cpp:95
+#: src/ui/qt/update_checker.cpp:93
 msgid "{app_name} {new_version} is available (you have {current_version})"
 msgstr ""
 
-#: src/ui/qt/update_checker.cpp:103
+#: src/ui/qt/update_checker.cpp:101
 msgid "Visit the website for more information."
 msgstr ""
 
-#: src/ui/qt/update_checker.cpp:107
+#: src/ui/qt/update_checker.cpp:105
 msgid "You have the latest version of {app_name}"
 msgstr ""
 
-#: src/ui/qt/update_checker.cpp:108
+#: src/ui/qt/update_checker.cpp:106
 msgid "You have the latest version of {app_name} available for your system"
 msgstr ""
 
-#: src/ui/qt/update_checker.cpp:117
+#: src/ui/qt/update_checker.cpp:115
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
 msgstr ""
 
-#: src/ui/qt/update_checker.cpp:273
+#: src/ui/qt/update_checker.cpp:270
 msgid "Checking for updates…"
 msgstr ""
