@@ -88,7 +88,6 @@ std::vector<FormatInfo> getSupportedFormats()
     try {
         return getSupportedFormats(LibSndfile::get());
     } catch (Error&) {
-        // sound::getSupportedFormats() should not throw.
         return {};
     }
 }

@@ -5,6 +5,8 @@
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
+#include "error.h"
+
 
 namespace dpso::sound {
 namespace {
