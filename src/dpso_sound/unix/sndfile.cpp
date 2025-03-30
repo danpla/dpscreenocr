@@ -40,9 +40,11 @@ std::vector<FormatInfo> getSupportedFormats(
     //
     // 1: https://www.freedesktop.org/wiki/Specifications/sound-theme-spec/
     const std::vector<Format> expectedFormats{
+        #ifdef __APPLE__
         {LibSndfile::FORMAT_AIFF,
             {"AIFF", {".aiff", ".aif", ".aifc"}}},
         {LibSndfile::FORMAT_CAF, {"CAF", {".caf"}}},
+        #endif
         {LibSndfile::FORMAT_FLAC, {"FLAC", {".flac"}}},
         {LibSndfile::FORMAT_MPEG_LAYER_III, {"MP3", {".mp3"}}},
         {LibSndfile::FORMAT_OPUS, {"Opus", {".opus"}}},
