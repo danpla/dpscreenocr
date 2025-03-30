@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2025-03-29 22:06+0100\n"
-"PO-Revision-Date: 2025-01-07 23:04+0000\n"
-"Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
-"org>\n"
+"PO-Revision-Date: 2025-03-30 22:05+0000\n"
+"Last-Translator: 大王叫我来巡山 "
+"<hamburger2048@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/dpscreenocr/dpscreenocr/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:33
 msgid "Afrikaans"
@@ -804,11 +804,11 @@ msgstr "操作"
 
 #: src/ui/qt/main_window.cpp:513
 msgid "All supported audio files"
-msgstr ""
+msgstr "所有支持的音频文件"
 
 #: src/ui/qt/main_window.cpp:543
 msgid "Choose an audio file"
-msgstr ""
+msgstr "选择音频文件"
 
 #: src/ui/qt/main_window.cpp:558
 msgid "Hotkey"
@@ -852,7 +852,7 @@ msgstr "完成识别时播放声音"
 
 #: src/ui/qt/main_window.cpp:632
 msgid "Play this audio file:"
-msgstr ""
+msgstr "播放此音频文件："
 
 #: src/ui/qt/main_window.cpp:695
 msgid "Check for updates automatically"
