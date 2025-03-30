@@ -35,7 +35,7 @@ typedef struct UiAutostartArgs {
      * The first item is mandatory and should be an absolute path to
      * the executable. The rest are its arguments, if any.
      */
-    const char** args;
+    const char* const* args;
     size_t numArgs;
 } UiAutostartArgs;
 
