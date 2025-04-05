@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2025-03-29 22:06+0100\n"
-"PO-Revision-Date: 2025-04-05 13:29+0000\n"
+"PO-Revision-Date: 2025-04-06 02:35+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/ca/>\n"
@@ -419,115 +419,111 @@ msgstr "Eslovè"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:134
 msgid "Sindhi"
-msgstr "sindhi"
+msgstr "Sindhi"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:135
 msgid "Spanish; Castilian"
-msgstr "espanyol; castellà"
+msgstr "Espanyol; Castellà"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:136
-#, fuzzy
 msgid "Spanish; Castilian (old)"
-msgstr "espanyol/castellà antic"
+msgstr "Espanyol; Castellà (antic)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:137
 msgid "Albanian"
-msgstr "albanès"
+msgstr "Albanès"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:138
 msgid "Serbian"
-msgstr "serbi"
+msgstr "Serbi"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:139
-#, fuzzy
 msgid "Serbian (Latin)"
-msgstr "serbi, llatí"
+msgstr "Serbi (llatí)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:140
 msgid "Sundanese"
-msgstr "sundanès"
+msgstr "Sundanès"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:141
 msgid "Swahili"
-msgstr "suahili"
+msgstr "Suahili"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:142
 msgid "Swedish"
-msgstr "suec"
+msgstr "Suec"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:143
 msgid "Syriac"
-msgstr "siríac"
+msgstr "Siríac"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:144
 msgid "Tamil"
-msgstr "tàmil"
+msgstr "Tàmil"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:145
 msgid "Tatar"
-msgstr "tàrtar"
+msgstr "Tàrtar"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:146
 msgid "Telugu"
-msgstr "telugu"
+msgstr "Telugu"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:147
 msgid "Tajik"
-msgstr "tadjik"
+msgstr "Tadjik"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:148
 msgid "Tagalog"
-msgstr "tagal"
+msgstr "Tagal"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:149
 msgid "Thai"
-msgstr "tailandès"
+msgstr "Tailandès"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:150
 msgid "Tigrinya"
-msgstr "tigrinya"
+msgstr "Tigrinya"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:151
-#, fuzzy
 msgid "Tonga (Tonga Islands)"
-msgstr "tonga"
+msgstr "Tonga (Illes Tonga)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:152
 msgid "Turkish"
-msgstr "turc"
+msgstr "Turc"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:153
 msgid "Uighur; Uyghur"
-msgstr "uigur"
+msgstr "Uigur"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:154
 msgid "Ukrainian"
-msgstr "ucraïnès"
+msgstr "Ucraïnès"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:155
 msgid "Urdu"
-msgstr "urdu"
+msgstr "Urdu"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:156
 msgid "Uzbek"
-msgstr "uzbek"
+msgstr "Uzbek"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:157
-#, fuzzy
 msgid "Uzbek (Cyrillic)"
-msgstr "uzbek, ciríl·lic"
+msgstr "Uzbek (ciríl·lic)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:158
 msgid "Vietnamese"
-msgstr "vietnamita"
+msgstr "Vietnamita"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:159
 msgid "Yiddish"
-msgstr "ídix"
+msgstr "Ídix"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:160
 msgid "Yoruba"
-msgstr "ioruba"
+msgstr "Ioruba"
 
 #: src/ui/qt/about.cpp:59 src/ui/qt/update_checker.cpp:137
 msgid "Website"
