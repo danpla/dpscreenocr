@@ -71,4 +71,4 @@ msgstr ""
 #. Translators: This is the target language name to be shown in the
 #. language selection menu.
 msgid "LANGUAGE_NAME"
-msgstr "Deutsch"
+msgstr ""
