@@ -81,8 +81,8 @@ std::string toStr(char c)
 template<typename T>
 static std::string intToStr(T v, int base)
 {
-    // Reserve space for the base-2 representation.
-    char buf[sizeof(T) * CHAR_BIT];
+    // Reserve space for the base-2 representation and a minus sign.
+    char buf[sizeof(T) * CHAR_BIT + 1];
     const auto r = std::to_chars(buf, buf + sizeof(buf), v, base);
     // to_chars() can only fail with std::errc::value_too_large.
     return {buf, r.ptr};

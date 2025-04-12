@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include "dpso_utils/str.h"
 
 #include "flow.h"
@@ -158,6 +160,10 @@ void testToStr()
     TEST_STR(toStr(-1.0101), "-1.0101");
     TEST_STR(toStr(123.456), "123.456");
     TEST_STR(toStr(-123.456), "-123.456");
+
+    TEST_STR(
+        toStr(std::int64_t{INT64_MIN}, 2),
+        ("-1" + std::string(63, '0')).c_str());
 }
 
 
