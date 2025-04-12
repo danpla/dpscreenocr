@@ -41,11 +41,9 @@ void downloadFile(
     std::int64_t partSize{};
 
     using Clock = std::chrono::steady_clock;
-    Clock::time_point lastProgressReportTime;
 
-    // There's no sense to report the progress more often than an
-    // average monitor refresh rate (60 Hz).
-    const std::chrono::milliseconds progressReportInterval{1000 / 60};
+    Clock::time_point lastProgressReportTime;
+    const std::chrono::milliseconds progressReportInterval{1000 / 30};
 
     unsigned char buf[16 * 1024];
     while (true) {

@@ -1,6 +1,5 @@
 #include "sound.h"
 
-#include <cstddef>
 #include <string>
 
 #include "dpso_sound/error.h"
