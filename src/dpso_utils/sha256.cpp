@@ -2,7 +2,8 @@
 
 #include <algorithm>
 #include <cassert>
-#include <type_traits>
+
+#include "byte_order.h"
 
 
 // See:
@@ -81,31 +82,6 @@ inline std::uint32_t sSig1(std::uint32_t x)
 
 
 }
-
-
-template<typename T>
-void storeBe(T v, std::uint8_t dst[sizeof(T)])
-{
-    using UT = std::make_unsigned_t<T>;
-
-    for (auto i = sizeof(UT); i--;)
-        *dst++ = (static_cast<UT>(v) >> (i * 8)) & 0xff;
-}
-
-
-template<typename T>
-void loadBe(T& v, const std::uint8_t src[sizeof(T)])
-{
-    using UT = std::make_unsigned_t<T>;
-
-    UT uv{};
-    for (std::size_t i = 0; i < sizeof(UT); ++i)
-        uv = (uv << 8) | *src++;
-
-    v = static_cast<T>(uv);
-}
-
-
 }
 
 
@@ -168,12 +144,13 @@ Sha256::Digest Sha256::Context::finalize()
     }
 
     std::fill(buf + bufLen, buf + bitSizePos, 0);
-    storeBe(bitSize, buf + bitSizePos);
+    store<ByteOrder::big>(bitSize, buf + bitSizePos);
     transform(buf);
 
     Digest digest;
     for (auto i = 0; i < stateSize; ++i)
-        storeBe(state[i], digest.data() + sizeof(*state) * i);
+        store<ByteOrder::big>(
+            state[i], digest.data() + sizeof(*state) * i);
 
     return digest;
 }
@@ -184,7 +161,7 @@ void Sha256::Context::transform(const std::uint8_t block[blockSize])
     std::uint32_t w[64];
 
     for (auto i = 0; i < 16; ++i)
-        loadBe(w[i], block + sizeof(*w) * i);
+        load<ByteOrder::big>(w[i], block + sizeof(*w) * i);
 
     for (auto i = 16; i < 64; ++i)
         w[i] =

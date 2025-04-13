@@ -12,6 +12,7 @@ add_executable(
     dpso_sys/test_keys.cpp
     dpso_utils/stream/test_out_newline_conversion_stream.cpp
     dpso_utils/stream/test_string_stream.cpp
+    dpso_utils/test_byte_order.cpp
     dpso_utils/test_geometry.cpp
     dpso_utils/test_line_reader.cpp
     dpso_utils/test_os.cpp

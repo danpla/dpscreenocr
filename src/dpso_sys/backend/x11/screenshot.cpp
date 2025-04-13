@@ -4,6 +4,7 @@
 
 #include "dpso_img/ops.h"
 
+#include "dpso_utils/byte_order.h"
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/geometry.h"
 #include "dpso_utils/scope_exit.h"
@@ -20,23 +21,7 @@ namespace {
 using XPixel = unsigned long;
 
 
-template<int bytesPerPixel, int byteOrder>
-XPixel extractPixel(const std::uint8_t* data)
-{
-    XPixel px{};
-
-    if (byteOrder == LSBFirst)
-        for (int i = 0; i < bytesPerPixel; ++i)
-            px |= static_cast<XPixel>(data[i]) << (i * 8);
-    else
-        for (int i = 0; i < bytesPerPixel; ++i)
-            px = (px << 8) | data[i];
-
-    return px;
-}
-
-
-template<int bytesPerPixel, int byteOrder, typename CCTransformer>
+template<int bytesPerPx, ByteOrder byteOrder, typename CCTransformer>
 void getRgbData(
     const XImage& image,
     std::uint8_t* buf,
@@ -54,9 +39,9 @@ void getRgbData(
         auto* dstRow = buf + pitch * y;
 
         for (int x = 0; x < image.width; ++x) {
-            const auto px = extractPixel<bytesPerPixel, byteOrder>(
-                srcRow);
-            srcRow += bytesPerPixel;
+            XPixel px;
+            load<byteOrder, bytesPerPx>(px, srcRow);
+            srcRow += bytesPerPx;
 
             *dstRow++ = ccTransformer(
                 (px & image.red_mask) >> rShift);
@@ -69,7 +54,7 @@ void getRgbData(
 }
 
 
-template<int bytesPerPixel, typename CCTransformer>
+template<int bytesPerPx, typename CCTransformer>
 void getRgbData(
     const XImage& image,
     std::uint8_t* buf,
@@ -77,10 +62,10 @@ void getRgbData(
     CCTransformer ccTransformer)
 {
     if (image.byte_order == LSBFirst)
-        getRgbData<bytesPerPixel, LSBFirst>(
+        getRgbData<bytesPerPx, ByteOrder::little>(
             image, buf, pitch, ccTransformer);
     else
-        getRgbData<bytesPerPixel, MSBFirst>(
+        getRgbData<bytesPerPx, ByteOrder::big>(
             image, buf, pitch, ccTransformer);
 }
 
