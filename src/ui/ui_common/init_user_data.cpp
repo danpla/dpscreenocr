@@ -1,7 +1,6 @@
 #include "init_user_data.h"
 
 #include <filesystem>
-#include <system_error>
 
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/error_set.h"

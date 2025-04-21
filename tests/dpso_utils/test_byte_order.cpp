@@ -100,4 +100,3 @@ void testByteOrder()
 
 
 REGISTER_TEST(testByteOrder);
-

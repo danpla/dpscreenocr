@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <filesystem>
 #include <initializer_list>
 
 #include <tesseract/baseapi.h>
@@ -69,7 +70,17 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
 
     #if TESSERACT_MAJOR_VERSION >= 5
 
-    tess.GetAvailableLanguagesAsVector(&result);
+    // In Tesseract 5.5.0, GetAvailableLanguagesAsVector() was
+    // rewritten to use std::filesystem, but due to the lack of any
+    // exception handling, the method leaks filesystem_error (e.g. if
+    // the directory does not exist).
+    //
+    // See https://github.com/tesseract-ocr/tesseract/issues/4364
+    try {
+        tess.GetAvailableLanguagesAsVector(&result);
+    } catch (std::filesystem::filesystem_error&) {
+        return result;
+    }
 
     result.erase(
         std::remove_if(
