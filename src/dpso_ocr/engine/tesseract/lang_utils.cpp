@@ -100,7 +100,7 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
     // files.
     //
     // See https://github.com/tesseract-ocr/tesseract/issues/4416
-    if (*dataDir && TESSERACT_VERSION == 0x050500) {
+    if (*dataDir && std::strcmp(tess.Version(), "5.5.0") == 0) {
         // Drop duplicates that can occur when several files with the
         // same name have ".traineddata" in their extension, e.g.,
         // "eng.traineddata" and "eng.traineddata.sha256". Note that
