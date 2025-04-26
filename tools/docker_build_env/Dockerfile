@@ -513,10 +513,10 @@ RUN \
 
 # Tesseract
 RUN \
-    VERSION="5.3.3" \
+    VERSION="5.5.0" \
     && BASE="tesseract-$VERSION" \
     && ARCHIVE="$BASE.tar.gz" \
-    && ARCHIVE_SHA256="dc4329f85f41191b2d813b71b528ba6047745813474e583ccce8795ff2ff5681" \
+    && ARCHIVE_SHA256="f2fb34ca035b6d087a42875a35a7a5c4155fa9979c6132365b1e5a28ebc3fc11" \
     && wget \
         --progress=dot:mega \
         --output-document="$ARCHIVE" \
