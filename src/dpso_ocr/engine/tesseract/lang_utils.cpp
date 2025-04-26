@@ -62,8 +62,9 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
     // We can't get around the problem by writing our own routine that
     // will collect the list of "*.traineddata" files. The data path
     // may be different on various Unix-like systems (it's hardcoded
-    // at compilation time), and you can only get it via
-    // GetDatapath(), which also requires the same dummy Init() call.
+    // at compilation time; our dataDir is empty in this case), and
+    // you can only get it via GetDatapath(), which also requires the
+    // same dummy Init() call.
     tess.Init(sysDataDir.c_str(), nullptr);
 
     std::vector<std::string> result;
@@ -95,7 +96,8 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
     // incorrect file extension handling, only checking if a filename
     // has a ".traineddata" substring instead of strictly ending with
     // it. As a result, the list can contain duplicates and entries
-    // that refer to ".traineddata" files.
+    // that refer to ".traineddata***" rather than ".traineddata"
+    // files.
     //
     // See https://github.com/tesseract-ocr/tesseract/issues/4416
     if (*dataDir && TESSERACT_VERSION == 0x050500) {
