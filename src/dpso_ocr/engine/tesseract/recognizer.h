@@ -8,7 +8,7 @@
 namespace dpso::ocr::tesseract {
 
 
-std::unique_ptr<Recognizer> createRecognizer(const char* data);
+std::unique_ptr<Recognizer> createRecognizer(const char* dataDir);
 
 
 }

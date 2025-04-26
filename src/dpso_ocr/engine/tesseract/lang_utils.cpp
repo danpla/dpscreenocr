@@ -91,6 +91,37 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
             }),
         result.end());
 
+    // In Tesseract 5.5.0, GetAvailableLanguagesAsVector() uses
+    // incorrect file extension handling, only checking if a filename
+    // has a ".traineddata" substring instead of strictly ending with
+    // it. As a result, the list can contain duplicates and entries
+    // that refer to ".traineddata" files.
+    //
+    // See https://github.com/tesseract-ocr/tesseract/issues/4416
+    if (*dataDir && TESSERACT_VERSION == 0x050500) {
+        // Drop duplicates that can occur when several files with the
+        // same name have ".traineddata" in their extension, e.g.,
+        // "eng.traineddata" and "eng.traineddata.sha256". Note that
+        // the result of GetAvailableLanguagesAsVector() is sorted.
+        result.erase(
+            std::unique(result.begin(), result.end()), result.end());
+
+        // Drop entries that refer to ".traineddata***" rather than
+        // real ".traineddata" files.
+        result.erase(
+            std::remove_if(
+                result.begin(), result.end(),
+                [&](const std::string& lang)
+                {
+                    namespace fs = std::filesystem;
+
+                    return !fs::exists(
+                        fs::u8path(dataDir)
+                        / fs::u8path(lang + traineddataExt));
+                }),
+            result.end());
+    }
+
     #else
 
     GenericVector<STRING> tessLangCodes;
