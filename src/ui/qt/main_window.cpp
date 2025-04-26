@@ -683,11 +683,11 @@ QWidget* MainWindow::createSettingsTab()
         updateSoundSelector);
     connect(
         playCustomSoundCheck, &QCheckBox::clicked,
-        [=](bool isChecked)
+        [=]
         {
             reloadSound();
 
-            if (!isChecked || !customSoundLineEdit->text().isEmpty())
+            if (!customSoundLineEdit->text().isEmpty())
                 testSound();
         });
 
