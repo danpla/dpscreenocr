@@ -21,9 +21,9 @@ and can split independent text blocks, such as columns.
 
 #### Package manager
 
-The recommended way to install dpScreenOCR on Unix-like systems is to
-use the package manager. If the program is not available in your
-package manager, the [official website][dpScreenOCR website] provides
+The usual way to install dpScreenOCR on Unix-like systems is to use
+the package manager. If the program is not available in your package
+manager, the [official website][dpScreenOCR website] provides
 repositories for some systems, including Debian, Ubuntu, and
 derivatives. If yours is not one of them, consider the TAR.XZ archive
 or build the program from source.
@@ -34,14 +34,14 @@ or build the program from source.
 You can download dpScreenOCR as a self-contained directory in a TAR.XZ
 archive. It has several advantages over the package manager version:
 
-*   Doesn't need to be installed: just extract the TAR.XZ archive
+*   Doesn't need to be installed: just unpack the TAR.XZ archive
     anywhere and run `dpscreenocr`.
 
 *   Works on most distributions, including legacy systems released
     around 2014 or later.
 
-*   Provides the latest version of both dpScreenOCR and Tesseract,
-    while in the package manager they may be out of date.
+*   Provides the latest version of Tesseract, while in the package
+    manager it may be out of date.
 
 *   Has a [language manager][] that allows you to install and remove
     languages without leaving dpScreenOCR.
@@ -74,11 +74,12 @@ version.
 
 On Unix-like systems, the language installation process differs
 depending on whether dpScreenOCR was obtained from the package manager
-or as a TAR.XZ archive. Note that languages installed for the former
-will not be visible in the latter, and vice versa.
+or as a TAR.XZ archive. Languages installed for the former will not be
+visible in the latter, and vice versa.
 
-
-#### Package manager
+The TAR.XZ version of dpScreenOCR is shipped with the English language
+pack. To install other languages, use the language manager as
+described in the "[Language manager][]" section.
 
 If you installed dpScreenOCR using the package manager, you should
 also use the package manager to get the languages for Tesseract.
@@ -93,13 +94,6 @@ the package for German has the following names:
 
 dpScreenOCR does not use the "osd" (automatic script and orientation
 detection) and "equ" (math and equation detection) packages.
-
-
-#### TAR.XZ archive
-
-To install languages for the TAR.XZ version of dpScreenOCR, use the
-built-in language manager. See the "[Language manager][]" section for
-details.
 
 
 ### Windows
@@ -156,7 +150,7 @@ version of dpScreenOCR, otherwise you can handle languages through the
 system package manager as described in the "[Installing languages][]"
 section.
 
-When you open the manager, it tries to fetch the list of available
+When you open the manager, it tries to retrieve the list of available
 languages from the Internet. If this fails (e.g., if there is no
 network connection), you can still remove languages using the
 corresponding tab.
@@ -284,8 +278,8 @@ key combination.
 
 If "Check for updates automatically" is enabled in the "Settings" tab,
 dpScreenOCR will check for new program versions at startup, but no
-more often than once every 7 days. You can also check for updates
-manually using the "Check for updates" button in the "About" tab.
+more often than once a week. You can also check for updates manually
+using the "Check for updates" button in the "About" tab.
 
 
 # Command-line options
@@ -417,11 +411,10 @@ settings file:
 
     In dpScreenOCR versions prior to 1.5, this option was useful in
     combination with `ui_window_minimize_to_tray` when adding the
-    program to the autostart. Starting with the version 1.5, which
-    introduced the "Run at system logon" setting and the `-hide`
-    command-line option, `ui_window_minimize_on_start` is kept mainly
-    for backward compatibility and is only useful if you want the
-    program to minimize on normal (rather than automatic) startup.
+    program to the autostart. Now that the program has the "Run at
+    system logon" setting and the `-hide` command-line option,
+    `ui_window_minimize_on_start` is only kept for backward
+    compatibility.
 
 *   `update_check_auto_interval_days` (`7` by default) the interval,
     in days, between the automatic update checks.
