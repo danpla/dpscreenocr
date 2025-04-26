@@ -1,3 +1,43 @@
+1.5.0 (2025-??-??)
+==================
+
+* Language manager
+  * Added a file size column to language lists
+  * Added text showing the total number and size of selected languages
+  * "Update" tab header now shows the number of languages available
+    for update
+* Added a "Settings" tab that includes:
+  * Hotkey editor (moved from the "Main" tab)
+  * "Interface" group
+    * A checkbox to control the visibility of the notification area
+      icon. If enabled, you can also choose to hide the main window
+      when it is minimized or closed (use the notification area icon
+      to show it again).
+  * "Behavior" group
+    * A checkbox to play a sound when recognition is complete. If
+      enabled, you can also select a custom audio file to use instead
+      of the built-in one.
+    * A checkbox to automatically check for updates at startup. By
+      default, the updates are checked no more often than once a week.
+      You can change this interval in the settings file as described
+      in the "Tweaking" section of the user manual.
+    * A checkbox to run the program automatically at system logon
+* Added a "Check for updates" button to the "About" tab
+* Added a command line interface with "-help", "-hide", "-version"
+  options and an "autostart" command. See "-help" for details.
+* Updated Tesseract to 5.5.0
+* Unix:
+  * English OCR language is now included in the TAR.XZ bundle. It will
+    only be installed automatically for those who run dpScreenOCR for
+    the first time.
+  * Removed support for 16-bit screen color modes under X11
+* New translations
+  * Portuguese (Brazil)
+* CMake
+  * Minimum required CMake version is raised to 3.22
+  * Removed DPSO_ENABLE_NLS
+
+
 1.4.1 (2023-11-15)
 ==================
 
