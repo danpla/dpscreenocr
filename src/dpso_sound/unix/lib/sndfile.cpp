@@ -12,36 +12,26 @@ namespace dpso::sound {
 namespace {
 
 
-struct LibInfo {
-    std::string name;
-    unix::DlHandleUPtr handle;
-};
-
-
-LibInfo loadLib(const char* soName)
+unix::DlHandleUPtr loadLib(const char* soName)
 {
     if (auto* handle = dlopen(soName, RTLD_NOW | RTLD_LOCAL))
-        return {soName, unix::DlHandleUPtr{handle}};
+        return unix::DlHandleUPtr{handle};
 
     throw Error{str::format("Can't load {}: {}", soName, dlerror())};
 }
 
 
-void* loadFn(const LibInfo& libInfo, const char* name)
+void* loadFn(const char* name)
 {
-    if (auto* result = dlsym(libInfo.handle.get(), name))
+    static const auto* libName = "libsndfile.so.1";
+    static const auto dlHandle = loadLib(libName);
+
+    if (auto* result = dlsym(dlHandle.get(), name))
         return result;
 
     throw Error{str::format(
         "dlsym for \"{}\" from \"{}\": {}",
-        name, libInfo.name, dlerror())};
-}
-
-
-void* loadLibSndfileFn(const char* name)
-{
-    static const auto libInfo = loadLib("libsndfile.so.1");
-    return loadFn(libInfo, name);
+        name, libName, dlerror())};
 }
 
 
@@ -55,8 +45,7 @@ const LibSndfile& LibSndfile::get()
 }
 
 
-#define LOAD_FN(NAME) \
-    NAME{(decltype(NAME))loadLibSndfileFn("sf_" #NAME)}
+#define LOAD_FN(NAME) NAME{(decltype(NAME))loadFn("sf_" #NAME)}
 
 
 LibSndfile::LibSndfile()
