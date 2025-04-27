@@ -26,7 +26,7 @@ void validateLangCode(const char* langCode)
     for (const auto* s = langCode; *s; ++s)
         if (!isValidLangCodeChar(*s))
             throw LangCodeError{str::format(
-                "Invalid character at index {}", langCode - s)};
+                "Invalid character at index {}", s - langCode)};
 }
 
 
