@@ -5,7 +5,7 @@
 #include <X11/Xlib.h>
 
 #include "backend/key_manager.h"
-#include "backend/x11/backend_component.h"
+#include "backend/unix/x11/backend_component.h"
 
 
 namespace dpso::backend::x11 {

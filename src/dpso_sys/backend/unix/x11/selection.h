@@ -3,7 +3,7 @@
 #include <X11/Xlib.h>
 
 #include "backend/selection.h"
-#include "backend/x11/backend_component.h"
+#include "backend/unix/x11/backend_component.h"
 
 
 namespace dpso::backend::x11 {

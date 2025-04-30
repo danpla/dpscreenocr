@@ -16,10 +16,11 @@ if(UNIX AND NOT APPLE)
     target_sources(
         dpso_sys
         PRIVATE
-        backend/x11/backend.cpp
-        backend/x11/key_manager.cpp
-        backend/x11/screenshot.cpp
-        backend/x11/selection.cpp)
+        backend/unix/backend.cpp
+        backend/unix/x11/backend.cpp
+        backend/unix/x11/key_manager.cpp
+        backend/unix/x11/screenshot.cpp
+        backend/unix/x11/selection.cpp)
 elseif(WIN32)
     target_sources(
         dpso_sys
