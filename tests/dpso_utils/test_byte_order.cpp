@@ -1,4 +1,5 @@
 #include <array>
+#include <cstdint>
 
 #include "dpso_utils/byte_order.h"
 #include "dpso_utils/str.h"
