@@ -89,12 +89,12 @@ if(DPSO_ENABLE_UPDATE_CHECKER)
 
     if(NOT TARGET dpso_json)
         add_subdirectory(
-            ../dpso_json "${CMAKE_BINARY_DIR}/src/dpso_json")
+            ../../dpso_json "${CMAKE_BINARY_DIR}/src/dpso_json")
     endif()
 
     if(NOT TARGET dpso_net)
         add_subdirectory(
-            ../dpso_net "${CMAKE_BINARY_DIR}/src/dpso_net")
+            ../../dpso_net "${CMAKE_BINARY_DIR}/src/dpso_net")
     endif()
 
     find_package(Threads REQUIRED)
