@@ -73,11 +73,6 @@ public:
         return *this;
     }
 
-    Resource get() const
-    {
-        return resource;
-    }
-
     operator Resource() const
     {
         return resource;
@@ -88,10 +83,7 @@ private:
 };
 
 
-template<auto deleter>
-using XidHandle = ResourceHandle<XID, deleter>;
-
-using WindowHandle = XidHandle<XDestroyWindow>;
+using WindowHandle = ResourceHandle<Window, XDestroyWindow>;
 using GcHandle = ResourceHandle<GC, XFreeGC>;
 
 
