@@ -4,6 +4,7 @@
 
 #include "backend/selection.h"
 #include "backend/unix/x11/backend_component.h"
+#include "backend/unix/x11/utils.h"
 
 
 namespace dpso::backend::x11 {
@@ -12,7 +13,6 @@ namespace dpso::backend::x11 {
 class Selection : public backend::Selection, public BackendComponent {
 public:
     explicit Selection(Display* display);
-    ~Selection();
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
@@ -24,9 +24,9 @@ public:
     void updateStart() override;
     void handleEvent(const XEvent& event) override;
 private:
-    Display* display{};
-    Window window{};
-    GC gc{};
+    Display* display;
+    WindowHandle window{};
+    GcHandle gc{};
 
     bool isEnabled{};
     int baseBorderWidth{defaultBorderWidth};

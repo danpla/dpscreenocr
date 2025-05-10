@@ -7,10 +7,22 @@
 #include "backend/unix/x11/key_manager.h"
 #include "backend/unix/x11/screenshot.h"
 #include "backend/unix/x11/selection.h"
+#include "backend/unix/x11/utils.h"
 
 
 namespace dpso::backend::x11 {
 namespace {
+
+
+Display* openDisplay()
+{
+    if (auto* result = XOpenDisplay(nullptr))
+        return result;
+
+    throw BackendError{
+        std::string{"Can't connect to X display "}
+        + XDisplayName(nullptr)};
+}
 
 
 class Backend : public backend::Backend {
@@ -23,40 +35,33 @@ public:
 
     void update() override;
 private:
-    std::unique_ptr<Display, decltype(&XCloseDisplay)> display;
+    DisplayUPtr display;
 
-    std::unique_ptr<KeyManager> keyManager;
-    std::unique_ptr<Selection> selection;
+    KeyManager keyManager;
+    Selection selection;
 
     BackendComponent* components[2];
 };
 
 
 Backend::Backend()
-    : display{XOpenDisplay(nullptr), XCloseDisplay}
+    : display{openDisplay()}
+    , keyManager{display.get()}
+    , selection{display.get()}
+    , components{&keyManager, &selection}
 {
-    if (!display)
-        throw BackendError(
-            std::string("Can't connect to X display ")
-            + XDisplayName(nullptr));
-
-    keyManager = std::make_unique<KeyManager>(display.get());
-    selection = std::make_unique<Selection>(display.get());
-
-    components[0] = keyManager.get();
-    components[1] = selection.get();
 }
 
 
 KeyManager& Backend::getKeyManager()
 {
-    return *keyManager;
+    return keyManager;
 }
 
 
 Selection& Backend::getSelection()
 {
-    return *selection;
+    return selection;
 }
 
 

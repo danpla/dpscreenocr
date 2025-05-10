@@ -77,16 +77,18 @@ Selection::Selection(Display* display)
     XSetWindowAttributes windowAttrs;
     windowAttrs.override_redirect = True;
 
-    window = XCreateWindow(
-        display, XDefaultRootWindow(display),
-        0, 0,
-        1, 1,
-        0,
-        CopyFromParent,
-        CopyFromParent,
-        CopyFromParent,
-        CWOverrideRedirect,
-        &windowAttrs);
+    window = WindowHandle{
+        display,
+        XCreateWindow(
+            display, XDefaultRootWindow(display),
+            0, 0,
+            1, 1,
+            0,
+            CopyFromParent,
+            CopyFromParent,
+            CopyFromParent,
+            CWOverrideRedirect,
+            &windowAttrs)};
     XSelectInput(display, window, ExposureMask);
 
     updateBorderWidth();
@@ -98,22 +100,17 @@ Selection::Selection(Display* display)
     gcval.line_style = LineDoubleDash;
     gcval.dashes = borderWidth * Selection::dashLen;
 
-    gc = XCreateGC(
+    gc = GcHandle{
         display,
-        window,
-        GCForeground | GCBackground | GCLineWidth | GCLineStyle
-            | GCDashList,
-        &gcval);
+        XCreateGC(
+            display,
+            window,
+            GCForeground | GCBackground | GCLineWidth | GCLineStyle
+                | GCDashList,
+            &gcval)};
 
     updateWindowGeometry();
     updateWindowShape();
-}
-
-
-Selection::~Selection()
-{
-    XFreeGC(display, gc);
-    XDestroyWindow(display, window);
 }
 
 

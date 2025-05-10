@@ -7,10 +7,10 @@
 #include "dpso_utils/byte_order.h"
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/geometry.h"
-#include "dpso_utils/scope_exit.h"
 #include "dpso_utils/str.h"
 
 #include "backend/screenshot_error.h"
+#include "backend/unix/x11/utils.h"
 
 
 namespace dpso::backend::x11 {
@@ -107,7 +107,7 @@ img::ImgUPtr takeScreenshot(Display* display, const Rect& rect)
     if (isEmpty(captureRect))
         throw ScreenshotError{"Rect is outside screen bounds"};
 
-    auto* image = XGetImage(
+    ImageUPtr image{XGetImage(
         display,
         XDefaultRootWindow(display),
         captureRect.x,
@@ -115,12 +115,10 @@ img::ImgUPtr takeScreenshot(Display* display, const Rect& rect)
         captureRect.w,
         captureRect.h,
         AllPlanes,
-        ZPixmap);
+        ZPixmap)};
 
     if (!image)
         throw ScreenshotError{"XGetImage() failed"};
-
-    const ScopeExit destroyImage{[&]{ XDestroyImage(image); }};
 
     img::ImgUPtr result{
         dpsoImgCreate(
