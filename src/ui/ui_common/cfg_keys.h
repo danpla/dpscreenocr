@@ -3,6 +3,11 @@
 #pragma once
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 extern const char* const cfgKeyActionAddToHistory;
 extern const char* const cfgKeyActionCopyToClipboard;
 extern const char* const cfgKeyActionCopyToClipboardTextSeparator;
@@ -34,3 +39,8 @@ extern const char* const cfgKeyUiWindowY;
 extern const char* const cfgKeyUpdateCheckAuto;
 extern const char* const cfgKeyUpdateCheckAutoIntervalDays;
 extern const char* const cfgKeyUpdateCheckLastTime;
+
+
+#ifdef __cplusplus
+}
+#endif

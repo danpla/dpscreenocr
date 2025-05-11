@@ -7,6 +7,11 @@
 #include "dpso_sys/dpso_sys.h"
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 extern bool const cfgDefaultValueActionAddToHistory;
 extern bool const cfgDefaultValueActionCopyToClipboard;
 extern const char* const cfgDefaultValueActionCopyToClipboardTextSeparator;
@@ -24,3 +29,8 @@ extern bool const cfgDefaultValueUiWindowMinimizeOnStart;
 extern bool const cfgDefaultValueUiWindowMinimizeToTray;
 extern bool const cfgDefaultValueUpdateCheckAuto;
 extern int const cfgDefaultValueUpdateCheckAutoIntervalDays;
+
+
+#ifdef __cplusplus
+}
+#endif

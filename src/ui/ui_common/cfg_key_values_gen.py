@@ -85,13 +85,10 @@ def get_file_ext(file_type):
     return '.h' if file_type == FileType.HEADER else '.cpp'
 
 
-def gen_file_header(
+def gen_includes(
         filename_root, file_type,
         header_includes, implementation_includes):
     s = ''
-
-    if file_type == FileType.HEADER:
-        s += '#pragma once\n\n'
 
     includes = None
     if file_type == FileType.HEADER:
@@ -141,14 +138,30 @@ def write_source(
             '/* This file was automatically generated. '
             'Do not edit. */\n\n')
 
+        if file_type == FileType.HEADER:
+            f.write('#pragma once\n\n')
+
         f.write(
-            gen_file_header(
+            gen_includes(
                 filename_root, file_type,
                 header_includes, implementation_includes))
+
+        if file_type == FileType.HEADER:
+            f.write(
+                '#ifdef __cplusplus\n'
+                'extern "C" {\n'
+                '#endif\n\n\n')
 
         for var in variables:
             f.write(format_var(var, file_type))
             f.write('\n')
+
+        if file_type == FileType.HEADER:
+            f.write(
+                '\n\n'
+                '#ifdef __cplusplus\n'
+                '}\n'
+                '#endif\n')
 
 
 def write_sources(
