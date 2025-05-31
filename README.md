@@ -10,8 +10,8 @@ https://danpla.github.io/dpscreenocr
 *   [Changelog](doc/changelog.txt)
 *   [User manual](doc/manual.md)
 *   Building instructions
-    *    [Unix-like systems](doc/building-unix.txt)
-    *    [Windows](doc/building-windows-msys2.txt) (MSYS2)
+    *   [Unix-like systems](doc/building-unix.txt)
+    *   [Windows (MSYS2)](doc/building-windows-msys2.txt)
 
 
 ## Contributing
