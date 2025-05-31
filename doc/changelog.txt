@@ -25,7 +25,7 @@
 * Added a "Check for updates" button to the "About" tab
 * Added a command line interface with "-help", "-hide", "-version"
   options and an "autostart" command. See "-help" for details.
-* Updated Tesseract to 5.5.0
+* Updated Tesseract to 5.5.1
 * Unix:
   * English OCR language is now included in the TAR.XZ bundle. It will
     only be installed automatically for those who run dpScreenOCR for
