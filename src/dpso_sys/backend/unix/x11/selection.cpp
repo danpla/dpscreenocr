@@ -181,12 +181,15 @@ void Selection::updateStart()
 }
 
 
-void Selection::handleEvent(const XEvent& event)
+bool Selection::handleEvent(const XEvent& event)
 {
-    if (event.type == Expose
-            && event.xexpose.window == window
-            && event.xexpose.count == 0)
+    if (event.xany.window != window)
+        return false;
+
+    if (event.type == Expose && event.xexpose.count == 0)
         draw();
+
+    return true;
 }
 
 

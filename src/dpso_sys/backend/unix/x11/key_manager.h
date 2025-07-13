@@ -30,7 +30,7 @@ public:
     void removeBinding(int idx) override;
 
     void updateStart() override;
-    void handleEvent(const XEvent& event) override;
+    bool handleEvent(const XEvent& event) override;
 private:
     Display* display;
     bool isEnabled{};

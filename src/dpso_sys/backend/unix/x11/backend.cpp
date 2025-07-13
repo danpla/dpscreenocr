@@ -76,12 +76,12 @@ void Backend::update()
     for (auto* component : components)
         component->updateStart();
 
-    XEvent event;
-    while (XPending(display.get())) {
+    for (XEvent event; XPending(display.get());) {
         XNextEvent(display.get(), &event);
 
         for (auto* component : components)
-            component->handleEvent(event);
+            if (component->handleEvent(event))
+                break;
     }
 }
 

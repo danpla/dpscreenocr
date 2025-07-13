@@ -110,12 +110,14 @@ void KeyManager::updateStart()
 }
 
 
-void KeyManager::handleEvent(const XEvent& event)
+bool KeyManager::handleEvent(const XEvent& event)
 {
-    if (!isEnabled
-            || event.type != KeyPress
+    if (event.type != KeyPress
             || event.xkey.window != XDefaultRootWindow(display))
-        return;
+        return false;
+
+    if (!isEnabled)
+        return true;
 
     const auto mods = toDpsoMods(event.xkey.state);
 
@@ -125,6 +127,8 @@ void KeyManager::handleEvent(const XEvent& event)
             hotkeyAction = x11binding.binding.action;
             break;
         }
+
+    return true;
 }
 
 

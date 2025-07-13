@@ -11,7 +11,9 @@ public:
     virtual ~BackendComponent() = default;
 
     virtual void updateStart() {}
-    virtual void handleEvent(const XEvent& event) { (void)event; }
+
+    // Return true if the event was consumed.
+    virtual bool handleEvent(const XEvent& event) = 0;
 };
 
 
