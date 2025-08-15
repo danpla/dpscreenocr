@@ -20,6 +20,9 @@ namespace {
 namespace sha256 {
 
 
+const auto byteOrder = ByteOrder::big;
+
+
 const std::uint32_t k[64]{
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b,
     0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
@@ -144,12 +147,12 @@ Sha256::Digest Sha256::Context::finalize()
     }
 
     std::fill(buf + bufLen, buf + bitSizePos, 0);
-    store<ByteOrder::big>(bitSize, buf + bitSizePos);
+    store<sha256::byteOrder>(bitSize, buf + bitSizePos);
     transform(buf);
 
     Digest digest;
     for (auto i = 0; i < stateSize; ++i)
-        store<ByteOrder::big>(
+        store<sha256::byteOrder>(
             state[i], digest.data() + sizeof(*state) * i);
 
     return digest;
@@ -161,7 +164,7 @@ void Sha256::Context::transform(const std::uint8_t block[blockSize])
     std::uint32_t w[64];
 
     for (auto i = 0; i < 16; ++i)
-        load<ByteOrder::big>(w[i], block + sizeof(*w) * i);
+        load<sha256::byteOrder>(w[i], block + sizeof(*w) * i);
 
     for (auto i = 16; i < 64; ++i)
         w[i] =
