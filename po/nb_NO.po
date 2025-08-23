@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2025-03-29 22:06+0100\n"
-"PO-Revision-Date: 2025-01-12 20:00+0000\n"
+"PO-Revision-Date: 2025-08-24 18:02+0000\n"
 "Last-Translator: Daniel Plakhotich <daniel.plakhotich@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "dpscreenocr/dpscreenocr/nb_NO/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.13\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:33
 msgid "Afrikaans"
@@ -806,11 +806,11 @@ msgstr "Handlinger"
 
 #: src/ui/qt/main_window.cpp:513
 msgid "All supported audio files"
-msgstr ""
+msgstr "Alle støttede lydfiler"
 
 #: src/ui/qt/main_window.cpp:543
 msgid "Choose an audio file"
-msgstr ""
+msgstr "Velg en lydfil"
 
 #: src/ui/qt/main_window.cpp:558
 msgid "Hotkey"
@@ -858,7 +858,7 @@ msgstr "Avspill lyd når gjenkjenning er fullført"
 
 #: src/ui/qt/main_window.cpp:632
 msgid "Play this audio file:"
-msgstr ""
+msgstr "Spill denne lydfilen:"
 
 #: src/ui/qt/main_window.cpp:695
 msgid "Check for updates automatically"
