@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2025-03-29 22:06+0100\n"
-"PO-Revision-Date: 2024-08-24 15:09+0000\n"
+"PO-Revision-Date: 2025-10-03 13:55+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/hr/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.7.1-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:33
 msgid "Afrikaans"
@@ -552,7 +552,7 @@ msgstr "Program za prepoznavanje teksta na ekranu"
 
 #: src/ui/qt/about.cpp:126
 msgid "Check for updates"
-msgstr ""
+msgstr "Traži nove verzije"
 
 #: src/ui/qt/action_chooser.cpp:25
 msgid "Copy text to clipboard"
@@ -808,11 +808,11 @@ msgstr "Radnje"
 
 #: src/ui/qt/main_window.cpp:513
 msgid "All supported audio files"
-msgstr ""
+msgstr "Sve podržane audio datoteke"
 
 #: src/ui/qt/main_window.cpp:543
 msgid "Choose an audio file"
-msgstr ""
+msgstr "Odaberi audio datoteku"
 
 #: src/ui/qt/main_window.cpp:558
 msgid "Hotkey"
@@ -856,15 +856,15 @@ msgstr "Ponašanje"
 
 #: src/ui/qt/main_window.cpp:623
 msgid "Play sound when recognition is complete"
-msgstr ""
+msgstr "Reproduciraj zvuk kada je prepoznavanje završeno"
 
 #: src/ui/qt/main_window.cpp:632
 msgid "Play this audio file:"
-msgstr ""
+msgstr "Reproduciraj ovu audio datoteku:"
 
 #: src/ui/qt/main_window.cpp:695
 msgid "Check for updates automatically"
-msgstr ""
+msgstr "Automatski traži nove verzije"
 
 #: src/ui/qt/main_window.cpp:702
 msgid "Run at system logon"
@@ -888,8 +888,14 @@ msgid_plural ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} days"
 msgstr[0] ""
+"{app_name} će automatski traćiti nove verzije pri pokretanju, ali ne češće "
+"od jednom svakih {count} dana"
 msgstr[1] ""
+"{app_name} će automatski traćiti nove verzije pri pokretanju, ali ne češće "
+"od jednom svakih {count} dana"
 msgstr[2] ""
+"{app_name} će automatski traćiti nove verzije pri pokretanju, ali ne češće "
+"od jednom svakih {count} dana"
 
 #: src/ui/qt/main_window.cpp:1121
 msgid "Please install languages"
@@ -913,34 +919,37 @@ msgstr "Pritisni {hotkey} za kraj biranja područja"
 
 #: src/ui/qt/update_checker.cpp:53
 msgid "An error occurred while checking for updates"
-msgstr ""
+msgstr "Došlo je do greške prilikom traženja novih verzija"
 
 #: src/ui/qt/update_checker.cpp:68
 msgid "{required} (you have {actual})"
-msgstr ""
+msgstr "{required} (ti imaš {actual})"
 
 #: src/ui/qt/update_checker.cpp:93
 msgid "{app_name} {new_version} is available (you have {current_version})"
-msgstr ""
+msgstr "Dostupna je {app_name} {new_version} (ti imaš {current_version})"
 
 #: src/ui/qt/update_checker.cpp:101
 msgid "Visit the website for more information."
-msgstr ""
+msgstr "Posjeti web stranicu za više informacija."
 
 #: src/ui/qt/update_checker.cpp:105
 msgid "You have the latest version of {app_name}"
-msgstr ""
+msgstr "Imaš najnoviju verziju aplikacije {app_name}"
 
 #: src/ui/qt/update_checker.cpp:106
 msgid "You have the latest version of {app_name} available for your system"
 msgstr ""
+"Imaš najnoviju verziju aplikacije {app_name} koja je dostupna za tvoj sustav"
 
 #: src/ui/qt/update_checker.cpp:115
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
 msgstr ""
+"Najnovija verzija je {latest_version}, ali tvoj sustav ne ispunjava sljedeće "
+"minimalne zahtjeve: {requirements}."
 
 #: src/ui/qt/update_checker.cpp:270
 msgid "Checking for updates…"
-msgstr ""
+msgstr "Traženje novih verzija …"
