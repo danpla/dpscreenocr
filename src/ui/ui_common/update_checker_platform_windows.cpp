@@ -117,7 +117,7 @@ std::string getWindowsName(const RTL_OSVERSIONINFOW& v)
     else if (v.dwMajorVersion == 10 && v.dwMinorVersion == 0) {
         if (v.dwBuildNumber < 22000)
             name = "10";
-        else if (v.dwBuildNumber <= 26100)
+        else if (v.dwBuildNumber <= 26200)
             name = "11";
     }
 
