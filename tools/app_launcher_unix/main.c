@@ -307,7 +307,7 @@ static void cleanupLauncherPaths(LauncherPaths* paths)
     __attribute__((cleanup(cleanupLauncherPaths)))
 
 
-void cfgExtractKeyValue(
+static void cfgExtractKeyValue(
     char* line, const char** key, const char** value)
 {
     assert(key);
