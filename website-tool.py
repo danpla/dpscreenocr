@@ -33,6 +33,7 @@ PO_DIR = os.path.join(DATA_DIR, 'po')
 LOCALE_TO_BCP47 = {
     'bg': 'bg',
     'ca': 'ca',
+    'cs': 'cs',
     'de': 'de',
     'es': 'es',
     'fr': 'fr',
