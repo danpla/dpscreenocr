@@ -47,7 +47,7 @@ static auto getLowerBound(T& keyValues, const char* key)
         keyValues.begin(), keyValues.end(), key,
         [](const DpsoCfg::KeyValue& kv, const char* key)
         {
-            return std::strcmp(kv.key.c_str(), key) < 0;
+            return kv.key < key;
         });
 }
 
@@ -261,8 +261,7 @@ const char* dpsoCfgGetStr(
         return defaultVal;
 
     const auto iter = getLowerBound(cfg->keyValues, key);
-    if (iter != cfg->keyValues.end()
-            && std::strcmp(iter->key.c_str(), key) == 0)
+    if (iter != cfg->keyValues.end() && iter->key == key)
         return iter->value.c_str();
 
     return defaultVal;
@@ -281,8 +280,7 @@ void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
         return;
 
     const auto iter = getLowerBound(cfg->keyValues, key);
-    if (iter != cfg->keyValues.end() &&
-            std::strcmp(iter->key.c_str(), key) == 0)
+    if (iter != cfg->keyValues.end() && iter->key == key)
         iter->value = val;
     else
         cfg->keyValues.insert(iter, {key, val});
