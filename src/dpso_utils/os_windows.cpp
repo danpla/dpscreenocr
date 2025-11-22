@@ -151,30 +151,23 @@ static void validateExePath(const char* exePath)
     if (!*exePath)
         throw Error{"Path is empty"};
 
-    const auto ext = getFileExt(exePath);
-    if (ext.empty())
-        return;
-
     // We can't allow executing batch scripts, because it's impossible
     // to safely pass arbitrary text to them. The ^-escaping rules for
     // variables are broken by design: for example, unescaping happens
     // every time a variable is accessed, even on assignment to
     // another variable.
 
+    auto ext = getFileExt(exePath);
+    if (ext.empty())
+        return;
+
     // The string can contain trailing whitespace that will be
     // stripped by ShellExecute().
-    const auto* extBegin = ext.c_str();
-    const auto* extEnd = extBegin;
-    for (const auto* s = extBegin; *s; ++s)
-        if (!str::isSpace(*s))
-            extEnd = s + 1;
+    while (!ext.empty() && str::isSpace(ext.back()))
+        ext.pop_back();
 
     for (const auto* batchExt : {".bat", ".cmd"})
-        if (str::cmpSubStr(
-                batchExt,
-                extBegin,
-                extEnd - extBegin,
-                str::cmpIgnoreCase) == 0)
+        if (str::cmp(batchExt, ext.c_str(), str::cmpIgnoreCase) == 0)
             throw Error{"Execution of batch files is forbidden"};
 }
 
