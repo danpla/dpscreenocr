@@ -166,7 +166,6 @@ void removeSha256File(const char* digestSourceFilePath)
 
     try {
         os::removeFile(sha256FilePath.c_str());
-    } catch (os::FileNotFoundError&) {
     } catch (os::Error& e) {
         throw Sha256FileError{str::format(
             "os::removeFile(\"{}\"): {}", sha256FilePath, e.what())};

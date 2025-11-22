@@ -582,7 +582,6 @@ static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
     if (!newIsEnabled) {
         try {
             os::removeFile(autostart->desktopFilePath.c_str());
-        } catch (os::FileNotFoundError&) {
         } catch (os::Error& e) {
             throw AutostartError{str::format(
                 "os::removeFile(\"{}\"): {}",

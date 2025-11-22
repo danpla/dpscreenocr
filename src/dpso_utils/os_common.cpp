@@ -76,25 +76,9 @@ std::string getBaseName(const char* path)
 }
 
 
-const char* getFileExt(const char* filePath)
+std::string getFileExt(const char* filePath)
 {
-    const char* ext{};
-
-    for (const auto* s = filePath; *s; ++s)
-        if (*s == '.')
-            ext = s;
-        else if (std::strchr(dirSeparators, *s))
-            ext = nullptr;
-
-    if (ext
-            && ext[1]
-            // A leading period denotes a "hidden" file on Unix-like
-            // systems. We follow this convention on all platforms.
-            && ext != filePath
-            && !std::strchr(dirSeparators, ext[-1]))
-        return ext;
-
-    return nullptr;
+    return fs::u8path(filePath).extension().u8string();
 }
 
 
@@ -118,13 +102,9 @@ void resizeFile(const char* filePath, std::int64_t newSize)
 void removeFile(const char* filePath)
 {
     std::error_code ec;
-    if (!fs::remove(fs::u8path(filePath), ec))
-        // If the entry does not exist, std::filesystem::remove()
-        // returns false instead of reporting an error. Emulate this
-        // case manually.
-        throw FileNotFoundError{
-            "No such file or directory (false from fs::remove())"};
-
+    // Note that remove() returns false if the file does not exist. It
+    // doesn't set std::errc::no_such_file_or_directory in this case.
+    fs::remove(fs::u8path(filePath), ec);
     check("fs::remove", ec);
 }
 

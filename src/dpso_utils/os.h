@@ -65,9 +65,8 @@ std::string getBaseName(const char* path);
 std::string convertUtf8PathToSys(const char* utf8Path);
 
 
-// Return a pointer to the period of the extension, or null if
-// filePath has no extension.
-const char* getFileExt(const char* filePath);
+// Return the file extension, or an empty string if there is none.
+std::string getFileExt(const char* filePath);
 
 
 // Return size of filePath in bytes. The behavior is platform-specific
@@ -87,7 +86,8 @@ void resizeFile(const char* filePath, std::int64_t newSize);
 
 // Remove a regular file. The behavior is platform-specific if
 // filePath points to anything other than a regular file.
-// Throws os::Error.
+//
+// Throws os::Error. Nonexistent filePath is not treated as an error.
 void removeFile(const char* filePath);
 
 

@@ -217,7 +217,6 @@ void removeFile(const char* filePath)
 {
     try {
         dpso::os::removeFile(filePath);
-    } catch (dpso::os::FileNotFoundError&) {
     } catch (dpso::os::Error& e) {
         test::fatalError(
             "os::removeFile(\"{}\"): {}", filePath, e.what());

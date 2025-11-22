@@ -52,88 +52,6 @@ std::wstring toUtf16(const char* str, const char* varName)
 #define DPSO_WIN_TO_UTF16(VAR_NAME) toUtf16(VAR_NAME, #VAR_NAME)
 
 
-template<typename T>
-bool isDirSep(T c)
-{
-    return c == '\\' || c == '/';
-}
-
-
-// Skip the root part of a path, which can be a specifier of DOS path
-// ("C:\"), a UNC path ("\\server\share\"), or a device path
-// ("\\?\C:\", "\\?\\UNC\server\share\"). For details, see:
-// https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats
-// https://ikrima.dev/dev-notes/win-internals/win-path-formats/
-//
-// We can replace this function with PathCchSkipRoot() from pathcch.h
-// once we drop Windows 7.
-const char* skipRoot(const char* path)
-{
-    const auto* p = path;
-
-    if (p[0] && p[1] == ':')
-        return p + (isDirSep(p[2]) ? 3 : 2);
-
-    if (isDirSep(p[0]) && isDirSep(p[1])) {
-        // UNC or device path.
-        p += 2;
-
-        // Device path can look like:
-        // \\?\C:\file.txt
-        // \\?\UNC\server\share\file.txt
-        if (
-                p[0] == '?'
-                && isDirSep(p[1])
-                && str::cmpSubStr(
-                    "UNC", p + 2, 3, str::cmpIgnoreCase) == 0
-                && isDirSep(p[5]))
-            p += 6;
-
-        // Skip "server\share\" of a UNC path, or "?\C:\" of a device
-        // path.
-        for (auto i = 0; i < 2; ++i) {
-            while (*p && !isDirSep(*p))
-                ++p;
-
-            if (isDirSep(*p))
-                ++p;
-        }
-    }
-
-    return p;
-}
-
-
-struct PathParts {
-    const char* dirBegin;
-    const char* dirEnd;
-    const char* baseBegin;
-    const char* baseEnd;
-};
-
-
-PathParts splitPath(const char* path)
-{
-    const auto* pathNoRoot = skipRoot(path);
-
-    const auto* sepBegin = pathNoRoot;
-    const auto* sepEnd = sepBegin;
-
-    const auto* s = pathNoRoot;
-
-    for (; *s; ++s)
-        if (isDirSep(*s)) {
-            if (s > pathNoRoot && !isDirSep(s[-1]))
-                sepBegin = s;
-
-            sepEnd = s + 1;
-        }
-
-    return {
-        path, sepBegin == pathNoRoot ? sepEnd : sepBegin, sepEnd, s};
-}
-
-
 }
 
 
@@ -147,20 +65,6 @@ std::string getErrnoMsg(int errnum)
 
 const char* const newline = "\r\n";
 const char* const dirSeparators = "\\/";
-
-
-std::string getDirName(const char* path)
-{
-    const auto parts = splitPath(path);
-    return {parts.dirBegin, parts.dirEnd};
-}
-
-
-std::string getBaseName(const char* path)
-{
-    const auto parts = splitPath(path);
-    return {parts.baseBegin, parts.baseEnd};
-}
 
 
 // Returns the checked result of WideCharToMultiByte(), always > 0.
@@ -206,47 +110,6 @@ std::string convertUtf8PathToSys(const char* utf8Path)
 }
 
 
-std::int64_t getFileSize(const char* filePath)
-{
-    WIN32_FILE_ATTRIBUTE_DATA attrs;
-    if (!GetFileAttributesExW(
-            DPSO_WIN_TO_UTF16(filePath).c_str(),
-            GetFileExInfoStandard,
-            &attrs))
-        throwLastError("GetFileAttributesExW()");
-
-    return
-        (static_cast<std::uint64_t>(attrs.nFileSizeHigh) << 32)
-        | attrs.nFileSizeLow;
-}
-
-
-void resizeFile(const char* filePath, std::int64_t newSize)
-{
-    windows::Handle<windows::InvalidHandleType::value> file{
-        CreateFileW(
-            DPSO_WIN_TO_UTF16(filePath).c_str(),
-            GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-            nullptr,
-            OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL,
-            nullptr)};
-
-    if (!file)
-        throwLastError("CreateFileW()");
-
-    LARGE_INTEGER sizeLi;
-    sizeLi.QuadPart = newSize;
-
-    if (!SetFilePointerEx(file, sizeLi, nullptr, FILE_BEGIN))
-        throwLastError("SetFilePointerEx()");
-
-    if (!SetEndOfFile(file))
-        throwLastError("SetEndOfFile()");
-}
-
-
 FILE* fopen(const char* filePath, const char* mode)
 {
     try {
@@ -256,76 +119,6 @@ FILE* fopen(const char* filePath, const char* mode)
     } catch (Error&) {
         errno = EINVAL;
         return nullptr;
-    }
-}
-
-
-void removeFile(const char* filePath)
-{
-    if (!DeleteFileW(DPSO_WIN_TO_UTF16(filePath).c_str()))
-        throwLastError("DeleteFileW()");
-}
-
-
-void replace(const char* src, const char* dst)
-{
-    if (!MoveFileExW(
-            DPSO_WIN_TO_UTF16(src).c_str(),
-            DPSO_WIN_TO_UTF16(dst).c_str(),
-            MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
-        throwLastError("MoveFileExW()");
-}
-
-
-void makeDirs(const char* dirPath)
-{
-    auto dirPathUtf16 = DPSO_WIN_TO_UTF16(dirPath);
-
-    // CreateDirectory() always fails with a permission error instead
-    // of ERROR_ALREADY_EXISTS when called for a drive.
-    //
-    // As a workaround, we first iterate the path backward to
-    // calculate the initial part that exists, then forward to create
-    // missing directories. This way we also don't have to worry about
-    // various path forms ("C:\", "\\?\C:\", "\\?\UNC\LOCALHOST\C$",
-    // etc.).
-    auto* begin = dirPathUtf16.data();
-    auto* s = begin + dirPathUtf16.size();
-    while (s > begin) {
-        const auto c = *s;
-        *s = 0;
-
-        const auto exists =
-            GetFileAttributesW(dirPathUtf16.c_str())
-                != INVALID_FILE_ATTRIBUTES;
-
-        *s = c;
-
-        if (exists)
-            break;
-
-        while (s > begin && isDirSep(s[-1]))
-            --s;
-
-        while (s > begin && !isDirSep(s[-1]))
-            --s;
-    }
-
-    while (*s) {
-        while (*s && !isDirSep(*s))
-            ++s;
-
-        while (isDirSep(*s))
-            ++s;
-
-        const auto c = *s;
-        *s = 0;
-
-        if (!CreateDirectoryW(dirPathUtf16.c_str(), nullptr)
-                && GetLastError() != ERROR_ALREADY_EXISTS)
-            throwLastError("CreateDirectoryW()");
-
-        *s = c;
     }
 }
 
@@ -358,8 +151,8 @@ static void validateExePath(const char* exePath)
     if (!*exePath)
         throw Error{"Path is empty"};
 
-    const auto* ext = getFileExt(exePath);
-    if (!ext)
+    const auto ext = getFileExt(exePath);
+    if (ext.empty())
         return;
 
     // We can't allow executing batch scripts, because it's impossible
@@ -370,14 +163,18 @@ static void validateExePath(const char* exePath)
 
     // The string can contain trailing whitespace that will be
     // stripped by ShellExecute().
-    const auto* extEnd = ext;
-    for (const auto* s = ext; *s; ++s)
+    const auto* extBegin = ext.c_str();
+    const auto* extEnd = extBegin;
+    for (const auto* s = extBegin; *s; ++s)
         if (!str::isSpace(*s))
             extEnd = s + 1;
 
     for (const auto* batchExt : {".bat", ".cmd"})
         if (str::cmpSubStr(
-                batchExt, ext, extEnd - ext, str::cmpIgnoreCase) == 0)
+                batchExt,
+                extBegin,
+                extEnd - extBegin,
+                str::cmpIgnoreCase) == 0)
             throw Error{"Execution of batch files is forbidden"};
 }
 
