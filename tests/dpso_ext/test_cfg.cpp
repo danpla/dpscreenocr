@@ -794,6 +794,31 @@ void testSavedValueFormat()
 }
 
 
+void testLoadNonexistent()
+{
+    CfgUPtr cfg{dpsoCfgCreate()};
+    if (!cfg)
+        test::fatalError(
+            "testLoadNonexistent(): dpsoCfgCreate(): {}",
+            dpsoGetError());
+
+    const auto* key = "key";
+    dpsoCfgSetStr(cfg.get(), key, "");
+
+    if (!dpsoCfgLoad(cfg.get(), "nonexistent-cfg")) {
+        test::failure(
+            "dpsoCfgLoad() error on loading a nonexistent file: {}",
+             dpsoGetError());
+        return;
+    }
+
+    if (dpsoCfgKeyExists(cfg.get(), key))
+        test::failure(
+            "DpsoCfg wasn't reset during loading of a nonexistent "
+            "file");
+}
+
+
 void testCfg()
 {
     CfgUPtr cfg{dpsoCfgCreate()};
@@ -821,6 +846,8 @@ void testCfg()
     testKeyCaseInsensitivity(cfg.get());
 
     testSavedValueFormat();
+
+    testLoadNonexistent();
 }
 
 
