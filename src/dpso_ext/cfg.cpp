@@ -40,12 +40,6 @@ void dpsoCfgDelete(DpsoCfg* cfg)
 }
 
 
-static int cmpKeys(const char* a, const char* b)
-{
-    return str::cmp(a, b, str::cmpIgnoreCase);
-}
-
-
 template<typename T>
 static auto getLowerBound(T& keyValues, const char* key)
 {
@@ -53,7 +47,7 @@ static auto getLowerBound(T& keyValues, const char* key)
         keyValues.begin(), keyValues.end(), key,
         [](const DpsoCfg::KeyValue& kv, const char* key)
         {
-            return cmpKeys(kv.key.c_str(), key) < 0;
+            return std::strcmp(kv.key.c_str(), key) < 0;
         });
 }
 
@@ -268,7 +262,7 @@ const char* dpsoCfgGetStr(
 
     const auto iter = getLowerBound(cfg->keyValues, key);
     if (iter != cfg->keyValues.end()
-            && cmpKeys(iter->key.c_str(), key) == 0)
+            && std::strcmp(iter->key.c_str(), key) == 0)
         return iter->value.c_str();
 
     return defaultVal;
@@ -288,7 +282,7 @@ void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
 
     const auto iter = getLowerBound(cfg->keyValues, key);
     if (iter != cfg->keyValues.end() &&
-            cmpKeys(iter->key.c_str(), key) == 0)
+            std::strcmp(iter->key.c_str(), key) == 0)
         iter->value = val;
     else
         cfg->keyValues.insert(iter, {key, val});

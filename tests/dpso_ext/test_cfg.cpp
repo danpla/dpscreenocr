@@ -733,11 +733,11 @@ void testKeyValidity(DpsoCfg* cfg)
     }
 }
 
-void testKeyCaseInsensitivity(DpsoCfg* cfg)
+void testKeyCaseSensitivity(DpsoCfg* cfg)
 {
-    dpsoCfgSetStr(cfg, "Case_Insensitivity_TEST", "");
-    if (!dpsoCfgKeyExists(cfg, "case_insensitivity_test"))
-        test::failure("testKeyCaseInsensitivity failed");
+    dpsoCfgSetStr(cfg, "Case_Sensitivity_TEST", "");
+    if (dpsoCfgKeyExists(cfg, "case_sensitivity_test"))
+        test::failure("testKeyCaseSensitivity failed");
 }
 
 
@@ -843,7 +843,7 @@ void testCfg()
     testTimeParsing(cfg.get());
 
     testKeyValidity(cfg.get());
-    testKeyCaseInsensitivity(cfg.get());
+    testKeyCaseSensitivity(cfg.get());
 
     testSavedValueFormat();
 
