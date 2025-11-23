@@ -21,13 +21,15 @@ namespace {
 using XPixel = unsigned long;
 
 
-template<int bytesPerPx, ByteOrder byteOrder, typename CCTransformer>
+template<ByteOrder byteOrder, typename CCTransformer>
 void getRgbData(
     const XImage& image,
     std::uint8_t* buf,
     int pitch,
     CCTransformer ccTransformer)
 {
+    const auto bytesPerPx = 4;
+
     const auto rShift = img::getMaskRightShift(image.red_mask);
     const auto gShift = img::getMaskRightShift(image.green_mask);
     const auto bShift = img::getMaskRightShift(image.blue_mask);
@@ -54,7 +56,7 @@ void getRgbData(
 }
 
 
-template<int bytesPerPx, typename CCTransformer>
+template<typename CCTransformer>
 void getRgbData(
     const XImage& image,
     std::uint8_t* buf,
@@ -62,10 +64,10 @@ void getRgbData(
     CCTransformer ccTransformer)
 {
     if (image.byte_order == LSBFirst)
-        getRgbData<bytesPerPx, ByteOrder::little>(
+        getRgbData<ByteOrder::little>(
             image, buf, pitch, ccTransformer);
     else
-        getRgbData<bytesPerPx, ByteOrder::big>(
+        getRgbData<ByteOrder::big>(
             image, buf, pitch, ccTransformer);
 }
 
@@ -87,11 +89,10 @@ void getRgbData(const XImage& image, std::uint8_t* buf, int pitch)
 
     if (image.depth == 30)
         // XRGB 2-10-10-10
-        getRgbData<4>(
-            image, buf, pitch, [](XPixel c){ return c / 4; });
+        getRgbData(image, buf, pitch, [](XPixel c){ return c / 4; });
     else
         // 24 (XRGB 8-8-8-8) and 32 (ARGB 8-8-8-8)
-        getRgbData<4>(image, buf, pitch, [](XPixel c){ return c; });
+        getRgbData(image, buf, pitch, [](XPixel c){ return c; });
 }
 
 
