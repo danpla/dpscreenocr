@@ -20,6 +20,9 @@ typedef struct DpsoImg DpsoImg;
  * least w * dpsoPxFormatGetBytesPerPx(pxFormat). You can use 0 to
  * automatically calculate and use the minimal pitch.
  *
+ * The pixel data of the image is not initialized and may contain
+ * garbage.
+ *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null.
  */

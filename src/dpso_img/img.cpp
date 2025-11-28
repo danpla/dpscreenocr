@@ -48,8 +48,10 @@ DpsoImg* dpsoImgCreate(
         w,
         h,
         pitch,
-        std::make_unique<std::uint8_t[]>(
-            static_cast<std::size_t>(pitch) * h)};
+        // We don't use std::make_unique so that the array is not
+        // value-initialized.
+        std::unique_ptr<std::uint8_t[]>{
+            new std::uint8_t[static_cast<std::size_t>(pitch) * h]}};
 }
 
 
