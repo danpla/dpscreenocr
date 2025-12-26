@@ -83,8 +83,11 @@ HandleUPtr loadJson(const char* data, JsonType type)
         throw Error{str::format(
             "{}:{}: {}", error.line, error.column, error.text)};
 
-    if (getType(result.get()) != type)
-        throw Error{str::format("Root is not {}", getName(type))};
+    if (const auto actualType = getType(result.get());
+            actualType != type)
+        throw Error{str::format(
+            "Root is {} rather than {}",
+            getName(actualType), getName(type))};
 
     return result;
 }
@@ -118,18 +121,16 @@ static json_t* get(
 {
     assert(object);
     assert(getType(object) == JsonType::object);
-    assert(type != JsonType::null);
 
     auto* val = json_object_get(object, key);
     if (!val)
         throw Error{str::format("No \"{}\"", key)};
 
-    if (getType(val) == JsonType::null)
-        throw Error{str::format("\"{}\" is null", key)};
-
-    if (getType(val) != type)
+    if (const auto actualType = getType(val);
+            actualType != type)
         throw Error{str::format(
-            "\"{}\" is not {}", key, getName(type))};
+            "\"{}\" is {} rather than {}",
+            key, getName(actualType), getName(type))};
 
     return val;
 }
@@ -195,7 +196,6 @@ static json_t* get(
 {
     assert(array);
     assert(getType(array) == JsonType::array);
-    assert(type != JsonType::null);
 
     const auto size = json_array_size(array);
     if (idx >= size)
@@ -209,12 +209,11 @@ static json_t* get(
     // documentation.
     assert(val);
 
-    if (getType(val) == JsonType::null)
-        throw Error{str::format("Value at index {} is null", idx)};
-
-    if (getType(val) != type)
+    if (const auto actualType = getType(val);
+            actualType != type)
         throw Error{str::format(
-            "Value at index {} is not {}", idx, getName(type))};
+            "Value at index {} is {} rather than {}",
+            idx, getName(actualType), getName(type))};
 
     return val;
 }
