@@ -23,7 +23,6 @@ add_library(
     str.cpp
     stream/file_stream.cpp
     stream/out_newline_conversion_stream.cpp
-    stream/string_stream.cpp
     stream/utils.cpp
     strftime.cpp
     timing.cpp
