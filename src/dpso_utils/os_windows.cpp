@@ -159,7 +159,9 @@ static void validateExePath(const char* exePath)
 
     auto ext = getFileExt(exePath);
     if (ext.empty())
-        return;
+        // If the file name does not have an extension, ShellExecute()
+        // will try to execute a file with ".BAT" and ".CMD" appended.
+        throw Error{"Path does not have a file extension"};
 
     // The string can contain trailing whitespace that will be
     // stripped by ShellExecute().
