@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
@@ -39,9 +41,8 @@ public:
     Handle& operator=(const Handle&) = delete;
 
     Handle(Handle&& other) noexcept
-        : h{other.h}
+        : h{std::exchange(other.h, getInvalidValue())}
     {
-        other.h = getInvalidValue();
     }
 
     Handle& operator=(Handle&& other) noexcept
@@ -50,8 +51,7 @@ public:
             if (h != getInvalidValue())
                 CloseHandle(h);
 
-            h = other.h;
-            other.h = getInvalidValue();
+            h = std::exchange(other.h, getInvalidValue());
         }
 
         return *this;
