@@ -29,7 +29,7 @@ UiTaskbar* uiTaskbarCreateWin(HWND hwnd)
     }
 
     windows::CoInitializer coInitializer{COINIT_APARTMENTTHREADED};
-    if (!windows::coInitSuccess(coInitializer.getHresult())) {
+    if (FAILED(coInitializer.getHresult())) {
         setError(
             "COM initialization failed: {}",
             windows::getHresultMessage(coInitializer.getHresult()));

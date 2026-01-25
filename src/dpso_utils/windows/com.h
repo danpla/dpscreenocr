@@ -1,21 +1,13 @@
 #pragma once
 
-#include <objbase.h>
-
 #include <memory>
 #include <utility>
 
+#include <objbase.h>
+#include <winerror.h>
+
 
 namespace dpso::windows {
-
-
-// Check result of CoInitializeEx() for success.
-inline bool coInitSuccess(HRESULT hresult)
-{
-    // S_FALSE means that COM is already initialized. We should still
-    // call CoUninitialize() in this case.
-    return hresult == S_OK || hresult == S_FALSE;
-}
 
 
 // RAII for CoInitialize()
@@ -25,12 +17,13 @@ inline bool coInitSuccess(HRESULT hresult)
 // The class doesn't throw if CoInitialize() returns an error (e.g.
 // RPC_E_CHANGED_MODE). Instead, it only calls CoUninitialize() from
 // the destructor on success (i.e. S_OK or S_FALSE), and gives access
-// to HRESULT to check for failure explicitly via coInitSuccess().
+// to HRESULT to explicitly check for a failure.
 struct CoInitializer {
     explicit CoInitializer(DWORD dwCoInit)
         : hresult{
             CoInitializeEx(
                 nullptr, dwCoInit | COINIT_DISABLE_OLE1DDE)}
+        , active{SUCCEEDED(hresult)}
     {
     }
 
@@ -53,8 +46,7 @@ struct CoInitializer {
             finalize();
 
             hresult = other.hresult;
-            moved = other.moved;
-            other.moved = true;
+            active = std::exchange(other.active, false);
         }
 
         return *this;
@@ -66,11 +58,11 @@ struct CoInitializer {
     }
 private:
     HRESULT hresult{};
-    bool moved{};
+    bool active{};
 
     void finalize()
     {
-        if (!moved && coInitSuccess(hresult))
+        if (active)
             CoUninitialize();
     }
 };
