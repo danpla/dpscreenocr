@@ -1,8 +1,7 @@
-# This script can be run with "cmake -P". It requires the following
-# arguments:
+# This script can be run with "cmake -P" and the following arguments:
 #
 #  * BUNDLE_BUILD_DIR - a directory for auxiliary files
-#  * BUNDLE_DIR - a directory in which to store the bundle
+#  * BUNDLE_DIR - a directory to store the bundle
 
 cmake_minimum_required(VERSION "@CMAKE_MINIMUM_REQUIRED_VERSION@")
 
@@ -125,9 +124,6 @@ endfunction()
 
 function(qmake_query PROP OUT_VAR)
     find_program(QMAKE_EXE qmake RQUIRED)
-    if(NOT QMAKE_EXE)
-        message(FATAL_ERROR "qmake not found")
-    endif()
 
     execute_process(
         COMMAND "${QMAKE_EXE}" -query "${PROP}"
