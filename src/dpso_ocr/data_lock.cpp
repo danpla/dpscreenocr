@@ -18,7 +18,7 @@ struct ObserverData {
 
 struct SharedData {
     bool isDataLocked;
-    std::vector<std::reference_wrapper<ObserverData>> observerDatas;
+    std::vector<ObserverData*> observerDatas;
 
     static std::shared_ptr<SharedData> get(
         std::string_view engineId, std::string_view dataDir)
@@ -85,8 +85,8 @@ struct DataLock::Impl {
         if (sd->isDataLocked)
             throw DataLock::DataLockedError{"Data is already locked"};
 
-        for (auto& observerData : sd->observerDatas)
-            if (auto& fn = observerData.get().beforeLockCreated)
+        for (auto* observerData : sd->observerDatas)
+            if (auto& fn = observerData->beforeLockCreated)
                 fn();
 
         sd->isDataLocked = true;
@@ -97,8 +97,8 @@ struct DataLock::Impl {
         assert(sd->isDataLocked);
         sd->isDataLocked = false;
 
-        for (auto& observerData : sd->observerDatas)
-            if (auto& fn = observerData.get().afterLockRemoved)
+        for (auto* observerData : sd->observerDatas)
+            if (auto& fn = observerData->afterLockRemoved)
                 fn();
     }
 };
@@ -131,18 +131,17 @@ struct DataLockObserver::Impl {
         : sd{SharedData::get(engineId, dataDir)}
         , data{beforeLockCreated, afterLockRemoved}
     {
-        sd->observerDatas.push_back(data);
+        sd->observerDatas.push_back(&data);
     }
 
     ~Impl()
     {
         auto& datas = sd->observerDatas;
 
-        for (auto iter = datas.begin(); iter < datas.end(); ++iter)
-            if (&iter->get() == &data) {
-                datas.erase(iter);
-                break;
-            }
+        const auto iter = std::find(
+            datas.begin(), datas.end(), &data);
+        if (iter != datas.end())
+            datas.erase(iter);
     }
 };
 
