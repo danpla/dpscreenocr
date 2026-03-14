@@ -16,6 +16,17 @@ namespace dpso {
 const char* const sha256FileExt = ".sha256";
 
 
+static void validateDigest(std::string_view digest)
+{
+    const auto sha256HexDigestSize = Sha256::digestSize * 2;
+
+    if (digest.size() != sha256HexDigestSize)
+        throw Sha256FileError{str::format(
+            "Invalid hex digest size {} (should be {} for SHA-256)",
+            digest.size(), sha256HexDigestSize)};
+}
+
+
 std::string calcFileSha256(const char* filePath)
 {
     std::optional<FileStream> file;
@@ -51,6 +62,8 @@ std::string calcFileSha256(const char* filePath)
 void saveSha256File(
     const char* digestSourceFilePath, std::string_view digest)
 {
+    validateDigest(digest);
+
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
 
@@ -97,38 +110,30 @@ static std::string loadDigestFromSha256File(
             "os::readLine(): {}", e.what())};
     }
 
-    const auto* digestBegin = line.c_str();
-    const auto* digestEnd = digestBegin;
-    while (*digestEnd && *digestEnd != ' ')
-        ++digestEnd;
-
-    const auto digestSize = digestEnd - digestBegin;
-
-    if (digestSize == 0)
-        throw Sha256FileError{"Line doesn't start with digest"};
-
-    if (digestSize != Sha256::digestSize * 2)
-        throw Sha256FileError{str::format(
-            "Invalid digest size {} (should be {} for SHA-256)",
-            digestSize, Sha256::digestSize * 2)};
-
-    if (*digestEnd != ' ')
+    const auto spacePos = line.find(' ');
+    if (spacePos == line.npos)
         throw Sha256FileError{"Digest is not terminated by space"};
 
-    const auto mode = digestEnd[1];
+    const std::string_view digest(line.data(), spacePos);
+    validateDigest(digest);
+
+    if (spacePos + 1 == line.size())
+        throw Sha256FileError{"No digest mode specifier after space"};
+
+    const auto mode = line[spacePos + 1];
     if (mode != '*')
         throw Sha256FileError{str::format(
             "Expected binary digest mode \"*\", but got \"{}\"",
             mode)};
 
-    const auto* fileName = digestEnd + 2;
+    const auto* fileName = line.data() + spacePos + 2;
 
     if (fileName != expectedFileName)
         throw Sha256FileError{str::format(
             "Unexpected file name \"{}\" (should be \"{}\")",
             fileName, expectedFileName)};
 
-    return {digestBegin, digestEnd};
+    return std::string{digest};
 }
 
 
