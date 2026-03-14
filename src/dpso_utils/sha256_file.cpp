@@ -1,6 +1,5 @@
 #include "sha256_file.h"
 
-#include <cstring>
 #include <optional>
 
 #include "line_reader.h"
@@ -50,7 +49,7 @@ std::string calcFileSha256(const char* filePath)
 
 
 void saveSha256File(
-    const char* digestSourceFilePath, const char* digest)
+    const char* digestSourceFilePath, std::string_view digest)
 {
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
@@ -80,7 +79,7 @@ void saveSha256File(
 
 
 static std::string loadDigestFromSha256File(
-    Stream& stream, const char* expectedFileName)
+    Stream& stream, std::string_view expectedFileName)
 {
     std::string line;
 
@@ -124,7 +123,7 @@ static std::string loadDigestFromSha256File(
 
     const auto* fileName = digestEnd + 2;
 
-    if (std::strcmp(fileName, expectedFileName) != 0)
+    if (fileName != expectedFileName)
         throw Sha256FileError{str::format(
             "Unexpected file name \"{}\" (should be \"{}\")",
             fileName, expectedFileName)};
@@ -151,7 +150,7 @@ std::string loadSha256File(const char* digestSourceFilePath)
 
     try {
         return loadDigestFromSha256File(
-            *file, os::getBaseName(digestSourceFilePath).c_str());
+            *file, os::getBaseName(digestSourceFilePath));
     } catch (Sha256FileError& e) {
         throw Sha256FileError{str::format(
             "\"{}\": {}", sha256FilePath, e.what())};
@@ -195,7 +194,7 @@ std::string getSha256HexDigestWithCaching(const char* filePath)
     }
 
     try {
-        saveSha256File(filePath, digest.c_str());
+        saveSha256File(filePath, digest);
     } catch (Sha256FileError& e) {
         throw Sha256FileError{str::format(
             "Can't save digest: {}", e.what())};

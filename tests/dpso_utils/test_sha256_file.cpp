@@ -53,8 +53,7 @@ void testSaveSha256File()
         testFileName + dpso::sha256FileExt;
 
     try {
-        dpso::saveSha256File(
-            testFileName.c_str(), digest.c_str());
+        dpso::saveSha256File(testFileName.c_str(), digest);
     } catch (dpso::Sha256FileError& e) {
         test::failure(
             "saveSha256File(\"{}\", ...): {}",

@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 
 namespace dpso {
@@ -24,7 +25,7 @@ std::string calcFileSha256(const char* filePath);
 // digestSourceFilePath + ".sha256").
 // Throws Sha256FileError.
 void saveSha256File(
-    const char* digestSourceFilePath, const char* digest);
+    const char* digestSourceFilePath, std::string_view digest);
 
 
 // Load the SHA-256 hex digest previously saved by saveSha256File().
