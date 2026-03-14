@@ -38,7 +38,7 @@ void throwLastError(const char* description)
 }
 
 
-std::wstring toUtf16(const char* str, const char* varName)
+std::wstring toUtf16(std::string_view str, const char* varName)
 {
     try {
         return windows::utf8ToUtf16(str);
@@ -68,18 +68,22 @@ const char* const dirSeparators = "\\/";
 
 
 // Returns the checked result of WideCharToMultiByte(), always > 0.
-static int utf16ToAcp(const wchar_t* utf16Str, char* dst, int dstSize)
+static int utf16ToAcp(
+    std::wstring_view utf16Str, char* dst, int dstSize)
 {
+    if (utf16Str.empty())
+       return 0;
+
     BOOL defaultCharUsed{};
 
-    const auto sizeWithNull = WideCharToMultiByte(
+    const auto size = WideCharToMultiByte(
         CP_ACP,
         WC_NO_BEST_FIT_CHARS,
-        utf16Str, -1,
+        utf16Str.data(), utf16Str.size(),
         dst, dstSize,
         nullptr, &defaultCharUsed);
 
-    if (sizeWithNull <= 0)
+    if (size <= 0)
         throwLastError("WideCharToMultiByte(CP_ACP, ...)");
 
     if (defaultCharUsed)
@@ -88,15 +92,14 @@ static int utf16ToAcp(const wchar_t* utf16Str, char* dst, int dstSize)
             "represented by the current code page (cp{})",
             GetACP())};
 
-    return sizeWithNull;
+    return size;
 }
 
 
-static std::string utf16ToAcp(const wchar_t* utf16Str)
+static std::string utf16ToAcp(std::wstring_view utf16Str)
 {
-    const auto sizeWithNull = utf16ToAcp(utf16Str, nullptr, 0);
-    std::string result(sizeWithNull - 1, 0);
-    utf16ToAcp(utf16Str, result.data(), sizeWithNull);
+    std::string result(utf16ToAcp(utf16Str, nullptr, 0), 0);
+    utf16ToAcp(utf16Str, result.data(), result.size());
     return result;
 }
 
@@ -106,7 +109,7 @@ std::string convertUtf8PathToSys(const char* utf8Path)
     if (GetACP() == CP_UTF8)
         return utf8Path;
 
-    return utf16ToAcp(DPSO_WIN_TO_UTF16(utf8Path).c_str());
+    return utf16ToAcp(DPSO_WIN_TO_UTF16(utf8Path));
 }
 
 
@@ -186,7 +189,7 @@ void exec(
     const auto cmdLine = windows::createCmdLine("", args, numArgs);
 
     const auto exePathUtf16 = DPSO_WIN_TO_UTF16(exePath);
-    const auto cmdLineUtf16 = DPSO_WIN_TO_UTF16(cmdLine.c_str());
+    const auto cmdLineUtf16 = DPSO_WIN_TO_UTF16(cmdLine);
 
     // We use ShellExecute(), as it allows launching a script directly
     // without having to invoke the interpreter explicitly, that is,

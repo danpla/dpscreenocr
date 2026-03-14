@@ -7,7 +7,7 @@
 namespace {
 
 
-void testUtfConversion(const char* utf8Str)
+void testUtfConversion(std::string_view utf8Str)
 {
     using namespace dpso::windows;
 
@@ -24,7 +24,7 @@ void testUtfConversion(const char* utf8Str)
 
     std::string utf16ToUtf8Result;
     try {
-        utf16ToUtf8Result = utf16ToUtf8(utf16Str.c_str());
+        utf16ToUtf8Result = utf16ToUtf8(utf16Str);
     } catch (CharConversionError& e) {
         test::failure(
             "utf16ToUtf8() failed to convert result of "
@@ -45,20 +45,20 @@ void testUtfConversion(const char* utf8Str)
 
 void testUtfConversions()
 {
-    const char* const utf8Strings[]{
+    const std::string_view utf8Strings[]{
         "",
         // Юникод
         "\320\256\320\275\320\270\320\272\320\276\320\264"
     };
 
-    for (const auto* utf8Str : utf8Strings)
+    for (auto utf8Str : utf8Strings)
         testUtfConversion(utf8Str);
 }
 
 
 void testInvalidUtf8()
 {
-    const char* const strings[]{
+    const std::string_view strings[]{
         // Invalid start byte 0x80 - 0xbf
         "\x80",
         "\xbf",
@@ -83,7 +83,7 @@ void testInvalidUtf8()
         "\xf4\x90\x80\x80",
     };
 
-    for (const auto* s : strings) {
+    for (auto s : strings) {
         try {
             dpso::windows::utf8ToUtf16(s);
             test::failure(
@@ -97,7 +97,7 @@ void testInvalidUtf8()
 
 void testInvalidUtf16()
 {
-    const wchar_t* const strings[]{
+    const std::wstring_view strings[]{
         L"\xd800",  // min leading
         L"\xdbff",  // max leading
         L"\xdc00",  // min trailing
@@ -108,7 +108,7 @@ void testInvalidUtf16()
         L"\xdbff\xe000",  // max leading + (max trailing + 1)
     };
 
-    for (const auto* s : strings) {
+    for (auto s : strings) {
         try {
             dpso::windows::utf16ToUtf8(s);
             test::failure(

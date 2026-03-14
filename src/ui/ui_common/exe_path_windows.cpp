@@ -42,7 +42,7 @@ bool initExePath(const char* argv0)
         }
     }
 
-    exePath = dpso::windows::utf16ToUtf8(path.c_str());
+    exePath = dpso::windows::utf16ToUtf8(path);
     return true;
 }
 

@@ -5,28 +5,7 @@
 
 #ifdef _WIN32
 
-#include <string>
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-
-static std::wstring utf8ToUtf16(const char* utf8Str)
-{
-    const auto sizeWithNull = MultiByteToWideChar(
-        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1, nullptr, 0);
-    if (sizeWithNull <= 0)
-        return {};
-
-    std::wstring result(sizeWithNull - 1, 0);
-
-    if (!MultiByteToWideChar(
-            CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1,
-            &result[0], sizeWithNull))
-        return {};
-
-    return result;
-}
+#include "dpso_utils/windows/utf.h"
 
 
 void bindtextdomainUtf8(const char* domainName, const char* dirName)
@@ -36,7 +15,11 @@ void bindtextdomainUtf8(const char* domainName, const char* dirName)
     if (!dirName)
         return;
 
-    wbindtextdomain(domainName, utf8ToUtf16(dirName).c_str());
+    try {
+        wbindtextdomain(
+            domainName, dpso::windows::utf8ToUtf16(dirName).c_str());
+    } catch (dpso::windows::CharConversionError&) {
+    }
 }
 
 

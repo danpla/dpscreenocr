@@ -9,46 +9,53 @@
 namespace dpso::windows {
 
 
-static int utf8ToUtf16(const char* utf8Str, wchar_t* dst, int dstSize)
+static int utf8ToUtf16(
+    std::string_view utf8Str, wchar_t* dst, int dstSize)
 {
-    const auto sizeWithNull = MultiByteToWideChar(
-        CP_UTF8, MB_ERR_INVALID_CHARS, utf8Str, -1, dst, dstSize);
-    if (sizeWithNull <= 0)
+    if (utf8Str.empty())
+        return 0;
+
+    const auto size = MultiByteToWideChar(
+        CP_UTF8, MB_ERR_INVALID_CHARS,
+        utf8Str.data(), utf8Str.size(),
+        dst, dstSize);
+    if (size <= 0)
         throw CharConversionError(getErrorMessage(GetLastError()));
 
-    return sizeWithNull;
+    return size;
 }
 
 
-std::wstring utf8ToUtf16(const char* utf8Str)
+std::wstring utf8ToUtf16(std::string_view utf8Str)
 {
-    const auto sizeWithNull = utf8ToUtf16(utf8Str, nullptr, 0);
-    std::wstring result(sizeWithNull - 1, 0);
-    utf8ToUtf16(utf8Str, result.data(), sizeWithNull);
+    std::wstring result(utf8ToUtf16(utf8Str, nullptr, 0), 0);
+    utf8ToUtf16(utf8Str, result.data(), result.size());
     return result;
 }
 
 
 static int utf16ToUtf8(
-    const wchar_t* utf16Str, char* dst, int dstSize)
+    std::wstring_view utf16Str, char* dst, int dstSize)
 {
-    const auto sizeWithNull = WideCharToMultiByte(
+    if (utf16Str.empty())
+        return 0;
+
+    const auto size = WideCharToMultiByte(
         CP_UTF8, WC_ERR_INVALID_CHARS,
-        utf16Str, -1,
+        utf16Str.data(), utf16Str.size(),
         dst, dstSize,
         nullptr, nullptr);
-    if (sizeWithNull <= 0)
+    if (size <= 0)
         throw CharConversionError(getErrorMessage(GetLastError()));
 
-    return sizeWithNull;
+    return size;
 }
 
 
-std::string utf16ToUtf8(const wchar_t* utf16Str)
+std::string utf16ToUtf8(std::wstring_view utf16Str)
 {
-    const auto sizeWithNull = utf16ToUtf8(utf16Str, nullptr, 0);
-    std::string result(sizeWithNull - 1, 0);
-    utf16ToUtf8(utf16Str, result.data(), sizeWithNull);
+    std::string result(utf16ToUtf8(utf16Str, nullptr, 0), 0);
+    utf16ToUtf8(utf16Str, result.data(), result.size());
     return result;
 }
 

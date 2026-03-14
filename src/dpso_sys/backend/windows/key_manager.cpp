@@ -2,9 +2,9 @@
 
 #include <cassert>
 #include <charconv>
-#include <cwchar>
 #include <iterator>
 #include <string>
+#include <string_view>
 
 #include "dpso_utils/str.h"
 #include "dpso_utils/windows/utf.h"
@@ -61,15 +61,13 @@ const auto sentinelBit = 1 << (modsBits + keyBits);
 static_assert((1 << (modsBits + keyBits)) <= 0xFFFF - 0xC000 + 1);
 
 
-const auto* const atomNamePrefix =
+const std::wstring atomNamePrefix{
     #if DPSO_DLL
     L"dpso"
     #else
     L"#"
     #endif
-;
-
-const auto atomNamePrefixLen = std::wcslen(atomNamePrefix);
+};
 
 
 static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
@@ -80,17 +78,17 @@ static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
             str::toStr(
                 sentinelBit
                 | (hotkey.key << modsBits)
-                | hotkey.mods).c_str());
+                | hotkey.mods));
 }
 
 
-static DpsoHotkey atomNameToHotkey(const wchar_t* name)
+static DpsoHotkey atomNameToHotkey(std::wstring_view name)
 {
-    if (std::wcsncmp(name, atomNamePrefix, atomNamePrefixLen) != 0)
+    if (name.substr(0, atomNamePrefix.size()) != atomNamePrefix)
         return dpsoEmptyHotkey;
 
     const auto str = dpso::windows::utf16ToUtf8(
-        name + atomNamePrefixLen);
+        name.substr(atomNamePrefix.size()));
 
     ATOM atom{};
     const auto [ptr, ec] = std::from_chars(
@@ -241,10 +239,12 @@ void KeyManager::handleWmHotkey(const MSG& msg)
     // the buffer length in characters.
     static const auto atomNameBufLen = 255 / sizeof(wchar_t) + 1;
     wchar_t atomName[atomNameBufLen];
-    if (GlobalGetAtomNameW(id, atomName, atomNameBufLen) == 0)
+    const auto atomNameLen = GlobalGetAtomNameW(
+        id, atomName, atomNameBufLen);
+    if (atomNameLen == 0)
         return;
 
-    const auto hotkey = atomNameToHotkey(atomName);
+    const auto hotkey = atomNameToHotkey({atomName, atomNameLen});
     if (auto* binding = findBinding(hotkey))
         hotkeyAction = binding->action;
 }

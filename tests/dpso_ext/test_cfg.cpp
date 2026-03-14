@@ -374,9 +374,10 @@ void reload(DpsoCfg* cfg)
 }
 
 
-void loadCfgData(DpsoCfg* cfg, const char* cfgData)
+void loadCfgData(DpsoCfg* cfg, const std::string& cfgData)
 {
-    test::utils::saveText("loadCfgData", cfgFileName, cfgData);
+    test::utils::saveText(
+        "loadCfgData", cfgFileName, cfgData.c_str());
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     test::utils::removeFile(cfgFileName);
@@ -392,7 +393,7 @@ void testValueOverridingOnLoad(DpsoCfg* cfg)
 {
     const std::string key = "duplicate_key";
 
-    loadCfgData(cfg, (key + " value1\n" + key + " value2").c_str());
+    loadCfgData(cfg, key + " value1\n" + key + " value2");
     testGetStr(cfg, key.c_str(), "value2", "");
 }
 
@@ -439,8 +440,7 @@ void testStrParsing(DpsoCfg* cfg)
 
     for (const auto& test : tests) {
         loadCfgData(
-            cfg,
-            (std::string{test.key} + " " + test.valInFile).c_str());
+            cfg, std::string{test.key} + " " + test.valInFile);
         testGetStr(cfg, test.key, test.expectedVal, "default value");
     }
 }
@@ -467,8 +467,7 @@ void testIntParsing(DpsoCfg* cfg)
 
     for (const auto& test : tests) {
         loadCfgData(
-            cfg,
-            (std::string{test.key} + " " + test.valInFile).c_str());
+            cfg, std::string{test.key} + " " + test.valInFile);
         testGetInt(cfg, test.key, test.expectedVal, test.defaultVal);
     }
 }
@@ -491,8 +490,7 @@ void testBoolParsing(DpsoCfg* cfg)
 
     for (const auto& test : tests) {
         loadCfgData(
-            cfg,
-            (std::string{test.key} + " " + test.valInFile).c_str());
+            cfg, std::string{test.key} + " " + test.valInFile);
         testGetBool(cfg, test.key, test.expectedVal, test.defaultVal);
     }
 }
@@ -600,8 +598,7 @@ void testHotkeyParsing(DpsoCfg* cfg)
 
     for (const auto& test : tests) {
         loadCfgData(
-            cfg,
-            (std::string{test.key} + " " + test.valInFile).c_str());
+            cfg, std::string{test.key} + " " + test.valInFile);
         testGetHotkey(
             cfg, test.key, test.expectedVal, test.defaultVal);
     }
@@ -691,8 +688,7 @@ void testTimeParsing(DpsoCfg* cfg)
 
     for (const auto& test : tests) {
         loadCfgData(
-            cfg,
-            (std::string{test.key} + " " + test.valInFile).c_str());
+            cfg, std::string{test.key} + " " + test.valInFile);
         testGetTime(cfg, test.key, test.expectedVal);
     }
 }

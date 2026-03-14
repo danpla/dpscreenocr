@@ -10,7 +10,7 @@ add_library(
 
 set_target_properties(
     dpso_intl PROPERTIES
-    CXX_STANDARD 11
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
@@ -23,6 +23,12 @@ target_include_directories(dpso_intl PRIVATE . PUBLIC ..)
 if(WIN32)
     # We need at least 0.21 for wbindtextdomain()
     find_package(Intl 0.21.0 REQUIRED)
+
+    if(NOT TARGET dpso_utils)
+        add_subdirectory(
+            ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
+    endif()
+    target_link_libraries(dpso_intl PRIVATE dpso_utils)
 else()
     find_package(Intl REQUIRED)
 endif()

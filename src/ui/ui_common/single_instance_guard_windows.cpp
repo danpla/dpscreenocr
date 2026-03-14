@@ -49,7 +49,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     if (!mutex) {
         setError(
             "CreateMutexW(..., \"{}\"): {}",
-            windows::utf16ToUtf8(mutexName.c_str()),
+            windows::utf16ToUtf8(mutexName),
             windows::getErrorMessage(GetLastError()));
         return {};
     }

@@ -1,5 +1,5 @@
-#include <cstring>
 #include <string>
+#include <string_view>
 
 #include "dpso_ocr/engine/tesseract/utils.h"
 
@@ -13,8 +13,8 @@ namespace {
 void testPrettifyText()
 {
     const struct {
-        const char* original;
-        const char* prettified;
+        std::string_view original;
+        std::string_view prettified;
     } tests[]{
         // Trim whitespace
         {" \n\t\r", ""},
@@ -32,25 +32,20 @@ void testPrettifyText()
     };
 
     for (const auto& test : tests) {
-        std::string str = test.original;
-        const auto strLen = dpso::ocr::tesseract::prettifyText(
-            str.data());
+        std::string str{test.original};
 
-        if (std::strcmp(str.c_str(), test.prettified) != 0)
+        const std::string_view prettified{
+            str.data(),
+            dpso::ocr::tesseract::prettifyText(
+                str.data())};
+
+        if (prettified != test.prettified)
             test::failure(
                 "tesseract::prettifyText({}): "
                 "expected {}, got {}",
                 test::utils::toStr(test.original),
                 test::utils::toStr(test.prettified),
-                test::utils::toStr(str));
-
-        if (strLen != std::strlen(str.c_str()))
-            test::failure(
-                "tesseract::prettifyText({}): "
-                "expected string length {}, got {}",
-                test::utils::toStr(test.original),
-                std::strlen(str.c_str()),
-                strLen);
+                test::utils::toStr(prettified));
     }
 }
 

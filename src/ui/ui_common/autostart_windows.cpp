@@ -162,7 +162,7 @@ static UiAutostart* create(const UiAutostartArgs* args)
             windows::createCmdLine(
                 args->args[0],
                 args->args + 1,
-                args->numArgs - 1).c_str());
+                args->numArgs - 1));
     } catch (windows::CharConversionError& e) {
         throw AutostartError{str::format(
             "Can't convert command line (args->args) to UTF-16: {}",

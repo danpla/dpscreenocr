@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <stdexcept>
 
 
@@ -13,11 +14,11 @@ class CharConversionError : public std::runtime_error {
 
 
 // Throws CharConversionError on invalid UTF-8 sequence.
-std::wstring utf8ToUtf16(const char* utf8Str);
+std::wstring utf8ToUtf16(std::string_view utf8Str);
 
 
 // Throws CharConversionError on invalid UTF-16 sequence.
-std::string utf16ToUtf8(const wchar_t* utf16Str);
+std::string utf16ToUtf8(std::wstring_view utf16Str);
 
 
 }
