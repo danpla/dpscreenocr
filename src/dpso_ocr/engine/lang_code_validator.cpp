@@ -1,5 +1,7 @@
 #include "engine/lang_code_validator.h"
 
+#include <cstddef>
+
 #include "dpso_utils/str.h"
 
 
@@ -18,15 +20,15 @@ static bool isValidLangCodeChar(char c)
 }
 
 
-void validateLangCode(const char* langCode)
+void validateLangCode(std::string_view langCode)
 {
-    if (!*langCode)
+    if (langCode.empty())
         throw LangCodeError{"Language code is empty"};
 
-    for (const auto* s = langCode; *s; ++s)
-        if (!isValidLangCodeChar(*s))
+    for (std::size_t i{}; i < langCode.size(); ++i)
+        if (!isValidLangCodeChar(langCode[i]))
             throw LangCodeError{str::format(
-                "Invalid character at index {}", s - langCode)};
+                "Invalid character at index {}", i)};
 }
 
 

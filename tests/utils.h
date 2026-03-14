@@ -7,8 +7,7 @@ namespace test::utils {
 
 
 // Escape non-printable characters with C-style sequences.
-std::string escapeStr(const char* str);
-std::string escapeStr(const std::string& str);
+std::string escapeStr(std::string_view str);
 
 
 // The toStr() family of functions are the helpers intended to format
@@ -23,11 +22,12 @@ std::string escapeStr(const std::string& str);
 std::string toStr(bool b);
 
 
-// toStr() overloads for C string and std::string format a string as a
-// C string literal: it's passed though escapeStr() and enclosed in
-// double quotes. The C string variant also gives "nullptr" for null.
+// toStr() overloads for C string and std::string_view format a string
+// as a C string literal: it's passed though escapeStr() and enclosed
+// in double quotes. The C string variant also gives "nullptr" for
+// null.
 std::string toStr(const char* str);
-std::string toStr(const std::string& str);
+std::string toStr(std::string_view);
 
 
 // Convert line feeds (\n) to native line endings for the current

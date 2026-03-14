@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 
@@ -19,7 +20,7 @@ namespace dpso {
 class VersionCmp {
 public:
     VersionCmp() = default;
-    explicit VersionCmp(const char* str);
+    explicit VersionCmp(std::string_view str);
 
     bool operator<(const VersionCmp& other) const;
 private:

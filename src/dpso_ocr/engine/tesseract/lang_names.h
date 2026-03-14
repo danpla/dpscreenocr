@@ -1,11 +1,14 @@
 #pragma once
 
+#include <string_view>
+
 
 namespace dpso::ocr::tesseract {
 
 
-// Returns null if the language with the given code is not found.
-const char* getLangName(const char* langCode);
+// Returns an empty string the language with the given code is not
+// found.
+std::string_view getLangName(std::string_view langCode);
 
 
 }

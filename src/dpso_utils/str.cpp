@@ -1,8 +1,10 @@
 #include "str.h"
 
+#include <algorithm>
 #include <charconv>
 #include <climits>
 #include <cstring>
+#include <optional>
 
 #include "str_format_core.h"
 
@@ -31,26 +33,55 @@ static unsigned char toLower(unsigned char c)
 }
 
 
-int cmpSubStr(
-    const char* str,
-    const char* subStr, std::size_t subStrLen,
-    unsigned options)
+static int cmpIgnoreCase(
+    const char* a, const char* b, std::size_t len)
 {
-    for (std::size_t i = 0; i < subStrLen; ++i) {
-        unsigned char c1 = str[i];
-        unsigned char c2 = subStr[i];
-
-        if (options & cmpIgnoreCase) {
-            c1 = toLower(c1);
-            c2 = toLower(c2);
-        }
-
-        const auto diff = c1 - c2;
-        if (diff != 0 || c1 == 0)
+    for (std::size_t i = 0; i < len; ++i) {
+        const auto diff = toLower(a[i]) - toLower(b[i]);
+        if (diff != 0)
             return diff;
     }
 
-    return str[subStrLen] == 0 ? 0 : 1;
+    return 0;
+}
+
+
+int cmpIgnoreCase(std::string_view a, std::string_view b)
+{
+    const auto r = cmpIgnoreCase(
+        a.data(), b.data(), std::min(a.size(), b.size()));
+    if (r != 0)
+        return r;
+
+    if (a.size() < b.size())
+        return -1;
+
+    if (a.size() > b.size())
+        return 1;
+
+    return 0;
+}
+
+
+bool equalIgnoreCase(std::string_view a, std::string_view b)
+{
+    return a.size() == b.size()
+        && cmpIgnoreCase(a.data(), b.data(), a.size()) == 0;
+}
+
+
+bool startsWith(std::string_view s, std::string_view other)
+{
+    return s.size() >= other.size()
+        && s.compare(0, other.size(), other) == 0;
+}
+
+
+bool endsWith(std::string_view s, std::string_view other)
+{
+    return s.size() >= other.size()
+        && s.compare(
+            s.size() - other.size(), other.size(), other) == 0;
 }
 
 
@@ -166,40 +197,16 @@ std::string toStr(double v)
 }
 
 
-namespace formatArg {
-
-
-const char* get(char* v)
-{
-    return v;
-}
-
-
-const char* get(const char* v)
-{
-    return v;
-}
-
-
-const char* get(const std::string& v)
-{
-    return v.c_str();
-}
-
-
-}
-
-
 std::string format(
-    const char* fmt, std::initializer_list<const char*> args)
+    const char* fmt, std::initializer_list<std::string_view> args)
 {
     auto iter = args.begin();
 
     return format(
         fmt,
-        [&](const char* /*name*/, std::size_t nameLen) -> const char*
+        [&](std::string_view name) -> std::optional<std::string_view>
         {
-            if (nameLen == 0 && iter < args.end())
+            if (name.empty() && iter < args.end())
                 return *iter++;
 
             return {};

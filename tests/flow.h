@@ -34,7 +34,7 @@ static test::Runner FN ## TestRunner(#FN, FN)
 // Report a test case failure, increment the failure counter, and
 // continue.
 void failure(
-    const char* fmt, std::initializer_list<const char*> args);
+    const char* fmt, std::initializer_list<std::string_view> args);
 
 template<typename... Args>
 void failure(const char* fmt, const Args&... args)
@@ -52,7 +52,7 @@ int getNumFailures();
 // error when setting up a test.
 [[noreturn]]
 void fatalError(
-    const char* fmt, std::initializer_list<const char*> args);
+    const char* fmt, std::initializer_list<std::string_view> args);
 
 template<typename... Args>
 [[noreturn]]

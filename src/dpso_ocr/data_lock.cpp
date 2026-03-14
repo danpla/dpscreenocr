@@ -20,7 +20,7 @@ struct SharedData {
     std::vector<std::reference_wrapper<ObserverData>> observerDatas;
 
     static std::shared_ptr<SharedData> get(
-        const char* engineId, const char* dataDir)
+        std::string_view engineId, std::string_view dataDir)
     {
         struct CacheEntry {
             std::string engineId;
@@ -30,12 +30,21 @@ struct SharedData {
 
         static std::vector<CacheEntry> cache;
 
-        for (const auto& entry : cache) {
-            if (entry.engineId != engineId
-                    || entry.dataDir != dataDir)
-                continue;
+        static const auto findCacheEntry = [](
+            std::string_view engineId, std::string_view dataDir)
+        {
+            return std::find_if(
+                cache.begin(), cache.end(),
+                [&](const CacheEntry& entry)
+                {
+                    return entry.engineId == engineId
+                        && entry.dataDir == dataDir;
+                });
+        };
 
-            if (auto sd = entry.sharedData.lock())
+        if (const auto iter = findCacheEntry(engineId, dataDir);
+                iter != cache.end()) {
+            if (auto sd = iter->sharedData.lock())
                 return sd;
 
             assert(false);
@@ -48,19 +57,15 @@ struct SharedData {
                 dataDir = std::string{dataDir}]
             (SharedData* sd)
             {
-                for (auto iter = cache.begin();
-                        iter < cache.end();
-                        ++iter)
-                    if (iter->engineId == engineId
-                            && iter->dataDir == dataDir) {
-                        cache.erase(iter);
-                        break;
-                    }
+                const auto iter = findCacheEntry(engineId, dataDir);
+                if (iter != cache.end())
+                    cache.erase(iter);
 
                 delete sd;
             }};
 
-        cache.push_back({engineId, dataDir, sd});
+        cache.push_back(
+            {std::string{engineId}, std::string{dataDir}, sd});
 
         return sd;
     }
@@ -73,7 +78,7 @@ struct SharedData {
 struct DataLock::Impl {
     std::shared_ptr<SharedData> sd;
 
-    Impl(const char* engineId, const char* dataDir)
+    Impl(std::string_view engineId, std::string_view dataDir)
         : sd{SharedData::get(engineId, dataDir)}
     {
         if (sd->isDataLocked)
@@ -101,7 +106,8 @@ struct DataLock::Impl {
 DataLock::DataLock() = default;
 
 
-DataLock::DataLock(const char* engineId, const char* dataDir)
+DataLock::DataLock(
+        std::string_view engineId, std::string_view dataDir)
     : impl{std::make_unique<Impl>(engineId, dataDir)}
 {
 }
@@ -117,8 +123,8 @@ struct DataLockObserver::Impl {
     ObserverData data;
 
     Impl(
-            const char* engineId,
-            const char* dataDir,
+            std::string_view engineId,
+            std::string_view dataDir,
             const std::function<void()>& beforeLockCreated,
             const std::function<void()>& afterLockRemoved)
         : sd{SharedData::get(engineId, dataDir)}
@@ -144,8 +150,8 @@ DataLockObserver::DataLockObserver() = default;
 
 
 DataLockObserver::DataLockObserver(
-        const char* engineId,
-        const char* dataDir,
+        std::string_view engineId,
+        std::string_view dataDir,
         const std::function<void()>& beforeLockCreated,
         const std::function<void()>& afterLockRemoved)
     : impl{std::make_unique<Impl>(

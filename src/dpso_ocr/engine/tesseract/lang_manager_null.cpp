@@ -16,14 +16,10 @@ bool hasLangManager()
 
 
 std::unique_ptr<LangManager> createLangManager(
-    const char* dataDir,
-    const char* userAgent,
-    const char* infoFileUrl)
+    const char* /*dataDir*/,
+    const char* /*userAgent*/,
+    const char* /*infoFileUrl*/)
 {
-    (void)dataDir;
-    (void)userAgent;
-    (void)infoFileUrl;
-
     throw LangManagerError{"Language manager is not available"};
 }
 

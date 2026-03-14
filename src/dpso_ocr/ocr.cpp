@@ -168,7 +168,7 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
     auto ocr = std::make_unique<DpsoOcr>();
 
     ocr->dataLockObserver = ocr::DataLockObserver{
-        ocrEngine.getInfo().id.c_str(),
+        ocrEngine.getInfo().id,
         dataDir,
         [&ocr = *ocr]
         {

@@ -50,11 +50,11 @@ RTL_OSVERSIONINFOW getWindowsVersion()
 }
 
 
-RTL_OSVERSIONINFOW getVersionFromStr(const std::string& str)
+RTL_OSVERSIONINFOW getVersionFromStr(std::string_view str)
 {
     RTL_OSVERSIONINFOW result{};
 
-    const auto* s = str.c_str();
+    const auto* s = str.data();
     const auto* sEnd = s + str.size();
 
     const auto parse = [&](ULONG& result)

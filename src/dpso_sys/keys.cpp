@@ -3,34 +3,15 @@
 #include <cstddef>
 #include <vector>
 #include <string>
+#include <string_view>
 
 #include "dpso_utils/str.h"
 
 
-const DpsoHotkey dpsoEmptyHotkey{dpsoNoKey, dpsoNoKeyMods};
+namespace {
 
 
-DpsoKeyMod dpsoGetKeyModAt(int idx)
-{
-    static const DpsoKeyMod keyModsOrder[]{
-        // Apple order (Control, Option, Shift, Command) matches
-        // our enum:
-        // https://developer.apple.com/design/human-interface-guidelines/macos/user-interaction/keyboard/
-        //
-        // Design guides for other platforms and desktop environments
-        // don't seem to mention the order of modifiers.
-        dpsoKeyModCtrl, dpsoKeyModAlt, dpsoKeyModShift, dpsoKeyModWin
-    };
-    static_assert(std::size(keyModsOrder) == dpsoNumKeyMods);
-
-    if (idx < 0 || idx >= dpsoNumKeyMods)
-        return dpsoNoKeyMods;
-
-    return keyModsOrder[idx];
-}
-
-
-const char* const keyNames[]{
+const std::string_view keyNames[]{
     "F1",
     "F2",
     "F3",
@@ -137,33 +118,26 @@ const char* const keyNames[]{
 static_assert(std::size(keyNames) == dpsoNumKeys);
 
 
-static const char* keyToString(DpsoKey key)
+std::string_view keyToString(DpsoKey key)
 {
     if (key < 0 || key >= dpsoNumKeys)
-        return "";
+        return {};
 
     return keyNames[key];
 }
 
 
-static DpsoKey keyFromString(const char* str, std::size_t strLen)
+DpsoKey keyFromString(std::string_view str)
 {
-    if (strLen == 0)
+    if (str.empty())
         return dpsoNoKey;
 
     for (int i = 0; i < dpsoNumKeys; ++i)
-        if (dpso::str::cmpSubStr(
-                keyNames[i],
-                str,
-                strLen,
-                dpso::str::cmpIgnoreCase) == 0)
+        if (dpso::str::equalIgnoreCase(keyNames[i], str))
             return static_cast<DpsoKey>(i);
 
     return dpsoNoKey;
 }
-
-
-namespace {
 
 
 enum class KeyPlatformId {
@@ -190,16 +164,13 @@ const auto nativeKeyPlatformId =
 struct ModNameInfo {
     struct PlatformName {
         KeyPlatformId platformId;
-        const char* name;
+        std::string_view name;
     };
 
     DpsoKeyMod mod;
-    const char* genericName;
+    std::string_view genericName;
     std::vector<PlatformName> platformNames;
 };
-
-
-}
 
 
 const ModNameInfo modNameInfos[]{
@@ -220,10 +191,10 @@ const ModNameInfo modNameInfos[]{
 static_assert(std::size(modNameInfos) == dpsoNumKeyMods);
 
 
-static const char* modToString(DpsoKeyMod mod)
+std::string_view modToString(DpsoKeyMod mod)
 {
     if (mod == dpsoNoKeyMods)
-        return "";
+        return {};
 
     for (const auto& modNameInfo : modNameInfos) {
         if (mod != modNameInfo.mod)
@@ -236,34 +207,52 @@ static const char* modToString(DpsoKeyMod mod)
         return modNameInfo.genericName;
     }
 
-    return "";
+    return {};
 }
 
 
-static DpsoKeyMod modFromString(const char* str, std::size_t strLen)
+DpsoKeyMod modFromString(std::string_view str)
 {
-    if (strLen == 0)
+    if (str.empty())
         return dpsoNoKeyMods;
 
     for (const auto& modNameInfo : modNameInfos) {
-        if (dpso::str::cmpSubStr(
-                modNameInfo.genericName,
-                str,
-                strLen,
-                dpso::str::cmpIgnoreCase) == 0)
+        if (dpso::str::equalIgnoreCase(modNameInfo.genericName, str))
             return modNameInfo.mod;
 
         for (const auto& platformName : modNameInfo.platformNames)
-            if (dpso::str::cmpSubStr(
-                    platformName.name,
-                    str,
-                    strLen,
-                    dpso::str::cmpIgnoreCase) == 0)
+            if (dpso::str::equalIgnoreCase(platformName.name, str))
                 return modNameInfo.mod;
     }
 
     return dpsoNoKeyMods;
 }
+
+
+}
+
+
+DpsoKeyMod dpsoGetKeyModAt(int idx)
+{
+    static const DpsoKeyMod keyModsOrder[]{
+        // Apple order (Control, Option, Shift, Command) matches
+        // our enum:
+        // https://developer.apple.com/design/human-interface-guidelines/macos/user-interaction/keyboard/
+        //
+        // Design guides for other platforms and desktop environments
+        // don't seem to mention the order of modifiers.
+        dpsoKeyModCtrl, dpsoKeyModAlt, dpsoKeyModShift, dpsoKeyModWin
+    };
+    static_assert(std::size(keyModsOrder) == dpsoNumKeyMods);
+
+    if (idx < 0 || idx >= dpsoNumKeyMods)
+        return dpsoNoKeyMods;
+
+    return keyModsOrder[idx];
+}
+
+
+const DpsoHotkey dpsoEmptyHotkey{dpsoNoKey, dpsoNoKeyMods};
 
 
 const char* dpsoHotkeyToString(const DpsoHotkey* hotkey)
@@ -284,8 +273,8 @@ const char* dpsoHotkeyToString(const DpsoHotkey* hotkey)
         }
     }
 
-    const auto* keyName = keyToString(hotkey->key);
-    if (*keyName) {
+    const auto keyName = keyToString(hotkey->key);
+    if (!keyName.empty()) {
         if (!str.empty())
             str += " + ";
 
@@ -317,9 +306,8 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
                 nameEnd = s + 1;
 
         const auto mod = modFromString(
-            nameBegin, nameEnd - nameBegin);
-        if (mod != dpsoNoKeyMods
-                && !(hotkey->mods & mod)) {
+            std::string_view(nameBegin, nameEnd - nameBegin));
+        if (mod != dpsoNoKeyMods && !(hotkey->mods & mod)) {
             hotkey->mods |= mod;
 
             if (*s == '+') {
@@ -336,7 +324,8 @@ void dpsoHotkeyFromString(const char* str, DpsoHotkey* hotkey)
             if (!dpso::str::isBlank(*s))
                 nameEnd = s + 1;
 
-        hotkey->key = keyFromString(nameBegin, nameEnd - nameBegin);
+        hotkey->key = keyFromString(
+            std::string_view(nameBegin, nameEnd - nameBegin));
 
         if (hotkey->key == dpsoNoKey)
             hotkey->mods = dpsoNoKeyMods;

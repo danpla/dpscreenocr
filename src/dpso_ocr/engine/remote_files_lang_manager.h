@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string_view>
 #include <vector>
 
 #include "engine/lang_manager.h"
@@ -23,9 +24,10 @@ public:
     // This method is called for every remote language to check if it
     // should be excluded from the LangManager list. The default
     // implementation returns false.
-    virtual bool shouldIgnoreLang(const char* langCode) const;
+    virtual bool shouldIgnoreLang(std::string_view langCode) const;
 
-    virtual std::string getLangName(const char* langCode) const = 0;
+    virtual std::string getLangName(
+        std::string_view langCode) const = 0;
 
     int getNumLangs() const override;
 
@@ -65,7 +67,7 @@ private:
     std::vector<LangInfo> langInfos;
 
     static std::vector<RemoteLangInfo> parseJsonFileInfos(
-        const char* jsonData);
+        const std::string& jsonData);
     static std::vector<RemoteLangInfo> getRemoteLangs(
         const char* infoFileUrl, const char* userAgent);
 

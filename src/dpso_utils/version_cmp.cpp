@@ -2,16 +2,15 @@
 
 #include <cassert>
 #include <charconv>
-#include <cstring>
 
 
 namespace dpso {
 
 
-VersionCmp::VersionCmp(const char* str)
+VersionCmp::VersionCmp(std::string_view str)
 {
-    const auto* s = str;
-    const auto* sEnd = s + std::strlen(s);
+    const auto* s = str.data();
+    const auto* sEnd = s + str.size();
 
     while (s < sEnd) {
         // Use unsigned so that from_chars() doesn't accept the minus
@@ -19,7 +18,7 @@ VersionCmp::VersionCmp(const char* str)
         unsigned num;
         const auto [end, ec] = std::from_chars(s, sEnd, num);
         if (ec != std::errc{}) {
-            if (s > str) {
+            if (s > str.data()) {
                 // Make the preceding period a part of the extra
                 // string.
                 --s;
@@ -40,7 +39,7 @@ VersionCmp::VersionCmp(const char* str)
             break;
     }
 
-    extra = s;
+    extra.assign(s, sEnd);
 }
 
 

@@ -8,7 +8,7 @@ namespace dpso {
 
 // Set an error message to be returned by dpsoGetError().
 void setError(
-    const char* fmt, std::initializer_list<const char*> args);
+    const char* fmt, std::initializer_list<std::string_view> args);
 
 
 template<typename... Args>

@@ -1,26 +1,25 @@
 #pragma once
 
-#include <cstddef>
 #include <string>
+#include <string_view>
 
 
 namespace dpso::str {
 
 
-// This is the function that implements a Python-style brace string
-// formatting. The argument lookup is delegated to FindArg, which has
-// the following signature:
+// Python-style brace string formatting. The argument lookup is
+// delegated to FindArg, which has the following signature:
 //
-//   const char* findArg(const char* name, std::size_t nameLen)
+//   std::optional<std::string_view> findArg(std::string_view name)
 //
-// FindArg can return null if an argument with the given name is not
-// found.
+// FindArg can return nullopt if an argument with the given name is
+// not found.
 template<typename FindArg>
 std::string format(const char* fmt, FindArg findArg)
 {
     std::string result;
 
-    for (const auto* s = fmt; *s;) {
+    for (const auto* s = fmt; *s;)
         if (*s == '{') {
             ++s;
 
@@ -37,10 +36,10 @@ std::string format(const char* fmt, FindArg findArg)
             if (*nameEnd == '}') {
                 ++s;
 
-                const auto* arg = findArg(
-                    nameBegin, nameEnd - nameBegin);
+                const auto arg = findArg(
+                    std::string_view(nameBegin, nameEnd - nameBegin));
                 if (arg)
-                    result += arg;
+                    result += *arg;
                 else {
                     result += '{';
                     result.append(nameBegin, nameEnd);
@@ -64,7 +63,6 @@ std::string format(const char* fmt, FindArg findArg)
             }
         } else
             result += *s++;
-    }
 
     return result;
 }

@@ -3,6 +3,7 @@
 #include <functional>
 #include <memory>
 #include <stdexcept>
+#include <string_view>
 
 
 namespace dpso::ocr {
@@ -18,7 +19,7 @@ public:
 
     // Throws DataLockedError if data is already locked by another
     // DataLock.
-    DataLock(const char* engineId, const char* dataDir);
+    DataLock(std::string_view engineId, std::string_view dataDir);
 
     ~DataLock();
 
@@ -37,8 +38,8 @@ class DataLockObserver {
 public:
     DataLockObserver();
     DataLockObserver(
-        const char* engineId,
-        const char* dataDir,
+        std::string_view engineId,
+        std::string_view dataDir,
         const std::function<void()>& beforeLockCreated,
         const std::function<void()>& afterLockRemoved);
 

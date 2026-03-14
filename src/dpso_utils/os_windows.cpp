@@ -134,10 +134,9 @@ void syncFile(FILE* fp)
 }
 
 
-void syncDir(const char* dirPath)
+void syncDir(const char* /*dirPath*/)
 {
     // Windows doesn't support directory synchronization.
-    (void)dirPath;
 }
 
 
@@ -169,7 +168,7 @@ static void validateExePath(const char* exePath)
         ext.pop_back();
 
     for (const auto* batchExt : {".bat", ".cmd"})
-        if (str::cmp(batchExt, ext.c_str(), str::cmpIgnoreCase) == 0)
+        if (str::equalIgnoreCase(batchExt, ext))
             throw Error{"Execution of batch files is forbidden"};
 }
 

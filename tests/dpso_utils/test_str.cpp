@@ -43,55 +43,32 @@ const char* toStr(Order order)
 }
 
 
-void testCmpSubStr()
+void testCmpIgnoreCase()
 {
     using namespace dpso::str;
 
     const struct {
-        const char* str;
-        const char* subStr;
-        std::size_t subStrLen;
-        unsigned cmpOptions;
+        std::string_view a;
+        std::string_view b;
         Order expectedOrder;
     } tests[]{
-        {"", "", 0, cmpNormal, Order::equal},
-        {"", "", 1, cmpNormal, Order::equal},
-        {"", "", 2, cmpNormal, Order::equal},
-
-        {"Foo", "Foo", 0, cmpNormal, Order::greater},
-        {"Foo", "Foo", 1, cmpNormal, Order::greater},
-        {"Foo", "Foo", 2, cmpNormal, Order::greater},
-        {"Foo", "Foo", 3, cmpNormal, Order::equal},
-        {"Foo", "Foo", 4, cmpNormal, Order::equal},
-
-        {"Foo", "FooBar", 2, cmpNormal, Order::greater},
-        {"Foo", "FooBar", 3, cmpNormal, Order::equal},
-        {"Foo", "FooBar", 4, cmpNormal, Order::less},
-
-        {"FooBar", "Foo", 0, cmpNormal, Order::greater},
-        {"FooBar", "Foo", 3, cmpNormal, Order::greater},
-        {"FooBar", "Foo", 6, cmpNormal, Order::greater},
-        {"FooBar", "Foo", 9, cmpNormal, Order::greater},
-
-        {"Foo", "foo", 3, cmpNormal, Order::less},
-        {"foo", "Foo", 3, cmpNormal, Order::greater},
-        {"Foo", "foo", 3, cmpIgnoreCase, Order::equal},
+        {"", "", Order::equal},
+        {"Foo", "FOO", Order::equal},
+        {"Foo", "FOOBar", Order::less},
+        {"FOOBar", "Foo", Order::greater},
     };
 
     for (const auto& test : tests) {
-        const auto gotOrder = getOrder(cmpSubStr(
-            test.str, test.subStr, test.subStrLen, test.cmpOptions));
+        const auto gotOrder = getOrder(cmpIgnoreCase(test.a, test.b));
 
         if (gotOrder == test.expectedOrder)
             continue;
 
         test::failure(
-            "testCmpSubStr: cmpSubStr({}, {}, {}, {}): "
+            "testCmpIgnoreCase: cmpIgnoreCase({}, {}): "
             "expected {}, got {}",
-            test::utils::toStr(test.str),
-            test::utils::toStr(test.subStr),
-            test.subStrLen,
-            test.cmpOptions,
+            test::utils::toStr(test.a),
+            test::utils::toStr(test.b),
             test.expectedOrder,
             gotOrder);
     }
@@ -171,7 +148,7 @@ void testFormat()
 {
     const struct {
         const char* str;
-        std::initializer_list<const char*> args;
+        std::initializer_list<std::string_view> args;
         const char* expected;
     } tests[]{
         // Normal
@@ -217,7 +194,7 @@ void testFormat()
 
 void testStr()
 {
-    testCmpSubStr();
+    testCmpIgnoreCase();
     testJustify();
     testToStr();
     testFormat();

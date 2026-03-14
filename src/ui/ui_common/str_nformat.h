@@ -1,7 +1,7 @@
 #pragma once
 
 #include <initializer_list>
-#include <utility>
+#include <type_traits>
 
 #include "dpso_utils/str.h"
 
@@ -10,25 +10,16 @@ namespace ui {
 
 
 struct StrNFormatArg {
-    StrNFormatArg(const char* name, const char* str)
+    StrNFormatArg(const char* name, std::string_view str)
         : name{name}
         , str{str}
     {
     }
 
-    StrNFormatArg(const char* name, char* str)
-        : name{name}
-        , str{str}
-    {
-    }
-
-    StrNFormatArg(const char* name, std::string str)
-        : name{name}
-        , str{std::move(str)}
-    {
-    }
-
-    template<typename T>
+    template<
+        typename T,
+        std::enable_if_t<
+            !std::is_convertible_v<T, std::string_view>>* = {}>
     StrNFormatArg(const char* name, const T& v)
         : name{name}
     {
@@ -36,7 +27,7 @@ struct StrNFormatArg {
         str = toStr(v);
     }
 
-    const char* name;
+    std::string_view name;
     std::string str;
 };
 

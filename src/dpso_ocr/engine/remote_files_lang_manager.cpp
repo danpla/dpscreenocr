@@ -19,7 +19,8 @@
 namespace dpso::ocr {
 
 
-static void rethrowNetErrorAsLangManagerError(const char* message)
+static void rethrowNetErrorAsLangManagerError(
+    const std::string& message)
 {
     try {
         throw;
@@ -65,9 +66,8 @@ RemoteFilesLangManager::RemoteFilesLangManager(
 
 
 bool RemoteFilesLangManager::shouldIgnoreLang(
-    const char* langCode) const
+    std::string_view /*langCode*/) const
 {
-    (void)langCode;
     return false;
 }
 
@@ -86,7 +86,7 @@ std::string RemoteFilesLangManager::getLangCode(int langIdx) const
 
 std::string RemoteFilesLangManager::getLangName(int langIdx) const
 {
-    return getLangName(langInfos[langIdx].code.c_str());
+    return getLangName(langInfos[langIdx].code);
 }
 
 
@@ -110,7 +110,7 @@ void RemoteFilesLangManager::fetchExternalLangs()
 
     for (const auto& remoteLangInfo : getRemoteLangs(
             infoFileUrl.c_str(), userAgent.c_str()))
-        if (!shouldIgnoreLang(remoteLangInfo.code.c_str()))
+        if (!shouldIgnoreLang(remoteLangInfo.code))
             addRemoteLang(remoteLangInfo);
 }
 
@@ -176,7 +176,7 @@ void RemoteFilesLangManager::installLang(
             "Can't download \"{}\" to \"{}\": {}",
             langInfo.url,
             filePath,
-            e.what()).c_str());
+            e.what()));
     }
 
     if (canceled)
@@ -225,7 +225,8 @@ void RemoteFilesLangManager::removeLang(int langIdx)
 
 
 std::vector<RemoteFilesLangManager::RemoteLangInfo>
-RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
+RemoteFilesLangManager::parseJsonFileInfos(
+    const std::string& jsonData)
 {
     const auto fileInfos = json::Array::load(jsonData);
 
@@ -238,7 +239,7 @@ RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
         try {
             const auto code = fileInfo.getStr("code");
             try {
-                validateLangCode(code.c_str());
+                validateLangCode(code);
             } catch (LangCodeError& e) {
                 throw json::Error{str::format(
                     "Invalid code \"{}\": {}", code, e.what())};
@@ -246,10 +247,10 @@ RemoteFilesLangManager::parseJsonFileInfos(const char* jsonData)
 
             result.push_back(
                 {
-                    code,
-                    fileInfo.getStr("sha256"),
+                    std::string{code},
+                    std::string{fileInfo.getStr("sha256")},
                     fileInfo.getInt("size"),
-                    fileInfo.getStr("url")});
+                    std::string{fileInfo.getStr("url")}});
         } catch (json::Error& e) {
             throw json::Error{str::format(
                 "File info at index {}: {}", i, e.what())};
@@ -270,11 +271,11 @@ RemoteFilesLangManager::getRemoteLangs(
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::format(
             "Can't get data from \"{}\": {}",
-            infoFileUrl, e.what()).c_str());
+            infoFileUrl, e.what()));
     }
 
     try {
-        return parseJsonFileInfos(jsonData.c_str());
+        return parseJsonFileInfos(jsonData);
     } catch (json::Error& e) {
         throw LangManagerError{str::format(
             "Can't parse JSON info file from \"{}\": {}",

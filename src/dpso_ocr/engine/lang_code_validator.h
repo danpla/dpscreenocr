@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string_view>
+
 #include "engine/error.h"
 
 
@@ -12,7 +14,7 @@ class LangCodeError : public Error {
 
 
 // Throws LangCodeError.
-void validateLangCode(const char* langCode);
+void validateLangCode(std::string_view langCode);
 
 
 }

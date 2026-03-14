@@ -209,11 +209,9 @@ std::size_t CurlResponse::curlHeaderFn(
             std::from_chars(spacePos + 1, dataEnd, resp.statusCode);
     } else if (const auto colonPos = std::find(data, dataEnd, ':');
             colonPos != dataEnd
-            && str::cmpSubStr(
+            && str::equalIgnoreCase(
                 "Content-Length",
-                data,
-                colonPos - data,
-                str::cmpIgnoreCase) == 0) {
+                std::string_view(data, colonPos - data))) {
         // According to RFC 9112, a header value may contain leading
         // or trailing whitespace (spaces and horizontal tabs), which
         // should be ignored.

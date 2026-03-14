@@ -1,7 +1,6 @@
 #include "engine/tesseract/utils.h"
 
-#include <cassert>
-#include <cstring>
+#include <string_view>
 
 #include "dpso_utils/str.h"
 
@@ -12,19 +11,8 @@ namespace dpso::ocr::tesseract {
 std::size_t prettifyText(char* text)
 {
     struct Replacement {
-        const char* from;
-        std::size_t fromLen;
-        const char* to;
-        std::size_t toLen;
-
-        Replacement(const char* from, const char* to)
-            : from{from}
-            , fromLen{std::strlen(from)}
-            , to{to}
-            , toLen{std::strlen(to)}
-        {
-            assert(fromLen >= toLen);
-        }
+        std::string_view from;
+        std::string_view to;
     };
 
     // Note that ::from must be >= ::to.
@@ -42,31 +30,28 @@ std::size_t prettifyText(char* text)
         {"\n \n", ""},
     };
 
-    const auto* src = text;
+    std::string_view src{text};
     auto* dst = text;
 
-    while (str::isSpace(*src))
-        ++src;
+    while (!src.empty() && str::isSpace(src.front()))
+        src.remove_prefix(1);
 
-    while (*src) {
-        const auto* oldSrc = src;
+    while (!src.empty()) {
+        const auto* prevDst = dst;
 
         for (const auto& replacement : replacements) {
-            if (std::strncmp(
-                    src,
-                    replacement.from,
-                    replacement.fromLen) != 0)
+            if (!str::startsWith(src, replacement.from))
                 continue;
 
-            std::memcpy(dst, replacement.to, replacement.toLen);
-            src += replacement.fromLen;
-            dst += replacement.toLen;
-
+            dst += replacement.to.copy(dst, replacement.to.size());
+            src.remove_prefix(replacement.from.size());
             break;
         }
 
-        if (src == oldSrc)
-            *dst++ = *src++;
+        if (dst == prevDst) {
+            *dst++ = src.front();
+            src.remove_prefix(1);
+        }
     }
 
     while (dst > text && str::isSpace(dst[-1]))

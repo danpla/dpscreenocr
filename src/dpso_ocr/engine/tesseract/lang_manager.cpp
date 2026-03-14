@@ -37,15 +37,14 @@ public:
     {
     }
 
-    bool shouldIgnoreLang(const char* langCode) const override
+    bool shouldIgnoreLang(std::string_view langCode) const override
     {
         return isIgnoredLang(langCode);
     }
 
-    std::string getLangName(const char* langCode) const override
+    std::string getLangName(std::string_view langCode) const override
     {
-        const auto* name = tesseract::getLangName(langCode);
-        return name ? name : "";
+        return std::string{tesseract::getLangName(langCode)};
     }
 };
 

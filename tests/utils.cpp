@@ -16,15 +16,13 @@
 namespace test::utils {
 
 
-// escapeStr() that takes the length so that we can include embedded
-// nulls from std::string.
-static std::string escapeStr(const char* str, std::size_t strLen)
+std::string escapeStr(std::string_view str)
 {
     std::string result;
-    result.reserve(strLen);
+    result.reserve(str.size());
 
-    for (std::size_t i = 0; i < strLen; ++i)
-        switch (const auto c = str[i]) {
+    for (auto c : str)
+        switch (c) {
         case 0:
             result += "\\0";
             break;
@@ -63,18 +61,6 @@ static std::string escapeStr(const char* str, std::size_t strLen)
 }
 
 
-std::string escapeStr(const char* str)
-{
-    return escapeStr(str, std::strlen(str));
-}
-
-
-std::string escapeStr(const std::string& str)
-{
-    return escapeStr(str.c_str(), str.size());
-}
-
-
 std::string toStr(bool b)
 {
     return b ? "true" : "false";
@@ -86,11 +72,11 @@ std::string toStr(const char* str)
     if (!str)
         return "nullptr";
 
-    return '"' + escapeStr(str) + '"';
+    return toStr(std::string_view{str});
 }
 
 
-std::string toStr(const std::string& str)
+std::string toStr(std::string_view str)
 {
     return '"' + escapeStr(str) + '"';
 }

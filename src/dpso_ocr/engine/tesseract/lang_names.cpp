@@ -1,7 +1,6 @@
 #include "engine/tesseract/lang_names.h"
 
 #include <algorithm>
-#include <cstring>
 #include <iterator>
 
 
@@ -10,8 +9,8 @@ namespace {
 
 
 struct LangInfo {
-    const char* code;
-    const char* name;
+    std::string_view code;
+    std::string_view name;
 };
 
 
@@ -161,20 +160,19 @@ const LangInfo names[]{
 };
 
 
-const char* getLangName(const char* langCode)
+std::string_view getLangName(std::string_view langCode)
 {
     const auto iter = std::lower_bound(
         std::begin(names), std::end(names), langCode,
-        [](const LangInfo& langInfo, const char* langCode)
+        [](const LangInfo& langInfo, std::string_view langCode)
         {
-            return std::strcmp(langInfo.code, langCode) < 0;
+            return langInfo.code < langCode;
         });
 
-    if (iter != std::end(names)
-            && std::strcmp(iter->code, langCode) == 0)
+    if (iter != std::end(names) && iter->code == langCode)
         return iter->name;
 
-    return nullptr;
+    return {};
 }
 
 

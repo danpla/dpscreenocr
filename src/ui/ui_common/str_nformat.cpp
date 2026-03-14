@@ -1,5 +1,7 @@
 #include "str_nformat.h"
 
+#include <optional>
+
 #include "dpso_utils/str_format_core.h"
 
 
@@ -11,12 +13,11 @@ std::string strNFormat(
 {
     return dpso::str::format(
         str,
-        [&](const auto* name, std::size_t nameLen) -> const char*
+        [&](std::string_view name) -> std::optional<std::string_view>
         {
             for (const auto& arg : args)
-                if (dpso::str::cmpSubStr(
-                        arg.name, name, nameLen) == 0)
-                    return arg.str.c_str();
+                if (arg.name == name)
+                    return arg.str;
 
             return {};
         });

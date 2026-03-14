@@ -7,6 +7,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -249,8 +250,7 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
     auto langManager = std::make_unique<DpsoOcrLangManager>();
 
     try {
-        langManager->dataLock = ocr::DataLock{
-            engineId.c_str(), dataDir};
+        langManager->dataLock = ocr::DataLock{engineId, dataDir};
     } catch (ocr::DataLock::DataLockedError& e) {
         setError("{}", e.what());
         return nullptr;
@@ -475,7 +475,7 @@ void dpsoOcrLangManagerSetInstallMark(
 
 
 static std::optional<int> getLangIdx(
-    const ocr::LangManager& langManager, const char* langCode)
+    const ocr::LangManager& langManager, std::string_view langCode)
 {
     for (int i = 0; i < langManager.getNumLangs(); ++i)
         if (langManager.getLangCode(i) == langCode)
@@ -498,7 +498,7 @@ static void installLangs(
         auto& lang = langManager.langs[langIdx];
 
         const auto baseLangIdx = getLangIdx(
-            *langManager.langManager, lang.code.c_str());
+            *langManager.langManager, lang.code);
         assert(baseLangIdx);
 
         langManager.langManager->installLang(
@@ -630,7 +630,7 @@ bool dpsoOcrLangManagerRemoveLang(
         return true;
 
     const auto baseLangIdx = getLangIdx(
-        *langManager->langManager, lang->code.c_str());
+        *langManager->langManager, lang->code);
 
     // Fetching external languages cannot implicitly "remove" locally
     // available ones from LangManager. Since we rejected the language

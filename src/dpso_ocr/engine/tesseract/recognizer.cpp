@@ -1,7 +1,6 @@
 #include "engine/tesseract/recognizer.h"
 
 #include <cassert>
-#include <cstring>
 #include <string>
 #include <vector>
 
@@ -9,6 +8,7 @@
 #include <tesseract/ocrclass.h>
 
 #include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
 
 #include "engine/recognizer_error.h"
 #include "engine/tesseract/lang_names.h"
@@ -50,9 +50,8 @@ public:
 
     std::string getLangName(int langIdx) const override
     {
-        const auto* name = tesseract::getLangName(
-            langCodes[langIdx].c_str());
-        return name ? name : "";
+        return std::string{
+            tesseract::getLangName(langCodes[langIdx])};
     }
 
     void reloadLangs() override
@@ -103,10 +102,8 @@ struct CancelData {
         textDesc.cancel_this = this;
     }
 
-    static bool cancelFunc(void* data, int words)
+    static bool cancelFunc(void* data, int /*words*/)
     {
-        (void)words;
-
         auto* cancelData = static_cast<CancelData*>(data);
         assert(cancelData);
 
@@ -121,13 +118,6 @@ struct CancelData {
 };
 
 
-bool isVertical(const char* langCode)
-{
-    const auto* s = std::strrchr(langCode, '_');
-    return s && std::strcmp(s + 1, "vert") == 0;
-}
-
-
 OcrResult Recognizer::recognize(
     const OcrImage& image,
     const std::vector<int>& langIndices,
@@ -140,7 +130,7 @@ OcrResult Recognizer::recognize(
     for (const auto langIdx : langIndices) {
         const auto& langCode = langCodes[langIdx];
 
-        if (isVertical(langCode.c_str()))
+        if (str::endsWith(langCode, "_vert"))
             ++numVerticalLangs;
 
         if (!tessLangsStr.empty())

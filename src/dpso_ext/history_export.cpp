@@ -232,8 +232,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
 
     for (int i = 0; i < dpsoNumHistoryExportFormats; ++i)
         for (const auto* formatExt : exportFormatInfos[i].extensions)
-            if (str::cmp(
-                    ext.c_str(), formatExt, str::cmpIgnoreCase) == 0)
+            if (str::equalIgnoreCase(ext, formatExt))
                 return static_cast<DpsoHistoryExportFormat>(i);
 
     return defaultExportFormat;

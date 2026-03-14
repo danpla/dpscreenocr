@@ -173,8 +173,8 @@ static void writeKeyValue(
     if (!kv.value.empty() && kv.value.front() == ' ')
         write(stream, '\\');
 
-    for (const auto* s = kv.value.c_str(); *s; ++s)
-        switch (const auto c = *s) {
+    for (auto c : kv.value)
+        switch (c) {
         case '\n':
             write(stream, "\\n");
             break;
@@ -328,7 +328,7 @@ bool dpsoCfgGetBool(
         return defaultVal;
 
     for (int i = 0; i < 2; ++i)
-        if (str::cmp(str, boolToStr(i), str::cmpIgnoreCase) == 0)
+        if (str::equalIgnoreCase(str, boolToStr(i)))
             return i;
 
     return defaultVal;

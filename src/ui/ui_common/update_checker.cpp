@@ -44,7 +44,7 @@ struct UpdateInfo {
 
 
 UpdateInfo getUpdateInfoFromJson(
-    const char* appVersion, const char* jsonData)
+    const char* appVersion, const std::string& jsonData)
 {
     const auto versionInfos = json::Array::load(jsonData);
 
@@ -59,7 +59,7 @@ UpdateInfo getUpdateInfoFromJson(
 
         try {
             const auto version = versionInfo.getStr("version");
-            const VersionCmp versionCmp{version.c_str()};
+            const VersionCmp versionCmp{version};
 
             if (!(appVersionCmp < versionCmp)
                     || versionCmp < newVersionCmp)
@@ -116,7 +116,7 @@ UpdateInfo getUpdateInfo(
     }
 
     try {
-        return getUpdateInfoFromJson(appVersion, jsonData.c_str());
+        return getUpdateInfoFromJson(appVersion, jsonData);
     } catch (json::Error& e) {
         throw UpdateCheckerError{str::format(
             "JSON error: {}", e.what())};

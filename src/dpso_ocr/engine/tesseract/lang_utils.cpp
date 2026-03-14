@@ -4,6 +4,7 @@
 #include <cstring>
 #include <filesystem>
 #include <initializer_list>
+#include <iterator>
 
 #include <tesseract/baseapi.h>
 #if TESSERACT_MAJOR_VERSION < 5
@@ -22,10 +23,10 @@ namespace dpso::ocr::tesseract {
 const char* const traineddataExt = ".traineddata";
 
 
-bool isIgnoredLang(const char* lang)
+bool isIgnoredLang(std::string_view lang)
 {
     for (const auto* ignoredLang : {"equ", "osd"})
-        if (std::strcmp(lang, ignoredLang) == 0)
+        if (lang == ignoredLang)
             return true;
 
     return false;
@@ -84,12 +85,7 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
     }
 
     result.erase(
-        std::remove_if(
-            result.begin(), result.end(),
-            [](const std::string& lang)
-            {
-                return isIgnoredLang(lang.c_str());
-            }),
+        std::remove_if(result.begin(), result.end(), isIgnoredLang),
         result.end());
 
     // In Tesseract 5.5.0, GetAvailableLanguagesAsVector() uses

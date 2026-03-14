@@ -72,12 +72,13 @@ JsonType getType(const json_t* json)
 }
 
 
-HandleUPtr loadJson(const char* data, JsonType type)
+HandleUPtr loadJson(std::string_view data, JsonType type)
 {
     assert(type == JsonType::array || type == JsonType::object);
 
     json_error_t error;
-    HandleUPtr result{json_loads(data, 0, &error)};
+    HandleUPtr result{
+        json_loadb(data.data(), data.size(), 0, &error)};
 
     if (!result)
         throw Error{str::format(
@@ -102,7 +103,7 @@ void HandleDeleter::operator()(Handle* h) const
 }
 
 
-Object Object::load(const char* data)
+Object Object::load(std::string_view data)
 {
     return Object{loadJson(data, JsonType::object)};
 }
@@ -143,7 +144,7 @@ bool Object::getBool(const char* key) const
 }
 
 
-std::string Object::getStr(const char* key) const
+std::string_view Object::getStr(const char* key) const
 {
     const auto* val = get(handle.get(), key, JsonType::string);
     return {json_string_value(val), json_string_length(val)};
@@ -171,7 +172,7 @@ Array Object::getArray(const char* key) const
 }
 
 
-Array Array::load(const char* data)
+Array Array::load(std::string_view data)
 {
     return Array{loadJson(data, JsonType::array)};
 }
@@ -226,7 +227,7 @@ bool Array::getBool(std::size_t idx) const
 }
 
 
-std::string Array::getStr(std::size_t idx) const
+std::string_view Array::getStr(std::size_t idx) const
 {
     const auto* val = get(handle.get(), idx, JsonType::string);
     return {json_string_value(val), json_string_length(val)};

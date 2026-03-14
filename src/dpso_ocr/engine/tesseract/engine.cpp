@@ -1,6 +1,6 @@
 #include "engine/tesseract/engine.h"
 
-#include <cstring>
+#include <string_view>
 
 #include <tesseract/baseapi.h>
 // We no longer support Tesseract versions prior to 4.1.0 since they
@@ -28,9 +28,8 @@ namespace {
 
 std::string getMajorVersionString()
 {
-    const auto* v = ::tesseract::TessBaseAPI::Version();
-    const auto* dotPos = std::strchr(v, '.');
-    return dotPos ? std::string{v, dotPos} : v;
+    const std::string_view v{::tesseract::TessBaseAPI::Version()};
+    return {v, 0, v.find('.')};
 }
 
 

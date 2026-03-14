@@ -11,7 +11,7 @@
 #include <cstdint>
 #include <memory>
 #include <stdexcept>
-#include <string>
+#include <string_view>
 
 
 struct json_t;  // From Jansson.
@@ -41,10 +41,10 @@ class Array;
 
 class Object {
 public:
-    static Object load(const char* data);
+    static Object load(std::string_view data);
 
     bool getBool(const char* key) const;
-    std::string getStr(const char* key) const;
+    std::string_view getStr(const char* key) const;
     std::int64_t getInt(const char* key) const;
     Object getObject(const char* key) const;
     Array getArray(const char* key) const;
@@ -59,12 +59,12 @@ private:
 
 class Array {
 public:
-    static Array load(const char* data);
+    static Array load(std::string_view data);
 
     std::size_t getSize() const;
 
     bool getBool(std::size_t idx) const;
-    std::string getStr(std::size_t idx) const;
+    std::string_view getStr(std::size_t idx) const;
     std::int64_t getInt(std::size_t idx) const;
     Object getObject(std::size_t idx) const;
     Array getArray(std::size_t idx) const;

@@ -14,7 +14,7 @@ float getTime();
 void report(
     float startTime,
     const char* fmt,
-    std::initializer_list<const char*> args);
+    std::initializer_list<std::string_view> args);
 
 template<typename... Args>
 void report(float startTime, const char* fmt, const Args&... args)

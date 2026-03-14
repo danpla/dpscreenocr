@@ -19,7 +19,7 @@ namespace dpso {
 
 
 void setError(
-    const char* fmt, std::initializer_list<const char*> args)
+    const char* fmt, std::initializer_list<std::string_view> args)
 {
     error = str::format(fmt, args);
 }
