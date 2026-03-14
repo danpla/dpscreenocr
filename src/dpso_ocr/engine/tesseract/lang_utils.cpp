@@ -20,7 +20,7 @@
 namespace dpso::ocr::tesseract {
 
 
-const char* const traineddataExt = ".traineddata";
+const std::string_view traineddataExt{".traineddata"};
 
 
 bool isIgnoredLang(std::string_view lang)
@@ -33,11 +33,12 @@ bool isIgnoredLang(std::string_view lang)
 }
 
 
-std::vector<std::string> getAvailableLangs(const char* dataDir)
+std::vector<std::string> getAvailableLangs(std::string_view dataDir)
 {
     std::string sysDataDir;
     try {
-        sysDataDir = os::convertUtf8PathToSys(dataDir);
+        sysDataDir = os::convertUtf8PathToSys(
+            std::string{dataDir}.c_str());
     } catch (os::Error& e) {
         throw Error{
             std::string{"Can't convert dataDir to system encoding: "}
@@ -96,7 +97,8 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
     // files.
     //
     // See https://github.com/tesseract-ocr/tesseract/issues/4416
-    if (*dataDir && std::strcmp(tess.Version(), "5.5.0") == 0) {
+    if (!dataDir.empty()
+            && std::strcmp(tess.Version(), "5.5.0") == 0) {
         // Drop duplicates that can occur when several files with the
         // same name have ".traineddata" in their extension, e.g.,
         // "eng.traineddata" and "eng.traineddata.sha256". Note that
@@ -115,7 +117,8 @@ std::vector<std::string> getAvailableLangs(const char* dataDir)
 
                     return !fs::exists(
                         fs::u8path(dataDir)
-                        / fs::u8path(lang + traineddataExt));
+                        / fs::u8path(
+                            lang + std::string{traineddataExt}));
                 }),
             result.end());
     }

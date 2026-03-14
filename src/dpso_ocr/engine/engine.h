@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <string_view>
 
 
 namespace dpso::ocr {
@@ -41,13 +42,13 @@ public:
 
     // Throws RecognizerError
     virtual std::unique_ptr<Recognizer> createRecognizer(
-        const char* dataDir) const = 0;
+        std::string_view dataDir) const = 0;
 
     // See dpsoOcrLangManagerCreate(). Throws LangManagerError.
     virtual std::unique_ptr<LangManager> createLangManager(
-        const char* dataDir,
-        const char* userAgent,
-        const char* infoFileUrl) const = 0;
+        std::string_view dataDir,
+        std::string_view userAgent,
+        std::string_view infoFileUrl) const = 0;
 };
 
 

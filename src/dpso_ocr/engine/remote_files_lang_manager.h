@@ -15,10 +15,10 @@ class RemoteFilesLangManager : public LangManager {
 public:
     // See dpsoOcrLangManagerCreate() for the details.
     RemoteFilesLangManager(
-        const char* dataDir,
-        const char* fileExt,
-        const char* userAgent,
-        const char* infoFileUrl,
+        std::string_view dataDir,
+        std::string_view fileExt,
+        std::string_view userAgent,
+        std::string_view infoFileUrl,
         const std::vector<std::string>& localLangCodes);
 
     // This method is called for every remote language to check if it
@@ -69,7 +69,7 @@ private:
     static std::vector<RemoteLangInfo> parseJsonFileInfos(
         const std::string& jsonData);
     static std::vector<RemoteLangInfo> getRemoteLangs(
-        const char* infoFileUrl, const char* userAgent);
+        const std::string& infoFileUrl, const std::string& userAgent);
 
     void clearRemoteLangs();
     void mergeRemoteLang(

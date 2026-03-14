@@ -63,15 +63,15 @@ public:
     }
 
     std::unique_ptr<Recognizer> createRecognizer(
-        const char* dataDir) const override
+        std::string_view dataDir) const override
     {
         return tesseract::createRecognizer(dataDir);
     }
 
     std::unique_ptr<LangManager> createLangManager(
-        const char* dataDir,
-        const char* userAgent,
-        const char* infoFileUrl) const override
+        std::string_view dataDir,
+        std::string_view userAgent,
+        std::string_view infoFileUrl) const override
     {
         return tesseract::createLangManager(
             dataDir, userAgent, infoFileUrl);

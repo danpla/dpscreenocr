@@ -44,10 +44,10 @@ static std::int64_t getFileSize(const std::string& filePath)
 
 
 RemoteFilesLangManager::RemoteFilesLangManager(
-        const char* dataDir,
-        const char* fileExt,
-        const char* userAgent,
-        const char* infoFileUrl,
+        std::string_view dataDir,
+        std::string_view fileExt,
+        std::string_view userAgent,
+        std::string_view infoFileUrl,
         const std::vector<std::string>& localLangCodes)
     : dataDir{dataDir}
     , fileExt{fileExt}
@@ -109,7 +109,7 @@ void RemoteFilesLangManager::fetchExternalLangs()
     clearRemoteLangs();
 
     for (const auto& remoteLangInfo : getRemoteLangs(
-            infoFileUrl.c_str(), userAgent.c_str()))
+            infoFileUrl, userAgent))
         if (!shouldIgnoreLang(remoteLangInfo.code))
             addRemoteLang(remoteLangInfo);
 }
@@ -263,11 +263,12 @@ RemoteFilesLangManager::parseJsonFileInfos(
 
 std::vector<RemoteFilesLangManager::RemoteLangInfo>
 RemoteFilesLangManager::getRemoteLangs(
-    const char* infoFileUrl, const char* userAgent)
+    const std::string& infoFileUrl, const std::string& userAgent)
 {
     std::string jsonData;
     try {
-        jsonData = net::getData(infoFileUrl, userAgent);
+        jsonData = net::getData(
+            infoFileUrl.c_str(), userAgent.c_str());
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::format(
             "Can't get data from \"{}\": {}",

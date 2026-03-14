@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string_view>
 
 #include "engine/lang_manager.h"
 
@@ -12,9 +13,9 @@ bool hasLangManager();
 
 
 std::unique_ptr<LangManager> createLangManager(
-    const char* dataDir,
-    const char* userAgent,
-    const char* infoFileUrl);
+    std::string_view dataDir,
+    std::string_view userAgent,
+    std::string_view infoFileUrl);
 
 
 }

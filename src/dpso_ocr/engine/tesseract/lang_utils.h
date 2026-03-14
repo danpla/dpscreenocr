@@ -1,13 +1,14 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 
 namespace dpso::ocr::tesseract {
 
 
-extern const char* const traineddataExt;
+extern const std::string_view traineddataExt;
 
 
 // Returns true if the language should be ignored, e.g., when it's not
@@ -19,7 +20,7 @@ bool isIgnoredLang(std::string_view lang);
 // excluding those that are ignored by isIgnoredLang().
 //
 // Throws ocr::Error.
-std::vector<std::string> getAvailableLangs(const char* dataDir);
+std::vector<std::string> getAvailableLangs(std::string_view dataDir);
 
 
 }

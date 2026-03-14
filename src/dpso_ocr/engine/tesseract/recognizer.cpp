@@ -22,7 +22,7 @@ namespace {
 
 class Recognizer : public ocr::Recognizer {
 public:
-    explicit Recognizer(const char* dataDir)
+    explicit Recognizer(std::string_view dataDir)
         : dataDir{dataDir}
     {
         reloadLangCodes();
@@ -72,7 +72,7 @@ private:
     void reloadLangCodes()
     {
         try {
-            langCodes = getAvailableLangs(dataDir.c_str());
+            langCodes = getAvailableLangs(dataDir);
         } catch (Error& e) {
             throw RecognizerError{
                 std::string{"Can't get available languages: "}
@@ -200,7 +200,8 @@ OcrResult Recognizer::recognize(
 }
 
 
-std::unique_ptr<ocr::Recognizer> createRecognizer(const char* dataDir)
+std::unique_ptr<ocr::Recognizer> createRecognizer(
+    std::string_view dataDir)
 {
     return std::make_unique<Recognizer>(dataDir);
 }

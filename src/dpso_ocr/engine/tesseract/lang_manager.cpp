@@ -10,7 +10,7 @@ namespace dpso::ocr::tesseract {
 namespace {
 
 
-std::vector<std::string> getLocalLangs(const char* dataDir)
+std::vector<std::string> getLocalLangs(std::string_view dataDir)
 {
     try {
         return getAvailableLangs(dataDir);
@@ -25,9 +25,9 @@ std::vector<std::string> getLocalLangs(const char* dataDir)
 class LangManager : public RemoteFilesLangManager {
 public:
     LangManager(
-            const char* dataDir,
-            const char* userAgent,
-            const char* infoFileUrl)
+            std::string_view dataDir,
+            std::string_view userAgent,
+            std::string_view infoFileUrl)
         : RemoteFilesLangManager{
             dataDir,
             traineddataExt,
@@ -59,9 +59,9 @@ bool hasLangManager()
 
 
 std::unique_ptr<ocr::LangManager> createLangManager(
-    const char* dataDir,
-    const char* userAgent,
-    const char* infoFileUrl)
+    std::string_view dataDir,
+    std::string_view userAgent,
+    std::string_view infoFileUrl)
 {
     return std::make_unique<LangManager>(
         dataDir, userAgent, infoFileUrl);
