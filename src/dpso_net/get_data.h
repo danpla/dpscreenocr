@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 
 namespace dpso::net {
@@ -17,8 +18,8 @@ namespace dpso::net {
 //
 // Throws net::Error.
 std::string getData(
-    const char* url,
-    const char* userAgent,
+    std::string_view url,
+    std::string_view userAgent,
     std::int64_t sizeLimit = 4 * 1024 * 1024);
 
 

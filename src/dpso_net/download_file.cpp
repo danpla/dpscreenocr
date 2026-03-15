@@ -19,9 +19,9 @@ namespace dpso::net {
 
 
 void downloadFile(
-    const char* url,
-    const char* userAgent,
-    const char* filePath,
+    std::string_view url,
+    std::string_view userAgent,
+    std::string_view filePath,
     const DownloadProgressHandler& progressHandler)
 {
     const auto partPath = std::string{filePath} + ".part";
@@ -94,7 +94,7 @@ void downloadFile(
     partFile.reset();
 
     try {
-        os::replace(partPath.c_str(), filePath);
+        os::replace(partPath.c_str(), std::string{filePath}.c_str());
     } catch (os::Error& e) {
         throw Error{str::format(
             "os::replace(\"{}\", \"{}\"): {}",

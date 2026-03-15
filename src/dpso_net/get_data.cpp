@@ -12,7 +12,9 @@ namespace dpso::net {
 
 
 std::string getData(
-    const char* url, const char* userAgent, std::int64_t sizeLimit)
+    std::string_view url,
+    std::string_view userAgent,
+    std::int64_t sizeLimit)
 {
     if (sizeLimit < 0)
         throw Error{"Size limit is < 0"};

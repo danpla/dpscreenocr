@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <functional>
 #include <optional>
+#include <string_view>
 
 
 namespace dpso::net {
@@ -29,9 +30,9 @@ using DownloadProgressHandler = std::function<
 //
 // Throws net::Error.
 void downloadFile(
-    const char* url,
-    const char* userAgent,
-    const char* filePath,
+    std::string_view url,
+    std::string_view userAgent,
+    std::string_view filePath,
     const DownloadProgressHandler& progressHandler);
 
 

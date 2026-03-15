@@ -23,7 +23,7 @@ const CurlGlobalInit curlGlobalInit;
 
 class CurlResponse : public Response {
 public:
-    CurlResponse(const char* url, const char* userAgent);
+    CurlResponse(std::string_view url, std::string_view userAgent);
 
     std::optional<std::int64_t> getSize() const override
     {
@@ -73,7 +73,8 @@ private:
 };
 
 
-CurlResponse::CurlResponse(const char* url, const char* userAgent)
+CurlResponse::CurlResponse(
+        std::string_view url, std::string_view userAgent)
     : libCurl{LibCurl::get()}
     , curlM{{}, CurlMDeleter{libCurl}}
     , curl{{}, CurlDeleter{libCurl}}
@@ -99,8 +100,8 @@ CurlResponse::CurlResponse(const char* url, const char* userAgent)
 
     SETOPT(CURLOPT_ERRORBUFFER, curlError);
 
-    SETOPT(CURLOPT_URL, url);
-    SETOPT(CURLOPT_USERAGENT, userAgent);
+    SETOPT(CURLOPT_URL, std::string{url}.c_str());
+    SETOPT(CURLOPT_USERAGENT, std::string{userAgent}.c_str());
 
     SETOPT(CURLOPT_HEADERFUNCTION, curlHeaderFn);
     SETOPT(CURLOPT_HEADERDATA, this);
@@ -348,7 +349,7 @@ std::size_t CurlResponse::read()
 
 
 std::unique_ptr<Response> makeGetRequest(
-    const char* url, const char* userAgent)
+    std::string_view url, std::string_view userAgent)
 {
     if (const auto& errorText = curlGlobalInit.getErrorText();
             !errorText.empty())

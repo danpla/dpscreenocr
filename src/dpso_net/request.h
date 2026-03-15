@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <memory>
 #include <optional>
+#include <string_view>
 
 
 namespace dpso::net {
@@ -28,7 +29,7 @@ public:
 // Throws net::Error on error, or on any HTTP response code other than
 // 200.
 std::unique_ptr<Response> makeGetRequest(
-    const char* url, const char* userAgent);
+    std::string_view url, std::string_view userAgent);
 
 
 }

@@ -167,9 +167,9 @@ void RemoteFilesLangManager::installLang(
 
     try {
         net::downloadFile(
-            langInfo.url.c_str(),
-            userAgent.c_str(),
-            filePath.c_str(),
+            langInfo.url,
+            userAgent,
+            filePath,
             makeDownloadProgressHandler(progressHandler, canceled));
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::format(
@@ -225,8 +225,7 @@ void RemoteFilesLangManager::removeLang(int langIdx)
 
 
 std::vector<RemoteFilesLangManager::RemoteLangInfo>
-RemoteFilesLangManager::parseJsonFileInfos(
-    const std::string& jsonData)
+RemoteFilesLangManager::parseJsonFileInfos(std::string_view jsonData)
 {
     const auto fileInfos = json::Array::load(jsonData);
 
@@ -263,12 +262,11 @@ RemoteFilesLangManager::parseJsonFileInfos(
 
 std::vector<RemoteFilesLangManager::RemoteLangInfo>
 RemoteFilesLangManager::getRemoteLangs(
-    const std::string& infoFileUrl, const std::string& userAgent)
+    std::string_view infoFileUrl, std::string_view userAgent)
 {
     std::string jsonData;
     try {
-        jsonData = net::getData(
-            infoFileUrl.c_str(), userAgent.c_str());
+        jsonData = net::getData(infoFileUrl, userAgent);
     } catch (net::Error& e) {
         rethrowNetErrorAsLangManagerError(str::format(
             "Can't get data from \"{}\": {}",

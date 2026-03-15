@@ -6,6 +6,7 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 #include "dpso_json/json.h"
 
@@ -44,7 +45,7 @@ struct UpdateInfo {
 
 
 UpdateInfo getUpdateInfoFromJson(
-    const char* appVersion, const std::string& jsonData)
+    std::string_view appVersion, std::string_view jsonData)
 {
     const auto versionInfos = json::Array::load(jsonData);
 
@@ -95,9 +96,9 @@ UpdateInfo getUpdateInfoFromJson(
 
 
 UpdateInfo getUpdateInfo(
-    const char* appVersion,
-    const char* userAgent,
-    const char* infoFileUrl)
+    std::string_view appVersion,
+    std::string_view userAgent,
+    std::string_view infoFileUrl)
 {
     std::string jsonData;
     try {
@@ -187,9 +188,9 @@ void uiUpdateCheckerStartCheck(UiUpdateChecker* updateChecker)
     updateChecker->future = std::async(
         std::launch::async,
         getUpdateInfo,
-        updateChecker->appVersion.c_str(),
-        updateChecker->userAgent.c_str(),
-        updateChecker->infoFileUrl.c_str());
+        std::string_view{updateChecker->appVersion},
+        std::string_view{updateChecker->userAgent},
+        std::string_view{updateChecker->infoFileUrl});
 }
 
 

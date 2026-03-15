@@ -67,9 +67,9 @@ private:
     std::vector<LangInfo> langInfos;
 
     static std::vector<RemoteLangInfo> parseJsonFileInfos(
-        const std::string& jsonData);
+        std::string_view jsonData);
     static std::vector<RemoteLangInfo> getRemoteLangs(
-        const std::string& infoFileUrl, const std::string& userAgent);
+        std::string_view infoFileUrl, std::string_view userAgent);
 
     void clearRemoteLangs();
     void mergeRemoteLang(

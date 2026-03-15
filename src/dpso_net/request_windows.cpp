@@ -208,7 +208,7 @@ std::size_t WindowsResponse::read(void* dst, std::size_t dstSize)
 
 
 std::unique_ptr<Response> makeGetRequest(
-    const char* url, const char* userAgent)
+    std::string_view url, std::string_view userAgent)
 {
     std::wstring userAgentUtf16;
     try {
