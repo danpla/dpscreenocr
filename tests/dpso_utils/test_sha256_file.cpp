@@ -53,7 +53,7 @@ void testSaveSha256File()
         testFileName + dpso::sha256FileExt;
 
     try {
-        dpso::saveSha256File(testFileName.c_str(), digest);
+        dpso::saveSha256File(testFileName, digest);
     } catch (dpso::Sha256FileError& e) {
         test::failure(
             "saveSha256File(\"{}\", ...): {}",
@@ -94,7 +94,7 @@ void testLoadNonexistentSha256File()
         test::failure(
             "loadSha256File() returned a non-empty digest \"{}\" for "
             "a nonexistent file",
-            digest.c_str());
+            digest);
 }
 
 
@@ -133,8 +133,7 @@ void testLoadValidSha256File()
 
         std::string loadedDigest;
         try {
-            loadedDigest = dpso::loadSha256File(
-                testFileName.c_str());
+            loadedDigest = dpso::loadSha256File(testFileName);
         } catch (dpso::Sha256FileError& e) {
             test::failure(
                 "loadSha256File() threw an exception for the \"{}\" "
@@ -198,7 +197,7 @@ void testLoadInvalidSha256File()
             test.data.c_str());
 
         try {
-            dpso::loadSha256File(testFileName.c_str());
+            dpso::loadSha256File(testFileName);
         } catch (dpso::Sha256FileError&) {
             continue;
         }

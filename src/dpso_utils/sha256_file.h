@@ -13,11 +13,11 @@ class Sha256FileError : public std::runtime_error {
 };
 
 
-extern const char* const sha256FileExt;
+extern const std::string sha256FileExt;
 
 
 // Throws Sha256FileError.
-std::string calcFileSha256(const char* filePath);
+std::string calcFileSha256(std::string_view filePath);
 
 
 // Save the SHA-256 hex digest of the digestSourceFilePath file to the
@@ -25,20 +25,20 @@ std::string calcFileSha256(const char* filePath);
 // digestSourceFilePath + ".sha256").
 // Throws Sha256FileError.
 void saveSha256File(
-    const char* digestSourceFilePath, std::string_view digest);
+    std::string_view digestSourceFilePath, std::string_view digest);
 
 
 // Load the SHA-256 hex digest previously saved by saveSha256File().
 // Returns an empty string if the ".sha256" file for the given file
 // does not exist.
 // Throws Sha256FileError.
-std::string loadSha256File(const char* digestSourceFilePath);
+std::string loadSha256File(std::string_view digestSourceFilePath);
 
 
 // Does nothing if the ".sha256" file for the given file does not
 // exist.
 // Throws Sha256FileError.
-void removeSha256File(const char* digestSourceFilePath);
+void removeSha256File(std::string_view digestSourceFilePath);
 
 
 // Get the SHA-256 hex digest of the file from its ".sha256" file,
@@ -49,7 +49,7 @@ void removeSha256File(const char* digestSourceFilePath);
 // calcFileSha256(), saved with saveSha256File(), and returned.
 //
 // Throws Sha256FileError.
-std::string getSha256HexDigestWithCaching(const char* filePath);
+std::string getSha256HexDigestWithCaching(std::string_view filePath);
 
 
 }

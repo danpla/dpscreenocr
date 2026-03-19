@@ -194,7 +194,7 @@ void RemoteFilesLangManager::installLang(
     // update; it will be created if necessary the next time we check
     // if the language file is up to date.
     try {
-        removeSha256File(filePath.c_str());
+        removeSha256File(filePath);
     } catch (Sha256FileError&) {
     }
 }
@@ -218,7 +218,7 @@ void RemoteFilesLangManager::removeLang(int langIdx)
         langInfos.erase(langInfos.begin() + langIdx);
 
     try {
-        removeSha256File(filePath.c_str());
+        removeSha256File(filePath);
     } catch (Sha256FileError&) {
     }
 }
@@ -324,7 +324,7 @@ void RemoteFilesLangManager::mergeRemoteLang(
     }
 
     try {
-        if (getSha256HexDigestWithCaching(filePath.c_str())
+        if (getSha256HexDigestWithCaching(filePath)
                 != remoteLangInfo.sha256)
             langInfo.state = LangState::updateAvailable;
     } catch (Sha256FileError& e) {

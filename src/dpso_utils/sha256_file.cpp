@@ -13,7 +13,7 @@
 namespace dpso {
 
 
-const char* const sha256FileExt = ".sha256";
+const std::string sha256FileExt{".sha256"};
 
 
 static void validateDigest(std::string_view digest)
@@ -27,7 +27,7 @@ static void validateDigest(std::string_view digest)
 }
 
 
-std::string calcFileSha256(const char* filePath)
+std::string calcFileSha256(std::string_view filePath)
 {
     std::optional<FileStream> file;
     try {
@@ -60,7 +60,7 @@ std::string calcFileSha256(const char* filePath)
 
 
 void saveSha256File(
-    const char* digestSourceFilePath, std::string_view digest)
+    std::string_view digestSourceFilePath, std::string_view digest)
 {
     validateDigest(digest);
 
@@ -82,7 +82,8 @@ void saveSha256File(
             str::format(
                 "{} *{}\n",
                 digest,
-                os::getBaseName(digestSourceFilePath)));
+                os::getBaseName(
+                    std::string{digestSourceFilePath}.c_str())));
     } catch (StreamError& e) {
         throw Sha256FileError{str::format(
             "FileStream::write() to \"{}\": {}",
@@ -114,7 +115,7 @@ static std::string loadDigestFromSha256File(
     if (spacePos == line.npos)
         throw Sha256FileError{"Digest is not terminated by space"};
 
-    const std::string_view digest(line.data(), spacePos);
+    const std::string_view digest{line.data(), spacePos};
     validateDigest(digest);
 
     if (spacePos + 1 == line.size())
@@ -126,8 +127,7 @@ static std::string loadDigestFromSha256File(
             "Expected binary digest mode \"*\", but got \"{}\"",
             mode)};
 
-    const auto* fileName = line.data() + spacePos + 2;
-
+    const auto fileName = std::string_view{line}.substr(spacePos + 2);
     if (fileName != expectedFileName)
         throw Sha256FileError{str::format(
             "Unexpected file name \"{}\" (should be \"{}\")",
@@ -137,14 +137,14 @@ static std::string loadDigestFromSha256File(
 }
 
 
-std::string loadSha256File(const char* digestSourceFilePath)
+std::string loadSha256File(std::string_view digestSourceFilePath)
 {
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
 
     std::optional<FileStream> file;
     try {
-        file.emplace(sha256FilePath.c_str(), FileStream::Mode::read);
+        file.emplace(sha256FilePath, FileStream::Mode::read);
     } catch (os::FileNotFoundError&) {
         return {};
     } catch (os::Error& e) {
@@ -155,7 +155,9 @@ std::string loadSha256File(const char* digestSourceFilePath)
 
     try {
         return loadDigestFromSha256File(
-            *file, os::getBaseName(digestSourceFilePath));
+            *file,
+            os::getBaseName(
+                std::string{digestSourceFilePath}.c_str()));
     } catch (Sha256FileError& e) {
         throw Sha256FileError{str::format(
             "\"{}\": {}", sha256FilePath, e.what())};
@@ -163,7 +165,7 @@ std::string loadSha256File(const char* digestSourceFilePath)
 }
 
 
-void removeSha256File(const char* digestSourceFilePath)
+void removeSha256File(std::string_view digestSourceFilePath)
 {
     const auto sha256FilePath =
         std::string{digestSourceFilePath} + sha256FileExt;
@@ -177,7 +179,7 @@ void removeSha256File(const char* digestSourceFilePath)
 }
 
 
-std::string getSha256HexDigestWithCaching(const char* filePath)
+std::string getSha256HexDigestWithCaching(std::string_view filePath)
 {
     std::string digest;
 
