@@ -44,8 +44,7 @@ private:
     std::optional<std::int64_t> contentLength;
 
     char* dst{};
-    std::size_t dstSize{};
-    std::size_t dstPos{};
+    const char* dstEnd{};
 
     std::string buf;
     std::size_t bufPos{};
@@ -55,21 +54,36 @@ private:
     [[noreturn]]
     void throwError(const char* description, CURLMcode code);
 
+    void headerFn(std::string_view data);
+
     static std::size_t curlHeaderFn(
         char* data,
         std::size_t itemSize,
         std::size_t numItems,
-        void* userData);
+        void* userData)
+    {
+        const auto dataSize = itemSize * numItems;
+        static_cast<CurlResponse*>(userData)->headerFn(
+            {data, dataSize});
+        return dataSize;
+    }
+
+    void writeFn(std::string_view data);
 
     static std::size_t curlWriteFn(
         char* data,
         std::size_t itemSize,
         std::size_t numItems,
-        void* userData);
+        void* userData)
+    {
+        const auto dataSize = itemSize * numItems;
+        static_cast<CurlResponse*>(userData)->writeFn(
+            {data, dataSize});
+        return dataSize;
+    }
 
     void performTransferStep();
-
-    std::size_t read();
+    void read();
 };
 
 
@@ -175,104 +189,89 @@ void CurlResponse::throwError(const char* description, CURLMcode code)
 }
 
 
-std::size_t CurlResponse::curlHeaderFn(
-    char* data,
-    std::size_t itemSize,
-    std::size_t numItems,
-    void* userData)
+void CurlResponse::headerFn(std::string_view data)
 {
-    assert(userData);
-    auto& resp = *static_cast<CurlResponse*>(userData);
-
-    const auto dataSize = itemSize * numItems;
-
-    if (!resp.buf.empty())
+    if (!buf.empty())
         // This is a trailer of the chunked transfer coding.
-        return dataSize;
+        return;
 
-    const auto dataEnd = data + dataSize;
+    const std::string_view crlf{"\r\n"};
 
-    if (dataSize == 2 && data[0] == '\r' && data[1] == '\n') {
+    if (data == crlf) {
         // cURL invokes the function for the headers of all responses
         // received after initiating a request, and not just the final
         // one. This is the end of the current response header, so
         // prepare for the next one, if any.
-        resp.statusLineExpected = true;
-    } else if (resp.statusLineExpected) {
-        resp.statusLineExpected = false;
-
-        // Drop all data extracted from the previous response, if any.
-        resp.statusCode = 0;
-        resp.contentLength = {};
-
-        if (const auto spacePos = std::find(data, dataEnd, ' ');
-                spacePos != dataEnd)
-            std::from_chars(spacePos + 1, dataEnd, resp.statusCode);
-    } else if (const auto colonPos = std::find(data, dataEnd, ':');
-            colonPos != dataEnd
-            && str::equalIgnoreCase(
-                "Content-Length",
-                std::string_view(data, colonPos - data))) {
-        // According to RFC 9112, a header value may contain leading
-        // or trailing whitespace (spaces and horizontal tabs), which
-        // should be ignored.
-        const auto* valBegin = colonPos + 1;
-        while (valBegin < dataEnd && str::isBlank(*valBegin))
-            ++valBegin;
-
-        const auto* valEnd = dataEnd;
-
-        // cURL doesn't exclude CRLF from headers.
-        if (valEnd - valBegin > 1
-                && valEnd[-2] == '\r'
-                && valEnd[-1] == '\n')
-            valEnd -= 2;
-
-        while (valBegin < valEnd && str::isBlank(valEnd[-1]))
-            --valEnd;
-
-        std::int64_t contentLength{};
-        const auto [ptr, ec] = std::from_chars(
-            valBegin, valEnd, contentLength);
-        if (ec == std::errc{} && ptr == valEnd && contentLength >= 0)
-            resp.contentLength = contentLength;
+        statusLineExpected = true;
+        return;
     }
 
-    return dataSize;
+    if (statusLineExpected) {
+        statusLineExpected = false;
+
+        // Drop all data extracted from the previous response, if any.
+        statusCode = 0;
+        contentLength = {};
+
+        if (const auto spacePos = data.find(' ');
+                spacePos != data.npos)
+            std::from_chars(
+                data.data() + spacePos + 1,
+                data.data() + data.size(),
+                statusCode);
+
+        return;
+    }
+
+    const auto colonPos = data.find(':');
+    if (colonPos == data.npos
+        || !str::equalIgnoreCase(
+            "Content-Length", data.substr(0, colonPos)))
+        return;
+
+    auto val = data.substr(colonPos + 1);
+
+    // cURL doesn't exclude CRLF from headers.
+    if (str::endsWith(val, crlf))
+        val.remove_suffix(crlf.size());
+
+    // According to RFC 9112, a header value may contain leading
+    // or trailing whitespace (spaces and horizontal tabs), which
+    // should be ignored.
+    val = str::trim(val, str::isBlank);
+
+    std::int64_t contentLength{};
+    const auto [ptr, ec] = std::from_chars(
+        val.data(), val.data() + val.size(), contentLength);
+    if (ec == std::errc{}
+            && ptr == val.data() + val.size()
+            && contentLength >= 0)
+        this->contentLength = contentLength;
 }
 
 
-std::size_t CurlResponse::curlWriteFn(
-    char* data,
-    std::size_t itemSize,
-    std::size_t numItems,
-    void* userData)
+void CurlResponse::writeFn(std::string_view data)
 {
-    assert(userData);
-    auto& resp = *static_cast<CurlResponse*>(userData);
-
-    const auto dataSize = itemSize * numItems;
-
     // We are going to write directly to dst first, so the buf data
     // must not be partially drained. At the same time, we don't
     // expect the write function to be called exactly once per
-    // curl_multi_perform(), so buf may already be nonempty.
-    assert(resp.bufPos == 0);
+    // curl_multi_perform(), so buf can already be nonempty.
+    assert(bufPos == 0);
 
-    // We allow dst to be null if dstSize is zero so that we can use
-    // performTransferStep() from the constructor.
-    assert(resp.dstSize == 0 || resp.dst);
+    // dst can be null when we call performTransferStep() from the
+    // constructor rather than from read().
+    if (!dst) {
+        assert(!dstEnd);
+        buf.append(data);
+        return;
+    }
 
-    assert(resp.dstPos <= resp.dstSize);
-    const auto numWrite = std::min(
-        dataSize, resp.dstSize - resp.dstPos);
+    assert(dstEnd);
+    assert(dst <= dstEnd);
 
-    std::copy_n(data, numWrite, resp.dst + resp.dstPos);
-    resp.dstPos += numWrite;
-
-    resp.buf.append(data + numWrite, dataSize - numWrite);
-
-    return dataSize;
+    const auto numWrite = data.copy(dst, dstEnd - dst);
+    dst += numWrite;
+    buf.append(data, numWrite);
 }
 
 
@@ -311,26 +310,32 @@ void CurlResponse::performTransferStep()
 
 std::size_t CurlResponse::read(void* dst, std::size_t dstSize)
 {
-    this->dst = static_cast<char*>(dst);
-    this->dstSize = dstSize;
-    dstPos = 0;
+    if (!dst)
+        return 0;
 
-    return read();
+    auto* dstBegin = static_cast<char*>(dst);
+
+    this->dst = dstBegin;
+    dstEnd = dstBegin + dstSize;
+
+    read();
+
+    return this->dst - dstBegin;
 }
 
 
-std::size_t CurlResponse::read()
+void CurlResponse::read()
 {
     assert(dst);
-    assert(dstPos == 0);
+    assert(dstEnd);
+    assert(dst <= dstEnd);
 
     assert(bufPos <= buf.size());
     if (bufPos < buf.size()) {
-        const auto numRead = std::min(dstSize, buf.size() - bufPos);
-        buf.copy(dst, numRead, bufPos);
+        const auto numRead = buf.copy(dst, dstEnd - dst, bufPos);
 
         bufPos += numRead;
-        dstPos = numRead;
+        dst += numRead;
 
         if (bufPos == buf.size()) {
             buf.clear();
@@ -338,10 +343,8 @@ std::size_t CurlResponse::read()
         }
     }
 
-    while (!transferDone && dstPos < dstSize)
+    while (!transferDone && dst < dstEnd)
         performTransferStep();
-
-    return dstPos;
 }
 
 

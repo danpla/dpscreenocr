@@ -28,6 +28,14 @@ bool startsWith(std::string_view s, std::string_view other);
 bool endsWith(std::string_view s, std::string_view other);
 
 
+std::string_view trimLeft(
+    std::string_view s, bool (&pred)(unsigned char c));
+std::string_view trimRight(
+    std::string_view s, bool (&pred)(unsigned char c));
+std::string_view trim(
+    std::string_view s, bool (&pred)(unsigned char c));
+
+
 std::string leftJustify(
     std::string s, std::size_t width, char fill = ' ');
 

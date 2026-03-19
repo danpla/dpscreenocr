@@ -28,7 +28,7 @@ Order getOrder(int cmpResult)
 }
 
 
-const char* toStr(Order order)
+std::string_view toStr(Order order)
 {
     switch (order) {
     case Order::less:
@@ -39,7 +39,7 @@ const char* toStr(Order order)
         return ">";
     }
 
-    return "";
+    return {};
 }
 
 
@@ -76,9 +76,9 @@ void testCmpIgnoreCase()
 
 
 void testStr(
-    const char* callStr,
-    const std::string& callResult,
-    const char* expected,
+    std::string_view callStr,
+    std::string_view callResult,
+    std::string_view expected,
     int lineNum)
 {
     if (callResult != expected)
@@ -96,8 +96,7 @@ void testStr(
 
 void testJustify()
 {
-    using dpso::str::leftJustify;
-    using dpso::str::rightJustify;
+    using namespace dpso::str;
 
     TEST_STR(leftJustify("x", 4), "x   ");
     TEST_STR(rightJustify("x", 4), "   x");
@@ -107,6 +106,21 @@ void testJustify()
 
     TEST_STR(leftJustify("abcd", 2), "abcd");
     TEST_STR(rightJustify("abcd", 2), "abcd");
+}
+
+
+void testTrim()
+{
+    using namespace dpso::str;
+
+    TEST_STR(trimLeft(" ", isSpace), "");
+    TEST_STR(trimLeft(" a b ", isSpace), "a b ");
+
+    TEST_STR(trimRight(" ", isSpace), "");
+    TEST_STR(trimRight(" a b ", isSpace), " a b");
+
+    TEST_STR(trim(" ", isSpace), "");
+    TEST_STR(trim(" a b ", isSpace), "a b");
 }
 
 
@@ -140,16 +154,18 @@ void testToStr()
 
     TEST_STR(
         toStr(std::int64_t{INT64_MIN}, 2),
-        ("-1" + std::string(63, '0')).c_str());
+        "-1" + std::string(63, '0'));
 }
 
 
 void testFormat()
 {
+    using namespace dpso;
+
     const struct {
-        const char* str;
+        const char* fmt;
         std::initializer_list<std::string_view> args;
-        const char* expected;
+        std::string_view expected;
     } tests[]{
         // Normal
         {"1: {}, 2: {}", {"a", "b"}, "1: a, 2: b"},
@@ -168,24 +184,22 @@ void testFormat()
     };
 
     for (const auto& test : tests) {
-        const auto got = dpso::str::format(test.str, test.args);
+        const auto got = str::format(test.fmt, test.args);
         if (got == test.expected)
             continue;
 
         test::failure(
             "str::format({}, {}): "
             "expected {}, got {}",
-            test::utils::toStr(test.str),
+            test::utils::toStr(test.fmt),
             test::utils::toStr(test.args),
             test::utils::toStr(test.expected),
             test::utils::toStr(got));
     }
 
-    using dpso::str::format;
-
     // Test argument conversion.
     TEST_STR(
-        format(
+        str::format(
             "{} {} {} {} {} {}",
             1, 2.0f, 12.34f, 56.78, 'c', std::string{"str"}),
         "1 2 12.34 56.78 c str");
@@ -196,6 +210,7 @@ void testStr()
 {
     testCmpIgnoreCase();
     testJustify();
+    testTrim();
     testToStr();
     testFormat();
 }
