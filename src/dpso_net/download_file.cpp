@@ -28,7 +28,7 @@ void downloadFile(
 
     std::optional<FileStream> partFile;
     try {
-        partFile.emplace(partPath.c_str(), FileStream::Mode::write);
+        partFile.emplace(partPath, FileStream::Mode::write);
     } catch (os::Error& e) {
         throw Error{str::format(
             "FileStream(\"{}\", Mode::write): {}",

@@ -604,8 +604,7 @@ static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
     std::optional<FileStream> file;
     try {
         file.emplace(
-            autostart->desktopFilePath.c_str(),
-            FileStream::Mode::write);
+            autostart->desktopFilePath, FileStream::Mode::write);
     } catch (os::Error& e) {
         throw AutostartError{str::format(
             "FileStream(\"{}\", Mode::write): {}",

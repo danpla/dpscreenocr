@@ -69,7 +69,7 @@ void saveSha256File(
 
     std::optional<FileStream> file;
     try {
-        file.emplace(sha256FilePath.c_str(), FileStream::Mode::write);
+        file.emplace(sha256FilePath, FileStream::Mode::write);
     } catch (os::Error& e) {
         throw Sha256FileError{str::format(
             "FileStream(\"{}\", Mode::write): {}",

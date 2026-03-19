@@ -30,10 +30,12 @@ static const char* getFopenMode(FileStream::Mode mode)
 }
 
 
-FileStream::FileStream(const char* fileName, FileStream::Mode mode)
+FileStream::FileStream(
+        std::string_view fileName, FileStream::Mode mode)
     : impl{std::make_unique<Impl>()}
 {
-    impl->fp.reset(os::fopen(fileName, getFopenMode(mode)));
+    impl->fp.reset(
+        os::fopen(std::string{fileName}.c_str(), getFopenMode(mode)));
     if (!impl->fp)
         os::throwErrno("fopen()", errno);
 }
@@ -68,7 +70,7 @@ void FileStream::sync()
 }
 
 
-const char* toStr(FileStream::Mode mode)
+std::string_view toStr(FileStream::Mode mode)
 {
     #define CASE(M) \
         case FileStream::Mode::M: \
@@ -83,7 +85,7 @@ const char* toStr(FileStream::Mode mode)
     #undef CASE
 
     assert(false);
-    return "";
+    return {};
 }
 
 

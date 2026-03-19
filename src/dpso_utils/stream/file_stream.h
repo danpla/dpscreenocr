@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string_view>
 
 #include "dpso_utils/stream/stream.h"
 
@@ -25,7 +26,7 @@ public:
     };
 
     // Throws os::Error.
-    FileStream(const char* fileName, Mode mode);
+    FileStream(std::string_view fileName, Mode mode);
     ~FileStream();
 
     FileStream(const FileStream&) = delete;
@@ -48,7 +49,7 @@ private:
 };
 
 
-const char* toStr(FileStream::Mode mode);
+std::string_view toStr(FileStream::Mode mode);
 
 
 }
