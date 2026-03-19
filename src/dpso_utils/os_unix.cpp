@@ -59,9 +59,9 @@ const char* const newline = "\n";
 const char* const dirSeparators = "/";
 
 
-std::string convertUtf8PathToSys(const char* utf8Path)
+std::string convertUtf8PathToSys(std::string_view utf8Path)
 {
-    return utf8Path;
+    return std::string{utf8Path};
 }
 
 
@@ -101,13 +101,14 @@ void syncFile(std::FILE* fp)
 }
 
 
-void syncDir(const char* dirPath)
+void syncDir(std::string_view dirPath)
 {
     #ifndef O_DIRECTORY
     #define O_DIRECTORY 0
     #endif
 
-    const auto fd = open(dirPath, O_RDONLY | O_DIRECTORY);
+    const auto fd = open(
+        std::string{dirPath}.c_str(), O_RDONLY | O_DIRECTORY);
     if (fd == -1) {
         if (errno == EACCES)
             return;

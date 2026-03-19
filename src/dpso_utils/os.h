@@ -4,6 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 
 namespace dpso::os {
@@ -44,12 +45,12 @@ extern const char* const dirSeparators;
 // include trailing separators, unless it's a root directory. Returns
 // an empty string if the path does not contain a directory (e.g., if
 // it doesn't have separators).
-std::string getDirName(const char* path);
+std::string getDirName(std::string_view path);
 
 
 // Return the last path component, or an empty string if there is
 // none.
-std::string getBaseName(const char* path);
+std::string getBaseName(std::string_view path);
 
 
 // Convert path from UTF-8 to the system-specific encoding.
@@ -62,18 +63,18 @@ std::string getBaseName(const char* path);
 // On systems other than Windows, the function returns the path as is.
 //
 // Throws os::Error.
-std::string convertUtf8PathToSys(const char* utf8Path);
+std::string convertUtf8PathToSys(std::string_view utf8Path);
 
 
 // Return the file extension, or an empty string if there is none.
-std::string getFileExt(const char* filePath);
+std::string getFileExt(std::string_view filePath);
 
 
 // Return size of filePath in bytes. The behavior is platform-specific
 // if the filePath points to anything other than a regular file.
 //
 // Throws os::Error.
-std::int64_t getFileSize(const char* filePath);
+std::int64_t getFileSize(std::string_view filePath);
 
 
 // Change the file size. If the file was larger than newSize, the
@@ -81,14 +82,14 @@ std::int64_t getFileSize(const char* filePath);
 // new area is platform-dependent (filled with zeros on most systems).
 //
 // Throws os::Error.
-void resizeFile(const char* filePath, std::int64_t newSize);
+void resizeFile(std::string_view filePath, std::int64_t newSize);
 
 
 // Remove a regular file. The behavior is platform-specific if
 // filePath points to anything other than a regular file.
 //
 // Throws os::Error. Nonexistent filePath is not treated as an error.
-void removeFile(const char* filePath);
+void removeFile(std::string_view filePath);
 
 
 // Rename a file or directory, replacing destination.
@@ -97,13 +98,13 @@ void removeFile(const char* filePath);
 // dst on all platforms.
 //
 // Throws os::Error.
-void replace(const char* src, const char* dst);
+void replace(std::string_view src, std::string_view dst);
 
 
 // Create a chain of directories.
 //
 // Throws os::Error. An existing dirPath is not treated as an error.
-void makeDirs(const char* dirPath);
+void makeDirs(std::string_view dirPath);
 
 
 // Synchronize directory with storage device.
@@ -113,13 +114,13 @@ void makeDirs(const char* dirPath);
 // directory entry has reached the storage device.
 //
 // Throws os::Error.
-void syncDir(const char* dirPath);
+void syncDir(std::string_view dirPath);
 
 
 // Read all data from a file.
 //
 // Throws os::Error.
-std::string loadData(const char* filePath);
+std::string loadData(std::string_view filePath);
 
 
 // Run an executable.

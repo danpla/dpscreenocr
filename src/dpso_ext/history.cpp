@@ -117,7 +117,7 @@ static void openSync(
 
     if (!fileDir.empty())
         try {
-            os::makeDirs(fileDir.c_str());
+            os::makeDirs(fileDir);
         } catch (os::Error& e) {
             setError("os::makeDirs(): {}", e.what());
             return;
@@ -131,7 +131,8 @@ static void openSync(
     }
 
     try {
-        os::syncDir(fileDir.empty() ? "." : fileDir.c_str());
+        os::syncDir(
+            fileDir.empty() ? "." : std::string_view{fileDir});
     } catch (os::Error& e) {
         setError("os::syncDir(): {}", e.what());
         file.reset();

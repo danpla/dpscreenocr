@@ -211,7 +211,7 @@ bool dpsoCfgSave(const DpsoCfg* cfg, const char* filePath)
     if (const auto fileDir = os::getDirName(filePath);
             !fileDir.empty())
         try {
-            os::makeDirs(fileDir.c_str());
+            os::makeDirs(fileDir);
         } catch (os::Error& e) {
             setError("os::makeDirs(): {}", e.what());
             return false;

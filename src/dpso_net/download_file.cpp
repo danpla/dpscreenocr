@@ -76,7 +76,7 @@ void downloadFile(
             partFile.reset();
 
             try {
-                os::removeFile(partPath.c_str());
+                os::removeFile(partPath);
             } catch (os::Error&) {
             }
 
@@ -94,7 +94,7 @@ void downloadFile(
     partFile.reset();
 
     try {
-        os::replace(partPath.c_str(), std::string{filePath}.c_str());
+        os::replace(partPath, filePath);
     } catch (os::Error& e) {
         throw Error{str::format(
             "os::replace(\"{}\", \"{}\"): {}",

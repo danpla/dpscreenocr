@@ -82,8 +82,7 @@ void saveSha256File(
             str::format(
                 "{} *{}\n",
                 digest,
-                os::getBaseName(
-                    std::string{digestSourceFilePath}.c_str())));
+                os::getBaseName(digestSourceFilePath)));
     } catch (StreamError& e) {
         throw Sha256FileError{str::format(
             "FileStream::write() to \"{}\": {}",
@@ -155,9 +154,7 @@ std::string loadSha256File(std::string_view digestSourceFilePath)
 
     try {
         return loadDigestFromSha256File(
-            *file,
-            os::getBaseName(
-                std::string{digestSourceFilePath}.c_str()));
+            *file, os::getBaseName(digestSourceFilePath));
     } catch (Sha256FileError& e) {
         throw Sha256FileError{str::format(
             "\"{}\": {}", sha256FilePath, e.what())};
@@ -171,7 +168,7 @@ void removeSha256File(std::string_view digestSourceFilePath)
         std::string{digestSourceFilePath} + sha256FileExt;
 
     try {
-        os::removeFile(sha256FilePath.c_str());
+        os::removeFile(sha256FilePath);
     } catch (os::Error& e) {
         throw Sha256FileError{str::format(
             "os::removeFile(\"{}\"): {}", sha256FilePath, e.what())};

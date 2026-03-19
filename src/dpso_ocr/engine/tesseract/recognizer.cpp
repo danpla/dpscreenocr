@@ -141,7 +141,7 @@ OcrResult Recognizer::recognize(
 
     std::string sysDataDir;
     try {
-        sysDataDir = os::convertUtf8PathToSys(dataDir.c_str());
+        sysDataDir = os::convertUtf8PathToSys(dataDir);
     } catch (os::Error& e) {
         return {
             OcrResult::Status::error,

@@ -581,7 +581,7 @@ static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
 
     if (!newIsEnabled) {
         try {
-            os::removeFile(autostart->desktopFilePath.c_str());
+            os::removeFile(autostart->desktopFilePath);
         } catch (os::Error& e) {
             throw AutostartError{str::format(
                 "os::removeFile(\"{}\"): {}",
@@ -593,9 +593,9 @@ static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
     }
 
     const auto desktopFileDir = os::getDirName(
-        autostart->desktopFilePath.c_str());
+        autostart->desktopFilePath);
     try {
-        os::makeDirs(desktopFileDir.c_str());
+        os::makeDirs(desktopFileDir);
     } catch (os::Error& e) {
         throw AutostartError{str::format(
             "os::makeDirs(\"{}\"): {}", desktopFileDir, e.what())};
@@ -623,7 +623,7 @@ static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
                 escape(autostart->cmdLine.c_str())));
     } catch (StreamError& e) {
         try {
-            os::removeFile(autostart->desktopFilePath.c_str());
+            os::removeFile(autostart->desktopFilePath);
         } catch (os::Error&) {
         }
 

@@ -63,25 +63,25 @@ void throwErrno(const char* description, int errnum)
 }
 
 
-std::string getDirName(const char* path)
+std::string getDirName(std::string_view path)
 {
     return fs::u8path(path).parent_path().u8string();
 }
 
 
-std::string getBaseName(const char* path)
+std::string getBaseName(std::string_view path)
 {
     return fs::u8path(path).filename().u8string();
 }
 
 
-std::string getFileExt(const char* filePath)
+std::string getFileExt(std::string_view filePath)
 {
     return fs::u8path(filePath).extension().u8string();
 }
 
 
-std::int64_t getFileSize(const char* filePath)
+std::int64_t getFileSize(std::string_view filePath)
 {
     std::error_code ec;
     const auto result = fs::file_size(fs::u8path(filePath), ec);
@@ -90,7 +90,7 @@ std::int64_t getFileSize(const char* filePath)
 }
 
 
-void resizeFile(const char* filePath, std::int64_t newSize)
+void resizeFile(std::string_view filePath, std::int64_t newSize)
 {
     std::error_code ec;
     fs::resize_file(fs::u8path(filePath), newSize, ec);
@@ -98,7 +98,7 @@ void resizeFile(const char* filePath, std::int64_t newSize)
 }
 
 
-void removeFile(const char* filePath)
+void removeFile(std::string_view filePath)
 {
     std::error_code ec;
     // Note that remove() returns false if the file does not exist. It
@@ -108,7 +108,7 @@ void removeFile(const char* filePath)
 }
 
 
-void replace(const char* src, const char* dst)
+void replace(std::string_view src, std::string_view dst)
 {
     std::error_code ec;
     fs::rename(fs::u8path(src), fs::u8path(dst), ec);
@@ -116,7 +116,7 @@ void replace(const char* src, const char* dst)
 }
 
 
-void makeDirs(const char* dirPath)
+void makeDirs(std::string_view dirPath)
 {
     std::error_code ec;
     fs::create_directories(fs::u8path(dirPath), ec);
@@ -124,7 +124,7 @@ void makeDirs(const char* dirPath)
 }
 
 
-std::string loadData(const char* filePath)
+std::string loadData(std::string_view filePath)
 {
     std::int64_t fileSize;
     try {

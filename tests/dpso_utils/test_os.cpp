@@ -64,7 +64,7 @@ void testLoadData()
         "testLoadData", filePath.c_str(), filePath.c_str());
 
     try {
-        const auto data = os::loadData(filePath.c_str());
+        const auto data = os::loadData(filePath);
         if (data != filePath)
             test::failure(
                 "os::loadData(\"{}\"): expected \"{}\", got \"{}\"",

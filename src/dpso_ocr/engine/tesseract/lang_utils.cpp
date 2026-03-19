@@ -37,8 +37,7 @@ std::vector<std::string> getAvailableLangs(std::string_view dataDir)
 {
     std::string sysDataDir;
     try {
-        sysDataDir = os::convertUtf8PathToSys(
-            std::string{dataDir}.c_str());
+        sysDataDir = os::convertUtf8PathToSys(dataDir);
     } catch (os::Error& e) {
         throw Error{
             std::string{"Can't convert dataDir to system encoding: "}

@@ -32,10 +32,10 @@ static void rethrowNetErrorAsLangManagerError(
 }
 
 
-static std::int64_t getFileSize(const std::string& filePath)
+static std::int64_t getFileSize(std::string_view filePath)
 {
     try {
-        return os::getFileSize(filePath.c_str());
+        return os::getFileSize(filePath);
     } catch (os::Error& e) {
         throw LangManagerError{str::format(
             "Can't get size of \"{}\": {}", filePath, e.what())};
@@ -151,7 +151,7 @@ void RemoteFilesLangManager::installLang(
     int langIdx, const ProgressHandler& progressHandler)
 {
     try {
-        os::makeDirs(dataDir.c_str());
+        os::makeDirs(dataDir);
     } catch (os::Error& e) {
         throw LangManagerError{str::format(
             "Can't create directory \"{}\": {}", dataDir, e.what())};
@@ -205,7 +205,7 @@ void RemoteFilesLangManager::removeLang(int langIdx)
     const auto filePath = getFilePath(langInfos[langIdx].code);
 
     try {
-        os::removeFile(filePath.c_str());
+        os::removeFile(filePath);
     } catch (os::Error& e) {
         throw LangManagerError{str::format(
             "Can't remove \"{}\": {}", filePath, e.what())};
