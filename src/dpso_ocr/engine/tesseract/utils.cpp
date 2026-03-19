@@ -30,11 +30,8 @@ std::size_t prettifyText(char* text)
         {"\n \n", ""},
     };
 
-    std::string_view src{text};
+    auto src = str::trim(text, str::isSpace);
     auto* dst = text;
-
-    while (!src.empty() && str::isSpace(src.front()))
-        src.remove_prefix(1);
 
     while (!src.empty()) {
         const auto* prevDst = dst;
@@ -53,9 +50,6 @@ std::size_t prettifyText(char* text)
             src.remove_prefix(1);
         }
     }
-
-    while (dst > text && str::isSpace(dst[-1]))
-        --dst;
 
     *dst = 0;
 
