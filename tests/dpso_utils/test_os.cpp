@@ -60,8 +60,7 @@ void testLoadData()
 {
     const std::string filePath{"test_load_data.txt"};
 
-    test::utils::saveText(
-        "testLoadData", filePath.c_str(), filePath.c_str());
+    test::utils::saveText("testLoadData", filePath, filePath);
 
     try {
         const auto data = os::loadData(filePath);
@@ -73,7 +72,7 @@ void testLoadData()
         test::failure("os::loadData(\"{}\"): {}", filePath, e.what());
     }
 
-    test::utils::removeFile(filePath.c_str());
+    test::utils::removeFile(filePath);
 
     CHECK_FILE_NOT_FOUND_ERROR(os::loadData, "nonexistent_file");
 }

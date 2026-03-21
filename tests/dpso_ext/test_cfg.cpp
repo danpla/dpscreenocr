@@ -376,8 +376,7 @@ void reload(DpsoCfg* cfg)
 
 void loadCfgData(DpsoCfg* cfg, const std::string& cfgData)
 {
-    test::utils::saveText(
-        "loadCfgData", cfgFileName, cfgData.c_str());
+    test::utils::saveText("loadCfgData", cfgFileName, cfgData);
 
     const auto loaded = dpsoCfgLoad(cfg, cfgFileName);
     test::utils::removeFile(cfgFileName);
@@ -748,7 +747,7 @@ void testSavedValueFormat()
             : val{val}
             , expectedData{
                 test::utils::lfToNativeNewline(
-                    str::format("key {}\n", expectedValData).c_str())}
+                    str::format("key {}\n", expectedValData))}
         {
         }
     } tests[]{
@@ -782,8 +781,7 @@ void testSavedValueFormat()
 
         test::failure(
             "testSavedValueFormat(): Unexpected value format");
-        test::utils::printFirstDifference(
-            test.expectedData.c_str(), gotData.c_str());
+        test::utils::printFirstDifference(test.expectedData, gotData);
     }
 
     test::utils::removeFile(cfgFileName);

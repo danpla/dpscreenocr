@@ -379,7 +379,7 @@ void testExport()
             const auto& expectedData =
                 test.exportedData[exportFormat];
             const auto gotData = test::utils::loadText(
-                "testExport", exportedFileName.c_str());
+                "testExport", exportedFileName);
 
             if (gotData != expectedData) {
                 test::failure(
@@ -388,10 +388,10 @@ void testExport()
                     toStr(exportFormat),
                     test.description);
                 test::utils::printFirstDifference(
-                    expectedData.c_str(), gotData.c_str());
+                    expectedData, gotData);
             }
 
-            test::utils::removeFile(exportedFileName.c_str());
+            test::utils::removeFile(exportedFileName);
         }
     }
 

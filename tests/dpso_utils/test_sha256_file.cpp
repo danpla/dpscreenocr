@@ -38,8 +38,7 @@ void testCalcFileSha256()
         return;
 
     test::failure("calcFileSha256(): Wrong digest");
-    test::utils::printFirstDifference(
-        digest, calculatedDigest.c_str());
+    test::utils::printFirstDifference(digest, calculatedDigest);
 }
 
 
@@ -62,9 +61,9 @@ void testSaveSha256File()
     }
 
     const auto gotData = test::utils::loadText(
-        "testSaveSha256File", testSha256FileName.c_str());
+        "testSaveSha256File", testSha256FileName);
 
-    test::utils::removeFile(testSha256FileName.c_str());
+    test::utils::removeFile(testSha256FileName);
 
     const auto expectedData = digest + " *" + testFileName + "\n";
 
@@ -72,8 +71,7 @@ void testSaveSha256File()
         return;
 
     test::failure("saveSha256File(): Unexpected content");
-    test::utils::printFirstDifference(
-        expectedData.c_str(), gotData.c_str());
+    test::utils::printFirstDifference(expectedData, gotData);
 }
 
 
@@ -127,9 +125,7 @@ void testLoadValidSha256File()
 
     for (const auto& test : tests) {
         test::utils::saveText(
-            "testLoadValidSha256File",
-            testSha256FileName.c_str(),
-            test.data.c_str());
+            "testLoadValidSha256File", testSha256FileName, test.data);
 
         std::string loadedDigest;
         try {
@@ -147,11 +143,10 @@ void testLoadValidSha256File()
 
         test::failure(
             "loadSha256File() returned an invalid digest");
-        test::utils::printFirstDifference(
-            digest.c_str(), loadedDigest.c_str());
+        test::utils::printFirstDifference(digest, loadedDigest);
     }
 
-    test::utils::removeFile(testSha256FileName.c_str());
+    test::utils::removeFile(testSha256FileName);
 }
 
 
@@ -193,8 +188,8 @@ void testLoadInvalidSha256File()
     for (const auto& test : tests) {
         test::utils::saveText(
             "testLoadInvalidSha256File",
-            testSha256FileName.c_str(),
-            test.data.c_str());
+            testSha256FileName,
+            test.data);
 
         try {
             dpso::loadSha256File(testFileName);
@@ -207,7 +202,7 @@ void testLoadInvalidSha256File()
             test.description);
     }
 
-    test::utils::removeFile(testSha256FileName.c_str());
+    test::utils::removeFile(testSha256FileName);
 }
 
 

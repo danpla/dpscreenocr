@@ -1,5 +1,6 @@
 #include "utils.h"
 
+#include <algorithm>
 #include <cctype>
 #include <optional>
 #include <queue>
@@ -68,10 +69,7 @@ std::string toStr(bool b)
 
 std::string toStr(const char* str)
 {
-    if (!str)
-        return "nullptr";
-
-    return toStr(std::string_view{str});
+    return str ? toStr(std::string_view{str}) : "nullptr";
 }
 
 
@@ -81,22 +79,25 @@ std::string toStr(std::string_view str)
 }
 
 
-std::string lfToNativeNewline(const char* str)
+std::string lfToNativeNewline(std::string_view str)
 {
     std::string result;
+    result.reserve(str.size());
 
-    for (const auto* s = str; *s; ++s)
-        if (*s == '\n')
+    for (auto c : str)
+        if (c == '\n')
             result += dpso::os::newline;
         else
-            result += *s;
+            result += c;
 
     return result;
 }
 
 
 void saveText(
-    const char* contextInfo, const char* filePath, const char* text)
+    std::string_view contextInfo,
+    std::string_view filePath,
+    std::string_view text)
 {
     std::optional<dpso::FileStream> file;
     try {
@@ -104,9 +105,7 @@ void saveText(
     } catch (dpso::os::Error& e) {
         test::fatalError(
             "{}: saveText(): FileStream(\"{}\", Mode::write): {}",
-            contextInfo,
-            filePath,
-            e.what());
+            contextInfo, filePath, e.what());
     }
 
     try {
@@ -114,55 +113,51 @@ void saveText(
     } catch (dpso::StreamError& e) {
         test::fatalError(
             "{}: saveText(): write(file, ...) to \"{}\": {}",
-            contextInfo,
-            filePath,
-            e.what());
+            contextInfo, filePath, e.what());
     }
 }
 
 
-std::string loadText(const char* contextInfo, const char* filePath)
+std::string loadText(
+    std::string_view contextInfo, std::string_view filePath)
 {
     try {
         return dpso::os::loadData(filePath);
     } catch (dpso::os::Error& e) {
         test::fatalError(
             "{}: os::loadData(): {}",
-            contextInfo,
-            filePath,
-            e.what());
+            contextInfo, filePath, e.what());
     }
 }
 
 
-static std::string getNextLine(const char*& str)
+static std::string_view extractNextLine(std::string_view& str)
 {
-    const auto* lineBegin = str;
+    auto pos = std::min(str.find_first_of("\r\n"), str.size());
+    if (pos < str.size()) {
+        if (str[pos] == '\r'
+                && pos + 1 < str.size()
+                && str[pos + 1] == '\n')
+            ++pos;
 
-    for (; *str; ++str) {
-        if (*str == '\r' || *str == '\n') {
-            if (*str == '\r' && str[1] == '\n')
-                ++str;
-
-            ++str;
-            break;
-        }
+        ++pos;
     }
 
-    return {lineBegin, str};
+    auto result = str.substr(0, pos);
+    str.remove_prefix(pos);
+    return result;
 }
 
 
-void printFirstDifference(const char* expected, const char* actual)
+void printFirstDifference(
+    std::string_view expected, std::string_view actual)
 {
     const auto maxContextLines = 5;
-    std::queue<std::string> contextLines;
+    std::queue<std::string_view> contextLines;
 
-    const auto* e = expected;
-    const auto* a = actual;
     while (true) {
-        const auto el = getNextLine(e);
-        const auto al = getNextLine(a);
+        const auto el = extractNextLine(expected);
+        const auto al = extractNextLine(actual);
 
         if (el != al) {
             std::fprintf(
@@ -198,7 +193,7 @@ void printFirstDifference(const char* expected, const char* actual)
 }
 
 
-void removeFile(const char* filePath)
+void removeFile(std::string_view filePath)
 {
     try {
         dpso::os::removeFile(filePath);

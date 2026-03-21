@@ -227,8 +227,7 @@ void testTruncatedData()
 
         test::failure(
             "testTruncatedData(): Unexpected final data");
-        test::utils::printFirstDifference(
-            test.finalData, finalData.c_str());
+        test::utils::printFirstDifference(test.finalData, finalData);
     }
 
     test::utils::removeFile(historyFileName);

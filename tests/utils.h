@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 
@@ -33,7 +34,7 @@ std::string toStr(std::string_view str);
 
 // Convert line feeds (\n) to native line endings for the current
 // platform.
-std::string lfToNativeNewline(const char* str);
+std::string lfToNativeNewline(std::string_view str);
 
 
 template<typename T, typename StrExtractor>
@@ -78,23 +79,27 @@ auto toStr(const T& v, StrExtractor strExtractor = {})
 // In failure, calls tests::fatalError() using contextInfo as a part
 // of the error message.
 void saveText(
-    const char* contextInfo, const char* filePath, const char* text);
+    std::string_view contextInfo,
+    std::string_view filePath,
+    std::string_view text);
 
 
 // In failure, calls tests::fatalError() using contextInfo as a part
 // of the error message.
-std::string loadText(const char* contextInfo, const char* filePath);
+std::string loadText(
+    std::string_view contextInfo, std::string_view filePath);
 
 
 // Print the first difference between two possibly multiline texts.
 // Non-printable characters in each printed line are escaped as by
 // escapeStr(). Does nothing if texts are equal.
-void printFirstDifference(const char* expected, const char* actual);
+void printFirstDifference(
+    std::string_view expected, std::string_view actual);
 
 
 // Does nothing if filePath doesn't exist. Calls tests::fatalError()
 // on errors.
-void removeFile(const char* filePath);
+void removeFile(std::string_view filePath);
 
 
 }
