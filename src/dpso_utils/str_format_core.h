@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -15,55 +17,44 @@ namespace dpso::str {
 // FindArg can return nullopt if an argument with the given name is
 // not found.
 template<typename FindArg>
-std::string format(const char* fmt, FindArg findArg)
+std::string format(std::string_view fmt, FindArg findArg)
 {
     std::string result;
 
-    for (const auto* s = fmt; *s;)
-        if (*s == '{') {
-            ++s;
+    static const std::string_view braces{"{}"};
 
-            if (*s == '{') {
-                result += *s++;
-                continue;
-            }
+    while (true) {
+        const auto brace1Pos = fmt.find_first_of(braces);
+        if (brace1Pos == fmt.npos)
+            break;
 
-            const auto* nameBegin = s;
-            while (*s && *s != '{' && *s != '}')
-                ++s;
-            const auto* nameEnd = s;
+        const auto argPos = brace1Pos + 1;
+        const auto brace2Pos = fmt.find_first_of(braces, argPos);
+        if (brace2Pos == fmt.npos)
+            break;
 
-            if (*nameEnd == '}') {
-                ++s;
+        const auto specEndPos = brace2Pos + 1;
 
-                const auto arg = findArg(
-                    std::string_view(nameBegin, nameEnd - nameBegin));
-                if (arg)
-                    result += *arg;
-                else {
-                    result += '{';
-                    result.append(nameBegin, nameEnd);
-                    result += '}';
-                }
-            } else {
-                // No closing } or unexpected {
-                result += '{';
-                result += nameBegin;
+        if (fmt[brace1Pos] == fmt[brace2Pos]) {
+            if (argPos != brace2Pos)
                 break;
-            }
-        } else if (*s == '}') {
-            if (s[1] == '}') {
-                result += *s;
-                s += 2;
-                continue;
-            } else {
-                // Stray }
-                result += s;
-                break;
-            }
-        } else
-            result += *s++;
 
+            result.append(fmt, 0, brace2Pos);
+        } else if (fmt[brace1Pos] == '{') {
+            const std::optional<std::string_view> arg{findArg(
+                fmt.substr(argPos, brace2Pos - argPos))};
+            if (arg) {
+                result.append(fmt, 0, brace1Pos);
+                result += *arg;
+            } else
+                result.append(fmt, 0, specEndPos);
+        } else // A }{ pair, possibly with some characters in between.
+            break;
+
+        fmt.remove_prefix(specEndPos);
+    }
+
+    result.append(fmt);
     return result;
 }
 

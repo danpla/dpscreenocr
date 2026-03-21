@@ -1,10 +1,6 @@
 #include "error_get.h"
 #include "error_set.h"
 
-#include <string>
-
-#include "str.h"
-
 
 static thread_local std::string error;
 
@@ -19,7 +15,8 @@ namespace dpso {
 
 
 void setError(
-    const char* fmt, std::initializer_list<std::string_view> args)
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args)
 {
     error = str::format(fmt, args);
 }

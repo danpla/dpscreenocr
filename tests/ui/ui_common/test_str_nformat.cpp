@@ -1,5 +1,4 @@
 #include <initializer_list>
-#include <string>
 
 #include "ui/ui_common/str_nformat.h"
 #include "dpso_utils/str.h"
@@ -8,18 +7,21 @@
 #include "utils.h"
 
 
-static std::string toStr(const ui::StrNFormatArg& arg)
+namespace {
+
+
+std::string toStr(const ui::StrNFormatArg& arg)
 {
     return dpso::str::format("{\"{}\": \"{}\"}", arg.name, arg.str);
 }
 
 
-static void testStrNFormat()
+void testStrNFormat()
 {
     const struct {
-        const char* str;
+        std::string_view str;
         std::initializer_list<ui::StrNFormatArg> args;
-        const char* expected;
+        std::string_view expected;
     } tests[]{
         {
             // Normal
@@ -66,6 +68,16 @@ static void testStrNFormat()
             "1: {a1}, 2: {a2",
             {{"a1", "v1"}, {"a2", "v2"}},
             "1: v1, 2: {a2"},
+        {
+            // {*{
+            "1: {a1{, 2: {a2}",
+            {{"a1", "v1"}, {"a2", "v2"}},
+            "1: {a1{, 2: {a2}"},
+        {
+            // }*}
+            "1: }a1}, 2: {a2}",
+            {{"a1", "v1"}, {"a2", "v2"}},
+            "1: }a1}, 2: {a2}"},
     };
 
     for (const auto& test : tests) {
@@ -81,6 +93,9 @@ static void testStrNFormat()
             test.expected,
             got);
     }
+}
+
+
 }
 
 

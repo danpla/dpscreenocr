@@ -10,7 +10,7 @@ namespace ui {
 
 
 struct StrNFormatArg {
-    StrNFormatArg(const char* name, std::string_view str)
+    StrNFormatArg(std::string_view name, std::string_view str)
         : name{name}
         , str{str}
     {
@@ -40,7 +40,7 @@ struct StrNFormatArg {
 // corresponding entry in the args array. To insert a brace as is,
 // mention it twice.
 std::string strNFormat(
-    const char* str, std::initializer_list<StrNFormatArg> args);
+    std::string_view str, std::initializer_list<StrNFormatArg> args);
 
 
 }

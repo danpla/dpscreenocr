@@ -163,7 +163,7 @@ void testFormat()
     using namespace dpso;
 
     const struct {
-        const char* fmt;
+        std::string_view fmt;
         std::initializer_list<std::string_view> args;
         std::string_view expected;
     } tests[]{
@@ -181,6 +181,10 @@ void testFormat()
         {"1: {}, 2: { {}, 3: {}", {"a", "b"}, "1: a, 2: { {}, 3: {}"},
         // No closing }
         {"1: {}, 2: { ", {"a", "b"}, "1: a, 2: { "},
+        // } }
+        {"1: } }, 2: {}", {"a", "b"}, "1: } }, 2: {}"},
+        // { {
+        {"1: { {, 2: {}", {"a", "b"}, "1: { {, 2: {}"},
     };
 
     for (const auto& test : tests) {

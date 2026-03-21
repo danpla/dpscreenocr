@@ -34,10 +34,11 @@ static test::Runner FN ## TestRunner(#FN, FN)
 // Report a test case failure, increment the failure counter, and
 // continue.
 void failure(
-    const char* fmt, std::initializer_list<std::string_view> args);
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args);
 
 template<typename... Args>
-void failure(const char* fmt, const Args&... args)
+void failure(std::string_view fmt, const Args&... args)
 {
     failure(fmt, {dpso::str::formatArg::get(args)...});
 }
@@ -52,11 +53,12 @@ int getNumFailures();
 // error when setting up a test.
 [[noreturn]]
 void fatalError(
-    const char* fmt, std::initializer_list<std::string_view> args);
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args);
 
 template<typename... Args>
 [[noreturn]]
-void fatalError(const char* fmt, const Args&... args)
+void fatalError(std::string_view fmt, const Args&... args)
 {
     fatalError(fmt, {dpso::str::formatArg::get(args)...});
 }

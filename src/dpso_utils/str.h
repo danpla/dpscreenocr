@@ -82,10 +82,11 @@ auto get(const T& v) -> decltype(toStr(v))
 // Python-style brace string formatting. Only positional arguments are
 // supported.
 std::string format(
-    const char* fmt, std::initializer_list<std::string_view> args);
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args);
 
 template<typename... Args>
-std::string format(const char* fmt, const Args&... args)
+std::string format(std::string_view fmt, const Args&... args)
 {
     return format(fmt, {formatArg::get(args)...});
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <type_traits>
 
 
 namespace test::utils {
@@ -27,7 +28,7 @@ std::string toStr(bool b);
 // in double quotes. The C string variant also gives "nullptr" for
 // null.
 std::string toStr(const char* str);
-std::string toStr(std::string_view);
+std::string toStr(std::string_view str);
 
 
 // Convert line feeds (\n) to native line endings for the current
@@ -62,7 +63,11 @@ struct DefaultStrExtractor {
 };
 
 
-template<typename T, typename StrExtractor = DefaultStrExtractor>
+template<
+    typename T,
+    typename StrExtractor = DefaultStrExtractor,
+    std::enable_if_t<
+        !std::is_convertible_v<T, std::string_view>>* = {}>
 auto toStr(const T& v, StrExtractor strExtractor = {})
     -> decltype(toStr(v.begin(), v.end(), strExtractor))
 {

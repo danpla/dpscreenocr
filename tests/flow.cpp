@@ -63,7 +63,8 @@ static int numFailures;
 
 
 void failure(
-    const char* fmt, std::initializer_list<std::string_view> args)
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args)
 {
     ++numFailures;
     std::fputs(dpso::str::format(fmt, args).c_str(), stderr);
@@ -78,7 +79,8 @@ int getNumFailures()
 
 
 void fatalError(
-    const char* fmt, std::initializer_list<std::string_view> args)
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args)
 {
     std::fputs("FATAL ERROR\n", stderr);
     std::fputs(dpso::str::format(fmt, args).c_str(), stderr);

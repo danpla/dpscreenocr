@@ -225,7 +225,8 @@ std::string toStr(double v)
 
 
 std::string format(
-    const char* fmt, std::initializer_list<std::string_view> args)
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args)
 {
     auto iter = args.begin();
 
