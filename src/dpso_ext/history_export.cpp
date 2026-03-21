@@ -268,7 +268,8 @@ bool dpsoHistoryExport(
     // None of the export formats require a particular line ending
     // style, so use the OS newline to make Windows Notepad users
     // happy.
-    OutNewlineConversionStream newlineConversionStream{*file};
+    OutNewlineConversionStream newlineConversionStream{
+        *file, os::newline};
 
     try {
         exportFormatInfos[exportFormat].writeFn(

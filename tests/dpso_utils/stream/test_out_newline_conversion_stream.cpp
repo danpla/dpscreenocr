@@ -14,14 +14,14 @@ namespace {
 
 void testOutNewlineConversionStream()
 {
-    const auto* fileName = "test_out_newline_conversion_stream.txt";
-    const auto* input = " \n \r \r\n ";
+    const std::string_view fileName{
+        "test_out_newline_conversion_stream.txt"};
+    const std::string_view input{" \n \r \r\n "};
 
     const struct {
-        const char* outNewline;
-        std::string expected;
+        std::string_view outNewline;
+        std::string_view expected;
     } tests[]{
-        {nullptr, test::utils::lfToNativeNewline(input)},
         {"", "  \r \r "},
         {"\n", input},
         {"abc", " abc \r \rabc "},
@@ -50,8 +50,7 @@ void testOutNewlineConversionStream()
             test::failure(
                 "Converting {} to {} newlines: expected {}, got {}",
                 test::utils::toStr(input),
-                test.outNewline
-                    ? test::utils::toStr(test.outNewline) : "OS",
+                test::utils::toStr(test.outNewline),
                 test::utils::toStr(test.expected),
                 test::utils::toStr(actual));
     }

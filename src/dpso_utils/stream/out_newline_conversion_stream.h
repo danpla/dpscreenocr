@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 #include "dpso_utils/stream/stream.h"
 
@@ -12,10 +13,8 @@ namespace dpso {
 // string when writing. Does no conversion when reading.
 class OutNewlineConversionStream : public Stream {
 public:
-    // The newline can be any string. If null, the native newline for
-    // the current platform is used.
-    explicit OutNewlineConversionStream(
-        Stream& base, const char* newline = nullptr);
+    OutNewlineConversionStream(
+        Stream& base, std::string_view newline);
 
     std::size_t readSome(void* dst, std::size_t dstSize) override;
     void write(const void* src, std::size_t srcSize) override;

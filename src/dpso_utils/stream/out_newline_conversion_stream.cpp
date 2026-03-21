@@ -2,16 +2,14 @@
 
 #include <algorithm>
 
-#include "os.h"
-
 
 namespace dpso {
 
 
 OutNewlineConversionStream::OutNewlineConversionStream(
-        Stream& base, const char* newline)
+        Stream& base, std::string_view newline)
     : base{base}
-    , newline{newline ? newline : os::newline}
+    , newline{newline}
 {
 }
 
