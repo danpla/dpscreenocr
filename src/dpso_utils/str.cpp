@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <charconv>
 #include <climits>
-#include <cstring>
 #include <optional>
 
 #include "str_format_core.h"
@@ -20,7 +19,8 @@ bool isBlank(unsigned char c)
 
 bool isSpace(unsigned char c)
 {
-    return c && std::strchr(" \f\n\r\t\v", c);
+    static const std::string_view spaces{" \f\n\r\t\v"};
+    return spaces.find(c) != spaces.npos;
 }
 
 
@@ -34,7 +34,7 @@ static unsigned char toLower(unsigned char c)
 
 
 static int cmpIgnoreCase(
-    const char* a, const char* b, std::size_t len)
+    std::string_view a, std::string_view b, std::size_t len)
 {
     for (std::size_t i = 0; i < len; ++i) {
         const auto diff = toLower(a[i]) - toLower(b[i]);
@@ -48,8 +48,7 @@ static int cmpIgnoreCase(
 
 int cmpIgnoreCase(std::string_view a, std::string_view b)
 {
-    const auto r = cmpIgnoreCase(
-        a.data(), b.data(), std::min(a.size(), b.size()));
+    const auto r = cmpIgnoreCase(a, b, std::min(a.size(), b.size()));
     if (r != 0)
         return r;
 
@@ -66,7 +65,7 @@ int cmpIgnoreCase(std::string_view a, std::string_view b)
 bool equalIgnoreCase(std::string_view a, std::string_view b)
 {
     return a.size() == b.size()
-        && cmpIgnoreCase(a.data(), b.data(), a.size()) == 0;
+        && cmpIgnoreCase(a, b, a.size()) == 0;
 }
 
 
