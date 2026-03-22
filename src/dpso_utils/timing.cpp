@@ -25,7 +25,7 @@ float getTime()
 
 void report(
     float startTime,
-    const char* fmt,
+    std::string_view fmt,
     std::initializer_list<std::string_view> args)
 {
     const auto duration = getTime() - startTime;

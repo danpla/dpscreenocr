@@ -13,11 +13,12 @@ float getTime();
 
 void report(
     float startTime,
-    const char* fmt,
+    std::string_view fmt,
     std::initializer_list<std::string_view> args);
 
 template<typename... Args>
-void report(float startTime, const char* fmt, const Args&... args)
+void report(
+    float startTime, std::string_view fmt, const Args&... args)
 {
     report(startTime, fmt, {str::formatArg::get(args)...});
 }
