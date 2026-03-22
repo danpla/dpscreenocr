@@ -159,7 +159,7 @@ static void validateExePath(std::string_view exePath)
     // every time a variable is accessed, even on assignment to
     // another variable.
 
-    auto ext = getFileExt(exePath);
+    const auto ext = getFileExt(exePath);
     if (ext.empty())
         // If the file name does not have an extension, ShellExecute()
         // will try to execute a file with ".BAT" or ".CMD" appended.
