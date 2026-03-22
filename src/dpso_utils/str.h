@@ -57,6 +57,8 @@ std::string toStr(unsigned long long v, int base = 10);
 std::string toStr(float v);
 std::string toStr(double v);
 
+std::string toHex(const void* data, std::size_t size);
+
 
 namespace formatArg {
 

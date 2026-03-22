@@ -55,7 +55,8 @@ std::string calcFileSha256(std::string_view filePath)
             break;
     }
 
-    return toHex(h.getDigest());
+    const auto digest = h.getDigest();
+    return str::toHex(digest.data(), digest.size());
 }
 
 

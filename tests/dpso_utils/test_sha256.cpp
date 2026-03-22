@@ -1,6 +1,5 @@
-#include <string>
-
 #include "dpso_utils/sha256.h"
+#include "dpso_utils/str.h"
 
 #include "flow.h"
 
@@ -14,8 +13,8 @@
 static void testSha256()
 {
     const struct {
-        std::string str;
-        const char* digest;
+        std::string_view str;
+        std::string_view digest;
         int numRepeats;
     } tests[]{
         {
@@ -75,7 +74,11 @@ static void testSha256()
         for (auto i = 0; i < test.numRepeats; ++i)
             h.update(test.str.data(), test.str.size());
 
-        if (dpso::toHex(h.getDigest()) == test.digest)
+        const auto digest = h.getDigest();
+        const auto hexDigest = dpso::str::toHex(
+            digest.data(), digest.size());
+
+        if (hexDigest == test.digest)
             continue;
 
         test::failure(
@@ -83,7 +86,7 @@ static void testSha256()
             test.str,
             test.numRepeats,
             test.digest,
-            dpso::toHex(h.getDigest()));
+            hexDigest);
         break;
     }
 }

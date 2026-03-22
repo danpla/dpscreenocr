@@ -3,7 +3,6 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <string>
 
 
 namespace dpso {
@@ -36,9 +35,6 @@ private:
 
     Context context;
 };
-
-
-std::string toHex(const Sha256::Digest& digest);
 
 
 }

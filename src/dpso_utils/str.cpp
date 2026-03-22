@@ -36,7 +36,7 @@ static unsigned char toLower(unsigned char c)
 static int cmpIgnoreCase(
     std::string_view a, std::string_view b, std::size_t len)
 {
-    for (std::size_t i = 0; i < len; ++i) {
+    for (std::size_t i{}; i < len; ++i) {
         const auto diff = toLower(a[i]) - toLower(b[i]);
         if (diff != 0)
             return diff;
@@ -220,6 +220,24 @@ std::string toStr(float v)
 std::string toStr(double v)
 {
     return doubleToStr(v);
+}
+
+
+std::string toHex(const void* data, std::size_t size)
+{
+    std::string result;
+    result.reserve(size * 2);
+
+    const auto* bytes = static_cast<const unsigned char*>(data);
+    static const auto* hexChars = "0123456789abcdef";
+
+    for (std::size_t i{}; i < size; ++i) {
+        const auto b = bytes[i];
+        result += hexChars[b >> 4];
+        result += hexChars[b & 0x0f];
+    }
+
+    return result;
 }
 
 

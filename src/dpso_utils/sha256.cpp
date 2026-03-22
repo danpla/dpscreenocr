@@ -211,19 +211,4 @@ Sha256::Digest Sha256::getDigest() const
 }
 
 
-std::string toHex(const Sha256::Digest& digest)
-{
-    std::string result;
-    result.reserve(digest.size() * 2);
-
-    static const auto* hexChars = "0123456789abcdef";
-    for (auto b : digest) {
-        result += hexChars[b >> 4];
-        result += hexChars[b & 0x0f];
-    }
-
-    return result;
-}
-
-
 }
