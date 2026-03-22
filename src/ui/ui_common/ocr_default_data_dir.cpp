@@ -30,7 +30,7 @@ std::optional<std::string> getDefaultOcrDataDir(
         }
 
         result = dataPath;
-        result += *dpso::os::dirSeparators;
+        result += dpso::os::dirSeparators[0];
         result += engineInfo.id;
         result += "_data";
         break;

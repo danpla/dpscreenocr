@@ -2,12 +2,16 @@
 
 #include <chrono>
 #include <thread>
+#include <vector>
 
 #include "error_set.h"
 #include "os.h"
 
 
-const char* const dpsoDirSeparators = dpso::os::dirSeparators;
+char dpsoGetDirSeparator(void)
+{
+    return dpso::os::dirSeparators[0];
+}
 
 
 void dpsoSleep(int milliseconds)
@@ -20,8 +24,10 @@ void dpsoSleep(int milliseconds)
 bool dpsoExec(
     const char* exePath, const char* const args[], size_t numArgs)
 {
+    const std::vector<std::string_view> argsSv{args, args + numArgs};
+
     try {
-        dpso::os::exec(exePath, args, numArgs);
+        dpso::os::exec(exePath, argsSv.data(), argsSv.size());
         return true;
     } catch (dpso::os::Error& e) {
         dpso::setError("{}", e.what());

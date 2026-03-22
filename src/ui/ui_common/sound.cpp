@@ -44,9 +44,9 @@ std::string getSoundPath(const CacheEntry& cacheEntry)
 
     return
         std::string{uiGetAppDir(UiAppDirData)}
-        + *os::dirSeparators
+        + os::dirSeparators[0]
         + "sounds"
-        + *os::dirSeparators
+        + os::dirSeparators[0]
         + cacheEntry.soundName
         + ".wav";
 }

@@ -26,7 +26,7 @@ namespace ui::qt {
 History::History(const std::string& dirPath)
 {
     historyFilePath =
-        dirPath + *dpsoDirSeparators + uiHistoryFileName;
+        dirPath + dpsoGetDirSeparator() + uiHistoryFileName;
 
     textEdit = new QTextEdit();
     textEdit->setReadOnly(true);

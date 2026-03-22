@@ -355,7 +355,7 @@ void RemoteFilesLangManager::addRemoteLang(
 std::string RemoteFilesLangManager::getFilePath(
     const std::string& langCode) const
 {
-    return dataDir + *os::dirSeparators + langCode + fileExt;
+    return dataDir + os::dirSeparators[0] + langCode + fileExt;
 }
 
 

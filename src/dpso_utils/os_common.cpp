@@ -30,7 +30,7 @@ namespace {
 // It also doesn't make sense to catch filesystem_error solely for its
 // code() when wrapping a single function: the error_code overloads
 // give fewer lines of code because there is no try-catch block.
-void check(const char* description, const std::error_code& ec)
+void check(std::string_view description, const std::error_code& ec)
 {
     if (!ec)
         return;
@@ -49,7 +49,7 @@ void check(const char* description, const std::error_code& ec)
 
 
 [[noreturn]]
-void throwErrno(const char* description, int errnum)
+void throwErrno(std::string_view description, int errnum)
 {
     const auto message = str::format(
         "{}: {}", description, getErrnoMsg(errnum));

@@ -17,7 +17,7 @@ namespace {
 
 
 [[noreturn]]
-void throwErrno(const char* description)
+void throwErrno(std::string_view description)
 {
     os::throwErrno(description, errno);
 }
@@ -55,8 +55,8 @@ std::string getErrnoMsg(int errnum)
 }
 
 
-const char* const newline = "\n";
-const char* const dirSeparators = "/";
+const std::string_view newline{"\n"};
+const std::string_view dirSeparators{"/"};
 
 
 std::string convertUtf8PathToSys(std::string_view utf8Path)
@@ -123,8 +123,8 @@ void syncDir(std::string_view dirPath)
 
 
 void exec(
-    const char* exePath,
-    const char* const args[],
+    std::string_view exePath,
+    const std::string_view* args,
     std::size_t numArgs)
 {
     const auto pid = fork();
@@ -132,11 +132,17 @@ void exec(
         throwErrno("fork()");
 
     if (pid == 0) {
-        std::vector<const char*> argv;
-        argv.reserve(1 + numArgs + 1);
+        std::vector<std::string> argvStr;
+        argvStr.reserve(1 + numArgs);
 
-        argv.push_back(exePath);
-        argv.insert(argv.end(), args, args + numArgs);
+        argvStr.emplace_back(exePath);
+        argvStr.insert(argvStr.end(), args, args + numArgs);
+
+        std::vector<const char*> argv;
+        argv.reserve(argvStr.size() + 1);
+
+        for (const auto& str : argvStr)
+            argv.push_back(str.c_str());
         argv.push_back(nullptr);
 
         execvp(argv[0], (char* const*)argv.data());

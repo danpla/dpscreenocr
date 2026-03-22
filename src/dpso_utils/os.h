@@ -29,15 +29,15 @@ std::string getErrnoMsg(int errnum);
 
 // Throws the given errno number as os::Error.
 [[noreturn]]
-void throwErrno(const char* description, int errnum);
+void throwErrno(std::string_view description, int errnum);
 
 
-extern const char* const newline;
+extern const std::string_view newline;
 
 
 // Directory separators for the current platform. The primary one is
 // the first in the list.
-extern const char* const dirSeparators;
+extern const std::string_view dirSeparators;
 
 
 // Return the path without the last component. The result will not
@@ -130,8 +130,8 @@ std::string loadData(std::string_view filePath);
 // The function blocks the caller's thread until the executable exits.
 // Throws os::Error.
 void exec(
-    const char* exePath,
-    const char* const args[],
+    std::string_view exePath,
+    const std::string_view* args,
     std::size_t numArgs);
 
 
