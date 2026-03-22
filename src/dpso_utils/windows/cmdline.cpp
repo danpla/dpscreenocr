@@ -1,15 +1,14 @@
 #include "windows/cmdline.h"
 
-#include <cstring>
-
 
 namespace dpso::windows {
 
 
-static void appendArgEscaped(std::string& s, const char* arg)
+static void appendArgEscaped(std::string& s, std::string_view arg)
 {
     // Don't escape if not necessary.
-    if (*arg && !std::strpbrk(arg, " \"\r\n\t\v\f")) {
+    if (!arg.empty()
+            && arg.find_first_of(" \"\r\n\t\v\f") == arg.npos) {
         s += arg;
         return;
     }
@@ -17,26 +16,29 @@ static void appendArgEscaped(std::string& s, const char* arg)
     s += '"';
 
     while (true) {
-        std::size_t numBackslashes = 0;
+        const auto pos = arg.find_first_not_of('\\');
+        const std::size_t numBackslashes{
+            pos == arg.npos ? arg.size() : pos};
 
-        for (; *arg == '\\'; ++arg)
-            ++numBackslashes;
-
-        const auto c = *arg++;
+        arg.remove_prefix(numBackslashes);
 
         // Escape quotes and double their preceding backslashes.
-        if (!c) {
+
+        if (arg.empty()) {
             // Escape trailing backslashes.
             s.append(numBackslashes * 2, '\\');
             break;
-        } else if (c == '"')
+        }
+
+        if (arg.front() == '"')
             // Escape backslashes and the following quote.
             s.append(numBackslashes * 2 + 1, '\\');
         else
             // Leave backslashes as is.
             s.append(numBackslashes, '\\');
 
-        s += c;
+        s += arg.front();
+        arg.remove_prefix(1);
     }
 
     s += '"';
@@ -64,12 +66,12 @@ static void appendArgEscaped(std::string& s, const char* arg)
 // * http://daviddeley.com/autohotkey/parameters/parameters.htm
 // * https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/
 std::string createCmdLine(
-    const char* programName,
-    const char* const* args, std::size_t numArgs)
+    std::string_view programName,
+    const std::string_view* args, std::size_t numArgs)
 {
     std::string result;
 
-    if (std::strchr(programName, ' ')) {
+    if (programName.find(' ') != programName.npos) {
         result += '"';
         result += programName;
         result += '"';

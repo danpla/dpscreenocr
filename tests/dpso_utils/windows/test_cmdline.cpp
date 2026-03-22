@@ -18,7 +18,7 @@ namespace {
 
 
 // Wrapper around CommandLineToArgvW()
-std::vector<std::string> cmdLineToArgv(const char* cmdLine)
+std::vector<std::string> cmdLineToArgv(std::string_view cmdLine)
 {
     int argc;
     auto** argv = CommandLineToArgvW(
@@ -39,14 +39,14 @@ std::vector<std::string> cmdLineToArgv(const char* cmdLine)
 }
 
 
-void testArgv(std::initializer_list<const char*> argv)
+void testArgv(std::initializer_list<std::string_view> argv)
 {
     using namespace dpso::windows;
 
     const auto cmdLine = createCmdLine(
         *argv.begin(), argv.begin() + 1, argv.size() - 1);
 
-    const auto gotArgv = cmdLineToArgv(cmdLine.c_str());
+    const auto gotArgv = cmdLineToArgv(cmdLine);
 
     if (gotArgv.size() != argv.size()) {
         test::failure(
@@ -79,8 +79,8 @@ void testArgv(std::initializer_list<const char*> argv)
 
 void testWindowsCmdLine()
 {
-    const auto* programName = "program name";
-    const std::initializer_list<const char*> argvs[]{
+    const std::string_view programName{"program name"};
+    const std::initializer_list<std::string_view> argvs[]{
         {programName, "a\\\\b", "de fg", "h"},
         {programName, "a\\\"b", "c", "d"},
         {programName, "a\\\\b c", "d", "e"},

@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -156,13 +157,14 @@ static UiAutostart* create(const UiAutostartArgs* args)
                 exePath.c_str(), existingExePath.c_str());
     }
 
+    const std::vector<std::string_view> argsSv{
+        args->args, args->args + args->numArgs};
+
     std::wstring cmdLine;
     try {
         cmdLine = windows::utf8ToUtf16(
             windows::createCmdLine(
-                args->args[0],
-                args->args + 1,
-                args->numArgs - 1));
+                argsSv[0], argsSv.data() + 1, argsSv.size() - 1));
     } catch (windows::CharConversionError& e) {
         throw AutostartError{str::format(
             "Can't convert command line (args->args) to UTF-16: {}",

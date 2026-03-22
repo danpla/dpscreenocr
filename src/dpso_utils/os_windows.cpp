@@ -22,7 +22,7 @@ namespace {
 
 
 [[noreturn]]
-void throwLastError(const char* description)
+void throwLastError(std::string_view description)
 {
     const auto lastError = GetLastError();
 
@@ -104,10 +104,10 @@ static std::string utf16ToAcp(std::wstring_view utf16Str)
 }
 
 
-std::string convertUtf8PathToSys(const char* utf8Path)
+std::string convertUtf8PathToSys(std::string_view utf8Path)
 {
     if (GetACP() == CP_UTF8)
-        return utf8Path;
+        return std::string{utf8Path};
 
     return utf16ToAcp(DPSO_WIN_TO_UTF16(utf8Path));
 }
@@ -137,20 +137,20 @@ void syncFile(FILE* fp)
 }
 
 
-void syncDir(const char* /*dirPath*/)
+void syncDir(std::string_view /*dirPath*/)
 {
     // Windows doesn't support directory synchronization.
 }
 
 
-static void validateExePath(const char* exePath)
+static void validateExePath(std::string_view exePath)
 {
-    while (str::isSpace(*exePath))
-        ++exePath;
+    // ShellExecute() strips leading and trailing whitespace chars.
+    exePath = str::trim(exePath, str::isSpace);
 
     // ShellExecute() opens the current working directory in Explorer
     // if the executable path is empty.
-    if (!*exePath)
+    if (exePath.empty())
         throw Error{"Path is empty"};
 
     // We can't allow executing batch scripts, because it's impossible
@@ -162,13 +162,8 @@ static void validateExePath(const char* exePath)
     auto ext = getFileExt(exePath);
     if (ext.empty())
         // If the file name does not have an extension, ShellExecute()
-        // will try to execute a file with ".BAT" and ".CMD" appended.
+        // will try to execute a file with ".BAT" or ".CMD" appended.
         throw Error{"Path does not have a file extension"};
-
-    // The string can contain trailing whitespace that will be
-    // stripped by ShellExecute().
-    while (!ext.empty() && str::isSpace(ext.back()))
-        ext.pop_back();
 
     for (const auto* batchExt : {".bat", ".cmd"})
         if (str::equalIgnoreCase(batchExt, ext))
@@ -177,8 +172,8 @@ static void validateExePath(const char* exePath)
 
 
 void exec(
-    const char* exePath,
-    const char* const args[],
+    std::string_view exePath,
+    const std::string_view* args,
     std::size_t numArgs)
 {
     validateExePath(exePath);

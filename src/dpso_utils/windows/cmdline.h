@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <string>
+#include <string_view>
 
 
 namespace dpso::windows {
@@ -16,8 +17,8 @@ namespace dpso::windows {
 // lpCommandLine for CreateProcess() when lpApplicationName is not
 // null), leave programName empty.
 std::string createCmdLine(
-    const char* programName,
-    const char* const* args, std::size_t numArgs);
+    std::string_view programName,
+    const std::string_view* args, std::size_t numArgs);
 
 
 }
