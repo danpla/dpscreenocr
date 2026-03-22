@@ -135,7 +135,7 @@ const std::initializer_list<BasicTypesTest> boolTests{
 
 std::string makeCfgKeyForChar(char c)
 {
-    return "str_char_" + str::rightJustify(str::toStr(c, 16), 2, '0');
+    return "str_char_" + str::justifyRight(str::toStr(c, 16), 2, '0');
 }
 
 

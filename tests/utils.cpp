@@ -50,7 +50,7 @@ std::string escapeStr(std::string_view str)
             else
                 result +=
                     "\\x"
-                    + dpso::str::rightJustify(
+                    + dpso::str::justifyRight(
                         dpso::str::toStr(c, 16),
                         2,
                         '0');

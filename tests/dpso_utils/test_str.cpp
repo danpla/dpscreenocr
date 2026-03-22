@@ -98,14 +98,14 @@ void testJustify()
 {
     using namespace dpso::str;
 
-    TEST_STR(leftJustify("x", 4), "x   ");
-    TEST_STR(rightJustify("x", 4), "   x");
+    TEST_STR(justifyLeft("x", 4), "x   ");
+    TEST_STR(justifyRight("x", 4), "   x");
 
-    TEST_STR(leftJustify("x", 4, '-'), "x---");
-    TEST_STR(rightJustify("x", 4, '-'), "---x");
+    TEST_STR(justifyLeft("x", 4, '-'), "x---");
+    TEST_STR(justifyRight("x", 4, '-'), "---x");
 
-    TEST_STR(leftJustify("abcd", 2), "abcd");
-    TEST_STR(rightJustify("abcd", 2), "abcd");
+    TEST_STR(justifyLeft("abcd", 2), "abcd");
+    TEST_STR(justifyRight("abcd", 2), "abcd");
 }
 
 

@@ -111,7 +111,7 @@ std::string_view trim(
 }
 
 
-std::string leftJustify(std::string s, std::size_t width, char fill)
+std::string justifyLeft(std::string s, std::size_t width, char fill)
 {
     if (s.size() < width)
         s.resize(width, fill);
@@ -120,7 +120,7 @@ std::string leftJustify(std::string s, std::size_t width, char fill)
 }
 
 
-std::string rightJustify(std::string s, std::size_t width, char fill)
+std::string justifyRight(std::string s, std::size_t width, char fill)
 {
     if (s.size() < width)
         s.insert(0, width - s.size(), fill);

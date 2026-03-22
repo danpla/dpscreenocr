@@ -36,11 +36,9 @@ std::string_view trim(
     std::string_view s, bool (&pred)(unsigned char c));
 
 
-std::string leftJustify(
+std::string justifyLeft(
     std::string s, std::size_t width, char fill = ' ');
-
-
-std::string rightJustify(
+std::string justifyRight(
     std::string s, std::size_t width, char fill = ' ');
 
 

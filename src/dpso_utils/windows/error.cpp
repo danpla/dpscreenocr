@@ -46,7 +46,7 @@ std::string getHresultMessage(HRESULT hresult)
 
     return
         "HRESULT 0x"
-        + str::rightJustify(str::toStr(hresult, 16), 8, '0');
+        + str::justifyRight(str::toStr(hresult, 16), 8, '0');
 }
 
 

@@ -168,7 +168,7 @@ static void writeKeyValue(
     const DpsoCfg::KeyValue& kv,
     std::size_t maxKeyLen)
 {
-    write(stream, str::leftJustify(kv.key, maxKeyLen + 1));
+    write(stream, str::justifyLeft(kv.key, maxKeyLen + 1));
 
     if (!kv.value.empty() && kv.value.front() == ' ')
         write(stream, '\\');
