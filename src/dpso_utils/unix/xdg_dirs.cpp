@@ -10,7 +10,7 @@
 namespace dpso::unix {
 
 
-const char* toStr(XdgDir dir)
+std::string_view toStr(XdgDir dir)
 {
     #define CASE(DIR) case DIR: return #DIR
 
@@ -22,7 +22,7 @@ const char* toStr(XdgDir dir)
     #undef CASE
 
     assert(false);
-    return "";
+    return {};
 }
 
 

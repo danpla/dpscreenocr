@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 
 namespace dpso::unix {
@@ -12,7 +13,7 @@ enum class XdgDir {
 };
 
 
-const char* toStr(XdgDir dir);
+std::string_view toStr(XdgDir dir);
 
 
 // Return an absolute path of a directory defined by XDG Base

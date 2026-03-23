@@ -1,16 +1,15 @@
 #include "unix/path_env_search.h"
 
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 
 namespace dpso::unix {
 
 
-std::string findInPathEnv(const char* name)
+std::string findInPathEnv(std::string_view name)
 {
-    if (strchr(name, '/'))
+    if (name.find('/') != name.npos)
         return {};
 
     const auto* p = getenv("PATH");

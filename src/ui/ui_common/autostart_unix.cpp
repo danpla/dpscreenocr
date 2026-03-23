@@ -515,8 +515,7 @@ static UiAutostart* create(const UiAutostartArgs* args)
         // absolute path or just a name to be searched in $PATH.
         if (const auto slashPos = desktopFileExe.find('/');
                 slashPos == desktopFileExe.npos) {
-            desktopFileExe = unix::findInPathEnv(
-                desktopFileExe.c_str());
+            desktopFileExe = unix::findInPathEnv(desktopFileExe);
             if (desktopFileExe.empty())
                 continue;
         } else if (slashPos != 0)

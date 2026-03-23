@@ -2,7 +2,6 @@
 
 #include <errno.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "os.h"
 #include "str.h"
@@ -12,11 +11,11 @@
 namespace dpso::unix {
 
 
-std::string getExePath(const char* name)
+std::string getExePath(std::string_view name)
 {
     std::string path;
 
-    if (strchr(name, '/'))
+    if (name.find('/') != name.npos)
         path = name;
     else {
         path = findInPathEnv(name);
@@ -30,7 +29,7 @@ std::string getExePath(const char* name)
         throw os::Error{str::format(
             "realpath(\"{}\"): {}", path, os::getErrnoMsg(errno))};
 
-    std::string result = realPath;
+    std::string result{realPath};
     free(realPath);
 
     return result;
