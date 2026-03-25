@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -110,7 +111,7 @@ static bool createEntries(
 
 static void openSync(
     std::optional<FileStream>& file,
-    const char* filePath,
+    std::string_view filePath,
     FileStream::Mode mode)
 {
     const auto fileDir = os::getDirName(filePath);
@@ -147,7 +148,7 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
 
     std::string data;
     try {
-        data = os::loadData(filePath);
+        data = os::loadData(history->filePath);
     } catch (os::FileNotFoundError&) {
     } catch (os::Error& e) {
         setError("os::loadData(): {}", e.what());
@@ -270,9 +271,7 @@ bool dpsoHistoryClear(DpsoHistory* history)
     history->entries.clear();
 
     openSync(
-        history->file,
-        history->filePath.c_str(),
-        FileStream::Mode::write);
+        history->file, history->filePath, FileStream::Mode::write);
 
     return history->file.has_value();
 }
