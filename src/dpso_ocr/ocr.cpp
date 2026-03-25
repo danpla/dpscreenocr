@@ -392,7 +392,7 @@ static ocr::OcrImage prepareImage(
             str::format(
                 "dpso_debug_1_original_{}{}",
                 dpsoPxFormatToStr(pxFormat),
-                img::getPnmExt(pxFormat)).c_str(),
+                img::getPnmExt(pxFormat)),
             pxFormat,
             dpsoImgGetConstData(image),
             imageW, imageH, dpsoImgGetPitch(image));

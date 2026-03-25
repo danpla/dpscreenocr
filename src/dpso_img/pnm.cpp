@@ -11,7 +11,7 @@
 namespace dpso::img {
 
 
-const char* getPnmExt(DpsoPxFormat pxFormat)
+std::string_view getPnmExt(DpsoPxFormat pxFormat)
 {
     return pxFormat == DpsoPxFormatGrayscale ? ".pgm" : ".ppm";
 }
@@ -82,7 +82,7 @@ static void writePnm(
 
 
 void savePnm(
-    const char* filePath,
+    std::string_view filePath,
     DpsoPxFormat pxFormat,
     const std::uint8_t* data,
     int w,
