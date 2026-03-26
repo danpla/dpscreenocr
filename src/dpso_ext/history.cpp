@@ -9,6 +9,7 @@
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
 #include "dpso_utils/stream/file_stream.h"
 #include "dpso_utils/stream/utils.h"
 
@@ -62,9 +63,10 @@ static bool createEntries(
 
         if (s[1] != '\n') {
             setError(
-                "Unexpected {:#04x} instead of \\n at {} for "
+                "Unexpected 0x{} instead of \\n at {} for "
                 "timestamp at {}",
-                s[1],  s - data, timestampBegin - data);
+                str::toStr(static_cast<unsigned char>(s[1]), 16),
+                s - data, timestampBegin - data);
             return false;
         }
 
@@ -90,9 +92,10 @@ static bool createEntries(
 
             if (s[1] != '\n') {
                 setError(
-                    "Unexpected {:#04x} instead of \\n at {} for "
+                    "Unexpected 0x{} instead of \\n at {} for "
                     "text at {}",
-                    s[1], s - data, textBegin - data);
+                    str::toStr(static_cast<unsigned char>(s[1]), 16),
+                    s - data, textBegin - data);
                 return false;
             }
 
