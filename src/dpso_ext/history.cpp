@@ -35,7 +35,7 @@ struct DpsoHistory {
 
 
 static bool createEntries(
-    const char* data,
+    std::string_view data,
     std::vector<DpsoHistory::Entry>& entries,
     std::size_t& validDataSize)
 {
@@ -48,63 +48,56 @@ static bool createEntries(
     // power loss), so the best strategy is to restore successfully
     // written entries.
 
-    for (const auto* s = data; *s;) {
-        const auto* timestampBegin = s;
-        while (*s && *s != '\n')
-            ++s;
-
-        if (!*s)
-            // Truncated timestamp.
+    for (std::size_t pos{}; true;) {
+        const auto timestampPos = pos;
+        pos = data.find('\n', pos);
+        if (pos == data.npos)
+             // Either truncated timestamp or end of data.
             break;
 
-        if (!s[1])
+        const auto timestampLen = pos - timestampPos;
+
+        if (++pos == data.size())
             // Truncated \n\n terminator.
             break;
 
-        if (s[1] != '\n') {
+        if (const auto c = data[pos]; c != '\n') {
             setError(
                 "Unexpected 0x{} instead of \\n at {} for "
                 "timestamp at {}",
-                str::toStr(static_cast<unsigned char>(s[1]), 16),
-                s - data, timestampBegin - data);
+                str::toStr(static_cast<unsigned char>(c), 16),
+                pos, timestampPos);
             return false;
         }
 
-        DpsoHistory::Entry e;
-        e.timestamp.assign(timestampBegin, s);
+        const auto textPos = ++pos;
+        pos = std::min(data.find('\f', pos), data.size());
 
-        s += 2;
+        entries.push_back(
+            {
+                {data, timestampPos, timestampLen},
+                {data, textPos, pos - textPos}});
 
-        const auto* textBegin = s;
-        while (*s && *s != '\f')
-            ++s;
+        validDataSize = pos;
 
-        e.text.assign(textBegin, s);
-
-        entries.push_back(std::move(e));
-
-        validDataSize = s - data;
-
-        if (*s == '\f') {
-            if (!s[1])
+        if (pos < data.size()) {
+            if (++pos == data.size())
                 // Truncated \f\n terminator.
                 break;
 
-            if (s[1] != '\n') {
+            if (const auto c = data[pos]; c != '\n') {
                 setError(
                     "Unexpected 0x{} instead of \\n at {} for "
                     "text at {}",
-                    str::toStr(static_cast<unsigned char>(s[1]), 16),
-                    s - data, textBegin - data);
+                    str::toStr(static_cast<unsigned char>(c), 16),
+                    pos, textPos);
                 return false;
             }
 
-            if (!s[2])
+            if (++pos == data.size())
                 // \f\n at the end of the file is a truncated
                 // subsequent entry.
                 break;
-
-            s += 2;
         }
     }
 
@@ -159,7 +152,7 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
     }
 
     std::size_t validDataSize{};
-    if (!createEntries(data.c_str(), history->entries, validDataSize))
+    if (!createEntries(data, history->entries, validDataSize))
         return nullptr;
 
     if (validDataSize != data.size())
