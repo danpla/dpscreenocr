@@ -367,8 +367,8 @@ Values can contain the following escape sequences:
 *   `\t` - tabulation
 
 Any other character preceded by `\` is kept as is. To preserve leading
-spaces, escape the first one with `\`; to preserve trailing spaces,
-put `\` at the end of the line.
+spaces, put `\` before the first space; to preserve trailing spaces,
+put `\` after the last space.
 
 To reset an option to its default value, remove it from settings.cfg;
 to reset all options, clear or delete the file.

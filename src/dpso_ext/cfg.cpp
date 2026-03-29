@@ -2,9 +2,10 @@
 
 #include <algorithm>
 #include <charconv>
-#include <cstring>
 #include <optional>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 #include "dpso_utils/error_set.h"
@@ -18,155 +19,107 @@
 using namespace dpso;
 
 
-struct DpsoCfg {
-    struct KeyValue {
-        std::string key;
-        std::string value;
-    };
+namespace {
 
-    std::vector<KeyValue> keyValues;
+
+struct KeyValue {
+    std::string key;
+    std::string value;
 };
 
 
-DpsoCfg* dpsoCfgCreate(void)
-{
-    return new DpsoCfg{};
-}
-
-
-void dpsoCfgDelete(DpsoCfg* cfg)
-{
-    delete cfg;
-}
+using KeyValues = std::vector<KeyValue>;
 
 
 template<typename T>
-static auto getLowerBound(T& keyValues, const char* key)
+auto getLowerBound(T& keyValues, std::string_view key)
 {
     return std::lower_bound(
         keyValues.begin(), keyValues.end(), key,
-        [](const DpsoCfg::KeyValue& kv, const char* key)
+        [](const KeyValue& kv, std::string_view key)
         {
             return kv.key < key;
         });
 }
 
 
-static void parseKeyValue(const char* str, DpsoCfg::KeyValue& kv)
+const std::string* getStr(
+    const KeyValues& keyValues, std::string_view key)
 {
-    const auto* keyBegin = str;
-    while (str::isBlank(*keyBegin))
-        ++keyBegin;
+    const auto iter = getLowerBound(keyValues, key);
+    if (iter != keyValues.end() && iter->key == key)
+        return &iter->value;
 
-    const auto* keyEnd = keyBegin;
-    while (*keyEnd && !str::isBlank(*keyEnd))
-        ++keyEnd;
+    return {};
+}
 
-    kv.key.assign(keyBegin, keyEnd);
 
-    const auto* valueBegin = keyEnd;
-    while (str::isBlank(*valueBegin))
-        ++valueBegin;
+bool isValidKey(std::string_view key)
+{
+    return !key.empty() && key.find_first_of(" \t\r\n") == key.npos;
+}
 
-    kv.value.clear();
 
-    // We will trim any unescaped trailing blanks. \ at the end is
-    // ignored, which allows to explicitly mark the end of the value
-    // instead of escaping its last space.
-    const auto* blanksBegin = valueBegin;
-    const auto* blanksEnd = blanksBegin;
+void setStr(
+    KeyValues& keyValues, std::string_view key, std::string&& val)
+{
+    if (!isValidKey(key))
+        return;
 
-    for (const auto* s = valueBegin; *s;) {
-        if (str::isBlank(*s)) {
-            if (s != blanksEnd)
-                blanksBegin = s;
+    auto iter = getLowerBound(keyValues, key);
+    if (iter == keyValues.end() || iter->key != key)
+        iter = keyValues.insert(iter, {std::string{key}, {}});
 
-            blanksEnd = ++s;
-            continue;
-        }
+    iter->value = std::move(val);
+}
 
-        if (s == blanksEnd)
-            kv.value.append(blanksBegin, blanksEnd);
 
-        if (const auto c = *s++; c != '\\') {
-            kv.value += c;
-            continue;
-        }
+void loadKeyValue(KeyValues& keyValues, std::string_view str)
+{
+    str = str::trimLeft(str, str::isBlank);
 
-        if (!*s)
+    const auto key = str.substr(
+        0,
+        std::find_if(str.begin(), str.end(), str::isBlank)
+            - str.begin());
+
+    const auto rawVal = str::trim(
+        str.substr(key.size()), str::isBlank);
+
+    std::string val;
+    for (auto iter = rawVal.begin(); iter < rawVal.end();) {
+        const auto unsecapedEnd = std::find(iter, rawVal.end(), '\\');
+        val.append(iter, unsecapedEnd);
+
+        if (unsecapedEnd == rawVal.end())
             break;
 
-        switch (const auto c = *s++) {
+        iter = unsecapedEnd + 1;
+        if (iter == rawVal.end())
+            break;
+
+        switch (const auto c = *iter++) {
         case 'n':
-            kv.value += '\n';
+            val += '\n';
             break;
         case 'r':
-            kv.value += '\r';
+            val += '\r';
             break;
         case 't':
-            kv.value += '\t';
+            val += '\t';
             break;
         default:
-            kv.value += c;
+            val += c;
             break;
         }
     }
+
+    setStr(keyValues, key, std::move(val));
 }
 
 
-// Our file format allows using any byte values, so we don't use the
-// text mode (i.e. fopen() without the "b" flag) for IO - neither for
-// reading nor for writing - to avoid surprises when we actually need
-// to handle "binary" data (for example, the text mode on Windows
-// treats 0x1a as EOF when reading). We will still write CRLF line
-// endings on Windows to make Notepad users happy.
-
-
-bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
-{
-    if (!cfg) {
-        setError("cfg is null");
-        return false;
-    }
-
-    cfg->keyValues.clear();
-
-    std::optional<FileStream> file;
-    try {
-        file.emplace(filePath, FileStream::Mode::read);
-    } catch (os::FileNotFoundError&) {
-        return true;
-    } catch (os::Error& e) {
-        setError("FileStream(..., Mode::read): {}", e.what());
-        return false;
-    }
-
-    LineReader lineReader{*file};
-    std::string line;
-    DpsoCfg::KeyValue kv;
-    while (true) {
-        try {
-            if (!lineReader.readLine(line))
-                break;
-        } catch (StreamError& e) {
-            setError("LineReader::readLine(): {}", e.what());
-            cfg->keyValues.clear();
-            return false;
-        }
-
-        parseKeyValue(line.c_str(), kv);
-        if (!kv.key.empty())
-            dpsoCfgSetStr(cfg, kv.key.c_str(), kv.value.c_str());
-    }
-
-    return true;
-}
-
-
-static void writeKeyValue(
-    Stream& stream,
-    const DpsoCfg::KeyValue& kv,
-    std::size_t maxKeyLen)
+void writeKeyValue(
+    Stream& stream, const KeyValue& kv, std::size_t maxKeyLen)
 {
     write(stream, str::justifyLeft(kv.key, maxKeyLen + 1));
 
@@ -192,12 +145,67 @@ static void writeKeyValue(
             break;
         }
 
-    // If we have a single space, it's already escaped, but we still
-    // append \ to make the end visible.
     if (!kv.value.empty() && kv.value.back() == ' ')
         write(stream, '\\');
 
     write(stream, os::newline);
+}
+
+
+}
+
+
+struct DpsoCfg {
+    KeyValues keyValues;
+};
+
+
+DpsoCfg* dpsoCfgCreate(void)
+{
+    return new DpsoCfg{};
+}
+
+
+void dpsoCfgDelete(DpsoCfg* cfg)
+{
+    delete cfg;
+}
+
+
+bool dpsoCfgLoad(DpsoCfg* cfg, const char* filePath)
+{
+    if (!cfg) {
+        setError("cfg is null");
+        return false;
+    }
+
+    cfg->keyValues.clear();
+
+    std::optional<FileStream> file;
+    try {
+        file.emplace(filePath, FileStream::Mode::read);
+    } catch (os::FileNotFoundError&) {
+        return true;
+    } catch (os::Error& e) {
+        setError("FileStream(..., Mode::read): {}", e.what());
+        return false;
+    }
+
+    LineReader lineReader{*file};
+    for (std::string line; true;) {
+        try {
+            if (!lineReader.readLine(line))
+                break;
+        } catch (StreamError& e) {
+            setError("LineReader::readLine(): {}", e.what());
+            cfg->keyValues.clear();
+            return false;
+        }
+
+        loadKeyValue(cfg->keyValues, line);
+    }
+
+    return true;
 }
 
 
@@ -260,36 +268,24 @@ const char* dpsoCfgGetStr(
     if (!cfg)
         return defaultVal;
 
-    const auto iter = getLowerBound(cfg->keyValues, key);
-    if (iter != cfg->keyValues.end() && iter->key == key)
-        return iter->value.c_str();
-
-    return defaultVal;
-}
-
-
-static bool isValidKey(const char* key)
-{
-    return *key && !std::strpbrk(key, " \t\r\n");
+    const auto* str = getStr(cfg->keyValues, key);
+    return str ? str->c_str() : defaultVal;
 }
 
 
 void dpsoCfgSetStr(DpsoCfg* cfg, const char* key, const char* val)
 {
-    if (!cfg || !isValidKey(key))
-        return;
-
-    const auto iter = getLowerBound(cfg->keyValues, key);
-    if (iter != cfg->keyValues.end() && iter->key == key)
-        iter->value = val;
-    else
-        cfg->keyValues.insert(iter, {key, val});
+    if (cfg)
+        setStr(cfg->keyValues, key, val);
 }
 
 
 int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
 {
-    const auto* str = dpsoCfgGetStr(cfg, key, nullptr);
+    if (!cfg)
+        return defaultVal;
+
+    const auto* str = getStr(cfg->keyValues, key);
     if (!str)
         return defaultVal;
 
@@ -299,8 +295,9 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
 
     int result{};
 
-    const auto* strEnd = str + std::strlen(str);
-    const auto [ptr, ec] = std::from_chars(str, strEnd, result);
+    const auto* strEnd = str->data() + str->size();
+    const auto [ptr, ec] = std::from_chars(
+        str->data(), strEnd, result);
     if (ec == std::errc{} && ptr == strEnd)
         return result;
 
@@ -310,11 +307,12 @@ int dpsoCfgGetInt(const DpsoCfg* cfg, const char* key, int defaultVal)
 
 void dpsoCfgSetInt(DpsoCfg* cfg, const char* key, int val)
 {
-    dpsoCfgSetStr(cfg, key, str::toStr(val).c_str());
+    if (cfg)
+        setStr(cfg->keyValues, key, str::toStr(val));
 }
 
 
-static const char* boolToStr(bool b)
+static std::string_view boolToStr(bool b)
 {
     return b ? "true" : "false";
 }
@@ -323,12 +321,15 @@ static const char* boolToStr(bool b)
 bool dpsoCfgGetBool(
     const DpsoCfg* cfg, const char* key, bool defaultVal)
 {
-    const auto* str = dpsoCfgGetStr(cfg, key, nullptr);
+    if (!cfg)
+        return defaultVal;
+
+    const auto* str = getStr(cfg->keyValues, key);
     if (!str)
         return defaultVal;
 
     for (int i = 0; i < 2; ++i)
-        if (str::equalIgnoreCase(str, boolToStr(i)))
+        if (str::equalIgnoreCase(*str, boolToStr(i)))
             return i;
 
     return defaultVal;
@@ -337,5 +338,6 @@ bool dpsoCfgGetBool(
 
 void dpsoCfgSetBool(DpsoCfg* cfg, const char* key, bool val)
 {
-    dpsoCfgSetStr(cfg, key, boolToStr(val));
+    if (cfg)
+        setStr(cfg->keyValues, key, std::string{boolToStr(val)});
 }
