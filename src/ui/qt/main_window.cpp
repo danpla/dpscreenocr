@@ -73,14 +73,14 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
     keyManager = dpsoSysGetKeyManager(sys.get());
     selection = dpsoSysGetSelection(sys.get());
 
-    const auto* cfgPath = dpsoGetUserDir(
-        DpsoUserDirConfig, uiAppFileName);
+    const auto* cfgPath = dpsoGetUserDir(DpsoUserDirConfig);
     if (!cfgPath)
         throw Error(
-            std::string("Can't get configuration path: ")
+            std::string("Can't get configuration directory path: ")
             + dpsoGetError());
 
-    cfgDirPath = cfgPath;
+    cfgDirPath =
+        std::string{cfgPath} + dpsoGetDirSeparator() + uiAppFileName;
     cfgFilePath = cfgDirPath + dpsoGetDirSeparator() + uiCfgFileName;
 
     cfg.reset(dpsoCfgCreate());

@@ -10,9 +10,8 @@ namespace ui {
 
 
 // Return an absolute path of the OCR data directory for the given
-// engine. The path will be empty if
-// DpsoOcrEngineInfo::dataDirPreference is not
-// DpsoOcrEngineDataDirPreferencePreferExplicit.
+// engine. The path will be empty if engineInfo.dataDirPreference is
+// not DpsoOcrEngineDataDirPreferencePreferExplicit.
 //
 // On failure, sets an error message (dpsoGetError()) and returns
 // nullopt.

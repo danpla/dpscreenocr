@@ -15,7 +15,7 @@
 using namespace dpso;
 
 
-const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
+const char* dpsoGetUserDir(DpsoUserDir userDir)
 {
     // FOLDERID_RoamingAppData is actually better path for config, but
     // we keep using FOLDERID_LocalAppData for backward compatibility.
@@ -46,9 +46,6 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
         setError("Can't convert path to UTF-8: {}", e.what());
         return {};
     }
-
-    path += '\\';
-    path += appName;
 
     return path.c_str();
 }

@@ -25,7 +25,7 @@ static unix::XdgDir getXdgDir(DpsoUserDir userDir)
 }
 
 
-const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
+const char* dpsoGetUserDir(DpsoUserDir userDir)
 {
     static std::string path;
 
@@ -37,9 +37,6 @@ const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName)
         setError("unix::getXdgDirPath({}): {}", xdgDir, e.what());
         return {};
     }
-
-    path += '/';
-    path += appName;
 
     return path.c_str();
 }

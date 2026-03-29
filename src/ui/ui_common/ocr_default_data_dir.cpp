@@ -21,18 +21,19 @@ std::optional<std::string> getDefaultOcrDataDir(
     case DpsoOcrEngineDataDirPreferencePreferDefault:
         break;
     case DpsoOcrEngineDataDirPreferencePreferExplicit: {
-        const auto* dataPath = dpsoGetUserDir(
-            DpsoUserDirData, uiAppFileName);
-        if (!dataPath) {
+        const auto* dataDirPath = dpsoGetUserDir(DpsoUserDirData);
+        if (!dataDirPath) {
             dpso::setError(
                 "Can't get user data dir: {}", dpsoGetError());
             return {};
         }
 
-        result = dataPath;
-        result += dpso::os::dirSeparators[0];
-        result += engineInfo.id;
-        result += "_data";
+        result = std::string{dataDirPath}
+            + dpso::os::dirSeparators[0]
+            + uiAppFileName
+            + dpso::os::dirSeparators[0]
+            + engineInfo.id
+            + "_data";
         break;
     }
     }

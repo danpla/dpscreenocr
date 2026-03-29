@@ -15,10 +15,10 @@ typedef enum {
 /**
  * Get a path to a user directory.
  *
- * appName becomes a subdirectory of the path. On failure, and sets an
- * error message (dpsoGetError()) and returns null.
+ * On failure, and sets an error message (dpsoGetError()) and returns
+ * null.
  */
-const char* dpsoGetUserDir(DpsoUserDir userDir, const char* appName);
+const char* dpsoGetUserDir(DpsoUserDir userDir);
 
 
 #ifdef __cplusplus
