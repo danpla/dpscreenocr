@@ -28,12 +28,10 @@ std::optional<std::string> getDefaultOcrDataDir(
             return {};
         }
 
-        result = std::string{dataDirPath}
-            + dpso::os::dirSeparators[0]
-            + uiAppFileName
-            + dpso::os::dirSeparators[0]
-            + engineInfo.id
-            + "_data";
+        result = dpso::os::joinPath({
+            dataDirPath,
+            uiAppFileName,
+            std::string{engineInfo.id} + "_data"});
         break;
     }
     }

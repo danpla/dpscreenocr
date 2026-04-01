@@ -8,10 +8,7 @@
 #include "os.h"
 
 
-char dpsoGetDirSeparator(void)
-{
-    return dpso::os::dirSeparators[0];
-}
+const char dpsoDirSeparator = dpso::os::dirSeparator;
 
 
 void dpsoSleep(int milliseconds)

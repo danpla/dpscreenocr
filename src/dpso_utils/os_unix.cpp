@@ -56,7 +56,7 @@ std::string getErrnoMsg(int errnum)
 
 
 const std::string_view newline{"\n"};
-const std::string_view dirSeparators{"/"};
+const char dirSeparator{'/'};
 
 
 std::string convertUtf8PathToSys(std::string_view utf8Path)

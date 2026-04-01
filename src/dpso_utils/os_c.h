@@ -10,9 +10,9 @@ extern "C" {
 
 
 /**
- * Return the directory separators for the current platform.
+ * Directory separator for the current platform.
  */
-char dpsoGetDirSeparator(void);
+extern const char dpsoDirSeparator;
 
 
 /**

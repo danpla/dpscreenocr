@@ -63,6 +63,17 @@ void throwErrno(std::string_view description, int errnum)
 }
 
 
+std::string joinPath(std::initializer_list<std::string_view> parts)
+{
+    fs::path result;
+
+    for (auto part : parts)
+        result /= fs::u8path(part);
+
+    return result.u8string();
+}
+
+
 std::string getDirName(std::string_view path)
 {
     return fs::u8path(path).parent_path().u8string();

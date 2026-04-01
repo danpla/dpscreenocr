@@ -80,8 +80,8 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
             + dpsoGetError());
 
     cfgDirPath =
-        std::string{cfgPath} + dpsoGetDirSeparator() + uiAppFileName;
-    cfgFilePath = cfgDirPath + dpsoGetDirSeparator() + uiCfgFileName;
+        std::string{cfgPath} + dpsoDirSeparator + uiAppFileName;
+    cfgFilePath = cfgDirPath + dpsoDirSeparator + uiCfgFileName;
 
     cfg.reset(dpsoCfgCreate());
     if (!cfg)

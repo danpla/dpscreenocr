@@ -64,7 +64,7 @@ std::string getErrnoMsg(int errnum)
 
 
 const std::string_view newline{"\r\n"};
-const std::string_view dirSeparators{"\\/"};
+const char dirSeparator{'\\'};
 
 
 // Returns the checked result of WideCharToMultiByte(), always > 0.

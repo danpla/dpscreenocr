@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <initializer_list>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -35,9 +36,11 @@ void throwErrno(std::string_view description, int errnum);
 extern const std::string_view newline;
 
 
-// Directory separators for the current platform. The primary one is
-// the first in the list.
-extern const std::string_view dirSeparators;
+// Directory separator for the current platform.
+extern const char dirSeparator;
+
+
+std::string joinPath(std::initializer_list<std::string_view> parts);
 
 
 // Return the path without the last component. The result will not

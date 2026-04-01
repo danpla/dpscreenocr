@@ -1,6 +1,7 @@
 #include "sound.h"
 
 #include <string>
+#include <string_view>
 
 #include "dpso_sound/error.h"
 #include "dpso_sound/sound.h"
@@ -19,7 +20,7 @@ namespace {
 
 struct CacheEntry {
     UiSoundId soundId;
-    const char* soundName;
+    std::string_view soundName;
     std::string customFilePath{};
     std::unique_ptr<sound::Player> player{};
 } cache[]{
@@ -42,13 +43,10 @@ std::string getSoundPath(const CacheEntry& cacheEntry)
     if (!cacheEntry.customFilePath.empty())
         return cacheEntry.customFilePath;
 
-    return
-        std::string{uiGetAppDir(UiAppDirData)}
-        + os::dirSeparators[0]
-        + "sounds"
-        + os::dirSeparators[0]
-        + cacheEntry.soundName
-        + ".wav";
+    return os::joinPath({
+        uiGetAppDir(UiAppDirData),
+        "sounds",
+        std::string{cacheEntry.soundName} + ".wav"});
 }
 
 
