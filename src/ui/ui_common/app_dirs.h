@@ -27,7 +27,7 @@ typedef enum {
 /**
  * Get app directory path.
  *
- * The returned string is valid till the next call to uiGetDir().
+ * The returned string is valid till the next call to uiGetAppDir().
  */
 const char* uiGetAppDir(UiAppDir dir);
 

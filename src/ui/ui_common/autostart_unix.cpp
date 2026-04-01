@@ -2,10 +2,10 @@
 
 #include <algorithm>
 #include <cstdlib>
-#include <cstring>
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <sys/stat.h>
@@ -42,20 +42,23 @@ class AutostartError : public std::runtime_error {
 
 
 // Escape the "string" type defined by the desktop entry spec.
-std::string escape(const char* str)
+std::string escape(std::string_view str)
 {
     std::string result;
 
-    for (const auto* s = str; *s; ++s) {
+    for (std::size_t i{}; i < str.size(); ++i) {
+        const auto c = str[i];
+
         // Escaping spaces and tabs is only necessary if it's a
         // leading or trailing character, to avoid trimming during
         // parsing.
-        if ((*s == ' ' || *s == '\t') && (s > str && s[1])) {
-            result += *s;
+        if ((c == ' ' || c == '\t')
+                && (i > 0 && i + 1 < str.size())) {
+            result += c;
             continue;
         }
 
-        switch (*s) {
+        switch (c) {
         case ' ':
             result += "\\s";
             break;
@@ -72,7 +75,7 @@ std::string escape(const char* str)
             result += "\\\\";
             break;
         default:
-            result += *s;
+            result += c;
             break;
         }
     }
@@ -102,6 +105,7 @@ void appendUnescaped(std::string& str, char c)
         str += '\\';
         break;
     default:
+        // Unknown escape sequence; leave it as is.
         str += '\\';
         str += c;
         break;
@@ -110,15 +114,15 @@ void appendUnescaped(std::string& str, char c)
 
 
 // Unescape the "string" type defined by the desktop entry spec.
-std::string unescape(const char* str)
+std::string unescape(std::string_view str)
 {
     std::string result;
 
-    while (*str)
-        if (const auto c = *str++; c != '\\')
+    for (auto iter = str.begin(); iter < str.end();)
+        if (const auto c = *iter++; c == '\\' && iter < str.end())
+            appendUnescaped(result, *iter++);
+        else
             result += c;
-        else if (*str)
-            appendUnescaped(result, *str++);
 
     return result;
 }
@@ -128,20 +132,15 @@ std::string unescape(const char* str)
 // requires the argument to be quoted.
 bool isReservedArgChar(char c)
 {
-    return std::strchr(" \t\n\"'\\><~|&;$*?#()`", c);
+    static const std::string_view reserved{" \t\n\"'\\><~|&;$*?#()`"};
+    return reserved.find(c) != reserved.npos;
 }
 
 
-bool needsQuoting(const char* arg)
+bool needsQuoting(std::string_view arg)
 {
-    if (!*arg)
-        return true;
-
-    for (; *arg; ++arg)
-        if (isReservedArgChar(*arg))
-            return true;
-
-    return false;
+    return arg.empty()
+        || std::any_of(arg.begin(), arg.end(), isReservedArgChar);
 }
 
 
@@ -149,11 +148,12 @@ bool needsQuoting(const char* arg)
 // argument.
 bool isEscapableArgChar(char c)
 {
-    return std::strchr("\"`$\\", c);
+    static const std::string_view escapable{"\"`$\\"};
+    return escapable.find(c) != escapable.npos;
 }
 
 
-void appendArg(std::string& cmdLine, const char* arg)
+void appendArg(std::string& cmdLine, std::string_view arg)
 {
     if (!cmdLine.empty())
         cmdLine += ' ';
@@ -165,58 +165,57 @@ void appendArg(std::string& cmdLine, const char* arg)
 
     cmdLine += '"';
 
-    for (; *arg; ++arg) {
-        if (isEscapableArgChar(*arg))
+    for (auto c : arg) {
+        if (isEscapableArgChar(c))
             cmdLine += '\\';
 
-        cmdLine += *arg;
+        cmdLine += c;
     }
 
     cmdLine += '"';
 }
 
 
-// Extracts the next argument from the Exec string. When the function
-// returns, the exec string will point past the last parsed character.
-// Returns nullopt if no arguments left. Throws AutostartError if
-// the argument is incorrectly quoted.
-std::optional<std::string> getNextArg(const char*& cmdLine)
+// Extract the next argument from the Exec string. Returns nullopt if
+// no arguments left. Throws AutostartError if the argument is
+// incorrectly quoted.
+std::optional<std::string> extractNextArg(std::string_view& cmdLine)
 {
-    while (str::isSpace(*cmdLine))
-        ++cmdLine;
-
-    if (!*cmdLine)
+    cmdLine = str::trimLeft(cmdLine, str::isSpace);
+    if (cmdLine.empty())
         return {};
 
-    if (*cmdLine != '"') {
-        const auto* argBegin = cmdLine;
-        while (*cmdLine && *cmdLine != ' ') {
-            if (isReservedArgChar(*cmdLine))
+    if (cmdLine.front() != '"') {
+        std::size_t argLen{};
+        for (; argLen < cmdLine.size(); ++argLen)
+            if (const auto c = cmdLine[argLen]; c == ' ')
+                break;
+            else if (isReservedArgChar(c))
                 throw AutostartError{str::format(
                     "Reserved character \"{}\" outside a quoted "
                     "argument",
-                    *cmdLine)};
+                    c)};
 
-            ++cmdLine;
-        }
+        const auto arg = cmdLine.substr(0, argLen);
+        cmdLine.remove_prefix(argLen);
 
-        return std::string{argBegin, cmdLine};
+        return std::string{arg};
     }
 
     // Quoted argument.
 
-    // Skip the leading double quote.
-    ++cmdLine;
-
     std::string result;
-    while (true) {
-        if (!*cmdLine)
+
+    // Start with 1 to skip the leading double quote.
+    for (std::size_t i{1}; true;) {
+        if (i == cmdLine.size())
             throw AutostartError{
                 "Quoted argument has no closing \""};
 
-        if (const auto c = *cmdLine++; c == '"')
+        if (const auto c = cmdLine[i++]; c == '"') {
+            cmdLine.remove_prefix(i);
             break;
-        else if (c != '\\') {
+        } else if (c != '\\') {
             if (isEscapableArgChar(c))
                 throw AutostartError{str::format(
                     "Unescaped \"{}\" inside a quoted argument", c)};
@@ -225,11 +224,12 @@ std::optional<std::string> getNextArg(const char*& cmdLine)
             continue;
         }
 
-        if (!*cmdLine)
+        if (i == cmdLine.size())
             throw AutostartError{"Command line ends with \\"};
 
-        const auto c = *cmdLine++;
+        const auto c = cmdLine[i++];
         if (!isEscapableArgChar(c))
+            // Keep unknown escape sequences as is.
             result += '\\';
 
         result += c;
@@ -241,17 +241,16 @@ std::optional<std::string> getNextArg(const char*& cmdLine)
 
 // Check if the value is inside the string list as defined by the
 // "string(s)" type of the desktop entry spec.
-bool isInStrings(const char* strings, const char* val)
+bool isInStrings(std::string_view strings, std::string_view val)
 {
-    if (!*strings)
+    if (strings.empty())
         return false;
 
     const auto sep = ';';
 
-    const auto* s = strings;
     std::string str;
-    while (true) {
-        if (!*s || *s == sep) {
+    for (std::size_t i{}; true;) {
+        if (i == strings.size() || strings[i] == sep) {
             if (str == val)
                 return true;
 
@@ -259,23 +258,23 @@ bool isInStrings(const char* strings, const char* val)
 
             // A trailing separator is optional for the last value in
             // the list, unless it's an empty string.
-            if (*s == sep)
-                ++s;
+            if (i < strings.size() && strings[i] == sep)
+                ++i;
 
-            if (!*s)
+            if (i == strings.size())
                 break;
         }
 
-        if (const auto c = *s++; c != '\\') {
+        if (const auto c = strings[i++]; c != '\\') {
             str += c;
             continue;
         }
 
-        if (!*s)
+        if (i == strings.size())
             continue;
 
         // Strings in lists support an extra escape sequence for ;.
-        if (const auto c = *s++; c == sep)
+        if (const auto c = strings[i++]; c == sep)
             str += sep;
         else
             appendUnescaped(str, c);
@@ -287,7 +286,7 @@ bool isInStrings(const char* strings, const char* val)
 
 // Check if the given string list contains one of the desktop names
 // from $XDG_CURRENT_DESKTOP.
-bool containsCurrentDesktop(const char* strings)
+bool containsCurrentDesktop(std::string_view strings)
 {
     const auto* s = std::getenv("XDG_CURRENT_DESKTOP");
     if (!s)
@@ -295,7 +294,6 @@ bool containsCurrentDesktop(const char* strings)
 
     const auto sep = ':';
 
-    std::string desktop;
     while (*s) {
         const auto* begin = s;
         const auto* end = begin;
@@ -303,8 +301,8 @@ bool containsCurrentDesktop(const char* strings)
         while (*end && *end != sep)
             ++end;
 
-        desktop.assign(begin, end);
-        if (!desktop.empty() && isInStrings(strings, desktop.c_str()))
+        const std::string_view desktop(begin, end - begin);
+        if (!desktop.empty() && isInStrings(strings, desktop))
             return true;
 
         if (*end == sep)
@@ -326,7 +324,7 @@ struct DesktopFileInfo {
 // Returns nullopt if the desktop file doesn't exist or has a
 // "Hidden=true" line. Throws AutostartError on errors.
 std::optional<DesktopFileInfo> getDesktopFileInfo(
-    const char* desktopFilePath)
+    std::string_view desktopFilePath)
 {
     std::optional<FileStream> file;
     try {
@@ -358,7 +356,7 @@ std::optional<DesktopFileInfo> getDesktopFileInfo(
             continue;
 
         if (!wasHeader) {
-            const auto* mainGroup = "[Desktop Entry]";
+            const std::string_view mainGroup{"[Desktop Entry]"};
             if (line == mainGroup) {
                 wasHeader = true;
                 continue;
@@ -383,31 +381,28 @@ std::optional<DesktopFileInfo> getDesktopFileInfo(
         // ignored, but doesn't mention space before the key or
         // after the value.
 
-        auto keyEnd = equalsPos;
-        while (keyEnd > 0 && str::isSpace(line[keyEnd - 1]))
-            --keyEnd;
-
-        if (keyEnd == 0)
+        const auto key = str::trimRight(
+            std::string_view{line.data(), equalsPos},
+            str::isSpace);
+        if (key.empty())
             throw AutostartError{str::format(
                 "Key is empty in \"{}\"", line)};
 
-        line[keyEnd] = 0;
-        const auto* key = line.c_str();
+        const auto val = str::trimLeft(
+            std::string_view{
+                line.data() + equalsPos + 1,
+                line.size() - (equalsPos + 1)},
+            str::isSpace);
 
-        const auto* val = line.c_str() + equalsPos + 1;
-        while (str::isSpace(*val))
-            ++val;
-
-        if (std::strcmp(key, "Exec") == 0)
+        if (key == "Exec")
             result.cmdLine = unescape(val);
-        else if (std::strcmp(key, "Hidden") == 0
-                && std::strcmp(val, "true") == 0)
+        else if (key == "Hidden" && val == "true")
             // The spec says that "Hidden=true" is strictly equivalent
             // to the .desktop file not existing at all.
             return {};
-        else if (std::strcmp(key, "OnlyShowIn") == 0)
+        else if (key == "OnlyShowIn")
             result.isEnabled = containsCurrentDesktop(val);
-        else if (std::strcmp(key, "NotShowIn") == 0)
+        else if (key == "NotShowIn")
             result.isEnabled = !containsCurrentDesktop(val);
     }
 
@@ -426,7 +421,7 @@ bool isSameFsEntry(const char* aPath, const char* bPath)
 }
 
 
-std::string getAltDesktopFileName(const char* appName)
+std::string getAltDesktopFileName(std::string_view appName)
 {
     std::string result{appName};
     // This is the conversion done by the XFCE autostart manager.
@@ -489,7 +484,7 @@ static UiAutostart* create(const UiAutostartArgs* args)
             : {&primaryDesktopFilePath, &altDesktopFilePath}) {
         std::optional<DesktopFileInfo> desktopFileInfo;
         try {
-            desktopFileInfo = getDesktopFileInfo(path->c_str());
+            desktopFileInfo = getDesktopFileInfo(*path);
         } catch (AutostartError& e) {
             throw AutostartError{str::format(
                 "Can't load \"{}\": {}", *path, e.what())};
@@ -500,8 +495,8 @@ static UiAutostart* create(const UiAutostartArgs* args)
 
         std::string desktopFileExe;
         try {
-            const char* cmdLine = desktopFileInfo->cmdLine.c_str();
-            desktopFileExe = getNextArg(cmdLine).value_or("");
+            std::string_view cmdLine{desktopFileInfo->cmdLine};
+            desktopFileExe = extractNextArg(cmdLine).value_or("");
         } catch (AutostartError& e) {
             throw AutostartError{str::format(
                 "Invalid Exec command line \"{}\" in \"{}\": {}",
@@ -536,7 +531,7 @@ static UiAutostart* create(const UiAutostartArgs* args)
     }
 
     std::string cmdLine;
-    for (std::size_t i = 0; i < args->numArgs; ++i)
+    for (std::size_t i{}; i < args->numArgs; ++i)
         appendArg(cmdLine, args->args[i]);
 
     return new UiAutostart{
@@ -618,8 +613,8 @@ static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
                 "Type=Application\n"
                 "Name={}\n"
                 "Exec={}\n",
-                escape(autostart->appName.c_str()),
-                escape(autostart->cmdLine.c_str())));
+                escape(autostart->appName),
+                escape(autostart->cmdLine)));
     } catch (StreamError& e) {
         try {
             os::removeFile(autostart->desktopFilePath);
