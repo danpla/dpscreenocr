@@ -1,18 +1,13 @@
 #include "engine/tesseract/lang_utils.h"
 
-#include <algorithm>
-#include <cstring>
 #include <filesystem>
 #include <initializer_list>
-#include <iterator>
+#include <system_error>
+#include <utility>
 
 #include <tesseract/baseapi.h>
-#if TESSERACT_MAJOR_VERSION < 5
-#include <tesseract/genericvector.h>
-#include <tesseract/strngs.h>
-#endif
 
-#include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
 
 #include "engine/error.h"
 
@@ -35,108 +30,79 @@ bool isIgnoredLang(std::string_view lang)
 
 std::vector<std::string> getAvailableLangs(std::string_view dataDir)
 {
-    std::string sysDataDir;
-    try {
-        sysDataDir = os::convertUtf8PathToSys(dataDir);
-    } catch (os::Error& e) {
-        throw Error{
-            std::string{"Can't convert dataDir to system encoding: "}
-            + e.what()};
-    }
+    // We collect language files ourself instead of using
+    // TessBaseAPI::GetAvailableLanguagesAsVector():
+    //
+    // * The signature of the method is different between Tesseract 4
+    //   and 5, and we don't want maintain two code paths.
+    //
+    // * In Tesseract 5.5.0, the method was rewritten to use
+    //   std::filesystem under the hood, but due to the lack of any
+    //   exception handling, it leaks filesystem_error (e.g. if the
+    //   directory does not exist) that we would need to catch.
+    //
+    //   See https://github.com/tesseract-ocr/tesseract/issues/4364
+    //
+    // * In Tesseract 5.5.0, the method incorrectly handles file
+    //   extensions, only checking if a filename has a ".traineddata"
+    //   substring instead of strictly ending with it. As a result,
+    //   the list can contain duplicates and entries referring to
+    //   ".traineddata***" rather than ".traineddata" files. Removing
+    //   those duplicates would require using std::filesystem anyway.
+    //
+    //   See https://github.com/tesseract-ocr/tesseract/issues/4416
 
-    ::tesseract::TessBaseAPI tess;
+    namespace fs = std::filesystem;
 
-    // GetAvailableLanguagesAsVector() is broken by design: it uses
-    // a data path from the last Init(), while Init() itself requires
-    // at least one language (null language is implicit "eng" in
-    // versions before 5). As a workaround, we don't check Init() for
-    // error: it will fail if "eng" is not available, but the path
-    // will remain in TessBaseAPI so GetAvailableLanguagesAsVector()
-    // can use it.
-    //
-    // The only alternative is to make sure that "eng" is available,
-    // e.g. make it a dependency of our application package when
-    // distributing on Unix-like systems.
-    //
-    // See https://github.com/tesseract-engine/tesseract/issues/1073
-    //
-    // We can't get around the problem by writing our own routine that
-    // will collect the list of "*.traineddata" files. The data path
-    // may be different on various Unix-like systems (it's hardcoded
-    // at compilation time; our dataDir is empty in this case), and
-    // you can only get it via GetDatapath(), which also requires the
-    // same dummy Init() call.
-    tess.Init(sysDataDir.c_str(), nullptr);
+    fs::path dataDirPath;
+    if (dataDir.empty()) {
+        // This is a request for the compiled-in Tesseract data path,
+        // which is necessary on Unix-like systems when using the
+        // system-wide Tesseract library and language files. This path
+        // is typically configured by the package maintainers may
+        // therefore differ between OS distributions.
+        //
+        // Both GetDatapath() and GetAvailableLanguagesAsVector() use
+        // a data path calculated by the last Init(), so we have to
+        // call Init() even if we want to use the compiled-in data
+        // path (for this, we pass an empty path to Init()). At the
+        // same time, Init() requires at least one language (null
+        // language is implicit "eng" in Tesseract versions before 5).
+        // As a workaround, we don't check Init() for errors: it will
+        // fail if "eng" is unavailable, but the path will still be
+        // calculated and stored in TessBaseAPI.
+        ::tesseract::TessBaseAPI tess;
+        tess.Init("", nullptr);
+        dataDirPath = fs::u8path(tess.GetDatapath());
+    } else
+        dataDirPath = fs::u8path(dataDir);
 
     std::vector<std::string> result;
 
-    #if TESSERACT_MAJOR_VERSION >= 5
+    std::error_code ec;
+    // Like TessBaseAPI::GetAvailableLanguagesAsVector(), we collect
+    // languages recursively, but in practice this only makes sense
+    // on Unix-like systems when the data dir path is empty (i.e. when
+    // using languages from the system package manager), because on
+    // certain OS distributions, some languages are actually placed in
+    // subdirectories (e.g. "script/").
+    for (const auto& entry : fs::recursive_directory_iterator{
+            dataDirPath,
+            fs::directory_options::skip_permission_denied,
+            ec}) {
+        if (entry.path().extension() != traineddataExt)
+            continue;
 
-    // In Tesseract 5.5.0, GetAvailableLanguagesAsVector() was
-    // rewritten to use std::filesystem, but due to the lack of any
-    // exception handling, the method leaks filesystem_error (e.g. if
-    // the directory does not exist).
-    //
-    // See https://github.com/tesseract-ocr/tesseract/issues/4364
-    try {
-        tess.GetAvailableLanguagesAsVector(&result);
-    } catch (std::filesystem::filesystem_error&) {
-        return result;
+        const auto lang = entry.path().lexically_relative(dataDirPath)
+            .replace_extension().u8string();
+        if (!isIgnoredLang(lang))
+            result.push_back(std::move(lang));
     }
 
-    result.erase(
-        std::remove_if(result.begin(), result.end(), isIgnoredLang),
-        result.end());
-
-    // In Tesseract 5.5.0, GetAvailableLanguagesAsVector() uses
-    // incorrect file extension handling, only checking if a filename
-    // has a ".traineddata" substring instead of strictly ending with
-    // it. As a result, the list can contain duplicates and entries
-    // that refer to ".traineddata***" rather than ".traineddata"
-    // files.
-    //
-    // See https://github.com/tesseract-ocr/tesseract/issues/4416
-    if (!dataDir.empty()
-            && std::strcmp(tess.Version(), "5.5.0") == 0) {
-        // Drop duplicates that can occur when several files with the
-        // same name have ".traineddata" in their extension, e.g.,
-        // "eng.traineddata" and "eng.traineddata.sha256". Note that
-        // the result of GetAvailableLanguagesAsVector() is sorted.
-        result.erase(
-            std::unique(result.begin(), result.end()), result.end());
-
-        // Drop entries that refer to ".traineddata***" rather than
-        // real ".traineddata" files.
-        result.erase(
-            std::remove_if(
-                result.begin(), result.end(),
-                [&](const std::string& lang)
-                {
-                    namespace fs = std::filesystem;
-
-                    return !fs::exists(
-                        fs::u8path(dataDir)
-                        / fs::u8path(
-                            lang + std::string{traineddataExt}));
-                }),
-            result.end());
-    }
-
-    #else
-
-    GenericVector<STRING> tessLangCodes;
-    tess.GetAvailableLanguagesAsVector(&tessLangCodes);
-
-    for (int i = 0; i < tessLangCodes.size(); ++i) {
-        const auto& langCode = tessLangCodes[i];
-        if (!isIgnoredLang(langCode.c_str()))
-            result.push_back(
-                {
-                    langCode.c_str(),
-                    static_cast<std::size_t>(langCode.size())});
-    }
-
-    #endif
+    if (ec && ec != std::errc::no_such_file_or_directory)
+        throw Error{str::format(
+            "Directory \"{}\" iterator error: {}",
+            dataDirPath.u8string(), ec.message())};
 
     return result;
 }
