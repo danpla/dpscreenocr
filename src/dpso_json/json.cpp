@@ -24,7 +24,7 @@ enum class JsonType {
 };
 
 
-const char* getName(JsonType type)
+std::string_view getName(JsonType type)
 {
     #define CASE(N) case JsonType::N: return #N
 
@@ -41,7 +41,7 @@ const char* getName(JsonType type)
     #undef CASE
 
     assert(false);
-    return "";
+    return {};
 }
 
 
