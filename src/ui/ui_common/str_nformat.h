@@ -20,7 +20,7 @@ struct StrNFormatArg {
         typename T,
         std::enable_if_t<
             !std::is_convertible_v<T, std::string_view>>* = {}>
-    StrNFormatArg(const char* name, const T& v)
+    StrNFormatArg(std::string_view name, const T& v)
         : name{name}
     {
         using namespace dpso::str;
