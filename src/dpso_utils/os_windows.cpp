@@ -38,7 +38,7 @@ void throwLastError(std::string_view description)
 }
 
 
-std::wstring toUtf16(std::string_view str, const char* varName)
+std::wstring toUtf16(std::string_view str, std::string_view varName)
 {
     try {
         return windows::utf8ToUtf16(str);
