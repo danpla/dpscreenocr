@@ -124,16 +124,14 @@ QVariant LangList::headerData(
 }
 
 
-int LangList::rowCount(const QModelIndex& parent) const
+int LangList::rowCount(const QModelIndex& /*parent*/) const
 {
-    (void)parent;
     return langInfos.size();
 }
 
 
-int LangList::columnCount(const QModelIndex& parent) const
+int LangList::columnCount(const QModelIndex& /*parent*/) const
 {
-    (void)parent;
     return 5;
 }
 

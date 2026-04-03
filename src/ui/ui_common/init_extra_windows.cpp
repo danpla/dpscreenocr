@@ -34,20 +34,14 @@ static void registerApplicationRestart()
 }
 
 
-bool initStart(int argc, char* argv[])
+bool initStart(int /*argc*/, char* /*argv*/[])
 {
-    (void)argc;
-    (void)argv;
-
     return true;
 }
 
 
-bool initEnd(int argc, char* argv[])
+bool initEnd(int /*argc*/, char* /*argv*/[])
 {
-    (void)argc;
-    (void)argv;
-
     registerApplicationRestart();
     return true;
 }

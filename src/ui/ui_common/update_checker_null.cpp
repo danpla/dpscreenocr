@@ -20,14 +20,10 @@ struct UiUpdateChecker {
 
 
 UiUpdateChecker* uiUpdateCheckerCreate(
-    const char* appVersion,
-    const char* userAgent,
-    const char* infoFileUrl)
+    const char* /*appVersion*/,
+    const char* /*userAgent*/,
+    const char* /*infoFileUrl*/)
 {
-    (void)appVersion;
-    (void)userAgent;
-    (void)infoFileUrl;
-
     return new UiUpdateChecker{};
 }
 
@@ -38,27 +34,22 @@ void uiUpdateCheckerDelete(UiUpdateChecker* updateChecker)
 }
 
 
-void uiUpdateCheckerStartCheck(UiUpdateChecker* updateChecker)
+void uiUpdateCheckerStartCheck(UiUpdateChecker* /*updateChecker*/)
 {
-    (void)updateChecker;
 }
 
 
 bool uiUpdateCheckerIsCheckInProgress(
-    const UiUpdateChecker* updateChecker)
+    const UiUpdateChecker* /*updateChecker*/)
 {
-    (void)updateChecker;
     return false;
 }
 
 
 UiUpdateCheckerStatus uiUpdateCheckerGetUpdateInfo(
-    UiUpdateChecker* updateChecker,
-    UiUpdateCheckerUpdateInfo* updateInfo)
+    UiUpdateChecker* /*updateChecker*/,
+    UiUpdateCheckerUpdateInfo* /*updateInfo*/)
 {
-    (void)updateChecker;
-    (void)updateInfo;
-
     dpso::setError("Update checker was disabled at compile time");
     return UiUpdateCheckerStatusGenericError;
 }

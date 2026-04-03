@@ -52,10 +52,8 @@ static const QColor& getStatusColor(Status status)
 }
 
 
-void StatusIndicator::paintEvent(QPaintEvent* event)
+void StatusIndicator::paintEvent(QPaintEvent* /*event*/)
 {
-    (void)event;
-
     const auto& color = getStatusColor(status);
 
     const auto size = qMin(width(), height());

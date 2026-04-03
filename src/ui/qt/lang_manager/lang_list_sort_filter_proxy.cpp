@@ -44,10 +44,8 @@ void LangListSortFilterProxy::setFilterText(
 
 
 bool LangListSortFilterProxy::filterAcceptsColumn(
-    int sourceColumn, const QModelIndex& sourceParent) const
+    int sourceColumn, const QModelIndex& /*sourceParent*/) const
 {
-    (void)sourceParent;
-
     using LangGroup = LangListSortFilterProxy::LangGroup;
 
     return sourceColumn == LangList::columnIdxName

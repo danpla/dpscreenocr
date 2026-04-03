@@ -217,10 +217,8 @@ void UpdateChecker::saveState(DpsoCfg* cfg) const
 }
 
 
-void UpdateChecker::timerEvent(QTimerEvent* event)
+void UpdateChecker::timerEvent(QTimerEvent* /*event*/)
 {
-    (void)event;
-
     Q_ASSERT(autoCheck);
     Q_ASSERT(autoChecker);
 

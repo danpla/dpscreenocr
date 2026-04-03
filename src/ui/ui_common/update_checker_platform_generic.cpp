@@ -13,9 +13,8 @@ namespace ui::updateChecker {
 
 
 std::vector<UnmetRequirement> processRequirements(
-    const dpso::json::Object& requirements)
+    const dpso::json::Object& /*requirements*/)
 {
-    (void)requirements;
     return {};
 }
 

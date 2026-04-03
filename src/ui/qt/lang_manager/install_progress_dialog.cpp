@@ -145,10 +145,8 @@ void InstallProgressDialog::reject()
 }
 
 
-void InstallProgressDialog::timerEvent(QTimerEvent* event)
+void InstallProgressDialog::timerEvent(QTimerEvent* /*event*/)
 {
-    (void)event;
-
     DpsoOcrLangInstallProgress progress;
     dpsoOcrLangManagerGetInstallProgress(langManager, &progress);
 

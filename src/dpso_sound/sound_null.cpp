@@ -23,10 +23,8 @@ const std::vector<FormatInfo>& getSupportedFormats()
 }
 
 
-std::unique_ptr<Player> Player::create(const char* filePath)
+std::unique_ptr<Player> Player::create(const char* /*filePath*/)
 {
-    (void)filePath;
-
     throw Error{"Sound library is not available"};
 }
 

@@ -148,10 +148,8 @@ public:
         // Do nothing to prevent the dialog from closing.
     }
 protected:
-    void timerEvent(QTimerEvent* event) override
+    void timerEvent(QTimerEvent* /*event*/) override
     {
-        (void)event;
-
         if (!callback || !callback())
             accept();
     }

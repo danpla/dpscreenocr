@@ -165,10 +165,8 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
 }
 
 
-void MainWindow::timerEvent(QTimerEvent* event)
+void MainWindow::timerEvent(QTimerEvent* /*event*/)
 {
-    (void)event;
-
     dpsoSysUpdate(sys.get());
 
     // The selection doesn't block keyboard and mouse interaction, so

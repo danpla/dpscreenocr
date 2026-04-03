@@ -14,7 +14,7 @@
 namespace ui {
 
 
-void initIntl(void)
+void initIntl()
 {
     setlocale(LC_ALL, "");
 

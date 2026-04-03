@@ -23,12 +23,11 @@ std::vector<UnmetRequirement> processRequirements(
     const auto* actualVersion = gnu_get_libc_version();
 
     if (dpso::VersionCmp{actualVersion}
-            < dpso::VersionCmp{requiredVersion}) {
+            < dpso::VersionCmp{requiredVersion})
         return {
             {
                 "glibc " + std::string{requiredVersion},
                 "glibc " + std::string{actualVersion}}};
-    }
 
     return {};
 }

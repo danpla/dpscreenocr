@@ -38,10 +38,8 @@ namespace ui {
 // [1] https://github.com/tesseract-ocr/tesstrain/issues/259
 
 
-bool initStart(int argc, char* argv[])
+bool initStart(int /*argc*/, char* argv[])
 {
-    (void)argc;
-
     const auto* ompThreadLimit = "OMP_THREAD_LIMIT";
     const auto* ompThreadLimitRequiredVal = "1";
 
@@ -69,11 +67,8 @@ bool initStart(int argc, char* argv[])
 }
 
 
-bool initEnd(int argc, char* argv[])
+bool initEnd(int /*argc*/, char* /*argv*/[])
 {
-    (void)argc;
-    (void)argv;
-
     return true;
 }
 
