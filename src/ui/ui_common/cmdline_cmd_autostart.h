@@ -8,7 +8,8 @@ namespace ui {
 
 // On failure, sets an error message (dpsoGetError()) and returns
 // false.
-bool cmdLineCmdAutostart(const char* argv0, std::string_view action);
+bool cmdLineCmdAutostart(
+    std::string_view argv0, std::string_view action);
 
 
 }

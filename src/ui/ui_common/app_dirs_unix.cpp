@@ -22,7 +22,7 @@ bool initAppDirs()
     if (const auto p = baseDirPath.rfind('/'); p != baseDirPath.npos)
         baseDirPath.resize(p);
 
-    if (getToplevelArgv0(nullptr) != nullptr)
+    if (!getToplevelArgv0({}).empty())
         // The app was run by the launcher that is already located in
         // the base directory.
         return true;

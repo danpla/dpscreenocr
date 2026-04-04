@@ -67,7 +67,8 @@ UiStartupArgs initStartupArgs(int argc, char* argv[])
     if (argc > 1 && *argv[1] != '-') {
         const struct {
             std::string_view name;
-            bool (&fn)(const char* argv0, std::string_view action);
+            bool (&fn)(
+                std::string_view argv0, std::string_view action);
         } commands[]{
             {"autostart", cmdLineCmdAutostart}
         };

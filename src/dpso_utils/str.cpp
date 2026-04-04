@@ -5,8 +5,8 @@
 #include <climits>
 #include <optional>
 
-#include "str_stdio.h"
 #include "str_format_core.h"
+#include "str_stdio.h"
 
 
 namespace dpso::str {

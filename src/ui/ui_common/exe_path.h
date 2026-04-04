@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 
 namespace ui {
@@ -8,7 +9,7 @@ namespace ui {
 
 // This function is called as a part of uiInit(). On failure, sets an
 // error message (dpsoGetError()) and returns false.
-bool initExePath(const char* argv0);
+bool initExePath(std::string_view argv0);
 
 
 // Return a canonical absolute path of the toplevel executable

@@ -21,9 +21,9 @@ namespace ui {
 static std::string exePath;
 
 
-bool initExePath(const char* argv0)
+bool initExePath(std::string_view argv0)
 {
-    const auto* toplevelArgv0 = getToplevelArgv0(argv0);
+    const auto toplevelArgv0 = getToplevelArgv0(argv0);
 
     try {
         exePath = dpso::unix::getExePath(toplevelArgv0);

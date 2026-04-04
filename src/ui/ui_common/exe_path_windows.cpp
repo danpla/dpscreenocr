@@ -14,7 +14,7 @@ namespace ui {
 static std::string exePath;
 
 
-bool initExePath(const char* /*argv0*/)
+bool initExePath(std::string_view /*argv0*/)
 {
     std::wstring path;
 
