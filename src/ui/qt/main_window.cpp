@@ -417,7 +417,8 @@ QWidget* MainWindow::createMainTab()
 
     DpsoOcrEngineInfo ocrEngineInfo;
     dpsoOcrGetEngineInfo(ocrEngineIdx, &ocrEngineInfo);
-    langManagerButton->setVisible(ocrEngineInfo.hasLangManager);
+    if (!ocrEngineInfo.hasLangManager)
+        langManagerButton->hide();
 
     connect(
         langManagerButton, &QPushButton::clicked,
@@ -617,9 +618,15 @@ QWidget* MainWindow::createSettingsTab()
     auto* behaviorGroup = new QGroupBox(_("Behavior"));
     auto* behaviorGroupLayout = new QVBoxLayout(behaviorGroup);
 
+    const auto setupSoundWidget = [](QWidget* w)
+    {
+        if (!uiSoundIsAvailable())
+            w->hide();
+    };
+
     playSoundCheck = new QCheckBox(
         _("Play sound when recognition is complete"));
-    playSoundCheck->setVisible(uiSoundIsAvailable());
+    setupSoundWidget(playSoundCheck);
     behaviorGroupLayout->addWidget(playSoundCheck);
 
     auto* playSoundSubordinateLayout = new QHBoxLayout();
@@ -628,21 +635,21 @@ QWidget* MainWindow::createSettingsTab()
     behaviorGroupLayout->addLayout(playSoundSubordinateLayout);
 
     playCustomSoundCheck = new QCheckBox(_("Play this audio file:"));
+    setupSoundWidget(playCustomSoundCheck);
     playCustomSoundCheck->setEnabled(false);
-    playCustomSoundCheck->setVisible(uiSoundIsAvailable());
     playSoundSubordinateLayout->addWidget(playCustomSoundCheck);
 
     customSoundLineEdit = new QLineEdit();
-    customSoundLineEdit->setVisible(uiSoundIsAvailable());
+    setupSoundWidget(customSoundLineEdit);
     customSoundLineEdit->setReadOnly(true);
     customSoundLineEdit->setEnabled(false);
     playSoundSubordinateLayout->addWidget(customSoundLineEdit, 1);
 
     auto* selectSoundButton = new QToolButton();
+    setupSoundWidget(selectSoundButton);
     selectSoundButton->setIcon(
         selectSoundButton->style()->standardIcon(
             QStyle::SP_DialogOpenButton, nullptr, selectSoundButton));
-    selectSoundButton->setVisible(uiSoundIsAvailable());
     selectSoundButton->setEnabled(false);
     connect(
         selectSoundButton, &QToolButton::clicked,
@@ -691,7 +698,8 @@ QWidget* MainWindow::createSettingsTab()
 
     autoUpdateCheck = new QCheckBox(
         _("Check for updates automatically"));
-    autoUpdateCheck->setVisible(uiUpdateCheckerIsAvailable());
+    if (!uiUpdateCheckerIsAvailable())
+        autoUpdateCheck->hide();
     connect(
         autoUpdateCheck, &QCheckBox::toggled,
         &updateChecker, &UpdateChecker::setAutoCheckIsEnabled);

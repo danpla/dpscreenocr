@@ -129,3 +129,21 @@
       gettext("One apple")
     else
       ngettext("{count} apple", "{count} apples", n)
+
+* In Qt, don't use setWisible(condition) when building the widget
+  hierarchy, because if the condition is true, the widget will
+  immediately appear as a window until it gets a parent (e.g. until it
+  is added to a layout). Instead, do this:
+
+    if (!condition)
+      w->hide();
+
+  We could also solve this problem by ensuring that the widget has a
+  parent when setVisible() is called, but:
+
+  * We don't pass parents to widget constructors. This doesn't make
+    sense because the widget will be attached to the parent anyway
+    when added to the layout.
+
+  * Adding a widget to the layout immediately after creating it is an
+    non-obvious workaround that's easy to break or forget about.

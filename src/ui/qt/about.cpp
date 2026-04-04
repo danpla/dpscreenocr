@@ -116,7 +116,7 @@ About::About()
 
     textEdit = new QTextEdit();
     textEdit->setReadOnly(true);
-    textEdit->setVisible(false);
+    textEdit->hide();
 
     auto textEditFont = textEdit->currentFont();
     setMonospace(textEditFont);
@@ -124,7 +124,8 @@ About::About()
 
     auto* checkUpdatesButton = new QPushButton(
         _("Check for updates"));
-    checkUpdatesButton->setVisible(uiUpdateCheckerIsAvailable());
+    if (!uiUpdateCheckerIsAvailable())
+        checkUpdatesButton->hide();
     connect(
         checkUpdatesButton, &QPushButton::clicked,
         this, &About::checkUpdates);
