@@ -1,7 +1,6 @@
 #include "user_agent.h"
 
-#include <cstring>
-#include <string>
+#include <string_view>
 
 #include "app_info.h"
 
@@ -13,18 +12,16 @@ namespace {
 // See RFC 1945.
 bool isValidTokenChar(char c)
 {
-    return
-        c > 31
-        && c < 127
-        && !std::strchr("()<>@,;:\\\"/[]?={} \t", c);
+    static const std::string_view specials{"()<>@,;:\\\"/[]?={} \t"};
+    return c > 31 && c < 127 && specials.find(c) == specials.npos;
 }
 
 
-void appendAsToken(std::string& result, const char* str)
+void appendAsToken(std::string& result, std::string_view str)
 {
-    for (const char* s = str; *s; ++s)
-        if (isValidTokenChar(*s))
-            result += *s;
+    for (auto c : str)
+        if (isValidTokenChar(c))
+            result += c;
 }
 
 
