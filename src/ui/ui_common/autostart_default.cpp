@@ -10,8 +10,7 @@
 
 UiAutostart* uiAutostartCreateDefault(void)
 {
-    const char* args[]{
-        ui::getToplevelExePath().c_str(), ui::cmdLineOptHide};
+    const char* args[]{ui::getExePath().c_str(), ui::cmdLineOptHide};
 
     const UiAutostartArgs autostartArgs{
         uiAppName, uiAppFileName, args, std::size(args)};

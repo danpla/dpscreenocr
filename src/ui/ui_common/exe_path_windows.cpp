@@ -1,7 +1,5 @@
 #include "exe_path.h"
 
-#include <string>
-
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
@@ -42,12 +40,6 @@ bool initExePath(const char* /*argv0*/)
 
     exePath = dpso::windows::utf16ToUtf8(path);
     return true;
-}
-
-
-const std::string& getToplevelExePath()
-{
-    return exePath;
 }
 
 
