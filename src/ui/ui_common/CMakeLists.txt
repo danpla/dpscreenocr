@@ -131,6 +131,11 @@ target_include_directories(
     PRIVATE .
     PUBLIC .. "${CMAKE_CURRENT_BINARY_DIR}")
 
+if(NOT TARGET dpso_ext)
+    add_subdirectory(
+        ../../dpso_ext "${CMAKE_BINARY_DIR}/src/dpso_ext")
+endif()
+
 if(NOT TARGET dpso_intl)
     add_subdirectory(
         ../../dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
@@ -159,4 +164,4 @@ endif()
 target_link_libraries(
     ui_common
     PUBLIC dpso_ocr dpso_sys dpso_utils
-    PRIVATE dpso_intl dpso_sound)
+    PRIVATE dpso_ext dpso_intl dpso_sound)
