@@ -5,6 +5,7 @@
 #include <climits>
 #include <optional>
 
+#include "str_stdio.h"
 #include "str_format_core.h"
 
 
@@ -241,20 +242,41 @@ std::string toHex(const void* data, std::size_t size)
 }
 
 
+static auto makeArgLookupFn(
+    std::initializer_list<std::string_view> args)
+{
+    return
+        [iter = args.begin(), end = args.end()]
+        (std::string_view name) mutable
+        -> std::optional<std::string_view>
+        {
+            if (name.empty() && iter < end)
+                return *iter++;
+
+            return {};
+        };
+}
+
+
 std::string format(
     std::string_view fmt,
     std::initializer_list<std::string_view> args)
 {
-    auto iter = args.begin();
+    return format(fmt, makeArgLookupFn(args));
+}
 
+
+void print(
+    std::FILE* fp,
+    std::string_view fmt,
+    std::initializer_list<std::string_view> args)
+{
     return format(
         fmt,
-        [&](std::string_view name) -> std::optional<std::string_view>
+        makeArgLookupFn(args),
+        [&](std::string_view str)
         {
-            if (name.empty() && iter < args.end())
-                return *iter++;
-
-            return {};
+            std::fwrite(str.data(), 1, str.size(), fp);
         });
 }
 

@@ -8,18 +8,21 @@
 namespace dpso::str {
 
 
-// Python-style brace string formatting. The argument lookup is
-// delegated to FindArg, which has the following signature:
+// Python-style brace string formatting. The signature of FindArg is:
 //
 //   std::optional<std::string_view> findArg(std::string_view name)
 //
 // FindArg can return nullopt if an argument with the given name is
 // not found.
-template<typename FindArg>
-std::string format(std::string_view fmt, FindArg findArg)
+//
+// The final string is written in chunks to WriteStr:
+//
+//   void writeStr(std::string_view str)
+//
+template<typename FindArg, typename WriteStr>
+void format(
+    std::string_view fmt, FindArg findArg, WriteStr writeStr)
 {
-    std::string result;
-
     static const std::string_view braces{"{}"};
 
     while (true) {
@@ -38,22 +41,37 @@ std::string format(std::string_view fmt, FindArg findArg)
             if (argPos != brace2Pos)
                 break;
 
-            result.append(fmt, 0, brace2Pos);
+            writeStr(fmt.substr(0, brace2Pos));
         } else if (fmt[brace1Pos] == '{') {
             const std::optional<std::string_view> arg{findArg(
                 fmt.substr(argPos, brace2Pos - argPos))};
             if (arg) {
-                result.append(fmt, 0, brace1Pos);
-                result += *arg;
+                writeStr(fmt.substr(0, brace1Pos));
+                writeStr(*arg);
             } else
-                result.append(fmt, 0, specEndPos);
+                writeStr(fmt.substr(0, specEndPos));
         } else // A }{ pair, possibly with some characters in between.
             break;
 
         fmt.remove_prefix(specEndPos);
     }
 
-    result.append(fmt);
+    writeStr(fmt);
+}
+
+
+template<typename FindArg>
+std::string format(std::string_view fmt, FindArg findArg)
+{
+    std::string result;
+
+    format(
+        fmt, findArg,
+        [&](std::string_view str)
+        {
+            result.append(str);
+        });
+
     return result;
 }
 

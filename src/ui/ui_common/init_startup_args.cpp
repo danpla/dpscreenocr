@@ -1,10 +1,10 @@
 #include "init_startup_args.h"
 
-#include <cstdio>
 #include <cstdlib>
-#include <cstring>
+#include <string_view>
 
 #include "dpso_utils/error_get.h"
+#include "dpso_utils/str_stdio.h"
 
 #include "app_info.h"
 #include "cmdline_cmd_autostart.h"
@@ -12,22 +12,25 @@
 #include "toplevel_argv0.h"
 
 
+using namespace dpso;
+
+
 namespace ui {
 
 
-static void printHelp(const char* argv0)
+static void printHelp(std::string_view argv0)
 {
-    std::printf("%s %s\n\n", uiAppName, uiAppVersion);
-    std::fputs("Usage\n", stdout);
-    std::printf("    %s [options...]\n", argv0);
-    std::printf("    %s command action\n\n", argv0);
+    str::print("{} {}\n\n", uiAppName, uiAppVersion);
+    str::print("Usage\n");
+    str::print("    {} [options...]\n", argv0);
+    str::print("    {} command action\n\n", argv0);
 
-    std::printf(
+    str::print(
         "Options\n"
         "\n"
         "  -help\n"
         "      Print this help and exit.\n"
-        "  %s\n"
+        "  {}\n"
         "      Start the program with the hidden window. The window\n"
         "      will either be hidden to the notification area or\n"
         "      minimized if the notification area icon is disabled.\n"
@@ -36,13 +39,13 @@ static void printHelp(const char* argv0)
         "\n",
         cmdLineOptHide);
 
-    std::printf(
+    str::print(
         "Commands\n"
         "\n"
         "  autostart\n"
         "      Manage the application autostart. If autostart is\n"
         "      enabled, the program will start automatically with\n"
-        "      the %s option when you log on to the system.\n"
+        "      the {} option when you log on to the system.\n"
         "\n"
         "      Actions\n"
         "        on\n"
@@ -63,22 +66,22 @@ UiStartupArgs initStartupArgs(int argc, char* argv[])
     // Comand mode.
     if (argc > 1 && *argv[1] != '-') {
         const struct {
-            const char* name;
-            bool (&fn)(const char* argv0, const char* action);
+            std::string_view name;
+            bool (&fn)(const char* argv0, std::string_view action);
         } commands[]{
             {"autostart", cmdLineCmdAutostart}
         };
 
-        const auto* cmdName = argv[1];
+        const std::string_view cmdName{argv[1]};
 
         for (const auto& cmd : commands) {
-            if (std::strcmp(cmd.name, cmdName) != 0)
+            if (cmd.name != cmdName)
                 continue;
 
             if (argc != 3) {
-                std::fprintf(
+                str::print(
                     stderr,
-                    "Command \"%s\" expects a single action.\n",
+                    "Command \"{}\" expects a single action.\n",
                     cmdName);
                 std::exit(EXIT_FAILURE);
             }
@@ -86,33 +89,33 @@ UiStartupArgs initStartupArgs(int argc, char* argv[])
             if (cmd.fn(argv[0], argv[2]))
                 std::exit(EXIT_SUCCESS);
 
-            std::fprintf(stderr, "%s.\n", dpsoGetError());
+            str::print(stderr, "{}.\n", dpsoGetError());
             std::exit(EXIT_FAILURE);
         }
 
-        std::fprintf(
+        str::print(
             stderr,
-            "Unknown command \"%s\". Use \"-help\" for a list of "
+            "Unknown command \"{}\". Use \"-help\" for a list of "
             "available commands.\n",
             cmdName);
         std::exit(EXIT_FAILURE);
     }
 
     for (int i = 1; i < argc; ++i) {
-        const auto* arg = argv[i];
+        const std::string_view arg{argv[i]};
 
-        if (std::strcmp(arg, "-help") == 0) {
+        if (arg == "-help") {
             printHelp(getToplevelArgv0(argv[0]));
             std::exit(EXIT_SUCCESS);
-        } else if (std::strcmp(arg, "-version") == 0) {
-            std::printf("%s %s\n", uiAppName, uiAppVersion);
+        } else if (arg == "-version") {
+            str::print("{} {}\n", uiAppName, uiAppVersion);
             std::exit(EXIT_SUCCESS);
-        } else if (std::strcmp(arg, cmdLineOptHide) == 0)
+        } else if (arg == cmdLineOptHide)
             result.hide = true;
         else {
-            std::fprintf(
+            str::print(
                 stderr,
-                "Unknown option \"%s\". Use \"-help\" for a list of "
+                "Unknown option \"{}\". Use \"-help\" for a list of "
                 "available options.\n",
                 arg);
             std::exit(EXIT_FAILURE);

@@ -8,7 +8,7 @@
 #include <cstdio>
 #include <ratio>
 
-#include "str.h"
+#include "str_stdio.h"
 
 
 namespace dpso::timing {
@@ -30,9 +30,9 @@ void report(
 {
     const auto duration = getTime() - startTime;
 
-    std::fputs("Timing: ", stdout);
-    std::fputs(str::format(fmt, args).c_str(), stdout);
-    std::fputs(str::format(": {} ms\n", duration).c_str(), stdout);
+    str::print("Timing: ");
+    str::print(fmt, args);
+    str::print(": {} ms\n", duration);
 
     std::fflush(stdout);
 }
