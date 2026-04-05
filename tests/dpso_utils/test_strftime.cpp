@@ -1,5 +1,7 @@
 #include "dpso_utils/strftime.h"
 
+#include <string_view>
+
 #include "flow.h"
 
 
@@ -15,7 +17,7 @@ static void testStrftime()
 
     const struct {
         const char* format;
-        const char* result;
+        std::string_view result;
     } tests[]{
         {"", ""},
         {"%Y-%m-%d %H:%M:%S", "2022-11-17 23:58:59"},

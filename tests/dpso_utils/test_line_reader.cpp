@@ -1,4 +1,5 @@
 #include <optional>
+#include <string_view>
 #include <vector>
 
 #include "dpso_utils/line_reader.h"
@@ -15,7 +16,7 @@ namespace {
 void testLineReader()
 {
     const struct {
-        const char* text;
+        std::string_view text;
         std::vector<std::string> expectedLines;
     } tests[]{
         {"", {}},
@@ -33,7 +34,7 @@ void testLineReader()
         {"a\nb\rc\r\n", {"a", "b", "c"}},
     };
 
-    const auto* fileName = "test_read_line.txt";
+    const std::string_view fileName{"test_read_line.txt"};
 
     for (const auto& test : tests) {
         test::utils::saveText(

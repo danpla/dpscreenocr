@@ -1,4 +1,5 @@
 #include <string>
+#include <string_view>
 
 #include "dpso_utils/sha256_file.h"
 
@@ -11,12 +12,12 @@ namespace {
 
 void testCalcFileSha256()
 {
-    const auto* testFileName = "test_calc_file_sha256.txt";
-    const auto* data =
-        "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq";
-    const auto* digest =
+    const std::string_view testFileName{"test_calc_file_sha256.txt"};
+    const std::string_view data{
+        "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"};
+    const std::string_view digest{
         "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd4"
-        "19db06c1";
+        "19db06c1"};
 
     test::utils::saveText("testCalcFileSha256", testFileName, data);
 
@@ -106,7 +107,7 @@ void testLoadValidSha256File()
         testFileName + dpso::sha256FileExt;
 
     const struct {
-        const char* description;
+        std::string_view description;
         std::string data;
     } tests[]{
         {
@@ -160,7 +161,7 @@ void testLoadInvalidSha256File()
         testFileName + dpso::sha256FileExt;
 
     const struct {
-        const char* description;
+        std::string_view description;
         std::string data;
     } tests[]{
         {"Leading spaces", " " + digest + " *" + testFileName},

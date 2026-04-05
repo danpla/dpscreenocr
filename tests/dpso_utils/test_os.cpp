@@ -1,5 +1,6 @@
 #include <cerrno>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "dpso_utils/os.h"
@@ -20,7 +21,7 @@ namespace {
 
 
 template<typename Fn>
-bool checkFileNotFoundError(Fn fn, const char* fnName)
+bool checkFileNotFoundError(Fn fn, std::string_view fnName)
 {
     try {
         fn();
@@ -46,7 +47,7 @@ bool checkFileNotFoundError(Fn fn, const char* fnName)
 
 void testSyncDir()
 {
-    const auto* dirPath = ".";
+    const std::string_view dirPath{"."};
 
     try {
         os::syncDir(dirPath);
@@ -58,7 +59,7 @@ void testSyncDir()
 
 void testLoadData()
 {
-    const std::string filePath{"test_load_data.txt"};
+    const std::string_view filePath{"test_load_data.txt"};
 
     test::utils::saveText("testLoadData", filePath, filePath);
 

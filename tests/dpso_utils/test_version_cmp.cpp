@@ -1,5 +1,7 @@
 #include "dpso_utils/version_cmp.h"
 
+#include <string_view>
+
 #include "flow.h"
 #include "utils.h"
 
@@ -7,8 +9,8 @@
 static void testVersionCmp()
 {
     const struct {
-        const char* strA;
-        const char* strB;
+        std::string_view strA;
+        std::string_view strB;
         bool isLess;
     } tests [] = {
         {"", "1", true},

@@ -1,5 +1,7 @@
 #include <initializer_list>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 #include "dpso_ext/history.h"
@@ -22,12 +24,12 @@ std::string toStr(DpsoHistoryExportFormat exportFormat)
 
 
 void testDetectExportFormat(
-    const char* filePath,
+    const std::string& filePath,
     DpsoHistoryExportFormat defaultExportFormat,
     DpsoHistoryExportFormat expectedExportFormat)
 {
     const auto gotExportFormat = dpsoHistoryDetectExportFormat(
-        filePath, defaultExportFormat);
+        filePath.c_str(), defaultExportFormat);
     if (gotExportFormat == expectedExportFormat)
         return;
 
@@ -44,7 +46,7 @@ void testDetectExportFormat(
 void testDetectExportFormat()
 {
     const struct {
-        std::vector<const char*> extensions;
+        std::vector<std::string> extensions;
         DpsoHistoryExportFormat exportFormat;
         DpsoHistoryExportFormat defaultExportFormat;
     } tests[]{
@@ -66,16 +68,16 @@ void testDetectExportFormat()
     };
     static_assert(std::size(tests) == dpsoNumHistoryExportFormats);
 
-    for (const auto* prefix : {"file", "dir.name/file"})
+    for (const std::string prefix : {"file", "dir.name/file"})
         for (const auto& test : tests) {
-            for (const auto* ext : test.extensions)
+            for (const auto& ext : test.extensions)
                 testDetectExportFormat(
-                    (std::string{prefix} + ext).c_str(),
+                    prefix + ext,
                     test.defaultExportFormat,
                     test.exportFormat);
 
             testDetectExportFormat(
-                (std::string{prefix} + ".unknown_ext").c_str(),
+                prefix + ".unknown_ext",
                 test.defaultExportFormat,
                 test.defaultExportFormat);
         }
@@ -84,7 +86,7 @@ void testDetectExportFormat()
 
 void testExport()
 {
-    static const auto* htmlBegin =
+    static const std::string_view htmlBegin{
         "<!DOCTYPE html>\n"
         "<html>\n"
         "<head>\n"
@@ -97,23 +99,23 @@ void testExport()
         "    }\n"
         "  </style>\n"
         "</head>\n"
-        "<body>\n";
+        "<body>\n"};
 
-    static const auto* htmlEnd =
+    static const std::string_view htmlEnd{
         "</body>\n"
-        "</html>\n";
+        "</html>\n"};
 
     const struct Test {
-        const char* description;
+        std::string_view description;
         std::vector<DpsoHistoryEntry> entries;
         std::vector<std::string> exportedData;
 
         Test(
-                const char* description,
+                std::string_view description,
                 std::vector<DpsoHistoryEntry>&& entries,
-                const char* txtData,
-                const char* htmlBodyData,
-                const char* jsonData)
+                std::string_view txtData,
+                std::string_view htmlBodyData,
+                std::string_view jsonData)
             : description{description}
             , entries{std::move(entries)}
             , exportedData{

@@ -14,7 +14,7 @@ using namespace dpso;
 namespace {
 
 
-const char* toStr(ByteOrder byteOrder)
+std::string_view toStr(ByteOrder byteOrder)
 {
     switch (byteOrder) {
     case ByteOrder::little:

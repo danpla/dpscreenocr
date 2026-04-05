@@ -1,5 +1,6 @@
 #include <cstring>
 #include <iterator>
+#include <string_view>
 #include <vector>
 
 #include "dpso_ext/history.h"
@@ -70,7 +71,7 @@ enum class IoTestMode {
 };
 
 
-std::string toStr(IoTestMode mode)
+std::string_view toStr(IoTestMode mode)
 {
     switch (mode) {
     case IoTestMode::write:
@@ -151,10 +152,10 @@ void testTruncatedData()
     const DpsoHistoryEntry extraEntry{"extraTs", "extraText"};
 
     const struct {
-        const char* description;
-        const char* data;
+        std::string_view description;
+        std::string_view data;
         std::vector<DpsoHistoryEntry> expectedEntries;
-        const char* finalData;  // After appending extraEntry.
+        std::string_view finalData;  // After appending extraEntry.
     } tests[]{
         {
             "No timestamp terminator (first entry)",
@@ -237,8 +238,8 @@ void testTruncatedData()
 void testInvalidData()
 {
     const struct {
-        const char* description;
-        const char* data;
+        std::string_view description;
+        std::string_view data;
     } tests[]{
         {"Invalid timestamp terminator", "ts1\nb"},
         {"Invalid entry separator", "ts1\n\ntext1\f*ts2\n\ntext2"},
