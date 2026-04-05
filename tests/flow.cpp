@@ -1,8 +1,11 @@
 #include "flow.h"
 
 #include <cstdlib>
-#include <cstdio>
-#include <cstring>
+
+#include "dpso_utils/str_stdio.h"
+
+
+using namespace dpso;
 
 
 namespace test {
@@ -30,14 +33,14 @@ Runner* Runner::list;
 int Runner::numRunners;
 
 
-Runner::Runner(const char* name, void (&fn)())
+Runner::Runner(std::string_view name, void (&fn)())
     : name{name}
     , fn{fn}
     , next{}
 {
     // Link alphabetically.
     auto** pos = &list;
-    while (*pos && std::strcmp((*pos)->name, name) < 0)
+    while (*pos && (*pos)->name < name)
         pos = &(*pos)->next;
 
     next = *pos;
@@ -47,7 +50,7 @@ Runner::Runner(const char* name, void (&fn)())
 }
 
 
-const char* Runner::getName() const
+std::string_view Runner::getName() const
 {
     return name;
 }
@@ -67,8 +70,8 @@ void failure(
     std::initializer_list<std::string_view> args)
 {
     ++numFailures;
-    std::fputs(dpso::str::format(fmt, args).c_str(), stderr);
-    std::fputc('\n', stderr);
+    str::print(stderr, fmt, args);
+    str::print(stderr, "\n");
 }
 
 
@@ -82,9 +85,9 @@ void fatalError(
     std::string_view fmt,
     std::initializer_list<std::string_view> args)
 {
-    std::fputs("FATAL ERROR\n", stderr);
-    std::fputs(dpso::str::format(fmt, args).c_str(), stderr);
-    std::fputc('\n', stderr);
+    str::print(stderr, "FATAL ERROR\n");
+    str::print(stderr, fmt, args);
+    str::print(stderr, "\n");
     std::exit(EXIT_FAILURE);
 }
 

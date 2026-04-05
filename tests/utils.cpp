@@ -9,8 +9,12 @@
 
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
+#include "dpso_utils/str_stdio.h"
 #include "dpso_utils/stream/file_stream.h"
 #include "dpso_utils/stream/utils.h"
+
+
+using namespace dpso;
 
 
 namespace test::utils {
@@ -50,10 +54,7 @@ std::string escapeStr(std::string_view str)
             else
                 result +=
                     "\\x"
-                    + dpso::str::justifyRight(
-                        dpso::str::toStr(c, 16),
-                        2,
-                        '0');
+                    + str::justifyRight(str::toStr(c, 16), 2, '0');
             break;
         }
 
@@ -86,7 +87,7 @@ std::string lfToNativeNewline(std::string_view str)
 
     for (auto c : str)
         if (c == '\n')
-            result += dpso::os::newline;
+            result += os::newline;
         else
             result += c;
 
@@ -99,18 +100,18 @@ void saveText(
     std::string_view filePath,
     std::string_view text)
 {
-    std::optional<dpso::FileStream> file;
+    std::optional<FileStream> file;
     try {
-        file.emplace(filePath, dpso::FileStream::Mode::write);
-    } catch (dpso::os::Error& e) {
+        file.emplace(filePath, FileStream::Mode::write);
+    } catch (os::Error& e) {
         test::fatalError(
             "{}: saveText(): FileStream(\"{}\", Mode::write): {}",
             contextInfo, filePath, e.what());
     }
 
     try {
-        dpso::write(*file, text);
-    } catch (dpso::StreamError& e) {
+        write(*file, text);
+    } catch (StreamError& e) {
         test::fatalError(
             "{}: saveText(): write(file, ...) to \"{}\": {}",
             contextInfo, filePath, e.what());
@@ -122,8 +123,8 @@ std::string loadText(
     std::string_view contextInfo, std::string_view filePath)
 {
     try {
-        return dpso::os::loadData(filePath);
-    } catch (dpso::os::Error& e) {
+        return os::loadData(filePath);
+    } catch (os::Error& e) {
         test::fatalError(
             "{}: os::loadData(): {}",
             contextInfo, filePath, e.what());
@@ -160,25 +161,25 @@ void printFirstDifference(
         const auto al = extractNextLine(actual);
 
         if (el != al) {
-            std::fprintf(
+            str::print(
                 stderr,
                 "First difference between expected (e) and actual "
-                "(a) data, with %zu preceding\n"
-                "line%s. Non-printable characters are escaped with "
+                "(a) data, with {} preceding\n"
+                "line{}. Non-printable characters are escaped with "
                 "C-style sequences.\n",
                 contextLines.size(),
                 contextLines.size() == 1 ? "" : "s");
 
             while (!contextLines.empty()) {
-                std::fprintf(
+                str::print(
                     stderr,
-                    " |%s\n",
-                    escapeStr(contextLines.front()).c_str());
+                    " |{}\n",
+                    escapeStr(contextLines.front()));
                 contextLines.pop();
             }
 
-            std::fprintf(stderr, "e|%s\n", escapeStr(el).c_str());
-            std::fprintf(stderr, "a|%s\n", escapeStr(al).c_str());
+            str::print(stderr, "e|{}\n", escapeStr(el));
+            str::print(stderr, "a|{}\n", escapeStr(al));
             break;
         }
 
@@ -196,8 +197,8 @@ void printFirstDifference(
 void removeFile(std::string_view filePath)
 {
     try {
-        dpso::os::removeFile(filePath);
-    } catch (dpso::os::Error& e) {
+        os::removeFile(filePath);
+    } catch (os::Error& e) {
         test::fatalError(
             "os::removeFile(\"{}\"): {}", filePath, e.what());
     }

@@ -13,15 +13,15 @@ public:
 
     static int getNumRunners();
 
-    Runner(const char* name, void (&fn)());
+    Runner(std::string_view name, void (&fn)());
 
-    const char* getName() const;
+    std::string_view getName() const;
     void run() const;
 private:
     static Runner* list;
     static int numRunners;
 
-    const char* name;
+    std::string_view name;
     void (*fn)();
     Runner* next;
 };

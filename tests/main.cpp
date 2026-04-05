@@ -2,8 +2,12 @@
 #include <cstdio>
 
 #include "dpso_utils/str.h"
+#include "dpso_utils/str_stdio.h"
 
 #include "flow.h"
+
+
+using namespace dpso;
 
 
 int main()
@@ -13,9 +17,10 @@ int main()
     for (const auto* runner = test::Runner::getFirst();
             runner;
             runner = runner->getNext()) {
-        std::printf(
-            "%2i/%i: %s\n",
-            ++curRunnerNum, test::Runner::getNumRunners(),
+        str::print(
+            "{}/{}: {}\n",
+            str::justifyRight(str::toStr(++curRunnerNum), 2),
+            test::Runner::getNumRunners(),
             runner->getName());
         // Flush to make sure that failure() messages (written to
         // stderr) are nested under the test name.
@@ -23,13 +28,13 @@ int main()
         runner->run();
     }
 
-    std::printf("===\n");
+    str::print("===\n");
     const auto numFailures = test::getNumFailures();
     if (numFailures == 0)
-        std::printf("Everything is OK\n");
+        str::print("Everything is OK\n");
     else
-        std::printf(
-            "%i failure%s\n",
+        str::print(
+            "{} failure{}\n",
             numFailures,
             numFailures > 1 ? "s" : "");
 
