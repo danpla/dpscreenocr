@@ -37,11 +37,9 @@ static unsigned char toLower(unsigned char c)
 static int cmpIgnoreCase(
     std::string_view a, std::string_view b, std::size_t len)
 {
-    for (std::size_t i{}; i < len; ++i) {
-        const auto diff = toLower(a[i]) - toLower(b[i]);
-        if (diff != 0)
-            return diff;
-    }
+    for (std::size_t i{}; i < len; ++i)
+        if (const auto d = toLower(a[i]) - toLower(b[i]); d != 0)
+            return d;
 
     return 0;
 }
@@ -99,7 +97,7 @@ std::string_view trimRight(
     std::string_view s, bool (&pred)(unsigned char c))
 {
     auto n = s.size();
-    while (n > 0 && pred(s[n-1]))
+    while (n > 0 && pred(s[n - 1]))
         --n;
     return s.substr(0, n);
 }
