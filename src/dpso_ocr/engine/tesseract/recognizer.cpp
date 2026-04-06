@@ -155,6 +155,7 @@ OcrResult Recognizer::recognize(
 
     // Silence "Estimating resolution as ..." and any other debug
     // messages that Tesseract prints to stderr by default.
+    #ifdef NDEBUG
     tess.SetVariable(
         "debug_file",
         #ifdef __unix__
@@ -165,6 +166,7 @@ OcrResult Recognizer::recognize(
         "" // Default value; Tesseract will print to stderr.
         #endif
         );
+    #endif
 
     ::tesseract::PageSegMode pageSegMode;
 
