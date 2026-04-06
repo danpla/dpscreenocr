@@ -153,6 +153,19 @@ OcrResult Recognizer::recognize(
         return {
             OcrResult::Status::error, "TessBaseAPI::Init() failed"};
 
+    // Silence "Estimating resolution as ..." and any other debug
+    // messages that Tesseract prints to stderr by default.
+    tess.SetVariable(
+        "debug_file",
+        #ifdef __unix__
+        "/dev/null"
+        #elif defined(_WIN32)
+        "nul"
+        #else
+        "" // Default value; Tesseract will print to stderr.
+        #endif
+        );
+
     ::tesseract::PageSegMode pageSegMode;
 
     if (ocrFeatures & ocrFeatureTextSegmentation)
