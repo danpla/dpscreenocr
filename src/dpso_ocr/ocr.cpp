@@ -58,7 +58,7 @@ struct Job {
 
 
 struct JobResult {
-    ocr::OcrResult ocrResult;
+    ocr::Recognizer::Result ocrResult;
     std::string timestamp;
 };
 
@@ -342,7 +342,7 @@ static std::string createTimestamp()
 }
 
 
-static ocr::OcrImage prepareImage(
+static ocr::Recognizer::Image prepareImage(
     const DpsoImg* image,
     std::vector<std::uint8_t> (&imgBuffers)[3],
     ProgressTracker& progressTracker,

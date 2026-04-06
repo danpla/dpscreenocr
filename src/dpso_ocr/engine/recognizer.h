@@ -10,15 +10,6 @@
 namespace dpso::ocr {
 
 
-// Grayscale image for OCR.
-struct OcrImage {
-    const std::uint8_t* data;
-    int width;
-    int height;
-    int pitch;
-};
-
-
 enum OcrFeature {
     ocrFeatureTextSegmentation = 1 << 0
 };
@@ -27,27 +18,34 @@ enum OcrFeature {
 using OcrFeatures = unsigned;
 
 
-struct OcrResult {
-    enum class Status {
-        // OCR was successful. The text field holds the recognized
-        // text.
-        success,
-
-        // OCR was terminated from the progress callback. The text is
-        // empty.
-        terminated,
-
-        // OCR error. The text holds an error message.
-        error
-    };
-
-    Status status;
-    std::string text;
-};
-
-
 class Recognizer {
 public:
+    // Grayscale image for OCR.
+    struct Image {
+        const std::uint8_t* data;
+        int width;
+        int height;
+        int pitch;
+    };
+
+    struct Result {
+        enum class Status {
+            // OCR was successful. The text field holds the recognized
+            // text.
+            success,
+
+            // OCR was terminated from the progress callback. The text
+            // is empty.
+            terminated,
+
+            // OCR error. The text holds an error message.
+            error
+        };
+
+        Status status;
+        std::string text;
+    };
+
     // The progress is in percents from 0 to 100. Returns false to
     // terminate OCR.
     using ProgressHandler = std::function<bool(int progress)>;
@@ -70,8 +68,8 @@ public:
     // Throws RecognizerError
     virtual void reloadLangs() = 0;
 
-    virtual OcrResult recognize(
-        const OcrImage& image,
+    virtual Result recognize(
+        const Image& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
         const ProgressHandler& progressHandler) = 0;

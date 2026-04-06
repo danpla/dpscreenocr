@@ -59,8 +59,8 @@ public:
         reloadLangCodes();
     }
 
-    OcrResult recognize(
-        const OcrImage& image,
+    Result recognize(
+        const Image& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
         const ProgressHandler& progressHandler) override;
@@ -118,8 +118,8 @@ struct CancelData {
 };
 
 
-OcrResult Recognizer::recognize(
-    const OcrImage& image,
+Recognizer::Result Recognizer::recognize(
+    const Image& image,
     const std::vector<int>& langIndices,
     OcrFeatures ocrFeatures,
     const ProgressHandler& progressHandler)
@@ -144,14 +144,13 @@ OcrResult Recognizer::recognize(
         sysDataDir = os::convertUtf8PathToSys(dataDir);
     } catch (os::Error& e) {
         return {
-            OcrResult::Status::error,
+            Result::Status::error,
             std::string{"Can't convert dataDir to system encoding: "}
                 + e.what()};
     }
 
     if (tess.Init(sysDataDir.c_str(), tessLangsStr.c_str()) != 0)
-        return {
-            OcrResult::Status::error, "TessBaseAPI::Init() failed"};
+        return {Result::Status::error, "TessBaseAPI::Init() failed"};
 
     // Silence "Estimating resolution as ..." and any other debug
     // messages that Tesseract prints to stderr by default.
@@ -194,21 +193,20 @@ OcrResult Recognizer::recognize(
     CancelData cancelData{progressHandler};
     if (tess.Recognize(&cancelData.textDesc) != 0)
         return {
-            OcrResult::Status::error,
-            "TessBaseAPI::Recognize() failed"};
+            Result::Status::error, "TessBaseAPI::Recognize() failed"};
 
     if (cancelData.canceled)
-        return {OcrResult::Status::terminated, ""};
+        return {Result::Status::terminated, ""};
 
     std::unique_ptr<char[]> text{tess.GetUTF8Text()};
     if (!text)
         return {
-            OcrResult::Status::error,
+            Result::Status::error,
             "TessBaseAPI::GetUTF8Text() returned null"};
 
     const auto textLen = prettifyText(text.get());
 
-    return {OcrResult::Status::success, {text.get(), textLen}};
+    return {Result::Status::success, {text.get(), textLen}};
 }
 
 
