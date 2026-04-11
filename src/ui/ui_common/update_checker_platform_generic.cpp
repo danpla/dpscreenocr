@@ -3,6 +3,12 @@
 #include "update_checker.h"
 
 
+bool uiUpdateCheckerIsAvailable(void)
+{
+    return true;
+}
+
+
 const char* uiUpdateCheckerGetPlatformId(void)
 {
     return "generic";

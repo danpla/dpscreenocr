@@ -157,12 +157,6 @@ struct UiUpdateChecker {
 };
 
 
-bool uiUpdateCheckerIsAvailable(void)
-{
-    return true;
-}
-
-
 UiUpdateChecker* uiUpdateCheckerCreate(
     const char* appVersion,
     const char* userAgent,
