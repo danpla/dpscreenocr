@@ -28,7 +28,7 @@ set(APP_VERSION
 
 set(APP_DESCRIPTION "A program to recognize text on the screen")
 
-set(APP_AUTHOR "Daniel Plakhotich")
+set(APP_AUTHOR "Danyl Plakhotych")
 set(APP_COPYRIGHT_YEAR "2019-2026")
 set(APP_URL "https://danpla.github.io/dpscreenocr/")
 
