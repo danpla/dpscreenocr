@@ -20,6 +20,6 @@ If you need full control over the build process, use:
 
 The above command will drop you into the bash shell, with the current
 working directory mounted as the "/workspace" directory inside the
-container. Follow the instructions in the "doc/building-unix.txt" file
-in the dpScreenOCR source code directory, then type "exit" to exit the
-container when you are done.
+container. Follow the instructions in the "doc/building-unix.txt" and
+"doc/packaging-unix-bundle.txt" files in the dpScreenOCR source code
+directory, then type "exit" to exit the container when you are done.

@@ -1,0 +1,35 @@
+You can build dpScreenOCR as a bundle - a self-contained directory
+that includes the program itself, all the necessary libraries, and a
+launcher.
+
+It's recommended to build the bundle from within a Docker environment
+from the "tools/dpscreenocr_build_env" directory. It uses an old OS
+distribution to ensure that the bundle will work even on legacy
+systems, and has all the necessary dependencies configured. See
+"tools/dpscreenocr_build_env/readme.txt" for the details.
+
+If you are not using a Docker image, you will need to install
+additional dependencies beyond those listed in the "Dependencies"
+section of "building-unix.txt":
+
+  * libcurl >= 7.28. If your system provides several flavors of
+    libcurl, it doesn't matter which one to install: dpScreenOCR will
+    dynamically load libcurl instead of linking against it, so only
+    the headers are needed when building. It usually makes sense to
+    use the flavor whose runtime version is already installed: this
+    avoids downloading unnecessary transitive dependencies.
+
+  * libjansson >= 2.7
+
+On Debian, Ubuntu, and derivatives, you can install the above with:
+
+    sudo apt-get install libcurl4-gnutls-dev libjansson-dev
+
+The process of creating the bundle is now independent of whether you
+are inside a Docker image: use the steps described in the "Building"
+section of "building-unix.txt", with two important differences:
+
+  * Disable DPSO_USE_DEFAULT_TESSERACT_DATA_PATH, enable
+    DPSO_DYNAMIC_CURL and DPSO_ENABLE_UPDATE_CHECKER CMake options.
+
+  * Call "make bundle_archive" instead of "make".
