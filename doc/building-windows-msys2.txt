@@ -7,9 +7,6 @@ Contents:
     1.2 Dependencies
     1.3 Pandoc
   2 Building
-  3 Packaging
-    3.1 CPack
-    3.2 Inno Setup
 
 
 1 Setting up environment
@@ -95,31 +92,3 @@ You can build dpScreenOCR with the following commands:
 You can configure the build with various CMake options; run
 "cmake -LH .." to see them all. Options specific to dpScreenOCR have
 the "DPSO_" prefix.
-
-
-3 Packaging
-===========
-
-
-3.1 CPack
----------
-
-To create packages, run "cpack -G <generators>", where <generators>
-is a semicolon-separated list of generator names you can find in
-"cpack --help".
-
-The NSIS, NSIS64, and WIX generators are no longer supported. Use Inno
-Setup instead.
-
-
-3.2 Inno Setup
---------------
-
-CMake will generate inno_setup.iss in the build directory to create an
-installer with Inno Setup >= 6.4.
-
-You will need some unofficial language files listed in
-inno_setup_languages.isi. Download them from the Inno Setup website or
-source code repository (Files/Languages/Unofficial/) to the
-"Languages/Unofficial/" directory in the root of your Inno Setup
-installation.

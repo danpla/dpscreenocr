@@ -1,0 +1,8 @@
+CMake will generate inno_setup.iss in the build directory to create an
+installer with Inno Setup >= 6.4.
+
+You will need some unofficial language files listed in
+inno_setup_languages.isi. Download them from the Inno Setup website or
+source code repository (Files/Languages/Unofficial/) to the
+"Languages/Unofficial/" directory in the root of your Inno Setup
+installation.

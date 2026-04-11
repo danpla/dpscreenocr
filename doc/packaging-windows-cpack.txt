@@ -1,0 +1,5 @@
+Run "cpack -G <generators>", where <generators> is a
+semicolon-separated list of generator names found in "cpack --help".
+
+CPack is currently only used to create archives. The NSIS, NSIS64, and
+WIX generators are no longer supported.

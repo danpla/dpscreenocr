@@ -14,6 +14,10 @@ if(UNIX AND NOT APPLE)
     include(dist_unix_bundle)
 elseif(WIN32)
     include(dist_windows_iss)
+
+    if (DPSO_ENABLE_MSIX)
+        include(dist_windows_msix)
+    endif()
 endif()
 
 include(CPack)

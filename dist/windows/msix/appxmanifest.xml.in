@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+
+  <Identity
+    Name="@APP_MSIX_NAME@"
+    Publisher="@APP_MSIX_PUBLISHER@"
+    Version="@APP_VERSION@.0"
+    ProcessorArchitecture="@APP_MSIX_ARCH@" />
+
+  <Properties>
+    <DisplayName>@APP_NAME@</DisplayName>
+    <PublisherDisplayName>@APP_AUTHOR@</PublisherDisplayName>
+    <Logo>msix_assets\logo-50.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily
+      Name="Windows.Desktop"
+      MinVersion="10.0.17763.0"
+      MaxVersionTested="10.0.19045.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+
+  <Applications>
+    <Application Id="@APP_FILE_NAME@"
+      Executable="@APP_FILE_NAME@.exe"
+      EntryPoint="Windows.FullTrustApplication">
+
+      <uap:VisualElements
+        DisplayName="@APP_NAME@"
+        Description="@APP_DESCRIPTION@"
+        BackgroundColor="transparent"
+        Square150x150Logo="msix_assets\logo-150.png"
+        Square44x44Logo="msix_assets\logo-44.png">
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+</Package>
+

@@ -1,0 +1,90 @@
+To support packaging the program as MSIX, to will need to run CMake
+with the DPSO_ENABLE_MSIX option enabled. This option also requires
+extra set up steps for building the program binaries, which are
+described in the building-windows-*.txt documents.
+
+
+CMake setup
+===========
+
+Before running CMake with DPSO_ENABLE_MSIX, install Windows SDK:
+
+https://learn.microsoft.com/en-us/windows/apps/windows-sdk/downloads
+
+CMake needs the following utilities from the SDK:
+
+* makepri.exe
+* makeappx.exe
+* signtool.exe
+
+You do not need to install the entire Windows SDK for these utilities.
+Instead, you can select the following features during installation:
+
+* Windows App Certification Kit
+* Windows SDK Signing Tools for Windows Desktop Apps
+* Windows SDK for UWP Managed Apps
+
+Be aware, however, that the names of features and the final layout of
+the SDK installation directory may differ between versions of the SDK.
+
+After installing the Windows SDK, you need to tell CMake the paths to
+makepri.exe, makeappx.exe, and signtool.exe. You can do this either by
+adding their directories to your PATH environment variable or by
+explicitly specifying the paths using CMake options MAKEPRI_EXE,
+MAKEAPPX_EXE, and SIGNTOOL_EXE like:
+
+  cmake -DMAKEPRI_EXE=path\to\makepri.exe ...
+
+
+Creating MSIX
+=============
+
+After a successful configuration, CMake provides the following build
+targets:
+
+* "msix" - creates and signs the MSIX package. Keep in mind that it
+  will also build the program binaries using the current CMake
+  configuration, so don't forget to adjust CMAKE_BUILD_TYPE and other
+  options if you need a release build.
+
+* "msixupload" - calls the "msix" target and then packs the MSIX in a
+  ".msixupload" file for uploading to Microsoft Store.
+
+The MSIX package is signed with your personal self-signed certificate.
+This is a necessary formality necessary for uploading the MSIX to
+Microsoft Store or installing it locally. The certificate is taken
+from your personal certificate storage and will be created there
+automatically if it does not already exist.
+
+Having the certificate in you personal certificate storage is not
+enough to install the MSIX locally: you must explicitly install the
+certificate to make it trusted. For your convenience, CMake saves the
+certificate file (CER) alongside with the MSIX file. You can also
+access the certificate from the MSIX file itself: right-click on the
+MSIX -> Properties -> Digital Signatures -> Select the signature ->
+Details -> View Certificate.
+
+Whether you open the certificate file directly or via the MSIX file
+properties, select "Install Certificate..." -> "Local Machine" ->
+"Place all certificates in the following store" -> "Trusted Root
+Certification Authorities" and finish installation. After completing
+these steps, App Installer should allow you install the MSIX.
+
+The certificate needs to be installed only once, because it is
+logically associated only with the MSIX publisher identifier that
+doesn't change when a new MSIX is created, even if the program version
+or the MSIX file name is different.
+
+You can remove the certificate if you no longer need it:
+
+* To remove it from your personal certificate storage, press Windows +
+  R, type "crtmgr.msc", and delete it from "Personal\Certificates".
+
+* To remove it from the local machine, press Press Windows + R, type
+  "certlm.msc", and delete it from "Trusted Root Certification
+  Authorities\Certificates"
+
+In both cases, you can identify the certificate by the "Issued To" or
+"Issued By" field that matches the "CN=..." publisher identifier code
+found in the top-level CMakeLists.txt. Both "Issued To" and "Issued
+By" are also shown during the certificate installation.
