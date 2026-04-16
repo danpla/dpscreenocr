@@ -1,4 +1,4 @@
-#include "init_startup_args.h"
+#include "cmdline.h"
 
 #include <cstdlib>
 #include <string_view>
@@ -59,11 +59,10 @@ static void printHelp(std::string_view argv0)
 }
 
 
-UiStartupArgs initStartupArgs(int argc, char* argv[])
+void processCmdLine(
+    int argc, char* argv[], UiStartupArgs& startupArgs)
 {
-    UiStartupArgs result{};
-
-    // Comand mode.
+    // Command mode.
     if (argc > 1 && *argv[1] != '-') {
         const struct {
             std::string_view name;
@@ -112,7 +111,7 @@ UiStartupArgs initStartupArgs(int argc, char* argv[])
             str::print("{} {}\n", uiAppName, uiAppVersion);
             std::exit(EXIT_SUCCESS);
         } else if (arg == cmdLineOptHide)
-            result.hide = true;
+            startupArgs.hide = true;
         else {
             str::print(
                 stderr,
@@ -122,8 +121,6 @@ UiStartupArgs initStartupArgs(int argc, char* argv[])
             std::exit(EXIT_FAILURE);
         }
     }
-
-    return result;
 }
 
 

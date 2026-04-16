@@ -1,9 +1,9 @@
 #include "init.h"
 
+#include "cmdline.h"
 #include "exe_path.h"
 #include "init_extra.h"
 #include "init_intl.h"
-#include "init_startup_args.h"
 #include "init_user_data.h"
 
 #include "dpso_utils/error_get.h"
@@ -17,7 +17,9 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
         return false;
     }
 
-    *startupArgs = ui::initStartupArgs(argc, argv);
+    startupArgs = {};
+
+    ui::processCmdLine(argc, argv, *startupArgs);
 
     if (!ui::initStart(argc, argv)) {
         dpso::setError("ui::initStart: {}", dpsoGetError());

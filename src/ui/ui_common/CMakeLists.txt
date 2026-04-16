@@ -18,11 +18,11 @@ add_library(
     autostart_default.cpp
     cfg_default_values.cpp
     cfg_keys.cpp
+    cmdline.cpp
     cmdline_cmd_autostart.cpp
     cmdline_opts.cpp
     init.cpp
     init_intl.cpp
-    init_startup_args.cpp
     init_user_data.cpp
     ocr_default.cpp
     ocr_default_data_dir.cpp
