@@ -1,0 +1,10 @@
+#include "msix_helper/dll_name.h"
+
+
+namespace ui::msix {
+
+
+const std::string_view helperDllName{"@MSIX_HELPER_DLL_NAME@"};
+
+
+}

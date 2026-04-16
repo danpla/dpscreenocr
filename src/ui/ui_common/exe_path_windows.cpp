@@ -1,11 +1,8 @@
 #include "exe_path.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
 #include "dpso_utils/error_set.h"
-#include "dpso_utils/windows/error.h"
-#include "dpso_utils/windows/utf.h"
+#include "dpso_utils/os_error.h"
+#include "dpso_utils/windows/exe_path.h"
 
 
 namespace ui {
@@ -16,30 +13,13 @@ static std::string exePath;
 
 bool initExePath(std::string_view /*argv0*/)
 {
-    std::wstring path;
-
-    while (true) {
-        path.reserve(path.size() + 32);
-        path.resize(path.capacity());
-
-        const auto size = GetModuleFileNameW(
-            nullptr, path.data(), path.size());
-
-        if (size == 0) {
-            dpso::setError(
-                "GetModuleFileNameW(): {}",
-                dpso::windows::getErrorMessage(GetLastError()));
-            return false;
-        }
-
-        if (size < path.size()) {
-            path.resize(size);
-            break;
-        }
+    try {
+        exePath = dpso::windows::getExePath();
+        return true;
+    } catch (dpso::os::Error& e) {
+        dpso::setError("windows::getExePath(): {}", e.what());
+        return false;
     }
-
-    exePath = dpso::windows::utf16ToUtf8(path);
-    return true;
 }
 
 

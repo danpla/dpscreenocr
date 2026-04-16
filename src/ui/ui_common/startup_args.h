@@ -4,7 +4,7 @@
 
 
 /**
- * Program startup arguments from the command line options.
+ * Program startup arguments.
  */
 typedef struct UiStartupArgs {
     /**

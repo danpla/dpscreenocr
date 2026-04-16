@@ -1,5 +1,7 @@
 #pragma once
 
+#include "startup_args.h"
+
 
 namespace ui {
 
@@ -9,7 +11,7 @@ namespace ui {
 // function called by uiInit(); initEnd() is the last. On failure,
 // both should set an error message (dpsoGetError()) and return false.
 bool initStart(int argc, char* argv[]);
-bool initEnd(int argc, char* argv[]);
+bool initEnd(int argc, char* argv[], UiStartupArgs& startupArgs);
 
 
 }

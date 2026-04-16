@@ -42,7 +42,7 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
         return false;
     }
 
-    if (!ui::initEnd(argc, argv)) {
+    if (!ui::initEnd(argc, argv, *startupArgs)) {
         dpso::setError("ui::initEnd: {}", dpsoGetError());
         return false;
     }

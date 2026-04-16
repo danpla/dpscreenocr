@@ -50,9 +50,14 @@ elseif(WIN32)
         ui_common
         PRIVATE
         app_dirs_windows.cpp
+        autostart/autostart_windows.cpp
+        autostart/autostart_windows_registry.cpp
+        msix_helper/msix_helper.cpp
         autostart_windows.cpp
         exe_path_windows.cpp
         init_extra_windows.cpp)
+
+    list(APPEND IN_SRCS msix_helper/dll_name.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
@@ -104,6 +109,49 @@ if(DPSO_ENABLE_UPDATE_CHECKER)
         PRIVATE dpso_json dpso_net ${CMAKE_THREAD_LIBS_INIT})
 else()
     target_sources(ui_common PRIVATE update_checker_null.cpp)
+endif()
+
+if(DPSO_ENABLE_MSIX)
+    option(
+        DPSO_WINRT_INCLUDE_DIR
+        "Path to the C++/WinRT include directory (for DPSO_ENABLE_MSIX)"
+        "")
+
+    add_library(
+        ui_common_msix_helper_dll MODULE
+        msix_helper/dll.cpp)
+
+    set(MSIX_HELPER_DLL_NAME "dpso_msix_helper")
+
+    set_target_properties(
+        ui_common_msix_helper_dll PROPERTIES
+        CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+        OUTPUT_NAME "${MSIX_HELPER_DLL_NAME}"
+        PREFIX "")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+            OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(
+            ui_common_msix_helper_dll PRIVATE -Wall -Wextra -pedantic)
+    endif()
+
+    target_include_directories(ui_common_msix_helper_dll PRIVATE .)
+    if(DPSO_WINRT_INCLUDE_DIR)
+        target_include_directories(
+            ui_common_msix_helper_dll
+            PRIVATE "${DPSO_WINRT_INCLUDE_DIR}")
+    endif()
+
+    target_compile_definitions(
+        ui_common_msix_helper_dll PRIVATE BUILDING_DLL=1)
+
+    find_package(Threads REQUIRED)
+
+    target_link_libraries(
+        ui_common_msix_helper_dll
+        PRIVATE windowsapp ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 foreach(IN_SRC ${IN_SRCS})

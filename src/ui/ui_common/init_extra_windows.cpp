@@ -3,6 +3,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#include "msix_helper/msix_helper.h"
+
 
 namespace ui {
 
@@ -40,8 +42,12 @@ bool initStart(int /*argc*/, char* /*argv*/[])
 }
 
 
-bool initEnd(int /*argc*/, char* /*argv*/[])
+bool initEnd(
+    int /*argc*/, char* /*argv*/[], UiStartupArgs& startupArgs)
 {
+    if (msix::isActivatedByStartupTask())
+        startupArgs.hide = true;
+
     registerApplicationRestart();
     return true;
 }

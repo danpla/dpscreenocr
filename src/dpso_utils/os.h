@@ -2,22 +2,13 @@
 
 #include <cstdint>
 #include <initializer_list>
-#include <stdexcept>
 #include <string>
 #include <string_view>
 
+#include "os_error.h"
+
 
 namespace dpso::os {
-
-
-class Error : public std::runtime_error {
-    using runtime_error::runtime_error;
-};
-
-
-class FileNotFoundError : public Error {
-    using Error::Error;
-};
 
 
 // Return the description of the given errno number. This is similar

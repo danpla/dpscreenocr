@@ -3,7 +3,8 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  IgnorableNamespaces="uap rescap desktop">
 
   <Identity
     Name="@APP_MSIX_NAME@"
@@ -44,6 +45,16 @@
         Square150x150Logo="msix_assets\logo-150.png"
         Square44x44Logo="msix_assets\logo-44.png">
       </uap:VisualElements>
+
+      <Extensions>
+        <desktop:Extension Category="windows.startupTask">
+          <desktop:StartupTask
+            TaskId="@APP_FILE_NAME@"
+            Enabled="false"
+            DisplayName="@APP_NAME@" />
+        </desktop:Extension>
+      </Extensions>
+
     </Application>
   </Applications>
 </Package>

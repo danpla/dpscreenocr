@@ -43,7 +43,7 @@ elseif(WIN32)
         os_windows.cpp
         windows/cmdline.cpp
         windows/error.cpp
-        windows/package.cpp
+        windows/exe_path.cpp
         windows/utf.cpp)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")

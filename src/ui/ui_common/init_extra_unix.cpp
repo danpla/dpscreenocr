@@ -67,7 +67,8 @@ bool initStart(int /*argc*/, char* argv[])
 }
 
 
-bool initEnd(int /*argc*/, char* /*argv*/[])
+bool initEnd(
+    int /*argc*/, char* /*argv*/[], UiStartupArgs& /*startupArgs*/)
 {
     return true;
 }

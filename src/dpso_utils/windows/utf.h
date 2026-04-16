@@ -2,14 +2,15 @@
 
 #include <string>
 #include <string_view>
-#include <stdexcept>
+
+#include "dpso_utils/os_error.h"
 
 
 namespace dpso::windows {
 
 
-class CharConversionError : public std::runtime_error {
-    using runtime_error::runtime_error;
+class CharConversionError : public os::Error {
+    using Error::Error;
 };
 
 

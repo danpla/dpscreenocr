@@ -7,8 +7,8 @@
 #include "dpso_utils/str.h"
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/module.h"
-#include "dpso_utils/windows/package.h"
 
+#include "msix_helper/msix_helper.h"
 #include "update_checker.h"
 
 
@@ -17,7 +17,7 @@ using namespace dpso;
 
 bool uiUpdateCheckerIsAvailable(void)
 {
-    return !windows::isInPackage();
+    return !ui::msix::isInMsix();
 }
 
 

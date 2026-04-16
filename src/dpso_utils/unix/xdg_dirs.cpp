@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstdlib>
 
-#include "os.h"
+#include "os_error.h"
 #include "str.h"
 
 
