@@ -1,45 +1,35 @@
 #include "app_dirs.h"
-#include "init_app_dirs.h"
-
-#include <string>
 
 #include "app_dirs_unix_cfg.h"
 #include "exe_path.h"
 #include "toplevel_argv0.h"
 
 
-static std::string baseDirPath;
-
-
-namespace ui {
-
-
-bool initAppDirs()
+static std::string calcBaseDirPath()
 {
-    baseDirPath = getExePath();
+    auto result = ui::getExePath();
 
     // Drop the executable name.
-    if (const auto p = baseDirPath.rfind('/'); p != baseDirPath.npos)
-        baseDirPath.resize(p);
+    if (const auto p = result.rfind('/'); p != result.npos)
+        result.resize(p);
 
-    if (!getToplevelArgv0({}).empty())
+    if (!ui::getToplevelArgv0({}).empty())
         // The app was run by the launcher that is already located in
         // the base directory.
-        return true;
+        return result;
 
     // Drop the parent dir (bin).
-    if (const auto p = baseDirPath.rfind('/'); p != baseDirPath.npos)
-        baseDirPath.resize(p);
+    if (const auto p = result.rfind('/'); p != result.npos)
+        result.resize(p);
 
-    return true;
-}
-
-
+    return result;
 }
 
 
 const char* uiGetAppDir(UiAppDir dir)
 {
+    static const auto baseDirPath = calcBaseDirPath();
+
     static std::string result;
     result = baseDirPath + '/';
 

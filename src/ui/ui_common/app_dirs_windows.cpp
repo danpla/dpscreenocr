@@ -1,32 +1,24 @@
 #include "app_dirs.h"
-#include "init_app_dirs.h"
 
 #include "exe_path.h"
 
 
-static std::string baseDirPath;
-
-
-namespace ui {
-
-
-bool initAppDirs()
+static std::string calcBaseDirPath()
 {
-    baseDirPath = getExePath();
+    auto result = ui::getExePath();
 
-    const auto slashPos = baseDirPath.rfind('\\');
-    if (slashPos != baseDirPath.npos)
-        baseDirPath.resize(slashPos);
+    const auto slashPos = result.rfind('\\');
+    if (slashPos != result.npos)
+        result.resize(slashPos);
 
     return true;
 }
 
 
-}
-
-
 const char* uiGetAppDir(UiAppDir dir)
 {
+    static const auto baseDirPath = calcBaseDirPath();
+
     static std::string result;
     result = baseDirPath;
 

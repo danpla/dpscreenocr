@@ -8,7 +8,8 @@ namespace ui {
 //
 // The function performs all steps needed to set up libintl, such as
 // calling setlocale(), bindtextdomain(), etc. It depends on
-// UiAppDirLocale, so uiInitAppDirs() must be called before use.
+// UiAppDirLocale, which in turn depends on the executable path, so
+// must be called after initExePath().
 void initIntl();
 
 
