@@ -42,8 +42,7 @@ bool initStart(int /*argc*/, char* /*argv*/[])
 }
 
 
-bool initEnd(
-    int /*argc*/, char* /*argv*/[], UiStartupArgs& startupArgs)
+bool initEnd(UiStartupArgs& startupArgs)
 {
     if (msix::isActivatedByStartupTask())
         startupArgs.hide = true;
