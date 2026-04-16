@@ -103,7 +103,7 @@ About::About()
         "%4</p>"
         ).arg(
             joinInLayoutDirection(" ", {uiAppName, uiAppVersion}),
-            _("Program to recognize text on screen"),
+            _("A program to recognize text on the screen"),
             createLinks().join("<br>"),
             uiAppCopyright));
 

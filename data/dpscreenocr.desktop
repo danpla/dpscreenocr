@@ -6,4 +6,4 @@ Icon=dpscreenocr
 Categories=Graphics;OCR;
 SingleMainWindow=true
 Terminal=false
-Comment=Program to recognize text on screen
+Comment=A program to recognize text on the screen
