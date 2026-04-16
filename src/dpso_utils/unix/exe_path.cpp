@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-#include "os_error.h"
+#include "os.h"
 #include "str.h"
 #include "unix/path_env_search.h"
 

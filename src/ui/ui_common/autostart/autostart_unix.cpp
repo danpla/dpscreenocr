@@ -1,16 +1,13 @@
-#include "autostart.h"
+#include "autostart/autostart.h"
 
 #include <algorithm>
 #include <cstdlib>
 #include <optional>
-#include <stdexcept>
 #include <string>
 #include <string_view>
-#include <utility>
 
 #include <sys/stat.h>
 
-#include "dpso_utils/error_set.h"
 #include "dpso_utils/line_reader.h"
 #include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
@@ -33,12 +30,8 @@ using namespace dpso;
 // desktop-file-utils package.
 
 
+namespace ui {
 namespace {
-
-
-class AutostartError : public std::runtime_error {
-    using runtime_error::runtime_error;
-};
 
 
 // Escape the "string" type defined by the desktop entry spec.
@@ -191,7 +184,7 @@ std::optional<std::string> extractNextArg(std::string_view& cmdLine)
             if (const auto c = cmdLine[argLen]; c == ' ')
                 break;
             else if (isReservedArgChar(c))
-                throw AutostartError{str::format(
+                throw Autostart::Error{str::format(
                     "Reserved character \"{}\" outside a quoted "
                     "argument",
                     c)};
@@ -209,7 +202,7 @@ std::optional<std::string> extractNextArg(std::string_view& cmdLine)
     // Start with 1 to skip the leading double quote.
     for (std::size_t i{1}; true;) {
         if (i == cmdLine.size())
-            throw AutostartError{
+            throw Autostart::Error{
                 "Quoted argument has no closing \""};
 
         if (const auto c = cmdLine[i++]; c == '"') {
@@ -217,7 +210,7 @@ std::optional<std::string> extractNextArg(std::string_view& cmdLine)
             break;
         } else if (c != '\\') {
             if (isEscapableArgChar(c))
-                throw AutostartError{str::format(
+                throw Autostart::Error{str::format(
                     "Unescaped \"{}\" inside a quoted argument", c)};
 
             result += c;
@@ -225,7 +218,7 @@ std::optional<std::string> extractNextArg(std::string_view& cmdLine)
         }
 
         if (i == cmdLine.size())
-            throw AutostartError{"Command line ends with \\"};
+            throw Autostart::Error{"Command line ends with \\"};
 
         const auto c = cmdLine[i++];
         if (!isEscapableArgChar(c))
@@ -332,7 +325,7 @@ std::optional<DesktopFileInfo> getDesktopFileInfo(
     } catch (os::FileNotFoundError&) {
         return {};
     } catch (os::Error& e) {
-        throw AutostartError{str::format(
+        throw Autostart::Error{str::format(
             "FileStream(..., Mode::read): {}", e.what())};
     }
 
@@ -348,7 +341,7 @@ std::optional<DesktopFileInfo> getDesktopFileInfo(
             if (!lineReader.readLine(line))
                 break;
         } catch (StreamError& e) {
-            throw AutostartError{str::format(
+            throw Autostart::Error{str::format(
                 "LineReader::readLine(): {}", e.what())};
         }
 
@@ -364,7 +357,7 @@ std::optional<DesktopFileInfo> getDesktopFileInfo(
 
             // The spec says that there should be nothing preceding
             // [Desktop Entry] but possibly one or more comments.
-            throw AutostartError{str::format(
+            throw Autostart::Error{str::format(
                 "Unexpected line \"{}\" before {}", line, mainGroup)};
         }
 
@@ -374,7 +367,7 @@ std::optional<DesktopFileInfo> getDesktopFileInfo(
 
         const auto equalsPos = line.find('=');
         if (equalsPos == line.npos)
-            throw AutostartError{str::format(
+            throw Autostart::Error{str::format(
                 "No = in \"{}\"", line)};
 
         // The spec says that space around the = sign should be
@@ -385,7 +378,7 @@ std::optional<DesktopFileInfo> getDesktopFileInfo(
             std::string_view{line.data(), equalsPos},
             str::isSpace);
         if (key.empty())
-            throw AutostartError{str::format(
+            throw Autostart::Error{str::format(
                 "Key is empty in \"{}\"", line)};
 
         const auto val = str::trimLeft(
@@ -430,28 +423,35 @@ std::string getAltDesktopFileName(std::string_view appName)
 }
 
 
-}
+class AutostartUnix : public Autostart {
+public:
+    explicit AutostartUnix(const Args& args);
 
+    bool getIsEnabled() const override
+    {
+        return isEnabled;
+    }
 
-struct UiAutostart {
+    void setIsEnabled(bool newIsEnabled) override;
+private:
     std::string appName;
     std::string cmdLine;
     std::string desktopFilePath;
-    bool isEnabled;
+    bool isEnabled{};
 };
 
 
-static UiAutostart* create(const UiAutostartArgs* args)
+AutostartUnix::AutostartUnix(const Args& args)
+    : appName{args.appName}
 {
-    if (!args)
-        throw AutostartError{"args is null"};
+    if (args.numArgs == 0)
+        throw Error{"args.numArgs is 0"};
 
-    if (args->numArgs == 0)
-        throw AutostartError{"args->numArgs is 0"};
+    if (args.args[0].empty() || args.args[0].front() != '/')
+        throw Error{"args.args[0] must be an absolute path"};
 
-    if (*args->args[0] != '/')
-        throw AutostartError{
-            "args->args[0] must be an absolute path"};
+    for (std::size_t i{}; i < args.numArgs; ++i)
+        appendArg(cmdLine, args.args[i]);
 
     std::string autostartDir;
     try {
@@ -459,34 +459,31 @@ static UiAutostart* create(const UiAutostartArgs* args)
             unix::getXdgDirPath(unix::XdgDir::configHome)
             + "/autostart";
     } catch (os::Error& e) {
-        throw AutostartError{str::format(
+        throw Error{str::format(
             "unix::getXdgDirPath(XdgDir::configHome): {}", e.what())};
     }
 
-    auto primaryDesktopFilePath = str::format(
-        "{}/{}.desktop", autostartDir, args->appFileName);
+    const auto primaryDesktopFilePath = str::format(
+        "{}/{}.desktop", autostartDir, args.appFileName);
 
     // The alternative name is the one most likely to be used by
     // system autostart managers: on most desktops, their dialogs ask
     // the user for a program name, and the desktop file name is
     // automatically derived from that.
-    auto altDesktopFilePath = str::format(
+    const auto altDesktopFilePath = str::format(
         "{}/{}.desktop",
-        autostartDir, getAltDesktopFileName(args->appName));
-
-    auto* desktopFilePath = &primaryDesktopFilePath;
-    bool isEnabled{};
+        autostartDir, getAltDesktopFileName(args.appName));
 
     // Try the primary name first, as this is what we use by default
     // if there is no existing desktop entry. But if the file with the
     // alt name matches, there's no harm in continuing to use it.
-    for (auto* path
+    for (const auto* path
             : {&primaryDesktopFilePath, &altDesktopFilePath}) {
         std::optional<DesktopFileInfo> desktopFileInfo;
         try {
             desktopFileInfo = getDesktopFileInfo(*path);
-        } catch (AutostartError& e) {
-            throw AutostartError{str::format(
+        } catch (Error& e) {
+            throw Error{str::format(
                 "Can't load \"{}\": {}", *path, e.what())};
         }
 
@@ -497,8 +494,8 @@ static UiAutostart* create(const UiAutostartArgs* args)
         try {
             std::string_view cmdLine{desktopFileInfo->cmdLine};
             desktopFileExe = extractNextArg(cmdLine).value_or("");
-        } catch (AutostartError& e) {
-            throw AutostartError{str::format(
+        } catch (Error& e) {
+            throw Error{str::format(
                 "Invalid Exec command line \"{}\" in \"{}\": {}",
                 desktopFileInfo->cmdLine, *path, e.what())};
         }
@@ -514,95 +511,61 @@ static UiAutostart* create(const UiAutostartArgs* args)
             if (desktopFileExe.empty())
                 continue;
         } else if (slashPos != 0)
-            throw AutostartError{str::format(
+            throw Error{str::format(
                 "Exec command line (\"{}\") in \"{}\" cannot have a "
                 "relative executable path",
                 desktopFileInfo->cmdLine, *path)};
 
         // Do the string comparison first as an optimization for the
         // common case when both paths are already canonical.
-        if (args->args[0] == desktopFileExe
+        if (args.args[0] == desktopFileExe
                 || isSameFsEntry(
-                    args->args[0], desktopFileExe.c_str())) {
-            desktopFilePath = path;
+                    std::string{args.args[0]}.c_str(),
+                    desktopFileExe.c_str())) {
+            desktopFilePath = *path;
             isEnabled = desktopFileInfo->isEnabled;
             break;
         }
     }
 
-    std::string cmdLine;
-    for (std::size_t i{}; i < args->numArgs; ++i)
-        appendArg(cmdLine, args->args[i]);
-
-    return new UiAutostart{
-        args->appName,
-        std::move(cmdLine),
-        std::move(*desktopFilePath),
-        isEnabled};
+    if (desktopFilePath.empty())
+        desktopFilePath = primaryDesktopFilePath;
 }
 
 
-UiAutostart* uiAutostartCreate(const UiAutostartArgs* args)
+void AutostartUnix::setIsEnabled(bool newIsEnabled)
 {
-    try {
-        return create(args);
-    } catch (AutostartError& e) {
-        setError("{}", e.what());
-        return {};
-    }
-}
-
-
-void uiAutostartDelete(UiAutostart* autostart)
-{
-    delete autostart;
-}
-
-
-bool uiAutostartGetIsEnabled(const UiAutostart* autostart)
-{
-    return autostart && autostart->isEnabled;
-}
-
-
-static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
-{
-    if (!autostart)
-        throw AutostartError{"autostart is null"};
-
-    if (newIsEnabled == autostart->isEnabled)
+    if (newIsEnabled == isEnabled)
         return;
 
     if (!newIsEnabled) {
         try {
-            os::removeFile(autostart->desktopFilePath);
+            os::removeFile(desktopFilePath);
         } catch (os::Error& e) {
-            throw AutostartError{str::format(
+            throw Error{str::format(
                 "os::removeFile(\"{}\"): {}",
-                autostart->desktopFilePath, e.what())};
+                desktopFilePath, e.what())};
         }
 
-        autostart->isEnabled = false;
+        isEnabled = false;
         return;
     }
 
-    const auto desktopFileDir = os::getDirName(
-        autostart->desktopFilePath);
+    const auto desktopFileDir = os::getDirName(desktopFilePath);
     try {
         os::makeDirs(desktopFileDir);
     } catch (os::Error& e) {
-        throw AutostartError{str::format(
+        throw Error{str::format(
             "os::makeDirs(\"{}\"): {}", desktopFileDir, e.what())};
     }
 
     std::optional<FileStream> file;
     try {
-        file.emplace(
-            autostart->desktopFilePath, FileStream::Mode::write);
+        file.emplace(desktopFilePath, FileStream::Mode::write);
     } catch (os::Error& e) {
-        throw AutostartError{str::format(
+        throw Error{str::format(
             "FileStream(\"{}\", Mode::write): {}",
-            autostart->desktopFilePath, e.what())};
+            desktopFilePath, e.what())};
     }
 
     try {
@@ -613,31 +576,31 @@ static void setIsEnabled(UiAutostart* autostart, bool newIsEnabled)
                 "Type=Application\n"
                 "Name={}\n"
                 "Exec={}\n",
-                escape(autostart->appName),
-                escape(autostart->cmdLine)));
+                escape(appName),
+                escape(cmdLine)));
     } catch (StreamError& e) {
         try {
-            os::removeFile(autostart->desktopFilePath);
+            os::removeFile(desktopFilePath);
         } catch (os::Error&) {
         }
 
-        throw AutostartError{str::format(
+        throw Error{str::format(
             "write(file, ...) to \"{}\": {}",
-            autostart->desktopFilePath, e.what())};
+            desktopFilePath, e.what())};
     }
 
-    autostart->isEnabled = true;
+    isEnabled = true;
 }
 
 
-bool uiAutostartSetIsEnabled(
-    UiAutostart* autostart, bool newIsEnabled)
+}
+
+
+std::unique_ptr<Autostart> Autostart::create(
+    const Args& args)
 {
-    try {
-        setIsEnabled(autostart, newIsEnabled);
-        return true;
-    } catch (AutostartError& e) {
-        setError("{}", e.what());
-        return false;
-    }
+    return std::make_unique<AutostartUnix>(args);
+}
+
+
 }

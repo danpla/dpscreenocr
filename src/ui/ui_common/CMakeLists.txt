@@ -14,6 +14,7 @@ option(
 add_library(
     ui_common STATIC
 
+    autostart.cpp
     autostart_default.cpp
     cfg_default_values.cpp
     cfg_keys.cpp
@@ -39,7 +40,7 @@ if(UNIX AND NOT APPLE)
         ui_common
         PRIVATE
         app_dirs_unix.cpp
-        autostart_unix.cpp
+        autostart/autostart_unix.cpp
         exe_path_unix.cpp
         init_extra_unix.cpp)
 
@@ -53,7 +54,6 @@ elseif(WIN32)
         autostart/autostart_windows.cpp
         autostart/autostart_windows_registry.cpp
         msix_helper/msix_helper.cpp
-        autostart_windows.cpp
         exe_path_windows.cpp
         init_extra_windows.cpp)
 
