@@ -15,6 +15,11 @@ public:
         using runtime_error::runtime_error;
     };
 
+    // See UiAutostartSateDenied.
+    class AutostartDeniedError : public std::runtime_error {
+        using runtime_error::runtime_error;
+    };
+
     // See UiAutostartArgs
     struct Args {
         std::string_view appName;
@@ -26,6 +31,8 @@ public:
     static std::unique_ptr<Autostart> create(const Args& args);
 
     virtual ~Autostart() = default;
+
+    virtual bool getIsAvailable() const = 0;
 
     virtual bool getIsEnabled() const = 0;
     virtual void setIsEnabled(bool newIsEnabled) = 0;

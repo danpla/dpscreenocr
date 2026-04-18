@@ -427,6 +427,11 @@ class AutostartUnix : public Autostart {
 public:
     explicit AutostartUnix(const Args& args);
 
+    bool getIsAvailable() const override
+    {
+        return true;
+    }
+
     bool getIsEnabled() const override
     {
         return isEnabled;

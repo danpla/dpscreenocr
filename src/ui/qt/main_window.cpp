@@ -16,6 +16,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSessionManager>
+#include <QSignalBlocker>
 #include <QStringList>
 #include <QStyle>
 #include <QSystemTrayIcon>
@@ -717,26 +718,37 @@ QWidget* MainWindow::createSettingsTab()
     Q_ASSERT(autostart);
     autostartCheck->setChecked(
         uiAutostartGetIsEnabled(autostart.get()));
+    if (!uiAutostartGetIsAvailable(autostart.get()))
+        autostartCheck->hide();
     connect(
         autostartCheck, &QCheckBox::toggled,
         [&](bool isChecked)
         {
-            if (uiAutostartSetIsEnabled(autostart.get(), isChecked))
+            const auto result = uiAutostartSetIsEnabled(
+                autostart.get(), isChecked);
+            if (result == UiAutostartSateChangeResultSuccess)
                 return;
 
-            // uiAutostartSetIsEnabled() failure will not change the
-            // autostart state, so setChecked() will not result in an
-            // infinite recursion as the next lambda call will be
-            // no-op.
+            const QSignalBlocker signalBlocker{autostartCheck};
             autostartCheck->setChecked(
                 uiAutostartGetIsEnabled(autostart.get()));
 
-            QMessageBox::critical(
-                this,
-                uiAppName,
-                QString("Can't %1 autostart: %2").arg(
-                    isChecked ? "enable" : "disable",
-                    dpsoGetError()));
+            switch (result) {
+            case UiAutostartSateChangeResultSuccess:
+                break;
+            case UiAutostartSateChangeResultDenied:
+                QMessageBox::warning(
+                    this, uiAppName, gettext(dpsoGetError()));
+                break;
+            case UiAutostartSateChangeResultError:
+                QMessageBox::critical(
+                    this,
+                    uiAppName,
+                    QString("Can't %1 autostart: %2").arg(
+                        isChecked ? "enable" : "disable",
+                        dpsoGetError()));
+                break;
+            }
         });
     behaviorGroupLayout->addWidget(autostartCheck);
 

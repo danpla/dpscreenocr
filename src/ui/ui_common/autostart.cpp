@@ -46,25 +46,34 @@ void uiAutostartDelete(UiAutostart* autostart)
 }
 
 
+bool uiAutostartGetIsAvailable(const UiAutostart* autostart)
+{
+    return autostart && autostart->impl->getIsAvailable();
+}
+
+
 bool uiAutostartGetIsEnabled(const UiAutostart* autostart)
 {
     return autostart && autostart->impl->getIsEnabled();
 }
 
 
-bool uiAutostartSetIsEnabled(
+UiAutostartSateChangeResult uiAutostartSetIsEnabled(
     UiAutostart* autostart, bool newIsEnabled)
 {
     if (!autostart) {
         setError("autostart is null");
-        return false;
+        return UiAutostartSateChangeResultError;
     }
 
     try {
         autostart->impl->setIsEnabled(newIsEnabled);
-        return true;
+        return UiAutostartSateChangeResultSuccess;
+    } catch (ui::Autostart::AutostartDeniedError& e) {
+        setError("{}", e.what());
+        return UiAutostartSateChangeResultDenied;
     } catch (ui::Autostart::Error& e) {
         setError("{}", e.what());
-        return false;
+        return UiAutostartSateChangeResultError;
     }
 }
