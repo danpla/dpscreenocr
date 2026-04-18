@@ -14,7 +14,8 @@ namespace ui {
 
 static bool setIsEnabled(UiAutostart* autostart, bool isEnabled)
 {
-    if (uiAutostartSetIsEnabled(autostart, isEnabled))
+    if (uiAutostartSetIsEnabled(autostart, isEnabled)
+            == UiAutostartSateChangeResultSuccess)
         return true;
 
     dpso::setError(
