@@ -98,6 +98,11 @@ class RegistryAutostart : public Autostart {
 public:
     explicit RegistryAutostart(const Args& args);
 
+    bool getIsAvailable() const override
+    {
+        return true;
+    }
+
     bool getIsEnabled() const override
     {
         return isEnabled;

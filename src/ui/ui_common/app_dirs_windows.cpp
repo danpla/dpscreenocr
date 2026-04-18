@@ -11,7 +11,7 @@ static std::string calcBaseDirPath()
     if (slashPos != result.npos)
         result.resize(slashPos);
 
-    return true;
+    return result;
 }
 
 

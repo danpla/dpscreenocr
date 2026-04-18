@@ -29,9 +29,21 @@ MsixHelper_startupTaskCreate(const wchar_t* id);
 EXPORT void MsixHelper_startupTaskDelete(MsixHelper_StartupTask* st);
 
 EXPORT bool
-MsixHelper_startupTaskGetIsEnabled(const MsixHelper_StartupTask* st);
+MsixHelper_startupTaskGetIsAvailable(
+    const MsixHelper_StartupTask* st);
 
 EXPORT bool
+MsixHelper_startupTaskGetIsEnabled(const MsixHelper_StartupTask* st);
+
+
+typedef enum {
+    MsixHelper_StartupTaskSateChangeResultSuccess,
+    MsixHelper_StartupTaskSateChangeResultDenied,
+    MsixHelper_StartupTaskSateChangeResultError
+} MsixHelper_StartupTaskSateChangeResult;
+
+
+EXPORT MsixHelper_StartupTaskSateChangeResult
 MsixHelper_startupTaskSetIsEnabled(
     MsixHelper_StartupTask* st, bool newIsEnabled);
 

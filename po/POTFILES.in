@@ -14,3 +14,4 @@ src/ui/qt/main.cpp
 src/ui/qt/main_window.cpp
 src/ui/qt/update_checker.cpp
 src/ui/qt/utils.cpp
+src/ui/ui_common/msix_helper/dll.cpp

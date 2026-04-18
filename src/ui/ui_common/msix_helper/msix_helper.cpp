@@ -79,6 +79,7 @@ public:
     DECL_FN(isActivatedByStartupTask);
     DECL_FN(startupTaskCreate);
     DECL_FN(startupTaskDelete);
+    DECL_FN(startupTaskGetIsAvailable);
     DECL_FN(startupTaskGetIsEnabled);
     DECL_FN(startupTaskSetIsEnabled);
 
@@ -139,6 +140,7 @@ private:
         , LOAD_FN(isActivatedByStartupTask)
         , LOAD_FN(startupTaskCreate)
         , LOAD_FN(startupTaskDelete)
+        , LOAD_FN(startupTaskGetIsAvailable)
         , LOAD_FN(startupTaskGetIsEnabled)
         , LOAD_FN(startupTaskSetIsEnabled)
     {
@@ -207,6 +209,11 @@ public:
         dll.startupTaskDelete(st);
     }
 
+    bool getIsAvailable() const override
+    {
+        return dll.startupTaskGetIsAvailable(st);
+    }
+
     bool getIsEnabled() const override
     {
         return dll.startupTaskGetIsEnabled(st);
@@ -214,9 +221,16 @@ public:
 
     void setIsEnabled(bool newIsEnabled) override
     {
-        if(!dll.startupTaskSetIsEnabled(st, newIsEnabled))
+        switch (dll.startupTaskSetIsEnabled(st, newIsEnabled)) {
+        case MsixHelper_StartupTaskSateChangeResultSuccess:
+            return;
+        case MsixHelper_StartupTaskSateChangeResultDenied:
+            throw Autostart::AutostartDeniedError{
+                std::string{dll.getError()}};
+        case MsixHelper_StartupTaskSateChangeResultError:
             throw Autostart::Error{str::format(
                 "startupTaskSetIsEnabled: {}", dll.getError())};
+        }
     }
 private:
     const Dll& dll;

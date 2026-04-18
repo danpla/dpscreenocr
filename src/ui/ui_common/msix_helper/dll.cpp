@@ -14,6 +14,9 @@
 using namespace winrt::Windows::ApplicationModel;
 
 
+#define N_(S) S
+
+
 namespace {
 
 
@@ -120,56 +123,36 @@ bool MsixHelper_isActivatedByStartupTask()
 }
 
 
-struct MsixHelper_StartupTask {
-    std::wstring id;
+namespace {
+
+
+class StartupTaskDeniedError : public Error {
+    using Error::Error;
 };
 
 
-MsixHelper_StartupTask*
-    MsixHelper_startupTaskCreate(const wchar_t* id)
+StartupTaskState getStartupTaskState(const std::wstring& id)
 {
-    return new MsixHelper_StartupTask{id};
+    return runInMtaThread(
+        [&]()
+        {
+            try {
+                return StartupTask::GetAsync(id).get().State();
+            } catch (winrt::hresult_error& e) {
+                throw Error{"StartupTask::GetAsync().State()", e};
+            }
+        });
 }
 
 
-void MsixHelper_startupTaskDelete(MsixHelper_StartupTask* st)
-{
-    delete st;
-}
-
-
-static bool isEnabled(StartupTaskState state)
+bool isEnabled(StartupTaskState state)
 {
     return state == StartupTaskState::Enabled
         || state == StartupTaskState::EnabledByPolicy;
 }
 
 
-bool
-MsixHelper_startupTaskGetIsEnabled(const MsixHelper_StartupTask* st)
-{
-    if (!st)
-        return false;
-
-    try {
-        return runInMtaThread(
-            [&]()
-            {
-                try {
-                    return isEnabled(
-                        StartupTask::GetAsync(st->id).get().State());
-                } catch (winrt::hresult_error&) {
-                    return false;
-                }
-            });
-    } catch (Error&) {
-        return false;
-    }
-}
-
-
-static void setStatupTaskIsEnabled(
-    const std::wstring& id, bool newIsEnabled)
+void setStatupTaskIsEnabled(const std::wstring& id, bool newIsEnabled)
 {
     StartupTask startupTask{nullptr};
     try {
@@ -190,7 +173,18 @@ static void setStatupTaskIsEnabled(
 
     if (newIsEnabled) {
         if (state == StartupTaskState::DisabledByUser)
-            throw Error{"Startup is disabled by the user"};
+            // Translators: This is a Windows-specific message. Make
+            // sure that "Settings", "Apps", and "Startup" actually
+            // match the text you see in the Windows interface in the
+            // target language. If you don't have access to Windows,
+            // look for screenshots on the Internet (try searching for
+            // "windows settings startup").
+            //
+            // https://en.wikipedia.org/wiki/Settings_(Windows)
+            // https://support.microsoft.com/en-us/windows/configure-startup-applications-in-windows-115a420a-0bff-4a6f-90e0-1934c844e473
+            throw StartupTaskDeniedError{N_(
+                "Startup is disabled by the user. You can enable it "
+                "in Windows Settings (Apps > Startup).")};
 
         if (state == StartupTaskState::DisabledByPolicy)
             throw Error{
@@ -227,13 +221,71 @@ static void setStatupTaskIsEnabled(
 }
 
 
+}
+
+
+struct MsixHelper_StartupTask {
+    std::wstring id;
+};
+
+
+MsixHelper_StartupTask*
+    MsixHelper_startupTaskCreate(const wchar_t* id)
+{
+    return new MsixHelper_StartupTask{id};
+}
+
+
+void MsixHelper_startupTaskDelete(MsixHelper_StartupTask* st)
+{
+    delete st;
+}
+
+
 bool
+MsixHelper_startupTaskGetIsAvailable(const MsixHelper_StartupTask* st)
+{
+    if (!st)
+        return false;
+
+    try {
+        switch (getStartupTaskState(st->id)) {
+        case StartupTaskState::Disabled:
+        case StartupTaskState::DisabledByUser:
+        case StartupTaskState::Enabled:
+            return true;
+        case StartupTaskState::DisabledByPolicy:
+        case StartupTaskState::EnabledByPolicy:
+            break;
+        }
+    } catch (Error&) {
+    }
+
+    return false;
+}
+
+
+bool
+MsixHelper_startupTaskGetIsEnabled(const MsixHelper_StartupTask* st)
+{
+    if (!st)
+        return false;
+
+    try {
+        return isEnabled(getStartupTaskState(st->id));
+    } catch (Error&) {
+        return false;
+    }
+}
+
+
+MsixHelper_StartupTaskSateChangeResult
 MsixHelper_startupTaskSetIsEnabled(
     MsixHelper_StartupTask* st, bool newIsEnabled)
 {
     if (!st) {
         lastError = "st is null";
-        return false;
+        return MsixHelper_StartupTaskSateChangeResultError;
     }
 
     try {
@@ -242,9 +294,12 @@ MsixHelper_startupTaskSetIsEnabled(
             {
                 setStatupTaskIsEnabled(st->id, newIsEnabled);
             });
-        return true;
+        return MsixHelper_StartupTaskSateChangeResultSuccess;
+    } catch (StartupTaskDeniedError& e) {
+        lastError = e.what();
+        return MsixHelper_StartupTaskSateChangeResultDenied;
     } catch (Error& e) {
         lastError = e.what();
-        return false;
+        return MsixHelper_StartupTaskSateChangeResultError;
     }
 }
