@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2026-04-16 19:34+0200\n"
+"POT-Creation-Date: 2026-04-18 21:43+0200\n"
 "PO-Revision-Date: 2026-02-25 09:09+0000\n"
 "Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -581,7 +581,7 @@ msgstr "Exporter…"
 msgid "Clear…"
 msgstr "Effacer…"
 
-#: src/ui/qt/history.cpp:61 src/ui/qt/main_window.cpp:118
+#: src/ui/qt/history.cpp:61 src/ui/qt/main_window.cpp:119
 msgid "History"
 msgstr "Historique"
 
@@ -589,7 +589,7 @@ msgstr "Historique"
 msgid "Plain text"
 msgstr "Texte brut"
 
-#: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:538
+#: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:539
 msgid "All files"
 msgstr "Tous les fichiers"
 
@@ -602,7 +602,7 @@ msgid "Clear the history?"
 msgstr "Effacer l'historique ?"
 
 #: src/ui/qt/history.cpp:153 src/ui/qt/lang_manager/lang_manager_page.cpp:280
-#: src/ui/qt/main_window.cpp:188
+#: src/ui/qt/main_window.cpp:189
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -674,7 +674,7 @@ msgstr ""
 msgid "Update ({count})"
 msgstr "Mise à jour ({count})"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:414
+#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:415
 msgid "Language manager"
 msgstr "Gestion des langues"
 
@@ -747,88 +747,88 @@ msgstr "Vérifiez votre connexion internet et réessayez."
 msgid "{app_name} is already running"
 msgstr "{app_name} est déjà en cours d'exécution"
 
-#: src/ui/qt/main_window.cpp:60
+#: src/ui/qt/main_window.cpp:61
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Reconnaissance en cours {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:117
+#: src/ui/qt/main_window.cpp:118
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "Général"
 
-#: src/ui/qt/main_window.cpp:119
+#: src/ui/qt/main_window.cpp:120
 msgid "Settings"
 msgstr "Paramètres"
 
-#: src/ui/qt/main_window.cpp:120
+#: src/ui/qt/main_window.cpp:121
 msgid "About"
 msgstr "À propos"
 
-#: src/ui/qt/main_window.cpp:187
+#: src/ui/qt/main_window.cpp:188
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "La reconnaissance n'est pas terminée. Quitter quand même ?"
 
-#: src/ui/qt/main_window.cpp:189 src/ui/qt/main_window.cpp:377
+#: src/ui/qt/main_window.cpp:190 src/ui/qt/main_window.cpp:378
 msgid "Quit"
 msgstr "Quitter"
 
-#: src/ui/qt/main_window.cpp:369
+#: src/ui/qt/main_window.cpp:370
 msgid "Show {app_name}"
 msgstr "Afficher {app_name}"
 
-#: src/ui/qt/main_window.cpp:391
+#: src/ui/qt/main_window.cpp:392
 msgid "Status"
 msgstr "Statut"
 
-#: src/ui/qt/main_window.cpp:401
+#: src/ui/qt/main_window.cpp:402
 msgid "Character recognition"
 msgstr "Reconnaissance de caractères"
 
-#: src/ui/qt/main_window.cpp:405
+#: src/ui/qt/main_window.cpp:406
 msgid "Split text blocks"
 msgstr "Couper les blocs de texte"
 
-#: src/ui/qt/main_window.cpp:407
+#: src/ui/qt/main_window.cpp:408
 msgid "Split independent text blocks, such as columns"
 msgstr "Couper les blocs de texte indépendant, comme les colonnes"
 
-#: src/ui/qt/main_window.cpp:410
+#: src/ui/qt/main_window.cpp:411
 msgid "Languages:"
 msgstr "Langues :"
 
-#: src/ui/qt/main_window.cpp:416
+#: src/ui/qt/main_window.cpp:417
 msgid "Install, update, and remove languages"
 msgstr "Installer, mettre à jour et supprimer des langues"
 
-#: src/ui/qt/main_window.cpp:428
+#: src/ui/qt/main_window.cpp:429
 msgid "Actions"
 msgstr "Actions"
 
-#: src/ui/qt/main_window.cpp:512
+#: src/ui/qt/main_window.cpp:513
 msgid "All supported audio files"
 msgstr "Tous les fichiers audio pris en charge"
 
-#: src/ui/qt/main_window.cpp:542
+#: src/ui/qt/main_window.cpp:543
 msgid "Choose an audio file"
 msgstr "Sélectionnez un fichier audio"
 
-#: src/ui/qt/main_window.cpp:557
+#: src/ui/qt/main_window.cpp:558
 msgid "Hotkey"
 msgstr "Raccourcis"
 
-#: src/ui/qt/main_window.cpp:570
+#: src/ui/qt/main_window.cpp:571
 msgid "Interface"
 msgstr "Interface"
 
-#: src/ui/qt/main_window.cpp:574
+#: src/ui/qt/main_window.cpp:575
 msgid "Show notification area icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: src/ui/qt/main_window.cpp:598
+#: src/ui/qt/main_window.cpp:599
 msgid "Minimize to notification area"
 msgstr "Minimiser dans la zone de notification"
 
-#: src/ui/qt/main_window.cpp:602
+#: src/ui/qt/main_window.cpp:603
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -836,11 +836,11 @@ msgstr ""
 "Minimiser la fenêtre masquera {app_name}. Utilisez l'icône de la zone de "
 "notification pour l'afficher à nouveau."
 
-#: src/ui/qt/main_window.cpp:608
+#: src/ui/qt/main_window.cpp:609
 msgid "Close to notification area"
 msgstr "Fermer dans la zone de notification"
 
-#: src/ui/qt/main_window.cpp:612
+#: src/ui/qt/main_window.cpp:613
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -848,27 +848,27 @@ msgstr ""
 "Fermer la fenêtre masquera {app_name}. Utilisez l'icône de la zone de "
 "notification pour l'afficher à nouveau."
 
-#: src/ui/qt/main_window.cpp:618
+#: src/ui/qt/main_window.cpp:619
 msgid "Behavior"
 msgstr "Comportement"
 
-#: src/ui/qt/main_window.cpp:628
+#: src/ui/qt/main_window.cpp:629
 msgid "Play sound when recognition is complete"
 msgstr "Jouer un son lorsque la reconnaissance est terminée"
 
-#: src/ui/qt/main_window.cpp:637
+#: src/ui/qt/main_window.cpp:638
 msgid "Play this audio file:"
 msgstr "Jouer ce fichier audio :"
 
-#: src/ui/qt/main_window.cpp:700
+#: src/ui/qt/main_window.cpp:701
 msgid "Check for updates automatically"
 msgstr "Vérifier automatiquement les mises à jour"
 
-#: src/ui/qt/main_window.cpp:708
+#: src/ui/qt/main_window.cpp:709
 msgid "Run at system logon"
 msgstr "Exécuter au démarrage du système"
 
-#: src/ui/qt/main_window.cpp:712
+#: src/ui/qt/main_window.cpp:713
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -879,7 +879,7 @@ msgstr ""
 "notification est activée, ou minimisée si l'icône de la zone de notification "
 "est désactivée."
 
-#: src/ui/qt/main_window.cpp:869
+#: src/ui/qt/main_window.cpp:881
 msgid ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} day"
@@ -893,23 +893,23 @@ msgstr[1] ""
 "{app_name} vérifiera automatiquement les mises à jour au démarrage, mais pas "
 "plus d'une fois tous les {count} jours"
 
-#: src/ui/qt/main_window.cpp:1127
+#: src/ui/qt/main_window.cpp:1139
 msgid "Please install languages"
 msgstr "Veuillez installer les langues"
 
-#: src/ui/qt/main_window.cpp:1129
+#: src/ui/qt/main_window.cpp:1141
 msgid "Please select languages"
 msgstr "Veuillez sélectionner des langues"
 
-#: src/ui/qt/main_window.cpp:1131
+#: src/ui/qt/main_window.cpp:1143
 msgid "Please select actions"
 msgstr "Veuillez sélectionner des actions"
 
-#: src/ui/qt/main_window.cpp:1143
+#: src/ui/qt/main_window.cpp:1155
 msgid "Press {hotkey} to start area selection"
 msgstr "Appuyez sur {hotkey} pour démarrer la sélection de zone"
 
-#: src/ui/qt/main_window.cpp:1144
+#: src/ui/qt/main_window.cpp:1156
 msgid "Press {hotkey} to finish selection"
 msgstr "Appuyez sur {hotkey} pour terminer la sélection"
 
@@ -949,3 +949,19 @@ msgstr ""
 #: src/ui/qt/update_checker.cpp:268
 msgid "Checking for updates…"
 msgstr "Vérification des mises à jour…"
+
+#. Translators: This is a Windows-specific message.
+#. Make sure that "Settings", "Apps", and "Startup"
+#. actually match the text you see in the Windows
+#. interface in the target language. If you don't have
+#. access to Windows, look for screenshots on the
+#. Internet (try searching for "windows settings
+#. startup").
+#.
+#. https://en.wikipedia.org/wiki/Settings_(Windows)
+#. https://support.microsoft.com/en-us/windows/configure-startup-applications-in-windows-115a420a-0bff-4a6f-90e0-1934c844e473
+#: src/ui/ui_common/msix_helper/dll.cpp:187
+msgid ""
+"Startup is disabled by the user. You can enable it in Windows Settings (Apps "
+"> Startup)."
+msgstr ""

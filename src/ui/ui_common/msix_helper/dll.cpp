@@ -173,18 +173,19 @@ void setStatupTaskIsEnabled(const std::wstring& id, bool newIsEnabled)
 
     if (newIsEnabled) {
         if (state == StartupTaskState::DisabledByUser)
-            // Translators: This is a Windows-specific message. Make
-            // sure that "Settings", "Apps", and "Startup" actually
-            // match the text you see in the Windows interface in the
-            // target language. If you don't have access to Windows,
-            // look for screenshots on the Internet (try searching for
-            // "windows settings startup").
-            //
-            // https://en.wikipedia.org/wiki/Settings_(Windows)
-            // https://support.microsoft.com/en-us/windows/configure-startup-applications-in-windows-115a420a-0bff-4a6f-90e0-1934c844e473
-            throw StartupTaskDeniedError{N_(
-                "Startup is disabled by the user. You can enable it "
-                "in Windows Settings (Apps > Startup).")};
+            throw StartupTaskDeniedError{
+                // Translators: This is a Windows-specific message.
+                // Make sure that "Settings", "Apps", and "Startup"
+                // actually match the text you see in the Windows
+                // interface in the target language. If you don't have
+                // access to Windows, look for screenshots on the
+                // Internet (try searching for "windows settings
+                // startup").
+                //
+                // https://en.wikipedia.org/wiki/Settings_(Windows)
+                // https://support.microsoft.com/en-us/windows/configure-startup-applications-in-windows-115a420a-0bff-4a6f-90e0-1934c844e473
+                N_("Startup is disabled by the user. You can enable "
+                "it in Windows Settings (Apps > Startup).")};
 
         if (state == StartupTaskState::DisabledByPolicy)
             throw Error{
