@@ -157,13 +157,14 @@ DpsoHistory* dpsoHistoryOpen(const char* filePath)
 
     if (validDataSize != data.size())
         try {
-            os::resizeFile(filePath, validDataSize);
+            os::resizeFile(history->filePath, validDataSize);
         } catch (os::Error& e) {
             setError("os::resizeFile(): {}", e.what());
             return nullptr;
         }
 
-    openSync(history->file, filePath, FileStream::Mode::append);
+    openSync(
+        history->file, history->filePath, FileStream::Mode::append);
     if (!history->file)
         return nullptr;
 
