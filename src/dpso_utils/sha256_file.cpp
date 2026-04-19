@@ -92,7 +92,39 @@ void saveSha256File(
 }
 
 
-static std::string loadDigestFromSha256File(
+namespace {
+
+
+struct Sha256FileRecord {
+    std::string_view digest;
+    std::string_view filePath;
+};
+
+
+Sha256FileRecord parseSha256FileLine(std::string_view line)
+{
+    const auto spacePos = line.find(' ');
+    if (spacePos == line.npos)
+        throw Sha256FileError{"Digest is not terminated by space"};
+
+    const auto digest = line.substr(0, spacePos);
+    validateDigest(digest);
+
+    if (spacePos + 1 == line.size())
+        throw Sha256FileError{"No digest mode specifier after space"};
+
+    const auto mode = line[spacePos + 1];
+    if (mode != '*')
+        throw Sha256FileError{str::format(
+            "Expected binary digest mode \"*\", got \"{}\"", mode)};
+
+    const auto filePath = line.substr(spacePos + 2);
+
+    return {digest, filePath};
+}
+
+
+std::string loadDigestFromSha256File(
     Stream& stream, std::string_view expectedFileName)
 {
     std::string line;
@@ -111,29 +143,17 @@ static std::string loadDigestFromSha256File(
             "os::readLine(): {}", e.what())};
     }
 
-    const auto spacePos = line.find(' ');
-    if (spacePos == line.npos)
-        throw Sha256FileError{"Digest is not terminated by space"};
+    const auto record = parseSha256FileLine(line);
 
-    const std::string_view digest{line.data(), spacePos};
-    validateDigest(digest);
-
-    if (spacePos + 1 == line.size())
-        throw Sha256FileError{"No digest mode specifier after space"};
-
-    const auto mode = line[spacePos + 1];
-    if (mode != '*')
-        throw Sha256FileError{str::format(
-            "Expected binary digest mode \"*\", but got \"{}\"",
-            mode)};
-
-    const auto fileName = std::string_view{line}.substr(spacePos + 2);
-    if (fileName != expectedFileName)
+    if (record.filePath != expectedFileName)
         throw Sha256FileError{str::format(
             "Unexpected file name \"{}\" (should be \"{}\")",
-            fileName, expectedFileName)};
+            record.filePath, expectedFileName)};
 
-    return std::string{digest};
+    return std::string{record.digest};
+}
+
+
 }
 
 
