@@ -17,7 +17,7 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
         return false;
     }
 
-    startupArgs = {};
+    *startupArgs = {};
 
     ui::processCmdLine(argc, argv, *startupArgs);
 
