@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
 #include <string>
 #include <utility>
 #include <vector>
@@ -122,7 +123,7 @@ private:
     InternetUPtr hInternet;
     InternetUPtr hConnection;
     std::optional<std::int64_t> contentLength;
-    std::vector<unsigned char> buf;
+    std::vector<std::uint8_t> buf;
     std::size_t bufPos{};
 };
 
@@ -149,7 +150,7 @@ std::size_t WindowsResponse::read(void* dst, std::size_t dstSize)
             std::copy_n(
                 buf.data() + bufPos,
                 numRead,
-                static_cast<unsigned char*>(dst) + dstPos);
+                static_cast<std::uint8_t*>(dst) + dstPos);
 
             bufPos += numRead;
             dstPos += numRead;
@@ -164,7 +165,7 @@ std::size_t WindowsResponse::read(void* dst, std::size_t dstSize)
         // copying.
         if (DWORD numRead; InternetReadFile(
                 hConnection.get(),
-                static_cast<unsigned char*>(dst) + dstPos,
+                static_cast<std::uint8_t*>(dst) + dstPos,
                 availDstSize,
                 &numRead))
             return dstPos + numRead;

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <charconv>
 #include <climits>
+#include <cstdint>
 #include <optional>
 
 #include "str_format_core.h"
@@ -227,7 +228,7 @@ std::string toHex(const void* data, std::size_t size)
     std::string result;
     result.reserve(size * 2);
 
-    const auto* bytes = static_cast<const unsigned char*>(data);
+    const auto* bytes = static_cast<const std::uint8_t*>(data);
     static const auto* hexChars = "0123456789abcdef";
 
     for (std::size_t i{}; i < size; ++i) {

@@ -1,5 +1,6 @@
 #include "sha256_file.h"
 
+#include <cstdint>
 #include <optional>
 
 #include "line_reader.h"
@@ -39,7 +40,7 @@ std::string calcFileSha256(std::string_view filePath)
 
     Sha256 h;
 
-    unsigned char buf[32 * 1024];
+    std::uint8_t buf[32 * 1024];
     while (true) {
         std::size_t numRead{};
         try {

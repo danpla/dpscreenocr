@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <type_traits>
 
 
@@ -29,7 +30,7 @@ template<ByteOrder byteOrder, typename T>
 void store(T v, void* data)
 {
     const auto uv = static_cast<std::make_unsigned_t<T>>(v);
-    auto* dst = static_cast<unsigned char*>(data);
+    auto* dst = static_cast<std::uint8_t*>(data);
 
     iLoop<byteOrder, sizeof(uv)>(
         [&](std::size_t i)
@@ -45,7 +46,7 @@ void load(T& v, const void* data)
     static_assert(numBytes <= sizeof(T));
 
     using UT = std::make_unsigned_t<T>;
-    const auto* src = static_cast<const unsigned char*>(data);
+    const auto* src = static_cast<const std::uint8_t*>(data);
 
     UT uv{};
 

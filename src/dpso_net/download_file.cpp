@@ -1,6 +1,7 @@
 #include "download_file.h"
 
 #include <chrono>
+#include <cstdint>
 #include <string>
 
 #include "dpso_utils/os.h"
@@ -45,7 +46,7 @@ void downloadFile(
     Clock::time_point lastProgressReportTime;
     const std::chrono::milliseconds progressReportInterval{1000 / 30};
 
-    unsigned char buf[16 * 1024];
+    std::uint8_t buf[16 * 1024];
     while (true) {
         const auto numRead = response->read(buf, sizeof(buf));
         if (numRead == 0)
