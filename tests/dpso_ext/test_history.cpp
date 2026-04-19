@@ -90,7 +90,7 @@ void testIo(IoTestMode mode)
         DpsoHistoryEntry inEntry;
         DpsoHistoryEntry outEntry;
 
-        explicit Test(const DpsoHistoryEntry& entry)
+        Test(const DpsoHistoryEntry& entry)
             : Test{entry, entry}
         {}
 
