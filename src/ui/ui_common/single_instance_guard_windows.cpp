@@ -1,5 +1,6 @@
 #include "single_instance_guard.h"
 
+#include <algorithm>
 #include <string>
 
 #define WIN32_LEAN_AND_MEAN
@@ -38,9 +39,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     // starts with "Global\". Also, the rest of the name cannot have
     // backslashes, so we replace them with underscores.
 
-    for (auto& c : idUtf16)
-        if (c == L'\\')
-            c = L'_';
+    std::replace(idUtf16.begin(), idUtf16.end(), L'\\', L'_');
 
     const auto mutexName = L"Local\\" + idUtf16 + L"_instance_mutex";
 
