@@ -7,9 +7,14 @@
 #include <unistd.h>
 
 #include <string>
+#include <utility>
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/os.h"
+#include "dpso_utils/str.h"
+
+
+using namespace dpso;
 
 
 struct UiSingleInstanceGuard {
@@ -40,39 +45,34 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     errno = 0;
     const auto* passwd = getpwuid(uid);
     if (!passwd) {
-        dpso::setError(
+        setError(
             "getpwuid({}): {}",
             uid,
-            errno == 0
-                ? "Can't find the user"
-                : dpso::os::getErrnoMsg(errno));
+            errno == 0 ? "User not found" : os::getErrnoMsg(errno));
         return {};
     }
 
-    const auto filePath =
-        std::string{"/tmp/."}
-        + id
-        + "_instance_lock_for_"
-        + passwd->pw_name;
+    auto filePath = str::format(
+        "/tmp/.{}_instance_lock_for_{}", id, passwd->pw_name);
 
     const auto fd = open(
         filePath.c_str(), O_WRONLY | O_CREAT, S_IWUSR | S_IRUSR);
     if (fd == -1) {
-        dpso::setError(
+        setError(
             "open(\"{}\", ...): {}",
-            filePath, dpso::os::getErrnoMsg(errno));
+            filePath, os::getErrnoMsg(errno));
         return {};
     }
 
     if (lockf(fd, F_TLOCK, 0) == 0)
-        return new UiSingleInstanceGuard{filePath, fd};
+        return new UiSingleInstanceGuard{std::move(filePath), fd};
 
     close(fd);
 
     if (errno == EACCES || errno == EAGAIN)
         return new UiSingleInstanceGuard{{}, -1};
 
-    dpso::setError("lockf(): {}", dpso::os::getErrnoMsg(errno));
+    setError("lockf(): {}", os::getErrnoMsg(errno));
     return {};
 }
 
