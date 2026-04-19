@@ -68,7 +68,7 @@ template<
     typename T,
     typename StrExtractor = DefaultStrExtractor,
     std::enable_if_t<
-        !std::is_convertible_v<T, std::string_view>>* = {}>
+        !std::is_convertible_v<T, std::string_view>, int> = 0>
 auto toStr(const T& v, StrExtractor strExtractor = {})
     -> decltype(toStr(v.begin(), v.end(), strExtractor))
 {

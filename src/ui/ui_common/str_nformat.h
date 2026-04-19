@@ -19,7 +19,7 @@ struct StrNFormatArg {
     template<
         typename T,
         std::enable_if_t<
-            !std::is_convertible_v<T, std::string_view>>* = {}>
+            !std::is_convertible_v<T, std::string_view>, int> = 0>
     StrNFormatArg(std::string_view name, const T& v)
         : name{name}
     {
