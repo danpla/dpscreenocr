@@ -110,8 +110,9 @@ private:
             windows::utf8ToUtf16(dllPath).c_str());
         if (!result)
             throw Error{str::format(
-                "Can't load \"{}\": {}",
-                dllPath, windows::getErrorMessage(GetLastError()))};
+                "Can't load \"{}.dll\": {}",
+                helperDllName,
+                windows::getErrorMessage(GetLastError()))};
 
         return result;
     }
