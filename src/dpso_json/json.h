@@ -43,6 +43,11 @@ class Object {
 public:
     static Object load(std::string_view data);
 
+    // For keys, we use char* instead of string_view for compatibility
+    // with Ubuntu 22.04, which ships with Jansson 2.13, while the
+    // json_object_getn() function needed for string_view was added in
+    // Jansson 2.14. We can migrate to string_view once Ubuntu 22.04
+    // reaches EOL in 2027-06-01.
     bool getBool(const char* key) const;
     std::string_view getStr(const char* key) const;
     std::int64_t getInt(const char* key) const;
