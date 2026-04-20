@@ -55,14 +55,15 @@ unpack it, and follow the instructions in "doc/building-unix.txt".
 
 ### Windows
 
-The [dpScreenOCR website][] provides an installer and a ZIP archive.
-The latter doesn't need installation: unpack it anywhere and run
-dpscreenocr.exe.
+The recommended way to install dpScreenOCR on Windows is through
+Microsoft Store.
 
-Both versions are identical. In particular, the ZIP variant is not a
-so-called [portable application][]: it stores its configuration and
-other files in [the same directories][Program files] as the installer
-version.
+Alternatively, the [dpScreenOCR website][] provides an installer and a
+ZIP archive. The latter doesn't need installation: unpack it anywhere
+and run dpscreenocr.exe. Both versions are identical. In particular,
+the ZIP variant is not a so-called [portable application][]: it stores
+its configuration and other files in
+[the same directories][Program files] as the installer version.
 
 [Portable application]: https://en.wikipedia.org/wiki/Portable_application
 
@@ -281,6 +282,10 @@ dpScreenOCR will check for new program versions at startup, but no
 more often than once a week. You can also check for updates manually
 using the "Check for updates" button in the "About" tab.
 
+This update check functionality is not needed and is therefore hidden
+from the dpScreenOCR interface if the program was installed from
+Microsoft Store or the system package manager.
+
 
 # Command-line options
 
@@ -305,7 +310,7 @@ Configuration files are located in the following directory:
 *   Windows: `%LOCALAPPDATA%\dpscreenocr`
 
     To quickly navigate to this folder, you can paste this path into
-    “Run” (press Windows + R) or into the folder address bar of File
+    "Run" (press Windows + R) or into the folder address bar of File
     Explorer. `%LOCALAPPDATA%` is an environment variable that usually
     refers to `C:\Users\(your name)\AppData\Local\`.
 
