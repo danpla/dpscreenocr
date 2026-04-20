@@ -1,7 +1,6 @@
 #include "engine/tesseract/lang_utils.h"
 
 #include <filesystem>
-#include <initializer_list>
 #include <system_error>
 #include <utility>
 
@@ -20,7 +19,9 @@ const std::string_view traineddataExt{".traineddata"};
 
 bool isIgnoredLang(std::string_view lang)
 {
-    for (const auto* ignoredLang : {"equ", "osd"})
+    static const std::string_view ignoredLangs[]{"equ", "osd"};
+
+    for (const auto& ignoredLang : ignoredLangs)
         if (lang == ignoredLang)
             return true;
 
@@ -93,7 +94,7 @@ std::vector<std::string> getAvailableLangs(std::string_view dataDir)
         if (entry.path().extension() != traineddataExt)
             continue;
 
-        const auto lang = entry.path().lexically_relative(dataDirPath)
+        auto lang = entry.path().lexically_relative(dataDirPath)
             .replace_extension().u8string();
         if (!isIgnoredLang(lang))
             result.push_back(std::move(lang));
