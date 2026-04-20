@@ -3,6 +3,7 @@
 #include <condition_variable>
 #include <exception>
 #include <mutex>
+#include <optional>
 #include <thread>
 #include <type_traits>
 #include <utility>
@@ -77,24 +78,16 @@ auto execute(ActionExecutor& executor, const CallableT& callable)
 
         explicit CallableAction(const CallableT& callable)
             : callable{callable}
-            , result{}
         {
-        }
-
-        ~CallableAction()
-        {
-            if (result)
-                result->~ResultT();
         }
 
         void action() override
         {
-            result = new(resultMem) ResultT{callable()};
+            result.emplace(callable());
         }
 
         const CallableT& callable;
-        alignas(ResultT) unsigned char resultMem[sizeof(ResultT)];
-        ResultT* result;
+        std::optional<ResultT> result;
     } action(callable);
 
     executor.execute(action);
