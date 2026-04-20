@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2023-09-20 01:25+0200\n"
+"POT-Creation-Date: 2026-04-20 19:01+0200\n"
 "PO-Revision-Date: 2023-06-28 20:15+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -22,9 +22,9 @@ msgstr ""
 
 #, python-brace-format
 msgid ""
-"{app_name} is a program to recognize text on the screen. Powered by "
-"<a {tesseract_link}>Tesseract</a>, it supports more than 100 languages and "
-"can split independent text blocks, such as columns. Read the <a {manual_link}"
+"{app_name} is a program to recognize text on the screen. Powered by <a "
+"{tesseract_link}>Tesseract</a>, it supports more than 100 languages and can "
+"split independent text blocks, such as columns. Read the <a {manual_link}"
 ">manual</a> for instructions on installing, configuring, and using the "
 "program."
 msgstr ""
@@ -40,8 +40,8 @@ msgstr ""
 
 #, python-brace-format
 msgid ""
-"Download {file}, which works on most "
-"systems, or choose a package for your distribution:"
+"Download {file}, which works on most systems, or choose a package for your "
+"distribution:"
 msgstr ""
 
 msgid "Ubuntu and derivatives"
@@ -49,8 +49,8 @@ msgstr ""
 
 #, python-brace-format
 msgid ""
-"<b>Windows</b> 7 or newer: <a {installer_link}>installer</a> or <a "
-"{zip_archive_link}>ZIP archive</a>"
+"Direct download: <a {installer_link}>installer</a> or <a {zip_archive_link}"
+">ZIP archive</a>"
 msgstr ""
 
 msgid "Source code (tar.gz)"

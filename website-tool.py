@@ -454,8 +454,9 @@ def gen_main_page_content(root_url, page_lang, translator):
                         translator.gettext('Ubuntu and derivatives'))
             )
         ),
-        translator.gettext(
-                '<b>Windows</b> 7 or newer: '
+        '<b>Windows</b><br>'
+        + translator.gettext(
+                'Direct download: '
                 '<a {installer_link}>installer</a> or '
                 '<a {zip_archive_link}>ZIP archive</a>').format(
             installer_link=(
