@@ -54,15 +54,26 @@ ActionChooser::ActionChooser()
         runExeCheck, &QCheckBox::toggled,
         selectExeButton, &QToolButton::setEnabled);
 
-    connect(
-        copyToClipboardCheck, &QCheckBox::toggled,
-        this, &ActionChooser::actionsChanged);
-    connect(
-        addToHistoryCheck, &QCheckBox::toggled,
-        this, &ActionChooser::actionsChanged);
-    connect(
-        runExeCheck, &QCheckBox::toggled,
-        this, &ActionChooser::actionsChanged);
+    const auto setupActionCheckbox =
+    [&](QCheckBox* check, Action action)
+    {
+        connect(
+            check, &QCheckBox::toggled,
+            this,
+            [this, action](bool isChecked)
+            {
+                if (isChecked == actions.testFlag(action))
+                    return;
+
+                actions.setFlag(action, isChecked);
+                emit actionsChanged();
+            });
+    };
+
+    setupActionCheckbox(
+        copyToClipboardCheck, Action::copyToClipboard);
+    setupActionCheckbox(addToHistoryCheck, Action::addToHistory);
+    setupActionCheckbox(runExeCheck, Action::runExe);
 
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins({});
@@ -80,17 +91,6 @@ ActionChooser::ActionChooser()
 
 ActionChooser::Actions ActionChooser::getSelectedActions() const
 {
-    Actions actions = Action::none;
-
-    if (copyToClipboardCheck->isChecked())
-        actions |= Action::copyToClipboard;
-
-    if (addToHistoryCheck->isChecked())
-        actions |= Action::addToHistory;
-
-    if (runExeCheck->isChecked())
-        actions |= Action::runExe;
-
     return actions;
 }
 

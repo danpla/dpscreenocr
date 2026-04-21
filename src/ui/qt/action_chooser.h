@@ -38,6 +38,7 @@ signals:
 private slots:
     void chooseExe();
 private:
+    Actions actions{Action::none};
     QCheckBox* copyToClipboardCheck;
     QCheckBox* addToHistoryCheck;
     QCheckBox* runExeCheck;
