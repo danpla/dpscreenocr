@@ -129,9 +129,8 @@ void runLangManager(QWidget* parent, int ocrEngineIdx)
     refreshUpdateTabTitle();
 
     QObject::connect(
-        langList,
-        &QAbstractItemModel::modelReset,
-        refreshUpdateTabTitle);
+        langList, &QAbstractItemModel::modelReset,
+        tabs, refreshUpdateTabTitle);
 
     auto* buttonBox = new QDialogButtonBox();
     QObject::connect(

@@ -32,8 +32,8 @@ ActionChooser::ActionChooser()
     exeLineEdit = new QLineEdit();
     exeLineEdit->setEnabled(false);
     connect(
-        exeLineEdit, &QLineEdit::textChanged,
-        [&](const QString& text)
+        exeLineEdit, &QLineEdit::textChanged, this,
+        [this](const QString& text)
         {
             exePath = text.trimmed().toUtf8();
         });
@@ -58,8 +58,7 @@ ActionChooser::ActionChooser()
     [&](QCheckBox* check, Action action)
     {
         connect(
-            check, &QCheckBox::toggled,
-            this,
+            check, &QCheckBox::toggled, this,
             [this, action](bool isChecked)
             {
                 if (isChecked == actions.testFlag(action))

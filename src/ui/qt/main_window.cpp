@@ -377,9 +377,8 @@ void MainWindow::createQActions()
 
     quitAction = new QAction(_("Quit"), this);
     connect(
-        quitAction,
-        &QAction::triggered,
-        [&]
+        quitAction, &QAction::triggered, this,
+        [this]
         {
             quitRequested = true;
             close();
@@ -574,8 +573,8 @@ QWidget* MainWindow::createSettingsTab()
     showTrayIconCheck = new QCheckBox(
         _("Show notification area icon"));
     connect(
-        showTrayIconCheck, &QCheckBox::toggled,
-        [&](bool isChecked)
+        showTrayIconCheck, &QCheckBox::toggled, this,
+        [this](bool isChecked)
         {
             trayIcon->setVisible(isChecked);
 
@@ -657,7 +656,7 @@ QWidget* MainWindow::createSettingsTab()
         this, &MainWindow::chooseSound);
     playSoundSubordinateLayout->addWidget(selectSoundButton);
 
-    const auto updateSoundSelector = [=]
+    const auto updateSoundSelector = [this, selectSoundButton]
     {
         const auto isEnabled = playSoundCheck->isChecked()
             && playCustomSoundCheck->isChecked();
@@ -667,15 +666,15 @@ QWidget* MainWindow::createSettingsTab()
     };
 
     connect(
-        playSoundCheck, &QCheckBox::toggled,
-        [=](bool isChecked)
+        playSoundCheck, &QCheckBox::toggled, this,
+        [this, updateSoundSelector](bool isChecked)
         {
             playCustomSoundCheck->setEnabled(isChecked);
             updateSoundSelector();
         });
     connect(
-        playSoundCheck, &QCheckBox::clicked,
-        [=](bool isChecked)
+        playSoundCheck, &QCheckBox::clicked, this,
+        [this](bool isChecked)
         {
             if (!isChecked)
                 return;
@@ -686,10 +685,10 @@ QWidget* MainWindow::createSettingsTab()
 
     connect(
         playCustomSoundCheck, &QCheckBox::toggled,
-        updateSoundSelector);
+        this, updateSoundSelector);
     connect(
-        playCustomSoundCheck, &QCheckBox::clicked,
-        [=]
+        playCustomSoundCheck, &QCheckBox::clicked, this,
+        [this]
         {
             reloadSound();
 
@@ -721,8 +720,8 @@ QWidget* MainWindow::createSettingsTab()
     if (!uiAutostartGetIsAvailable(autostart.get()))
         autostartCheck->hide();
     connect(
-        autostartCheck, &QCheckBox::toggled,
-        [&](bool isChecked)
+        autostartCheck, &QCheckBox::toggled, this,
+        [this](bool isChecked)
         {
             const auto result = uiAutostartSetIsEnabled(
                 autostart.get(), isChecked);
@@ -793,9 +792,8 @@ void MainWindow::createTrayIcon()
     trayIcon->setContextMenu(menu);
 
     connect(
-        trayIcon,
-        &QSystemTrayIcon::activated,
-        [&](QSystemTrayIcon::ActivationReason reason)
+        trayIcon, &QSystemTrayIcon::activated, this,
+        [this](QSystemTrayIcon::ActivationReason reason)
         {
             if (reason == QSystemTrayIcon::Trigger)
                 visibilityAction->toggle();
