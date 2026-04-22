@@ -86,10 +86,7 @@ int main(int argc, char* argv[])
     // High DPI support is enabled by default in Qt 6.
     #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
-    #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    #endif
 
     // We could also set HighDpiScaleFactorRoundingPolicy to
     // PassThrough since this is default in Qt 6, but high DPI support
