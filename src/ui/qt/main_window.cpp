@@ -1143,13 +1143,13 @@ void MainWindow::updateStatus()
 
 void MainWindow::checkResults()
 {
+    if (!dpsoOcrHasPendingResults(ocr.get()))
+        return;
+
     const auto actions = actionChooser->getSelectedActions();
 
-    bool wasResults{};
-    DpsoOcrJobResult result;
-    while (dpsoOcrGetResult(ocr.get(), &result)) {
-        wasResults = true;
-
+    for (DpsoOcrJobResult result;
+            dpsoOcrGetResult(ocr.get(), &result);) {
         if (actions & ActionChooser::Action::copyToClipboard) {
             if (clipboardText)
                 *clipboardText += clipboardTextSeparator;
@@ -1167,7 +1167,7 @@ void MainWindow::checkResults()
             dpsoExec(actionChooser->getExePath(), &result.text, 1);
     }
 
-    if (!wasResults || dpsoOcrHasPendingResults(ocr.get()))
+    if (dpsoOcrHasPendingResults(ocr.get()))
         return;
 
     if (clipboardText) {

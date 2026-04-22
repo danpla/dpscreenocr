@@ -103,6 +103,7 @@ struct DpsoOcr {
     std::vector<std::uint8_t> imgBuffers[3];
     bool dumpDebugImages;
 
+    std::size_t numPendingResults;
     std::queue<JobResult> results;
 };
 
@@ -571,6 +572,8 @@ bool dpsoOcrQueueJob(
         ocrFeatures,
         createTimestamp()};
 
+    ++ocr->numPendingResults;
+
     const auto link = ocr->link.getLock();
 
     link->jobQueue.push(std::move(job));
@@ -595,27 +598,25 @@ bool dpsoOcrProgressEqual(
 
 void dpsoOcrGetProgress(const DpsoOcr* ocr, DpsoOcrProgress* progress)
 {
-    if (ocr && progress)
-        *progress = ocr->link.getLock()->progress;
+    if (!ocr || !progress)
+        return;
+
+    // Check numPendingResults as a small optimization to avoid
+    // link.getLock().
+    *progress = ocr->numPendingResults == 0
+        ? DpsoOcrProgress{} : ocr->link.getLock()->progress;
 }
 
 
 bool dpsoOcrHasPendingResults(const DpsoOcr* ocr)
 {
-    if (!ocr)
-        return false;
-
-    if (!ocr->results.empty())
-        return true;
-
-    const auto link = ocr->link.getLock();
-    return !link->results.empty() || link->jobsPending();
+    return ocr && ocr->numPendingResults > 0;
 }
 
 
 bool dpsoOcrGetResult(DpsoOcr* ocr, DpsoOcrJobResult* result)
 {
-    if (!ocr || !result)
+    if (!ocr || ocr->numPendingResults == 0 || !result)
         return false;
 
     if (!ocr->results.empty())
@@ -633,15 +634,18 @@ bool dpsoOcrGetResult(DpsoOcr* ocr, DpsoOcrJobResult* result)
         r.ocrResult.text.size(),
         r.timestamp.c_str()};
 
+    --ocr->numPendingResults;
+
     return true;
 }
 
 
 void dpsoOcrTerminateJobs(DpsoOcr* ocr)
 {
-    if (!ocr)
+    if (!ocr || ocr->numPendingResults == 0)
         return;
 
+    ocr->numPendingResults = 0;
     ocr->results = {};
 
     {
