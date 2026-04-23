@@ -25,8 +25,8 @@ std::size_t prettifyText(char* text)
         // generates paragraphs consisting of a single space. If such
         // a paragraph is not the first one, the text may look like
         // "paragraph1\n\n \n\nparagraph3". Removing the "\n \n"
-        // sequence will result in a normal paragraph separator
-        // (empty line). Leading sequences are removed on trimming.
+        // sequence will result in a normal paragraph separator (empty
+        // line).
         {"\n \n", ""},
     };
 
