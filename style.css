@@ -29,6 +29,10 @@ p {
   margin: 0 auto;
 }
 
+.store-badge {
+  width: 14em;
+}
+
 /*
 Modern CSS has logical properties ("margin-inline-end", "float:
 inline-start", etc.) and ":dir()" for things that depend on script

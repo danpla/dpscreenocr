@@ -18,6 +18,8 @@ APP_AUTHOR = 'Danyl Plakhotych'
 APP_AUTHOR_EMAIL = 'danyl.plakhotych@gmail.com'
 BUGS_ADDRESS = 'https://github.com/danpla/dpscreenocr/issues'
 
+APP_MS_STORE_ID = '9n5pt4jg4qxc'
+
 
 SCRIPT_PATH = os.path.realpath(__file__)
 SCRIPT_DIR = os.path.dirname(SCRIPT_PATH)
@@ -46,6 +48,38 @@ LOCALE_TO_BCP47 = {
     'tr': 'tr',
     'uk': 'uk',
     'zh_CN': 'zh-Hans',
+}
+
+
+# Mapping from BCP 47 tags to the tags used in the Microsoft Store
+# badge URLs. Unlike LOCALE_TO_BCP47, adding values to this mapping is
+# not necessary: if the pair is missing here, the English URL will
+# be used for the badge. It's possible to use an empty string as the
+# value in case both tags are equal.
+#
+# See https://apps.microsoft.com/badge for the list of available
+# language tags.
+#
+# Microsoft Store languages seem to be BCP 47 tags, except that it
+# uses deprecated "zh-cn" and "zh-tw" instead of the recommended
+# "zh-Hans" and "zh-Hant". Also, their tags always in lower case, so
+# we do the same for consistency.
+BCP47_TO_MS_STORE_LANG = {
+    'bg': '',
+    'ca': '',
+    'cs': '',
+    'de': '',
+    'en': 'en-us',
+    'es': '',
+    'fr': '',
+    'hr': '',
+    'pa': '',
+    'pl': '',
+    'pt-BR': 'pt-br',
+    'ru': '',
+    'tr': '',
+    'uk': '',
+    'zh-Hans': 'zh-cn',
 }
 
 
@@ -335,6 +369,28 @@ def gen_lang_menu(langs, page_lang, page_suburl):
     return result
 
 
+def gen_ms_store_badge_link(page_lang):
+    ms_store_lang = BCP47_TO_MS_STORE_LANG.get(page_lang)
+    if ms_store_lang is None:
+        ms_store_lang_en_us = 'en-us'
+        print(
+            'Microsoft Store URL language tag for "{}" is not '
+            'defined; remapped to "{}"'.format(
+                page_lang, ms_store_lang_en_us))
+        ms_store_lang = ms_store_lang_en_us
+    elif not ms_store_lang:
+        ms_store_lang = page_lang
+
+    return (
+        '<a href="https://apps.microsoft.com/detail/{}'
+        '?referrer=appbadge&mode=full" target="_blank" '
+        'rel="noopener noreferrer">\n'.format(APP_MS_STORE_ID)
+        + indent('<img class="store-badge" '
+            'src="https://get.microsoft.com/images/'
+            '{}%20dark.svg"/>\n'.format(ms_store_lang))
+        + '</a>')
+
+
 def write_page(
         langs,
         page_lang,
@@ -454,7 +510,9 @@ def gen_main_page_content(root_url, page_lang, translator):
                         translator.gettext('Ubuntu and derivatives'))
             )
         ),
-        '<b>Windows</b><br>'
+        '<b>Windows</b><br>\n'
+        + gen_ms_store_badge_link(page_lang)
+        + '<br>\n'
         + translator.gettext(
                 'Direct download: '
                 '<a {installer_link}>installer</a> or '
