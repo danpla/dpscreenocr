@@ -450,12 +450,11 @@ def gen_main_page_content(root_url, page_lang, translator):
     title = '<div id="title">{}</div>\n'.format(APP_NAME)
 
     about_text = translator.gettext(
-        '{app_name} is a program to recognize text on the screen. '
-        'Powered by <a {tesseract_link}>Tesseract</a>, it supports '
-        'more than 100 languages and can split independent text '
-        'blocks, such as columns. Read the <a {manual_link}>manual'
-        '</a> for instructions on installing, configuring, and using '
-        'the program.').format(
+        '{app_name} is a program that can extract text from any part '
+        'of the screen. It eliminates the need for manual retyping '
+        'when working with scanned documents, screenshots, videos, '
+        'user interface elements, and other situations where it is '
+        'impossible to copy text in the usual way.').format(
             app_name=APP_NAME,
             tesseract_link='href="{}"'.format(
                 translator.gettext(
@@ -467,6 +466,40 @@ def gen_main_page_content(root_url, page_lang, translator):
     screenshot = '<img id="screenshot" src="{}" alt="">\n'.format(
         get_localizable_resource_url(
             root_url, page_lang, 'images/screenshot-windows.png'))
+
+    features_text = translator.gettext('Features:')
+
+    features_list = gen_unordered_list((
+        translator.gettext(
+            '<b>Supports 100+ languages.</b> English is included by '
+            'default; others can be installed via the built-in '
+            'manager.'),
+        translator.gettext(
+            '<b>Easy to use.</b> Press a global hotkey to select an '
+            'area on the screen and send the recognized text to the '
+            'clipboard.'),
+        translator.gettext(
+            '<b>Works offline.</b> Recognition is performed locally '
+            'on your device. Internet is only required to download '
+            'additional languages.'),
+        translator.gettext(
+            # Translators: In this context, you should translate
+            # "free" as in "free speech," not as in "free beer". See:
+            # https://en.wikipedia.org/wiki/Free_and_open-source_software
+            '<b>Free and open source.</b> Powered by '
+            '<a {tesseract_link}>Tesseract</a>.').format(
+                tesseract_link='href="{}"'.format(
+                    translator.gettext(
+                        'https://en.wikipedia.org/wiki/'
+                        'Tesseract_(software)'))),
+    ))
+
+    manual_info = translator.gettext(
+        'Read the <b><a {manual_link}>manual</a></b> for '
+        'instructions on installing, configuring, and using '
+        'the program.').format(
+            # The manual is currently not translatable.
+            manual_link='href="{}/manual.html"'.format(root_url))
 
     github_repo_file_url_base = (
         'https://raw.githubusercontent.com/danpla/dpscreenocr/v'
@@ -493,7 +526,7 @@ def gen_main_page_content(root_url, page_lang, translator):
 
     download_list = gen_unordered_list((
         (
-            '<b>GNU/Linux</b><br>'
+            '<b>Linux</b><br>\n'
             + translator.gettext(
                 'Download {file}, which works on most systems, or '
                 'choose a package for your distribution:').format(
@@ -550,6 +583,9 @@ def gen_main_page_content(root_url, page_lang, translator):
             + '</header>\n'
             + '<p>{}</p>\n'.format(about_text)
             + screenshot
+            + '<p><b>{}</b></p>\n'.format(features_text)
+            + features_list
+            + '<p>{}</p>\n'.format(manual_info)
             + '<p>{}</p>\n'.format(download_text)
             + download_list
             + '<p>{}</p>\n'.format(contribute_text))

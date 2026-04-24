@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR Website\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2026-04-20 19:01+0200\n"
+"POT-Creation-Date: 2026-04-25 01:37+0200\n"
 "PO-Revision-Date: 2024-05-02 21:07+0000\n"
 "Last-Translator: Fernando Lopes <118869201+plasmus777@users.noreply.github."
 "com>\n"
@@ -25,19 +25,46 @@ msgstr "Idioma"
 
 #, python-brace-format
 msgid ""
-"{app_name} is a program to recognize text on the screen. Powered by <a "
-"{tesseract_link}>Tesseract</a>, it supports more than 100 languages and can "
-"split independent text blocks, such as columns. Read the <a {manual_link}"
-">manual</a> for instructions on installing, configuring, and using the "
-"program."
+"{app_name} is a program that can extract text from any part of the screen. "
+"It eliminates the need for manual retyping when working with scanned "
+"documents, screenshots, videos, user interface elements, and other "
+"situations where it is impossible to copy text in the usual way."
 msgstr ""
-"{app_name} é um programa para reconhecer textos na tela. Através do <a "
-"{tesseract_link}>Tesseract</a>, ele suporta mais de 100 idiomas e pode "
-"dividir blocos de texto independentes, como colunas. Leia o <a {manual_link}"
-">manual</a> para instruções de instalação, configuração e uso do programa."
 
 msgid "https://en.wikipedia.org/wiki/Tesseract_(software)"
 msgstr "https://pt.wikipedia.org/wiki/Tesseract_(software)"
+
+msgid "Features:"
+msgstr ""
+
+msgid ""
+"<b>Supports 100+ languages.</b> English is included by default; others can "
+"be installed via the built-in manager."
+msgstr ""
+
+msgid ""
+"<b>Easy to use.</b> Press a global hotkey to select an area on the screen "
+"and send the recognized text to the clipboard."
+msgstr ""
+
+msgid ""
+"<b>Works offline.</b> Recognition is performed locally on your device. "
+"Internet is only required to download additional languages."
+msgstr ""
+
+#. Translators: In this context, you should translate
+#. "free" as in "free speech," not as in "free beer". See:
+#. https://en.wikipedia.org/wiki/Free_and_open-source_software
+#, python-brace-format
+msgid ""
+"<b>Free and open source.</b> Powered by <a {tesseract_link}>Tesseract</a>."
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Read the <b><a {manual_link}>manual</a></b> for instructions on installing, "
+"configuring, and using the program."
+msgstr ""
 
 #, python-brace-format
 msgid ""
