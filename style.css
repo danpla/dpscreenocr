@@ -4,10 +4,10 @@ body {
   max-width: 36em;
   font-family: sans-serif;
   line-height: 1.6;
+  hyphens: auto;
 }
 
 p {
-  hyphens: auto;
   text-align: justify;
 }
 
