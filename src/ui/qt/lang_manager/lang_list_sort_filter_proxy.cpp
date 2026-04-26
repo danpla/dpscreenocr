@@ -38,8 +38,14 @@ QVariant LangListSortFilterProxy::headerData(
 void LangListSortFilterProxy::setFilterText(
     const QString& newFilterText)
 {
+    #if QT_VERSION < QT_VERSION_CHECK(6, 10, 0)
     filterText = newFilterText;
     invalidateFilter();
+    #else
+    beginFilterChange();
+    filterText = newFilterText;
+    endFilterChange(QSortFilterProxyModel::Direction::Rows);
+    #endif
 }
 
 
@@ -99,8 +105,7 @@ bool LangListSortFilterProxy::filterAcceptsRow(
         return true;
 
     static const int filterableColumnIndices[]{
-        LangList::columnIdxName, LangList::columnIdxCode
-    };
+        LangList::columnIdxName, LangList::columnIdxCode};
 
     for (auto i : filterableColumnIndices)
         if (sm->data(sm->index(sourceRow, i, sourceParent)).
