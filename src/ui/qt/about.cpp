@@ -40,11 +40,9 @@ static QString formatLink(const QString& name, const QUrl& url)
 
 static bool appendFileLink(
     QStringList& links,
-    const QString& docDirPath,
-    const QString& fileName,
+    const QString& filePath,
     const QString& linkName)
 {
-    const auto filePath = docDirPath + '/' + fileName;
     if (!QFileInfo(filePath).exists())
         return false;
 
@@ -64,19 +62,18 @@ static QStringList createLinks()
     for (const auto* ext : {".html", ".txt"})
         if (appendFileLink(
                 result,
-                docDirPath,
-                QString("manual") + ext,
+                docDirPath + "/manual" + ext,
                 _("User manual")))
             break;
 
-    appendFileLink(result, docDirPath, "changelog.txt", _("Changes"));
+    appendFileLink(
+        result, docDirPath + "/changelog.txt", _("Changes"));
 
     result.append(formatLink(_("License"), QUrl(aboutLicenseUrl)));
 
     appendFileLink(
         result,
-        docDirPath,
-        "third-party-licenses",
+        docDirPath + "/third-party-licenses",
         _("Third-party licenses"));
 
     return result;
