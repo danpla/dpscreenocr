@@ -36,14 +36,24 @@ endfunction()
 
 function(copy_qt_windows_plugins SRC_DIR DST_DIR)
     set(PLUGINS
-        "platforms/qwindows.dll"
-        "styles/qwindowsvistastyle.dll")
+        "platforms/qwindows.dll")
+
+    if(EXISTS "${SRC_DIR}/styles/qwindowsvistastyle.dll")
+        list(APPEND PLUGINS "styles/qwindowsvistastyle.dll")
+    else()
+        # Qt 6.7 and newer.
+        list(APPEND PLUGINS "styles/qmodernwindowsstyle.dll")
+    endif()
 
     set(DST_FILES)
 
     foreach(PLUGIN ${PLUGINS})
         set(SRC_FILE "${SRC_DIR}/${PLUGIN}")
         set(DST_FILE "${DST_DIR}/${PLUGIN}")
+
+        if(NOT EXISTS "${SRC_FILE}")
+            message(FATAL_ERROR "\"${SRC_FILE}\" does not exist")
+        endif()
 
         add_custom_command(
             OUTPUT "${DST_FILE}"
