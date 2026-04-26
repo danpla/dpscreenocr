@@ -17,7 +17,6 @@ signals:
     void checkUpdates();
 private slots:
     void handleLinkActivation(const QString &link);
-    void handleLinkHover(const QString &link);
 private:
     QString currentTextLink;
     QTextEdit* textEdit;

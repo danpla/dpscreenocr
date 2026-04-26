@@ -3,7 +3,6 @@
 #include <initializer_list>
 
 #include <QApplication>
-#include <QCursor>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileInfo>
@@ -12,7 +11,6 @@
 #include <QPushButton>
 #include <QStringList>
 #include <QTextEdit>
-#include <QToolTip>
 #include <QUrl>
 #include <QVBoxLayout>
 
@@ -107,9 +105,6 @@ About::About()
     connect(
         infoTextLabel, &QLabel::linkActivated,
         this, &About::handleLinkActivation);
-    connect(
-        infoTextLabel, &QLabel::linkHovered,
-        this, &About::handleLinkHover);
 
     textEdit = new QTextEdit();
     textEdit->setReadOnly(true);
@@ -173,19 +168,6 @@ void About::handleLinkActivation(const QString& link)
     }
 
     QDesktopServices::openUrl(QUrl(link));
-}
-
-
-void About::handleLinkHover(const QString &link)
-{
-    const QUrl url(link);
-    if (url.scheme() == "about")
-        return;
-
-    QToolTip::showText(
-        QCursor::pos(),
-        url.isLocalFile()
-            ? QDir::toNativeSeparators(url.toLocalFile()) : link);
 }
 
 
