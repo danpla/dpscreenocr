@@ -36,7 +36,7 @@ HotkeyEditor::HotkeyEditor(
         modCheck->setChecked(keySelected && (hotkey.mods & mod));
 
         connect(
-            modCheck, &QCheckBox::stateChanged,
+            modCheck, &QCheckBox::toggled,
             this, &HotkeyEditor::changed);
 
         layout->addWidget(modCheck);
