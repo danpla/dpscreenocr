@@ -1,5 +1,6 @@
 #include "os.h"
 
+#include <cerrno>
 #include <cstring>
 #include <io.h>
 
