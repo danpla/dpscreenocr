@@ -33,18 +33,15 @@ p {
   width: 14em;
 }
 
-/*
-Modern CSS has logical properties ("margin-inline-end", "float:
-inline-start", etc.) and ":dir()" for things that depend on script
-direction, but we instead use "[dir="rtl"]" selectors to support old
-browsers.
-*/
-
 #copyright {
+  display: inline-block;
+}
+
+#lang-menu {
   float: right;
 }
 
-html[dir="rtl"] #copyright {
+html[dir="rtl"] #lang-menu {
   float: left;
 }
 

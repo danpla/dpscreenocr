@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="../favicon.png">
   <link rel="stylesheet" href="../style.css">
+  <noscript><style> .js-only { display: none; } </style></noscript>
 </head>
 <body>
   <header>
@@ -48,7 +49,7 @@
     <li>
       <b>Windows</b><br>
       <a href="https://apps.microsoft.com/detail/9n5pt4jg4qxc?referrer=appbadge&mode=full" target="_blank" rel="noopener noreferrer">
-        <img class="store-badge" src="https://get.microsoft.com/images/zh-cn%20dark.svg"/>
+        <img class="store-badge" src="https://get.microsoft.com/images/zh-cn%20dark.svg" alt="">
       </a><br>
       Direct download: <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.5.1/dpScreenOCR-1.5.1-win32.exe">installer</a> or <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.5.1/dpScreenOCR-1.5.1-win32.zip">ZIP archive</a>
     </li>
@@ -59,19 +60,23 @@
   <p><b>帮忙</b><a href="https://hosted.weblate.org/engage/dpscreenocr/">翻译</a>；<b>帮忙</b><a href="https://github.com/danpla/dpscreenocr">开发</a>。</p>
   <footer>
     <div id="copyright">© 2019-2026 <a href="mailto:danyl.plakhotych@gmail.com?subject=dpScreenOCR">Danyl Plakhotych</a></div>
-    <script>
-      function onLangClick(element) {
-        try {
-          localStorage.setItem("lang", element.lang);
-        } catch {
-        }
-        return true;
-      }
-    </script>
-    <details>
-      <summary>语言</summary>
-      <a lang="ca" hreflang="ca" href="../ca/" onclick="onLangClick(this)">Català</a>&emsp;<a lang="en" hreflang="en" href="../en/" onclick="onLangClick(this)">English</a>&emsp;<a lang="es" hreflang="es" href="../es/" onclick="onLangClick(this)">Español</a>&emsp;<a lang="fr" hreflang="fr" href="../fr/" onclick="onLangClick(this)">Français</a>&emsp;<a lang="hr" hreflang="hr" href="../hr/" onclick="onLangClick(this)">Hrvatski</a>&emsp;<a lang="pt-BR" hreflang="pt-BR" href="../pt-BR/" onclick="onLangClick(this)">Português&nbsp;(Brasil)</a>&emsp;<a lang="ru" hreflang="ru" href="../ru/" onclick="onLangClick(this)">Русский</a>&emsp;<a lang="uk" hreflang="uk" href="../uk/" onclick="onLangClick(this)">Українська</a>&emsp;<b>中文（简体）</b>
-    </details>
+    <select title="语言" id="lang-menu" class="js-only">
+      <option value="ca">Català</option>
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="hr">Hrvatski</option>
+      <option value="pt-BR">Português (Brasil)</option>
+      <option value="ru">Русский</option>
+      <option value="uk">Українська</option>
+      <option value="zh-Hans" selected>中文（简体）</option>
+    </select>
+    <script src="../lang-menu.js"></script>
+    <noscript>
+      <hr>
+      <b>语言</b><br>
+      <a lang="ca" href="../ca/">Català</a> | <a lang="en" href="../en/">English</a> | <a lang="es" href="../es/">Español</a> | <a lang="fr" href="../fr/">Français</a> | <a lang="hr" href="../hr/">Hrvatski</a> | <a lang="pt-BR" href="../pt-BR/">Português&nbsp;(Brasil)</a> | <a lang="ru" href="../ru/">Русский</a> | <a lang="uk" href="../uk/">Українська</a> | <b>中文（简体）</b>
+    </noscript>
   </footer>
 </body>
 </html>

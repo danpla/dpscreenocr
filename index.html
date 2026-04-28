@@ -6,12 +6,10 @@
 <meta charset="utf-8">
 <link rel="icon" type="image/png" href="favicon.png">
 <script>
-  // The code is written in ES5 JavaScript to support old browsers.
+  const langs = ["ca", "en", "es", "fr", "hr", "pt-BR", "ru", "uk", "zh-Hans"];
+  const storageLangKey = "lang";
 
-  var langs = ["ca", "en", "es", "fr", "hr", "pt-BR", "ru", "uk", "zh-Hans"];
-  var storageLangKey = "lang";
-
-  var userLangFixups = {
+  const userLangFixups = {
     // Some browsers use no longer recommended zh-CN and zh-TW codes
     // for Simplified and Traditional Chinese. See:
     // https://www.w3.org/International/geo/html-tech/tech-lang.html
@@ -19,30 +17,24 @@
     "zh-TW": "zh-Hant"
   };
 
-  function startsWith(str, other) {
-    return str.lastIndexOf(other, 0) == 0;
-  }
-
   function detectPageLang() {
-    var userLangs = navigator.languages || [navigator.language];
+    let userLangs = navigator.languages || [navigator.language];
     // navigator.languages is immutable, so make a copy so that we can
     // remove elements later.
     userLangs = userLangs.slice();
 
     while (userLangs.length > 0)
-      for (var i = 0; i < userLangs.length;) {
-        var userLang = userLangs[i];
+      for (let i = 0; i < userLangs.length;) {
+        let userLang = userLangs[i];
         userLang = userLangFixups[userLang] || userLang;
 
-        for (var j = 0; j < langs.length; ++j) {
-          var lang = langs[j];
-          if (startsWith(lang, userLang))
+        for (const lang of langs)
+          if (lang.startsWith(userLang))
             return lang;
-        }
 
         // Trim the last tag for a more generic match on the next
         // pass.
-        var hyphenIndex = userLang.lastIndexOf('-');
+        const hyphenIndex = userLang.lastIndexOf('-');
         if (hyphenIndex == -1)
           userLangs.splice(i, 1);
         else {
@@ -54,7 +46,7 @@
     return null;
   }
 
-  var pageLang;
+  let pageLang;
 
   // The language can be saved in localStorage not only by this
   // script, but also by clicking on a language menu item.
@@ -68,7 +60,7 @@
 
   // Make sure the cached value is still valid because the language
   // can be removed.
-  if (pageLang && langs.indexOf(pageLang) == -1)
+  if (pageLang && !langs.includes(pageLang))
     pageLang = null;
 
   if (!pageLang) {
@@ -88,8 +80,7 @@
 </head>
 <body>
   <!--
-  A fallback for really weird browsers that support neither ES5 JS nor
-  <meta> redirect.
+  A fallback for weird browsers that don't support <meta> redirect.
   -->
   <a href="en/">English</a>
 </body>

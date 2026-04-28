@@ -269,6 +269,8 @@ GENERATED_DOC_COMMENT = 'This document was automatically generated.'
 # The Web Storage API key for the site language.
 JS_STORAGE_LANG_KEY = 'lang'
 
+JSONLY_CSS_CLASS = 'js-only'
+
 
 def write_root_index_page(langs):
     with open(
@@ -310,29 +312,58 @@ def gen_unordered_list(tree):
     return result
 
 
-def gen_lang_menu(langs, page_lang, page_suburl):
-    translator = langs[page_lang]
+LANG_MENU_SCRIPT_NAME = 'lang-menu.js'
 
-    js_on_lang_click_fn = 'onLangClick'
+
+def write_lang_menu_script():
+    with open(
+            os.path.join(DATA_DIR, LANG_MENU_SCRIPT_NAME + '.in'),
+            encoding='utf-8') as f:
+        script_template = f.read()
 
     script = at_format(
-        'function @JS_ON_LANG_CLICK_FN@(element) {\n'
-        '  try {\n'
-        '    localStorage.setItem('
-            '"@JS_STORAGE_LANG_KEY@", element.lang);\n'
-        '  } catch {\n'
-        '  }\n'
-        '  return true;\n'
-        '}\n',
-        JS_ON_LANG_CLICK_FN=js_on_lang_click_fn,
+        script_template,
         JS_STORAGE_LANG_KEY=JS_STORAGE_LANG_KEY)
 
-    result = '<script>\n{}</script>\n'.format(indent(script))
+    script = '// {}\n\n{}'.format(GENERATED_DOC_COMMENT, script)
 
-    result += '<details>\n'
-    result += indent('<summary>{}</summary>\n'.format(
-        translator.gettext('Language')))
+    with open_for_text_writing(LANG_MENU_SCRIPT_NAME) as f:
+        f.write(script)
 
+
+def gen_lang_menu(langs, page_lang, root_url):
+    lang_name_to_code = {}
+
+    for lang_code, translator in langs.items():
+        if lang_code == 'en':
+            lang_name = 'English'
+        else:
+            lang_name = translator.gettext(GETTEXT_LANGUAGE_NAME_KEY)
+
+        lang_name_to_code[lang_name] = lang_code
+
+    options = []
+
+    for lang_name, lang_code in sorted(lang_name_to_code.items()):
+        options.append(
+            '<option value="{}"{}>{}</option>'.format(
+                lang_code,
+                ' selected' if lang_code == page_lang else '',
+                lang_name))
+
+    result = '<select title="{}" id="lang-menu" class="{}">\n'.format(
+        langs[page_lang].gettext('Language'), JSONLY_CSS_CLASS)
+    result += indent('\n'.join(options)) + '\n'
+    result += '</select>\n'
+
+    result += (
+        '<script src="{}/{}"></script>\n'.format(
+            root_url, LANG_MENU_SCRIPT_NAME))
+
+    return result
+
+
+def gen_static_lang_menu(langs, page_lang, page_suburl):
     lang_name_to_code = {}
 
     for lang_code, translator in langs.items():
@@ -353,18 +384,15 @@ def gen_lang_menu(langs, page_lang, page_suburl):
         else:
             url = lang_code + '/' + page_suburl
             items.append(
-                '<a lang="{lang_code}" '
-                'hreflang="{lang_code}" '
-                'href="{}/{}" '
-                'onclick="{}(this)">{}</a>'.format(
+                '<a lang="{}" href="{}/{}">{}</a>'.format(
+                    lang_code,
                     get_url_to_root(url),
                     strip_index_html(url),
-                    js_on_lang_click_fn,
-                    lang_name,
-                    lang_code=lang_code))
+                    lang_name))
 
-    result += indent('&emsp;'.join(items)) + '\n'
-    result += '</details>\n'
+    result = '<b>{}</b><br>\n'.format(
+        langs[page_lang].gettext('Language'))
+    result += ' | '.join(items) + '\n'
 
     return result
 
@@ -387,7 +415,7 @@ def gen_ms_store_badge_link(page_lang):
         'rel="noopener noreferrer">\n'.format(APP_MS_STORE_ID)
         + indent('<img class="store-badge" '
             'src="https://get.microsoft.com/images/'
-            '{}%20dark.svg"/>\n'.format(ms_store_lang))
+            '{}%20dark.svg" alt="">\n'.format(ms_store_lang))
         + '</a>')
 
 
@@ -406,11 +434,16 @@ def write_page(
         '<title>{}</title>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" '
-        'content="width=device-width, initial-scale=1">\n'
+            'content="width=device-width, initial-scale=1">\n'
         '<link rel="icon" type="image/png" '
-        'href="{root_url}/favicon.png">\n'
+            'href="{root_url}/favicon.png">\n'
         '<link rel="stylesheet" href="{root_url}/style.css">\n'
-        ).format(title, root_url=root_url)
+        '<noscript><style> .{jsonly_css_class} {{ display: none; }} '
+            '</style></noscript>\n'
+        ).format(
+            title,
+            root_url=root_url,
+            jsonly_css_class=JSONLY_CSS_CLASS)
 
     copyright_text = (
         '<div id="copyright">'
@@ -436,7 +469,12 @@ def write_page(
         f.write(indent(
             '<footer>\n{}</footer>\n'.format(indent(
                 copyright_text
-                + gen_lang_menu(langs, page_lang, page_suburl)))))
+                + gen_lang_menu(langs, page_lang, root_url)
+                + '<noscript>\n{}</noscript>\n'.format(
+                    indent(
+                        '<hr>\n'
+                        + gen_static_lang_menu(
+                            langs, page_lang, page_suburl)))))))
         f.write(
             '</body>\n'
             '</html>\n')
@@ -611,6 +649,7 @@ def write_pages(langs):
 def generate_website():
     mo_dir = os.path.join(tempfile.gettempdir(), 'website-tool-tmp')
     compile_po(mo_dir)
+    write_lang_menu_script()
     write_pages(collect_langs(mo_dir))
     shutil.rmtree(mo_dir)
 
