@@ -1,21 +1,13 @@
 // This document was automatically generated.
 
 document.getElementById("lang-menu").onchange = (event) => {
-  const lang = event.target.value;
+  const select = event.target;
 
   try {
-    localStorage.setItem("lang", lang);
+    localStorage.setItem(
+        "lang", select[select.selectedIndex].lang);
   } catch {
   }
 
-  const curLang = document.documentElement.lang;
-  console.assert(curLang);
-
-  const curPathname = window.location.pathname;
-  if (curPathname != `/${curLang}` &&
-      !curPathname.startsWith(`/${curLang}/`))
-    return;
-
-  window.location.pathname = curPathname.replace(
-    `/${curLang}`, `/${lang}`);
+  window.location = select.value;
 };

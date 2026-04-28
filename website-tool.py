@@ -331,7 +331,7 @@ def write_lang_menu_script():
         f.write(script)
 
 
-def gen_lang_menu(langs, page_lang, root_url):
+def gen_lang_menu(langs, page_lang, page_suburl):
     lang_name_to_code = {}
 
     for lang_code, translator in langs.items():
@@ -345,9 +345,12 @@ def gen_lang_menu(langs, page_lang, root_url):
     options = []
 
     for lang_name, lang_code in sorted(lang_name_to_code.items()):
+        url = lang_code + '/' + page_suburl
         options.append(
-            '<option value="{}"{}>{}</option>'.format(
+            '<option lang="{}" value="{}/{}"{}>{}</option>'.format(
                 lang_code,
+                get_url_to_root(url),
+                strip_index_html(url),
                 ' selected' if lang_code == page_lang else '',
                 lang_name))
 
@@ -358,7 +361,8 @@ def gen_lang_menu(langs, page_lang, root_url):
 
     result += (
         '<script src="{}/{}"></script>\n'.format(
-            root_url, LANG_MENU_SCRIPT_NAME))
+            get_url_to_root(page_lang + '/' + page_suburl),
+            LANG_MENU_SCRIPT_NAME))
 
     return result
 
@@ -469,7 +473,7 @@ def write_page(
         f.write(indent(
             '<footer>\n{}</footer>\n'.format(indent(
                 copyright_text
-                + gen_lang_menu(langs, page_lang, root_url)
+                + gen_lang_menu(langs, page_lang, page_suburl)
                 + '<noscript>\n{}</noscript>\n'.format(
                     indent(
                         '<hr>\n'
