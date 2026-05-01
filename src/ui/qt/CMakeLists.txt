@@ -94,9 +94,14 @@ endif()
 find_package(
     Qt${DPSO_QT_VERSION} REQUIRED COMPONENTS Core Gui Widgets)
 
-if(DPSO_QT_VERSION EQUAL 5
-        AND Qt5Widgets_VERSION VERSION_LESS "5.7.0")
+if(DPSO_QT_VERSION EQUAL 5 AND Qt5Core_VERSION VERSION_LESS "5.7.0")
     message(FATAL_ERROR "Qt 5 >= 5.7.0 is required")
+endif()
+
+if(DPSO_QT_VERSION EQUAL 6
+        AND Qt6Core_VERSION VERSION_GREATER_EQUAL "6.7.0")
+    target_compile_definitions(
+        dpscreenocr_qt PRIVATE QT_NO_CONTEXTLESS_CONNECT=1)
 endif()
 
 target_link_libraries(
