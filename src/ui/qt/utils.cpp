@@ -16,7 +16,6 @@
 #include <QtGlobal>
 
 #include "dpso_intl/dpso_intl.h"
-#include "ui_common/ui_common.h"
 
 
 #define _(S) gettext(S)
@@ -32,7 +31,7 @@ namespace ui::qt {
 
 
 QString strNFormat(
-    const char* str, std::initializer_list<StrNFormatArg> args)
+    std::string_view str, std::initializer_list<StrNFormatArg> args)
 {
     return QString::fromStdString(ui::strNFormat(str, args));
 }

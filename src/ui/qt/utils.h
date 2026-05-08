@@ -20,7 +20,8 @@ namespace ui::qt {
 
 
 QString strNFormat(
-    const char* str, std::initializer_list<ui::StrNFormatArg> args);
+    std::string_view str,
+    std::initializer_list<ui::StrNFormatArg> args);
 
 
 QString formatDataSize(qint64 size);
