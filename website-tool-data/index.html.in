@@ -73,7 +73,7 @@
   window.location.replace(pageLang + "/");
 </script>
 <noscript>
-  <meta http-equiv="refresh" content="0; url='en/'">
+  <meta http-equiv="refresh" content="0; url=en/">
 </noscript>
 </head>
 <body>
