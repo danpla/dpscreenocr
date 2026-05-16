@@ -414,9 +414,8 @@ def gen_ms_store_badge_link(page_lang):
         ms_store_lang = page_lang
 
     return (
-        '<a href="https://apps.microsoft.com/detail/{}'
-        '?referrer=appbadge&mode=full" target="_blank" '
-        'rel="noopener noreferrer">\n'.format(APP_MS_STORE_ID)
+        '<a href="https://apps.microsoft.com/detail/{}" '
+        'target="_blank">\n'.format(APP_MS_STORE_ID)
         + indent('<img class="store-badge" '
             'src="https://get.microsoft.com/images/'
             '{}%20dark.svg" alt="">\n'.format(ms_store_lang))
