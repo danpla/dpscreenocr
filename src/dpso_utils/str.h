@@ -42,10 +42,6 @@ std::string justifyRight(
     std::string s, std::size_t width, char fill = ' ');
 
 
-// toStr() functions are locale-independent replacements for
-// std::to_string(). Since C++26, std::to_string() is the same as
-// std::format("{}", v), so these functions will be unnecessary once
-// we have C++26.
 std::string toStr(char c);
 std::string toStr(int v, int base = 10);
 std::string toStr(unsigned v, int base = 10);
