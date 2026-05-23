@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2026-04-18 21:43+0200\n"
+"POT-Creation-Date: 2026-05-23 23:39+0200\n"
 "PO-Revision-Date: 2026-05-10 15:11+0000\n"
 "Last-Translator: Milo Ivir <mail@milotype.de>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -526,31 +526,31 @@ msgstr "Jidiš"
 msgid "Yoruba"
 msgstr "Joruba"
 
-#: src/ui/qt/about.cpp:59 src/ui/qt/update_checker.cpp:137
+#: src/ui/qt/about.cpp:55 src/ui/qt/update_checker.cpp:137
 msgid "Website"
 msgstr "Web-stranica"
 
-#: src/ui/qt/about.cpp:69
+#: src/ui/qt/about.cpp:64
 msgid "User manual"
 msgstr "Korisnički priručnik"
 
-#: src/ui/qt/about.cpp:72
+#: src/ui/qt/about.cpp:68
 msgid "Changes"
 msgstr "Promjene"
 
-#: src/ui/qt/about.cpp:74
+#: src/ui/qt/about.cpp:70
 msgid "License"
 msgstr "Licenca"
 
-#: src/ui/qt/about.cpp:80
+#: src/ui/qt/about.cpp:75
 msgid "Third-party licenses"
 msgstr "Licence trećih strana"
 
-#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:10
+#: src/ui/qt/about.cpp:101 data/dpscreenocr.desktop:10
 msgid "A program to recognize text on the screen"
 msgstr "Program za prepoznavanje teksta na ekranu"
 
-#: src/ui/qt/about.cpp:126
+#: src/ui/qt/about.cpp:118
 msgid "Check for updates"
 msgstr "Traži nove verzije"
 
@@ -570,7 +570,7 @@ msgstr "Pokreni izvršnu datoteku:"
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "Pokreni izvršnu datoteku s prepoznatim tekstom kao prvim argumentom"
 
-#: src/ui/qt/action_chooser.cpp:156
+#: src/ui/qt/action_chooser.cpp:155
 msgid "Choose an executable"
 msgstr "Odaberi izvršnu datoteku"
 
@@ -590,7 +590,7 @@ msgstr "Kronologija"
 msgid "Plain text"
 msgstr "Običan tekst"
 
-#: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:539
+#: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:516
 msgid "All files"
 msgstr "Sve datoteke"
 
@@ -603,7 +603,7 @@ msgid "Clear the history?"
 msgstr "Isprazniti kronologiju?"
 
 #: src/ui/qt/history.cpp:153 src/ui/qt/lang_manager/lang_manager_page.cpp:280
-#: src/ui/qt/main_window.cpp:189
+#: src/ui/qt/main_window.cpp:188
 msgid "Cancel"
 msgstr "Odustani"
 
@@ -674,7 +674,7 @@ msgstr "Dogodila se greška tijekom dohvaćanje popisa jezika"
 msgid "Update ({count})"
 msgstr "Aktualiziraj ({count})"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:415
+#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:392
 msgid "Language manager"
 msgstr "Upravljač jezika"
 
@@ -688,8 +688,8 @@ msgstr "Instaliraj"
 msgid "Remove"
 msgstr "Ukloni"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:142 src/ui/qt/update_checker.cpp:139
-#: src/ui/qt/utils.cpp:218
+#: src/ui/qt/lang_manager/lang_manager.cpp:141 src/ui/qt/update_checker.cpp:139
+#: src/ui/qt/utils.cpp:217
 msgid "Close"
 msgstr "Zatvori"
 
@@ -745,7 +745,7 @@ msgstr "Neki jezici nisu uklonjeni"
 msgid "Check your network connection and try again."
 msgstr "Provjeri mrežnu vezu i pokušaj ponovo."
 
-#: src/ui/qt/main.cpp:136
+#: src/ui/qt/main.cpp:133
 msgid "{app_name} is already running"
 msgstr "Program {app_name} je već pokrenut"
 
@@ -766,71 +766,71 @@ msgstr "Postavke"
 msgid "About"
 msgstr "Informacije"
 
-#: src/ui/qt/main_window.cpp:188
+#: src/ui/qt/main_window.cpp:187
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Prepoznavanje još nije gotovo. Svejedno prekinuti?"
 
-#: src/ui/qt/main_window.cpp:190 src/ui/qt/main_window.cpp:378
+#: src/ui/qt/main_window.cpp:189 src/ui/qt/main_window.cpp:356
 msgid "Quit"
 msgstr "Prekini"
 
-#: src/ui/qt/main_window.cpp:370
+#: src/ui/qt/main_window.cpp:348
 msgid "Show {app_name}"
 msgstr "Prikaži {app_name}"
 
-#: src/ui/qt/main_window.cpp:392
+#: src/ui/qt/main_window.cpp:369
 msgid "Status"
 msgstr "Stanje"
 
-#: src/ui/qt/main_window.cpp:402
+#: src/ui/qt/main_window.cpp:379
 msgid "Character recognition"
 msgstr "Prepoznavanje znakova"
 
-#: src/ui/qt/main_window.cpp:406
+#: src/ui/qt/main_window.cpp:383
 msgid "Split text blocks"
 msgstr "Razdvoji tekstualne blokove"
 
-#: src/ui/qt/main_window.cpp:408
+#: src/ui/qt/main_window.cpp:385
 msgid "Split independent text blocks, such as columns"
 msgstr "Razdvoji samostalne tekstualne blokove, npr. stupce"
 
-#: src/ui/qt/main_window.cpp:411
+#: src/ui/qt/main_window.cpp:388
 msgid "Languages:"
 msgstr "Jezici:"
 
-#: src/ui/qt/main_window.cpp:417
+#: src/ui/qt/main_window.cpp:394
 msgid "Install, update, and remove languages"
 msgstr "Instaliraj, aktualiziraj i ukloni jezike"
 
-#: src/ui/qt/main_window.cpp:429
+#: src/ui/qt/main_window.cpp:406
 msgid "Actions"
 msgstr "Radnje"
 
-#: src/ui/qt/main_window.cpp:513
+#: src/ui/qt/main_window.cpp:490
 msgid "All supported audio files"
 msgstr "Sve podržane audio datoteke"
 
-#: src/ui/qt/main_window.cpp:543
+#: src/ui/qt/main_window.cpp:520
 msgid "Choose an audio file"
 msgstr "Odaberi audio datoteku"
 
-#: src/ui/qt/main_window.cpp:558
+#: src/ui/qt/main_window.cpp:535
 msgid "Hotkey"
 msgstr "Tipkovnički prečac"
 
-#: src/ui/qt/main_window.cpp:571
+#: src/ui/qt/main_window.cpp:548
 msgid "Interface"
 msgstr "Sučelje"
 
-#: src/ui/qt/main_window.cpp:575
+#: src/ui/qt/main_window.cpp:552
 msgid "Show notification area icon"
 msgstr "Pokaži ikonu područja obavijesti"
 
-#: src/ui/qt/main_window.cpp:599
+#: src/ui/qt/main_window.cpp:576
 msgid "Minimize to notification area"
 msgstr "Sakrij u područje obavijesti"
 
-#: src/ui/qt/main_window.cpp:603
+#: src/ui/qt/main_window.cpp:580
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -838,11 +838,11 @@ msgstr ""
 "Skrivanjem prozora će se {app_name} sakriti. Koristi ikonu područja "
 "obavijesti za ponovno prikazivanje."
 
-#: src/ui/qt/main_window.cpp:609
+#: src/ui/qt/main_window.cpp:586
 msgid "Close to notification area"
 msgstr "Zatvori u područje obavijesti"
 
-#: src/ui/qt/main_window.cpp:613
+#: src/ui/qt/main_window.cpp:590
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -850,27 +850,27 @@ msgstr ""
 "Zatvaranjem prozora će se {app_name} sakriti. Koristi ikonu područja "
 "obavijesti za ponovno prikazivanje."
 
-#: src/ui/qt/main_window.cpp:619
+#: src/ui/qt/main_window.cpp:596
 msgid "Behavior"
 msgstr "Ponašanje"
 
-#: src/ui/qt/main_window.cpp:629
+#: src/ui/qt/main_window.cpp:606
 msgid "Play sound when recognition is complete"
 msgstr "Reproduciraj zvuk kada je prepoznavanje završeno"
 
-#: src/ui/qt/main_window.cpp:638
+#: src/ui/qt/main_window.cpp:615
 msgid "Play this audio file:"
 msgstr "Reproduciraj ovu audio datoteku:"
 
-#: src/ui/qt/main_window.cpp:701
+#: src/ui/qt/main_window.cpp:678
 msgid "Check for updates automatically"
 msgstr "Automatski traži nove verzije"
 
-#: src/ui/qt/main_window.cpp:709
+#: src/ui/qt/main_window.cpp:686
 msgid "Run at system logon"
 msgstr "Pokreni prilikom prijavljivanja na sustav"
 
-#: src/ui/qt/main_window.cpp:713
+#: src/ui/qt/main_window.cpp:690
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -880,7 +880,7 @@ msgstr ""
 "se sakriti u području obavijesti ako je ikona područja obavijesti aktivirana "
 "ili smanjiti ako je ikona deaktivirana."
 
-#: src/ui/qt/main_window.cpp:881
+#: src/ui/qt/main_window.cpp:857
 msgid ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} day"
@@ -897,23 +897,23 @@ msgstr[2] ""
 "{app_name} će automatski tražiti nove verzije pri pokretanju, ali ne češće "
 "od jednom svakih {count} dana"
 
-#: src/ui/qt/main_window.cpp:1139
+#: src/ui/qt/main_window.cpp:1115
 msgid "Please install languages"
 msgstr "Instaliraj jezike"
 
-#: src/ui/qt/main_window.cpp:1141
+#: src/ui/qt/main_window.cpp:1117
 msgid "Please select languages"
 msgstr "Odaberi jezike"
 
-#: src/ui/qt/main_window.cpp:1143
+#: src/ui/qt/main_window.cpp:1119
 msgid "Please select actions"
 msgstr "Odaberi radnje"
 
-#: src/ui/qt/main_window.cpp:1155
+#: src/ui/qt/main_window.cpp:1131
 msgid "Press {hotkey} to start area selection"
 msgstr "Pritisni {hotkey} za početak biranja područja"
 
-#: src/ui/qt/main_window.cpp:1156
+#: src/ui/qt/main_window.cpp:1132
 msgid "Press {hotkey} to finish selection"
 msgstr "Pritisni {hotkey} za kraj biranja područja"
 

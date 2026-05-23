@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2026-04-18 21:43+0200\n"
+"POT-Creation-Date: 2026-05-23 23:39+0200\n"
 "PO-Revision-Date: 2026-02-25 09:09+0000\n"
 "Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -525,31 +525,31 @@ msgstr "Yiddish"
 msgid "Yoruba"
 msgstr "Yoruba"
 
-#: src/ui/qt/about.cpp:59 src/ui/qt/update_checker.cpp:137
+#: src/ui/qt/about.cpp:55 src/ui/qt/update_checker.cpp:137
 msgid "Website"
 msgstr "Site web"
 
-#: src/ui/qt/about.cpp:69
+#: src/ui/qt/about.cpp:64
 msgid "User manual"
 msgstr "Manuel utilisateur"
 
-#: src/ui/qt/about.cpp:72
+#: src/ui/qt/about.cpp:68
 msgid "Changes"
 msgstr "Notes de mise à jour"
 
-#: src/ui/qt/about.cpp:74
+#: src/ui/qt/about.cpp:70
 msgid "License"
 msgstr "Licence"
 
-#: src/ui/qt/about.cpp:80
+#: src/ui/qt/about.cpp:75
 msgid "Third-party licenses"
 msgstr "Licences tierces"
 
-#: src/ui/qt/about.cpp:106 data/dpscreenocr.desktop:10
+#: src/ui/qt/about.cpp:101 data/dpscreenocr.desktop:10
 msgid "A program to recognize text on the screen"
 msgstr "Programme de reconnaissance de texte à l'écran"
 
-#: src/ui/qt/about.cpp:126
+#: src/ui/qt/about.cpp:118
 msgid "Check for updates"
 msgstr "Vérifier les mises à jour"
 
@@ -569,7 +569,7 @@ msgstr "Lancer l'exécutable :"
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "Lance un exécutable avec le texte reconnu comme premier argument"
 
-#: src/ui/qt/action_chooser.cpp:156
+#: src/ui/qt/action_chooser.cpp:155
 msgid "Choose an executable"
 msgstr "Sélectionner un exécutable"
 
@@ -589,7 +589,7 @@ msgstr "Historique"
 msgid "Plain text"
 msgstr "Texte brut"
 
-#: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:539
+#: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:516
 msgid "All files"
 msgstr "Tous les fichiers"
 
@@ -602,7 +602,7 @@ msgid "Clear the history?"
 msgstr "Effacer l'historique ?"
 
 #: src/ui/qt/history.cpp:153 src/ui/qt/lang_manager/lang_manager_page.cpp:280
-#: src/ui/qt/main_window.cpp:189
+#: src/ui/qt/main_window.cpp:188
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -674,7 +674,7 @@ msgstr ""
 msgid "Update ({count})"
 msgstr "Mise à jour ({count})"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:415
+#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:392
 msgid "Language manager"
 msgstr "Gestion des langues"
 
@@ -688,8 +688,8 @@ msgstr "Installer"
 msgid "Remove"
 msgstr "Supprimer"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:142 src/ui/qt/update_checker.cpp:139
-#: src/ui/qt/utils.cpp:218
+#: src/ui/qt/lang_manager/lang_manager.cpp:141 src/ui/qt/update_checker.cpp:139
+#: src/ui/qt/utils.cpp:217
 msgid "Close"
 msgstr "Fermer"
 
@@ -743,7 +743,7 @@ msgstr "Certaines langues n'ont pas été supprimées"
 msgid "Check your network connection and try again."
 msgstr "Vérifiez votre connexion internet et réessayez."
 
-#: src/ui/qt/main.cpp:136
+#: src/ui/qt/main.cpp:133
 msgid "{app_name} is already running"
 msgstr "{app_name} est déjà en cours d'exécution"
 
@@ -764,71 +764,71 @@ msgstr "Paramètres"
 msgid "About"
 msgstr "À propos"
 
-#: src/ui/qt/main_window.cpp:188
+#: src/ui/qt/main_window.cpp:187
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "La reconnaissance n'est pas terminée. Quitter quand même ?"
 
-#: src/ui/qt/main_window.cpp:190 src/ui/qt/main_window.cpp:378
+#: src/ui/qt/main_window.cpp:189 src/ui/qt/main_window.cpp:356
 msgid "Quit"
 msgstr "Quitter"
 
-#: src/ui/qt/main_window.cpp:370
+#: src/ui/qt/main_window.cpp:348
 msgid "Show {app_name}"
 msgstr "Afficher {app_name}"
 
-#: src/ui/qt/main_window.cpp:392
+#: src/ui/qt/main_window.cpp:369
 msgid "Status"
 msgstr "Statut"
 
-#: src/ui/qt/main_window.cpp:402
+#: src/ui/qt/main_window.cpp:379
 msgid "Character recognition"
 msgstr "Reconnaissance de caractères"
 
-#: src/ui/qt/main_window.cpp:406
+#: src/ui/qt/main_window.cpp:383
 msgid "Split text blocks"
 msgstr "Couper les blocs de texte"
 
-#: src/ui/qt/main_window.cpp:408
+#: src/ui/qt/main_window.cpp:385
 msgid "Split independent text blocks, such as columns"
 msgstr "Couper les blocs de texte indépendant, comme les colonnes"
 
-#: src/ui/qt/main_window.cpp:411
+#: src/ui/qt/main_window.cpp:388
 msgid "Languages:"
 msgstr "Langues :"
 
-#: src/ui/qt/main_window.cpp:417
+#: src/ui/qt/main_window.cpp:394
 msgid "Install, update, and remove languages"
 msgstr "Installer, mettre à jour et supprimer des langues"
 
-#: src/ui/qt/main_window.cpp:429
+#: src/ui/qt/main_window.cpp:406
 msgid "Actions"
 msgstr "Actions"
 
-#: src/ui/qt/main_window.cpp:513
+#: src/ui/qt/main_window.cpp:490
 msgid "All supported audio files"
 msgstr "Tous les fichiers audio pris en charge"
 
-#: src/ui/qt/main_window.cpp:543
+#: src/ui/qt/main_window.cpp:520
 msgid "Choose an audio file"
 msgstr "Sélectionnez un fichier audio"
 
-#: src/ui/qt/main_window.cpp:558
+#: src/ui/qt/main_window.cpp:535
 msgid "Hotkey"
 msgstr "Raccourcis"
 
-#: src/ui/qt/main_window.cpp:571
+#: src/ui/qt/main_window.cpp:548
 msgid "Interface"
 msgstr "Interface"
 
-#: src/ui/qt/main_window.cpp:575
+#: src/ui/qt/main_window.cpp:552
 msgid "Show notification area icon"
 msgstr "Afficher une icône dans la zone de notification"
 
-#: src/ui/qt/main_window.cpp:599
+#: src/ui/qt/main_window.cpp:576
 msgid "Minimize to notification area"
 msgstr "Minimiser dans la zone de notification"
 
-#: src/ui/qt/main_window.cpp:603
+#: src/ui/qt/main_window.cpp:580
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -836,11 +836,11 @@ msgstr ""
 "Minimiser la fenêtre masquera {app_name}. Utilisez l'icône de la zone de "
 "notification pour l'afficher à nouveau."
 
-#: src/ui/qt/main_window.cpp:609
+#: src/ui/qt/main_window.cpp:586
 msgid "Close to notification area"
 msgstr "Fermer dans la zone de notification"
 
-#: src/ui/qt/main_window.cpp:613
+#: src/ui/qt/main_window.cpp:590
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -848,27 +848,27 @@ msgstr ""
 "Fermer la fenêtre masquera {app_name}. Utilisez l'icône de la zone de "
 "notification pour l'afficher à nouveau."
 
-#: src/ui/qt/main_window.cpp:619
+#: src/ui/qt/main_window.cpp:596
 msgid "Behavior"
 msgstr "Comportement"
 
-#: src/ui/qt/main_window.cpp:629
+#: src/ui/qt/main_window.cpp:606
 msgid "Play sound when recognition is complete"
 msgstr "Jouer un son lorsque la reconnaissance est terminée"
 
-#: src/ui/qt/main_window.cpp:638
+#: src/ui/qt/main_window.cpp:615
 msgid "Play this audio file:"
 msgstr "Jouer ce fichier audio :"
 
-#: src/ui/qt/main_window.cpp:701
+#: src/ui/qt/main_window.cpp:678
 msgid "Check for updates automatically"
 msgstr "Vérifier automatiquement les mises à jour"
 
-#: src/ui/qt/main_window.cpp:709
+#: src/ui/qt/main_window.cpp:686
 msgid "Run at system logon"
 msgstr "Exécuter au démarrage du système"
 
-#: src/ui/qt/main_window.cpp:713
+#: src/ui/qt/main_window.cpp:690
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -879,7 +879,7 @@ msgstr ""
 "notification est activée, ou minimisée si l'icône de la zone de notification "
 "est désactivée."
 
-#: src/ui/qt/main_window.cpp:881
+#: src/ui/qt/main_window.cpp:857
 msgid ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} day"
@@ -893,23 +893,23 @@ msgstr[1] ""
 "{app_name} vérifiera automatiquement les mises à jour au démarrage, mais pas "
 "plus d'une fois tous les {count} jours"
 
-#: src/ui/qt/main_window.cpp:1139
+#: src/ui/qt/main_window.cpp:1115
 msgid "Please install languages"
 msgstr "Veuillez installer les langues"
 
-#: src/ui/qt/main_window.cpp:1141
+#: src/ui/qt/main_window.cpp:1117
 msgid "Please select languages"
 msgstr "Veuillez sélectionner des langues"
 
-#: src/ui/qt/main_window.cpp:1143
+#: src/ui/qt/main_window.cpp:1119
 msgid "Please select actions"
 msgstr "Veuillez sélectionner des actions"
 
-#: src/ui/qt/main_window.cpp:1155
+#: src/ui/qt/main_window.cpp:1131
 msgid "Press {hotkey} to start area selection"
 msgstr "Appuyez sur {hotkey} pour démarrer la sélection de zone"
 
-#: src/ui/qt/main_window.cpp:1156
+#: src/ui/qt/main_window.cpp:1132
 msgid "Press {hotkey} to finish selection"
 msgstr "Appuyez sur {hotkey} pour terminer la sélection"
 
