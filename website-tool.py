@@ -76,6 +76,7 @@ BCP47_TO_MS_STORE_LANG = {
     'hr': '',
     'pa': '',
     'pl': '',
+    'pt': 'pt-pt',
     'pt-BR': 'pt-br',
     'ru': '',
     'tr': '',
