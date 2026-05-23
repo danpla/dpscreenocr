@@ -13,9 +13,7 @@ VersionCmp::VersionCmp(std::string_view str)
     const auto* sEnd = s + str.size();
 
     while (s < sEnd) {
-        // Use unsigned so that from_chars() doesn't accept the minus
-        // sign.
-        unsigned num;
+        NumT num;
         const auto [end, ec] = std::from_chars(s, sEnd, num);
         if (ec != std::errc{}) {
             if (s > str.data()) {

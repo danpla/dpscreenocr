@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -24,7 +25,9 @@ public:
 
     bool operator<(const VersionCmp& other) const;
 private:
-    std::vector<unsigned> nums;
+    using NumT = std::uint32_t;
+
+    std::vector<NumT> nums;
     std::string extra;
 };
 
