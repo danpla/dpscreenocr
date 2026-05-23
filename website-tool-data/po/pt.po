@@ -1,0 +1,99 @@
+# Portuguese translations for dpScreenOCR package.
+# Copyright (C) 2026 THE dpScreenOCR'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the dpScreenOCR Website package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dpScreenOCR Website\n"
+"Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
+"POT-Creation-Date: 2026-05-24 00:43+0200\n"
+"PO-Revision-Date: 2026-05-24 00:43+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Language"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"{app_name} is a program that can extract text from any part of the screen. "
+"It eliminates the need for manual retyping when working with scanned "
+"documents, screenshots, videos, user interface elements, and other "
+"situations where it is impossible to copy text in the usual way."
+msgstr ""
+
+msgid "https://en.wikipedia.org/wiki/Tesseract_(software)"
+msgstr ""
+
+msgid "Features:"
+msgstr ""
+
+msgid ""
+"<b>Supports 100+ languages.</b> English is included by default; others can "
+"be installed via the built-in manager."
+msgstr ""
+
+msgid ""
+"<b>Easy to use.</b> Press a global hotkey to select an area on the screen "
+"and send the recognized text to the clipboard."
+msgstr ""
+
+msgid ""
+"<b>Works offline.</b> Recognition is performed locally on your device. "
+"Internet is only required to download additional languages."
+msgstr ""
+
+#. Translators: In this context, you should translate
+#. "free" as in "free speech," not as in "free beer". See:
+#. https://en.wikipedia.org/wiki/Free_and_open-source_software
+#, python-brace-format
+msgid ""
+"<b>Free and open source.</b> Powered by <a {tesseract_link}>Tesseract</a>."
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Read the <b><a {manual_link}>manual</a></b> for instructions on installing, "
+"configuring, and using the program."
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"<b>Download</b> version {version_number} (<a {changelog_link}>changes</a>, "
+"<a {license_link}>license</a>):"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Download {file}, which works on most systems, or choose a package for your "
+"distribution:"
+msgstr ""
+
+msgid "Ubuntu and derivatives"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Direct download: <a {installer_link}>installer</a> or <a {zip_archive_link}"
+">ZIP archive</a>"
+msgstr ""
+
+msgid "Source code (tar.gz)"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"<b>Contribute</b> by taking part in <a {translations_link}>translation</a> "
+"or <a {development_link}>development</a>."
+msgstr ""
+
+#. Translators: This is the target language name to be shown in the
+#. language selection menu.
+msgid "LANGUAGE_NAME"
+msgstr ""
