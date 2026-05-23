@@ -12,7 +12,7 @@ static void testVersionCmp()
         std::string_view strA;
         std::string_view strB;
         bool isLess;
-    } tests [] = {
+    } tests[]{
         {"", "1", true},
         {"1", "", false},
 
@@ -41,6 +41,13 @@ static void testVersionCmp()
 
         {"1.0-rc1", "1.0", true},
         {"1.0", "1.0-rc1", false},
+
+        // Negative numbers and an explicit "+" are not supported, so
+        // the "+/-" sign and everything that follows it is treated as
+        // an arbitrary string.
+        {"-1", "-2", true},
+        {"1", "+2", false},
+        {"+1", "1", true},
     };
 
     for (const auto& test : tests) {
