@@ -16,6 +16,9 @@ static void testVersionCmp()
         {"", "1", true},
         {"1", "", false},
 
+        {"", "0.0.0", false},
+        {"0.0.0", "", false},
+
         {"1", "1.0.0", false},
         {"1.0.0", "1", false},
 
@@ -34,6 +37,9 @@ static void testVersionCmp()
         {"1.2.3", "01.002.0003", false},
         {"01.002.0003", "1.2.3", false},
 
+        {"-rc1", "0.0.0-rc1", false},
+        {"0.0.0-rc1", "-rc1", false},
+
         {"1-rc1", "1.0.0-rc1", false},
         {"1.0.0-rc1", "1-rc1", false},
 
@@ -47,6 +53,9 @@ static void testVersionCmp()
 
         {"1.0-rc1", "1.0", true},
         {"1.0", "1.0-rc1", false},
+
+        {"1", "1.", false},
+        {"1.", "1", true},
 
         // Negative numbers and an explicit "+" are not supported, so
         // the "+/-" sign and everything that follows it is treated as

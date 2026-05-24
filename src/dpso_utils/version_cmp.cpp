@@ -1,6 +1,5 @@
 #include "version_cmp.h"
 
-#include <cassert>
 #include <charconv>
 #include <cstddef>
 
@@ -14,16 +13,14 @@ VersionCmp::VersionCmp(std::string_view str)
     const auto* sEnd = s + str.size();
 
     std::size_t numCount{};
-    while (s < sEnd) {
+    while (true) {
         NumT num;
         const auto [end, ec] = std::from_chars(s, sEnd, num);
         if (ec != std::errc{}) {
-            if (s > str.data()) {
+            if (s > str.data() && s[-1] == '.') {
                 // Make the preceding period a part of the extra
                 // string.
                 --s;
-                assert(!nums.empty());
-                assert(*s == '.');
             }
 
             break;
@@ -40,8 +37,6 @@ VersionCmp::VersionCmp(std::string_view str)
 
         if (s < sEnd && *s == '.')
             ++s;
-        else
-            break;
     }
 
     extra.assign(s, sEnd);
