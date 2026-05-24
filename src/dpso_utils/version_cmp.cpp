@@ -31,7 +31,7 @@ VersionCmp::VersionCmp(std::string_view str)
 
         s = end;
 
-        if (*s == '.')
+        if (s < sEnd && *s == '.')
             ++s;
         else
             break;
