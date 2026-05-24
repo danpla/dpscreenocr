@@ -6,9 +6,6 @@
 #include "dpso_ocr/dpso_ocr.h"
 
 
-class QTreeWidgetItem;
-
-
 namespace ui::qt {
 
 
@@ -21,9 +18,6 @@ public:
 
     void loadState(const DpsoCfg* cfg);
     void saveState(DpsoCfg* cfg) const;
-private slots:
-    void updateLangState(QTreeWidgetItem* item, int column);
-    void selectCheckboxColumn(QTreeWidgetItem* current);
 private:
     DpsoOcr* ocr;
 };

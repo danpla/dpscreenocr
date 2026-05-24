@@ -75,8 +75,17 @@ LangBrowser::LangBrowser(DpsoOcr* ocr)
     header()->setSectionsMovable(false);
 
     connect(
-        this, &LangBrowser::itemChanged,
-        this, &LangBrowser::updateLangState);
+        this, &LangBrowser::itemChanged, this,
+        [ocr](QTreeWidgetItem* item, int column)
+        {
+            if (column != columnIdxCheckbox)
+                return;
+
+            dpsoOcrSetLangIsActive(
+                ocr,
+                item->data(columnIdxCheckbox, Qt::UserRole).toInt(),
+                item->checkState(columnIdxCheckbox) == Qt::Checked);
+        });
 
     // When the user enters QTreeWidget via keyboard (e.g. by pressing
     // Tab), the focus goes to the checkbox column, making it possible
@@ -94,8 +103,11 @@ LangBrowser::LangBrowser(DpsoOcr* ocr)
     // to itemActivated(), but this signal is emitted on Enter rather
     // than on Space.
     connect(
-        this, &LangBrowser::currentItemChanged,
-        this, &LangBrowser::selectCheckboxColumn);
+        this, &LangBrowser::currentItemChanged, this,
+        [this](QTreeWidgetItem* current)
+        {
+            setCurrentItem(current, columnIdxCheckbox);
+        });
 }
 
 
@@ -137,24 +149,6 @@ void LangBrowser::reloadLangs()
             setCurrentItem(item, columnIdxCheckbox);
     }
     setSortingEnabled(true);
-}
-
-
-void LangBrowser::updateLangState(QTreeWidgetItem* item, int column)
-{
-    if (column != columnIdxCheckbox)
-        return;
-
-    dpsoOcrSetLangIsActive(
-        ocr,
-        item->data(columnIdxCheckbox, Qt::UserRole).toInt(),
-        item->checkState(columnIdxCheckbox) == Qt::Checked);
-}
-
-
-void LangBrowser::selectCheckboxColumn(QTreeWidgetItem* current)
-{
-    setCurrentItem(current, columnIdxCheckbox);
 }
 
 
