@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <charconv>
+#include <cstddef>
 
 
 namespace dpso {
@@ -12,6 +13,7 @@ VersionCmp::VersionCmp(std::string_view str)
     const auto* s = str.data();
     const auto* sEnd = s + str.size();
 
+    std::size_t numCount{};
     while (s < sEnd) {
         NumT num;
         const auto [end, ec] = std::from_chars(s, sEnd, num);
@@ -27,7 +29,12 @@ VersionCmp::VersionCmp(std::string_view str)
             break;
         }
 
-        nums.push_back(num);
+        ++numCount;
+        // We don't want trailing zeros so that "1" == "1.0.0"
+        if (num != 0) {
+            nums.resize(numCount);
+            nums.back() = num;
+        }
 
         s = end;
 

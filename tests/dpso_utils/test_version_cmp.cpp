@@ -16,6 +16,9 @@ static void testVersionCmp()
         {"", "1", true},
         {"1", "", false},
 
+        {"1", "1.0.0", false},
+        {"1.0.0", "1", false},
+
         {"1.0", "1.0.1", true},
         {"1.0.1", "1.0", false},
 
@@ -30,6 +33,9 @@ static void testVersionCmp()
 
         {"1.2.3", "01.002.0003", false},
         {"01.002.0003", "1.2.3", false},
+
+        {"1-rc1", "1.0.0-rc1", false},
+        {"1.0.0-rc1", "1-rc1", false},
 
         {"1.0-rc1", "1.0-rc1", false},
 
@@ -59,7 +65,7 @@ static void testVersionCmp()
             continue;
 
         test::failure(
-            "\"{}\" < \"{}\" expected to be {}\n",
+            "\"{}\" < \"{}\" expected to be {}",
             test.strA,
             test.strB,
             test::utils::toStr(test.isLess));
