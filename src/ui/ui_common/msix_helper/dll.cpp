@@ -55,7 +55,7 @@ auto runInMtaThread(Fn&& fn)
 {
     return std::async(
         std::launch::async,
-        [fn = std::forward<Fn>(fn)]()
+        [fn = std::forward<Fn>(fn)]
         {
             try {
                 winrt::init_apartment(
@@ -68,7 +68,8 @@ auto runInMtaThread(Fn&& fn)
             // std::async() can use a thread pool, so it's important
             // to de-initialize the apartment.
             const struct UninitApartment {
-                ~UninitApartment() {
+                ~UninitApartment()
+                {
                     winrt::uninit_apartment();
                 }
             } uninitApartment;
@@ -134,7 +135,7 @@ class StartupTaskDeniedError : public Error {
 StartupTaskState getStartupTaskState(const std::wstring& id)
 {
     return runInMtaThread(
-        [&]()
+        [&]
         {
             try {
                 return StartupTask::GetAsync(id).get().State();
@@ -291,7 +292,7 @@ MsixHelper_startupTaskSetIsEnabled(
 
     try {
         runInMtaThread(
-            [&]()
+            [&]
             {
                 setStatupTaskIsEnabled(st->id, newIsEnabled);
             });
