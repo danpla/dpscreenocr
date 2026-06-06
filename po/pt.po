@@ -5,805 +5,807 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2026-05-23 23:39+0200\n"
-"PO-Revision-Date: 2026-05-23 23:39+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-06-07 10:01+0000\n"
+"Last-Translator: ssantos <ssantos@web.de>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/dpscreenocr/"
+"dpscreenocr/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.6\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:32
 msgid "Afrikaans"
-msgstr ""
+msgstr "Africâner"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:33
 msgid "Amharic"
-msgstr ""
+msgstr "Amárico"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:34
 msgid "Arabic"
-msgstr ""
+msgstr "Árabe"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:35
 msgid "Assamese"
-msgstr ""
+msgstr "Assamês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:36
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbaijano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:37
 msgid "Azerbaijani (Cyrillic)"
-msgstr ""
+msgstr "Azerbaijano (Cirílico)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:38
 msgid "Belarusian"
-msgstr ""
+msgstr "Bielorrusso"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:39
 msgid "Bengali"
-msgstr ""
+msgstr "Bengali"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:40
 msgid "Tibetan"
-msgstr ""
+msgstr "Tibetano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:41
 msgid "Bosnian"
-msgstr ""
+msgstr "Bósnio"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:42
 msgid "Breton"
-msgstr ""
+msgstr "Bretão"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:43
 msgid "Bulgarian"
-msgstr ""
+msgstr "Búlgaro"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:44
 msgid "Catalan; Valencian"
-msgstr ""
+msgstr "Catalão; Valenciano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:45
 msgid "Cebuano"
-msgstr ""
+msgstr "Cebuano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:46
 msgid "Czech"
-msgstr ""
+msgstr "Tcheco"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:47
 msgid "Chinese (simplified)"
-msgstr ""
+msgstr "Chinês (simplificado)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:48
 msgid "Chinese (simplified, vertical)"
-msgstr ""
+msgstr "Chinês (simplificado, vertical)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:49
 msgid "Chinese (traditional)"
-msgstr ""
+msgstr "Chinês (tradicional)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:50
 msgid "Chinese (traditional, vertical)"
-msgstr ""
+msgstr "Chinês (tradicional, vertical)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:51
 msgid "Cherokee"
-msgstr ""
+msgstr "Cherokee"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:52
 msgid "Corsican"
-msgstr ""
+msgstr "Corsa"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:53
 msgid "Welsh"
-msgstr ""
+msgstr "Galês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:54
 msgid "Danish"
-msgstr ""
+msgstr "Dinamarquês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:55
 msgid "Danish (Fraktur)"
-msgstr ""
+msgstr "Dinamarquês (Fraktur)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:56
 msgid "German"
-msgstr ""
+msgstr "Alemão"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:57
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:71
 msgid "German (Fraktur)"
-msgstr ""
+msgstr "Alemão (Fraktur)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:58
 msgid "Dhivehi; Divehi; Maldivian"
-msgstr ""
+msgstr "Dhivehi; Divehi; Maldivas"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:59
 msgid "Dzongkha"
-msgstr ""
+msgstr "Butanês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:60
 msgid "Greek, Modern (1453-)"
-msgstr ""
+msgstr "Grego, Moderno (1453-)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:61
 msgid "English"
-msgstr ""
+msgstr "Inglês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:62
 msgid "English, Middle (1100-1500)"
-msgstr ""
+msgstr "Inglês, Médio (1100-1500)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:63
 msgid "Esperanto"
-msgstr ""
+msgstr "Esperanto"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:64
 msgid "Estonian"
-msgstr ""
+msgstr "Estoniano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:65
 msgid "Basque"
-msgstr ""
+msgstr "Basco"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:66
 msgid "Faroese"
-msgstr ""
+msgstr "Feroês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:67
 msgid "Persian"
-msgstr ""
+msgstr "Persa"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:68
 msgid "Filipino; Pilipino"
-msgstr ""
+msgstr "Filipino; Pilipino"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:69
 msgid "Finnish"
-msgstr ""
+msgstr "Finlandês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:70
 msgid "French"
-msgstr ""
+msgstr "Francês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:72
 msgid "French, Middle (ca. 1400-1600)"
-msgstr ""
+msgstr "Francês, Médio (ca. 1400-1600)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:73
 msgid "Frisian, Western"
-msgstr ""
+msgstr "Frísio, Ocidental"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:74
 msgid "Gaelic, Scottish"
-msgstr ""
+msgstr "Gaélico, Escocês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:75
 msgid "Irish"
-msgstr ""
+msgstr "Irlandês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:76
 msgid "Galician"
-msgstr ""
+msgstr "Galego"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:77
 msgid "Greek, Ancient (to 1453)"
-msgstr ""
+msgstr "Grego, Antigo (até 1453)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:78
 msgid "Gujarati"
-msgstr ""
+msgstr "Guzerate"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:79
 msgid "Creole, Haitian"
-msgstr ""
+msgstr "Crioulo, Haitiano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:80
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebraico"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:81
 msgid "Hindi"
-msgstr ""
+msgstr "Hindi"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:82
 msgid "Croatian"
-msgstr ""
+msgstr "Croata"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:83
 msgid "Hungarian"
-msgstr ""
+msgstr "Húngaro"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:84
 msgid "Armenian"
-msgstr ""
+msgstr "Armênio"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:85
 msgid "Inuktitut"
-msgstr ""
+msgstr "Inuktitut"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:86
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonésio"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:87
 msgid "Icelandic"
-msgstr ""
+msgstr "Islandês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:88
 msgid "Italian"
-msgstr ""
+msgstr "Italiano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:89
 msgid "Italian (old)"
-msgstr ""
+msgstr "Italiano (antigo)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:90
 msgid "Javanese"
-msgstr ""
+msgstr "Javanês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:91
 msgid "Japanese"
-msgstr ""
+msgstr "Japonês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:92
 msgid "Japanese (vertical)"
-msgstr ""
+msgstr "Japonês (vertical)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:93
 msgid "Kannada"
-msgstr ""
+msgstr "Kannada"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:94
 msgid "Georgian"
-msgstr ""
+msgstr "Georgiano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:95
 msgid "Georgian (old)"
-msgstr ""
+msgstr "Georgiano (antigo)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:96
 msgid "Kazakh"
-msgstr ""
+msgstr "Cazaque"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:97
 msgid "Khmer, Central"
-msgstr ""
+msgstr "Khmer, Central"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:98
 msgid "Kirghiz; Kyrgyz"
-msgstr ""
+msgstr "Quirguiz; Quirguistão"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:99
 msgid "Kurdish, Northern"
-msgstr ""
+msgstr "Curdo, Norte"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:100
 msgid "Korean"
-msgstr ""
+msgstr "Coreano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:101
 msgid "Korean (vertical)"
-msgstr ""
+msgstr "Coreano (vertical)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:102
 msgid "Kurdish"
-msgstr ""
+msgstr "Curdo"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:103
 msgid "Lao"
-msgstr ""
+msgstr "Lao"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:104
 msgid "Latin"
-msgstr ""
+msgstr "Latim"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:105
 msgid "Latvian"
-msgstr ""
+msgstr "Letão"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:106
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lituano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:107
 msgid "Luxembourgish; Letzeburgesch"
-msgstr ""
+msgstr "Luxemburguês; Luxemburgo"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:108
 msgid "Malayalam"
-msgstr ""
+msgstr "Malaiala"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:109
 msgid "Marathi"
-msgstr ""
+msgstr "Marathi"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:110
 msgid "Macedonian"
-msgstr ""
+msgstr "Macedônio"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:111
 msgid "Maltese"
-msgstr ""
+msgstr "Maltês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:112
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongol"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:113
 msgid "Maori"
-msgstr ""
+msgstr "Maori"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:114
 msgid "Malay"
-msgstr ""
+msgstr "Malaio"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:115
 msgid "Burmese"
-msgstr ""
+msgstr "Birmanês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:116
 msgid "Nepali"
-msgstr ""
+msgstr "Nepalês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:117
 msgid "Dutch; Flemish"
-msgstr ""
+msgstr "Holandês; Flamengo"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:118
 msgid "Norwegian"
-msgstr ""
+msgstr "Norueguês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:119
 msgid "Occitan (post 1500)"
-msgstr ""
+msgstr "Occitano (pós 1500)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:120
 msgid "Oriya"
-msgstr ""
+msgstr "Oriá"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:121
 msgid "Panjabi; Punjabi"
-msgstr ""
+msgstr "Panjabi; Punjabi"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:122
 msgid "Polish"
-msgstr ""
+msgstr "Polonês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:123
 msgid "Portuguese"
-msgstr ""
+msgstr "Português"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:124
 msgid "Pushto; Pashto"
-msgstr ""
+msgstr "Pastó; Pashto"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:125
 msgid "Quechua"
-msgstr ""
+msgstr "Quíchua"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:126
 msgid "Romanian; Moldavian; Moldovan"
-msgstr ""
+msgstr "Romeno; Moldávio"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:127
 msgid "Russian"
-msgstr ""
+msgstr "Russo"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:128
 msgid "Sanskrit"
-msgstr ""
+msgstr "Sânscrito"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:129
 msgid "Sinhala; Sinhalese"
-msgstr ""
+msgstr "Cingalês; Sinhala"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:130
 msgid "Slovak"
-msgstr ""
+msgstr "Eslovaco"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:131
 msgid "Slovak (Fraktur)"
-msgstr ""
+msgstr "Eslovaco (Fraktur)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:132
 msgid "Slovenian"
-msgstr ""
+msgstr "Esloveno"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:133
 msgid "Sindhi"
-msgstr ""
+msgstr "Sindi"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:134
 msgid "Spanish; Castilian"
-msgstr ""
+msgstr "Espanhol; Castelhano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:135
 msgid "Spanish; Castilian (old)"
-msgstr ""
+msgstr "Espanhol; Castelhano (antigo)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:136
 msgid "Albanian"
-msgstr ""
+msgstr "Albanês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:137
 msgid "Serbian"
-msgstr ""
+msgstr "Sérvio"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:138
 msgid "Serbian (Latin)"
-msgstr ""
+msgstr "Sérvio (Latino)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:139
 msgid "Sundanese"
-msgstr ""
+msgstr "Sudanês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:140
 msgid "Swahili"
-msgstr ""
+msgstr "Suaíli"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:141
 msgid "Swedish"
-msgstr ""
+msgstr "Sueco"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:142
 msgid "Syriac"
-msgstr ""
+msgstr "Siríaco"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:143
 msgid "Tamil"
-msgstr ""
+msgstr "Tâmil"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:144
 msgid "Tatar"
-msgstr ""
+msgstr "Tártaro"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:145
 msgid "Telugu"
-msgstr ""
+msgstr "Telugo"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:146
 msgid "Tajik"
-msgstr ""
+msgstr "Tadjique"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:147
 msgid "Tagalog"
-msgstr ""
+msgstr "Tagalo"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:148
 msgid "Thai"
-msgstr ""
+msgstr "Tailandês"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:149
 msgid "Tigrinya"
-msgstr ""
+msgstr "Tigrínia"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:150
 msgid "Tonga (Tonga Islands)"
-msgstr ""
+msgstr "Tonga (Ilhas Tonga)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:151
 msgid "Turkish"
-msgstr ""
+msgstr "Turco"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:152
 msgid "Uighur; Uyghur"
-msgstr ""
+msgstr "Uigur"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:153
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ucraniano"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:154
 msgid "Urdu"
-msgstr ""
+msgstr "Urdu"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:155
 msgid "Uzbek"
-msgstr ""
+msgstr "Uzbeque"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:156
 msgid "Uzbek (Cyrillic)"
-msgstr ""
+msgstr "Uzbeque (Cirílico)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:157
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamita"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:158
 msgid "Yiddish"
-msgstr ""
+msgstr "Iídiche"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp:159
 msgid "Yoruba"
-msgstr ""
+msgstr "Iorubá"
 
 #: src/ui/qt/about.cpp:55 src/ui/qt/update_checker.cpp:137
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 #: src/ui/qt/about.cpp:64
 msgid "User manual"
-msgstr ""
+msgstr "Manual do utilizador"
 
 #: src/ui/qt/about.cpp:68
 msgid "Changes"
-msgstr ""
+msgstr "Alterações"
 
 #: src/ui/qt/about.cpp:70
 msgid "License"
-msgstr ""
+msgstr "Licença"
 
 #: src/ui/qt/about.cpp:75
 msgid "Third-party licenses"
-msgstr ""
+msgstr "Licenças de terceiros"
 
 #: src/ui/qt/about.cpp:101 data/dpscreenocr.desktop:10
 msgid "A program to recognize text on the screen"
-msgstr ""
+msgstr "Programa para reconhecer textos no ecrã"
 
 #: src/ui/qt/about.cpp:118
 msgid "Check for updates"
-msgstr ""
+msgstr "Verificar se há atualizações"
 
 #: src/ui/qt/action_chooser.cpp:25
 msgid "Copy text to clipboard"
-msgstr ""
+msgstr "Copiar texto para a área de transferência"
 
 #: src/ui/qt/action_chooser.cpp:26
 msgid "Add text to history"
-msgstr ""
+msgstr "Adicionar texto ao histórico"
 
 #: src/ui/qt/action_chooser.cpp:28
 msgid "Run executable:"
-msgstr ""
+msgstr "Iniciar executável:"
 
 #: src/ui/qt/action_chooser.cpp:30
 msgid "Run an executable with the recognized text as the first argument"
-msgstr ""
+msgstr "Inicie um executável com o texto reconhecido como o primeiro argumento"
 
 #: src/ui/qt/action_chooser.cpp:155
 msgid "Choose an executable"
-msgstr ""
+msgstr "Escolha um executável"
 
 #: src/ui/qt/history.cpp:39
 msgid "Export…"
-msgstr ""
+msgstr "Exportar…"
 
 #: src/ui/qt/history.cpp:44
 msgid "Clear…"
-msgstr ""
+msgstr "Limpar…"
 
 #: src/ui/qt/history.cpp:61 src/ui/qt/main_window.cpp:119
 msgid "History"
-msgstr ""
+msgstr "Histórico"
 
 #: src/ui/qt/history.cpp:78
 msgid "Plain text"
-msgstr ""
+msgstr "Texto sem formatação"
 
 #: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:516
 msgid "All files"
-msgstr ""
+msgstr "Todos os ficheiros"
 
 #: src/ui/qt/history.cpp:118
 msgid "Export history"
-msgstr ""
+msgstr "Exportar histórico"
 
 #: src/ui/qt/history.cpp:153
 msgid "Clear the history?"
-msgstr ""
+msgstr "Limpar histórico?"
 
 #: src/ui/qt/history.cpp:153 src/ui/qt/lang_manager/lang_manager_page.cpp:280
 #: src/ui/qt/main_window.cpp:188
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: src/ui/qt/history.cpp:153
 msgid "Clear"
-msgstr ""
+msgstr "Limpar"
 
 #: src/ui/qt/lang_browser.cpp:64 src/ui/qt/lang_manager/lang_list.cpp:106
 msgctxt "language"
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: src/ui/qt/lang_browser.cpp:65 src/ui/qt/lang_manager/lang_list.cpp:108
 msgctxt "language"
 msgid "Code"
-msgstr ""
+msgstr "Código"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:109
 msgid "Cancel…"
-msgstr ""
+msgstr "Cancelar…"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:126
 msgid "Are you sure you want to cancel the installation?"
-msgstr ""
+msgstr "Tem certeza que deseja cancelar a instalação?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:127
 msgid "Continue installation"
-msgstr ""
+msgstr "Continuar instalação"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:128
 msgid "Cancel installation"
-msgstr ""
+msgstr "Cancelar instalação"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
 msgid "Are you sure you want to cancel the update?"
-msgstr ""
+msgstr "Tem certeza que deseja cancelar a atualização?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
 msgid "Continue updating"
-msgstr ""
+msgstr "Continuar a atualizar"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
 msgid "Cancel update"
-msgstr ""
+msgstr "Cancelar atualização"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:174
 msgid "Installing “{name}” ({current}/{total})"
-msgstr ""
+msgstr "A instalar “{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp:176
 msgid "Updating “{name}” ({current}/{total})"
-msgstr ""
+msgstr "A atualizar “{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp:31
 msgctxt "digital_data"
 msgid "Size"
-msgstr ""
+msgstr "Tamanho"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:41
 msgid "Fetching the language list…"
-msgstr ""
+msgstr "A buscar a lista de idiomas…"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:58
 msgid "An error occurred while fetching the list of languages"
-msgstr ""
+msgstr "Ocorreu um erro ao buscar a lista de idiomas"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:85
 msgid "Update ({count})"
-msgstr ""
+msgstr "Atualizar ({count})"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:392
 msgid "Language manager"
-msgstr ""
+msgstr "Gestor de idiomas"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:118
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:187
 msgid "Install"
-msgstr ""
+msgstr "Instalar"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:121
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:280
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp:141 src/ui/qt/update_checker.cpp:139
 #: src/ui/qt/utils.cpp:217
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:61
 msgctxt "noun"
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:135
 msgid "No languages selected."
-msgstr ""
+msgstr "Nenhum idioma selecionado."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:149
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{count} idioma selecionado ({size})."
+msgstr[1] "{count} idiomas selecionados ({size})."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:187
 msgid "Update"
-msgstr ""
+msgstr "Atualizar"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:229
 msgid "An error occurred while installing languages"
-msgstr ""
+msgstr "Ocorreu um erro ao instalar idiomas"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:230
 msgid "An error occurred while updating languages"
-msgstr ""
+msgstr "Ocorreu um erro ao atualizar idiomas"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:244
 msgid "Remove…"
-msgstr ""
+msgstr "Remover…"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:269
 msgid "Remove “{name}”?"
-msgstr ""
+msgstr "Remover “{name}”?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:274
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Remover {count} idioma selecionado?"
+msgstr[1] "Remover {count} idiomas selecionados?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp:299
 msgid "Some languages were not removed"
-msgstr ""
+msgstr "Alguns idiomas não foram removidos"
 
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp:32
 #: src/ui/qt/update_checker.cpp:47
 msgid "Check your network connection and try again."
-msgstr ""
+msgstr "Verifique a sua conexão de rede e tente novamente."
 
 #: src/ui/qt/main.cpp:133
 msgid "{app_name} is already running"
-msgstr ""
+msgstr "{app_name} já está em execução"
 
 #: src/ui/qt/main_window.cpp:61
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr ""
+msgstr "Reconhecimento {progress}% ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp:118
 msgctxt "ui_tab"
 msgid "Main"
-msgstr ""
+msgstr "Principal"
 
 #: src/ui/qt/main_window.cpp:120
 msgid "Settings"
-msgstr ""
+msgstr "Configurações"
 
 #: src/ui/qt/main_window.cpp:121
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #: src/ui/qt/main_window.cpp:187
 msgid "Recognition is not yet finished. Quit anyway?"
-msgstr ""
+msgstr "O reconhecimento ainda não terminou. Sair mesmo assim?"
 
 #: src/ui/qt/main_window.cpp:189 src/ui/qt/main_window.cpp:356
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
 
 #: src/ui/qt/main_window.cpp:348
 msgid "Show {app_name}"
-msgstr ""
+msgstr "Exibir {app_name}"
 
 #: src/ui/qt/main_window.cpp:369
 msgid "Status"
-msgstr ""
+msgstr "Estado"
 
 #: src/ui/qt/main_window.cpp:379
 msgid "Character recognition"
-msgstr ""
+msgstr "Reconhecimento de caracteres"
 
 #: src/ui/qt/main_window.cpp:383
 msgid "Split text blocks"
-msgstr ""
+msgstr "Dividir blocos de texto"
 
 #: src/ui/qt/main_window.cpp:385
 msgid "Split independent text blocks, such as columns"
-msgstr ""
+msgstr "Dividir blocos de texto independentes, como colunas"
 
 #: src/ui/qt/main_window.cpp:388
 msgid "Languages:"
-msgstr ""
+msgstr "Idiomas:"
 
 #: src/ui/qt/main_window.cpp:394
 msgid "Install, update, and remove languages"
-msgstr ""
+msgstr "Instalar, atualizar e remover idiomas"
 
 #: src/ui/qt/main_window.cpp:406
 msgid "Actions"
-msgstr ""
+msgstr "Ações"
 
 #: src/ui/qt/main_window.cpp:490
 msgid "All supported audio files"
-msgstr ""
+msgstr "Todos os ficheiros de áudio apoiados"
 
 #: src/ui/qt/main_window.cpp:520
 msgid "Choose an audio file"
@@ -811,39 +813,43 @@ msgstr ""
 
 #: src/ui/qt/main_window.cpp:535
 msgid "Hotkey"
-msgstr ""
+msgstr "Tecla de atalho"
 
 #: src/ui/qt/main_window.cpp:548
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 #: src/ui/qt/main_window.cpp:552
 msgid "Show notification area icon"
-msgstr ""
+msgstr "Exibir ícone na área de notificações"
 
 #: src/ui/qt/main_window.cpp:576
 msgid "Minimize to notification area"
-msgstr ""
+msgstr "Minimizar para a área de notificações"
 
 #: src/ui/qt/main_window.cpp:580
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr ""
+"Minimizar a janela esconderá o {app_name}. Use o ícone na área de "
+"notificações para exibí-lo novamente."
 
 #: src/ui/qt/main_window.cpp:586
 msgid "Close to notification area"
-msgstr ""
+msgstr "Fechar para a área de notificações"
 
 #: src/ui/qt/main_window.cpp:590
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr ""
+"Fechar a janela esconderá o {app_name}. Use o ícone na área de notificações "
+"para exibí-lo novamente."
 
 #: src/ui/qt/main_window.cpp:596
 msgid "Behavior"
-msgstr ""
+msgstr "Comportamento"
 
 #: src/ui/qt/main_window.cpp:606
 msgid "Play sound when recognition is complete"
@@ -859,7 +865,7 @@ msgstr ""
 
 #: src/ui/qt/main_window.cpp:686
 msgid "Run at system logon"
-msgstr ""
+msgstr "Executar ao iniciar o sistema"
 
 #: src/ui/qt/main_window.cpp:690
 msgid ""
@@ -867,6 +873,9 @@ msgid ""
 "program will be hidden to the notification area if the notification area "
 "icon is enabled, or minimized if the icon is disabled."
 msgstr ""
+"{app_name} será iniciado automaticamente quando entrar no sistema. O "
+"programa ficará oculto na área de notificação se o ícone da área de "
+"notificação estiver ativado ou minimizado se o ícone estiver desativado."
 
 #: src/ui/qt/main_window.cpp:857
 msgid ""
@@ -880,23 +889,23 @@ msgstr[1] ""
 
 #: src/ui/qt/main_window.cpp:1115
 msgid "Please install languages"
-msgstr ""
+msgstr "Por favor, instale idiomas"
 
 #: src/ui/qt/main_window.cpp:1117
 msgid "Please select languages"
-msgstr ""
+msgstr "Por favor, selecione idiomas"
 
 #: src/ui/qt/main_window.cpp:1119
 msgid "Please select actions"
-msgstr ""
+msgstr "Selecione as ações"
 
 #: src/ui/qt/main_window.cpp:1131
 msgid "Press {hotkey} to start area selection"
-msgstr ""
+msgstr "Pressione {hotkey} para iniciar a seleção em área"
 
 #: src/ui/qt/main_window.cpp:1132
 msgid "Press {hotkey} to finish selection"
-msgstr ""
+msgstr "Pressione {hotkey} para concluir a seleção"
 
 #: src/ui/qt/update_checker.cpp:53
 msgid "An error occurred while checking for updates"
