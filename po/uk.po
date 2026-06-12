@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2026-05-23 23:39+0200\n"
+"POT-Creation-Date: 2026-06-12 02:27+0200\n"
 "PO-Revision-Date: 2026-04-19 21:09+0000\n"
 "Last-Translator: Danyl Plakhotych <danyl.plakhotych@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -17,820 +17,818 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.17.1-dev\n"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:32
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Afrikaans"
 msgstr "Африкаанс"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:33
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Amharic"
 msgstr "Амхарська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:34
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Arabic"
 msgstr "Арабська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:35
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Assamese"
 msgstr "Ассамська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:36
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Azerbaijani"
 msgstr "Азербайджанська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:37
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Azerbaijani (Cyrillic)"
 msgstr "Азербайджанська (кирилиця)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:38
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Belarusian"
 msgstr "Білоруська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:39
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Bengali"
 msgstr "Бенгальська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:40
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Tibetan"
 msgstr "Тибетська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:41
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Bosnian"
 msgstr "Боснійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:42
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Breton"
 msgstr "Бретонська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:43
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Bulgarian"
 msgstr "Болгарська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:44
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Catalan; Valencian"
 msgstr "Каталонська; Валенсійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:45
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Cebuano"
 msgstr "Себуанська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:46
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Czech"
 msgstr "Чеська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:47
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Chinese (simplified)"
 msgstr "Китайська (спрощена)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:48
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Chinese (simplified, vertical)"
 msgstr "Китайська (спрощена, вертикальна)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:49
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Chinese (traditional)"
 msgstr "Китайська (традиційна)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:50
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Chinese (traditional, vertical)"
 msgstr "Китайська (традиційна, вертикальна)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:51
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Cherokee"
 msgstr "Черокі"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:52
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Corsican"
 msgstr "Корсиканська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:53
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Welsh"
 msgstr "Валлійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:54
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Danish"
 msgstr "Данська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:55
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Danish (Fraktur)"
 msgstr "Данська (фрактура)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:56
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "German"
 msgstr "Німецька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:57
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:71
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "German (Fraktur)"
 msgstr "Німецька (фрактура)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:58
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Dhivehi; Divehi; Maldivian"
 msgstr "Дхівехі; Діверхі; Мальдівська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:59
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Dzongkha"
 msgstr "Дзонг-ке"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:60
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Greek, Modern (1453-)"
 msgstr "Грецька, Новогрецька (1453-)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:61
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "English"
 msgstr "Англійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:62
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "English, Middle (1100-1500)"
 msgstr "Англійська, Середньоанглійська (1100-1500)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:63
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Esperanto"
 msgstr "Есперанто"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:64
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Estonian"
 msgstr "Естонська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:65
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Basque"
 msgstr "Баскська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:66
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Faroese"
 msgstr "Фарерська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:67
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Persian"
 msgstr "Перська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:68
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Filipino; Pilipino"
 msgstr "Філіппінська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:69
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Finnish"
 msgstr "Фінська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:70
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "French"
 msgstr "Французька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:72
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "French, Middle (ca. 1400-1600)"
 msgstr "Французька, Середньофранцузька (прибл. 1400-1600)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:73
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Frisian, Western"
 msgstr "Західнофризька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:74
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Gaelic, Scottish"
 msgstr "Шотландська гельська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:75
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Irish"
 msgstr "Ірландська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:76
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Galician"
 msgstr "Галісійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:77
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Greek, Ancient (to 1453)"
 msgstr "Грецька, Давньогрецька (до 1453)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:78
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Gujarati"
 msgstr "Гуджараті"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:79
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Creole, Haitian"
 msgstr "Креольська, гаїтянська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:80
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Hebrew"
 msgstr "Іврит"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:81
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Hindi"
 msgstr "Гінді"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:82
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Croatian"
 msgstr "Хорватська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:83
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Hungarian"
 msgstr "Угорська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:84
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Armenian"
 msgstr "Вірменська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:85
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Inuktitut"
 msgstr "Інуктітут"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:86
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Indonesian"
 msgstr "Індонезійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:87
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Icelandic"
 msgstr "Ісландська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:88
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Italian"
 msgstr "Італійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:89
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Italian (old)"
 msgstr "Італійська (стара)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:90
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Javanese"
 msgstr "Яванська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:91
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Japanese"
 msgstr "Японська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:92
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Japanese (vertical)"
 msgstr "Японська (вертикальна)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:93
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Kannada"
 msgstr "Каннада"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:94
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Georgian"
 msgstr "Грузинська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:95
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Georgian (old)"
 msgstr "Грузинська (стара)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:96
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Kazakh"
 msgstr "Казахська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:97
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Khmer, Central"
 msgstr "Кхмерська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:98
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Kirghiz; Kyrgyz"
 msgstr "Киргизька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:99
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Kurdish, Northern"
 msgstr "Північнокурдська, Курманджі"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:100
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Korean"
 msgstr "Корейська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:101
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Korean (vertical)"
 msgstr "Корейська (вертикальна)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:102
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Kurdish"
 msgstr "Курдська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:103
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Lao"
 msgstr "Лаоська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:104
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Latin"
 msgstr "Латинська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:105
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Latvian"
 msgstr "Латиська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:106
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Lithuanian"
 msgstr "Литовська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:107
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Luxembourgish; Letzeburgesch"
 msgstr "Люксембурзька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:108
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Malayalam"
 msgstr "Малаялам"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:109
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Marathi"
 msgstr "Маратхі"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:110
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Macedonian"
 msgstr "Македонська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:111
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Maltese"
 msgstr "Мальтійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:112
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Mongolian"
 msgstr "Монгольська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:113
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Maori"
 msgstr "Маорі"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:114
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Malay"
 msgstr "Малайська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:115
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Burmese"
 msgstr "Бірманська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:116
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Nepali"
 msgstr "Непальська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:117
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Dutch; Flemish"
 msgstr "Нідерландська; Фламандська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:118
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Norwegian"
 msgstr "Норвезька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:119
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Occitan (post 1500)"
 msgstr "Окситанська (після 1500)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:120
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Oriya"
 msgstr "Орія"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:121
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Panjabi; Punjabi"
 msgstr "Пенджабі"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:122
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Polish"
 msgstr "Польська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:123
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Portuguese"
 msgstr "Португальська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:124
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Pushto; Pashto"
 msgstr "Пушту"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:125
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Quechua"
 msgstr "Кечуа"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:126
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Romanian; Moldavian; Moldovan"
 msgstr "Румунська; Молдовська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:127
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Russian"
 msgstr "Російська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:128
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Sanskrit"
 msgstr "Санскрит"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:129
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Sinhala; Sinhalese"
 msgstr "Сингальська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:130
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Slovak"
 msgstr "Словацька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:131
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Slovak (Fraktur)"
 msgstr "Словацька (фрактура)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:132
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Slovenian"
 msgstr "Словенська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:133
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Sindhi"
 msgstr "Синдхі"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:134
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Spanish; Castilian"
 msgstr "Іспанська; Кастильська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:135
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Spanish; Castilian (old)"
 msgstr "Іспанська; Кастильська (стара)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:136
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Albanian"
 msgstr "Албанська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:137
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Serbian"
 msgstr "Сербська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:138
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Serbian (Latin)"
 msgstr "Сербська (латиниця)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:139
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Sundanese"
 msgstr "Сунданська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:140
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Swahili"
 msgstr "Суахілі"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:141
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Swedish"
 msgstr "Шведська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:142
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Syriac"
 msgstr "Сирійська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:143
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Tamil"
 msgstr "Тамільська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:144
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Tatar"
 msgstr "Татарська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:145
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Telugu"
 msgstr "Телугу"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:146
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Tajik"
 msgstr "Таджицька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:147
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Tagalog"
 msgstr "Тагальська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:148
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Thai"
 msgstr "Тайська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:149
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Tigrinya"
 msgstr "Тигринья"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:150
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Tonga (Tonga Islands)"
 msgstr "Тонганська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:151
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Turkish"
 msgstr "Турецька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:152
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Uighur; Uyghur"
 msgstr "Уйгурська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:153
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:154
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Urdu"
 msgstr "Урду"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:155
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Uzbek"
 msgstr "Узбецька"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:156
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Uzbek (Cyrillic)"
 msgstr "Узбецька (кирилиця)"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:157
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Vietnamese"
 msgstr "В'єтнамська"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:158
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Yiddish"
 msgstr "Їдиш"
 
-#: src/dpso_ocr/engine/tesseract/lang_names.cpp:159
+#: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Yoruba"
 msgstr "Йоруба"
 
-#: src/ui/qt/about.cpp:55 src/ui/qt/update_checker.cpp:137
+#: src/ui/qt/about.cpp src/ui/qt/update_checker.cpp
 msgid "Website"
 msgstr "Вебсайт"
 
-#: src/ui/qt/about.cpp:64
+#: src/ui/qt/about.cpp
 msgid "User manual"
 msgstr "Посібник користувача"
 
-#: src/ui/qt/about.cpp:68
+#: src/ui/qt/about.cpp
 msgid "Changes"
 msgstr "Зміни"
 
-#: src/ui/qt/about.cpp:70
+#: src/ui/qt/about.cpp
 msgid "License"
 msgstr "Ліцензія"
 
-#: src/ui/qt/about.cpp:75
+#: src/ui/qt/about.cpp
 msgid "Third-party licenses"
 msgstr "Ліцензії третіх сторін"
 
-#: src/ui/qt/about.cpp:101 data/dpscreenocr.desktop:10
+#: src/ui/qt/about.cpp data/dpscreenocr.desktop
 msgid "A program to recognize text on the screen"
 msgstr "Програма для розпізнавання тексту не екрані"
 
-#: src/ui/qt/about.cpp:118
+#: src/ui/qt/about.cpp
 msgid "Check for updates"
 msgstr "Перевірити наявність оновлень"
 
-#: src/ui/qt/action_chooser.cpp:25
+#: src/ui/qt/action_chooser.cpp
 msgid "Copy text to clipboard"
 msgstr "Копіювати текст в буфер обміну"
 
-#: src/ui/qt/action_chooser.cpp:26
+#: src/ui/qt/action_chooser.cpp
 msgid "Add text to history"
 msgstr "Додати текст в історію"
 
-#: src/ui/qt/action_chooser.cpp:28
+#: src/ui/qt/action_chooser.cpp
 msgid "Run executable:"
 msgstr "Запустити виконуваний файл:"
 
-#: src/ui/qt/action_chooser.cpp:30
+#: src/ui/qt/action_chooser.cpp
 msgid "Run an executable with the recognized text as the first argument"
 msgstr "Запустити виконуваний файл із розпізнаним текстом як першим аргументом"
 
-#: src/ui/qt/action_chooser.cpp:155
+#: src/ui/qt/action_chooser.cpp
 msgid "Choose an executable"
 msgstr "Виберіть виконуваний файл"
 
-#: src/ui/qt/history.cpp:39
+#: src/ui/qt/history.cpp
 msgid "Export…"
 msgstr "Експортувати…"
 
-#: src/ui/qt/history.cpp:44
+#: src/ui/qt/history.cpp
 msgid "Clear…"
 msgstr "Очистити…"
 
-#: src/ui/qt/history.cpp:61 src/ui/qt/main_window.cpp:119
+#: src/ui/qt/history.cpp src/ui/qt/main_window.cpp
 msgid "History"
 msgstr "Історія"
 
-#: src/ui/qt/history.cpp:78
+#: src/ui/qt/history.cpp
 msgid "Plain text"
 msgstr "Звичайний текст"
 
-#: src/ui/qt/history.cpp:113 src/ui/qt/main_window.cpp:516
+#: src/ui/qt/history.cpp src/ui/qt/main_window.cpp
 msgid "All files"
 msgstr "Усі файли"
 
-#: src/ui/qt/history.cpp:118
+#: src/ui/qt/history.cpp
 msgid "Export history"
 msgstr "Експортувати історію"
 
-#: src/ui/qt/history.cpp:153
+#: src/ui/qt/history.cpp
 msgid "Clear the history?"
 msgstr "Очистити історію?"
 
-#: src/ui/qt/history.cpp:153 src/ui/qt/lang_manager/lang_manager_page.cpp:280
-#: src/ui/qt/main_window.cpp:188
+#: src/ui/qt/history.cpp src/ui/qt/lang_manager/lang_manager_page.cpp
+#: src/ui/qt/main_window.cpp
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: src/ui/qt/history.cpp:153
+#: src/ui/qt/history.cpp
 msgid "Clear"
 msgstr "Очистити"
 
-#: src/ui/qt/lang_browser.cpp:64 src/ui/qt/lang_manager/lang_list.cpp:106
+#: src/ui/qt/lang_browser.cpp src/ui/qt/lang_manager/lang_list.cpp
 msgctxt "language"
 msgid "Name"
 msgstr "Назва"
 
-#: src/ui/qt/lang_browser.cpp:65 src/ui/qt/lang_manager/lang_list.cpp:108
+#: src/ui/qt/lang_browser.cpp src/ui/qt/lang_manager/lang_list.cpp
 msgctxt "language"
 msgid "Code"
 msgstr "Код"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:109
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Cancel…"
 msgstr "Скасувати…"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:126
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Are you sure you want to cancel the installation?"
 msgstr "Ви впевнені, що хочете скасувати встановлення?"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:127
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Continue installation"
 msgstr "Продовжити встановлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:128
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Cancel installation"
 msgstr "Скасувати встановлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:132
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Are you sure you want to cancel the update?"
 msgstr "Ви впевнені, що хочете скасувати оновлення?"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:133
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Continue updating"
 msgstr "Продовжити оновлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:134
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Cancel update"
 msgstr "Скасувати оновлення"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:174
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Installing “{name}” ({current}/{total})"
 msgstr "Встановлення «{name}» ({current}/{total})"
 
-#: src/ui/qt/lang_manager/install_progress_dialog.cpp:176
+#: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Updating “{name}” ({current}/{total})"
 msgstr "Оновлення «{name}» ({current}/{total})"
 
-#: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp:31
+#: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp
 msgctxt "digital_data"
 msgid "Size"
 msgstr "Розмір"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:41
+#: src/ui/qt/lang_manager/lang_manager.cpp
 msgid "Fetching the language list…"
 msgstr "Отримання списку мов…"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:58
+#: src/ui/qt/lang_manager/lang_manager.cpp
 msgid "An error occurred while fetching the list of languages"
 msgstr "Виникла помилка при отриманні списку мов"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:85
+#: src/ui/qt/lang_manager/lang_manager.cpp
 msgid "Update ({count})"
 msgstr "Оновити ({count})"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:112 src/ui/qt/main_window.cpp:392
+#: src/ui/qt/lang_manager/lang_manager.cpp src/ui/qt/main_window.cpp
 msgid "Language manager"
 msgstr "Менеджер мов"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:118
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:187
+#: src/ui/qt/lang_manager/lang_manager.cpp
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Install"
 msgstr "Встановити"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:121
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:280
+#: src/ui/qt/lang_manager/lang_manager.cpp
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Remove"
 msgstr "Видалити"
 
-#: src/ui/qt/lang_manager/lang_manager.cpp:141 src/ui/qt/update_checker.cpp:139
-#: src/ui/qt/utils.cpp:217
+#: src/ui/qt/lang_manager/lang_manager.cpp src/ui/qt/update_checker.cpp
+#: src/ui/qt/utils.cpp
 msgid "Close"
 msgstr "Закрити"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:61
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgctxt "noun"
 msgid "Filter"
 msgstr "Фільтр"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:135
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "No languages selected."
 msgstr "Жодної мови не вибрано."
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:149
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "{count} language selected ({size})."
 msgid_plural "{count} languages selected ({size})."
 msgstr[0] "{count} мова вибрана ({size})."
 msgstr[1] "{count} мови вибрані ({size})."
 msgstr[2] "{count} мов вибрано ({size})."
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:187
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Update"
 msgstr "Оновити"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:229
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "An error occurred while installing languages"
 msgstr "Виникла помилка при встановленні мов"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:230
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "An error occurred while updating languages"
 msgstr "Виникла помилка при оновленні мов"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:244
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Remove…"
 msgstr "Видалити…"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:269
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Remove “{name}”?"
 msgstr "Видалити «{name}»?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:274
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Remove {count} selected language?"
 msgid_plural "Remove {count} selected languages?"
 msgstr[0] "Видалити {count} вибрану мову?"
 msgstr[1] "Видалити {count} вибрані мови?"
 msgstr[2] "Видалити {count} вибраних мов?"
 
-#: src/ui/qt/lang_manager/lang_manager_page.cpp:299
+#: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Some languages were not removed"
 msgstr "Деякі мови не були видалені"
 
-#: src/ui/qt/lang_manager/lang_op_status_error.cpp:32
-#: src/ui/qt/update_checker.cpp:47
+#: src/ui/qt/lang_manager/lang_op_status_error.cpp src/ui/qt/update_checker.cpp
 msgid "Check your network connection and try again."
 msgstr "Перевірте ваше підключення до мережі та спробуйте знову."
 
-#: src/ui/qt/main.cpp:133
+#: src/ui/qt/main.cpp
 msgid "{app_name} is already running"
 msgstr "{app_name} вже запущений"
 
-#: src/ui/qt/main_window.cpp:61
+#: src/ui/qt/main_window.cpp
 msgid "Recognition {progress}% ({current_job}/{total_jobs})"
 msgstr "Розпізнавання {progress}% ({current_job}/{total_jobs})"
 
-#: src/ui/qt/main_window.cpp:118
+#: src/ui/qt/main_window.cpp
 msgctxt "ui_tab"
 msgid "Main"
 msgstr "Головне"
 
-#: src/ui/qt/main_window.cpp:120
+#: src/ui/qt/main_window.cpp
 msgid "Settings"
 msgstr "Налаштування"
 
-#: src/ui/qt/main_window.cpp:121
+#: src/ui/qt/main_window.cpp
 msgid "About"
 msgstr "Про програму"
 
-#: src/ui/qt/main_window.cpp:187
+#: src/ui/qt/main_window.cpp
 msgid "Recognition is not yet finished. Quit anyway?"
 msgstr "Розпізнавання ще не закінчено. Все одно вийти?"
 
-#: src/ui/qt/main_window.cpp:189 src/ui/qt/main_window.cpp:356
+#: src/ui/qt/main_window.cpp
 msgid "Quit"
 msgstr "Вийти"
 
-#: src/ui/qt/main_window.cpp:348
+#: src/ui/qt/main_window.cpp
 msgid "Show {app_name}"
 msgstr "Показати {app_name}"
 
-#: src/ui/qt/main_window.cpp:369
+#: src/ui/qt/main_window.cpp
 msgid "Status"
 msgstr "Статус"
 
-#: src/ui/qt/main_window.cpp:379
+#: src/ui/qt/main_window.cpp
 msgid "Character recognition"
 msgstr "Розпізнавання символів"
 
-#: src/ui/qt/main_window.cpp:383
+#: src/ui/qt/main_window.cpp
 msgid "Split text blocks"
 msgstr "Розділити блоки тексту"
 
-#: src/ui/qt/main_window.cpp:385
+#: src/ui/qt/main_window.cpp
 msgid "Split independent text blocks, such as columns"
 msgstr "Розділити незалежні блоки тексту, такі як колонки"
 
-#: src/ui/qt/main_window.cpp:388
+#: src/ui/qt/main_window.cpp
 msgid "Languages:"
 msgstr "Мови:"
 
-#: src/ui/qt/main_window.cpp:394
+#: src/ui/qt/main_window.cpp
 msgid "Install, update, and remove languages"
 msgstr "Встановлення, оновлення та видалення мов"
 
-#: src/ui/qt/main_window.cpp:406
+#: src/ui/qt/main_window.cpp
 msgid "Actions"
 msgstr "Дії"
 
-#: src/ui/qt/main_window.cpp:490
+#: src/ui/qt/main_window.cpp
 msgid "All supported audio files"
 msgstr "Всі підтримувані аудіофайли"
 
-#: src/ui/qt/main_window.cpp:520
+#: src/ui/qt/main_window.cpp
 msgid "Choose an audio file"
 msgstr "Виберіть аудіофайл"
 
-#: src/ui/qt/main_window.cpp:535
+#: src/ui/qt/main_window.cpp
 msgid "Hotkey"
 msgstr "Гаряча клавіша"
 
-#: src/ui/qt/main_window.cpp:548
+#: src/ui/qt/main_window.cpp
 msgid "Interface"
 msgstr "Інтерфейс"
 
-#: src/ui/qt/main_window.cpp:552
+#: src/ui/qt/main_window.cpp
 msgid "Show notification area icon"
 msgstr "Показати значок в області сповіщень"
 
-#: src/ui/qt/main_window.cpp:576
+#: src/ui/qt/main_window.cpp
 msgid "Minimize to notification area"
 msgstr "Згортати в область сповіщень"
 
-#: src/ui/qt/main_window.cpp:580
+#: src/ui/qt/main_window.cpp
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
@@ -838,11 +836,11 @@ msgstr ""
 "Згортання вікна призведе до приховання {app_name}. Щоб показати його знову, "
 "скористайтеся значком в області сповіщень."
 
-#: src/ui/qt/main_window.cpp:586
+#: src/ui/qt/main_window.cpp
 msgid "Close to notification area"
 msgstr "Закривати в область сповіщень"
 
-#: src/ui/qt/main_window.cpp:590
+#: src/ui/qt/main_window.cpp
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
@@ -850,27 +848,27 @@ msgstr ""
 "Закриття вікна призведе до приховання {app_name}. Щоб показати його знову, "
 "скористайтеся значком в області сповіщень."
 
-#: src/ui/qt/main_window.cpp:596
+#: src/ui/qt/main_window.cpp
 msgid "Behavior"
 msgstr "Поведінка"
 
-#: src/ui/qt/main_window.cpp:606
+#: src/ui/qt/main_window.cpp
 msgid "Play sound when recognition is complete"
 msgstr "Відтворити звук при завершенні розпізнавання"
 
-#: src/ui/qt/main_window.cpp:615
+#: src/ui/qt/main_window.cpp
 msgid "Play this audio file:"
 msgstr "Відтворювати цей аудіофайл:"
 
-#: src/ui/qt/main_window.cpp:678
+#: src/ui/qt/main_window.cpp
 msgid "Check for updates automatically"
 msgstr "Перевіряти наявність оновлень автоматично"
 
-#: src/ui/qt/main_window.cpp:686
+#: src/ui/qt/main_window.cpp
 msgid "Run at system logon"
 msgstr "Запускати при вході в систему"
 
-#: src/ui/qt/main_window.cpp:690
+#: src/ui/qt/main_window.cpp
 msgid ""
 "{app_name} will start automatically when you log on to the system. The "
 "program will be hidden to the notification area if the notification area "
@@ -880,7 +878,7 @@ msgstr ""
 "прихована в область сповіщень, якщо значок області сповіщень увімкнено, або "
 "згорнута, якщо значок вимкнено."
 
-#: src/ui/qt/main_window.cpp:857
+#: src/ui/qt/main_window.cpp
 msgid ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} day"
@@ -897,51 +895,51 @@ msgstr[2] ""
 "{app_name} буде автоматично перевіряти наявність оновлень під час запуску, "
 "але не частіше, ніж раз на {count} днів"
 
-#: src/ui/qt/main_window.cpp:1115
+#: src/ui/qt/main_window.cpp
 msgid "Please install languages"
 msgstr "Будь ласка, встановіть мови"
 
-#: src/ui/qt/main_window.cpp:1117
+#: src/ui/qt/main_window.cpp
 msgid "Please select languages"
 msgstr "Будь ласка, виберіть мови"
 
-#: src/ui/qt/main_window.cpp:1119
+#: src/ui/qt/main_window.cpp
 msgid "Please select actions"
 msgstr "Будь ласка, виберіть дії"
 
-#: src/ui/qt/main_window.cpp:1131
+#: src/ui/qt/main_window.cpp
 msgid "Press {hotkey} to start area selection"
 msgstr "Натисніть {hotkey}, щоб почати виділення області"
 
-#: src/ui/qt/main_window.cpp:1132
+#: src/ui/qt/main_window.cpp
 msgid "Press {hotkey} to finish selection"
 msgstr "Натисніть {hotkey}, щоб закінчити виділення"
 
-#: src/ui/qt/update_checker.cpp:53
+#: src/ui/qt/update_checker.cpp
 msgid "An error occurred while checking for updates"
 msgstr "Виникла помилка під час перевірки оновлень"
 
-#: src/ui/qt/update_checker.cpp:68
+#: src/ui/qt/update_checker.cpp
 msgid "{required} (you have {actual})"
 msgstr "{required} (у вас {actual})"
 
-#: src/ui/qt/update_checker.cpp:93
+#: src/ui/qt/update_checker.cpp
 msgid "{app_name} {new_version} is available (you have {current_version})"
 msgstr "Доступний {app_name} {new_version} (у вас {current_version})"
 
-#: src/ui/qt/update_checker.cpp:101
+#: src/ui/qt/update_checker.cpp
 msgid "Visit the website for more information."
 msgstr "Відвідайте вебсайт для додаткової інформації."
 
-#: src/ui/qt/update_checker.cpp:105
+#: src/ui/qt/update_checker.cpp
 msgid "You have the latest version of {app_name}"
 msgstr "У вас найновіша версія {app_name}"
 
-#: src/ui/qt/update_checker.cpp:106
+#: src/ui/qt/update_checker.cpp
 msgid "You have the latest version of {app_name} available for your system"
 msgstr "У вас найновіша версія {app_name}, доступна для вашої системи"
 
-#: src/ui/qt/update_checker.cpp:115
+#: src/ui/qt/update_checker.cpp
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
@@ -949,7 +947,7 @@ msgstr ""
 "Останньою версією є {latest_version}, але ваша система не відповідає "
 "наступним мінімальним вимогам: {requirements}."
 
-#: src/ui/qt/update_checker.cpp:268
+#: src/ui/qt/update_checker.cpp
 msgid "Checking for updates…"
 msgstr "Перевірка наявності оновлень…"
 
@@ -963,7 +961,7 @@ msgstr "Перевірка наявності оновлень…"
 #.
 #. https://en.wikipedia.org/wiki/Settings_(Windows)
 #. https://support.microsoft.com/en-us/windows/configure-startup-applications-in-windows-115a420a-0bff-4a6f-90e0-1934c844e473
-#: src/ui/ui_common/msix_helper/dll.cpp:187
+#: src/ui/ui_common/msix_helper/dll.cpp
 msgid ""
 "Startup is disabled by the user. You can enable it in Windows Settings (Apps "
 "> Startup)."
