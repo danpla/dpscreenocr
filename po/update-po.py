@@ -36,9 +36,10 @@ def main():
     if not xgettext_path:
         sys.exit('xgettext not found')
 
-    # We need xgettext 0.19 for desktop file support. msgmerge can be
-    # of any version.
-    check_min_version(xgettext_path, "0.19")
+    # We need xgettext 0.19 for desktop file support. This is also the
+    # first version where arguments for the --add-location option were
+    # introduced.
+    check_min_version(xgettext_path, '0.19')
 
     msgmerge_path = shutil.which('msgmerge')
     if not msgmerge_path:
@@ -49,6 +50,7 @@ def main():
         '--files-from=POTFILES.in',
         '--from-code=UTF-8',
         '--add-comments=Translators:',
+        '--add-location=file',
         '--package-name=' + APP_NAME,
         '--msgid-bugs-address=' + BUGS_ADDRESS,
         '--directory=..',
@@ -63,6 +65,7 @@ def main():
         xgettext_path,
         '--from-code=UTF-8',
         '--omit-header',
+        '--add-location=file',
         '--join-existing',
         '--directory=..',
         '--output=' + APP_FILE_NAME + '.pot',
