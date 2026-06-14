@@ -17,30 +17,23 @@
   };
 
   function detectPageLang() {
-    let userLangs = navigator.languages || [navigator.language];
-    // navigator.languages is immutable, so make a copy so that we can
-    // remove elements later.
-    userLangs = userLangs.slice();
+    const userLangs = navigator.languages || [navigator.language];
 
-    while (userLangs.length > 0)
-      for (let i = 0; i < userLangs.length;) {
-        let userLang = userLangs[i];
-        userLang = userLangFixups[userLang] || userLang;
+    for (let userLang of userLangs) {
+      userLang = userLangFixups[userLang] || userLang;
 
+      while (true) {
         for (const lang of langs)
           if (lang.startsWith(userLang))
             return lang;
 
-        // Trim the last tag for a more generic match on the next
-        // pass.
         const hyphenIndex = userLang.lastIndexOf('-');
         if (hyphenIndex == -1)
-          userLangs.splice(i, 1);
-        else {
-          userLangs[i] = userLang.substring(0, hyphenIndex);
-          ++i;
-        }
+          break;
+
+        userLang = userLang.substring(0, hyphenIndex);
       }
+    }
 
     return null;
   }
