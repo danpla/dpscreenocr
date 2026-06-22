@@ -16,8 +16,8 @@ public:
     };
 
     // See UiAutostartSateDenied.
-    class AutostartDeniedError : public std::runtime_error {
-        using runtime_error::runtime_error;
+    class AutostartDeniedError : public Error {
+        using Error::Error;
     };
 
     // See UiAutostartArgs
