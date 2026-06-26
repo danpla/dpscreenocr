@@ -41,7 +41,7 @@ function(gen_html_manual DST_DIR)
 
     set(DST_DATA_FILES)
     foreach(SRC_FILE ${SRC_DATA_FILES})
-        get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
+        cmake_path(GET SRC_FILE FILENAME SRC_FILE_NAME)
         set(DST_FILE "${DST_DIR}/manual-data/${SRC_FILE_NAME}")
         list(APPEND DST_DATA_FILES "${DST_FILE}")
 

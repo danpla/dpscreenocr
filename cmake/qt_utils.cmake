@@ -20,7 +20,7 @@ function(copy_qt_translations SRC_DIR DST_DIR)
 
     set(DST_QMS)
     foreach(SRC_QM ${SRC_QMS})
-        get_filename_component(QM_NAME "${SRC_QM}" NAME)
+        cmake_path(GET SRC_QM FILENAME QM_NAME)
         set(DST_QM "${DST_DIR}/${QM_NAME}")
         list(APPEND DST_QMS "${DST_QM}")
 

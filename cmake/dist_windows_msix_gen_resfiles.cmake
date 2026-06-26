@@ -1,4 +1,4 @@
-get_filename_component(PARENT_DIR "${DIR}" DIRECTORY)
+cmake_path(GET DIR PARENT_PATH PARENT_DIR)
 
 file(
     GLOB_RECURSE RESFILES

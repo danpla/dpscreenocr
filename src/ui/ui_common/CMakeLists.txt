@@ -157,7 +157,7 @@ endif()
 foreach(IN_SRC ${IN_SRCS})
     configure_file("${IN_SRC}.in" "${IN_SRC}" @ONLY)
 
-    get_filename_component(IN_SRC_EXT "${IN_SRC}" EXT)
+    cmake_path(GET IN_SRC EXTENSION LAST_ONLY IN_SRC_EXT)
     if(NOT IN_SRC_EXT STREQUAL ".h")
         target_sources(
             ui_common PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/${IN_SRC}")

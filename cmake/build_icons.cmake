@@ -71,7 +71,7 @@ function(build_icons DST_DIR)
             "${SRC_DIR}/${SIZE}/*${FILE_EXT}")
 
         foreach(SRC_FILE ${SRC_FILES})
-            get_filename_component(SRC_FILE_NAME "${SRC_FILE}" NAME)
+            cmake_path(GET SRC_FILE FILENAME SRC_FILE_NAME)
             set(DST_FILE "${DST_DIR}/${SIZE}/${SRC_FILE_NAME}")
 
             add_custom_command(
