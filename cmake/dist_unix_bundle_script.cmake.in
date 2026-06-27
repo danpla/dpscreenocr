@@ -156,7 +156,12 @@ function(bundle_qt_translations)
 endfunction()
 
 
-set(DOC_DIR "${BUNDLE_DIR}/share/doc")
+set(DOC_DIR "${BUNDLE_DIR}/share/doc/${APP_FILE_NAME}")
+
+# The application will check for this directory and show a
+# corresponding link in the "About" section, so the name should be
+# kept in sync with the source.
+set(DOC_TPL_DIR "${DOC_DIR}/third-party-licenses")
 
 
 # Find a program for bundle_file_licenses().
@@ -188,7 +193,7 @@ function(bundle_file_licenses FILE_PATH)
         if(EXISTS "${COPYRIGHT_FILE_PATH}")
             file(
                 COPY "${COPYRIGHT_FILE_PATH}"
-                DESTINATION "${DOC_DIR}/${PACKAGE_NAME}")
+                DESTINATION "${DOC_TPL_DIR}/${PACKAGE_NAME}")
         endif()
     endif()
 endfunction()
@@ -352,8 +357,7 @@ function(bundle_manually_installed_lib_licenses)
         "/usr/local/share/doc/manually-installed-lib-licenses")
 
     if(IS_DIRECTORY "${MIL_LICENSES_DIR}")
-        file(GLOB LICENSE_DIRS "${MIL_LICENSES_DIR}/*")
-        file(COPY ${LICENSE_DIRS} DESTINATION "${DOC_DIR}")
+        file(COPY "${MIL_LICENSES_DIR}/" DESTINATION "${DOC_TPL_DIR}")
     else()
         message(
             WARNING
@@ -361,28 +365,6 @@ function(bundle_manually_installed_lib_licenses)
             "not be included because the \"${MIL_LICENSES_DIR}\" "
             "directory where they should be does not exist.")
     endif()
-endfunction()
-
-
-function(set_up_third_party_licenses_dir)
-    file(
-        GLOB LICENSE_DIRS
-        RELATIVE "${DOC_DIR}"
-        "${DOC_DIR}/*")
-    list(REMOVE_ITEM LICENSE_DIRS "${APP_FILE_NAME}")
-
-    # The application will check for this directory and show a
-    # corresponding link in the "About" section, so the name should be
-    # kept in sync with the source.
-    set(TPL_DIR "${DOC_DIR}/${APP_FILE_NAME}/third-party-licenses")
-    file(MAKE_DIRECTORY "${TPL_DIR}")
-
-    foreach(LICENSE_DIR ${LICENSE_DIRS})
-        file(
-            CREATE_LINK
-                "../../${LICENSE_DIR}" "${TPL_DIR}/${LICENSE_DIR}"
-            SYMBOLIC)
-    endforeach()
 endfunction()
 
 
@@ -398,7 +380,6 @@ bundle_libs()
 bundle_tesseract_data()
 
 bundle_manually_installed_lib_licenses()
-set_up_third_party_licenses_dir()
 
 if(DPSO_UI STREQUAL "qt")
     create_qt_conf()
