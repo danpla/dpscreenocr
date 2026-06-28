@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2026-06-12 02:27+0200\n"
-"PO-Revision-Date: 2024-08-18 20:09+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"PO-Revision-Date: 2026-06-29 13:48+0000\n"
+"Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/es/>\n"
 "Language: es\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Afrikaans"
@@ -550,7 +550,7 @@ msgstr "Programa para reconocer el texto en pantalla"
 
 #: src/ui/qt/about.cpp
 msgid "Check for updates"
-msgstr ""
+msgstr "Comprobar actualizaciones"
 
 #: src/ui/qt/action_chooser.cpp
 msgid "Copy text to clipboard"
@@ -803,11 +803,11 @@ msgstr "Acciones"
 
 #: src/ui/qt/main_window.cpp
 msgid "All supported audio files"
-msgstr ""
+msgstr "Todos los archivos de sonido admitidos"
 
 #: src/ui/qt/main_window.cpp
 msgid "Choose an audio file"
-msgstr ""
+msgstr "Elija un archivo de sonido"
 
 #: src/ui/qt/main_window.cpp
 msgid "Hotkey"
@@ -851,15 +851,15 @@ msgstr "Comportamiento"
 
 #: src/ui/qt/main_window.cpp
 msgid "Play sound when recognition is complete"
-msgstr ""
+msgstr "Reproduce sonido cuando el reconocimiento está completado"
 
 #: src/ui/qt/main_window.cpp
 msgid "Play this audio file:"
-msgstr ""
+msgstr "Reproduzca este archivo de sonido:"
 
 #: src/ui/qt/main_window.cpp
 msgid "Check for updates automatically"
-msgstr ""
+msgstr "Comprobar actualizaciones automáticamente"
 
 #: src/ui/qt/main_window.cpp
 msgid "Run at system logon"
@@ -883,7 +883,11 @@ msgid_plural ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} days"
 msgstr[0] ""
+"{app_name} automáticamente comprobará actualizaciones al arranque, pero no "
+"más a menudo que una vez cada {count} día"
 msgstr[1] ""
+"{app_name} automáticamente comprobará actualizaciones al arranque, pero no "
+"más a menudo que una vez cada {count} días"
 
 #: src/ui/qt/main_window.cpp
 msgid "Please install languages"
@@ -907,37 +911,39 @@ msgstr "Pulse {hotkey} para finalizar la selección"
 
 #: src/ui/qt/update_checker.cpp
 msgid "An error occurred while checking for updates"
-msgstr ""
+msgstr "Sucedió un error mientras comprobaba actualizaciones"
 
 #: src/ui/qt/update_checker.cpp
 msgid "{required} (you have {actual})"
-msgstr ""
+msgstr "{required} (tiene {actual})"
 
 #: src/ui/qt/update_checker.cpp
 msgid "{app_name} {new_version} is available (you have {current_version})"
-msgstr ""
+msgstr "{app_name} {new_version} está disponible (tiene {current_version})"
 
 #: src/ui/qt/update_checker.cpp
 msgid "Visit the website for more information."
-msgstr ""
+msgstr "Visite el sitio web para más información."
 
 #: src/ui/qt/update_checker.cpp
 msgid "You have the latest version of {app_name}"
-msgstr ""
+msgstr "Tiene la última versión de {app_name}"
 
 #: src/ui/qt/update_checker.cpp
 msgid "You have the latest version of {app_name} available for your system"
-msgstr ""
+msgstr "Tiene disponible la versión más última de {app_name} para su sistema"
 
 #: src/ui/qt/update_checker.cpp
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
 msgstr ""
+"La versión última es {latest_version}, pero su sistema no encuentra los "
+"requisitos mínimos siguientes: {requirements}."
 
 #: src/ui/qt/update_checker.cpp
 msgid "Checking for updates…"
-msgstr ""
+msgstr "Comprobando actualizaciones…"
 
 #. Translators: This is a Windows-specific message.
 #. Make sure that "Settings", "Apps", and "Startup"
@@ -954,3 +960,5 @@ msgid ""
 "Startup is disabled by the user. You can enable it in Windows Settings (Apps "
 "> Startup)."
 msgstr ""
+"Inicio deshabilitado por el usuario. Puede habilitarlo en Opciones de "
+"Windows (App > Inicio)."
