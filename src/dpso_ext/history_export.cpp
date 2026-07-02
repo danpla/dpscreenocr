@@ -87,6 +87,9 @@ void writeHtml(Stream& stream, const DpsoHistory* history)
         "  <meta charset=\"utf-8\">\n"
         "  <title>History</title>\n"
         "  <style>\n"
+        "    .timestamp {\n"
+        "      font-weight: bold;\n"
+        "    }\n"
         "    .text {\n"
         "      margin: 1em 1em 2em;\n"
         "      line-height: 1.6;\n"
@@ -102,9 +105,9 @@ void writeHtml(Stream& stream, const DpsoHistory* history)
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
-        write(stream, "  <p class=\"timestamp\"><b>");
+        write(stream, "  <p class=\"timestamp\">");
         writeEscapedHtml(stream, "", e.timestamp);
-        write(stream, "</b></p>\n");
+        write(stream, "</p>\n");
 
         write(stream, "  <p class=\"text\">\n");
         writeEscapedHtml(stream, "    ", e.text);
