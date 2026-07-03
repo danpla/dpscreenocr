@@ -403,7 +403,7 @@ def gen_static_lang_menu(langs, page_lang, page_suburl):
     return result
 
 
-def gen_ms_store_badge_link(page_lang):
+def gen_ms_store_link(page_lang):
     ms_store_lang = BCP47_TO_MS_STORE_LANG.get(page_lang)
     if ms_store_lang is None:
         ms_store_lang_en_us = 'en-us'
@@ -416,8 +416,8 @@ def gen_ms_store_badge_link(page_lang):
         ms_store_lang = page_lang
 
     return (
-        '<a href="https://apps.microsoft.com/detail/{}" '
-        'target="_blank">\n'.format(APP_MS_STORE_ID)
+        '<a href="https://apps.microsoft.com/detail/{}">\n'.format(
+            APP_MS_STORE_ID)
         + indent('<img class="store-badge" '
             'src="https://get.microsoft.com/images/'
             '{}%20dark.svg" alt="">\n'.format(ms_store_lang))
@@ -587,7 +587,7 @@ def gen_main_page_content(root_url, page_lang, translator):
             )
         ),
         '<b>Windows</b><br>\n'
-        + gen_ms_store_badge_link(page_lang)
+        + gen_ms_store_link(page_lang)
         + '<br>\n'
         + translator.gettext(
                 'Direct download: '
