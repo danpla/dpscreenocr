@@ -27,10 +27,10 @@ endfunction()
 
 # Generate inno_setup_languages.isi.
 function(gen_inno_setup_language_list)
-    # This is the mapping from a locale name in po/LINGUAS to a name
+    # This is the mapping from a language code in po/LINGUAS to a name
     # if the Inno Setup language file from "compiler:Languages\".
     # English is always included and is not listed here. To skip a
-    # locale that has no corresponding language file, use - as the
+    # code that has no corresponding language file, use - as the
     # file name, e.g.:
     #
     #   set(ISL_en_GB "-")
@@ -85,8 +85,8 @@ function(gen_inno_setup_language_list)
             REPLACE ";" ", " UNDEFINED_ISLS_STR "${UNDEFINED_ISLS}")
         message(
             WARNING
-            "Inno Setup language files for the following locales are "
-            "not defined: ${UNDEFINED_ISLS_STR}. Add them to the "
+            "Inno Setup language files for the following languages "
+            "are not defined: ${UNDEFINED_ISLS_STR}. Add them to the "
             "list above.")
     endif()
 endfunction()

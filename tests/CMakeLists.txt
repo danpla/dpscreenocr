@@ -92,16 +92,11 @@ if(NOT TARGET dpso_img)
         ../src/dpso_img "${CMAKE_BINARY_DIR}/src/dpso_img")
 endif()
 
-if(NOT TARGET dpso_intl)
-    add_subdirectory(
-        ../src/dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
-endif()
 
 target_link_libraries(
     test_c_compilation
     dpso_ext
     dpso_img
-    dpso_intl
     dpso_ocr
     dpso_sys
     dpso_utils

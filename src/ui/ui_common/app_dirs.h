@@ -15,12 +15,7 @@ typedef enum {
     /**
      * Directory with documents like the user manual, license, etc.
      */
-    UiAppDirDoc,
-
-    /**
-     * Localization data for bindtextdomain().
-     */
-    UiAppDirLocale
+    UiAppDirDoc
 } UiAppDir;
 
 

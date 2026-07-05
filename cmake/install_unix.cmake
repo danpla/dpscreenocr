@@ -32,12 +32,11 @@ install(
     DESTINATION "${CMAKE_INSTALL_DATADIR}/${APP_FILE_NAME}")
 
 include(compile_po)
-compile_po("${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}")
+compile_po("${CMAKE_BINARY_DIR}/translations")
 
 install(
-    # Note the trailing slash.
-    DIRECTORY "${CMAKE_BINARY_DIR}/locale/"
-    DESTINATION "${CMAKE_INSTALL_LOCALEDIR}")
+    DIRECTORY "${CMAKE_BINARY_DIR}/translations"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/${APP_FILE_NAME}")
 
 if(DPSO_GEN_HTML_MANUAL)
     include(gen_manual)

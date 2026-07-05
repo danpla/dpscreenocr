@@ -3,7 +3,6 @@
 #include <QHeaderView>
 #include <QTreeWidgetItem>
 
-#include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"
 
 
@@ -61,8 +60,8 @@ LangBrowser::LangBrowser(DpsoOcr* ocr)
 {
     setHeaderLabels({
         "",  // Checkbox
-        pgettext("language", "Name"),
-        pgettext("language", "Code")});
+        uiTranslateContext("language", "Name"),
+        uiTranslateContext("language", "Code")});
 
     setUniformRowHeights(true);
     setSortingEnabled(true);
@@ -140,7 +139,7 @@ void LangBrowser::reloadLangs()
         const auto* langName = dpsoOcrGetLangName(ocr, i);
         item->setText(
             columnIdxName,
-            *langName ? gettext(langName) : langCode);
+            *langName ? uiTranslate(langName) : langCode);
         item->setText(columnIdxCode, langCode);
 
         addTopLevelItem(item);

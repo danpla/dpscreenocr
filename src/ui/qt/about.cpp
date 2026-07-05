@@ -14,14 +14,12 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-#include "dpso_intl/dpso_intl.h"
-
 #include "ui_common/ui_common.h"
 
 #include "utils.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 namespace ui::qt {

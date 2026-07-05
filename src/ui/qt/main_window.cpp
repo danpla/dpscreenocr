@@ -26,7 +26,6 @@
 #include <QVBoxLayout>
 #include <QtGlobal>
 
-#include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
 
 #include "about.h"
@@ -40,7 +39,7 @@
 #include "utils.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 namespace ui::qt {
@@ -115,7 +114,8 @@ MainWindow::MainWindow(const UiStartupArgs& startupArgs)
     createQActions();
 
     tabs = new QTabWidget();
-    tabs->addTab(createMainTab(), pgettext("ui_tab", "Main"));
+    tabs->addTab(
+        createMainTab(), uiTranslateContext("ui_tab", "Main"));
     tabs->addTab(createHistoryTab(), _("History"));
     tabs->addTab(createSettingsTab(), _("Settings"));
     tabs->addTab(createAboutTab(), _("About"));
@@ -715,7 +715,7 @@ QWidget* MainWindow::createSettingsTab()
                 break;
             case UiAutostartSateChangeResultDenied:
                 QMessageBox::warning(
-                    this, uiAppName, gettext(dpsoGetError()));
+                    this, uiAppName, uiTranslate(dpsoGetError()));
                 break;
             case UiAutostartSateChangeResultError:
                 QMessageBox::critical(
@@ -853,14 +853,14 @@ void MainWindow::loadState(const DpsoCfg* cfg)
         updateChecker.getAutoCheckIsEnabled());
     autoUpdateCheck->setToolTip(
         strNFormat(
-            ngettext(
+            uiTranslateN(
+                updateChecker.getAutoCheckIntervalDays(),
                 "{app_name} will automatically check for updates at "
                 "startup, but no more often than once every {count} "
                 "day",
                 "{app_name} will automatically check for updates at "
                 "startup, but no more often than once every {count} "
-                "days",
-                updateChecker.getAutoCheckIntervalDays()),
+                "days"),
             {
                 {"app_name", uiAppName},
                 {"count", updateChecker.getAutoCheckIntervalDays()}

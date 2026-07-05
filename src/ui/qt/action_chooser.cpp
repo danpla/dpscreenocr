@@ -10,11 +10,10 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
-#include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 namespace ui::qt {

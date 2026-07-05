@@ -7,20 +7,21 @@ find_program(MSGFMT_EXE msgfmt REQUIRED)
 #
 # The full path of a MO file will be:
 #
-#   DST_DIR/{LANGUAGE}/LC_MESSAGES/${MO_NAME}.mo
-function(compile_po DST_DIR MO_NAME)
+#   DST_DIR/{LANGUAGE}.mo
+function(compile_po DST_DIR)
     set(MO_FILES)
     get_linguas(LANGS)
     foreach(LANG ${LANGS})
         set(PO_FILE "${CMAKE_SOURCE_DIR}/po/${LANG}.po")
-        set(MO_DIR "${DST_DIR}/${LANG}/LC_MESSAGES")
-        set(MO_FILE "${MO_DIR}/${MO_NAME}.mo")
+        set(MO_DIR "${DST_DIR}")
+        set(MO_FILE "${MO_DIR}/${LANG}.mo")
 
         add_custom_command(
             OUTPUT "${MO_FILE}"
             # msgfmt doesn't create intermediate directories.
             COMMAND "${CMAKE_COMMAND}" -E make_directory "${MO_DIR}"
-            COMMAND "${MSGFMT_EXE}" -o "${MO_FILE}" "${PO_FILE}"
+            COMMAND
+                "${MSGFMT_EXE}" --no-hash -o "${MO_FILE}" "${PO_FILE}"
             DEPENDS "${PO_FILE}"
             VERBATIM)
 

@@ -50,12 +50,12 @@
   understand macros. That is, the following will not work as expected:
 
     #define COPYRIGHT_SIGN "\302\251"
-    ... = gettext("Copyright " COPYRIGHT_SIGN "2018");
+    ... = uiTranslate("Copyright " COPYRIGHT_SIGN "2018");
 
   Instead, the escape sequence should be put inline (here we separate
   it from the rest of the string for better readability):
 
-    ... = gettext("Copyright " "\302\251" "2018");
+    ... = uiTranslate("Copyright " "\302\251" "2018");
 
 * In general, define arrays without an explicit size. When the number
   of elements in the array must match some constant, it should be
@@ -109,7 +109,7 @@
 * When creating translatable strings with plural forms, don't format
   the singular form especially, like:
 
-    ngettext("One apple", "{count} apples", n)
+    uiTranslateN(n, "One apple", "{count} apples")
 
   The English singular form always implies 1, so it's technically fine
   to use "One apple" instead of "{count} apple". However, some other
@@ -122,9 +122,9 @@
   the special case separately:
 
     if (n == 1)
-      gettext("One apple")
+      uiTranslate("One apple")
     else
-      ngettext("{count} apple", "{count} apples", n)
+      uiTranslateN(n, "{count} apple", "{count} apples")
 
 * In Qt, don't use setWisible(condition) when building the widget
   hierarchy, because if the condition is true, the widget will

@@ -1,7 +1,8 @@
 #include "lang_manager/lang_list_sort_filter_proxy.h"
 
-#include "dpso_intl/dpso_intl.h"
 #include "dpso_ocr/dpso_ocr.h"
+
+#include "ui_common/ui_common.h"
 
 #include "lang_manager/lang_list.h"
 #include "lang_manager/metatypes.h"
@@ -28,7 +29,7 @@ QVariant LangListSortFilterProxy::headerData(
     if (role == Qt::DisplayRole
             && orientation == Qt::Horizontal
             && section == columnIdxSize)
-        return pgettext("digital_data", "Size");
+        return uiTranslateContext("digital_data", "Size");
 
     return QSortFilterProxyModel::headerData(
         section, orientation, role);

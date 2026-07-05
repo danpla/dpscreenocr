@@ -7,7 +7,6 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
-#include "dpso_intl/dpso_intl.h"
 #include "dpso_ocr/dpso_ocr.h"
 #include "dpso_utils/dpso_utils.h"
 #include "ui_common/ui_common.h"
@@ -18,7 +17,7 @@
 #include "utils.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 namespace ui::qt::langManager {

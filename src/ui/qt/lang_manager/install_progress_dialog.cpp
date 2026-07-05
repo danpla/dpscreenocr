@@ -9,13 +9,12 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "dpso_intl/dpso_intl.h"
 #include "ui_common/ui_common.h"
 
 #include "utils.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 namespace ui::qt::langManager {
@@ -176,7 +175,7 @@ void InstallProgressDialog::timerEvent(QTimerEvent* /*event*/)
             : _("Updating \342\200\234{name}\342\200\235 "
                 "({current}/{total})"),
         {
-            {"name", *langName ? gettext(langName) : langCode},
+            {"name", *langName ? uiTranslate(langName) : langCode},
             {"current", progress.curLangNum},
             {"total", progress.totalLangs}}));
 }

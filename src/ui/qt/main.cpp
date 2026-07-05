@@ -1,5 +1,7 @@
 #include <cstdlib>
 #include <optional>
+#include <string>
+#include <vector>
 
 #include <QApplication>
 #include <QLibraryInfo>
@@ -8,7 +10,6 @@
 #include <QMessageBox>
 #include <QTranslator>
 
-#include "dpso_intl/dpso_intl.h"
 #include "dpso_utils/dpso_utils.h"
 #include "ui_common/ui_common.h"
 
@@ -17,7 +18,7 @@
 #include "utils.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 // In release mode, suppress debug and warning messages to avoid
@@ -49,6 +50,28 @@ static void installQtMessageHandler()
 }
 
 
+static void pickTranslationLang()
+{
+    const auto uiLangs = QLocale::system().uiLanguages();
+
+    std::vector<std::string> langTags;
+    langTags.reserve(uiLangs.size());
+
+    for (const auto& lang : uiLangs)
+        langTags.push_back(lang.toStdString());
+
+    std::vector<const char*> langTagsCStr;
+    langTagsCStr.reserve(langTags.size());
+
+    for (const auto& langTag : langTags)
+        langTagsCStr.push_back(langTag.c_str());
+
+    if (!uiPickTranslationLang(
+            langTagsCStr.data(), langTagsCStr.size()))
+        qWarning("uiPickTranslationLang(): %s", dpsoGetError());
+}
+
+
 static void installQtTranslations(QApplication& app)
 {
     const auto translationsPath =
@@ -59,7 +82,7 @@ static void installQtTranslations(QApplication& app)
         #endif
             QLibraryInfo::TranslationsPath);
 
-    const auto localeName = QLocale::system().name();
+    const auto* localeName = uiGetTranslationLang();
 
     const QString translations[]{"qt", "qtbase"};
 
@@ -112,6 +135,7 @@ int main(int argc, char* argv[])
     // therefore only be called after a successful uiInit().
     app.setWindowIcon(ui::qt::getThemeIcon(uiIconNameApp));
 
+    pickTranslationLang();
     installQtTranslations(app);
 
     const ui::SingleInstanceGuardUPtr singleInstanceGuard{

@@ -40,7 +40,7 @@ Required:
   * Qt 5.7 - 6. DPSO_QT_VERSION CMake option.
   * tesseract >= 4.1.0
   * jansson >= 2.7
-  * gettext >= 0.21
+  * gettext tools >= 0.21
   * pkg-config (recent MSYS2 uses a compatible pkgconf tool)
 
 Optional:
@@ -53,7 +53,7 @@ To install all dependencies except Pandoc, run in a MinGW shell:
         make \
         $MINGW_PACKAGE_PREFIX-cmake \
         $MINGW_PACKAGE_PREFIX-gcc \
-        $MINGW_PACKAGE_PREFIX-gettext \
+        $MINGW_PACKAGE_PREFIX-gettext-tools \
         $MINGW_PACKAGE_PREFIX-jansson \
         $MINGW_PACKAGE_PREFIX-pkgconf \
         $MINGW_PACKAGE_PREFIX-qt5-base \

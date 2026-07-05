@@ -55,8 +55,12 @@ def main():
         '--msgid-bugs-address=' + BUGS_ADDRESS,
         '--directory=..',
         '--output=' + APP_FILE_NAME + '.pot',
+        '-k',  # Disable default keywords
         '-k_',
-        '-kN_'))
+        '-kN_',
+        '-kuiTranslate',
+        '-kuiTranslateContext:1c,2',
+        '-kuiTranslateN:2,3'))
 
     # Handle the desktop entry separately instead of including it in
     # POTFILES.in. This way we can disable the default keyword list,

@@ -139,15 +139,17 @@ function(bundle_qt_translations)
     qmake_query(QT_INSTALL_TRANSLATIONS SRC_DIR)
     set(DST_DIR "${BUNDLE_DIR}/share/qt/translations")
 
-    set(LOCALE_DIR "${BUNDLE_DIR}/share/locale")
+    set(MO_DIR "${BUNDLE_DIR}/share/${APP_FILE_NAME}/translations")
 
-    file(GLOB LOCALES RELATIVE "${LOCALE_DIR}" "${LOCALE_DIR}/*")
+    file(GLOB MOS RELATIVE "${MO_DIR}" "${MO_DIR}/*")
 
     set(COMPONENTS qt qtbase)
 
-    foreach(LOCALE ${LOCALES})
+    foreach(MO ${MOS})
+        cmake_path(
+            REMOVE_EXTENSION MO LAST_ONLY OUTPUT_VARIABLE LANG)
         foreach(COMPONENT ${COMPONENTS})
-            set(QM "${SRC_DIR}/${COMPONENT}_${LOCALE}.qm")
+            set(QM "${SRC_DIR}/${COMPONENT}_${LANG}.qm")
             if(EXISTS "${QM}")
                 file(COPY "${QM}" DESTINATION "${DST_DIR}")
             endif()

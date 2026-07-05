@@ -3,7 +3,6 @@
 #include "cmdline.h"
 #include "exe_path.h"
 #include "init_extra.h"
-#include "init_intl.h"
 #include "init_user_data.h"
 
 #include "dpso_utils/error_get.h"
@@ -30,8 +29,6 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
         dpso::setError("ui::initExePath: {}", dpsoGetError());
         return false;
     }
-
-    ui::initIntl();
 
     if (!ui::initUserData()) {
         dpso::setError("ui::initUserData: {}", dpsoGetError());

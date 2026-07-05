@@ -73,8 +73,8 @@ Source: "doc\*"; \
 Source: "icons\*"; \
   DestDir: "{app}\icons"; \
   Flags: ignoreversion recursesubdirs
-Source: "locale\*"; \
-  DestDir: "{app}\locale"; \
+Source: "translations\*"; \
+  DestDir: "{app}\translations"; \
   Flags: ignoreversion recursesubdirs
 Source: "sounds\*"; \
   DestDir: "{app}\sounds"; \

@@ -1,6 +1,6 @@
 #include "lang_manager/lang_list.h"
 
-#include "dpso_intl/dpso_intl.h"
+#include "ui_common/ui_common.h"
 
 #include "lang_manager/metatypes.h"
 #include "utils.h"
@@ -43,7 +43,7 @@ void LangList::reloadLangs()
         dpsoOcrLangManagerGetLangSize(langManager, i, &langSize);
 
         langInfos.append({
-            *langName ? gettext(langName) : langCode,
+            *langName ? uiTranslate(langName) : langCode,
             langCode,
             dpsoOcrLangManagerGetLangState(langManager, i),
             langSize});
@@ -103,9 +103,9 @@ QVariant LangList::headerData(
 
     switch (section) {
     case columnIdxName:
-        return pgettext("language", "Name");
+        return uiTranslateContext("language", "Name");
     case columnIdxCode:
-        return pgettext("language", "Code");
+        return uiTranslateContext("language", "Code");
     case columnIdxState:
         // This column is not shown to the user, so don't bother with
         // translation.

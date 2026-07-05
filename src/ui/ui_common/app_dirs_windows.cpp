@@ -28,9 +28,6 @@ const char* uiGetAppDir(UiAppDir dir)
     case UiAppDirDoc:
         result += "\\doc";
         break;
-    case UiAppDirLocale:
-        result += "\\locale";
-        break;
     }
 
     return result.c_str();

@@ -40,9 +40,6 @@ const char* uiGetAppDir(UiAppDir dir)
     case UiAppDirDoc:
         result += unixAppDirDoc;
         break;
-    case UiAppDirLocale:
-        result += unixAppDirLocale;
-        break;
     }
 
     return result.c_str();

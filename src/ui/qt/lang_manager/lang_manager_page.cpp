@@ -8,7 +8,6 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-#include "dpso_intl/dpso_intl.h"
 #include "dpso_ocr/dpso_ocr.h"
 #include "dpso_utils/dpso_utils.h"
 #include "ui_common/ui_common.h"
@@ -21,7 +20,7 @@
 #include "utils.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 namespace ui::qt::langManager {
@@ -58,7 +57,8 @@ LangManagerPage::LangManagerPage(
     : langList{&langList}
 {
     auto* filterLineEdit = new QLineEdit();
-    filterLineEdit->setPlaceholderText(pgettext("noun", "Filter"));
+    filterLineEdit->setPlaceholderText(
+        uiTranslateContext("noun", "Filter"));
     filterLineEdit->setClearButtonEnabled(true);
 
     treeView = new QTreeView();
@@ -145,10 +145,10 @@ void LangManagerPage::selectionChanged()
 
     selectionInfoLabel->setText(
         strNFormat(
-            ngettext(
+            uiTranslateN(
+                selectedRows.size(),
                 "{count} language selected ({size}).",
-                "{count} languages selected ({size}).",
-                selectedRows.size()),
+                "{count} languages selected ({size})."),
             {
                 {"count", selectedRows.size()},
                 {"size", formatDataSize(totalSize)}}));
@@ -267,13 +267,13 @@ bool LangManagerPageRemove::performAction(
 
         questionText = strNFormat(
             _("Remove \342\200\234{name}\342\200\235?"),
-            {{"name", *langName ? gettext(langName) : langCode}});
+            {{"name", *langName ? uiTranslate(langName) : langCode}});
     } else
         questionText = strNFormat(
-            ngettext(
+            uiTranslateN(
+                langCodes.size(),
                 "Remove {count} selected language?",
-                "Remove {count} selected languages?",
-                langCodes.size()),
+                "Remove {count} selected languages?"),
             {{"count", langCodes.size()}});
 
     if (!confirmDestructiveAction(

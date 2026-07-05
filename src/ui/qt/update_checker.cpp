@@ -8,14 +8,13 @@
 #include <QStringList>
 #include <QUrl>
 
-#include "dpso_intl/dpso_intl.h"
 #include "dpso_sys/dpso_sys.h"
 #include "dpso_utils/dpso_utils.h"
 
 #include "utils.h"
 
 
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 namespace ui::qt {

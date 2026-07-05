@@ -77,10 +77,10 @@ else()
 endif()
 
 include(compile_po)
-compile_po("${CMAKE_BINARY_DIR}/locale" "${APP_FILE_NAME}")
+compile_po("${CMAKE_BINARY_DIR}/translations")
 
 install(
-    DIRECTORY "${CMAKE_BINARY_DIR}/locale"
+    DIRECTORY "${CMAKE_BINARY_DIR}/translations"
     DESTINATION .
     COMPONENT localization)
 

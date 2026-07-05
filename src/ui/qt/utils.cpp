@@ -15,10 +15,8 @@
 #include <QVBoxLayout>
 #include <QtGlobal>
 
-#include "dpso_intl/dpso_intl.h"
 
-
-#define _(S) gettext(S)
+#define _(S) uiTranslate(S)
 
 
 std::string toStr(const QString& s)

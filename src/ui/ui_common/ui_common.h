@@ -12,6 +12,7 @@
 #include "single_instance_guard.h"
 #include "sound.h"
 #include "taskbar.h"
+#include "translation.h"
 #include "update_checker.h"
 #include "update_checker_default.h"
 

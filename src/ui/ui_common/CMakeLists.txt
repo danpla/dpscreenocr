@@ -22,13 +22,13 @@ add_library(
     cmdline_cmd_autostart.cpp
     cmdline_opts.cpp
     init.cpp
-    init_intl.cpp
     init_user_data.cpp
     ocr_default.cpp
     ocr_default_data_dir.cpp
     sound.cpp
     str_nformat.cpp
     toplevel_argv0.cpp
+    translation.cpp
     update_checker_default.cpp
     user_agent.cpp)
 
@@ -184,11 +184,6 @@ if(NOT TARGET dpso_ext)
         ../../dpso_ext "${CMAKE_BINARY_DIR}/src/dpso_ext")
 endif()
 
-if(NOT TARGET dpso_intl)
-    add_subdirectory(
-        ../../dpso_intl "${CMAKE_BINARY_DIR}/src/dpso_intl")
-endif()
-
 if(NOT TARGET dpso_ocr)
     add_subdirectory(
         ../../dpso_ocr "${CMAKE_BINARY_DIR}/src/dpso_ocr")
@@ -209,7 +204,10 @@ if(NOT TARGET dpso_utils)
         ../../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
+add_subdirectory(
+    ../../external/dp_intl "${CMAKE_BINARY_DIR}/src/external/dp_intl")
+
 target_link_libraries(
     ui_common
     PUBLIC dpso_ocr dpso_sys dpso_utils
-    PRIVATE dpso_ext dpso_intl dpso_sound)
+    PRIVATE dpso_ext dpso_sound dp_intl::dp_intl)
