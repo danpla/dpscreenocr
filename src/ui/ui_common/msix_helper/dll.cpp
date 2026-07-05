@@ -66,7 +66,7 @@ auto runInMtaThread(Fn&& fn)
             }
 
             // std::async() can use a thread pool, so it's important
-            // to de-initialize the apartment.
+            // to uninitialize the apartment.
             const struct UninitApartment {
                 ~UninitApartment()
                 {
@@ -94,9 +94,9 @@ const char* MsixHelper_getLastError(std::size_t* len)
 bool MsixHelper_init()
 {
     try {
-        // Note that init_apartment() is nothing more than a wrapper
-        // for CoInitializeEx(), so apartment_type must match COINIT_*
-        // vale we use for CoInitializeEx() in our code.
+        // init_apartment() is nothing more than a wrapper for
+        // CoInitializeEx(), so apartment_type must match COINIT_*
+        // value that we use for CoInitializeEx() in our code.
         winrt::init_apartment(winrt::apartment_type::single_threaded);
         return true;
     } catch (winrt::hresult_error& e) {
