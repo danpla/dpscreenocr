@@ -5,7 +5,7 @@
   * Standard C/C++ library headers. On Unix-like systems, OS API
     (POSIX) headers may also be in this group.
   * OS API headers.
-  * Other third-party headers, including src/thirdparty.
+  * Other third-party headers, including src/external.
   * Our headers from src/.
 
   Separate these #include groups by an empty line.

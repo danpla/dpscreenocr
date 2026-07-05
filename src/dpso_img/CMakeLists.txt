@@ -24,8 +24,8 @@ endif()
 
 if(NOT TARGET stb_image_resize2)
     add_subdirectory(
-        ../thirdparty/stb_image_resize2
-        "${CMAKE_BINARY_DIR}/src/thirdparty/stb_image_resize2")
+        ../external/stb_image_resize2
+        "${CMAKE_BINARY_DIR}/src/external/stb_image_resize2")
 endif()
 
 target_link_libraries(dpso_img PRIVATE dpso_utils stb_image_resize2)
