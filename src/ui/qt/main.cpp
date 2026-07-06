@@ -57,14 +57,14 @@ static void installQtTranslations(QApplication& app)
         #endif
             QLibraryInfo::TranslationsPath);
 
-    const QString localeName = uiGetTranslationLang();
+    const QString langCode = uiGetTranslationLang();
 
     const QString translations[]{"qt", "qtbase"};
 
     for (const auto& translation : translations) {
         auto* translator = new QTranslator(&app);
         if (translator->load(
-                translation + "_" + localeName, translationsPath))
+                translation + "_" + langCode, translationsPath))
             app.installTranslator(translator);
     }
 }
