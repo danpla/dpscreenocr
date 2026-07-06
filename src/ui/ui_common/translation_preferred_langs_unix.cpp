@@ -34,8 +34,8 @@ std::vector<std::string> getPreferredTranslationLangs()
         return result;
     }
 
-    for (const auto* locale : {"LC_ALL", "LC_MESSAGES", "LANG"})
-        if (locale && *locale)
+    for (const auto* var : {"LC_ALL", "LC_MESSAGES", "LANG"})
+        if (const auto* locale = std::getenv(var); locale && *locale)
             return {locale};
 
     return {};
