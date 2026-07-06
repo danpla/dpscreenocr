@@ -93,6 +93,9 @@ void testExport()
         "  <meta charset=\"utf-8\">\n"
         "  <title>History</title>\n"
         "  <style>\n"
+        "    .timestamp {\n"
+        "      font-weight: bold;\n"
+        "    }\n"
         "    .text {\n"
         "      margin: 1em 1em 2em;\n"
         "      line-height: 1.6;\n"
@@ -150,7 +153,7 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b></b></p>\n"
+            "  <p class=\"timestamp\"></p>\n"
             "  <p class=\"text\">\n"
             "\n"
             "  </p>\n"
@@ -172,12 +175,12 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b></b></p>\n"
+            "  <p class=\"timestamp\"></p>\n"
             "  <p class=\"text\">\n"
             "\n"
             "  </p>\n"
             "  <hr>\n"
-            "  <p class=\"timestamp\"><b></b></p>\n"
+            "  <p class=\"timestamp\"></p>\n"
             "  <p class=\"text\">\n"
             "\n"
             "  </p>\n"
@@ -203,7 +206,7 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b>ts</b></p>\n"
+            "  <p class=\"timestamp\">ts</p>\n"
             "  <p class=\"text\">\n"
             "    text\n"
             "  </p>\n"
@@ -227,12 +230,12 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b>ts 1</b></p>\n"
+            "  <p class=\"timestamp\">ts 1</p>\n"
             "  <p class=\"text\">\n"
             "    text 1\n"
             "  </p>\n"
             "  <hr>\n"
-            "  <p class=\"timestamp\"><b>ts 2</b></p>\n"
+            "  <p class=\"timestamp\">ts 2</p>\n"
             "  <p class=\"text\">\n"
             "    text 2\n"
             "  </p>\n"
@@ -258,7 +261,7 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b>ts line 1 ts line 2</b></p>\n"
+            "  <p class=\"timestamp\">ts line 1 ts line 2</p>\n"
             "  <p class=\"text\">\n"
             "    text line 1<br>\n"
             "    text line 2\n"
@@ -280,7 +283,7 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b>ts</b></p>\n"
+            "  <p class=\"timestamp\">ts</p>\n"
             "  <p class=\"text\">\n"
             "    text<br>\n"
             "\n"
@@ -302,7 +305,7 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b>'\"&lt;&gt;&amp;</b></p>\n"
+            "  <p class=\"timestamp\">'\"&lt;&gt;&amp;</p>\n"
             "  <p class=\"text\">\n"
             "    '\"&lt;&gt;&amp;\n"
             "  </p>\n"
@@ -324,7 +327,7 @@ void testExport()
             "\n"
             ,
 
-            "  <p class=\"timestamp\"><b>\b\f \r\t\320\264</b></p>\n"
+            "  <p class=\"timestamp\">\b\f \r\t\320\264</p>\n"
             "  <p class=\"text\">\n"
             "    \b <br>\n"
             "    \r\t\320\264\n"
