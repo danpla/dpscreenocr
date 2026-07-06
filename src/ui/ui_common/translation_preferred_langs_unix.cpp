@@ -12,13 +12,13 @@ std::vector<std::string> getPreferredTranslationLangs()
     // See:
     // https://www.gnu.org/software/gettext/manual/html_node/Locale-Environment-Variables.html
 
-    if (const auto* language = std::getenv("LANGUAGE");
-            language && *language) {
+    if (const auto* langList = std::getenv("LANGUAGE");
+            langList && *langList) {
         // LANGUAGE is the only variable that could be a list; the
         // others always contain a single locale name.
         std::vector<std::string> result;
 
-        for (const auto* s = language; true;) {
+        for (const auto* s = langList; true;) {
             const auto* langBegin = s;
 
             while (*s && *s != ':')
