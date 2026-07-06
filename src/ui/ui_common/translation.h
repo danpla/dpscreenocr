@@ -20,9 +20,7 @@ extern "C" {
  * (Simplified Chinese).
  *
  * The default is "en" (English), which matches the language used in
- * the source strings passed to uiTranslate*() functions. The returned
- * string pointer remains valid till the next call to
- * uiPickTranslationLang().
+ * the source strings passed to uiTranslate*() functions.
  */
 const char* uiGetTranslationLang(void);
 
@@ -40,7 +38,7 @@ const char* uiTranslate(const char* id);
 /**
  * Translate a message using a context to resolve ambiguities.
  *
- * The method is similar to translate(), but takes an additional
+ * The method is similar to uiTranslate(), but takes an additional
  * context string to resolve ambiguities in cases when the same
  * message ID can have different meanings depending on the
  * context.
