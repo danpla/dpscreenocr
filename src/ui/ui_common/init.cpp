@@ -4,6 +4,7 @@
 #include "exe_path.h"
 #include "init_extra.h"
 #include "init_user_data.h"
+#include "translation_init.h"
 
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/error_set.h"
@@ -27,6 +28,11 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
 
     if (!ui::initExePath(argv[0])) {
         dpso::setError("ui::initExePath: {}", dpsoGetError());
+        return false;
+    }
+
+    if (!ui::initTranslation()) {
+        dpso::setError("ui::initTranslation: {}", dpsoGetError());
         return false;
     }
 

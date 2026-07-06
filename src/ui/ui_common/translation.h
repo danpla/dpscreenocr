@@ -28,29 +28,6 @@ const char* uiGetTranslationLang(void);
 
 
 /**
- * Pick the translation language.
- *
- * The function tries to pick the message catalog (MO file) that best
- * matches one of the languages from the langTags priority list. Each
- * language tag in the priority list has the format similar to BCP 47,
- * and consist of one or more alphanumeric subtags separated either by
- * hyphens or underscores. See the documentation of the dp_intl
- * library for the detailed description of the tag format and the
- * matching algorithm.
- *
- * Before performing any action, the function resets the current
- * language to English ("en"), which will effectively remain active if
- * no suitable match is found in the priority list or in case of an
- * error.
- *
- * On failure, the function sets an error message (dpsoGetError()) and
- * returns false.
- */
-bool uiPickTranslationLang(
-    const char* const langTags[], size_t numLangTags);
-
-
-/**
  * Translate a message.
  *
  * The method searches the message catalog (MO file) for a message

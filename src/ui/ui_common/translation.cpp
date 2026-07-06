@@ -18,6 +18,8 @@
 #include "dpso_utils/os.h"
 
 #include "app_dirs.h"
+#include "translation_init.h"
+#include "translation_preferred_langs.h"
 
 
 using namespace dpso;
@@ -85,14 +87,10 @@ void pickTranslationLang(const std::vector<std::string>& langTags)
 }
 
 
-const char* uiGetTranslationLang(void)
-{
-    return trLang.c_str();
-}
+namespace ui {
 
 
-bool uiPickTranslationLang(
-    const char* const langTags[], size_t numLangTags)
+bool initTranslation()
 {
     std::vector<std::string> tags;
 
@@ -104,7 +102,7 @@ bool uiPickTranslationLang(
     if (const auto* dpsoLang = std::getenv("DPSO_LANG"))
         tags.push_back(dpsoLang);
     else
-        tags.assign(langTags, langTags + numLangTags);
+        tags = ui::getPreferredTranslationLangs();
 
     try {
         pickTranslationLang(tags);
@@ -114,6 +112,15 @@ bool uiPickTranslationLang(
     }
 
     return true;
+}
+
+
+}
+
+
+const char* uiGetTranslationLang(void)
+{
+    return trLang.c_str();
 }
 
 

@@ -42,7 +42,8 @@ if(UNIX AND NOT APPLE)
         app_dirs_unix.cpp
         autostart/autostart_unix.cpp
         exe_path_unix.cpp
-        init_extra_unix.cpp)
+        init_extra_unix.cpp
+        translation_preferred_langs_unix.cpp)
 
     include(GNUInstallDirs)
     list(APPEND IN_SRCS app_dirs_unix_cfg.h)
