@@ -56,7 +56,8 @@ elseif(WIN32)
         autostart/autostart_windows_registry.cpp
         msix_helper/msix_helper.cpp
         exe_path_windows.cpp
-        init_extra_windows.cpp)
+        init_extra_windows.cpp
+        translation_preferred_langs_windows.cpp)
 
     list(APPEND IN_SRCS msix_helper/dll_name.cpp)
 else()
