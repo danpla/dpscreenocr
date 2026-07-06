@@ -1,7 +1,6 @@
 #include "os.h"
 
 #include <cerrno>
-#include <cstring>
 #include <io.h>
 
 #define WIN32_LEAN_AND_MEAN
@@ -53,14 +52,6 @@ std::wstring toUtf16(std::string_view str, std::string_view varName)
 #define DPSO_WIN_TO_UTF16(VAR_NAME) toUtf16(VAR_NAME, #VAR_NAME)
 
 
-}
-
-
-std::string getErrnoMsg(int errnum)
-{
-    // On Windows, strerror() does not depend on the locale and is
-    // documented to return a pointer to a thread-local storage.
-    return std::strerror(errnum);
 }
 
 

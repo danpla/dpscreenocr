@@ -2,6 +2,7 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "os.h"
 #include "str.h"
@@ -27,7 +28,7 @@ std::string getExePath(std::string_view name)
     auto* realPath = realpath(path.c_str(), nullptr);
     if (!realPath)
         throw os::Error{str::format(
-            "realpath(\"{}\"): {}", path, os::getErrnoMsg(errno))};
+            "realpath(\"{}\"): {}", path, strerror(errno))};
 
     std::string result{realPath};
     free(realPath);

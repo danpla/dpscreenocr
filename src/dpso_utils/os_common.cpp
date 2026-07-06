@@ -1,5 +1,6 @@
 #include "os.h"
 
+#include <cstring>
 #include <filesystem>
 #include <optional>
 #include <system_error>
@@ -52,7 +53,7 @@ void check(std::string_view description, const std::error_code& ec)
 void throwErrno(std::string_view description, int errnum)
 {
     const auto message = str::format(
-        "{}: {}", description, getErrnoMsg(errnum));
+        "{}: {}", description, std::strerror(errnum));
 
     switch (errnum) {
     case ENOENT:

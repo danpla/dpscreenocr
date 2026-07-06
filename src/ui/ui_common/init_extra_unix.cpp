@@ -6,7 +6,6 @@
 #include <unistd.h>
 
 #include "dpso_utils/error_set.h"
-#include "dpso_utils/os.h"
 
 
 namespace ui {
@@ -54,15 +53,13 @@ bool initStart(int /*argc*/, char* argv[])
             ompThreadLimit, ompThreadLimitRequiredVal, true) == -1) {
         dpso::setError(
             "setenv(\"{}\", ...): {}",
-            ompThreadLimit, dpso::os::getErrnoMsg(errno));
+            ompThreadLimit, strerror(errno));
         return false;
     }
 
     execvp(*argv, argv);
 
-    dpso::setError(
-        "execvp(\"{}\", ...): {}",
-        *argv, dpso::os::getErrnoMsg(errno));
+    dpso::setError("execvp(\"{}\", ...): {}", *argv, strerror(errno));
     return false;
 }
 

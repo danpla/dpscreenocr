@@ -1,4 +1,5 @@
 #include <cerrno>
+#include <cstring>
 #include <string>
 #include <vector>
 
@@ -26,7 +27,7 @@ void testFopen()
     if (!fp) {
         test::failure(
             "os::fopen(\"{}\"): {}",
-            testUnicodeFileName, os::getErrnoMsg(errno));
+            testUnicodeFileName, std::strerror(errno));
         return;
     }
 
@@ -43,7 +44,7 @@ void testSyncFile()
     if (!fp)
         test::fatalError(
             "testSyncFile: os::fopen(\"{}\"): {}",
-            fileName, os::getErrnoMsg(errno));
+            fileName, std::strerror(errno));
 
     try {
         os::syncFile(fp.get());

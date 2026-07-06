@@ -11,14 +11,6 @@
 namespace dpso::os {
 
 
-// Return the description of the given errno number. This is similar
-// to std::strerror(), except that it's locale-independent and
-// thread-safe, if supported by the platform. If these features are
-// not supported by the platform, then this function may just be a
-// wrapper for std::strerror().
-std::string getErrnoMsg(int errnum);
-
-
 // Throws the given errno number as os::Error.
 [[noreturn]]
 void throwErrno(std::string_view description, int errnum);

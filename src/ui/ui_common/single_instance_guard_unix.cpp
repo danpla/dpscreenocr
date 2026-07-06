@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <pwd.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -10,7 +11,6 @@
 #include <utility>
 
 #include "dpso_utils/error_set.h"
-#include "dpso_utils/os.h"
 #include "dpso_utils/str.h"
 
 
@@ -48,7 +48,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
         setError(
             "getpwuid({}): {}",
             uid,
-            errno == 0 ? "User not found" : os::getErrnoMsg(errno));
+            errno == 0 ? "User not found" : strerror(errno));
         return {};
     }
 
@@ -59,8 +59,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
         filePath.c_str(), O_WRONLY | O_CREAT, S_IWUSR | S_IRUSR);
     if (fd == -1) {
         setError(
-            "open(\"{}\", ...): {}",
-            filePath, os::getErrnoMsg(errno));
+            "open(\"{}\", ...): {}", filePath, strerror(errno));
         return {};
     }
 
@@ -72,7 +71,7 @@ UiSingleInstanceGuard* uiSingleInstanceGuardCreate(const char* id)
     if (errno == EACCES || errno == EAGAIN)
         return new UiSingleInstanceGuard{{}, -1};
 
-    setError("lockf(): {}", os::getErrnoMsg(errno));
+    setError("lockf(): {}", strerror(errno));
     return {};
 }
 

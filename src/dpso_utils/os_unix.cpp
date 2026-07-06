@@ -2,7 +2,6 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <locale.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -13,45 +12,12 @@
 
 
 namespace dpso::os {
-namespace {
 
 
 [[noreturn]]
-void throwErrno(std::string_view description)
+static void throwErrno(std::string_view description)
 {
     os::throwErrno(description, errno);
-}
-
-
-struct LocaleFreer {
-    using pointer = locale_t;
-
-    void operator()(locale_t locobj) const
-    {
-        if (locobj)
-            freelocale(locobj);
-    }
-};
-
-
-using LocaleUPtr = std::unique_ptr<locale_t, LocaleFreer>;
-
-
-LocaleUPtr newLocale(
-    int categoryMask, const char* locale, locale_t base)
-{
-    return LocaleUPtr{newlocale(categoryMask, locale, base)};
-}
-
-
-}
-
-
-std::string getErrnoMsg(int errnum)
-{
-    static const auto cLocale = newLocale(LC_ALL_MASK, "C", nullptr);
-    return cLocale
-        ? strerror_l(errnum, cLocale.get()) : strerror(errnum);
 }
 
 
