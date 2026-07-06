@@ -3,14 +3,6 @@
 #include <string_view>
 
 #include <tesseract/baseapi.h>
-// We no longer support Tesseract versions prior to 4.1.0 since they
-// depend on the "C" locale.
-#if !defined(TESSERACT_MAJOR_VERSION) \
-        || TESSERACT_MAJOR_VERSION < 4 \
-        || (TESSERACT_MAJOR_VERSION == 4 \
-            && TESSERACT_MINOR_VERSION < 1)
-    #error "Tesseract >= 4.1.0 is required"
-#endif
 
 #include "engine/engine.h"
 #include "engine/tesseract/lang_manager.h"
