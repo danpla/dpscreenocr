@@ -7,8 +7,6 @@
 
 #include "dpso_utils/progress_tracker.h"
 
-#include "ops_utils.h"
-
 
 namespace dpso::img {
 
@@ -184,8 +182,6 @@ Upscaler::Upscaler()
 
 
 Upscaler::~Upscaler() = default;
-Upscaler::Upscaler(Upscaler&&) noexcept = default;
-Upscaler& Upscaler::operator=(Upscaler&&) noexcept = default;
 
 
 void Upscaler::operator()(
@@ -196,49 +192,41 @@ void Upscaler::operator()(
 }
 
 
-template<Axis axis>
-static void boxBlur(
-    const std::uint8_t* src, int srcPitch,
-    std::uint8_t* dst, int dstPitch,
-    int w, int h,
-    int radius,
-    ProgressTracker& progressTracker)
-{
-    assert(w > 0);
-    assert(h > 0);
-    assert(radius > 0);
-    assert(srcPitch >= w);
-    assert(dstPitch >= w);
+namespace {
 
-    const auto kernelSize = 1 + radius * 2;
 
-    const auto numLines = getSize<getOpposite(axis)>(w, h);
-    const auto lineSize = getSize<axis>(w, h);
+class BoxBlur {
+public:
+    void operator()(
+        const std::uint8_t* src, int srcPitch,
+        std::uint8_t* dst, int dstPitch,
+        std::uint8_t* tmp, int tmpPitch,
+        int w, int h, int radius,
+        int numIters,
+        ProgressTracker& progressTracker);
+private:
+    std::vector<int> sums;
 
-    for (int l{}; l < numLines; ++l) {
-        const auto srcLine = makeLine<axis>(l, src, srcPitch);
+    static void hPass(
+        const std::uint8_t* src, int srcPitch,
+        std::uint8_t* dst, int dstPitch,
+        int w, int h,
+        int radius,
+        ProgressTracker& progressTracker);
 
-        auto sum = srcLine[0] * (radius + 1);
-        for (int i{1}; i <= radius; ++i)
-            sum += srcLine[std::min(i, lineSize - 1)];
+    void vPass(
+        const std::uint8_t* src, int srcPitch,
+        std::uint8_t* dst, int dstPitch,
+        int w, int h,
+        int radius,
+        ProgressTracker& progressTracker);
+};
 
-        const auto dstLine = makeLine<axis>(l, dst, dstPitch);
-        for (int i{}; i < lineSize; ++i) {
-            dstLine[i] = sum / kernelSize;
 
-            const auto addPx =
-                srcLine[std::min(i + radius + 1, lineSize - 1)];
-            const auto removePx = srcLine[std::max(i - radius, 0)];
-
-            sum += addPx - removePx;
-        }
-
-        progressTracker.update(static_cast<float>(l + 1) / numLines);
-    }
 }
 
 
-static void boxBlur(
+void BoxBlur::operator()(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
     std::uint8_t* tmp, int tmpPitch,
@@ -264,12 +252,12 @@ static void boxBlur(
 
     for (int i{}; i < numIters; ++i) {
         localProgressTracker.advanceJob();
-        boxBlur<Axis::x>(
+        hPass(
             curSrc, curSrcPitch, tmp, tmpPitch, w, h, radius,
             localProgressTracker);
 
         localProgressTracker.advanceJob();
-        boxBlur<Axis::y>(
+        vPass(
             tmp, tmpPitch, dst, dstPitch, w, h, radius,
             localProgressTracker);
 
@@ -279,6 +267,108 @@ static void boxBlur(
 
     localProgressTracker.finish();
 }
+
+
+void BoxBlur::hPass(
+    const std::uint8_t* src, int srcPitch,
+    std::uint8_t* dst, int dstPitch,
+    int w, int h,
+    int radius,
+    ProgressTracker& progressTracker)
+{
+    assert(w > 0);
+    assert(h > 0);
+    assert(radius > 0);
+    assert(srcPitch >= w);
+    assert(dstPitch >= w);
+
+    const auto kernelSize = 1 + radius * 2;
+
+    for (int y{}; y < h; ++y) {
+        const auto* srcRow = src + y * srcPitch;
+
+        auto sum = *srcRow * (radius + 1);
+        for (int x{1}; x <= radius; ++x)
+            sum += srcRow[std::min(x, w - 1)];
+
+        auto* dstRow = dst + y * dstPitch;
+        for (int x{}; x < w; ++x) {
+            dstRow[x] = sum / kernelSize;
+
+            const auto addPx =
+                srcRow[std::min(x + radius + 1, w - 1)];
+            const auto removePx = srcRow[std::max(x - radius, 0)];
+
+            sum += addPx - removePx;
+        }
+
+        progressTracker.update(static_cast<float>(y + 1) / h);
+    }
+}
+
+
+void BoxBlur::vPass(
+    const std::uint8_t* src, int srcPitch,
+    std::uint8_t* dst, int dstPitch,
+    int w, int h,
+    int radius,
+    ProgressTracker& progressTracker)
+{
+    assert(w > 0);
+    assert(h > 0);
+    assert(radius > 0);
+    assert(srcPitch >= w);
+    assert(dstPitch >= w);
+
+    // For better cache locality, the vertical pass operates on the
+    // entire rows, making the algorithm about 4 times faster than
+    // the naive variant (similar to the horizontal pass) that
+    // processes individual columns.
+
+    sums.resize(w);
+
+    const auto kernelSize = 1 + radius * 2;
+
+    const auto* row0 = src;
+    for (int x{}; x < w; ++x)
+        sums[x] = row0[x] * (radius + 1);
+
+    for (int y{1}; y <= radius; ++y) {
+        const auto* row = src + std::min(y, h - 1) * srcPitch;
+
+        for (int x{}; x < w; ++x)
+            sums[x] += row[x];
+    }
+
+    for (int y{}; y < h; ++y) {
+        auto* dstRow = dst + y * dstPitch;
+
+        const auto* addRow =
+            src + std::min(y + radius + 1, h - 1) * srcPitch;
+        const auto* subRow = src + std::max(y - radius, 0) * srcPitch;
+
+        for (int x{}; x < w; ++x) {
+            dstRow[x] = sums[x] / kernelSize;
+            sums[x] += addRow[x] - subRow[x];
+        }
+
+        progressTracker.update(static_cast<float>(y + 1) / h);
+    }
+}
+
+
+struct UnsharpMask::Impl {
+    BoxBlur boxBlur;
+};
+
+
+UnsharpMask::UnsharpMask()
+    : impl{std::make_unique<Impl>()}
+{
+}
+
+
+UnsharpMask::~UnsharpMask() = default;
 
 
 static void unsharp(
@@ -311,28 +401,7 @@ static void unsharp(
 }
 
 
-// Compared to the implementation in GIMP 2.8, our unsharp mask has
-// several simplifications for our particular use case. They don't
-// affect OCR quality, but improve performance or simplify the code.
-//
-//   * We don't use Gaussian blur instead of box if radius is < 10.
-//
-//   * We use 2 box blur iterations instead of 3.
-//
-//   * We don't try to approximate the Gaussian kernel width for box,
-//     so our kernel is always odd.
-//
-//     The formula for approximation and instructions on how to apply
-//     an even kernel comes from W3C Filter Effects Module, which was
-//     previously part of the SVG specification:
-//
-//         https://www.w3.org/TR/filter-effects-1
-//
-//   * We don't need thresholding.
-//
-// The GIMP implementation is in /plug-ins/common/unsharp-mask.c,
-// Git branch gimp-2-8.
-void unsharpMask(
+void UnsharpMask::operator()(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
     std::uint8_t* tmp, int tmpPitch,
@@ -351,7 +420,8 @@ void unsharpMask(
     ProgressTracker localProgressTracker(2, progressTracker);
 
     localProgressTracker.advanceJob();
-    boxBlur(
+
+    impl->boxBlur(
         src, srcPitch,
         dst, dstPitch,
         tmp, tmpPitch,

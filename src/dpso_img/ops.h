@@ -45,8 +45,8 @@ public:
     Upscaler(const Upscaler&) = delete;
     Upscaler& operator=(const Upscaler&) = delete;
 
-    Upscaler(Upscaler&&) noexcept;
-    Upscaler& operator=(Upscaler&&) noexcept;
+    Upscaler(Upscaler&&) = delete;
+    Upscaler& operator=(Upscaler&&) = delete;
 
     void operator()(
         const std::uint8_t* src, int srcW, int srcH, int srcPitch,
@@ -57,13 +57,28 @@ private:
 };
 
 
-void unsharpMask(
-    const std::uint8_t* src, int srcPitch,
-    std::uint8_t* dst, int dstPitch,
-    std::uint8_t* tmp, int tmpPitch,
-    int w, int h,
-    int radius,
-    ProgressTracker* progressTracker = nullptr);
+class UnsharpMask {
+public:
+    UnsharpMask();
+    ~UnsharpMask();
+
+    UnsharpMask(const UnsharpMask&) = delete;
+    UnsharpMask& operator=(const UnsharpMask&) = delete;
+
+    UnsharpMask(UnsharpMask&&) = delete;
+    UnsharpMask& operator=(UnsharpMask&&) = delete;
+
+    void operator()(
+        const std::uint8_t* src, int srcPitch,
+        std::uint8_t* dst, int dstPitch,
+        std::uint8_t* tmp, int tmpPitch,
+        int w, int h,
+        int radius,
+        ProgressTracker* progressTracker = nullptr);
+private:
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+};
 
 
 }

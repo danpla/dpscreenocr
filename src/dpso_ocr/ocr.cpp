@@ -102,6 +102,7 @@ struct DpsoOcr {
 
     std::vector<std::uint8_t> imgBuffers[3];
     img::Upscaler upscaler;
+    img::UnsharpMask unsharpMask;
     bool dumpDebugImages;
 
     std::size_t numPendingResults;
@@ -348,6 +349,7 @@ static ocr::Recognizer::Image prepareImage(
     const DpsoImg* image,
     std::vector<std::uint8_t> (&imgBuffers)[3],
     img::Upscaler& upscaler,
+    img::UnsharpMask& unsharpMask,
     ProgressTracker& progressTracker,
     bool dumpDebugImages)
 {
@@ -427,7 +429,7 @@ static ocr::Recognizer::Image prepareImage(
     localProgressTracker.advanceJob();
 
     DPSO_START_TIMING(unsharpMasking);
-    img::unsharpMask(
+    unsharpMask(
         imgBuffers[1].data(), bufferPitch,
         imgBuffers[0].data(), bufferPitch,
         imgBuffers[2].data(), bufferPitch,
@@ -466,6 +468,7 @@ static void processJob(DpsoOcr& ocr, const Job& job)
         job.image.get(),
         ocr.imgBuffers,
         ocr.upscaler,
+        ocr.unsharpMask,
         progressTracker,
         ocr.dumpDebugImages);
 
