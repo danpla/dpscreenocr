@@ -101,6 +101,7 @@ struct DpsoOcr {
     std::thread thread;
 
     std::vector<std::uint8_t> imgBuffers[3];
+    img::Upscaler upscaler;
     bool dumpDebugImages;
 
     std::size_t numPendingResults;
@@ -346,6 +347,7 @@ static std::string createTimestamp()
 static ocr::Recognizer::Image prepareImage(
     const DpsoImg* image,
     std::vector<std::uint8_t> (&imgBuffers)[3],
+    img::Upscaler& upscaler,
     ProgressTracker& progressTracker,
     bool dumpDebugImages)
 {
@@ -405,7 +407,7 @@ static ocr::Recognizer::Image prepareImage(
     }
 
     DPSO_START_TIMING(imageResizing);
-    img::resize(
+    upscaler(
         graySrc, imageW, imageH, graySrcPitch,
         imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
     DPSO_END_TIMING(
@@ -465,6 +467,7 @@ static void processJob(DpsoOcr& ocr, const Job& job)
     const auto ocrImage = prepareImage(
         job.image.get(),
         ocr.imgBuffers,
+        ocr.upscaler,
         progressTracker,
         ocr.dumpDebugImages);
 

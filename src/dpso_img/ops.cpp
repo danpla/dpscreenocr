@@ -2,8 +2,8 @@
 
 #include <algorithm>
 #include <cassert>
-
-#include "stb_image_resize2.h"
+#include <cmath>
+#include <vector>
 
 #include "dpso_utils/progress_tracker.h"
 
@@ -75,14 +75,124 @@ void toGray(
 }
 
 
-void resize(
+struct Upscaler::Impl {
+    struct Filter {
+        static constexpr auto size{4};
+
+        int idx[size];
+        float weights[size];
+    };
+
+    std::vector<Filter> filters;
+    std::vector<float> tmp;
+
+    void fillFilters(int srcSize, int dstSize);
+    void scale(
+        const std::uint8_t* src, int srcW, int srcH, int srcPitch,
+        std::uint8_t* dst, int dstW, int dstH, int dstPitch);
+};
+
+
+void Upscaler::Impl::fillFilters(int srcSize, int dstSize)
+{
+    filters.resize(dstSize);
+
+    const auto scale = static_cast<float>(dstSize) / srcSize;
+
+    const auto clamp = [=](int idx)
+    {
+        return std::clamp(idx, 0, srcSize - 1);
+    };
+
+    for (int i{}; i < dstSize; ++i) {
+        const auto srcPos = (i + 0.5f) / scale - 0.5f;
+        const auto centerIdx = static_cast<int>(
+            std::floor(srcPos));
+
+        auto& f = filters[i];
+
+        const auto t = srcPos - centerIdx;
+        const auto t2 = t * t;
+        const auto t3 = t2 * t;
+
+        auto* w = f.weights;
+
+        // Catmull-Rom filter
+        w[0] = -0.5f * t3 + t2 - 0.5f * t;
+        w[2] = -1.5f * t3 + 2.0f * t2 + 0.5f * t;
+        w[3] =  0.5f * t3 - 0.5f * t2;
+        w[1] =  1.0f - w[0] - w[2] - w[3];
+
+        f.idx[0] = clamp(centerIdx - 1);
+        f.idx[1] = clamp(centerIdx);
+        f.idx[2] = clamp(centerIdx + 1);
+        f.idx[3] = clamp(centerIdx + 2);
+    }
+}
+
+
+void Upscaler::Impl::scale(
     const std::uint8_t* src, int srcW, int srcH, int srcPitch,
     std::uint8_t* dst, int dstW, int dstH, int dstPitch)
 {
-    stbir_resize_uint8_linear(
-        src, srcW, srcH, srcPitch,
-        dst, dstW, dstH, dstPitch,
-        STBIR_1CHANNEL);
+    tmp.resize(dstW * srcH);
+
+    fillFilters(srcW, dstW);
+
+    for (int y{}; y < srcH; ++y) {
+        const auto* srcRow = src + y * srcPitch;
+        auto* tmpRow = tmp.data() + y * dstW;
+
+        for (int x{}; x < dstW; ++x) {
+            const auto& filter = filters[x];
+            auto sum = 0.0f;
+
+            for (int k{}; k < Filter::size; ++k)
+                sum += srcRow[filter.idx[k]] * filter.weights[k];
+
+            tmpRow[x] = sum;
+        }
+    }
+
+    fillFilters(srcH, dstH);
+
+    for (int y{}; y < dstH; ++y) {
+        const auto& filter = filters[y];
+        auto* dstRow = dst + y * dstPitch;
+
+        const float* tmpRows[Filter::size];
+        for (int k{}; k < Filter::size; ++k)
+            tmpRows[k] = tmp.data() + filter.idx[k] * dstW;
+
+        for (int x{}; x < dstW; ++x) {
+            // Start with 0.5 for rounding via cast at the end.
+            auto sum = 0.5f;
+
+            for (int k{}; k < Filter::size; ++k)
+                sum += tmpRows[k][x] * filter.weights[k];
+
+            dstRow[x] = std::clamp<int>(sum, 0, 255);
+        }
+    }
+}
+
+
+Upscaler::Upscaler()
+    : impl{std::make_unique<Impl>()}
+{
+}
+
+
+Upscaler::~Upscaler() = default;
+Upscaler::Upscaler(Upscaler&&) noexcept = default;
+Upscaler& Upscaler::operator=(Upscaler&&) noexcept = default;
+
+
+void Upscaler::operator()(
+    const std::uint8_t* src, int srcW, int srcH, int srcPitch,
+    std::uint8_t* dst, int dstW, int dstH, int dstPitch)
+{
+    impl->scale(src, srcW, srcH, srcPitch, dst, dstW, dstH, dstPitch);
 }
 
 

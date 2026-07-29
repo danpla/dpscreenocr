@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
 #include "px_format.h"
 
@@ -34,9 +35,26 @@ void toGray(
     int w, int h);
 
 
-void resize(
-    const std::uint8_t* src, int srcW, int srcH, int srcPitch,
-    std::uint8_t* dst, int dstW, int dstH, int dstPitch);
+// As the name implies, the class is designed for scaling images up.
+// Scaling down is technically possible, but the quality will be poor.
+class Upscaler {
+public:
+    Upscaler();
+    ~Upscaler();
+
+    Upscaler(const Upscaler&) = delete;
+    Upscaler& operator=(const Upscaler&) = delete;
+
+    Upscaler(Upscaler&&) noexcept;
+    Upscaler& operator=(Upscaler&&) noexcept;
+
+    void operator()(
+        const std::uint8_t* src, int srcW, int srcH, int srcPitch,
+        std::uint8_t* dst, int dstW, int dstH, int dstPitch);
+private:
+    struct Impl;
+    std::unique_ptr<Impl> impl;
+};
 
 
 void unsharpMask(
