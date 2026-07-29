@@ -63,7 +63,6 @@ void unsharpMask(
     std::uint8_t* tmp, int tmpPitch,
     int w, int h,
     int radius,
-    float amount,
     ProgressTracker* progressTracker = nullptr);
 
 

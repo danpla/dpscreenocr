@@ -286,7 +286,6 @@ static void unsharp(
     const std::uint8_t* blurred, int blurredPitch,
     std::uint8_t* dst, int dstPitch,
     int w, int h,
-    float amount,
     ProgressTracker& progressTracker)
 {
     assert(srcPitch >= w);
@@ -301,11 +300,9 @@ static void unsharp(
         const auto* blurredRow = blurred + y * blurredPitch;
         auto* dstRow = dst + y * dstPitch;
 
-        for (int x = 0; x < w; ++x) {
-            const auto diff = srcRow[x] - blurredRow[x];
+        for (int x = 0; x < w; ++x)
             dstRow[x] = std::clamp(
-                srcRow[x] + static_cast<int>(diff * amount), 0, 255);
-        }
+                srcRow[x] + (srcRow[x] - blurredRow[x]), 0, 255);
 
         localProgressTracker.update(static_cast<float>(y + 1) / h);
     }
@@ -341,7 +338,6 @@ void unsharpMask(
     std::uint8_t* tmp, int tmpPitch,
     int w, int h,
     int radius,
-    float amount,
     ProgressTracker* progressTracker)
 {
     if (srcPitch < w
@@ -370,7 +366,6 @@ void unsharpMask(
         dst, dstPitch,
         dst, dstPitch,
         w, h,
-        amount,
         localProgressTracker);
 
     localProgressTracker.finish();

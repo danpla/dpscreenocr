@@ -422,7 +422,6 @@ static ocr::Recognizer::Image prepareImage(
             imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
 
     const auto unsharpMaskRadius = 10;
-    const auto unsharpMaskAmount = 1.0f;
 
     ProgressTracker localProgressTracker(1, &progressTracker);
     localProgressTracker.advanceJob();
@@ -434,12 +433,11 @@ static ocr::Recognizer::Image prepareImage(
         imgBuffers[2].data(), bufferPitch,
         bufferW, bufferH,
         unsharpMaskRadius,
-        unsharpMaskAmount,
         &localProgressTracker);
     DPSO_END_TIMING(
         unsharpMasking,
-        "Unsharp masking (radius={}, amount={}, {}x{} px)",
-        unsharpMaskRadius, unsharpMaskAmount, bufferW, bufferH);
+        "Unsharp masking (radius={}, {}x{} px)",
+        unsharpMaskRadius, bufferW, bufferH);
 
     localProgressTracker.finish();
 
