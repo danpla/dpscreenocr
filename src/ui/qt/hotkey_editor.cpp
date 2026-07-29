@@ -24,7 +24,7 @@ HotkeyEditor::HotkeyEditor(
 
     const auto keySelected = hotkey.key != dpsoNoKey;
 
-    for (int i = 0; i < dpsoNumKeyMods; ++i) {
+    for (int i{}; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
 
         const DpsoHotkey modHotkey{dpsoNoKey, mod};
@@ -78,7 +78,7 @@ void HotkeyEditor::assignHotkey(bool emitChanged)
 
     const auto keySelected = getCurrentKey() != dpsoNoKey;
 
-    for (int i = 0; i < dpsoNumKeyMods; ++i) {
+    for (int i{}; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
         auto* modCheck = modChecks[i];
 
@@ -101,7 +101,7 @@ void HotkeyEditor::bind()
 {
     DpsoHotkey hotkey{getCurrentKey(), dpsoNoKeyMods};
 
-    for (int i = 0; i < dpsoNumKeyMods; ++i)
+    for (int i{}; i < dpsoNumKeyMods; ++i)
         if (modChecks[i]->isChecked())
             hotkey.mods |= dpsoGetKeyModAt(i);
 

@@ -18,7 +18,7 @@ void dpsoCfgLoadActiveLangs(
     DpsoOcr* ocr,
     const char* fallbackLangCode)
 {
-    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i)
+    for (int i{}; i < dpsoOcrGetNumLangs(ocr); ++i)
         dpsoOcrSetLangIsActive(ocr, i, false);
 
     const auto enableLang = [&](const char* langCode)
@@ -59,7 +59,7 @@ void dpsoCfgSaveActiveLangs(
 {
     std::string str;
 
-    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i) {
+    for (int i{}; i < dpsoOcrGetNumLangs(ocr); ++i) {
         if (!dpsoOcrGetLangIsActive(ocr, i))
             continue;
 

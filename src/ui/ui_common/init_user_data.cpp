@@ -48,7 +48,7 @@ bool setupOcrData()
 {
     const auto appDataDir = fs::u8path(uiGetAppDir(UiAppDirData));
 
-    for (int i = 0; i < dpsoOcrGetNumEngines(); ++i) {
+    for (int i{}; i < dpsoOcrGetNumEngines(); ++i) {
         DpsoOcrEngineInfo ocrEngineInfo;
         dpsoOcrGetEngineInfo(i, &ocrEngineInfo);
 

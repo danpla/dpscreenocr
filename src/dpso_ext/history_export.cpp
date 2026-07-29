@@ -19,7 +19,7 @@ namespace {
 
 void writePlainText(Stream& stream, const DpsoHistory* history)
 {
-    for (int i = 0; i < dpsoHistoryCount(history); ++i) {
+    for (int i{}; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
             write(stream, "\n\n\n");
 
@@ -98,7 +98,7 @@ void writeHtml(Stream& stream, const DpsoHistory* history)
         "</head>\n"
         "<body>\n");
 
-    for (int i = 0; i < dpsoHistoryCount(history); ++i) {
+    for (int i{}; i < dpsoHistoryCount(history); ++i) {
         if (i > 0)
             write(stream, "  <hr>\n");
 
@@ -156,7 +156,7 @@ void writeJson(Stream& stream, const DpsoHistory* history)
 {
     write(stream, "[\n");
 
-    for (int i = 0; i < dpsoHistoryCount(history); ++i) {
+    for (int i{}; i < dpsoHistoryCount(history); ++i) {
         DpsoHistoryEntry e;
         dpsoHistoryGet(history, i, &e);
 
@@ -233,7 +233,7 @@ DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
 {
     const auto ext = os::getFileExt(filePath);
 
-    for (int i = 0; i < dpsoNumHistoryExportFormats; ++i)
+    for (int i{}; i < dpsoNumHistoryExportFormats; ++i)
         for (const auto* formatExt : exportFormatInfos[i].extensions)
             if (str::equalIgnoreCase(ext, formatExt))
                 return static_cast<DpsoHistoryExportFormat>(i);

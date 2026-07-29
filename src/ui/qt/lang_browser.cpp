@@ -120,9 +120,9 @@ void LangBrowser::reloadLangs()
     clear();
 
     setSortingEnabled(false);
-    for (int i = 0; i < dpsoOcrGetNumLangs(ocr); ++i) {
-        // We will add the item once it fully built, so that we don't
-        // trigger the itemChanged() signal on each change.
+    for (int i{}; i < dpsoOcrGetNumLangs(ocr); ++i) {
+        // We will add the item once it's fully built, so that we
+        // don't trigger the itemChanged() signal on each change.
         auto* item = new LangBrowserItem();
 
         item->setData(columnIdxCheckbox, Qt::UserRole, i);

@@ -122,7 +122,7 @@ static void reloadLangs(DpsoOcr& ocr)
     ocr.langs.clear();
     ocr.langs.reserve(ocr.recognizer->getNumLangs());
 
-    for (int i = 0; i < ocr.recognizer->getNumLangs(); ++i)
+    for (int i{}; i < ocr.recognizer->getNumLangs(); ++i)
         ocr.langs.push_back(
             {
                 ocr.recognizer->getLangCode(i),

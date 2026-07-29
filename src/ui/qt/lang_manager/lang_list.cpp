@@ -33,7 +33,7 @@ void LangList::reloadLangs()
     langInfos.clear();
     langInfos.reserve(numLangs);
 
-    for (int i = 0; i < numLangs; ++i) {
+    for (int i{}; i < numLangs; ++i) {
         const auto* langCode =
             dpsoOcrLangManagerGetLangCode(langManager, i);
         const auto* langName =

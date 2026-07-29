@@ -132,7 +132,7 @@ DpsoKey keyFromString(std::string_view str)
     if (str.empty())
         return dpsoNoKey;
 
-    for (int i = 0; i < dpsoNumKeys; ++i)
+    for (int i{}; i < dpsoNumKeys; ++i)
         if (dpso::str::equalIgnoreCase(keyNames[i], str))
             return static_cast<DpsoKey>(i);
 
@@ -263,7 +263,7 @@ const char* dpsoHotkeyToString(const DpsoHotkey* hotkey)
     if (!hotkey)
         return str.c_str();
 
-    for (int i = 0; i < dpsoNumKeyMods; ++i) {
+    for (int i{}; i < dpsoNumKeyMods; ++i) {
         const auto mod = dpsoGetKeyModAt(i);
         if (hotkey->mods & mod) {
             if (!str.empty())

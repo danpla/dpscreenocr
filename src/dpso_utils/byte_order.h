@@ -18,7 +18,7 @@ template<ByteOrder byteOrder, std::size_t n, typename Fn>
 void iLoop(Fn fn)
 {
     if (byteOrder == ByteOrder::little)
-        for (std::size_t i = 0; i < n; i++)
+        for (std::size_t i{}; i < n; i++)
             fn(i);
     else
         for (auto i = n; i--;)

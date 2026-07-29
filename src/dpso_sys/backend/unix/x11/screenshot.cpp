@@ -34,13 +34,13 @@ void getRgbData(
     const auto gShift = img::getMaskRightShift(image.green_mask);
     const auto bShift = img::getMaskRightShift(image.blue_mask);
 
-    for (int y = 0; y < image.height; ++y) {
+    for (int y{}; y < image.height; ++y) {
         const auto* srcRow =
             reinterpret_cast<const std::uint8_t*>(image.data)
             + image.bytes_per_line * y;
         auto* dstRow = buf + pitch * y;
 
-        for (int x = 0; x < image.width; ++x) {
+        for (int x{}; x < image.width; ++x) {
             XPixel px;
             load<byteOrder, bytesPerPx>(px, srcRow);
             srcRow += bytesPerPx;

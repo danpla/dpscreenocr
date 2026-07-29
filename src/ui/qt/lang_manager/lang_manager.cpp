@@ -75,7 +75,7 @@ static QString getUpdateTabTitle(
     int numUpdatable{};
 
     const auto numLangs = dpsoOcrLangManagerGetNumLangs(langManager);
-    for (int i = 0; i < numLangs; ++i)
+    for (int i{}; i < numLangs; ++i)
         if (dpsoOcrLangManagerGetLangState(langManager, i)
                 == DpsoOcrLangStateUpdateAvailable)
             ++numUpdatable;

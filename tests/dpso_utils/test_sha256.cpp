@@ -71,7 +71,7 @@ static void testSha256()
     for (const auto& test : tests) {
         dpso::Sha256 h;
 
-        for (auto i = 0; i < test.numRepeats; ++i)
+        for (int i{}; i < test.numRepeats; ++i)
             h.update(test.str.data(), test.str.size());
 
         const auto digest = h.getDigest();

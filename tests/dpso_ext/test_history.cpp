@@ -124,7 +124,7 @@ void testIo(IoTestMode mode)
     TEST_COUNT(
         history.get(), mode == IoTestMode::write ? 0 : numTests);
 
-    for (int i = 0; i < static_cast<int>(numTests); ++i) {
+    for (int i{}; i < static_cast<int>(numTests); ++i) {
         const auto& test = tests[i];
 
         if (mode == IoTestMode::write) {
@@ -205,7 +205,7 @@ void testTruncatedData()
         if (!TEST_COUNT(history.get(), test.expectedEntries.size()))
             continue;
 
-        for (int i = 0; i < dpsoHistoryCount(history.get()); ++i) {
+        for (int i{}; i < dpsoHistoryCount(history.get()); ++i) {
             DpsoHistoryEntry entry;
             dpsoHistoryGet(history.get(), i, &entry);
 

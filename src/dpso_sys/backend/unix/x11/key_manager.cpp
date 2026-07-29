@@ -143,7 +143,7 @@ void KeyManager::changeGrab(
     // combinations of the lock keys. Since toDpsoMods() will
     // skip the lock keys, all the additional helper hotkeys will map
     // to the original one.
-    for (int i = 0; i < 16; ++i) {
+    for (int i{}; i < 16; ++i) {
         unsigned ignoredX11Mods = 0;
         if (i & 1)
             ignoredX11Mods |= LockMask;

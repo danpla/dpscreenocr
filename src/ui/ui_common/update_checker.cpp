@@ -55,7 +55,7 @@ UpdateInfo getUpdateInfoFromJson(
     VersionCmp newVersionCmp;
     VersionCmp latestVersionCmp;
 
-    for (std::size_t i = 0; i < versionInfos.getSize(); ++i) {
+    for (std::size_t i{}; i < versionInfos.getSize(); ++i) {
         const auto versionInfo = versionInfos.getObject(i);
 
         try {

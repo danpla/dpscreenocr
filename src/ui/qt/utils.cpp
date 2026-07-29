@@ -49,7 +49,7 @@ QString joinInLayoutDirection(
 
     const auto rtl = QApplication::isRightToLeft();
     // Since Qt 6, size_type switched from int to qsizetype.
-    for (QStringList::size_type i = 0; i < list.size(); ++i) {
+    for (QStringList::size_type i{}; i < list.size(); ++i) {
         if (i > 0)
             result.insert(rtl ? 0 : result.size(), separator);
 

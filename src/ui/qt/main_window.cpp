@@ -477,7 +477,7 @@ void MainWindow::chooseSound()
     const auto appendFilters = [](
         QString& result, const UiSoundFormatInfo& formatInfo)
     {
-        for (int i = 0; i < formatInfo.numExtensions; ++i) {
+        for (int i{}; i < formatInfo.numExtensions; ++i) {
             if (!result.isEmpty())
                 result += ' ';
 
@@ -490,7 +490,7 @@ void MainWindow::chooseSound()
         QString nameFilter{_("All supported audio files")};
 
         nameFilter += " (";
-        for (int i = 0; i < uiSoundGetNumFormats(); ++i) {
+        for (int i{}; i < uiSoundGetNumFormats(); ++i) {
             UiSoundFormatInfo formatInfo;
             uiSoundGetFormatInfo(i, &formatInfo);
             appendFilters(nameFilter, formatInfo);
@@ -500,7 +500,7 @@ void MainWindow::chooseSound()
         nameFilters.append(nameFilter);
     }
 
-    for (int i = 0; i < uiSoundGetNumFormats(); ++i) {
+    for (int i{}; i < uiSoundGetNumFormats(); ++i) {
         UiSoundFormatInfo formatInfo;
         uiSoundGetFormatInfo(i, &formatInfo);
 

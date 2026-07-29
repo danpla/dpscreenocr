@@ -360,7 +360,7 @@ void testExport()
                 test::fatalError(
                     "dpsoHistoryAppend(): {}", dpsoGetError());
 
-        for (int i = 0; i < dpsoNumHistoryExportFormats; ++i) {
+        for (int i{}; i < dpsoNumHistoryExportFormats; ++i) {
             const auto exportFormat =
                 static_cast<DpsoHistoryExportFormat>(i);
 

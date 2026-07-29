@@ -60,7 +60,7 @@ QString getUnmetRequirementsText(
 {
     QStringList list;
 
-    for (size_t i = 0; i < updateInfo.numUnmetRequirements; ++i) {
+    for (size_t i{}; i < updateInfo.numUnmetRequirements; ++i) {
         const auto& ur = updateInfo.unmetRequirements[i];
         if (*ur.actual)
             list.append(strNFormat(

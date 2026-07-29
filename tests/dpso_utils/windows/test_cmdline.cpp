@@ -31,7 +31,7 @@ std::vector<std::string> cmdLineToArgv(std::string_view cmdLine)
     std::vector<std::string> result;
     result.reserve(argc);
 
-    for (int i = 0; i < argc; ++i)
+    for (int i{}; i < argc; ++i)
         result.push_back(dpso::windows::utf16ToUtf8(argv[i]));
 
     LocalFree(argv);

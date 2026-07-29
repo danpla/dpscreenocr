@@ -48,7 +48,7 @@ void dpsoKeyManagerUnbindHotkey(
 
     auto& impl = keyManager->impl;
 
-    for (int i = 0; i < impl.getNumBindings(); ++i)
+    for (int i{}; i < impl.getNumBindings(); ++i)
         if (impl.getBinding(i).hotkey == *hotkey) {
             impl.removeBinding(i);
             break;
@@ -64,7 +64,7 @@ void dpsoKeyManagerUnbindAction(
 
     auto& impl = keyManager->impl;
 
-    for (int i = 0; i < impl.getNumBindings();)
+    for (int i{}; i < impl.getNumBindings();)
         if (impl.getBinding(i).action == action)
             impl.removeBinding(i);
         else
@@ -85,7 +85,7 @@ void dpsoKeyManagerFindActionHotkey(
     if (!keyManager)
         return;
 
-    for (int i = 0; i < keyManager->impl.getNumBindings(); ++i) {
+    for (int i{}; i < keyManager->impl.getNumBindings(); ++i) {
         const auto& binding = keyManager->impl.getBinding(i);
         if (binding.action == action) {
             *hotkey = binding.hotkey;
@@ -101,7 +101,7 @@ DpsoHotkeyAction dpsoKeyManagerFindHotkeyAction(
     if (!keyManager || !hotkey)
         return dpsoNoHotkeyAction;
 
-    for (int i = 0; i < keyManager->impl.getNumBindings(); ++i) {
+    for (int i{}; i < keyManager->impl.getNumBindings(); ++i) {
         const auto& binding = keyManager->impl.getBinding(i);
         if (binding.hotkey == *hotkey)
             return binding.action;

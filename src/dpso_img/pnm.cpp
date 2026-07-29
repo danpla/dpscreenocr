@@ -57,7 +57,7 @@ static void writePnm(
 
     if (pxFormat == DpsoPxFormatGrayscale
             || pxFormat == DpsoPxFormatRgb) {
-        for (int y = 0; y < h; ++y)
+        for (int y{}; y < h; ++y)
             stream.write(data + y * pitch, w * bpp);
         return;
     }
@@ -65,11 +65,11 @@ static void writePnm(
     const auto rgbIndices = getRgbIndices(pxFormat);
     std::vector<std::uint8_t> rgbRow(w * 3);
 
-    for (int y = 0; y < h; ++y) {
+    for (int y{}; y < h; ++y) {
         const auto* src = data + y * pitch;
         auto* dst = rgbRow.data();
-        for (int x = 0; x < w; ++x) {
-            for (int i = 0; i < 3; ++i)
+        for (int x{}; x < w; ++x) {
+            for (int i{}; i < 3; ++i)
                 dst[i] = src[rgbIndices[i]];
 
             src += bpp;

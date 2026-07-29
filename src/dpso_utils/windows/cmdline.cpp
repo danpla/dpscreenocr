@@ -78,7 +78,7 @@ std::string createCmdLine(
     } else
         result += programName;
 
-    for (std::size_t i = 0; i < numArgs; ++i) {
+    for (std::size_t i{}; i < numArgs; ++i) {
         if (!result.empty())
             result += ' ';
 

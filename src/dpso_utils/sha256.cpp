@@ -151,7 +151,7 @@ Sha256::Digest Sha256::Context::finalize()
     transform(buf);
 
     Digest digest;
-    for (auto i = 0; i < stateSize; ++i)
+    for (int i{}; i < stateSize; ++i)
         store<sha256::byteOrder>(
             state[i], digest.data() + sizeof(*state) * i);
 
@@ -163,10 +163,10 @@ void Sha256::Context::transform(const std::uint8_t block[blockSize])
 {
     std::uint32_t w[64];
 
-    for (auto i = 0; i < 16; ++i)
+    for (int i{}; i < 16; ++i)
         load<sha256::byteOrder>(w[i], block + sizeof(*w) * i);
 
-    for (auto i = 16; i < 64; ++i)
+    for (int i{16}; i < 64; ++i)
         w[i] =
             sha256::sSig1(w[i - 2])
             + w[i - 7]
@@ -176,7 +176,7 @@ void Sha256::Context::transform(const std::uint8_t block[blockSize])
     std::uint32_t ts[stateSize];
     std::copy_n(state, stateSize, ts);
 
-    for (auto i = 0; i < 64; ++i) {
+    for (int i{}; i < 64; ++i) {
         const auto t1 =
             ts[7]
             + sha256::bSig1(ts[4])
@@ -192,7 +192,7 @@ void Sha256::Context::transform(const std::uint8_t block[blockSize])
         ts[4] += t1;
     }
 
-    for (auto i = 0; i < stateSize; ++i)
+    for (int i{}; i < stateSize; ++i)
         state[i] += ts[i];
 
     numTransformedBytes += blockSize;

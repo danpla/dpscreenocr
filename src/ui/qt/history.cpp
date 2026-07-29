@@ -78,7 +78,7 @@ static QString createNameFilter(DpsoHistoryExportFormat exportFormat)
 
     result += " (";
 
-    for (int i = 0; i < exportFormatInfo.numExtensions; ++i) {
+    for (int i{}; i < exportFormatInfo.numExtensions; ++i) {
         if (i > 0)
             result += ' ';
 
@@ -105,7 +105,7 @@ void History::doExport()
 
     QStringList nameFilters;
 
-    for (int i = 0; i < dpsoNumHistoryExportFormats; ++i)
+    for (int i{}; i < dpsoNumHistoryExportFormats; ++i)
         nameFilters.append(createNameFilter(
             static_cast<DpsoHistoryExportFormat>(i)));
 
@@ -254,7 +254,7 @@ void History::loadState(const DpsoCfg* cfg)
             + dpsoGetError());
 
     textEdit->clear();
-    for (int i = 0; i < dpsoHistoryCount(history.get()); ++i) {
+    for (int i{}; i < dpsoHistoryCount(history.get()); ++i) {
         DpsoHistoryEntry entry;
         dpsoHistoryGet(history.get(), i, &entry);
         appendToTextEdit(entry.timestamp, entry.text);

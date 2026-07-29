@@ -328,7 +328,7 @@ bool dpsoCfgGetBool(
     if (!str)
         return defaultVal;
 
-    for (int i = 0; i < 2; ++i)
+    for (int i{}; i < 2; ++i)
         if (str::equalIgnoreCase(*str, boolToStr(i)))
             return i;
 

@@ -59,7 +59,7 @@ void reloadLangs(
     langs.clear();
 
     langs.reserve(langManager.getNumLangs());
-    for (auto i = 0; i < langManager.getNumLangs(); ++i)
+    for (int i{}; i < langManager.getNumLangs(); ++i)
         langs.push_back(
             {
                 langManager.getLangCode(i),
@@ -477,7 +477,7 @@ void dpsoOcrLangManagerSetInstallMark(
 static std::optional<int> getLangIdx(
     const ocr::LangManager& langManager, std::string_view langCode)
 {
-    for (int i = 0; i < langManager.getNumLangs(); ++i)
+    for (int i{}; i < langManager.getNumLangs(); ++i)
         if (langManager.getLangCode(i) == langCode)
             return i;
 
@@ -490,7 +490,7 @@ static void installLangs(
     const std::vector<int>& langIndices,
     const Synchronized<bool>& cancelRequested)
 {
-    for (std::size_t i = 0; i < langIndices.size(); ++i) {
+    for (std::size_t i{}; i < langIndices.size(); ++i) {
         if (*cancelRequested.getLock())
             throw LangOpExecutor::OpCanceled{};
 
@@ -537,7 +537,7 @@ bool dpsoOcrLangManagerStartInstall(DpsoOcrLangManager* langManager)
 
     std::vector<int> langIndices;
 
-    for (std::size_t i = 0; i < langManager->langs.size(); ++i) {
+    for (std::size_t i{}; i < langManager->langs.size(); ++i) {
         if (!langManager->langs[i].installMark)
             continue;
 

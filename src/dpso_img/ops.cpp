@@ -29,11 +29,11 @@ void toGray(
     {
         const auto srcBpp = dpsoPxFormatGetBytesPerPx(srcPxFormat);
 
-        for (int y = 0; y < h; ++y) {
+        for (int y{}; y < h; ++y) {
             const auto* srcRow = src + y * srcPitch;
             auto* dstRow = dst + y * dstPitch;
 
-            for (int x = 0; x < w; ++x) {
+            for (int x{}; x < w; ++x) {
                 dstRow[x] = grayExtractor(srcRow);
                 srcRow += srcBpp;
             }
@@ -215,15 +215,15 @@ static void boxBlur(
     const auto numLines = getSize<getOpposite(axis)>(w, h);
     const auto lineSize = getSize<axis>(w, h);
 
-    for (int l = 0; l < numLines; ++l) {
+    for (int l{}; l < numLines; ++l) {
         const auto srcLine = makeLine<axis>(l, src, srcPitch);
 
         auto sum = srcLine[0] * (radius + 1);
-        for (int i = 1; i <= radius; ++i)
+        for (int i{1}; i <= radius; ++i)
             sum += srcLine[std::min(i, lineSize - 1)];
 
         const auto dstLine = makeLine<axis>(l, dst, dstPitch);
-        for (int i = 0; i < lineSize; ++i) {
+        for (int i{}; i < lineSize; ++i) {
             dstLine[i] = sum / kernelSize;
 
             const auto addPx =
@@ -262,7 +262,7 @@ static void boxBlur(
     const auto* curSrc = src;
     auto curSrcPitch = srcPitch;
 
-    for (int i = 0; i < numIters; ++i) {
+    for (int i{}; i < numIters; ++i) {
         localProgressTracker.advanceJob();
         boxBlur<Axis::x>(
             curSrc, curSrcPitch, tmp, tmpPitch, w, h, radius,
@@ -295,12 +295,12 @@ static void unsharp(
     ProgressTracker localProgressTracker(1, &progressTracker);
     localProgressTracker.advanceJob();
 
-    for (int y = 0; y < h; ++y) {
+    for (int y{}; y < h; ++y) {
         const auto* srcRow = src + y * srcPitch;
         const auto* blurredRow = blurred + y * blurredPitch;
         auto* dstRow = dst + y * dstPitch;
 
-        for (int x = 0; x < w; ++x)
+        for (int x{}; x < w; ++x)
             dstRow[x] = std::clamp(
                 srcRow[x] + (srcRow[x] - blurredRow[x]), 0, 255);
 

@@ -232,7 +232,7 @@ RemoteFilesLangManager::parseJsonFileInfos(std::string_view jsonData)
     std::vector<RemoteLangInfo> result;
     result.reserve(fileInfos.getSize());
 
-    for (std::size_t i = 0; i < fileInfos.getSize(); ++i) {
+    for (std::size_t i{}; i < fileInfos.getSize(); ++i) {
         const auto fileInfo = fileInfos.getObject(i);
 
         try {

@@ -65,7 +65,7 @@ std::vector<FormatInfo> getSupportedFormats(
     // formats contain duplicates, e.g. multiple WAV for each internal
     // format it supports.
     for (const auto& ef : expectedFormats)
-        for (int i = 0; i < formatCount; i++) {
+        for (int i{}; i < formatCount; i++) {
             LibSndfile::FORMAT_INFO formatInfo;
             formatInfo.format = i;
 
