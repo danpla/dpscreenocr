@@ -14,8 +14,8 @@ extern "C" {
 /**
  * Take a screenshot.
  *
- * The screenshot is be taken from an intersection of the given rect
- * with the actual screen geometry.
+ * The screenshot is taken from the intersection of the given rect
+ * with the screen geometry.
  *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null.
