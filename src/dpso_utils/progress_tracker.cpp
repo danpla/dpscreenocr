@@ -1,5 +1,6 @@
 #include "progress_tracker.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <utility>
@@ -19,9 +20,7 @@ ProgressTracker::ProgressTracker(
 }
 
 
-ProgressTracker::ProgressTracker(
-        int numJobs,
-        ProgressTracker* parent)
+ProgressTracker::ProgressTracker(int numJobs, ProgressTracker* parent)
     : ProgressTracker{numJobs}
 {
     this->parent = parent;
@@ -29,19 +28,16 @@ ProgressTracker::ProgressTracker(
 
 
 ProgressTracker::ProgressTracker(int numJobs)
-    : numJobs{numJobs > 0 ? numJobs : 1}
+    : numJobs{std::max(numJobs, 1)}
 {
 }
 
 
 void ProgressTracker::advanceJob()
 {
-    ++curJobNum;
-    assert(curJobNum <= numJobs);
-    if (curJobNum > numJobs)
-        curJobNum = numJobs;
-
-    report((curJobNum - 1) / static_cast<float>(numJobs));
+    assert(curJobNum < numJobs);
+    curJobNum = std::min(curJobNum + 1, numJobs);
+    update(0.0f);
 }
 
 

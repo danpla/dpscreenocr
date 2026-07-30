@@ -43,7 +43,7 @@ public:
     ProgressTracker(
         int numJobs,
         ProgressHandler progressHandler,
-        float sensitivity = 0.01);
+        float sensitivity = 0.01f);
 
     // Create child tracker.
     //
