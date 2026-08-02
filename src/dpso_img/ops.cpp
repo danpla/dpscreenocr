@@ -309,21 +309,46 @@ void BoxBlur::hPass(
 
     for (int y{}; y < h; ++y) {
         const auto* srcRow = src + y * srcPitch;
-
-        auto sum = *srcRow * (radius + 1);
-        for (int x{1}; x <= radius; ++x)
-            sum += srcRow[std::min(x, w - 1)];
-
         auto* dstRow = dst + y * dstPitch;
-        for (int x{}; x < w; ++x) {
-            dstRow[x] = fp24ToU8(sum * kernelSizeRecip);
 
-            const auto addPx =
-                srcRow[std::min(x + radius + 1, w - 1)];
-            const auto removePx = srcRow[std::max(x - radius, 0)];
+        auto sum = srcRow[0] * (radius + 1);
+        for (int i{1}; i <= radius; ++i)
+            sum += srcRow[std::min(i, w - 1)];
 
-            sum += addPx - removePx;
-        }
+        // To avoid calling min/max() for each pixel, we split the
+        // line into 4 ordered ranges based on when the sliding window
+        // "detaches" from the left edge of the line (at which point
+        // we no longer need to clamp the subtracted pixel index) and
+        // when it hits the right edge (at which point we need to
+        // start clamping the added pixel index).
+
+        const auto processRange =
+        [&](int begin, int end, auto getSubIdx, auto getAddIdx)
+        {
+            for (auto x = begin; x < end; ++x) {
+                dstRow[x] = fp24ToU8(sum * kernelSizeRecip);
+                sum += srcRow[getAddIdx(x)] - srcRow[getSubIdx(x)];
+            }
+        };
+
+        // [0, p1) - the window only touches the left edge of the line
+        const auto p1 = std::clamp(w - radius - 1, 0, radius);
+        // [p1, p2) - the window touches both edges
+        const auto p2 = std::min(w, radius);
+        // [p2, p3) - the window doesn't touch the edges
+        const auto p3 = std::max(p2, w - radius - 1);
+        // [p3, w) - the window only touches the right edge
+
+        const auto clampedSubIdx = [](int) { return 0; };
+        const auto subIdx = [=](int x) { return x - radius; };
+
+        const auto clampedAddIdx = [=](int) { return w - 1; };
+        const auto addIdx = [=](int x) { return x + radius + 1; };
+
+        processRange(0, p1, clampedSubIdx, addIdx);
+        processRange(p1, p2, clampedSubIdx, clampedAddIdx);
+        processRange(p2, p3, subIdx, addIdx);
+        processRange(p3, w, subIdx, clampedAddIdx);
 
         progressTracker.update(static_cast<float>(y + 1) / h);
     }
