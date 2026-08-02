@@ -118,8 +118,8 @@ void Upscaler::Impl::fillFilters(int srcSize, int dstSize)
         // Catmull-Rom filter
         w[0] = -0.5f * t3 + t2 - 0.5f * t;
         w[2] = -1.5f * t3 + 2.0f * t2 + 0.5f * t;
-        w[3] =  0.5f * t3 - 0.5f * t2;
-        w[1] =  1.0f - w[0] - w[2] - w[3];
+        w[3] = 0.5f * t3 - 0.5f * t2;
+        w[1] = 1.0f - w[0] - w[2] - w[3];
 
         f.idx[0] = clamp(centerIdx - 1);
         f.idx[1] = clamp(centerIdx);
@@ -205,6 +205,29 @@ public:
         int numIters,
         ProgressTracker& progressTracker);
 private:
+    // When computing the average value of the moving blur kernel, we
+    // replace the division with multiplication using a UQ8.24 fixed
+    // point format to help the compiler vectorize the loops. 24 is
+    // the maximum number fraction bits (N) that fits in a 32-bit
+    // unsigned integer:
+    //
+    // sum * reciprocal(kernelSize)
+    // = (255 * kernelSize) * (2^N / kernelSize)
+    // = 255 * 2^N
+    //
+    // Which, with N = 24, gives 4'278'190'080.
+    using Fp24 = std::uint32_t;
+
+    static Fp24 u8ToFp24(std::uint8_t i)
+    {
+        return Fp24{i} << 24;
+    }
+
+    static std::uint8_t fp24ToU8(Fp24 fp)
+    {
+        return fp >> 24;
+    }
+
     std::vector<int> sums;
 
     static void hPass(
@@ -282,7 +305,7 @@ void BoxBlur::hPass(
     assert(srcPitch >= w);
     assert(dstPitch >= w);
 
-    const auto kernelSize = 1 + radius * 2;
+    const auto kernelSizeRecip = u8ToFp24(1) / (1 + radius * 2);
 
     for (int y{}; y < h; ++y) {
         const auto* srcRow = src + y * srcPitch;
@@ -293,7 +316,7 @@ void BoxBlur::hPass(
 
         auto* dstRow = dst + y * dstPitch;
         for (int x{}; x < w; ++x) {
-            dstRow[x] = sum / kernelSize;
+            dstRow[x] = fp24ToU8(sum * kernelSizeRecip);
 
             const auto addPx =
                 srcRow[std::min(x + radius + 1, w - 1)];
@@ -327,7 +350,17 @@ void BoxBlur::vPass(
 
     sums.resize(w);
 
-    const auto kernelSize = 1 + radius * 2;
+    // If the sums vector comes from outside the function (either as
+    // a reference parameter or via the implicit "this"), accessing
+    // its data via operator[] will prevent the compiler (at least
+    // GCC) from vectorizing the loops due to a possible aliasing of
+    // the vector storage with the dst pointer. Since C++ lacks a
+    // standard "restrict" qualifier to make things explicit, it's
+    // crucial to access the vector data via a local pointer variable
+    // rather than directly via operator[].
+    auto* sums = this->sums.data();
+
+    const auto kernelSizeRecip = u8ToFp24(1) / (1 + radius * 2);
 
     const auto* row0 = src;
     for (int x{}; x < w; ++x)
@@ -348,7 +381,7 @@ void BoxBlur::vPass(
         const auto* subRow = src + std::max(y - radius, 0) * srcPitch;
 
         for (int x{}; x < w; ++x) {
-            dstRow[x] = sums[x] / kernelSize;
+            dstRow[x] = fp24ToU8(sums[x] * kernelSizeRecip);
             sums[x] += addRow[x] - subRow[x];
         }
 
