@@ -46,9 +46,8 @@ public:
         std::string text;
     };
 
-    // The progress is in percents from 0 to 100. Returns false to
-    // terminate OCR.
-    using ProgressHandler = std::function<bool(int progress)>;
+    // Returns false to terminate OCR.
+    using CancelChecker = std::function<bool()>;
 
     virtual ~Recognizer() = default;
 
@@ -72,7 +71,7 @@ public:
         const Image& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
-        const ProgressHandler& progressHandler) = 0;
+        const CancelChecker& cancelChecker) = 0;
 };
 
 

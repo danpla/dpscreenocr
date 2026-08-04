@@ -56,8 +56,7 @@ const auto ocrEngineIdx = 0;
 
 
 MainWindow::MainWindow(const UiStartupArgs& startupArgs)
-    : progressStatusFmt{_(
-        "Recognition {progress}% ({current_job}/{total_jobs})")}
+    : progressStatusFmt{_("Recognition ({current_job}/{total_jobs})")}
     , updateChecker{
         this,
         [&]{ return dpsoSelectionGetIsEnabled(selection); }}
@@ -1080,22 +1079,13 @@ void MainWindow::updateStatus()
 
         lastProgress = progress;
 
-        const auto totalProgress = progress.curJob == 0
-            ? 0
-            : (((progress.curJob - 1) * 100 + progress.curJobProgress)
-                / progress.totalJobs);
-
         setStatus(
             Status::busy,
             strNFormat(
-                progressStatusFmt.c_str(),
+                progressStatusFmt,
                 {
-                    {"progress", totalProgress},
                     {"current_job", progress.curJob},
                     {"total_jobs", progress.totalJobs}}));
-
-        uiTaskbarSetProgress(taskbar.get(), totalProgress);
-
         return;
     }
 

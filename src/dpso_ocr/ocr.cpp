@@ -19,7 +19,6 @@
 
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/geometry.h"
-#include "dpso_utils/progress_tracker.h"
 #include "dpso_utils/str.h"
 #include "dpso_utils/strftime.h"
 #include "dpso_utils/synchronized.h"
@@ -350,7 +349,6 @@ static ocr::Recognizer::Image prepareImage(
     std::vector<std::uint8_t> (&imgBuffers)[3],
     img::Upscaler& upscaler,
     img::UnsharpMask& unsharpMask,
-    ProgressTracker& progressTracker,
     bool dumpDebugImages)
 {
     assert(image);
@@ -425,23 +423,17 @@ static ocr::Recognizer::Image prepareImage(
 
     const auto unsharpMaskRadius = 10;
 
-    ProgressTracker localProgressTracker(1, &progressTracker);
-    localProgressTracker.advanceJob();
-
     DPSO_START_TIMING(unsharpMasking);
     unsharpMask(
         imgBuffers[1].data(), bufferPitch,
         imgBuffers[0].data(), bufferPitch,
         imgBuffers[2].data(), bufferPitch,
         bufferW, bufferH,
-        unsharpMaskRadius,
-        &localProgressTracker);
+        unsharpMaskRadius);
     DPSO_END_TIMING(
         unsharpMasking,
         "Unsharp masking (radius={}, {}x{} px)",
         unsharpMaskRadius, bufferW, bufferH);
-
-    localProgressTracker.finish();
 
     if (dumpDebugImages)
         img::savePnm(
@@ -455,36 +447,21 @@ static ocr::Recognizer::Image prepareImage(
 
 static void processJob(DpsoOcr& ocr, const Job& job)
 {
-    ProgressTracker progressTracker{
-        2,
-        [&](float progress)
-        {
-            ocr.link.getLock()->progress.curJobProgress =
-                progress * 100;
-        }};
-
-    progressTracker.advanceJob();
     const auto ocrImage = prepareImage(
         job.image.get(),
         ocr.imgBuffers,
         ocr.upscaler,
         ocr.unsharpMask,
-        progressTracker,
         ocr.dumpDebugImages);
-
-    progressTracker.advanceJob();
 
     auto ocrResult = ocr.recognizer->recognize(
         ocrImage,
         job.langIndices,
         job.ocrFeatures,
-        [&](int progress)
+        [&]
         {
-            progressTracker.update(progress / 100.0f);
             return !ocr.link.getLock()->terminateJobs;
         });
-
-    progressTracker.finish();
 
     ocr.link.getLock()->results.push(
         {std::move(ocrResult), job.timestamp});
@@ -514,12 +491,6 @@ static void threadLoop(DpsoOcr& ocr)
             link->jobQueue.pop();
 
             link->jobActive = true;
-
-            // Although processJob() will reset progress to zero, this
-            // should also be done before incrementing curJob so that
-            // we don't return the progress of the previous job from
-            // dpsoOcrGetProgress() before the new one starts.
-            link->progress.curJobProgress = 0;
             ++link->progress.curJob;
         }
 
@@ -594,7 +565,6 @@ bool dpsoOcrProgressEqual(
     return
         a
         && b
-        && a->curJobProgress == b->curJobProgress
         && a->curJob == b->curJob
         && a->totalJobs == b->totalJobs;
 }

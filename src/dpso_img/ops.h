@@ -6,13 +6,7 @@
 #include "px_format.h"
 
 
-namespace dpso {
-
-
-class ProgressTracker;
-
-
-namespace img {
+namespace dpso::img {
 
 
 template<typename T>
@@ -73,13 +67,11 @@ public:
         std::uint8_t* dst, int dstPitch,
         std::uint8_t* tmp, int tmpPitch,
         int w, int h,
-        int radius,
-        ProgressTracker* progressTracker = nullptr);
+        int radius);
 private:
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
 
 
-}
 }

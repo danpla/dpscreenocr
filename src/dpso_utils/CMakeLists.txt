@@ -17,7 +17,6 @@ add_library(
     line_reader.cpp
     os_c.cpp
     os_common.cpp
-    progress_tracker.cpp
     sha256.cpp
     sha256_file.cpp
     str.cpp

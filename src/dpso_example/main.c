@@ -66,9 +66,7 @@ static void reportProgress(
 
     *lastProgress = progress;
 
-    printf(
-        "Job %i/%i progress: %2i%%\n",
-        progress.curJob, progress.totalJobs, progress.curJobProgress);
+    printf("Job %i/%i\n", progress.curJob, progress.totalJobs);
 }
 
 

@@ -63,7 +63,7 @@ public:
         const Image& image,
         const std::vector<int>& langIndices,
         OcrFeatures ocrFeatures,
-        const ProgressHandler& progressHandler) override;
+        const CancelChecker& cancelChecker) override;
 private:
     std::string dataDir;
     ::tesseract::TessBaseAPI tess;
@@ -89,13 +89,13 @@ struct CancelData {
     ETEXT_DESC
     #endif
         textDesc;
-    const Recognizer::ProgressHandler& progressHandler;
+    const Recognizer::CancelChecker& cancelChecker;
     bool canceled;
 
     explicit CancelData(
-            const Recognizer::ProgressHandler& progressHandler)
+            const Recognizer::CancelChecker& cancelChecker)
         : textDesc{}
-        , progressHandler{progressHandler}
+        , cancelChecker{cancelChecker}
         , canceled{}
     {
         textDesc.cancel = cancelFunc;
@@ -107,12 +107,10 @@ struct CancelData {
         auto* cancelData = static_cast<CancelData*>(data);
         assert(cancelData);
 
-        if (!cancelData->progressHandler)
+        if (!cancelData->cancelChecker)
             return false;
 
-        cancelData->canceled = !cancelData->progressHandler(
-            cancelData->textDesc.progress);
-
+        cancelData->canceled = !cancelData->cancelChecker();
         return cancelData->canceled;
     }
 };
@@ -122,7 +120,7 @@ Recognizer::Result Recognizer::recognize(
     const Image& image,
     const std::vector<int>& langIndices,
     OcrFeatures ocrFeatures,
-    const ProgressHandler& progressHandler)
+    const CancelChecker& cancelChecker)
 {
     std::string tessLangsStr;
     std::size_t numVerticalLangs{};
@@ -190,7 +188,7 @@ Recognizer::Result Recognizer::recognize(
     tess.SetImage(
         image.data, image.width, image.height, 1, image.pitch);
 
-    CancelData cancelData{progressHandler};
+    CancelData cancelData{cancelChecker};
     if (tess.Recognize(&cancelData.textDesc) != 0)
         return {
             Result::Status::error, "TessBaseAPI::Recognize() failed"};

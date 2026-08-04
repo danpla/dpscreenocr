@@ -5,8 +5,6 @@
 #include <cmath>
 #include <vector>
 
-#include "dpso_utils/progress_tracker.h"
-
 
 namespace dpso::img {
 
@@ -203,8 +201,7 @@ public:
         std::uint8_t* tmp, int tmpPitch,
         int w, int h,
         int radius,
-        int numIters,
-        ProgressTracker& progressTracker);
+        int numIters);
 private:
     // When computing the average value of the moving blur kernel, we
     // replace the division with multiplication using a UQ8.24 fixed
@@ -235,15 +232,13 @@ private:
         const std::uint8_t* src, int srcPitch,
         std::uint8_t* dst, int dstPitch,
         int w, int h,
-        int radius,
-        ProgressTracker& progressTracker);
+        int radius);
 
     void vPass(
         const std::uint8_t* src, int srcPitch,
         std::uint8_t* dst, int dstPitch,
         int w, int h,
-        int radius,
-        ProgressTracker& progressTracker);
+        int radius);
 };
 
 
@@ -256,8 +251,7 @@ void BoxBlur::operator()(
     std::uint8_t* tmp, int tmpPitch,
     int w, int h,
     int radius,
-    int numIters,
-    ProgressTracker& progressTracker)
+    int numIters)
 {
     assert(srcPitch >= w);
     assert(dstPitch >= w);
@@ -267,30 +261,16 @@ void BoxBlur::operator()(
     assert(radius > 0);
     assert(numIters > 0);
 
-    const auto numSubpassesPerIter = 2;  // vertical + horizontal
-    const auto numJobs = numIters * numSubpassesPerIter;
-
-    ProgressTracker localProgressTracker(numJobs, &progressTracker);
-
     const auto* curSrc = src;
     auto curSrcPitch = srcPitch;
 
     for (int i{}; i < numIters; ++i) {
-        localProgressTracker.advanceJob();
-        hPass(
-            curSrc, curSrcPitch, tmp, tmpPitch, w, h, radius,
-            localProgressTracker);
-
-        localProgressTracker.advanceJob();
-        vPass(
-            tmp, tmpPitch, dst, dstPitch, w, h, radius,
-            localProgressTracker);
+        hPass(curSrc, curSrcPitch, tmp, tmpPitch, w, h, radius);
+        vPass(tmp, tmpPitch, dst, dstPitch, w, h, radius);
 
         curSrc = dst;
         curSrcPitch = dstPitch;
     }
-
-    localProgressTracker.finish();
 }
 
 
@@ -298,8 +278,7 @@ void BoxBlur::hPass(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
     int w, int h,
-    int radius,
-    ProgressTracker& progressTracker)
+    int radius)
 {
     assert(srcPitch >= w);
     assert(dstPitch >= w);
@@ -350,8 +329,6 @@ void BoxBlur::hPass(
         processRange(p1, p2, clampedSubIdx, clampedAddIdx);
         processRange(p2, p3, subIdx, addIdx);
         processRange(p3, w, subIdx, clampedAddIdx);
-
-        progressTracker.update(static_cast<float>(y + 1) / h);
     }
 }
 
@@ -360,8 +337,7 @@ void BoxBlur::vPass(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
     int w, int h,
-    int radius,
-    ProgressTracker& progressTracker)
+    int radius)
 {
     assert(srcPitch >= w);
     assert(dstPitch >= w);
@@ -410,8 +386,6 @@ void BoxBlur::vPass(
             dstRow[x] = fp24ToU8(sums[x] * kernelSizeRecip);
             sums[x] += addRow[x] - subRow[x];
         }
-
-        progressTracker.update(static_cast<float>(y + 1) / h);
     }
 }
 
@@ -434,15 +408,11 @@ static void unsharp(
     const std::uint8_t* src, int srcPitch,
     const std::uint8_t* blurred, int blurredPitch,
     std::uint8_t* dst, int dstPitch,
-    int w, int h,
-    ProgressTracker& progressTracker)
+    int w, int h)
 {
     assert(srcPitch >= w);
     assert(blurredPitch >= w);
     assert(dstPitch >= w);
-
-    ProgressTracker localProgressTracker(1, &progressTracker);
-    localProgressTracker.advanceJob();
 
     for (int y{}; y < h; ++y) {
         const auto* srcRow = src + y * srcPitch;
@@ -452,11 +422,7 @@ static void unsharp(
         for (int x{}; x < w; ++x)
             dstRow[x] = std::clamp(
                 srcRow[x] + (srcRow[x] - blurredRow[x]), 0, 255);
-
-        localProgressTracker.update(static_cast<float>(y + 1) / h);
     }
-
-    localProgressTracker.finish();
 }
 
 
@@ -465,8 +431,7 @@ void UnsharpMask::operator()(
     std::uint8_t* dst, int dstPitch,
     std::uint8_t* tmp, int tmpPitch,
     int w, int h,
-    int radius,
-    ProgressTracker* progressTracker)
+    int radius)
 {
     if (srcPitch < w
             || dstPitch < w
@@ -476,27 +441,19 @@ void UnsharpMask::operator()(
             || radius < 1)
         return;
 
-    ProgressTracker localProgressTracker(2, progressTracker);
-
-    localProgressTracker.advanceJob();
     impl->boxBlur(
         src, srcPitch,
         dst, dstPitch,
         tmp, tmpPitch,
         w, h,
         radius,
-        2,
-        localProgressTracker);
+        2);
 
-    localProgressTracker.advanceJob();
     unsharp(
         src, srcPitch,
         dst, dstPitch,
         dst, dstPitch,
-        w, h,
-        localProgressTracker);
-
-    localProgressTracker.finish();
+        w, h);
 }
 
 
