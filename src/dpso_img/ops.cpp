@@ -201,7 +201,8 @@ public:
         const std::uint8_t* src, int srcPitch,
         std::uint8_t* dst, int dstPitch,
         std::uint8_t* tmp, int tmpPitch,
-        int w, int h, int radius,
+        int w, int h,
+        int radius,
         int numIters,
         ProgressTracker& progressTracker);
 private:
@@ -253,7 +254,8 @@ void BoxBlur::operator()(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
     std::uint8_t* tmp, int tmpPitch,
-    int w, int h, int radius,
+    int w, int h,
+    int radius,
     int numIters,
     ProgressTracker& progressTracker)
 {
@@ -299,13 +301,33 @@ void BoxBlur::hPass(
     int radius,
     ProgressTracker& progressTracker)
 {
+    assert(srcPitch >= w);
+    assert(dstPitch >= w);
     assert(w > 0);
     assert(h > 0);
     assert(radius > 0);
-    assert(srcPitch >= w);
-    assert(dstPitch >= w);
 
     const auto kernelSizeRecip = u8ToFp24(1) / (1 + radius * 2);
+
+    // To avoid calling min/max() for each pixel, we split the line
+    // into 4 ordered ranges based on when the sliding window detaches
+    // from the left edge of the line (at which point we no longer
+    // need to clamp the subtracted pixel index) and when it hits the
+    // right edge (at which point we need to start clamping the added
+    // pixel index).
+
+    // [0, p1) - the window only touches the left edge of the line
+    const auto p1 = std::clamp(w - radius - 1, 0, radius);
+    // [p1, p2) - the window touches both edges
+    const auto p2 = std::min(w, radius);
+    // [p2, p3) - the window doesn't touch the edges
+    const auto p3 = std::max(p2, w - radius - 1);
+    // [p3, w) - the window only touches the right edge
+
+    const auto clampedSubIdx = [](int) { return 0; };
+    const auto subIdx = [=](int x) { return x - radius; };
+    const auto clampedAddIdx = [=](int) { return w - 1; };
+    const auto addIdx = [=](int x) { return x + radius + 1; };
 
     for (int y{}; y < h; ++y) {
         const auto* srcRow = src + y * srcPitch;
@@ -315,13 +337,6 @@ void BoxBlur::hPass(
         for (int i{1}; i <= radius; ++i)
             sum += srcRow[std::min(i, w - 1)];
 
-        // To avoid calling min/max() for each pixel, we split the
-        // line into 4 ordered ranges based on when the sliding window
-        // "detaches" from the left edge of the line (at which point
-        // we no longer need to clamp the subtracted pixel index) and
-        // when it hits the right edge (at which point we need to
-        // start clamping the added pixel index).
-
         const auto processRange =
         [&](int begin, int end, auto getSubIdx, auto getAddIdx)
         {
@@ -330,20 +345,6 @@ void BoxBlur::hPass(
                 sum += srcRow[getAddIdx(x)] - srcRow[getSubIdx(x)];
             }
         };
-
-        // [0, p1) - the window only touches the left edge of the line
-        const auto p1 = std::clamp(w - radius - 1, 0, radius);
-        // [p1, p2) - the window touches both edges
-        const auto p2 = std::min(w, radius);
-        // [p2, p3) - the window doesn't touch the edges
-        const auto p3 = std::max(p2, w - radius - 1);
-        // [p3, w) - the window only touches the right edge
-
-        const auto clampedSubIdx = [](int) { return 0; };
-        const auto subIdx = [=](int x) { return x - radius; };
-
-        const auto clampedAddIdx = [=](int) { return w - 1; };
-        const auto addIdx = [=](int x) { return x + radius + 1; };
 
         processRange(0, p1, clampedSubIdx, addIdx);
         processRange(p1, p2, clampedSubIdx, clampedAddIdx);
@@ -362,11 +363,11 @@ void BoxBlur::vPass(
     int radius,
     ProgressTracker& progressTracker)
 {
+    assert(srcPitch >= w);
+    assert(dstPitch >= w);
     assert(w > 0);
     assert(h > 0);
     assert(radius > 0);
-    assert(srcPitch >= w);
-    assert(dstPitch >= w);
 
     // For better cache locality, the vertical pass operates on the
     // entire rows, making the algorithm about 4 times faster than
@@ -478,7 +479,6 @@ void UnsharpMask::operator()(
     ProgressTracker localProgressTracker(2, progressTracker);
 
     localProgressTracker.advanceJob();
-
     impl->boxBlur(
         src, srcPitch,
         dst, dstPitch,
