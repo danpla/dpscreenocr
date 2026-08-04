@@ -68,28 +68,45 @@ LangManagerPage::LangManagerPage(
     treeView->setSortingEnabled(true);
     treeView->sortByColumn(0, Qt::AscendingOrder);
     treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-    auto* sortFilterProxyModel = new LangListSortFilterProxy(
-        langGroup, this);
-    sortFilterProxyModel->setSourceModel(&langList);
-
-    connect(
-        filterLineEdit,
-        &QLineEdit::textChanged,
-        sortFilterProxyModel,
-        &LangListSortFilterProxy::setFilterText);
-
-    treeView->setModel(sortFilterProxyModel);
-
-    treeView->header()->setSectionsMovable(false);
-    treeView->header()->setStretchLastSection(false);
-    treeView->header()->setSectionResizeMode(
-        QHeaderView::ResizeToContents);
-    treeView->header()->setSectionResizeMode(
-        LangListSortFilterProxy::columnIdxName, QHeaderView::Stretch);
-
+    // We use the Minimum horizontal policy as a workaround for older
+    // Qt 5 versions (e.g. 5.12.12) where the default Preferred policy
+    // does not take the vertical scrollbar into account, making it
+    // appear on top of the last column when AdjustToContents is used.
+    treeView->setSizePolicy(
+        QSizePolicy::Minimum, QSizePolicy::Preferred);
     treeView->setSizeAdjustPolicy(
         QAbstractScrollArea::AdjustToContents);
+
+    auto* sortFilterProxy = new LangListSortFilterProxy(
+        langGroup, this);
+    sortFilterProxy->setSourceModel(&langList);
+
+    connect(
+        filterLineEdit, &QLineEdit::textChanged,
+        sortFilterProxy, &LangListSortFilterProxy::setFilterText);
+
+    auto* header = treeView->header();
+    header->setSectionsMovable(false);
+    header->setStretchLastSection(false);
+    // We use fixed column sizes so that the columns don't resize
+    // dynamically when rows are hidden/shown during filter changes.
+    header->setSectionResizeMode(QHeaderView::Fixed);
+
+    treeView->setModel(sortFilterProxy);
+    header->resizeSections(QHeaderView::ResizeToContents);
+
+    connect(
+        &langList, &QAbstractItemModel::modelReset, this,
+        [filterLineEdit, header, sortFilterProxy]
+        {
+            // Before fitting the columns to contents, we need to
+            // temporarily disable the filter so that all rows are
+            // taken into account, rather than only those that pass
+            // the current filter.
+            sortFilterProxy->setFilterText({});
+            header->resizeSections(QHeaderView::ResizeToContents);
+            sortFilterProxy->setFilterText(filterLineEdit->text());
+        });
 
     selectionInfoLabel = new QLabel();
 
