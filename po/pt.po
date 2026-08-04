@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
-"POT-Creation-Date: 2026-05-23 23:39+0200\n"
+"POT-Creation-Date: 2026-08-05 01:01+0200\n"
 "PO-Revision-Date: 2026-06-12 00:30+0000\n"
 "Last-Translator: ماجد ماجد <mnbvcsvj@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/dpscreenocr/"
@@ -552,7 +552,7 @@ msgstr "Programa para reconhecer textos no ecrã"
 msgid "Check for updates"
 msgstr "Verificar se há atualizações"
 
-#: src/ui/qt/action_chooser.cpp:25
+#: src/ui/qt/action_chooser.cpp
 #, fuzzy
 msgid "Copy text to clipboard"
 msgstr "Copiar texto para a área de transferência"
@@ -746,8 +746,8 @@ msgid "{app_name} is already running"
 msgstr "{app_name} já está em execução"
 
 #: src/ui/qt/main_window.cpp
-msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr "Reconhecimento {progress}% ({current_job}/{total_jobs})"
+msgid "Recognition ({current_job}/{total_jobs})"
+msgstr "Reconhecimento ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp
 msgctxt "ui_tab"

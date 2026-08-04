@@ -750,8 +750,8 @@ msgid "{app_name} is already running"
 msgstr ""
 
 #: src/ui/qt/main_window.cpp
-msgid "Recognition {progress}% ({current_job}/{total_jobs})"
-msgstr "Rozpoznano {progress}% ({current_job}/{total_jobs})"
+msgid "Recognition ({current_job}/{total_jobs})"
+msgstr "Rozpoznawanie ({current_job}/{total_jobs})"
 
 #: src/ui/qt/main_window.cpp
 msgctxt "ui_tab"
