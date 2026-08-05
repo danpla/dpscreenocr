@@ -71,7 +71,7 @@ void toGray(
 }
 
 
-struct Upscaler::Impl {
+struct Upscale::Impl {
     struct Filter {
         static constexpr auto size{4};
 
@@ -89,7 +89,7 @@ struct Upscaler::Impl {
 };
 
 
-void Upscaler::Impl::fillFilters(int srcSize, int dstSize)
+void Upscale::Impl::fillFilters(int srcSize, int dstSize)
 {
     filters.resize(dstSize);
 
@@ -127,7 +127,7 @@ void Upscaler::Impl::fillFilters(int srcSize, int dstSize)
 }
 
 
-void Upscaler::Impl::scale(
+void Upscale::Impl::scale(
     const std::uint8_t* src, int srcW, int srcH, int srcPitch,
     std::uint8_t* dst, int dstW, int dstH, int dstPitch)
 {
@@ -173,16 +173,16 @@ void Upscaler::Impl::scale(
 }
 
 
-Upscaler::Upscaler()
+Upscale::Upscale()
     : impl{std::make_unique<Impl>()}
 {
 }
 
 
-Upscaler::~Upscaler() = default;
+Upscale::~Upscale() = default;
 
 
-void Upscaler::operator()(
+void Upscale::operator()(
     const std::uint8_t* src, int srcW, int srcH, int srcPitch,
     std::uint8_t* dst, int dstW, int dstH, int dstPitch)
 {
@@ -198,7 +198,6 @@ public:
     void operator()(
         const std::uint8_t* src, int srcPitch,
         std::uint8_t* dst, int dstPitch,
-        std::uint8_t* tmp, int tmpPitch,
         int w, int h,
         int radius,
         int numIters);
@@ -226,6 +225,7 @@ private:
         return fp >> 24;
     }
 
+    std::vector<std::uint8_t> tmp;
     std::vector<int> sums;
 
     static void hPass(
@@ -248,25 +248,27 @@ private:
 void BoxBlur::operator()(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
-    std::uint8_t* tmp, int tmpPitch,
     int w, int h,
     int radius,
     int numIters)
 {
     assert(srcPitch >= w);
     assert(dstPitch >= w);
-    assert(tmpPitch >= w);
     assert(w > 0);
     assert(h > 0);
     assert(radius > 0);
     assert(numIters > 0);
 
+    const auto tmpPitch = w;
+    tmp.resize(tmpPitch * h);
+
     const auto* curSrc = src;
     auto curSrcPitch = srcPitch;
 
     for (int i{}; i < numIters; ++i) {
-        hPass(curSrc, curSrcPitch, tmp, tmpPitch, w, h, radius);
-        vPass(tmp, tmpPitch, dst, dstPitch, w, h, radius);
+        hPass(
+            curSrc, curSrcPitch, tmp.data(), tmpPitch, w, h, radius);
+        vPass(tmp.data(), tmpPitch, dst, dstPitch, w, h, radius);
 
         curSrc = dst;
         curSrcPitch = dstPitch;
@@ -429,13 +431,11 @@ static void unsharp(
 void UnsharpMask::operator()(
     const std::uint8_t* src, int srcPitch,
     std::uint8_t* dst, int dstPitch,
-    std::uint8_t* tmp, int tmpPitch,
     int w, int h,
     int radius)
 {
     if (srcPitch < w
             || dstPitch < w
-            || tmpPitch < w
             || w < 1
             || h < 1
             || radius < 1)
@@ -444,7 +444,6 @@ void UnsharpMask::operator()(
     impl->boxBlur(
         src, srcPitch,
         dst, dstPitch,
-        tmp, tmpPitch,
         w, h,
         radius,
         2);

@@ -99,8 +99,8 @@ struct DpsoOcr {
     Synchronized<Link> link;
     std::thread thread;
 
-    std::vector<std::uint8_t> imgBuffers[3];
-    img::Upscaler upscaler;
+    std::vector<std::uint8_t> imgBuffers[2];
+    img::Upscale upscale;
     img::UnsharpMask unsharpMask;
     bool dumpDebugImages;
 
@@ -345,11 +345,7 @@ static std::string createTimestamp()
 
 
 static ocr::Recognizer::Image prepareImage(
-    const DpsoImg* image,
-    std::vector<std::uint8_t> (&imgBuffers)[3],
-    img::Upscaler& upscaler,
-    img::UnsharpMask& unsharpMask,
-    bool dumpDebugImages)
+    DpsoOcr& ocr, const DpsoImg* image)
 {
     assert(image);
 
@@ -361,7 +357,7 @@ static ocr::Recognizer::Image prepareImage(
     const auto bufferH = imageH * scale;
     const auto bufferPitch = bufferW;
 
-    for (auto& buffer : imgBuffers)
+    for (auto& buffer : ocr.imgBuffers)
         buffer.resize(bufferH * bufferPitch);
 
     const std::uint8_t* graySrc;
@@ -376,7 +372,7 @@ static ocr::Recognizer::Image prepareImage(
             dpsoImgGetConstData(image),
             dpsoImgGetPitch(image),
             pxFormat,
-            imgBuffers[0].data(),
+            ocr.imgBuffers[0].data(),
             bufferPitch,
             imageW,
             imageH);
@@ -385,11 +381,11 @@ static ocr::Recognizer::Image prepareImage(
             "{} to grayscale ({}x{} px)",
             dpsoPxFormatToStr(pxFormat), imageW, imageH);
 
-        graySrc = imgBuffers[0].data();
+        graySrc = ocr.imgBuffers[0].data();
         graySrcPitch = bufferPitch;
     }
 
-    if (dumpDebugImages) {
+    if (ocr.dumpDebugImages) {
         const auto pxFormat = dpsoImgGetPxFormat(image);
         img::savePnm(
             str::format(
@@ -407,27 +403,26 @@ static ocr::Recognizer::Image prepareImage(
     }
 
     DPSO_START_TIMING(imageResizing);
-    upscaler(
+    ocr.upscale(
         graySrc, imageW, imageH, graySrcPitch,
-        imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
+        ocr.imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
     DPSO_END_TIMING(
         imageResizing,
         "Image resizing ({}x{} px -> {}x{} px, x{})",
         imageW, imageH, bufferW, bufferH, scale);
 
-    if (dumpDebugImages)
+    if (ocr.dumpDebugImages)
         img::savePnm(
             "dpso_debug_3_resize.pgm",
             DpsoPxFormatGrayscale,
-            imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
+            ocr.imgBuffers[1].data(), bufferW, bufferH, bufferPitch);
 
     const auto unsharpMaskRadius = 10;
 
     DPSO_START_TIMING(unsharpMasking);
-    unsharpMask(
-        imgBuffers[1].data(), bufferPitch,
-        imgBuffers[0].data(), bufferPitch,
-        imgBuffers[2].data(), bufferPitch,
+    ocr.unsharpMask(
+        ocr.imgBuffers[1].data(), bufferPitch,
+        ocr.imgBuffers[0].data(), bufferPitch,
         bufferW, bufferH,
         unsharpMaskRadius);
     DPSO_END_TIMING(
@@ -435,27 +430,20 @@ static ocr::Recognizer::Image prepareImage(
         "Unsharp masking (radius={}, {}x{} px)",
         unsharpMaskRadius, bufferW, bufferH);
 
-    if (dumpDebugImages)
+    if (ocr.dumpDebugImages)
         img::savePnm(
             "dpso_debug_4_unsharp_mask.pgm",
             DpsoPxFormatGrayscale,
-            imgBuffers[0].data(), bufferW, bufferH, bufferPitch);
+            ocr.imgBuffers[0].data(), bufferW, bufferH, bufferPitch);
 
-    return {imgBuffers[0].data(), bufferW, bufferH, bufferPitch};
+    return {ocr.imgBuffers[0].data(), bufferW, bufferH, bufferPitch};
 }
 
 
 static void processJob(DpsoOcr& ocr, const Job& job)
 {
-    const auto ocrImage = prepareImage(
-        job.image.get(),
-        ocr.imgBuffers,
-        ocr.upscaler,
-        ocr.unsharpMask,
-        ocr.dumpDebugImages);
-
     auto ocrResult = ocr.recognizer->recognize(
-        ocrImage,
+        prepareImage(ocr, job.image.get()),
         job.langIndices,
         job.ocrFeatures,
         [&]

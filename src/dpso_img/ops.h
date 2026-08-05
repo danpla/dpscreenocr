@@ -31,16 +31,16 @@ void toGray(
 
 // As the name implies, the class is designed for scaling images up.
 // Scaling down is technically possible, but the quality will be poor.
-class Upscaler {
+class Upscale {
 public:
-    Upscaler();
-    ~Upscaler();
+    Upscale();
+    ~Upscale();
 
-    Upscaler(const Upscaler&) = delete;
-    Upscaler& operator=(const Upscaler&) = delete;
+    Upscale(const Upscale&) = delete;
+    Upscale& operator=(const Upscale&) = delete;
 
-    Upscaler(Upscaler&&) = delete;
-    Upscaler& operator=(Upscaler&&) = delete;
+    Upscale(Upscale&&) = delete;
+    Upscale& operator=(Upscale&&) = delete;
 
     void operator()(
         const std::uint8_t* src, int srcW, int srcH, int srcPitch,
@@ -65,7 +65,6 @@ public:
     void operator()(
         const std::uint8_t* src, int srcPitch,
         std::uint8_t* dst, int dstPitch,
-        std::uint8_t* tmp, int tmpPitch,
         int w, int h,
         int radius);
 private:
