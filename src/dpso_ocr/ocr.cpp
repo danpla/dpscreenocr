@@ -440,7 +440,7 @@ static ocr::Recognizer::Image prepareImage(
 }
 
 
-static void processJob(DpsoOcr& ocr, const Job& job)
+static JobResult processJob(DpsoOcr& ocr, const Job& job)
 {
     auto ocrResult = ocr.recognizer->recognize(
         prepareImage(ocr, job.image.get()),
@@ -451,8 +451,7 @@ static void processJob(DpsoOcr& ocr, const Job& job)
             return !ocr.link.getLock()->terminateJobs;
         });
 
-    ocr.link.getLock()->results.push(
-        {std::move(ocrResult), job.timestamp});
+    return {std::move(ocrResult), job.timestamp};
 }
 
 
@@ -482,9 +481,11 @@ static void threadLoop(DpsoOcr& ocr)
             ++link->progress.curJob;
         }
 
-        processJob(ocr, job);
+        auto jobResult = processJob(ocr, job);
 
         const auto link = ocr.link.getLock();
+
+        link->results.push(std::move(jobResult));
 
         link->jobActive = false;
         if (link->jobQueue.empty()) {
