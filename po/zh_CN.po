@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2026-06-12 02:27+0200\n"
-"PO-Revision-Date: 2026-04-19 21:09+0000\n"
-"Last-Translator: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate."
-"org>\n"
+"PO-Revision-Date: 2026-08-06 02:01+0000\n"
+"Last-Translator: Hosted Weblate user 54392 "
+"<hamburger2048@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/dpscreenocr/dpscreenocr/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.8.1.dev0\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Afrikaans"
@@ -744,7 +744,6 @@ msgid "{app_name} is already running"
 msgstr "{app_name} 已经打开了"
 
 #: src/ui/qt/main_window.cpp
-#, fuzzy
 msgid "Recognition ({current_job}/{total_jobs})"
 msgstr "识别 ({current_job}/{total_jobs})"
 
