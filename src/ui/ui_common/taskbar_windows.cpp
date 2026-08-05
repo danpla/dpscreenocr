@@ -76,13 +76,12 @@ void uiTaskbarSetState(UiTaskbar* tb, UiTaskbarState newState)
         tbpFlag = TBPF_NOPROGRESS;
         break;
     case UiTaskbarStateProgress:
-        tbpFlag = TBPF_NORMAL;
-        tb->tbl->SetProgressValue(tb->hwnd, 0, 100);
+        tbpFlag = TBPF_INDETERMINATE;
         break;
     case UiTaskbarStateError:
         tbpFlag = TBPF_ERROR;
-        // Set full progress so that the whole button has red
-        // background. Another way to display error is an overlay
+        // Set the full progress so that the whole button has the red
+        // background. Another way to display an error is an overlay
         // icon, but such icons are hidden if the taskbar is
         // configured to use small buttons.
         tb->tbl->SetProgressValue(tb->hwnd, 100, 100);
@@ -90,11 +89,4 @@ void uiTaskbarSetState(UiTaskbar* tb, UiTaskbarState newState)
     }
 
     tb->tbl->SetProgressState(tb->hwnd, tbpFlag);
-}
-
-
-void uiTaskbarSetProgress(UiTaskbar* tb, int newProgress)
-{
-    if (tb)
-        tb->tbl->SetProgressValue(tb->hwnd, newProgress, 100);
 }

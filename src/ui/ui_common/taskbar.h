@@ -46,21 +46,19 @@ typedef enum {
      * Normal, default taskbar state.
      */
     UiTaskbarStateNormal,
+
     /**
      * Progress.
      *
-     * The implementation is not required to do anything meaningful
-     * when switching to this state (e.g. displaying 0 progress).
-     * Instead, you should think of it as just a switch that enables
-     * uiTaskbarSetProgress().
+     * The taskbar indicates an indeterminate progress.
      */
     UiTaskbarStateProgress,
+
     /**
      * Error.
      *
-     * Makes the taskbar to indicate an error, e.g. by turning it red,
-     * showing an overlay icon, or in any other way suitable for the
-     * current platform.
+     * The taskbar indicates an error, e.g. by turning red or showing
+     * an overlay icon.
      */
     UiTaskbarStateError
 } UiTaskbarState;
@@ -72,14 +70,6 @@ typedef enum {
  * The default state is UiTaskbarStateNormal.
  */
 void uiTaskbarSetState(UiTaskbar* tb, UiTaskbarState newState);
-
-
-/**
- * Set taskbar progress from 0 to 100.
- *
- * Does nothing if the current state is not UiTaskbarStateProgress.
- */
-void uiTaskbarSetProgress(UiTaskbar* tb, int newProgress);
 
 
 #ifdef __cplusplus
