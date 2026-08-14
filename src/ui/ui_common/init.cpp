@@ -19,12 +19,12 @@ bool uiInit(int argc, char* argv[], UiStartupArgs* startupArgs)
 
     *startupArgs = {};
 
-    ui::processCmdLine(argc, argv, *startupArgs);
-
     if (!ui::initStart(argc, argv)) {
         dpso::setError("ui::initStart: {}", dpsoGetError());
         return false;
     }
+
+    ui::processCmdLine(argc, argv, *startupArgs);
 
     if (!ui::initExePath(argv[0])) {
         dpso::setError("ui::initExePath: {}", dpsoGetError());
