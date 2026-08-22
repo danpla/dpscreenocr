@@ -270,7 +270,7 @@ void print(
     std::string_view fmt,
     std::initializer_list<std::string_view> args)
 {
-    return format(
+    format(
         fmt,
         makeArgLookupFn(args),
         [&](std::string_view str)
