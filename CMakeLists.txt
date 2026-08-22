@@ -49,10 +49,12 @@ elseif(NOT DPSO_UI STREQUAL "none")
     message(FATAL_ERROR "Unknown UI \"${DPSO_UI}\"")
 endif()
 
+if(NOT DPSO_UI STREQUAL "none")
+    include(install)
+    include(uninstall)
+    include(dist)
+endif()
+
 if(DPSO_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
-
-include(install)
-include(uninstall)
-include(dist)
