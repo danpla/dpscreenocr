@@ -23,15 +23,15 @@ namespace ui {
 // standard C streams) that use STD_*_HANDLE handles.
 static void attachConsole()
 {
-    // Since AttachConsole() unconditionally points all handles to the
-    // console, we must not reopen streams for handles that were valid
-    // (e.g. redirected to a file) before the call.
     const auto isValid = [](DWORD stdHandle)
     {
         const auto handle = GetStdHandle(stdHandle);
         return handle && handle != INVALID_HANDLE_VALUE;
     };
 
+    // Since AttachConsole() unconditionally points all handles to the
+    // console, we must not reopen streams for handles that were valid
+    // (e.g. redirected to a file) before the call.
     const auto stdoutValid = isValid(STD_OUTPUT_HANDLE);
     const auto stderrValid = isValid(STD_ERROR_HANDLE);
     // We don't care about stdin since our app does not use it.
@@ -42,18 +42,16 @@ static void attachConsole()
     if (!AttachConsole(ATTACH_PARENT_PROCESS))
         return;
 
-    const auto reopen = [](DWORD stdHandle, std::FILE* stream)
+    const auto reopen = [](std::FILE* stream)
     {
-        const auto handle = GetStdHandle(stdHandle);
-        if (handle && handle != INVALID_HANDLE_VALUE)
-            (void)std::freopen("CONOUT$", "w", stream);
+        (void)std::freopen("CONOUT$", "w", stream);
     };
 
     if (!stdoutValid)
-        reopen(STD_OUTPUT_HANDLE, stdout);
+        reopen(stdout);
 
     if (!stderrValid)
-        reopen(STD_ERROR_HANDLE, stderr);
+        reopen(stderr);
 }
 
 
