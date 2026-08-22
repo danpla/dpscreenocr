@@ -16,14 +16,26 @@ using namespace dpso;
 
 
 namespace ui {
+namespace {
 
 
-static void printHelp(std::string_view argv0)
+void printVersion()
 {
-    str::print("{} {}\n\n", uiAppName, uiAppVersion);
-    str::print("Usage\n");
-    str::print("    {} [options...]\n", argv0);
-    str::print("    {} command action\n\n", argv0);
+    str::print("{} {}\n", uiAppName, uiAppVersion);
+}
+
+
+void printHelp(std::string_view argv0)
+{
+    printVersion();
+
+    str::print(
+        "\n"
+        "Usage\n"
+        "    {} [options...]\n"
+        "    {} command action\n"
+        "\n",
+        argv0, argv0);
 
     str::print(
         "Options\n"
@@ -56,6 +68,9 @@ static void printHelp(std::string_view argv0)
         "            Print \"on\" or \"off\" depending on whether\n"
         "            autostart is enabled.\n",
         cmdLineOptHide);
+}
+
+
 }
 
 
@@ -101,14 +116,14 @@ void processCmdLine(
         std::exit(EXIT_FAILURE);
     }
 
-    for (int i = 1; i < argc; ++i) {
+    for (int i{1}; i < argc; ++i) {
         const std::string_view arg{argv[i]};
 
         if (arg == "-help") {
             printHelp(getToplevelArgv0(argv[0]));
             std::exit(EXIT_SUCCESS);
         } else if (arg == "-version") {
-            str::print("{} {}\n", uiAppName, uiAppVersion);
+            printVersion();
             std::exit(EXIT_SUCCESS);
         } else if (arg == cmdLineOptHide)
             startupArgs.hide = true;
