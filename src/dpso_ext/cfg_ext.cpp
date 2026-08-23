@@ -105,10 +105,7 @@ bool dpsoCfgGetTime(
     if (!time)
         return false;
 
-    const auto* str = dpsoCfgGetStr(cfg, key, nullptr);
-    if (!str)
-        return false;
-
+    const auto* str = dpsoCfgGetStr(cfg, key, "");
     const auto* strEnd = str + std::strlen(str);
 
     const auto parse = [&](int& result, int min, int max)
@@ -144,7 +141,7 @@ bool dpsoCfgGetTime(
             && parse(result.tm_min, 0, 59)
             && consume(':')
             && parse(result.tm_sec, 0, 60)
-            && str == strEnd){
+            && str == strEnd) {
         result.tm_year -= 1900;
         result.tm_mon -= 1;
 
