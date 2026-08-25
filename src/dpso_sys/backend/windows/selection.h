@@ -11,9 +11,12 @@
 namespace dpso::backend::windows {
 
 
+class BgThreadExecutor;
+
+
 class Selection : public backend::Selection {
 public:
-    explicit Selection(HINSTANCE instance);
+    Selection(BgThreadExecutor& bgThreadExecutor, HINSTANCE instance);
     ~Selection();
 
     bool getIsEnabled() const override;
@@ -25,15 +28,14 @@ public:
 
     void update();
 private:
+    BgThreadExecutor& bgThreadExecutor;
     bool isEnabled{};
     int dpi{};
     int baseBorderWidth{defaultBorderWidth};
     int borderWidth{baseBorderWidth};
     Point origin;
     Rect geom;
-
     dpso::windows::WindowUPtr window;
-
     dpso::windows::ObjectUPtr<HPEN> pens[2];
 
     static LRESULT CALLBACK wndProc(

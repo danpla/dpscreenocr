@@ -1,4 +1,4 @@
-#include "backend/windows/execution_layer/bg_thread_executor.h"
+#include "backend/windows/bg_thread_executor.h"
 
 #include <condition_variable>
 #include <exception>
@@ -7,7 +7,7 @@
 #include <utility>
 
 
-namespace dpso::backend {
+namespace dpso::backend::windows {
 
 
 struct BgThreadExecutor::Impl {
@@ -105,6 +105,12 @@ BgThreadExecutor::BgThreadExecutor()
 
 
 BgThreadExecutor::~BgThreadExecutor() = default;
+
+
+bool BgThreadExecutor::isActive() const
+{
+    return impl->isInThread;
+}
 
 
 void BgThreadExecutor::execute(Task& task)

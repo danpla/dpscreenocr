@@ -7,7 +7,7 @@
 
 #include "backend/backend_error.h"
 #include "backend/backend.h"
-#include "backend/windows/execution_layer/backend_executor.h"
+#include "backend/windows/bg_thread_executor.h"
 #include "backend/windows/key_manager.h"
 #include "backend/windows/screenshot.h"
 #include "backend/windows/selection.h"
@@ -28,8 +28,8 @@ public:
 
     void update() override;
 private:
+    BgThreadExecutor bgThreadExecutor;
     HINSTANCE instance;
-
     std::unique_ptr<KeyManager> keyManager;
     std::unique_ptr<Selection> selection;
 };
@@ -39,22 +39,23 @@ Backend::Backend()
     : instance{GetModuleHandleW(nullptr)}
 {
     if (!instance)
-        throw BackendError(
+        throw BackendError{
             "GetModuleHandle(): "
-            + dpso::windows::getErrorMessage(GetLastError()));
+            + dpso::windows::getErrorMessage(GetLastError())};
 
     try {
-        keyManager = std::make_unique<KeyManager>();
+        keyManager = std::make_unique<KeyManager>(bgThreadExecutor);
     } catch (BackendError& e) {
-        throw BackendError(
-            std::string("Can't create key manager: ") + e.what());
+        throw BackendError{
+            std::string{"Can't create key manager: "} + e.what()};
     }
 
     try {
-        selection = std::make_unique<Selection>(instance);
+        selection = std::make_unique<Selection>(
+            bgThreadExecutor, instance);
     } catch (BackendError& e) {
-        throw BackendError(
-            std::string("Can't create selection: ") + e.what());
+        throw BackendError{
+            std::string{"Can't create selection: "} + e.what()};
     }
 }
 
@@ -73,25 +74,34 @@ Selection& Backend::getSelection()
 
 img::ImgUPtr Backend::takeScreenshot(const Rect& rect)
 {
-    return windows::takeScreenshot(rect);
+    return bgThreadExecutor(
+        [&]
+        {
+            return windows::takeScreenshot(rect);
+        });
 }
 
 
 void Backend::update()
 {
-    keyManager->clearLastHotkeyAction();
-    // Update the selection before handling events so that we
-    // resize and repaint it on this update() rather than on the next.
-    selection->update();
+    bgThreadExecutor(
+        [&]
+        {
+            keyManager->clearLastHotkeyAction();
+            // Update the selection before handling events so that we
+            // resize and repaint it on this update() rather than on
+            // the next.
+            selection->update();
 
-    MSG msg;
-    while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE))
-        if (msg.message == WM_HOTKEY)
-            keyManager->handleWmHotkey(msg);
-        else {
-            TranslateMessage(&msg);
-            DispatchMessageW(&msg);
-        }
+            MSG msg;
+            while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE))
+                if (msg.message == WM_HOTKEY)
+                    keyManager->handleWmHotkey(msg);
+                else {
+                    TranslateMessage(&msg);
+                    DispatchMessageW(&msg);
+                }
+        });
 }
 
 
@@ -101,14 +111,7 @@ void Backend::update()
 
 std::unique_ptr<Backend> Backend::create()
 {
-    // We can't do anything in the main thread because its messages
-    // may be consumed by a GUI framework. BackendExecutor will do the
-    // job of calling the backend in the background thread.
-    return createBackendExecutor(
-        *[]() -> std::unique_ptr<Backend>
-        {
-            return std::make_unique<windows::Backend>();
-        });
+    return std::make_unique<windows::Backend>();
 }
 
 

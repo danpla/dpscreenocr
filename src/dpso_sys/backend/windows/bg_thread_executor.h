@@ -6,14 +6,14 @@
 #include <utility>
 
 
-namespace dpso::backend {
+namespace dpso::backend::windows {
 
 
 // BgThreadExecutor invokes callables in the same background thread.
 //
 // On Windows, each thread has its own message queue, so messages of
-// the main thread will be consumed by the GUI framework and will
-// not reach our library. BgThreadExecutor allows us to have our own
+// the main thread will be consumed by the GUI framework and will not
+// reach our library. BgThreadExecutor allows us to have our own
 // independent thread and queue.
 class BgThreadExecutor {
 public:
@@ -25,6 +25,12 @@ public:
 
     BgThreadExecutor(BgThreadExecutor&&) = delete;
     BgThreadExecutor& operator=(BgThreadExecutor&&) = delete;
+
+    // isActive() returns true if called from within operator(). This
+    // method can be useful for assertions when you call operator()
+    // only for the topmost routine of a deep call hierarchy (nested
+    // calls for operator() are allowed, but usually unnecessary).
+    bool isActive() const;
 
     template<
         typename FnT,

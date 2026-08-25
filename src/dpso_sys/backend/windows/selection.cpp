@@ -1,9 +1,12 @@
 #include "backend/windows/selection.h"
 
+#include <cassert>
+
 #include "dpso_utils/windows/error.h"
 #include "dpso_utils/windows/module.h"
 
 #include "backend/backend_error.h"
+#include "backend/windows/bg_thread_executor.h"
 
 
 // Transparent window areas
@@ -187,54 +190,65 @@ void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 }
 
 
-Selection::Selection(HINSTANCE instance)
-    : dpi{baseDpi}
+Selection::Selection(
+        BgThreadExecutor& bgThreadExecutor, HINSTANCE instance)
+    : bgThreadExecutor{bgThreadExecutor}
 {
-    registerWindowClass(instance, Selection::wndProc);
+    bgThreadExecutor(
+        [&]
+        {
+            registerWindowClass(instance, wndProc);
 
-    const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
+            const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
-    window.reset(CreateWindowExW(
-        WS_EX_TOPMOST
-            | WS_EX_TOOLWINDOW, // Hide from taskbar.
-        windowClassName,
-        L"Selection",
-        WS_POPUP,
-        0,
-        0,
-        0,
-        0,
-        nullptr,
-        nullptr,
-        instance,
-        nullptr));
+            window.reset(CreateWindowExW(
+                WS_EX_TOPMOST
+                    | WS_EX_TOOLWINDOW, // Hide from taskbar.
+                windowClassName,
+                L"Selection",
+                WS_POPUP,
+                0,
+                0,
+                0,
+                0,
+                nullptr,
+                nullptr,
+                instance,
+                nullptr));
 
-    if (!window)
-        throwLastError("Can't create selection window");
+            if (!window)
+                throwLastError("Can't create selection window");
 
-    if (!SetPropW(window.get(), thisPropName, this))
-        throwLastError("Can't set window property");
+            if (!SetPropW(window.get(), thisPropName, this))
+                throwLastError("Can't set window property");
 
-    // WM_DPICHANGED is only sent when a window is moved to a display
-    // with a different DPI, so we have to query the initial value
-    // manually. We also need this when we are not in a per-monitor
-    // DPI aware mode, in which case DPI will always remain the same
-    // and the selection will automatically be scaled by Windows.
-    //
-    // Note that getDpi() is not in the initialization list since it
-    // should be protected by the DPI awareness guard.
-    dpi = getDpi(origin);
+            // WM_DPICHANGED is only sent when a window is moved to a
+            // display with a different DPI, so we have to query the
+            // initial value manually. We also need this when we are
+            // not in a per-monitor DPI aware mode, in which case DPI
+            // will always remain the same and the selection will
+            // automatically be scaled by Windows.
+            //
+            // Note that getDpi() is not in the initialization list
+            // since it should be protected by the DPI awareness
+            // guard.
+            dpi = getDpi(origin);
 
-    updateBorderWidth();
-    updatePens();
-    updateWindowGeometry();
-    updateWindowRegion();
+            updateBorderWidth();
+            updatePens();
+            updateWindowGeometry();
+            updateWindowRegion();
+        });
 }
 
 
 Selection::~Selection()
 {
-    RemovePropW(window.get(), thisPropName);
+    bgThreadExecutor(
+        [&]
+        {
+            RemovePropW(window.get(), thisPropName);
+        });
 }
 
 
@@ -251,14 +265,19 @@ void Selection::setIsEnabled(bool newIsEnabled)
 
     isEnabled = newIsEnabled;
 
-    if (isEnabled) {
-        const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
+    bgThreadExecutor(
+        [&]
+        {
+            if (isEnabled) {
+                const ThreadDpiAwarenessContextGuard
+                    dpiAwarenessGuard;
 
-        origin = getMousePos();
-        setGeometry({origin, {}});
-    }
+                origin = getMousePos();
+                setGeometry({origin, {}});
+            }
 
-    ShowWindow(window.get(), isEnabled ? SW_SHOWNA : SW_HIDE);
+            ShowWindow(window.get(), isEnabled ? SW_SHOWNA : SW_HIDE);
+        });
 }
 
 
@@ -267,14 +286,18 @@ void Selection::setBorderWidth(int newBorderWidth)
     if (newBorderWidth == baseBorderWidth)
         return;
 
-    const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
+    bgThreadExecutor(
+        [&]
+        {
+            const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
-    baseBorderWidth = newBorderWidth;
+            baseBorderWidth = newBorderWidth;
 
-    updateBorderWidth();
-    updatePens();
-    updateWindowGeometry();
-    updateWindowRegion();
+            updateBorderWidth();
+            updatePens();
+            updateWindowGeometry();
+            updateWindowRegion();
+        });
 }
 
 
@@ -286,6 +309,8 @@ Rect Selection::getGeometry() const
 
 void Selection::update()
 {
+    assert(bgThreadExecutor.isActive());
+
     if (!isEnabled)
         return;
 
@@ -317,6 +342,8 @@ LRESULT CALLBACK Selection::wndProc(
 LRESULT Selection::processMessage(
     UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    assert(bgThreadExecutor.isActive());
+
     // We don't need a ThreadDpiAwarenessContextGuard guard here,
     // since the thread is automatically switched to the DPI context
     // of the window when the window procedure is called (the DPI

@@ -9,6 +9,8 @@
 #include "dpso_utils/str.h"
 #include "dpso_utils/windows/utf.h"
 
+#include "backend/windows/bg_thread_executor.h"
+
 
 namespace dpso::backend::windows {
 
@@ -137,6 +139,12 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 }
 
 
+KeyManager::KeyManager(BgThreadExecutor& bgThreadExecutor)
+    : bgThreadExecutor{bgThreadExecutor}
+{
+}
+
+
 KeyManager::~KeyManager()
 {
     setIsEnabled(false);  // Unregister all hotkeys.
@@ -159,8 +167,12 @@ void KeyManager::setIsEnabled(bool newIsEnabled)
     if (!isEnabled)
         hotkeyAction = dpsoNoHotkeyAction;
 
-    for (const auto& binding : bindings)
-        changeHotkeyState(binding.hotkey, isEnabled);
+    bgThreadExecutor(
+        [&]
+        {
+            for (const auto& binding : bindings)
+                changeHotkeyState(binding.hotkey, isEnabled);
+        });
 }
 
 
@@ -185,7 +197,11 @@ void KeyManager::bindHotkey(
     bindings.push_back({hotkey, action});
 
     if (isEnabled)
-        changeHotkeyState(hotkey, true);
+        bgThreadExecutor(
+            [&]
+            {
+                changeHotkeyState(hotkey, true);
+            });
 }
 
 
@@ -204,7 +220,11 @@ HotkeyBinding KeyManager::getBinding(int idx) const
 void KeyManager::removeBinding(int idx)
 {
     if (isEnabled)
-        changeHotkeyState(bindings[idx].hotkey, false);
+        bgThreadExecutor(
+            [&]
+            {
+                changeHotkeyState(bindings[idx].hotkey, false);
+            });
 
     if (idx + 1 < static_cast<int>(bindings.size()))
         bindings[idx] = bindings.back();
@@ -222,6 +242,7 @@ void KeyManager::clearLastHotkeyAction()
 void KeyManager::handleWmHotkey(const MSG& msg)
 {
     assert(msg.message == WM_HOTKEY);
+    assert(bgThreadExecutor.isActive());
 
     if (!isEnabled)
         return;

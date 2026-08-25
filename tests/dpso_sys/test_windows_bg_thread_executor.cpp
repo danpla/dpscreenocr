@@ -2,7 +2,7 @@
 
 #include <thread>
 
-#include "dpso_sys/backend/windows/execution_layer/bg_thread_executor.h"
+#include "dpso_sys/backend/windows/bg_thread_executor.h"
 
 #include "flow.h"
 
@@ -10,7 +10,7 @@
 namespace {
 
 
-using namespace dpso::backend;
+using namespace dpso::backend::windows;
 
 
 void testExecution()

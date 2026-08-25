@@ -25,11 +25,8 @@ elseif(WIN32)
     target_sources(
         dpso_sys
         PRIVATE
-        backend/windows/execution_layer/backend_executor.cpp
-        backend/windows/execution_layer/bg_thread_executor.cpp
-        backend/windows/execution_layer/key_manager_executor.cpp
-        backend/windows/execution_layer/selection_executor.cpp
         backend/windows/backend.cpp
+        backend/windows/bg_thread_executor.cpp
         backend/windows/key_manager.cpp
         backend/windows/screenshot.cpp
         backend/windows/selection.cpp)

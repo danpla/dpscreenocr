@@ -11,9 +11,12 @@
 namespace dpso::backend::windows {
 
 
+class BgThreadExecutor;
+
+
 class KeyManager : public backend::KeyManager {
 public:
-    KeyManager() = default;
+    explicit KeyManager(BgThreadExecutor& bgThreadExecutor);
     ~KeyManager();
 
     bool getIsEnabled() const override;
@@ -30,6 +33,7 @@ public:
     void clearLastHotkeyAction();
     void handleWmHotkey(const MSG& msg);
 private:
+    BgThreadExecutor& bgThreadExecutor;
     bool isEnabled{};
     std::vector<HotkeyBinding> bindings;
     DpsoHotkeyAction hotkeyAction{dpsoNoHotkeyAction};
