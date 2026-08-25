@@ -6,13 +6,13 @@
 namespace dpso::backend {
 
 
-class ActionExecutor;
+class BgThreadExecutor;
 
 
 class KeyManagerExecutor : public KeyManager {
 public:
     KeyManagerExecutor(
-        KeyManager& keyManager, ActionExecutor& actionExecutor);
+        KeyManager& keyManager, BgThreadExecutor& bgThreadExecutor);
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
@@ -26,7 +26,7 @@ public:
     void removeBinding(int idx) override;
 private:
     KeyManager& keyManager;
-    ActionExecutor& actionExecutor;
+    BgThreadExecutor& bgThreadExecutor;
 };
 
 

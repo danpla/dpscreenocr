@@ -1,6 +1,6 @@
 #include "backend/windows/execution_layer/backend_executor.h"
 
-#include "backend/windows/execution_layer/action_executor.h"
+#include "backend/windows/execution_layer/bg_thread_executor.h"
 #include "backend/windows/execution_layer/key_manager_executor.h"
 #include "backend/windows/execution_layer/selection_executor.h"
 
@@ -20,7 +20,7 @@ public:
 
     void update() override;
 private:
-    ActionExecutor actionExecutor;
+    BgThreadExecutor bgThreadExecutor;
 
     std::unique_ptr<Backend> backend;
 
@@ -33,16 +33,16 @@ private:
 
 
 BackendExecutor::BackendExecutor(BackendCreatorFn creatorFn)
-    : backend{execute(actionExecutor, creatorFn)}
-    , keyManagerExecutor{backend->getKeyManager(), actionExecutor}
-    , selectionExecutor{backend->getSelection(), actionExecutor}
+    : backend{bgThreadExecutor(creatorFn)}
+    , keyManagerExecutor{backend->getKeyManager(), bgThreadExecutor}
+    , selectionExecutor{backend->getSelection(), bgThreadExecutor}
 {
 }
 
 
 BackendExecutor::~BackendExecutor()
 {
-    execute(actionExecutor, [&]{ backend.reset(); });
+    bgThreadExecutor([&]{ backend.reset(); });
 }
 
 
@@ -60,15 +60,14 @@ Selection& BackendExecutor::getSelection()
 
 img::ImgUPtr BackendExecutor::takeScreenshot(const Rect& rect)
 {
-    return execute(actionExecutor, [&]{
-        return backend->takeScreenshot(rect);
-    });
+    return bgThreadExecutor(
+        [&]{ return backend->takeScreenshot(rect); });
 }
 
 
 void BackendExecutor::update()
 {
-    execute(actionExecutor, [&]{ backend->update(); });
+    bgThreadExecutor([&]{ backend->update(); });
 }
 
 

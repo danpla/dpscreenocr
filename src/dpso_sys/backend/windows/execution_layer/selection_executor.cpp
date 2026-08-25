@@ -1,19 +1,19 @@
 #include "backend/windows/execution_layer/selection_executor.h"
 
-#include "backend/windows/execution_layer/action_executor.h"
+#include "backend/windows/execution_layer/bg_thread_executor.h"
 
 
 namespace dpso::backend {
 
 
 #define EXECUTE(CALL) \
-    execute(actionExecutor, [&]{ return selection.CALL; })
+    bgThreadExecutor([&]{ return selection.CALL; })
 
 
 SelectionExecutor::SelectionExecutor(
-        Selection& selection, ActionExecutor& actionExecutor)
+        Selection& selection, BgThreadExecutor& bgThreadExecutor)
     : selection{selection}
-    , actionExecutor{actionExecutor}
+    , bgThreadExecutor{bgThreadExecutor}
 {
 }
 

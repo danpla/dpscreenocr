@@ -6,13 +6,13 @@
 namespace dpso::backend {
 
 
-class ActionExecutor;
+class BgThreadExecutor;
 
 
 class SelectionExecutor : public Selection {
 public:
     SelectionExecutor(
-        Selection& selection, ActionExecutor& actionExecutor);
+        Selection& selection, BgThreadExecutor& bgThreadExecutor);
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
@@ -22,7 +22,7 @@ public:
     Rect getGeometry() const override;
 private:
     Selection& selection;
-    ActionExecutor& actionExecutor;
+    BgThreadExecutor& bgThreadExecutor;
 };
 
 

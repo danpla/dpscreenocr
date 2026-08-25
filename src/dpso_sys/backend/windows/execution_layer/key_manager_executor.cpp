@@ -1,19 +1,19 @@
 #include "backend/windows/execution_layer/key_manager_executor.h"
 
-#include "backend/windows/execution_layer/action_executor.h"
+#include "backend/windows/execution_layer/bg_thread_executor.h"
 
 
 namespace dpso::backend {
 
 
 #define EXECUTE(CALL) \
-    execute(actionExecutor, [&]{ return keyManager.CALL; })
+    bgThreadExecutor([&]{ return keyManager.CALL; })
 
 
 KeyManagerExecutor::KeyManagerExecutor(
-        KeyManager& keyManager, ActionExecutor& actionExecutor)
+        KeyManager& keyManager, BgThreadExecutor& bgThreadExecutor)
     : keyManager{keyManager}
-    , actionExecutor{actionExecutor}
+    , bgThreadExecutor{bgThreadExecutor}
 {
 }
 
