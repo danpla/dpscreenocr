@@ -6,7 +6,6 @@
 #include "dpso_utils/windows/module.h"
 
 #include "backend/backend_error.h"
-#include "backend/windows/bg_thread_executor.h"
 
 
 // Transparent window areas
@@ -73,8 +72,11 @@ namespace dpso::backend::windows {
 namespace {
 
 
-dpso::windows::ModuleUPtr user32Dll{LoadLibraryW(L"user32")};
-dpso::windows::ModuleUPtr shcoreDll{LoadLibraryW(L"shcore")};
+using namespace dpso::windows;
+
+
+windows::ModuleUPtr user32Dll{LoadLibraryW(L"user32")};
+windows::ModuleUPtr shcoreDll{LoadLibraryW(L"shcore")};
 
 DPSO_WIN_DLL_FN(
     user32Dll.get(),
@@ -132,7 +134,7 @@ int getDpi(const Point& point)
             return xDpi;
     }
 
-    if (auto dc = dpso::windows::getDc(nullptr))
+    if (auto dc = windows::getDc(nullptr))
         return GetDeviceCaps(dc.get(), LOGPIXELSX);
 
     return baseDpi;
@@ -150,9 +152,9 @@ Point getMousePos()
 [[noreturn]]
 void throwLastError(const char* description)
 {
-    throw BackendError(
-        std::string(description) + ": "
-        + dpso::windows::getErrorMessage(GetLastError()));
+    throw BackendError{
+        std::string{description} + ": "
+        + windows::getErrorMessage(GetLastError())};
 }
 
 
@@ -286,12 +288,12 @@ void Selection::setBorderWidth(int newBorderWidth)
     if (newBorderWidth == baseBorderWidth)
         return;
 
+    baseBorderWidth = newBorderWidth;
+
     bgThreadExecutor(
         [&]
         {
             const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
-
-            baseBorderWidth = newBorderWidth;
 
             updateBorderWidth();
             updatePens();
@@ -430,12 +432,12 @@ void Selection::updateWindowGeometry()
 
 void Selection::updateWindowRegion()
 {
-    dpso::windows::ObjectUPtr<HRGN> region{CreateRectRgn(
+    windows::ObjectUPtr<HRGN> region{CreateRectRgn(
         0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2)};
     if (!region)
         return;
 
-    dpso::windows::ObjectUPtr<HRGN> holeRegion{CreateRectRgn(
+    windows::ObjectUPtr<HRGN> holeRegion{CreateRectRgn(
         borderWidth, borderWidth,
         borderWidth + geom.w, borderWidth + geom.h)};
     if (!holeRegion)
@@ -463,7 +465,7 @@ void Selection::setGeometry(const Rect& newGeom)
 }
 
 
-void Selection::draw(HDC dc)
+void Selection::draw(HDC dc) const
 {
     const auto rectLeft = borderWidth / 2;
     const auto rectTop = borderWidth / 2;
@@ -473,14 +475,13 @@ void Selection::draw(HDC dc)
     const auto rectRight = rectLeft + geom.w + borderWidth + 1;
     const auto rectBottom = rectTop + geom.h + borderWidth + 1;
 
-    const dpso::windows::ObjectSelector brushSelector{
+    const windows::ObjectSelector brushSelector{
         dc, GetStockObject(NULL_BRUSH)};
     for (const auto& pen : pens) {
         if (!pen)
             continue;
 
-        const dpso::windows::ObjectSelector penSelector{
-            dc, pen.get()};
+        const windows::ObjectSelector penSelector{dc, pen.get()};
         Rectangle(dc, rectLeft, rectTop, rectRight, rectBottom);
     }
 }

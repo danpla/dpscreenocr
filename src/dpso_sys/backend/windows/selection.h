@@ -3,15 +3,14 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "backend/selection.h"
 #include "dpso_utils/windows/gdi.h"
 #include "dpso_utils/windows/window.h"
 
+#include "backend/selection.h"
+#include "backend/windows/bg_thread_executor.h"
+
 
 namespace dpso::backend::windows {
-
-
-class BgThreadExecutor;
 
 
 class Selection : public backend::Selection {
@@ -47,7 +46,7 @@ private:
     void updateWindowGeometry();
     void updateWindowRegion();
     void setGeometry(const Rect& newGeom);
-    void draw(HDC dc);
+    void draw(HDC dc) const;
 };
 
 

@@ -14,6 +14,9 @@
 namespace dpso::backend::windows {
 
 
+using namespace dpso::windows;
+
+
 img::ImgUPtr takeScreenshot(const Rect& rect)
 {
     const Rect virtualScreenRect{
@@ -24,51 +27,46 @@ img::ImgUPtr takeScreenshot(const Rect& rect)
 
     const auto captureRect = getIntersection(rect, virtualScreenRect);
     if (isEmpty(captureRect))
-        throw ScreenshotError("Rect is outside screen bounds");
+        throw ScreenshotError{"Rect is outside screen bounds"};
 
-    auto screenDc = dpso::windows::getDc(nullptr);
+    auto screenDc = windows::getDc(nullptr);
     if (!screenDc)
-        throw ScreenshotError("GetDC(nullptr) failed");
+        throw ScreenshotError{"GetDC(nullptr) failed"};
 
-    auto imageDc = dpso::windows::createCompatibleDc(screenDc.get());
+    auto imageDc = windows::createCompatibleDc(screenDc.get());
     if (!imageDc)
         throw ScreenshotError(
             "CreateCompatibleDC() for screen DC failed");
 
-    dpso::windows::ObjectUPtr<HBITMAP> imageBitmap(
+    windows::ObjectUPtr<HBITMAP> imageBitmap{
         CreateCompatibleBitmap(
-            screenDc.get(), captureRect.w, captureRect.h));
+            screenDc.get(), captureRect.w, captureRect.h)};
     if (!imageBitmap)
-        throw ScreenshotError(
-            "CreateCompatibleBitmap() for screen DC failed");
+        throw ScreenshotError{
+            "CreateCompatibleBitmap() for screen DC failed"};
 
     // The GetDIBits() docs say that the bitmap must not be selected
     // into a DC when calling the function.
     {
-        const dpso::windows::ObjectSelector bitmapSelector(
-            imageDc.get(), imageBitmap.get());
+        const windows::ObjectSelector bitmapSelector{
+            imageDc.get(), imageBitmap.get()};
 
         if (!BitBlt(
                 imageDc.get(), 0, 0, captureRect.w, captureRect.h,
                 screenDc.get(), captureRect.x, captureRect.y,
                 SRCCOPY))
-            throw ScreenshotError(
+            throw ScreenshotError{
                 "BitBlt(): "
-                + dpso::windows::getErrorMessage(GetLastError()));
+                + windows::getErrorMessage(GetLastError())};
     }
 
-    BITMAPINFOHEADER bi;
+    BITMAPINFOHEADER bi{};
     bi.biSize = sizeof(bi);
     bi.biWidth = captureRect.w;
-    bi.biHeight = -captureRect.h;  // Invert for top-down rows order.
+    bi.biHeight = -captureRect.h;  // Invert for top-down row order.
     bi.biPlanes = 1;
     bi.biBitCount = 32;
     bi.biCompression = BI_RGB;
-    bi.biSizeImage = 0;
-    bi.biXPelsPerMeter = 0;
-    bi.biYPelsPerMeter = 0;
-    bi.biClrUsed = 0;
-    bi.biClrImportant = 0;
 
     img::ImgUPtr result{
         dpsoImgCreate(
@@ -77,8 +75,8 @@ img::ImgUPtr takeScreenshot(const Rect& rect)
             captureRect.h,
             GDI_DIBWIDTHBYTES(bi))};
     if (!result)
-        throw ScreenshotError(
-            std::string{"dpsoImgCreate(): "} + dpsoGetError());
+        throw ScreenshotError{
+            std::string{"dpsoImgCreate(): "} + dpsoGetError()};
 
     if (!GetDIBits(
             imageDc.get(), imageBitmap.get(),
@@ -86,9 +84,9 @@ img::ImgUPtr takeScreenshot(const Rect& rect)
             dpsoImgGetData(result.get()),
             reinterpret_cast<BITMAPINFO*>(&bi),
             DIB_RGB_COLORS))
-        throw ScreenshotError(
+        throw ScreenshotError{
             "GetDIBits(): "
-            + dpso::windows::getErrorMessage(GetLastError()));
+            + windows::getErrorMessage(GetLastError())};
 
     return result;
 }

@@ -6,12 +6,10 @@
 #include <windows.h>
 
 #include "backend/key_manager.h"
+#include "backend/windows/bg_thread_executor.h"
 
 
 namespace dpso::backend::windows {
-
-
-class BgThreadExecutor;
 
 
 class KeyManager : public backend::KeyManager {

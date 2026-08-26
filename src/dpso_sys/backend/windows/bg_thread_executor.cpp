@@ -4,7 +4,6 @@
 #include <exception>
 #include <mutex>
 #include <thread>
-#include <utility>
 
 
 namespace dpso::backend::windows {
@@ -72,7 +71,6 @@ void BgThreadExecutor::Impl::threadLoop()
 void BgThreadExecutor::Impl::execute(Task& task)
 {
     if (isInThread) {
-        // Execute nested tasks right away to avoid a deadlock.
         task.execute();
         return;
     }

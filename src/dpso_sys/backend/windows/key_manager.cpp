@@ -9,10 +9,12 @@
 #include "dpso_utils/str.h"
 #include "dpso_utils/windows/utf.h"
 
-#include "backend/windows/bg_thread_executor.h"
-
 
 namespace dpso::backend::windows {
+namespace {
+
+
+using namespace dpso::windows;
 
 
 // The RegisterHotKey() documentation says that an application must
@@ -44,7 +46,7 @@ namespace dpso::backend::windows {
 //    string atom functions to return a string atom.
 
 
-static constexpr unsigned createMask(unsigned numBits)
+constexpr unsigned createMask(unsigned numBits)
 {
     return ~(~0u << numBits);
 }
@@ -72,11 +74,11 @@ const std::wstring atomNamePrefix{
 };
 
 
-static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
+std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
 {
     return
         atomNamePrefix
-        + dpso::windows::utf8ToUtf16(
+        + windows::utf8ToUtf16(
             str::toStr(
                 sentinelBit
                 | (hotkey.key << modsBits)
@@ -84,12 +86,12 @@ static std::wstring hotkeyToAtomName(const DpsoHotkey& hotkey)
 }
 
 
-static DpsoHotkey atomNameToHotkey(std::wstring_view name)
+DpsoHotkey atomNameToHotkey(std::wstring_view name)
 {
     if (name.substr(0, atomNamePrefix.size()) != atomNamePrefix)
         return dpsoEmptyHotkey;
 
-    const auto str = dpso::windows::utf16ToUtf8(
+    const auto str = windows::utf16ToUtf8(
         name.substr(atomNamePrefix.size()));
 
     ATOM atom{};
@@ -106,11 +108,11 @@ static DpsoHotkey atomNameToHotkey(std::wstring_view name)
 }
 
 
-static UINT toWinKey(DpsoKey key);
-static UINT toWinMods(DpsoKeyMods mods);
+UINT toWinKey(DpsoKey key);
+UINT toWinMods(DpsoKeyMods mods);
 
 
-static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
+void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
 {
     const auto atomName = hotkeyToAtomName(hotkey);
     auto atom = GlobalFindAtomW(atomName.c_str());
@@ -136,6 +138,9 @@ static void changeHotkeyState(const DpsoHotkey& hotkey, bool enabled)
         return;
 
     RegisterHotKey(nullptr, atom, winMods, winKey);
+}
+
+
 }
 
 
@@ -185,8 +190,8 @@ DpsoHotkeyAction KeyManager::getLastHotkeyAction() const
 void KeyManager::bindHotkey(
     const DpsoHotkey& hotkey, DpsoHotkeyAction action)
 {
-    if (auto* existingBinding = findBinding(hotkey)) {
-        existingBinding->action = action;
+    if (auto* binding = findBinding(hotkey)) {
+        binding->action = action;
         return;
     }
 
@@ -266,7 +271,7 @@ void KeyManager::handleWmHotkey(const MSG& msg)
         return;
 
     const auto hotkey = atomNameToHotkey({atomName, atomNameLen});
-    if (auto* binding = findBinding(hotkey))
+    if (const auto* binding = findBinding(hotkey))
         hotkeyAction = binding->action;
 }
 
@@ -277,8 +282,11 @@ HotkeyBinding* KeyManager::findBinding(const DpsoHotkey& hotkey)
         if (binding.hotkey == hotkey)
             return &binding;
 
-    return nullptr;
+    return {};
 }
+
+
+namespace {
 
 
 const UINT keyToVk[]{
@@ -388,7 +396,7 @@ const UINT keyToVk[]{
 static_assert(std::size(keyToVk) == dpsoNumKeys);
 
 
-static UINT toWinKey(DpsoKey key)
+UINT toWinKey(DpsoKey key)
 {
     if (key < 0 || key >= dpsoNumKeys)
         return 0;
@@ -397,7 +405,7 @@ static UINT toWinKey(DpsoKey key)
 }
 
 
-static UINT toWinMods(DpsoKeyMods mods)
+UINT toWinMods(DpsoKeyMods mods)
 {
     UINT winMods = MOD_NOREPEAT;
 
@@ -414,4 +422,5 @@ static UINT toWinMods(DpsoKeyMods mods)
 }
 
 
+}
 }
