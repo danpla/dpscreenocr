@@ -11,11 +11,10 @@
 // Transparent window areas
 // ========================
 //
-// We use window regions (SetWindowRgn()) for selection.
-//
-// Another choice was a layered window (WS_EX_LAYERED) with
-// LWA_COLORKEY. However, this approach has several issues that happen
-// during resizing, especially when Aero is disabled:
+// We use window regions (SetWindowRgn()) for the selection. Another
+// choice was a layered window (WS_EX_LAYERED) with LWA_COLORKEY, but
+// this approach has several issues that happen during resizing,
+// especially when Aero is disabled:
 //
 // * The bigger the window, the higher is CPU load.
 //
@@ -48,24 +47,6 @@
 // making the whole window "transparent" for the mouse. In other
 // words, we don't need WS_EX_TRANSPARENT, which only works in
 // combination with WS_EX_LAYERED.
-//
-//
-// Dynamic DPI changes
-// ===================
-//
-// On Windows 8.1 and newer, the selection border dynamically scales
-// according to the display DPI if a per-monitor DPI awareness is set.
-// Since this is a library, we must not permanently set the process
-// DPI awareness; we can only change it temporarily (or permanently
-// for our own thread) with SetThreadDpiAwarenessContext() when
-// running on Windows 10 version 1607 or newer. On older versions, we
-// will use the DPI awareness of the process, whatever it may be.
-//
-// Although the Windows backend actually runs in a separate thread, we
-// don't rely on this in the selection handler. Instead of setting a
-// permanent per-monitor DPI awareness for the thread, we use a RAII
-// wrapper around SetThreadDpiAwarenessContext() for Windows API calls
-// that use DPI virtualization.
 
 
 namespace dpso::backend::windows {
