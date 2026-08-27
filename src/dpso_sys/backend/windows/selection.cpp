@@ -88,31 +88,6 @@ DPSO_WIN_DLL_FN(
     HRESULT (WINAPI *)(HMONITOR, int, UINT*, UINT*));
 
 
-class ThreadDpiAwarenessContextGuard {
-public:
-    ThreadDpiAwarenessContextGuard()
-        : oldDpiContext{}
-    {
-        // The v2 awareness was added later (in Windows 10 1703) than
-        // SetThreadDpiAwarenessContext() (added in Windows 10 1607),
-        // so we use v1 to fill the gap. Fortunately, the selection
-        // doesn't have non-client areas, so all v2 improvements are
-        // irrelevant in our case.
-        if (SetThreadDpiAwarenessContextFn)
-            oldDpiContext = SetThreadDpiAwarenessContextFn(
-                DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
-    }
-
-    ~ThreadDpiAwarenessContextGuard()
-    {
-        if (oldDpiContext)
-            SetThreadDpiAwarenessContextFn(oldDpiContext);
-    }
-private:
-    DPI_AWARENESS_CONTEXT oldDpiContext;
-};
-
-
 const auto baseDpi = 96;
 
 
@@ -168,19 +143,13 @@ void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
     if (registered)
         return;
 
-    WNDCLASSEXW wcx;
+    WNDCLASSEXW wcx{};
     wcx.cbSize = sizeof(wcx);
     wcx.style = CS_VREDRAW | CS_HREDRAW;
     wcx.lpfnWndProc = wndProc;
-    wcx.cbClsExtra = 0;
-    wcx.cbWndExtra = 0;
     wcx.hInstance = instance;
-    wcx.hIcon = nullptr;
     wcx.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    wcx.hbrBackground = nullptr;
-    wcx.lpszMenuName = nullptr;
     wcx.lpszClassName = windowClassName;
-    wcx.hIconSm = nullptr;
 
     if (RegisterClassExW(&wcx) == 0)
         throwLastError("Can't register selection window class");
@@ -201,7 +170,14 @@ Selection::Selection(
         {
             registerWindowClass(instance, wndProc);
 
-            const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
+            // The v2 awareness was added later (in Windows 10 1703)
+            // than SetThreadDpiAwarenessContext() (Windows 10 1607),
+            // so we use v1 to fill the gap. Fortunately, the
+            // selection doesn't have non-client areas, so all v2
+            // improvements are irrelevant in our case.
+            if (SetThreadDpiAwarenessContextFn)
+                SetThreadDpiAwarenessContextFn(
+                    DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
 
             window.reset(CreateWindowExW(
                 WS_EX_TOPMOST
@@ -230,10 +206,6 @@ Selection::Selection(
             // not in a per-monitor DPI aware mode, in which case DPI
             // will always remain the same and the selection will
             // automatically be scaled by Windows.
-            //
-            // Note that getDpi() is not in the initialization list
-            // since it should be protected by the DPI awareness
-            // guard.
             dpi = getDpi(origin);
 
             updateBorderWidth();
@@ -271,9 +243,6 @@ void Selection::setIsEnabled(bool newIsEnabled)
         [&]
         {
             if (isEnabled) {
-                const ThreadDpiAwarenessContextGuard
-                    dpiAwarenessGuard;
-
                 origin = getMousePos();
                 setGeometry({origin, {}});
             }
@@ -293,8 +262,6 @@ void Selection::setBorderWidth(int newBorderWidth)
     bgThreadExecutor(
         [&]
         {
-            const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
-
             updateBorderWidth();
             updatePens();
             updateWindowGeometry();
@@ -315,8 +282,6 @@ void Selection::update()
 
     if (!isEnabled)
         return;
-
-    const ThreadDpiAwarenessContextGuard dpiAwarenessGuard;
 
     auto newGeom = Rect::betweenPoints(origin, getMousePos());
     // The maximum cursor position is 1 pixel less than the size of
@@ -345,12 +310,6 @@ LRESULT Selection::processMessage(
     UINT msg, WPARAM wParam, LPARAM lParam)
 {
     assert(bgThreadExecutor.isActive());
-
-    // We don't need a ThreadDpiAwarenessContextGuard guard here,
-    // since the thread is automatically switched to the DPI context
-    // of the window when the window procedure is called (the DPI
-    // context of the window is set to the context of the calling
-    // thread when the window is created).
 
     switch (msg) {
     case WM_DPICHANGED:
