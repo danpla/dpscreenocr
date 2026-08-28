@@ -18,7 +18,6 @@
 #include "dpso_img/pnm.h"
 
 #include "dpso_utils/error_set.h"
-#include "dpso_utils/geometry.h"
 #include "dpso_utils/str.h"
 #include "dpso_utils/strftime.h"
 #include "dpso_utils/synchronized.h"

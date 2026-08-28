@@ -2,6 +2,8 @@
 
 #include <X11/Xlib.h>
 
+#include "dpso_utils/geometry.h"
+
 #include "backend/selection.h"
 #include "backend/unix/x11/backend_component.h"
 #include "backend/unix/x11/utils.h"

@@ -1,5 +1,7 @@
 #include "selection.h"
 
+#include "dpso_utils/geometry.h"
+
 #include "backend/selection.h"
 #include "dpso_sys_p.h"
 

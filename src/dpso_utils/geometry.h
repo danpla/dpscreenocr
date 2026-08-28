@@ -1,5 +1,7 @@
 #pragma once
 
+#include "geometry_fwd.h"
+
 
 struct DpsoRect;
 

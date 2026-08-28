@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dpso_utils/geometry.h"
+#include "dpso_utils/geometry_fwd.h"
 
 
 namespace dpso::backend {
