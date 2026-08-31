@@ -1,3 +1,4 @@
+#include <optional>
 #include <string>
 
 #define WIN32_LEAN_AND_MEAN
@@ -30,8 +31,8 @@ public:
 private:
     BgThreadExecutor bgThreadExecutor;
     HINSTANCE instance;
-    std::unique_ptr<KeyManager> keyManager;
-    std::unique_ptr<Selection> selection;
+    std::optional<KeyManager> keyManager;
+    std::optional<Selection> selection;
 };
 
 
@@ -44,15 +45,14 @@ Backend::Backend()
             + dpso::windows::getErrorMessage(GetLastError())};
 
     try {
-        keyManager = std::make_unique<KeyManager>(bgThreadExecutor);
+        keyManager.emplace(bgThreadExecutor);
     } catch (BackendError& e) {
         throw BackendError{
             std::string{"Can't create key manager: "} + e.what()};
     }
 
     try {
-        selection = std::make_unique<Selection>(
-            bgThreadExecutor, instance);
+        selection.emplace(bgThreadExecutor, instance);
     } catch (BackendError& e) {
         throw BackendError{
             std::string{"Can't create selection: "} + e.what()};
