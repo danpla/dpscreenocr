@@ -26,8 +26,8 @@ public:
     DataLock(const DataLock&) = delete;
     DataLock& operator=(const DataLock&) = delete;
 
-    DataLock(DataLock&& other) noexcept;
-    DataLock& operator=(DataLock&& other) noexcept;
+    DataLock(DataLock&&) noexcept;
+    DataLock& operator=(DataLock&&) noexcept;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl;
@@ -48,8 +48,8 @@ public:
     DataLockObserver(const DataLockObserver&) = delete;
     DataLockObserver& operator=(const DataLockObserver&) = delete;
 
-    DataLockObserver(DataLockObserver&& other) noexcept;
-    DataLockObserver& operator=(DataLockObserver&& other) noexcept;
+    DataLockObserver(DataLockObserver&&) noexcept;
+    DataLockObserver& operator=(DataLockObserver&&) noexcept;
 
     bool getIsDataLocked() const;
 private:

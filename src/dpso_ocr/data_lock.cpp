@@ -31,8 +31,8 @@ struct SharedData {
 
         static std::vector<CacheEntry> cache;
 
-        static const auto findCacheEntry = [](
-            std::string_view engineId, std::string_view dataDir)
+        static const auto findCacheEntry =
+        [](std::string_view engineId, std::string_view dataDir)
         {
             return std::find_if(
                 cache.begin(), cache.end(),
