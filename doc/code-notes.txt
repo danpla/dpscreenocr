@@ -65,7 +65,7 @@
   std::array) when using aggregate initialization is broken by design:
   it allows you to provide fewer values than specified by the array
   type, and compilers don't even warn about this. This is especially
-  dangerous when the size comes from a constant that may one day
+  dangerous when the size comes from a constant that could one day
   become N times larger.
 
 * Don't use locale-dependent routines.
@@ -83,11 +83,9 @@
     library functions like strto*() or anything that depends on them,
     like std::sto*() from <string>.
 
-  * Use getErrnoMsg() from "dpso_utils/os.h" instead of strerror().
-
 * Don't use C99/C++11 strftime() format specifiers in cross-platform
   code. They are not supported by old MSVCRT versions, and MinGW
-  doesn't provide replacements as it does for pritnf() functions.
+  doesn not provide replacements as it does for pritnf() functions.
 
 * Use underscores instead of hyphens in CMake target names.
 
@@ -107,9 +105,9 @@
   and that default may not match the CMake option.
 
 * When creating translatable strings with plural forms, don't format
-  the singular form especially, like:
+  the singular form especially like:
 
-    uiTranslateN(n, "One apple", "{count} apples")
+    ... = uiTranslateN(n, "One apple", "{count} apples");
 
   The English singular form always implies 1, so it's technically fine
   to use "One apple" instead of "{count} apple". However, some other
@@ -118,15 +116,13 @@
   analogous translation implying a single item instead of using a
   generic form with a number.
 
-  To avoid this issue, use the same form as for the plural, and handle
-  the special case separately:
+  To avoid this issue, handle the 1-item case separately:
 
-    if (n == 1)
-      uiTranslate("One apple")
-    else
-      uiTranslateN(n, "{count} apple", "{count} apples")
+    ... = (n == 1)
+        ? uiTranslate("One apple")
+        : uiTranslateN(n, "{count} apple", "{count} apples");
 
-* In Qt, don't use setWisible(condition) when building the widget
+* In Qt, don't use setVisible(condition) when building the widget
   hierarchy, because if the condition is true, the widget will
   immediately appear as a window until it gets a parent (e.g. until it
   is added to a layout). Instead, do this:
@@ -141,5 +137,5 @@
     sense because the widget will be attached to the parent anyway
     when added to the layout.
 
-  * Adding a widget to the layout immediately after creating it is an
+  * Adding a widget to the layout immediately after creating it is a
     non-obvious workaround that's easy to break or forget about.

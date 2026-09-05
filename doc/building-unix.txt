@@ -12,8 +12,7 @@ Required:
   * pkg-config to find libtesseract
   * libx11
   * libxext - for X11 Nonrectangular Window Shape Extension
-  * gettext tools >= 0.19 (msgfmt is needed to compile gettext message
-    catalogs).
+  * gettext tools >= 0.19 - for msgfmt
 
 Optional:
 

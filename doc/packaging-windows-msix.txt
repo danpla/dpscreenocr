@@ -51,10 +51,10 @@ targets:
   ".msixupload" file for uploading to Microsoft Store.
 
 The MSIX package is signed with your personal self-signed certificate.
-This is a necessary formality necessary for uploading the MSIX to
-Microsoft Store or installing it locally. The certificate is taken
-from your personal certificate storage and will be created there
-automatically if it does not already exist.
+This is a necessary formality for uploading the MSIX to Microsoft
+Store or installing it locally. The certificate is taken from your
+personal certificate storage and will be created there automatically
+if it does not already exist.
 
 Having the certificate in you personal certificate storage is not
 enough to install the MSIX locally: you must explicitly install the
@@ -68,19 +68,19 @@ Whether you open the certificate file directly or via the MSIX file
 properties, select "Install Certificate..." -> "Local Machine" ->
 "Place all certificates in the following store" -> "Trusted Root
 Certification Authorities" and finish installation. After completing
-these steps, App Installer should allow you install the MSIX.
+these steps, App Installer should allow you to install the MSIX.
 
 The certificate needs to be installed only once, because it is
-logically associated only with the MSIX publisher identifier that
-doesn't change when a new MSIX is created, even if the program version
-or the MSIX file name is different.
+associated only with the MSIX publisher identifier that doesn't change
+when a new MSIX is created, even if the program version or the MSIX
+file name is different.
 
 You can remove the certificate if you no longer need it:
 
 * To remove it from your personal certificate storage, press Windows +
   R, type "crtmgr.msc", and delete it from "Personal\Certificates".
 
-* To remove it from the local machine, press Press Windows + R, type
+* To remove it from the local machine, press Windows + R, type
   "certlm.msc", and delete it from "Trusted Root Certification
   Authorities\Certificates"
 
