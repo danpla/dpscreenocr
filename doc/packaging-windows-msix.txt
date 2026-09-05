@@ -27,13 +27,9 @@ Instead, you can select the following features during installation:
 Be aware, however, that the names of features and the final layout of
 the SDK installation directory may differ between versions of the SDK.
 
-After installing the Windows SDK, you need to tell CMake the paths to
-makepri.exe, makeappx.exe, and signtool.exe. You can do this either by
-adding their directories to your PATH environment variable or by
-explicitly specifying the paths using CMake options MAKEPRI_EXE,
-MAKEAPPX_EXE, and SIGNTOOL_EXE like:
-
-  cmake -DMAKEPRI_EXE=path\to\makepri.exe ...
+After installing the Windows SDK, you need to specify the paths to
+makepri.exe, makeappx.exe, and signtool.exe using MAKEPRI_EXE,
+MAKEAPPX_EXE, and SIGNTOOL_EXE CMake options.
 
 
 Creating MSIX

@@ -73,10 +73,8 @@ copy the English language pack installed for the current architecture.
 ----------
 
 MSYS2 does not provide Pandoc, so you have to download it from
-https://pandoc.org and make it visible to CMake by extending PATH in a
-MinGW shell:
-
-    export PATH="$PATH:path_to_pandoc_dir"
+https://pandoc.org and specify its path using the PANDOC_EXE CMake
+option.
 
 
 1.4 C++/WinRT
