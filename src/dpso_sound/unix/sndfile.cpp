@@ -39,7 +39,7 @@ static std::vector<FormatInfo> getSupportedFormats(
     // Specification [1] requires this extension instead of ".ogg".
     //
     // 1: https://www.freedesktop.org/wiki/Specifications/sound-theme-spec/
-    const std::vector<Format> expectedFormats{
+    const Format expectedFormats[]{
         {LibSndfile::FORMAT_FLAC, {"FLAC", {".flac"}}},
         {LibSndfile::FORMAT_MPEG_LAYER_III, {"MP3", {".mp3"}}},
         {LibSndfile::FORMAT_OPUS, {"Opus", {".opus"}}},
