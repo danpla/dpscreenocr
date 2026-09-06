@@ -58,7 +58,7 @@ void writePlainText(Stream& stream, const DpsoHistory* history)
 
 
 void writeEscapedHtml(
-    Stream& stream, const char* indent, const char* text)
+    Stream& stream, int indentSize, const char* text)
 {
     static const CharReplacement replacements[]{
         {'\n', "<br>\n"},
@@ -68,7 +68,8 @@ void writeEscapedHtml(
     };
 
     for (const auto* s = text; *s;) {
-        write(stream, indent);
+        for (int i{}; i < indentSize; ++i)
+            write(stream, ' ');
 
         while (*s) {
             const auto c = *s++;
@@ -111,11 +112,11 @@ void writeHtml(Stream& stream, const DpsoHistory* history)
         dpsoHistoryGet(history, i, &e);
 
         write(stream, "  <p class=\"timestamp\">");
-        writeEscapedHtml(stream, "", e.timestamp);
+        writeEscapedHtml(stream, 0, e.timestamp);
         write(stream, "</p>\n");
 
         write(stream, "  <p class=\"text\">\n");
-        writeEscapedHtml(stream, "    ", e.text);
+        writeEscapedHtml(stream, 4, e.text);
         write(stream, "\n  </p>\n");
     }
 
