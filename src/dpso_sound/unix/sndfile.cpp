@@ -20,7 +20,7 @@ namespace dpso::sound::sndfile {
 //
 // Since we only need to collect the file extensions, we only work
 // with the format field of SF_FORMAT_INFO.
-std::vector<FormatInfo> getSupportedFormats(
+static std::vector<FormatInfo> getSupportedFormats(
     const LibSndfile& libSndfile)
 {
     struct Format {
