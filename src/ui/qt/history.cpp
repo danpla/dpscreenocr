@@ -229,10 +229,7 @@ void History::appendToTextEdit(
     blockFormat.setAlignment(Qt::AlignLeft);
     cursor.insertBlock(blockFormat, charFormat);
 
-    // Although we no longer add a trailing newline to the recognized
-    // text, we still trim trailing whitespace so that texts from the
-    // older versions look pretty.
-    cursor.insertText(QString(text).trimmed());
+    cursor.insertText(text);
 
     // We must scroll to the bottom before scrolling to textBegin,
     // so that textBegin becomes the first line in the viewport
