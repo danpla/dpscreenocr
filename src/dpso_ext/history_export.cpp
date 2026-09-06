@@ -1,6 +1,7 @@
 #include "history_export.h"
 
 #include <optional>
+#include <string_view>
 #include <vector>
 
 #include "dpso_utils/error_set.h"
@@ -15,6 +16,26 @@ using namespace dpso;
 
 
 namespace {
+
+
+struct CharReplacement {
+    char from;
+    std::string_view to;
+};
+
+
+template<std::size_t N>
+void write(
+    Stream& stream, char c, const CharReplacement (&replacements)[N])
+{
+    for (const auto& r : replacements)
+        if (c == r.from) {
+            write(stream, r.to);
+            return;
+        }
+
+    write(stream, c);
+}
 
 
 void writePlainText(Stream& stream, const DpsoHistory* history)
@@ -39,38 +60,22 @@ void writePlainText(Stream& stream, const DpsoHistory* history)
 void writeEscapedHtml(
     Stream& stream, const char* indent, const char* text)
 {
+    static const CharReplacement replacements[]{
+        {'\n', "<br>\n"},
+        {'<', "&lt;"},
+        {'>', "&gt;"},
+        {'&', "&amp;"},
+    };
+
     for (const auto* s = text; *s;) {
         write(stream, indent);
 
         while (*s) {
             const auto c = *s++;
+            write(stream, c, replacements);
 
-            switch (c) {
-            case '\n':
-                // Although a trailing <br> has no effect (it doesn't
-                // add an empty line when rendered in browsers), we
-                // still add it so that we can restore the original
-                // text from the resulting HTML.
-                write(stream, "<br>");
+            if (c == '\n')
                 break;
-            case '<':
-                write(stream, "&lt;");
-                break;
-            case '>':
-                write(stream, "&gt;");
-                break;
-            case '&':
-                write(stream, "&amp;");
-                break;
-            default:
-                write(stream, c);
-                break;
-            }
-
-            if (c == '\n') {
-                write(stream, c);
-                break;
-            }
         }
     }
 }
@@ -123,30 +128,19 @@ void writeHtml(Stream& stream, const DpsoHistory* history)
 
 void writeEscapedJson(Stream& stream, const char* text)
 {
-    for (const auto* s = text; *s; ++s)
-        switch (const auto c = *s) {
-        case '\b':
-            write(stream, "\\b");
-            break;
-        case '\f':
-            write(stream, "\\f");
-            break;
-        case '\n':
-            write(stream, "\\n");
-            break;
-        case '\r':
-            write(stream, "\\r");
-            break;
-        case '\t':
-            write(stream, "\\t");
-            break;
-        default:
-            if (c == '\\' || c == '/' || c == '"')
-                write(stream, '\\');
+    static const CharReplacement replacements[]{
+        {'\b', "\\b"},
+        {'\f', "\\f"},
+        {'\n', "\\n"},
+        {'\r', "\\r"},
+        {'\t', "\\t"},
+        {'\\', "\\\\"},
+        {'/',  "\\/"},
+        {'\"', "\\\""},
+    };
 
-            write(stream, c);
-            break;
-        }
+    for (const auto* s = text; *s; ++s)
+        write(stream, *s, replacements);
 }
 
 
