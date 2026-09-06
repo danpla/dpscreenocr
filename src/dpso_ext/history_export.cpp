@@ -91,6 +91,8 @@ void writeHtml(Stream& stream, const DpsoHistory* history)
         "<html>\n"
         "<head>\n"
         "  <meta charset=\"utf-8\">\n"
+        "  <meta name=\"viewport\" "
+            "content=\"width=device-width, initial-scale=1\">\n"
         "  <title>History</title>\n"
         "  <style>\n"
         "    .timestamp {\n"
