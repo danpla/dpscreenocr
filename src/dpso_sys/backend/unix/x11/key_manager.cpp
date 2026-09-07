@@ -6,6 +6,7 @@
 
 
 namespace dpso::backend::x11 {
+namespace {
 
 
 // Mod1Mask - Alt
@@ -15,9 +16,12 @@ namespace dpso::backend::x11 {
 // Mod5Mask - ???
 
 
-static KeyCode keyToKeyCode(Display* display, DpsoKey key);
-static DpsoKeyMods toDpsoMods(unsigned x11Mods);
-static unsigned toX11Mods(DpsoKeyMods dpsoMods);
+KeyCode keyToKeyCode(Display* display, DpsoKey key);
+DpsoKeyMods toDpsoMods(unsigned x11Mods);
+unsigned toX11Mods(DpsoKeyMods dpsoMods);
+
+
+}
 
 
 KeyManager::KeyManager(Display* display)
@@ -173,6 +177,9 @@ void KeyManager::changeGrab(
 }
 
 
+namespace {
+
+
 const KeySym keyToKeySym[]{
     XK_F1,
     XK_F2,
@@ -280,7 +287,7 @@ const KeySym keyToKeySym[]{
 static_assert(std::size(keyToKeySym) == dpsoNumKeys);
 
 
-static KeyCode keyToKeyCode(Display* display, DpsoKey key)
+KeyCode keyToKeyCode(Display* display, DpsoKey key)
 {
     if (key < 0 || key >= dpsoNumKeys)
         return 0;
@@ -289,7 +296,7 @@ static KeyCode keyToKeyCode(Display* display, DpsoKey key)
 }
 
 
-static const struct {
+const struct {
     unsigned x11Mod;
     DpsoKeyMod dpsoMod;
 } modMap[]{
@@ -301,7 +308,7 @@ static const struct {
 static_assert(std::size(modMap) == dpsoNumKeyMods);
 
 
-static DpsoKeyMods toDpsoMods(unsigned x11Mods)
+DpsoKeyMods toDpsoMods(unsigned x11Mods)
 {
     DpsoKeyMods dpsoMods = dpsoNoKeyMods;
 
@@ -313,7 +320,7 @@ static DpsoKeyMods toDpsoMods(unsigned x11Mods)
 }
 
 
-static unsigned toX11Mods(DpsoKeyMods dpsoMods)
+unsigned toX11Mods(DpsoKeyMods dpsoMods)
 {
     unsigned x11Mods = 0;
 
@@ -325,4 +332,5 @@ static unsigned toX11Mods(DpsoKeyMods dpsoMods)
 }
 
 
+}
 }

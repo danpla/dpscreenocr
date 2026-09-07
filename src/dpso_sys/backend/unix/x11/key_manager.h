@@ -12,8 +12,7 @@ namespace dpso::backend::x11 {
 
 
 class KeyManager
-    : public backend::KeyManager
-    , public BackendComponent {
+    : public backend::KeyManager , public BackendComponent {
 public:
     explicit KeyManager(Display* display);
     ~KeyManager();

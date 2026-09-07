@@ -15,9 +15,10 @@
 
 
 namespace dpso::backend::x11 {
+namespace {
 
 
-static Point getMousePos(Display* display)
+Point getMousePos(Display* display)
 {
     Window rootWindow, childWindow;
     int rootX, rootY;
@@ -42,7 +43,7 @@ static Point getMousePos(Display* display)
 const auto baseDpi = 96;
 
 
-static int getDpi(Display* display)
+int getDpi(Display* display)
 {
     // X resources are attached to the root window when the program
     // starts, so XGetDefault() will always return the same value. An
@@ -68,6 +69,9 @@ static int getDpi(Display* display)
         return dpi;
 
     return baseDpi;
+}
+
+
 }
 
 
