@@ -10,7 +10,7 @@ namespace dpso::sound::sndfile {
 
 
 // The format info in sndfile is a complete mess. The "major" format
-// (SF_FORMAT_TYPEMASK) and the "subtype" (SF_FORMAT_TYPEMASK) can be:
+// (SF_FORMAT_TYPEMASK) and the "subtype" (SF_FORMAT_SUBMASK) can be:
 //   * Container + coding format, e.g. Vorbis is
 //     SF_FORMAT_OGG | SF_FORMAT_VORBIS
 //   * Coding + sample format, e.g. FLAC is
@@ -29,16 +29,15 @@ static std::vector<FormatInfo> getSupportedFormats(
     };
 
     // We don't want to return all the formats supported by sndfile,
-    // because they include the ones that are not widely used
-    // nowadays, such as AU and VOX.
+    // because some of them are either historical (such as AU and VOX)
+    // or rarely used outside of a specific platform (such as Apple's
+    // AIFF and CAF).
     //
-    // Note that the ".oga" extension can legitimately be used not
-    // only for Vorbis, but also for FLAC and Opus data in an OGG
-    // container. In practice, however, it's only important to include
-    // ".oga" as an alternative for Vorbis, since the Sound Theme
-    // Specification [1] requires this extension instead of ".ogg".
-    //
-    // 1: https://www.freedesktop.org/wiki/Specifications/sound-theme-spec/
+    // Note that the ".oga" extension can be used not only for Vorbis,
+    // but also for any other audio format in the OGG container, such
+    // as FLAC and Opus. In our case, however, it's only necessary to
+    // include ".oga" as an alternative for Vorbis, since the Sound
+    // Theme Specification requires this extension instead of ".ogg".
     const Format expectedFormats[]{
         {LibSndfile::FORMAT_FLAC, {"FLAC", {".flac"}}},
         {LibSndfile::FORMAT_MPEG_LAYER_III, {"MP3", {".mp3"}}},
@@ -56,9 +55,10 @@ static std::vector<FormatInfo> getSupportedFormats(
         &formatCount,
         sizeof(int));
 
-    // We iterate through expectedFormats first because sndfile
-    // formats contain duplicates, e.g. multiple WAV for each internal
-    // format it supports.
+    // We iterate expectedFormats first because sndfile formats
+    // contain entries with duplicate SF_FORMAT_TYPEMASK, e.g.
+    // combinations of SF_FORMAT_WAV with SF_FORMAT_PCM_16,
+    // SF_FORMAT_FLOAT, SF_FORMAT_MS_ADPCM, etc.
     for (const auto& ef : expectedFormats)
         for (int i{}; i < formatCount; i++) {
             LibSndfile::FORMAT_INFO formatInfo;
@@ -102,11 +102,11 @@ AudioData loadAudioData(const char* filePath)
         throw Error{str::format(
             "sf_open(): {}", libSndfile.strerror(nullptr))};
 
-    // The soundfile documentation recommends enabling
+    // The sndfile documentation recommends enabling
     // SFC_SET_SCALE_FLOAT_INT_READ to properly read shorts from files
     // containing floating-point samples in the [-1.0, 1.0] range, but
-    // it also affects Vorbis and Opus, making the audio too loud, so
-    // we only enable it explicitly for SF_FORMAT_FLOAT/DOUBLE.
+    // it also makes Vorbis and Opus audio too loud, so we only enable
+    // it explicitly for SF_FORMAT_FLOAT/DOUBLE.
     if (const auto format = info.format & LibSndfile::FORMAT_SUBMASK;
             format == LibSndfile::FORMAT_FLOAT
             || format == LibSndfile::FORMAT_DOUBLE)
