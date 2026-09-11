@@ -7,7 +7,7 @@
 #include <X11/Xutil.h>
 
 
-namespace dpso::backend {
+namespace dpso::backend::x11 {
 
 
 struct DisplayCloser {
