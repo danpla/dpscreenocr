@@ -21,9 +21,8 @@
 //
 // * Resizing a layered window forces all underlying windows to be
 //   repainted, even under transparent areas. This results in flashing
-//   widgets in some applications.
-//
-//   This is also probably one of the reasons of high CPU load.
+//   widgets in some applications. This is also probably one of the
+//   reasons of high CPU load.
 //
 // * A layered window always repaints its background, even with dummy
 //   WM_ERASEBKGND that returns 1; if hbrBackground is NULL, the color
@@ -32,7 +31,7 @@
 //   blinking.
 //
 //   Moving drawing from WM_PAINT to WM_ERASEBKGND doesn't solve the
-//   issue completely: when the window is enlarged, its right and
+//   problem, because when the window is enlarged, its right and
 //   bottom portions flash with the background color even before
 //   WM_ERASEBKGND.
 //
@@ -42,11 +41,9 @@
 // Window regions have no such problems; they work well both with and
 // without Aero.
 //
-// Another good thing is that Windows don't prevent the click-trough
-// behavior during resizing, at the moments when cursor is on the
-// visible part of the selection; that was not possible on X11 without
-// making the whole window "transparent" for the mouse. In other
-// words, we don't need WS_EX_TRANSPARENT, which only works in
+// Another good thing is that Windows doesn't prevent the click-trough
+// behavior during resizing when cursor is on the visible part of the
+// selection, so we don't need WS_EX_TRANSPARENT, which only works in
 // combination with WS_EX_LAYERED.
 
 
@@ -153,11 +150,11 @@ Selection::Selection(
         {
             registerWindowClass(instance, wndProc);
 
-            // The v2 awareness was added later (in Windows 10 1703)
-            // than SetThreadDpiAwarenessContext() (Windows 10 1607),
-            // so we use v1 to fill the gap. Fortunately, the
-            // selection doesn't have non-client areas, so all v2
-            // improvements are irrelevant in our case.
+            // The v2 awareness was added after (in Windows 10 1703)
+            // SetThreadDpiAwarenessContext() (Windows 10 1607), so we
+            // use v1 to fill the gap. Fortunately, the selection
+            // doesn't have non-client areas, so all v2 improvements
+            // are irrelevant in our case.
             if (SetThreadDpiAwarenessContextFn)
                 SetThreadDpiAwarenessContextFn(
                     DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
@@ -404,8 +401,8 @@ void Selection::draw(HDC dc) const
     const auto rectLeft = borderWidth / 2;
     const auto rectTop = borderWidth / 2;
 
-    // By GDI conventions, right and bottom edges are not part of the
-    // rectangle, so we need to add an extra pixel.
+    // By GDI conventions, the right and bottom edges are not part of
+    // the rectangle, so we need to add an extra pixel.
     const auto rectRight = rectLeft + geom.w + borderWidth + 1;
     const auto rectBottom = rectTop + geom.h + borderWidth + 1;
 
