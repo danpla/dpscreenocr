@@ -27,48 +27,29 @@ Display* openDisplay()
 
 class Backend : public backend::Backend {
 public:
-    Backend();
+    KeyManager& getKeyManager() override
+    {
+        return keyManager;
+    }
 
-    KeyManager& getKeyManager() override;
-    Selection& getSelection() override;
-    img::ImgUPtr takeScreenshot(const Rect& rect) override;
+    Selection& getSelection() override
+    {
+        return selection;
+    }
+
+    img::ImgUPtr takeScreenshot(const Rect& rect) override
+    {
+        return x11::takeScreenshot(display.get(), rect);
+    }
 
     void update() override;
 private:
-    DisplayUPtr display;
+    DisplayUPtr display{openDisplay()};
+    KeyManager keyManager{display.get()};
+    Selection selection{display.get()};
 
-    KeyManager keyManager;
-    Selection selection;
-
-    BackendComponent* components[2];
+    BackendComponent* components[2]{&keyManager, &selection};
 };
-
-
-Backend::Backend()
-    : display{openDisplay()}
-    , keyManager{display.get()}
-    , selection{display.get()}
-    , components{&keyManager, &selection}
-{
-}
-
-
-KeyManager& Backend::getKeyManager()
-{
-    return keyManager;
-}
-
-
-Selection& Backend::getSelection()
-{
-    return selection;
-}
-
-
-img::ImgUPtr Backend::takeScreenshot(const Rect& rect)
-{
-    return x11::takeScreenshot(display.get(), rect);
-}
 
 
 void Backend::update()
