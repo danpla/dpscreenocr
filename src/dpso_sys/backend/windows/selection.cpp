@@ -145,7 +145,7 @@ void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 
 Selection::Selection(
         BgThreadExecutor& bgThreadExecutor, HINSTANCE instance)
-    : bgThreadExecutor{bgThreadExecutor},
+    : bgThreadExecutor{bgThreadExecutor}
     , geom{makeSelectionRect(origin, origin)}
 {
     bgThreadExecutor(
