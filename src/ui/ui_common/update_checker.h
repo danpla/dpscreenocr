@@ -12,8 +12,8 @@ extern "C" {
 /**
  * Check if the update checker is available.
  *
- * If the update checker is not available, uiUpdateCheckerCreate()
- * will always set an error message (dpsoGetError()) and return null.
+ * uiUpdateCheckerCreate() will always fail if the update checker is
+ * not available,
  */
 bool uiUpdateCheckerIsAvailable(void);
 
