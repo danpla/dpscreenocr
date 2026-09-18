@@ -162,6 +162,11 @@ UiUpdateChecker* uiUpdateCheckerCreate(
     const char* userAgent,
     const char* infoFileUrl)
 {
+    if (!uiUpdateCheckerIsAvailable()) {
+        setError("Update checker is not available");
+        return nullptr;
+    }
+
     return new UiUpdateChecker{appVersion, userAgent, infoFileUrl};
 }
 

@@ -15,8 +15,10 @@ const char* uiUpdateCheckerGetPlatformId(void)
 }
 
 
-struct UiUpdateChecker {
-};
+static void setError()
+{
+    dpso::setError("Update checker was disabled at compile time");
+}
 
 
 UiUpdateChecker* uiUpdateCheckerCreate(
@@ -24,13 +26,13 @@ UiUpdateChecker* uiUpdateCheckerCreate(
     const char* /*userAgent*/,
     const char* /*infoFileUrl*/)
 {
-    return new UiUpdateChecker{};
+    setError();
+    return nullptr;
 }
 
 
-void uiUpdateCheckerDelete(UiUpdateChecker* updateChecker)
+void uiUpdateCheckerDelete(UiUpdateChecker* /*updateChecker*/)
 {
-    delete updateChecker;
 }
 
 
@@ -50,6 +52,6 @@ UiUpdateCheckerStatus uiUpdateCheckerGetUpdateInfo(
     UiUpdateChecker* /*updateChecker*/,
     UiUpdateCheckerUpdateInfo* /*updateInfo*/)
 {
-    dpso::setError("Update checker was disabled at compile time");
+    setError();
     return UiUpdateCheckerStatusGenericError;
 }

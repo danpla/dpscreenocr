@@ -12,10 +12,8 @@ extern "C" {
 /**
  * Check if the update checker is available.
  *
- * The function only returns false if the update checker was disabled
- * at compile time. In this case, uiUpdateCheckerCreate() will return
- * a dummy checker that returns an error for
- * uiUpdateCheckerGetUpdateInfo().
+ * If the update checker is not available, uiUpdateCheckerCreate()
+ * will always set an error message (dpsoGetError()) and return null.
  */
 bool uiUpdateCheckerIsAvailable(void);
 
