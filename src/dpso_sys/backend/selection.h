@@ -13,9 +13,9 @@ public:
     static const auto defaultBorderWidth = 3;
 
     // The selection border is filled with a pattern of black and
-    // white dashes. The dash length defines the number of squares in
-    // a single dash.
-    static const auto dashLen = 3;
+    // white dashes. The length of each dash is calculated by
+    // multiplying the border width by squaresPerDash.
+    static const auto squaresPerDash = 3;
 
     virtual ~Selection() = default;
 

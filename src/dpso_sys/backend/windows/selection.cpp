@@ -352,7 +352,7 @@ void Selection::updatePens()
     // Black dashes.
     lb.lbColor = RGB(0, 0, 0);
 
-    const DWORD dashWidth = borderWidth * Selection::dashLen;
+    const DWORD dashWidth = borderWidth * squaresPerDash;
     const DWORD pattern[]{dashWidth, dashWidth};
 
     pens[1].reset(ExtCreatePen(

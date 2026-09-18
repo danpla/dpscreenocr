@@ -14,6 +14,8 @@ public:
 
     // Return true if the event was consumed.
     virtual bool handleEvent(const XEvent& event) = 0;
+
+    virtual void updateEnd() {}
 };
 
 

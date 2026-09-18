@@ -25,21 +25,34 @@ public:
 
     void updateStart() override;
     bool handleEvent(const XEvent& event) override;
+    void updateEnd() override;
 private:
     Display* display;
-    WindowHandle window{};
-    GcHandle gc{};
+    Window rootWindow;
+    int screenNum;
+
+    WindowHandle window;
 
     bool isEnabled{};
-    int baseBorderWidth{defaultBorderWidth};
-    int borderWidth{baseBorderWidth};
     Point origin;
     Rect geom;
 
-    void updateBorderWidth();
-    void updateWindowGeometry();
-    void updateWindowShape();
-    void setGeometry(const Rect& newGeom);
+    int baseBorderWidth{defaultBorderWidth};
+    int borderWidth{baseBorderWidth};
+    int dashLen{borderWidth * squaresPerDash};
+
+    GcHandle tileGc;
+    PixmapHandle xTile;
+    PixmapHandle yTile;
+
+    static const int numBorders{4};
+    XRectangle borderRects[numBorders];
+    GcHandle borderGcs[numBorders];
+
+    bool needRedraw{};
+
+    void updateBorderProperties();
+    void updateWindow();
     void draw();
 };
 

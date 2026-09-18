@@ -85,6 +85,7 @@ private:
 
 using WindowHandle = ResourceHandle<Window, XDestroyWindow>;
 using GcHandle = ResourceHandle<GC, XFreeGC>;
+using PixmapHandle = ResourceHandle<Pixmap, XFreePixmap>;
 
 
 }

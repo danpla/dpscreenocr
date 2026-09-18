@@ -83,6 +83,9 @@ void Backend::update()
             if (component->handleEvent(event))
                 break;
     }
+
+    for (auto* component : components)
+        component->updateEnd();
 }
 
 
