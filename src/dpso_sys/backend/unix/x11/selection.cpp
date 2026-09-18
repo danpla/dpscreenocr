@@ -7,6 +7,7 @@
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
 
+#include "backend/selection_utils.h"
 
 // Exposure events
 // ===============
@@ -123,6 +124,7 @@ Selection::Selection(Display* display)
     : display{display}
     , rootWindow{XDefaultRootWindow(display)}
     , screenNum{XDefaultScreen(display)}
+    , geom{makeSelectionRect(origin, origin)}
 {
     XSetWindowAttributes windowAttrs;
     windowAttrs.event_mask = ExposureMask;
@@ -203,7 +205,7 @@ void Selection::setIsEnabled(bool newIsEnabled)
 
     if (isEnabled) {
         origin = getMousePos(display);
-        geom = {origin, {}};
+        geom = makeSelectionRect(origin, origin);
 
         updateWindow();
 
@@ -231,13 +233,8 @@ void Selection::updateStart()
     if (!isEnabled)
         return;
 
-    auto newGeom = Rect::betweenPoints(origin, getMousePos(display));
-
-    // The maximum cursor position is 1 pixel smaller than the size of
-    // the display.
-    ++newGeom.w;
-    ++newGeom.h;
-
+    const auto newGeom = makeSelectionRect(
+        origin, getMousePos(display));
     if (newGeom == geom)
         return;
 

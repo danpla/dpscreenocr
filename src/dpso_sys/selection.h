@@ -25,11 +25,11 @@ bool dpsoSelectionGetIsEnabled(const DpsoSelection* selection);
  * Set whether selection is enabled.
  *
  * An active selection shows the user a rectangle between the anchor
- * point (the position at the moment the selection was enabled) and
- * the current mouse position. The appearance of the selection depends
- * on the platform and implementation.
+ * point (the mouse cursor position at the moment the selection was
+ * enabled) and the current mouse cursor position. The appearance of
+ * the selection depends on the platform and implementation.
  *
- * Enabling the already active selection will not reset the anchor
+ * Enabling an already active selection will not reset the anchor
  * point; to do this, you have to explicitly disable end enable it
  * back.
  */
@@ -65,9 +65,10 @@ void dpsoSelectionSetBorderWidth(
 /**
  * Get selection geometry.
  *
- * You can use this function even if selection is not active, in which
- * case it will return the geometry at the moment when the selection
- * was disabled.
+ * You can use this function even if the selection is not active, in
+ * which case it will return the geometry at the moment the selection
+ * was disabled. If the selection was never enabled, the returned
+ * geometry depends on the implementation.
  */
 void dpsoSelectionGetGeometry(
     const DpsoSelection* selection, DpsoRect* rect);

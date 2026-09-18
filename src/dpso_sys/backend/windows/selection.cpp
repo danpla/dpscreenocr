@@ -6,6 +6,7 @@
 #include "dpso_utils/windows/module.h"
 
 #include "backend/backend_error.h"
+#include "backend/selection_utils.h"
 
 
 // Transparent window areas
@@ -144,7 +145,8 @@ void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
 
 Selection::Selection(
         BgThreadExecutor& bgThreadExecutor, HINSTANCE instance)
-    : bgThreadExecutor{bgThreadExecutor}
+    : bgThreadExecutor{bgThreadExecutor},
+    , geom{makeSelectionRect(origin, origin)}
 {
     bgThreadExecutor(
         [&]
@@ -225,7 +227,7 @@ void Selection::setIsEnabled(bool newIsEnabled)
         {
             if (isEnabled) {
                 origin = getMousePos();
-                setGeometry({origin, {}});
+                setGeometry(makeSelectionRect(origin, origin));
             }
 
             ShowWindow(window.get(), isEnabled ? SW_SHOWNA : SW_HIDE);
@@ -261,16 +263,8 @@ void Selection::update()
 {
     assert(bgThreadExecutor.isActive());
 
-    if (!isEnabled)
-        return;
-
-    auto newGeom = Rect::betweenPoints(origin, getMousePos());
-    // The maximum cursor position is 1 pixel less than the size of
-    // the display.
-    ++newGeom.w;
-    ++newGeom.h;
-
-    setGeometry(newGeom);
+    if (isEnabled)
+        setGeometry(makeSelectionRect(origin, getMousePos()));
 }
 
 
