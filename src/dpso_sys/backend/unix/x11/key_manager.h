@@ -32,6 +32,7 @@ public:
     bool handleEvent(const XEvent& event) override;
 private:
     Display* display;
+    Window rootWindow;
     bool isEnabled{};
 
     struct X11HotkeyBinding {
@@ -42,10 +43,7 @@ private:
 
     DpsoHotkeyAction hotkeyAction{dpsoNoHotkeyAction};
 
-    static void changeGrab(
-        Display* display,
-        const X11HotkeyBinding& x11binding,
-        bool grab);
+    void changeGrab(const X11HotkeyBinding& x11binding, bool grab);
 };
 
 

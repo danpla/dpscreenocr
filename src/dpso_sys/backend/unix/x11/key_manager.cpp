@@ -26,6 +26,7 @@ unsigned toX11Mods(DpsoKeyMods dpsoMods);
 
 KeyManager::KeyManager(Display* display)
     : display{display}
+    , rootWindow{XDefaultRootWindow(display)}
 {
 }
 
@@ -54,7 +55,7 @@ void KeyManager::setIsEnabled(bool newIsEnabled)
         hotkeyAction = dpsoNoHotkeyAction;
 
     for (const auto& x11binding : x11bindings)
-        changeGrab(display, x11binding, isEnabled);
+        changeGrab(x11binding, isEnabled);
 }
 
 
@@ -80,7 +81,7 @@ void KeyManager::bindHotkey(
     x11bindings.push_back({{hotkey, action}, keyCode});
 
     if (isEnabled)
-        changeGrab(display, x11bindings.back(), true);
+        changeGrab(x11bindings.back(), true);
 }
 
 
@@ -99,7 +100,7 @@ HotkeyBinding KeyManager::getBinding(int idx) const
 void KeyManager::removeBinding(int idx)
 {
     if (isEnabled)
-        changeGrab(display, x11bindings[idx], false);
+        changeGrab(x11bindings[idx], false);
 
     if (idx + 1 < static_cast<int>(x11bindings.size()))
         x11bindings[idx] = x11bindings.back();
@@ -116,8 +117,7 @@ void KeyManager::updateStart()
 
 bool KeyManager::handleEvent(const XEvent& event)
 {
-    if (event.type != KeyPress
-            || event.xkey.window != XDefaultRootWindow(display))
+    if (event.type != KeyPress || event.xkey.window != rootWindow)
         return false;
 
     if (!isEnabled)
@@ -137,7 +137,7 @@ bool KeyManager::handleEvent(const XEvent& event)
 
 
 void KeyManager::changeGrab(
-    Display* display, const X11HotkeyBinding& x11binding, bool grab)
+    const X11HotkeyBinding& x11binding, bool grab)
 {
     const auto x11Mods = toX11Mods(
         x11binding.binding.hotkey.mods);
@@ -148,7 +148,7 @@ void KeyManager::changeGrab(
     // skip the lock keys, all the additional helper hotkeys will map
     // to the original one.
     for (int i{}; i < 16; ++i) {
-        unsigned ignoredX11Mods = 0;
+        unsigned ignoredX11Mods{};
         if (i & 1)
             ignoredX11Mods |= LockMask;
         if (i & 2)
@@ -163,7 +163,7 @@ void KeyManager::changeGrab(
                 display,
                 x11binding.keyCode,
                 x11Mods | ignoredX11Mods,
-                XDefaultRootWindow(display),
+                rootWindow,
                 False,
                 GrabModeAsync,
                 GrabModeAsync);
@@ -172,7 +172,7 @@ void KeyManager::changeGrab(
                 display,
                 x11binding.keyCode,
                 x11Mods | ignoredX11Mods,
-                XDefaultRootWindow(display));
+                rootWindow);
     }
 }
 
@@ -322,7 +322,7 @@ DpsoKeyMods toDpsoMods(unsigned x11Mods)
 
 unsigned toX11Mods(DpsoKeyMods dpsoMods)
 {
-    unsigned x11Mods = 0;
+    unsigned x11Mods{};
 
     for (const auto& modPair : modMap)
         if (dpsoMods & modPair.dpsoMod)
