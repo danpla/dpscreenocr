@@ -16,12 +16,14 @@ namespace {
 
 Display* openDisplay()
 {
-    if (auto* result = XOpenDisplay(nullptr))
+    const char* displayName{};
+
+    if (auto* result = XOpenDisplay(displayName))
         return result;
 
     throw BackendError{
         std::string{"Can't connect to X display "}
-        + XDisplayName(nullptr)};
+        + XDisplayName(displayName)};
 }
 
 
