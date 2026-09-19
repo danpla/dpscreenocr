@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <cassert>
 #include <chrono>
-#include <cstring>
 #include <functional>
 #include <future>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -69,10 +69,12 @@ void Context::play(const AudioData& audioData)
 {
     stop();
 
-    static char appName[128];
-    if (!*appName
-            && !libPulse.get_binary_name(appName, sizeof(appName)))
-        std::strncpy(appName, "dpso_sound", sizeof(appName) - 1);
+    static std::string appName;
+    if (appName.empty()) {
+        char buf[128];
+        const auto name = libPulse.get_binary_name(buf, sizeof(buf));
+        appName = name ? name : "dpso_sound";
+    }
 
     const LibPulse::sample_spec sampleSpec{
         LibPulse::SAMPLE_S16NE,
@@ -83,7 +85,7 @@ void Context::play(const AudioData& audioData)
     PulseSimpleUPtr pulseSimple{
         libPulse.simple_new(
             nullptr,
-            appName,
+            appName.c_str(),
             LibPulse::STREAM_PLAYBACK,
             nullptr,
             "Playback",
