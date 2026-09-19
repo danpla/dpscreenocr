@@ -11,7 +11,6 @@ add_library(
     screenshot.cpp
     selection.cpp)
 
-# Backend
 if(UNIX AND NOT APPLE)
     target_sources(
         dpso_sys
@@ -21,6 +20,17 @@ if(UNIX AND NOT APPLE)
         backend/unix/x11/key_manager.cpp
         backend/unix/x11/screenshot.cpp
         backend/unix/x11/selection.cpp)
+
+    find_package(X11 REQUIRED)
+    if(NOT X11_Xshape_FOUND)
+        message(SEND_ERROR "X11 Shape Extension is not found")
+    endif()
+
+    target_include_directories(
+        dpso_sys
+        PRIVATE ${X11_INCLUDE_DIR} ${X11_Xshape_INCLUDE_PATH})
+    target_link_libraries(
+        dpso_sys PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
 elseif(WIN32)
     target_sources(
         dpso_sys
@@ -30,6 +40,9 @@ elseif(WIN32)
         backend/windows/key_manager.cpp
         backend/windows/screenshot.cpp
         backend/windows/selection.cpp)
+
+    find_package(Threads REQUIRED)
+    target_link_libraries(dpso_sys PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()
@@ -60,22 +73,4 @@ if(NOT TARGET dpso_utils)
         ../dpso_utils "${CMAKE_BINARY_DIR}/src/dpso_utils")
 endif()
 
-find_package(Threads REQUIRED)
-
-target_link_libraries(
-    dpso_sys
-    PUBLIC dpso_img dpso_utils
-    PRIVATE ${CMAKE_THREAD_LIBS_INIT})
-
-if(UNIX AND NOT APPLE)
-    find_package(X11 REQUIRED)
-    if(NOT X11_Xshape_FOUND)
-        message(SEND_ERROR "X11 Shape Extension is not found")
-    endif()
-
-    target_include_directories(
-        dpso_sys
-        PRIVATE ${X11_INCLUDE_DIR} ${X11_Xshape_INCLUDE_PATH})
-    target_link_libraries(
-        dpso_sys PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
-endif()
+target_link_libraries(dpso_sys PUBLIC dpso_img dpso_utils)
