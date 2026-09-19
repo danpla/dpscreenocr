@@ -11,7 +11,6 @@ namespace dpso::backend {
 
 class KeyManager;
 class Selection;
-class Screenshot;
 
 
 class Backend {
