@@ -74,6 +74,17 @@ void setStr(
 }
 
 
+struct {
+    char raw;
+    char escaped;
+} strEscapes[]{
+    {'\n', 'n'},
+    {'\r', 'r'},
+    {'\t', 't'},
+    {'\\', '\\'},
+};
+
+
 void loadKeyValue(KeyValues& keyValues, std::string_view str)
 {
     str = str::trimLeft(str, str::isBlank);
@@ -98,20 +109,14 @@ void loadKeyValue(KeyValues& keyValues, std::string_view str)
         if (iter == rawVal.end())
             break;
 
-        switch (const auto c = *iter++) {
-        case 'n':
-            val += '\n';
-            break;
-        case 'r':
-            val += '\r';
-            break;
-        case 't':
-            val += '\t';
-            break;
-        default:
-            val += c;
-            break;
-        }
+        auto c = *iter++;
+        for (const auto& esc : strEscapes)
+            if (c == esc.escaped) {
+                c = esc.raw;
+                break;
+            }
+
+        val += c;
     }
 
     setStr(keyValues, key, std::move(val));
@@ -126,24 +131,16 @@ void writeKeyValue(
     if (!kv.value.empty() && kv.value.front() == ' ')
         write(stream, '\\');
 
-    for (auto c : kv.value)
-        switch (c) {
-        case '\n':
-            write(stream, "\\n");
-            break;
-        case '\r':
-            write(stream, "\\r");
-            break;
-        case '\t':
-            write(stream, "\\t");
-            break;
-        case '\\':
-            write(stream, "\\\\");
-            break;
-        default:
-            write(stream, c);
-            break;
-        }
+    for (auto c : kv.value) {
+        for (const auto& esc : strEscapes)
+            if (c == esc.raw) {
+                write(stream, '\\');
+                c = esc.escaped;
+                break;
+            }
+
+        write(stream, c);
+    }
 
     if (!kv.value.empty() && kv.value.back() == ' ')
         write(stream, '\\');
