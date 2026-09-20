@@ -7,8 +7,7 @@
 namespace ui {
 
 
-std::unique_ptr<Autostart> Autostart::create(
-    const Args& args)
+std::unique_ptr<Autostart> Autostart::create(const Args& args)
 {
     if (msix::isInMsix())
         return msix::createStartupTaskAutostart(args);

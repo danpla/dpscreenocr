@@ -34,13 +34,26 @@ namespace ui {
 namespace {
 
 
+// Escape sequences of the "string" type from the desktop entry spec.
+const struct {
+    char raw;
+    char escaped;
+} strEscapes[]{
+    {' ', 's'},
+    {'\n', 'n'},
+    {'\t', 't'},
+    {'\r', 'r'},
+    {'\\', '\\'},
+};
+
+
 // Escape the "string" type defined by the desktop entry spec.
 std::string escape(std::string_view str)
 {
     std::string result;
 
     for (std::size_t i{}; i < str.size(); ++i) {
-        const auto c = str[i];
+        auto c = str[i];
 
         // Escaping spaces and tabs is only necessary if it's a
         // leading or trailing character, to avoid trimming during
@@ -51,26 +64,14 @@ std::string escape(std::string_view str)
             continue;
         }
 
-        switch (c) {
-        case ' ':
-            result += "\\s";
-            break;
-        case '\n':
-            result += "\\n";
-            break;
-        case '\t':
-            result += "\\t";
-            break;
-        case '\r':
-            result += "\\r";
-            break;
-        case '\\':
-            result += "\\\\";
-            break;
-        default:
-            result += c;
-            break;
-        }
+        for (const auto& esc : strEscapes)
+            if (c == esc.raw) {
+                result += '\\';
+                c = esc.escaped;
+                break;
+            }
+
+        result += c;
     }
 
     return result;
@@ -81,28 +82,15 @@ std::string escape(std::string_view str)
 // "string" type defined by the desktop entry spec.
 void appendUnescaped(std::string& str, char c)
 {
-    switch (c) {
-    case 's':
-        str += ' ';
-        break;
-    case 'n':
-        str += '\n';
-        break;
-    case 't':
-        str += '\t';
-        break;
-    case 'r':
-        str += '\r';
-        break;
-    case '\\':
-        str += '\\';
-        break;
-    default:
-        // Unknown escape sequence; leave it as is.
-        str += '\\';
-        str += c;
-        break;
-    }
+    for (const auto& esc : strEscapes)
+        if (c == esc.escaped) {
+            str += esc.raw;
+            return;
+        }
+
+    // Leave unknown escape sequences as is.
+    str += '\\';
+    str += c;
 }
 
 
@@ -601,8 +589,7 @@ void AutostartUnix::setIsEnabled(bool newIsEnabled)
 }
 
 
-std::unique_ptr<Autostart> Autostart::create(
-    const Args& args)
+std::unique_ptr<Autostart> Autostart::create(const Args& args)
 {
     return std::make_unique<AutostartUnix>(args);
 }
