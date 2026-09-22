@@ -4,35 +4,29 @@ endif()
 
 install(
     PROGRAMS "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}.exe"
-    DESTINATION .
-    COMPONENT Required)
+    DESTINATION .)
 
 configure_file(
     "${CMAKE_CURRENT_LIST_DIR}/install_windows_dlls.cmake.in"
     "${CMAKE_BINARY_DIR}/install_windows_dlls.cmake"
     @ONLY)
-install(
-    SCRIPT "${CMAKE_BINARY_DIR}/install_windows_dlls.cmake"
-    COMPONENT Required)
+install(SCRIPT "${CMAKE_BINARY_DIR}/install_windows_dlls.cmake")
 
 if(DPSO_UI STREQUAL "qt")
     include(build_icons)
     build_icons("${CMAKE_BINARY_DIR}/icons" RASTER_SIZES all)
     install(
         DIRECTORY "${CMAKE_BINARY_DIR}/icons"
-        DESTINATION .
-        COMPONENT Required)
+        DESTINATION .)
 
     install(
         DIRECTORY "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/plugins"
-        DESTINATION "qt${DPSO_QT_VERSION}"
-        COMPONENT Required)
+        DESTINATION "qt${DPSO_QT_VERSION}")
 
     install(
         DIRECTORY
             "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
-        DESTINATION "qt${DPSO_QT_VERSION}"
-        COMPONENT localization)
+        DESTINATION "qt${DPSO_QT_VERSION}")
 
     string(
         JOIN "\n" QT_CONF
@@ -44,8 +38,7 @@ if(DPSO_UI STREQUAL "qt")
         CONTENT "${QT_CONF}")
     install(
         FILES "${CMAKE_BINARY_DIR}/qt.conf"
-        DESTINATION .
-        COMPONENT Required)
+        DESTINATION .)
 endif()
 
 # Copy sounds to the binary dir so that we can test the app without
@@ -55,20 +48,17 @@ file(
     DESTINATION "${CMAKE_BINARY_DIR}")
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/sounds"
-    DESTINATION .
-    COMPONENT Required)
+    DESTINATION .)
 
 include(tesseract_utils)
 get_tesseract_data_dir_name(TESSERACT_DATA_DIR_NAME)
 if(TESSERACT_DATA_DIR_NAME)
     install(
         DIRECTORY
-        DESTINATION "${TESSERACT_DATA_DIR_NAME}"
-        COMPONENT Required)
+        DESTINATION "${TESSERACT_DATA_DIR_NAME}")
     install(
         FILES "${CMAKE_BINARY_DIR}/${TESSERACT_DATA_DIR_NAME}/eng.traineddata"
         DESTINATION "${TESSERACT_DATA_DIR_NAME}"
-        COMPONENT Required
         OPTIONAL)
 else()
     message(
@@ -81,8 +71,7 @@ compile_po("${CMAKE_BINARY_DIR}/translations")
 
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/translations"
-    DESTINATION .
-    COMPONENT localization)
+    DESTINATION .)
 
 include(line_endings_conversion)
 
@@ -108,5 +97,4 @@ convert_line_endings(
 
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/doc"
-    DESTINATION .
-    COMPONENT Required)
+    DESTINATION .)
