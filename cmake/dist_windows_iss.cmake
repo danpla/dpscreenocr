@@ -1,5 +1,4 @@
-# Generate inno_setup_config.isi.
-function(gen_inno_setup_config)
+function(iss_gen_setup_config OUT_DIR)
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
         set(APP_IS_64_BIT Yes)
     elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -10,23 +9,15 @@ function(gen_inno_setup_config)
             "Unexpected CMAKE_SIZEOF_VOID_P (${CMAKE_SIZEOF_VOID_P})")
     endif()
 
-    set(APP_UI "${DPSO_UI}")
-    if(DPSO_UI STREQUAL "qt")
-        set(APP_UI "${APP_UI}${DPSO_QT_VERSION}")
-    endif()
-
-    set(APP_TESSERACT_VERSION_MAJOR "${DPSO_TESSERACT_VERSION_MAJOR}")
-
     string(REPLACE "/" "\\" APP_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
 
     configure_file(
         "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup_config.isi.in"
-        "${CMAKE_BINARY_DIR}/inno_setup_config.isi"
+        "${OUT_DIR}/inno_setup_config.isi"
         @ONLY)
 endfunction()
 
-# Generate inno_setup_languages.isi.
-function(gen_inno_setup_language_list)
+function(iss_gen_language_list OUT_DIR)
     # This is the mapping from a language code in po/LINGUAS to a name
     # if the Inno Setup language file from "compiler:Languages\".
     # English is always included and is not listed here. To skip a
@@ -57,10 +48,7 @@ function(gen_inno_setup_language_list)
     set(ISL_uk "Ukrainian")
     set(ISL_zh_CN "Unofficial\\ChineseSimplified")
 
-    set(OUT_FILE "${CMAKE_BINARY_DIR}/inno_setup_languages.isi")
-
-    file(REMOVE "${OUT_FILE}")
-
+    set(CONTENT "")
     set(UNDEFINED_ISLS)
 
     include(get_linguas)
@@ -68,17 +56,22 @@ function(gen_inno_setup_language_list)
     foreach(LANG ${LANGS})
         if(NOT ISL_${LANG})
             list(APPEND UNDEFINED_ISLS "${LANG}")
-            file(
+            string(
                 APPEND
-                "${OUT_FILE}"
+                CONTENT
                 "; Name: \"${LANG}\"; MessagesFile: Not found\n")
         elseif(NOT ISL_${LANG} STREQUAL "-")
-            file(
+            string(
                 APPEND
-                "${OUT_FILE}"
+                CONTENT
                 "Name: \"${LANG}\"; MessagesFile: \"compiler:Languages\\${ISL_${LANG}}.isl\"\n")
         endif()
     endforeach()
+
+    file(
+        GENERATE
+        OUTPUT "${OUT_DIR}/inno_setup_languages.isi"
+        CONTENT "${CONTENT}")
 
     if(UNDEFINED_ISLS)
         string(
@@ -91,10 +84,32 @@ function(gen_inno_setup_language_list)
     endif()
 endfunction()
 
+set(ISS_BUILD_DIR "${CMAKE_BINARY_DIR}/iss_build")
+set(ISS_APP_DIR "${ISS_BUILD_DIR}/${APP_FILE_NAME}")
+
+set(ISS_SCRIPT "${ISS_BUILD_DIR}/inno_setup.iss")
 configure_file(
     "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup.iss"
-    "${CMAKE_BINARY_DIR}/inno_setup.iss"
+    "${ISS_SCRIPT}"
     COPYONLY)
 
-gen_inno_setup_config()
-gen_inno_setup_language_list()
+iss_gen_setup_config("${ISS_BUILD_DIR}")
+iss_gen_language_list("${ISS_BUILD_DIR}")
+
+add_custom_target(
+    iss
+    COMMAND
+        "${CMAKE_COMMAND}" -E rm -rf "${ISS_APP_DIR}"
+    COMMAND
+        "${CMAKE_COMMAND}"
+        --build "${CMAKE_BINARY_DIR}"
+        --parallel
+    COMMAND
+        "${CMAKE_COMMAND}"
+        --install "${CMAKE_BINARY_DIR}"
+        --strip
+        --prefix "${ISS_APP_DIR}"
+    COMMAND
+        "${CMAKE_COMMAND}" -E echo
+        "You can now build the installer using \"${ISS_SCRIPT}\""
+    VERBATIM)

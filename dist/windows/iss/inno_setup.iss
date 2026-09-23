@@ -22,18 +22,10 @@ AppCopyright=© {#APP_COPYRIGHT_YEAR} {#APP_AUTHOR}
 AppSupportURL={#APP_URL}
 LicenseFile={#APP_SOURCE_DIR}\LICENSE.txt
 
-; Use the lowest privileges so that the installer shows per-user
-; installation as the recommended method. This way, our uninstaller
-; can ask users if they want to remove user-specific data. In
-; particular, it's not great to silently leave hundreds of megabytes
-; of installed languages if the user is going to remove the program
-; permanently.
+; Use the lowest privileges so that the installer shows the per-user
+; installation as the recommended method.
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-; We know that we should not make user-specific changes in admin
-; install mode. Our entry in [Files] that uses {localappdata} has
-; "Check:" that will skip it in admin mode, so disable the warning.
-UsedUserAreasWarning=no
 
 OutputDir=.
 
@@ -61,57 +53,9 @@ Compression=lzma2
 SolidCompression=yes
 
 [Files]
-Source: "{#APP_FILE_NAME}.exe"; \
+Source: "{#APP_FILE_NAME}\*"; \
   DestDir: "{app}"; \
-  Flags: ignoreversion
-Source: "*.dll"; \
-  DestDir: "{app}"; \
-  Flags: ignoreversion
-Source: "doc\*"; \
-  DestDir: "{app}\doc"; \
   Flags: ignoreversion recursesubdirs
-Source: "icons\*"; \
-  DestDir: "{app}\icons"; \
-  Flags: ignoreversion recursesubdirs
-Source: "translations\*"; \
-  DestDir: "{app}\translations"; \
-  Flags: ignoreversion recursesubdirs
-Source: "sounds\*"; \
-  DestDir: "{app}\sounds"; \
-  Flags: ignoreversion recursesubdirs
-
-#define TESSDATA_DIR "tessdata"
-#define TESSERACT_DATA_DIR \
-  "tesseract_" + APP_TESSERACT_VERSION_MAJOR + "_data"
-#define ENG_TRAINEDDATA "eng.traineddata"
-
-; Our application copies TESSERACT_DATA_DIR (if any) to the current
-; user's local app data directory on first start; this is the only
-; purpose of TESSERACT_DATA_DIR in the installation directory.
-; However, when we install for the current user, we can do the same
-; copying from the installer and avoid installing TESSERACT_DATA_DIR
-; to save disk space. Therefore, there are two source lines below: for
-; admin and non-admin install modes, respectively.
-Source: "{#TESSERACT_DATA_DIR}\{#ENG_TRAINEDDATA}"; \
-  DestDir: "{app}\{#TESSERACT_DATA_DIR}"; \
-  Check: ShouldInstallEngTraineddata(); \
-  Flags: ignoreversion
-Source: "{#TESSERACT_DATA_DIR}\{#ENG_TRAINEDDATA}"; \
-  DestDir: "{localappdata}\{#APP_FILE_NAME}\{#TESSERACT_DATA_DIR}"; \
-  Check: ShouldCopyEngTraineddataForCurrentUser(); \
-  Flags: ignoreversion uninsneveruninstall
-
-#if APP_UI == "qt5" || APP_UI == "qt6"
-Source: "qt.conf"; \
-  DestDir: "{app}"; \
-  Flags: ignoreversion
-Source: "{#APP_UI}\plugins\*"; \
-  DestDir: "{app}\{#APP_UI}\plugins"; \
-  Flags: ignoreversion recursesubdirs
-Source: "{#APP_UI}\translations\*"; \
-  DestDir: "{app}\{#APP_UI}\translations"; \
-  Flags: ignoreversion recursesubdirs
-#endif
 
 [Icons]
 Name: "{autoprograms}\{#APP_NAME}"; \
@@ -126,27 +70,6 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 procedure OurLog(const Scope, Msg: String);
 begin
   Log('[{#APP_FILE_NAME}] ' + Scope + ': ' + Msg);
-end;
-
-// The two following Should*() checks are used in "Check:"; they are
-// mutually exclusive and intended for admin and non-admin install
-// modes, respectively. See the [Files] section for the details.
-
-function ShouldInstallEngTraineddata(): Boolean;
-begin
-  Result := IsAdminInstallMode();
-end;
-
-function ShouldCopyEngTraineddataForCurrentUser(): Boolean;
-begin
-  Result := not IsAdminInstallMode()
-    // To handle the case when the user updates from an old version
-    // that doesn't use data from {localappdata}, we must check the
-    // existence of TESSERACT_DATA_DIR rather that just the app data
-    // directory.
-    and not DirExists(
-      ExpandConstant('{localappdata}')
-      + '\{#APP_FILE_NAME}\{#TESSERACT_DATA_DIR}');
 end;
 
 function OurExecAndGetOutput(
