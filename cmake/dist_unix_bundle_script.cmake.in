@@ -88,7 +88,8 @@ function(set_up_launcher)
             -S "${LAUNCHER_SOURCE_DIR}"
             -B "${LAUNCHER_BUILD_DIR}"
             -G "${CMAKE_GENERATOR}"
-            "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+            -D "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+            -D "LAUNCHER_NAME=${APP_FILE_NAME}"
         COMMAND_ERROR_IS_FATAL ANY)
 
     execute_process(
@@ -102,10 +103,6 @@ function(set_up_launcher)
             --strip
             --prefix "${BUNDLE_DIR}"
         COMMAND_ERROR_IS_FATAL ANY)
-
-    file(
-        RENAME
-        "${BUNDLE_DIR}/launcher" "${BUNDLE_DIR}/${APP_FILE_NAME}")
 
     string(
         JOIN "\n" LAUNCHER_CFG
