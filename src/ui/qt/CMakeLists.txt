@@ -2,7 +2,7 @@ set(DPSO_QT_VERSION "5" CACHE STRING "Qt version to use: 5 or 6")
 set_property(CACHE DPSO_QT_VERSION PROPERTY STRINGS 5 6)
 
 add_executable(
-    dpscreenocr_qt
+    dpscreenocr
 
     about.cpp
     action_chooser.cpp
@@ -24,12 +24,11 @@ add_executable(
 if(WIN32)
     add_subdirectory(
         ../windows_rc "${CMAKE_BINARY_DIR}/src/ui/windows_rc")
-    target_sources(
-        dpscreenocr_qt PRIVATE $<TARGET_OBJECTS:windows_rc>)
+    target_sources(dpscreenocr PRIVATE $<TARGET_OBJECTS:windows_rc>)
 endif()
 
 set_target_properties(
-    dpscreenocr_qt PROPERTIES
+    dpscreenocr PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
@@ -39,18 +38,18 @@ set_target_properties(
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
-        dpscreenocr_qt PRIVATE -Wall -Wextra -pedantic)
+        dpscreenocr PRIVATE -Wall -Wextra -pedantic)
 endif()
 
-target_include_directories(dpscreenocr_qt PRIVATE .)
+target_include_directories(dpscreenocr PRIVATE .)
 
 if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
-    target_compile_definitions(dpscreenocr_qt PRIVATE QT_NO_DEBUG=1)
+    target_compile_definitions(dpscreenocr PRIVATE QT_NO_DEBUG=1)
 
     if(WIN32)
         # Hide console window.
         set_target_properties(
-            dpscreenocr_qt PROPERTIES WIN32_EXECUTABLE TRUE)
+            dpscreenocr PROPERTIES WIN32_EXECUTABLE TRUE)
     endif()
 endif()
 
@@ -79,7 +78,7 @@ if(NOT TARGET ui_common)
 endif()
 
 target_link_libraries(
-    dpscreenocr_qt
+    dpscreenocr
     dpso_ext dpso_ocr dpso_sys dpso_utils ui_common)
 
 if(NOT DPSO_QT_VERSION EQUAL 5 AND NOT DPSO_QT_VERSION EQUAL 6)
@@ -96,11 +95,11 @@ endif()
 if(DPSO_QT_VERSION EQUAL 6
         AND Qt6Core_VERSION VERSION_GREATER_EQUAL "6.7.0")
     target_compile_definitions(
-        dpscreenocr_qt PRIVATE QT_NO_CONTEXTLESS_CONNECT=1)
+        dpscreenocr PRIVATE QT_NO_CONTEXTLESS_CONNECT=1)
 endif()
 
 target_link_libraries(
-    dpscreenocr_qt
+    dpscreenocr
     Qt${DPSO_QT_VERSION}::Core
     Qt${DPSO_QT_VERSION}::Gui
     Qt${DPSO_QT_VERSION}::Widgets)
