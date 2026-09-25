@@ -95,10 +95,14 @@ function(set_up_launcher)
         COMMAND "${CMAKE_COMMAND}" --build "${LAUNCHER_BUILD_DIR}"
         COMMAND_ERROR_IS_FATAL ANY)
 
-    file(
-        INSTALL "${LAUNCHER_BUILD_DIR}/launcher"
-        DESTINATION "${BUNDLE_DIR}"
-        USE_SOURCE_PERMISSIONS)
+    execute_process(
+        COMMAND
+            "${CMAKE_COMMAND}"
+            --install "${LAUNCHER_BUILD_DIR}"
+            --strip
+            --prefix "${BUNDLE_DIR}"
+        COMMAND_ERROR_IS_FATAL ANY)
+
     file(
         RENAME
         "${BUNDLE_DIR}/launcher" "${BUNDLE_DIR}/${APP_FILE_NAME}")

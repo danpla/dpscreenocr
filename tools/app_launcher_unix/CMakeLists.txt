@@ -14,3 +14,7 @@ target_compile_options(
     launcher PRIVATE -Wall -Wextra -pedantic -Wstrict-prototypes)
 
 target_link_libraries(launcher dl)
+
+# Install to the root of CMAKE_INSTALL_PREFIX, mainly to make the
+# --strip option of "cmake --install" work.
+install(TARGETS launcher DESTINATION .)
