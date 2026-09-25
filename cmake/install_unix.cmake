@@ -1,7 +1,7 @@
 include(GNUInstallDirs)
 
 install(
-    PROGRAMS "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}"
+    TARGETS dpscreenocr
     DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 include(gen_desktop_entry)

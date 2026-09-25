@@ -267,6 +267,15 @@ function(bundle_libs)
     # bundled Qt plugins, we instead use the original plugins path.
     # This will work because each plugin has an RPATH entry to the
     # directory containing libraries.
+    #
+    # The same trick is done for the main executable: we use the
+    # executable from the build tree rather than the bundled
+    # (installed) one. The reason is that when the executable is
+    # installed with install(TARGETS) instead of install(PROGRAMS),
+    # CMake will strip its RPATH by default, and we don't want to
+    # mess with CMake options to keep the original RPATH (it is
+    # useless for the bundled executable anyway).
+
     set(EXTRA_LIBS)
 
     if(DPSO_UI STREQUAL "qt")
@@ -281,7 +290,7 @@ function(bundle_libs)
     # /usr/lib/x86_64-linux-gnu on Debian, but in /usr/lib on Arch.
     file(
         GET_RUNTIME_DEPENDENCIES
-        EXECUTABLES "${BUNDLE_DIR}/bin/${APP_FILE_NAME}"
+        EXECUTABLES "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}"
         LIBRARIES ${EXTRA_LIBS}
         RESOLVED_DEPENDENCIES_VAR RESOLVED_LIBS
         UNRESOLVED_DEPENDENCIES_VAR UNRESOLVED_LIBS)
