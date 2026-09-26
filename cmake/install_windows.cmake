@@ -36,13 +36,8 @@ if(DPSO_UI STREQUAL "qt")
         DESTINATION .)
 endif()
 
-# Copy sounds to the binary dir so that we can test the app without
-# installing.
-file(
-    COPY "${CMAKE_SOURCE_DIR}/data/sounds"
-    DESTINATION "${CMAKE_BINARY_DIR}")
 install(
-    DIRECTORY "${CMAKE_BINARY_DIR}/sounds"
+    DIRECTORY "${CMAKE_SOURCE_DIR}/data/sounds"
     DESTINATION .)
 
 include(tesseract_utils)
