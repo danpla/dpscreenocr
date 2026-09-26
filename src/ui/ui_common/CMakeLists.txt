@@ -130,8 +130,7 @@ if(DPSO_ENABLE_MSIX)
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-        OUTPUT_NAME "${MSIX_HELPER_DLL_NAME}"
+        LIBRARY_OUTPUT_NAME "${MSIX_HELPER_DLL_NAME}"
         PREFIX "")
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
             OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -154,6 +153,9 @@ if(DPSO_ENABLE_MSIX)
     target_link_libraries(
         ui_common_msix_helper_dll
         PRIVATE windowsapp ${CMAKE_THREAD_LIBS_INIT})
+
+    # The helper DLL is loaded from the EXE directory.
+    install(TARGETS ui_common_msix_helper_dll DESTINATION .)
 endif()
 
 foreach(IN_SRC ${IN_SRCS})

@@ -1,16 +1,11 @@
+install(
+    TARGETS "${APP_FILE_NAME}"
+    RUNTIME_DEPENDENCY_SET "${APP_FILE_NAME}"
+    DESTINATION .)
+
 if(MINGW)
     include(install_windows_msys2)
 endif()
-
-install(
-    PROGRAMS "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}.exe"
-    DESTINATION .)
-
-configure_file(
-    "${CMAKE_CURRENT_LIST_DIR}/install_windows_dlls.cmake.in"
-    "${CMAKE_BINARY_DIR}/install_windows_dlls.cmake"
-    @ONLY)
-install(SCRIPT "${CMAKE_BINARY_DIR}/install_windows_dlls.cmake")
 
 if(DPSO_UI STREQUAL "qt")
     include(build_icons)
@@ -68,7 +63,6 @@ endif()
 
 include(compile_po)
 compile_po("${CMAKE_BINARY_DIR}/translations")
-
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/translations"
     DESTINATION .)

@@ -1,20 +1,16 @@
 # Instructions specific to MSYS2/MinGW.
 
-configure_file(
-    "${CMAKE_CURRENT_LIST_DIR}/install_windows_msys2_copy_dlls.cmake.in"
-    "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
-    @ONLY)
-
-add_custom_target(
-    copy_dlls
-    ALL
-    COMMENT "Copying DLLs"
-    COMMAND
-        "${CMAKE_COMMAND}" -P
-        "${CMAKE_BINARY_DIR}/install_windows_msys2_copy_dlls.cmake"
-    VERBATIM)
-
-add_dependencies(copy_dlls "${APP_FILE_NAME}_${DPSO_UI}")
+install(
+    RUNTIME_DEPENDENCY_SET "${APP_FILE_NAME}"
+    DESTINATION .
+    DIRECTORIES "$ENV{MINGW_PREFIX}/bin"
+    # As of version 3.23, CMake doesn't seem to handle Windows API
+    # sets, so we filter them manually via PRE_EXCLUDE_REGEXES.
+    # https://docs.microsoft.com/en-us/windows/win32/apiindex/windows-apisets
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/22006
+    PRE_EXCLUDE_REGEXES "api-ms-.*" "ext-ms-.*"
+    POST_INCLUDE_REGEXES "^$ENV{MINGW_PREFIX}/bin/.*"
+    POST_EXCLUDE_REGEXES ".*")
 
 include(tesseract_utils)
 get_tesseract_data_dir_name(TESSERACT_DATA_DIR_NAME)
