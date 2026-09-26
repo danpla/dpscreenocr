@@ -8,11 +8,8 @@ if(MINGW)
 endif()
 
 if(DPSO_UI STREQUAL "qt")
-    include(build_icons)
-    build_icons("${CMAKE_BINARY_DIR}/icons" RASTER_SIZES all)
-    install(
-        DIRECTORY "${CMAKE_BINARY_DIR}/icons"
-        DESTINATION .)
+    include(icon_utils)
+    install_icons("icons" RASTER_SIZES all)
 
     string(
         JOIN "\n" QT_CONF
