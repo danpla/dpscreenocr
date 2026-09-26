@@ -31,22 +31,6 @@ install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/data/sounds"
     DESTINATION .)
 
-include(tesseract_utils)
-get_tesseract_data_dir_name(TESSERACT_DATA_DIR_NAME)
-if(TESSERACT_DATA_DIR_NAME)
-    install(
-        DIRECTORY
-        DESTINATION "${TESSERACT_DATA_DIR_NAME}")
-    install(
-        FILES "${CMAKE_BINARY_DIR}/${TESSERACT_DATA_DIR_NAME}/eng.traineddata"
-        DESTINATION "${TESSERACT_DATA_DIR_NAME}"
-        OPTIONAL)
-else()
-    message(
-        "Tesseract data dir was not detected; please set up "
-        "Tesseract data manually")
-endif()
-
 include(compile_po)
 compile_po("${CMAKE_BINARY_DIR}/translations")
 install(

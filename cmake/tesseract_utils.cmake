@@ -12,25 +12,23 @@ function(get_tesseract_data_dir_name VAR)
     endif()
 endfunction()
 
-# Copy contents of tessdata directory.
+# Install contents of the tessdata directory.
 #
-# copy_tessdata(
+# install_tessdata(
 #   SRC_DIR
 #   DST_DIR
 #   LANGUAGES languages...
 #   OPTIONAL)
 #
-# LANGUAGES is a list of traineddata files without extensions.
-# If OPTIONAL is given, nonexistent files are not treated as errors.
-function(copy_tessdata SRC_DIR DST_DIR)
+# LANGUAGES is a list of traineddata files without extensions. If
+# OPTIONAL is given, nonexistent files are not treated as errors.
+function(install_tessdata SRC_DIR DST_DIR)
     cmake_parse_arguments(ARG "OPTIONAL" "" "LANGUAGES" ${ARGN})
 
-    set(DST_FILES)
+    set(SRC_FILES)
 
     foreach(LANG ${ARG_LANGUAGES})
-        set(TRAINEDDATA_NAME "${LANG}.traineddata")
-        set(SRC_FILE "${SRC_DIR}/${TRAINEDDATA_NAME}")
-        set(DST_FILE "${DST_DIR}/${TRAINEDDATA_NAME}")
+        set(SRC_FILE "${SRC_DIR}/${LANG}.traineddata")
 
         if(NOT EXISTS "${SRC_FILE}")
             if(ARG_OPTIONAL)
@@ -41,15 +39,8 @@ function(copy_tessdata SRC_DIR DST_DIR)
             message(FATAL_ERROR "${SRC_FILE} does not exist")
         endif()
 
-        add_custom_command(
-            OUTPUT "${DST_FILE}"
-            COMMAND
-                "${CMAKE_COMMAND}" -E copy "${SRC_FILE}" "${DST_FILE}"
-            DEPENDS "${SRC_FILE}"
-            VERBATIM)
-
-        list(APPEND DST_FILES "${DST_FILE}")
+        list(APPEND SRC_FILES "${SRC_FILE}")
     endforeach()
 
-    add_custom_target(tessdata_dir ALL DEPENDS ${DST_FILES})
+    install(FILES ${SRC_FILES} DESTINATION "${DST_DIR}")
 endfunction()

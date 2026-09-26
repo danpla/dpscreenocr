@@ -1,5 +1,3 @@
-# Instructions specific to MSYS2/MinGW.
-
 install(
     RUNTIME_DEPENDENCY_SET "${APP_FILE_NAME}"
     DESTINATION .
@@ -15,9 +13,9 @@ install(
 include(tesseract_utils)
 get_tesseract_data_dir_name(TESSERACT_DATA_DIR_NAME)
 if(TESSERACT_DATA_DIR_NAME)
-    copy_tessdata(
+    install_tessdata(
         "$ENV{MINGW_PREFIX}/share/tessdata"
-        "${CMAKE_BINARY_DIR}/${TESSERACT_DATA_DIR_NAME}"
+        "${TESSERACT_DATA_DIR_NAME}"
         LANGUAGES eng
         OPTIONAL)
 endif()
