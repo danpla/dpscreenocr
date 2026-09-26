@@ -25,16 +25,16 @@ endif()
 if(DPSO_UI STREQUAL "qt")
     include(qt_utils)
 
-    copy_qt_windows_plugins(
+    install_qt_windows_plugins(
         "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/plugins"
-        "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/plugins")
+        "qt${DPSO_QT_VERSION}/plugins")
 
     include(get_linguas)
     get_linguas(LANGS)
 
-    copy_qt_translations(
+    install_qt_translations(
         "$ENV{MINGW_PREFIX}/share/qt${DPSO_QT_VERSION}/translations"
-        "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
+        "qt${DPSO_QT_VERSION}/translations"
         LANGUAGES ${LANGS}
         COMPONENTS qt qtbase)
 endif()

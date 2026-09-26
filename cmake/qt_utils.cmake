@@ -1,40 +1,29 @@
-# Copy standard Qt translations from SRC_DIR to DST_DIR.
+# Install standard Qt translations from SRC_DIR to DST_DIR.
 #
-# copy_qt_translations(
+# install_qt_translations(
 #   SRC_DIR
 #   DST_DIR
 #   LANGUAGES languages...
 #   COMPONENTS components...)
-function(copy_qt_translations SRC_DIR DST_DIR)
+function(install_qt_translations SRC_DIR DST_DIR)
     cmake_parse_arguments(ARG "" "" "LANGUAGES;COMPONENTS" ${ARGN})
 
-    set(SRC_QMS)
+    set(QMS)
     foreach(LANG ${ARG_LANGUAGES})
         foreach(COMPONENT ${ARG_COMPONENTS})
             set(QM "${SRC_DIR}/${COMPONENT}_${LANG}.qm")
             if(EXISTS "${QM}")
-                list(APPEND SRC_QMS "${QM}")
+                list(APPEND QMS "${QM}")
             endif()
         endforeach()
     endforeach()
 
-    set(DST_QMS)
-    foreach(SRC_QM ${SRC_QMS})
-        cmake_path(GET SRC_QM FILENAME QM_NAME)
-        set(DST_QM "${DST_DIR}/${QM_NAME}")
-        list(APPEND DST_QMS "${DST_QM}")
-
-        add_custom_command(
-            OUTPUT "${DST_QM}"
-            COMMAND "${CMAKE_COMMAND}" -E copy "${SRC_QM}" "${DST_QM}"
-            DEPENDS "${SRC_QM}"
-            VERBATIM)
-    endforeach()
-
-    add_custom_target(qt_translations ALL DEPENDS ${DST_QMS})
+    if(QMS)
+        install(FILES ${QMS} DESTINATION "${DST_DIR}")
+    endif()
 endfunction()
 
-function(copy_qt_windows_plugins SRC_DIR DST_DIR)
+function(install_qt_windows_plugins SRC_DIR DST_DIR)
     set(PLUGINS
         "platforms/qwindows.dll")
 
@@ -45,25 +34,15 @@ function(copy_qt_windows_plugins SRC_DIR DST_DIR)
         list(APPEND PLUGINS "styles/qmodernwindowsstyle.dll")
     endif()
 
-    set(DST_FILES)
-
     foreach(PLUGIN ${PLUGINS})
         set(SRC_FILE "${SRC_DIR}/${PLUGIN}")
-        set(DST_FILE "${DST_DIR}/${PLUGIN}")
-
         if(NOT EXISTS "${SRC_FILE}")
             message(FATAL_ERROR "\"${SRC_FILE}\" does not exist")
         endif()
 
-        add_custom_command(
-            OUTPUT "${DST_FILE}"
-            COMMAND
-                "${CMAKE_COMMAND}" -E copy "${SRC_FILE}" "${DST_FILE}"
-            DEPENDS "${SRC_FILE}"
-            VERBATIM)
-        list(APPEND DST_FILES "${DST_FILE}")
-    endforeach()
+        cmake_path(GET PLUGIN PARENT_PATH PLUGIN_DIR)
+        set(DST_FILE_DIR "${DST_DIR}/${PLUGIN_DIR}")
 
-    add_custom_target(
-        qt_windows_plugins ALL DEPENDS ${DST_FILES})
+        install(FILES "${SRC_FILE}" DESTINATION "${DST_FILE_DIR}")
+    endforeach()
 endfunction()

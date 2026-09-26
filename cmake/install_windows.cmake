@@ -14,15 +14,6 @@ if(DPSO_UI STREQUAL "qt")
         DIRECTORY "${CMAKE_BINARY_DIR}/icons"
         DESTINATION .)
 
-    install(
-        DIRECTORY "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/plugins"
-        DESTINATION "qt${DPSO_QT_VERSION}")
-
-    install(
-        DIRECTORY
-            "${CMAKE_BINARY_DIR}/qt${DPSO_QT_VERSION}/translations"
-        DESTINATION "qt${DPSO_QT_VERSION}")
-
     string(
         JOIN "\n" QT_CONF
         "[Paths]"
