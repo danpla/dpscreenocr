@@ -35,23 +35,23 @@ set_target_properties(
     AUTOMOC ON
     OUTPUT_NAME "dpscreenocr"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+if(WIN32)
+    # Hide the console window.
+    set_target_properties(
+        dpscreenocr PROPERTIES WIN32_EXECUTABLE TRUE)
+endif()
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
         dpscreenocr PRIVATE -Wall -Wextra -pedantic)
 endif()
 
-target_include_directories(dpscreenocr PRIVATE .)
-
 if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
     target_compile_definitions(dpscreenocr PRIVATE QT_NO_DEBUG=1)
-
-    if(WIN32)
-        # Hide console window.
-        set_target_properties(
-            dpscreenocr PROPERTIES WIN32_EXECUTABLE TRUE)
-    endif()
 endif()
+
+target_include_directories(dpscreenocr PRIVATE .)
 
 if(NOT TARGET dpso_ext)
     add_subdirectory(
