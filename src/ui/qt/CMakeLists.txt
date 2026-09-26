@@ -47,9 +47,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         dpscreenocr PRIVATE -Wall -Wextra -pedantic)
 endif()
 
-if(CMAKE_BUILD_TYPE MATCHES "Release|RelWithDebInfo|MinSizeRel")
-    target_compile_definitions(dpscreenocr PRIVATE QT_NO_DEBUG=1)
-endif()
+target_compile_definitions(
+    dpscreenocr PRIVATE $<$<NOT:$<CONFIG:Debug>>:QT_NO_DEBUG=1>)
 
 target_include_directories(dpscreenocr PRIVATE .)
 
