@@ -1,7 +1,7 @@
 include(GNUInstallDirs)
 
 install(
-    TARGETS dpscreenocr
+    TARGETS "${APP_FILE_NAME}"
     DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 include(gen_desktop_entry)
@@ -10,22 +10,17 @@ install(
     FILES "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}.desktop"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
 
-include(build_icons)
-build_icons(
-    "${CMAKE_BINARY_DIR}/icons"
+include(icon_utils)
+install_icons(
+    "${CMAKE_INSTALL_DATADIR}/${APP_FILE_NAME}/icons"
     RASTER_SIZES all
     INCLUDE_SCALABLE)
-install(
-    DIRECTORY "${CMAKE_BINARY_DIR}/icons"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/${APP_FILE_NAME}")
 
 configure_file(
     "${CMAKE_CURRENT_LIST_DIR}/install_unix_hicolor_icons.cmake.in"
     "${CMAKE_BINARY_DIR}/install_unix_hicolor_icons.cmake"
     @ONLY)
-install(
-    SCRIPT
-    "${CMAKE_BINARY_DIR}/install_unix_hicolor_icons.cmake")
+install(SCRIPT "${CMAKE_BINARY_DIR}/install_unix_hicolor_icons.cmake")
 
 install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/data/sounds"
@@ -33,7 +28,6 @@ install(
 
 include(compile_po)
 compile_po("${CMAKE_BINARY_DIR}/translations")
-
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/translations"
     DESTINATION "${CMAKE_INSTALL_DATADIR}/${APP_FILE_NAME}")

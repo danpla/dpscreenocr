@@ -1,68 +1,60 @@
-# Create the hicolor icon dir containing relative symbolic links to
-# images from share/(app name)/icons. The file hierarchy will reflect
-# CMAKE_BINARY_DIR/icons. The script is intended to be passed to
-# install(SCRIPT ...).
-#
-# We can obviously do this trough add_custom_command/target() followed
-# by install(DIRECTORY ...). A small problem here is that when the
-# OUTPUT of add_custom_command() is a symlink, that symlink should
-# actually resolve to an existing file, or the target will be always
-# considered out of date and will be rebuilt each time (at least this
-# is how Make works). A workaround to this problem is to put both the
-# the "hicolor" and the reference "icons" directories in the prefix
-# similar to those that will be install(). Something like:
-#
-#   CMAKE_BINARY_DIR/share/(app name)/icons
-#   CMAKE_BINARY_DIR/share/icons/hicolor
-#
-# This, however, complicates things by creating an implicit dependency
-# between the two routines that create content of "icons" and
-# "hicolor" directories, respectively. The install(SCRIPT ...)
-# approach gives much simpler code and doesn't need extra work at the
-# build step.
-#
-# The application icon is the only icon that will be in hicolor; the
-# real icons will be in share/(app name)/icons. The idea here is to
-# support relocation: the user may install and then move/copy the
-# program to a different location, and the application will still work
-# as expected. In other words, we use relative paths when looking for
-# resources, instead of hardcoding the installation prefix in the
-# executable. When the program resides in a nonstandard prefix (i.e.
-# not /usr or /usr/local) and the hicolor icons are not picked up
-# (because the icon engine normally looks for them in either
-# /usr/share/icons/hicolor or /usr/local/share/icons/hicolor), we will
-# use the normal non-themed icon from share/(app name)/icons.
+# Install symbolic links to the icons from the share/(app name)/icons
+# directory to the standard hicolor icon directory. The script is
+# intended for install(SCRIPT ...), after the main icons are already
+# installed.
 
-set(ICONS_DIR "@CMAKE_BINARY_DIR@/icons")
+set(ICONS_DIR "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/@CMAKE_INSTALL_DATADIR@/@APP_FILE_NAME@/icons")
+if(NOT IS_DIRECTORY "${ICONS_DIR}")
+    message(FATAL_ERROR "\"${ICONS_DIR}\" directory does not exist")
+endif()
+
+# In case if a relative DESTDIR is set, make the path absolute so that
+# RELATIVE in file(GLOB) works correctly.
+cmake_path(ABSOLUTE_PATH ICONS_DIR OUTPUT_VARIABLE ICONS_DIR)
 file(GLOB SIZES RELATIVE "${ICONS_DIR}" "${ICONS_DIR}/*")
 
+if(NOT SIZES)
+    message(FATAL_ERROR "No icon sizes collected in \"${ICONS_DIR}\"")
+endif()
+
 foreach(SIZE ${SIZES})
-    set(DST_SIZE_DIR)
-    set(FILE_EXT)
     if(SIZE STREQUAL "scalable")
         set(DST_SIZE_DIR "${SIZE}")
-        set(FILE_EXT ".svg")
+        set(EXT ".svg")
     else()
         set(DST_SIZE_DIR "${SIZE}x${SIZE}")
-        set(FILE_EXT ".png")
+        set(EXT ".png")
     endif()
 
-    set(FILE_NAME "@APP_FILE_NAME@${FILE_EXT}")
-    set(SYMLINK_PATH "@CMAKE_BINARY_DIR@/${FILE_NAME}")
+    # The app icon is the only icon we need in the hicolor directory,
+    # because it's used in system menus and can possibly be overridden
+    # by custom icon themes.
+    set(FILE_NAME "@APP_FILE_NAME@${EXT}")
 
-    execute_process(
-        # A hicolor icon resides in:
-        #   (install prefix)/share/icons/hicolor/(size)/(category)/
-        # We thus need to skip 4 parent directories to get to the
-        # "share" dir.
-        COMMAND
-            "${CMAKE_COMMAND}" -E create_symlink
-            "../../../../@APP_FILE_NAME@/icons/${SIZE}/${FILE_NAME}"
-            "${SYMLINK_PATH}")
+    # We must install symlinks using file(INSTALL) so that paths are
+    # added to the install_manifest.txt file that we use for the
+    # "uninstall" target.
+    #
+    # Technically, it seems possible to create a symlink in the final
+    # location and then "install" it to its own directory, but that
+    # looks like a hack, so we use a fair approach using a temporary
+    # file instead.
+    set(TMP_SYMLINK_PATH "@CMAKE_BINARY_DIR@/${FILE_NAME}")
 
     file(
-        INSTALL
-        FILES "${SYMLINK_PATH}"
+        CREATE_LINK
+        # A hicolor icon resides in:
+        #   (install prefix)/share/icons/hicolor/(size)/(category)/
+        # Therefore, we need to skip 4 parent directories to get to
+        # the "share" dir.
+        "../../../../@APP_FILE_NAME@/icons/${SIZE}/${FILE_NAME}"
+        "${TMP_SYMLINK_PATH}"
+        SYMBOLIC)
+    file(INSTALL
+        "${TMP_SYMLINK_PATH}"
+        # Note that there is no $ENV{DESTDIR} here; file(INSTALL) adds
+        # it automatically.
         DESTINATION "${CMAKE_INSTALL_PREFIX}/@CMAKE_INSTALL_DATADIR@/icons/hicolor/${DST_SIZE_DIR}/apps")
-    file(REMOVE "${SYMLINK_PATH}")
+
+    file(REMOVE "${TMP_SYMLINK_PATH}")
 endforeach()
