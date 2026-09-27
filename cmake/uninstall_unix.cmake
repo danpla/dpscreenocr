@@ -1,12 +1,7 @@
-if(NOT TARGET uninstall)
-    configure_file(
-        "${CMAKE_CURRENT_LIST_DIR}/cmake_uninstall.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-        @ONLY)
-
-    add_custom_target(
-        uninstall
-        COMMAND
-            "${CMAKE_COMMAND}" -P
-            "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-endif()
+add_custom_target(
+    uninstall
+    COMMAND
+        "${CMAKE_COMMAND}"
+        -D "INSTALL_MANIFEST_PATH=${CMAKE_BINARY_DIR}/install_manifest.txt"
+        -P "${CMAKE_CURRENT_LIST_DIR}/uninstall_unix_script.cmake"
+    VERBATIM)
