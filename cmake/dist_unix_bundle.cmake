@@ -1,16 +1,15 @@
-set(BUNDLE_BUILD_SCRIPT "${CMAKE_BINARY_DIR}/build_bundle.cmake")
-
-configure_file(
-    "${CMAKE_CURRENT_LIST_DIR}/dist_unix_bundle_script.cmake.in"
-    "${BUNDLE_BUILD_SCRIPT}"
-    @ONLY)
+set(BUNDLE_BUILD_DIR "${CMAKE_BINARY_DIR}/bundle_build")
 
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" OS_NAME)
 set(BUNDLE_DIR_NAME
     "${APP_NAME}-${APP_VERSION}-${OS_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
-
-set(BUNDLE_BUILD_DIR "${CMAKE_BINARY_DIR}/bundle_build")
 set(BUNDLE_DIR "${BUNDLE_BUILD_DIR}/${BUNDLE_DIR_NAME}")
+
+set(BUNDLE_BUILD_SCRIPT "${BUNDLE_BUILD_DIR}/build_bundle.cmake")
+configure_file(
+    "${CMAKE_CURRENT_LIST_DIR}/dist_unix_bundle_script.cmake.in"
+    "${BUNDLE_BUILD_SCRIPT}"
+    @ONLY)
 
 # Note that we intentionally use targets that are always out of date,
 # as CMake does not allow using the ALL target as a dependency.
