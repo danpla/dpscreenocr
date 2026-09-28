@@ -13,7 +13,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
 if(UNIX AND NOT APPLE)
     include(dist_unix_bundle)
 elseif(WIN32)
-    include(dist_windows_iss)
+    include(dist_windows_inno_setup)
 
     if (DPSO_ENABLE_MSIX)
         include(dist_windows_msix)

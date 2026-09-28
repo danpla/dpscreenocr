@@ -45,7 +45,7 @@ SetupIconFile={#APP_SOURCE_DIR}\data\icons\{#APP_FILE_NAME}.ico
 
 ShowLanguageDialog=auto
 
-#define RES_DIR APP_SOURCE_DIR + "\dist\windows\iss"
+#define RES_DIR APP_SOURCE_DIR + "\dist\windows\inno_setup"
 WizardImageFile={#RES_DIR}\wizard.bmp
 WizardSmallImageFile={#RES_DIR}\wizard_small.bmp
 

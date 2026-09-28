@@ -1,4 +1,4 @@
-function(iss_gen_setup_config OUT_DIR)
+function(inno_setup_gen_setup_config OUT_DIR)
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
         set(APP_IS_64_BIT Yes)
     elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -12,12 +12,12 @@ function(iss_gen_setup_config OUT_DIR)
     string(REPLACE "/" "\\" APP_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
 
     configure_file(
-        "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup_config.isi.in"
+        "${CMAKE_SOURCE_DIR}/dist/windows/inno_setup/inno_setup_config.isi.in"
         "${OUT_DIR}/inno_setup_config.isi"
         @ONLY)
 endfunction()
 
-function(iss_gen_language_list OUT_DIR)
+function(inno_setup_gen_language_list OUT_DIR)
     # This is the mapping from a language code in po/LINGUAS to a name
     # if the Inno Setup language file from "compiler:Languages\".
     # English is always included and is not listed here. To skip a
@@ -74,8 +74,7 @@ function(iss_gen_language_list OUT_DIR)
         CONTENT "${CONTENT}")
 
     if(UNDEFINED_ISLS)
-        string(
-            REPLACE ";" ", " UNDEFINED_ISLS_STR "${UNDEFINED_ISLS}")
+        list(JOIN UNDEFINED_ISLS ", " UNDEFINED_ISLS_STR)
         message(
             WARNING
             "Inno Setup language files for the following languages "
@@ -84,22 +83,22 @@ function(iss_gen_language_list OUT_DIR)
     endif()
 endfunction()
 
-set(ISS_BUILD_DIR "${CMAKE_BINARY_DIR}/iss_build")
-set(ISS_APP_DIR "${ISS_BUILD_DIR}/${APP_FILE_NAME}")
+set(INNO_SETUP_BUILD_DIR "${CMAKE_BINARY_DIR}/inno_setup_build")
+set(INNO_SETUP_APP_DIR "${INNO_SETUP_BUILD_DIR}/${APP_FILE_NAME}")
 
-set(ISS_SCRIPT "${ISS_BUILD_DIR}/inno_setup.iss")
+set(INNO_SETUP_SCRIPT "${INNO_SETUP_BUILD_DIR}/inno_setup.iss")
 configure_file(
-    "${CMAKE_SOURCE_DIR}/dist/windows/iss/inno_setup.iss"
-    "${ISS_SCRIPT}"
+    "${CMAKE_SOURCE_DIR}/dist/windows/inno_setup/inno_setup.iss"
+    "${INNO_SETUP_SCRIPT}"
     COPYONLY)
 
-iss_gen_setup_config("${ISS_BUILD_DIR}")
-iss_gen_language_list("${ISS_BUILD_DIR}")
+inno_setup_gen_setup_config("${INNO_SETUP_BUILD_DIR}")
+inno_setup_gen_language_list("${INNO_SETUP_BUILD_DIR}")
 
 add_custom_target(
-    iss
+    inno_setup
     COMMAND
-        "${CMAKE_COMMAND}" -E rm -rf "${ISS_APP_DIR}"
+        "${CMAKE_COMMAND}" -E rm -rf "${INNO_SETUP_APP_DIR}"
     COMMAND
         "${CMAKE_COMMAND}"
         --build "${CMAKE_BINARY_DIR}"
@@ -108,8 +107,8 @@ add_custom_target(
         "${CMAKE_COMMAND}"
         --install "${CMAKE_BINARY_DIR}"
         --strip
-        --prefix "${ISS_APP_DIR}"
+        --prefix "${INNO_SETUP_APP_DIR}"
     COMMAND
         "${CMAKE_COMMAND}" -E echo
-        "You can now build the installer using \"${ISS_SCRIPT}\""
+        "You can now build the installer using \"${INNO_SETUP_SCRIPT}\""
     VERBATIM)
