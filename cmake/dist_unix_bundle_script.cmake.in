@@ -28,6 +28,8 @@ function(validate_build_settings)
 
     if(NOT BUNDLE_DIR)
         message(FATAL_ERROR "BUNDLE_DIR is not set")
+    elseif(EXISTS "${BUNDLE_DIR}")
+        message(FATAL_ERROR "\"${BUNDLE_DIR}\" already exists")
     endif()
 
     set(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
@@ -385,8 +387,6 @@ endfunction()
 
 
 validate_build_settings()
-
-file(REMOVE_RECURSE "${BUNDLE_DIR}")
 
 set_up_program()
 set_up_launcher()

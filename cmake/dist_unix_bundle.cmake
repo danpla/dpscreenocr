@@ -17,6 +17,8 @@ configure_file(
 add_custom_target(
     bundle
     COMMAND
+        "${CMAKE_COMMAND}" -E rm -rf "${BUNDLE_DIR}"
+    COMMAND
         "${CMAKE_COMMAND}"
         -D "BUNDLE_BUILD_DIR=${BUNDLE_BUILD_DIR}"
         -D "BUNDLE_DIR=${BUNDLE_DIR}"
