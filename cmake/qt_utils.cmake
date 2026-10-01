@@ -24,8 +24,7 @@ function(install_qt_translations SRC_DIR DST_DIR)
 endfunction()
 
 function(install_qt_windows_plugins SRC_DIR DST_DIR)
-    set(PLUGINS
-        "platforms/qwindows.dll")
+    set(PLUGINS "platforms/qwindows.dll")
 
     if(EXISTS "${SRC_DIR}/styles/qwindowsvistastyle.dll")
         list(APPEND PLUGINS "styles/qwindowsvistastyle.dll")

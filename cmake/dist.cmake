@@ -3,7 +3,7 @@ if(UNIX AND NOT APPLE)
 elseif(WIN32)
     include(dist_windows_inno_setup)
 
-    if (DPSO_ENABLE_MSIX)
+    if(DPSO_ENABLE_MSIX)
         include(dist_windows_msix)
     endif()
 endif()

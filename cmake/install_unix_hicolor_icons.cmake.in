@@ -50,7 +50,8 @@ foreach(SIZE ${SIZES})
         "../../../../@APP_FILE_NAME@/icons/${SIZE}/${FILE_NAME}"
         "${TMP_SYMLINK_PATH}"
         SYMBOLIC)
-    file(INSTALL
+    file(
+        INSTALL
         "${TMP_SYMLINK_PATH}"
         # Note that there is no $ENV{DESTDIR} here; file(INSTALL) adds
         # it automatically.
