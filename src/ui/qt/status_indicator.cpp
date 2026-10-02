@@ -1,5 +1,8 @@
 #include "status_indicator.h"
 
+#include <algorithm>
+#include <cmath>
+
 #include <QPainter>
 
 
@@ -56,13 +59,14 @@ void StatusIndicator::paintEvent(QPaintEvent* /*event*/)
 {
     const auto& color = getStatusColor(status);
 
-    const auto size = qMin(width(), height());
+    const auto size = std::min(width(), height());
     const auto strokeWidth = size / 6.0f;
     const auto halfStrokeWidth = strokeWidth * 0.5f;
 
     const QRectF rect(
-        halfStrokeWidth + (width() - size) * 0.5f,
-        halfStrokeWidth + (height() - size) * 0.5f,
+        // We round coordinates to snap the rect to the pixel grid.
+        halfStrokeWidth + std::round((width() - size) * 0.5f),
+        halfStrokeWidth + std::round((height() - size) * 0.5f),
         size - strokeWidth,
         size - strokeWidth);
 
