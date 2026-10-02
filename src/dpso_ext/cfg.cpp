@@ -99,22 +99,19 @@ void loadKeyValue(KeyValues& keyValues, std::string_view str)
 
     std::string val;
     for (auto iter = rawVal.begin(); iter < rawVal.end();) {
-        const auto unsecapedEnd = std::find(iter, rawVal.end(), '\\');
-        val.append(iter, unsecapedEnd);
-
-        if (unsecapedEnd == rawVal.end())
-            break;
-
-        iter = unsecapedEnd + 1;
-        if (iter == rawVal.end())
-            break;
-
         auto c = *iter++;
-        for (const auto& esc : strEscapes)
-            if (c == esc.escaped) {
-                c = esc.raw;
+
+        if (c == '\\') {
+            if (iter == rawVal.end())
                 break;
-            }
+
+            c = *iter++;
+            for (const auto& esc : strEscapes)
+                if (c == esc.escaped) {
+                    c = esc.raw;
+                    break;
+                }
+        }
 
         val += c;
     }
