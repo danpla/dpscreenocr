@@ -8,22 +8,16 @@ namespace test {
 
 class Runner {
 public:
-    static const Runner* getFirst();
-    const Runner* getNext() const;
-
-    static int getNumRunners();
+    static int getCount();
+    static const Runner& get(int idx);
 
     Runner(std::string_view name, void (&fn)());
 
     std::string_view getName() const;
     void run() const;
 private:
-    static Runner* list;
-    static int numRunners;
-
     std::string_view name;
     void (*fn)();
-    Runner* next;
 };
 
 

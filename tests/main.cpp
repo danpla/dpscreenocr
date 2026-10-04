@@ -12,20 +12,17 @@ using namespace dpso;
 
 int main()
 {
-    int curRunnerNum{};
-
-    for (const auto* runner = test::Runner::getFirst();
-            runner;
-            runner = runner->getNext()) {
+    for (int i{}; i< test::Runner::getCount(); ++i) {
+        const auto& runner = test::Runner::get(i);
         str::print(
-            "{}/{}: {}\n",
-            str::justifyRight(str::toStr(++curRunnerNum), 2),
-            test::Runner::getNumRunners(),
-            runner->getName());
+            "{}/{} {}\n",
+            str::justifyRight(str::toStr(i + 1), 2),
+            test::Runner::getCount(),
+            runner.getName());
         // Flush to make sure that failure() messages (written to
         // stderr) are nested under the test name.
         std::fflush(stdout);
-        runner->run();
+        runner.run();
     }
 
     str::print("===\n");

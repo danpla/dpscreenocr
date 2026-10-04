@@ -1,6 +1,8 @@
 #include "flow.h"
 
+#include <algorithm>
 #include <cstdlib>
+#include <vector>
 
 #include "dpso_utils/str_stdio.h"
 
@@ -11,42 +13,43 @@ using namespace dpso;
 namespace test {
 
 
-const Runner* Runner::getFirst()
+static std::vector<const Runner*>& getRunners()
 {
-    return list;
+    static std::vector<const Runner*> runners;
+    return runners;
 }
 
 
-const Runner* Runner::getNext() const
+int Runner::getCount()
 {
-    return next;
+    return getRunners().size();
 }
 
 
-int Runner::getNumRunners()
+const Runner& Runner::get(int idx)
 {
-    return numRunners;
+    return *getRunners()[idx];
 }
-
-
-Runner* Runner::list;
-int Runner::numRunners;
 
 
 Runner::Runner(std::string_view name, void (&fn)())
     : name{name}
     , fn{fn}
-    , next{}
 {
-    // Link alphabetically.
-    auto** pos = &list;
-    while (*pos && (*pos)->name < name)
-        pos = &(*pos)->next;
+    auto& r = getRunners();
 
-    next = *pos;
-    *pos = this;
-
-    ++numRunners;
+    const auto iter = std::lower_bound(r.begin(), r.end(), name,
+        [&](const Runner* runner, std::string_view name)
+        {
+            return runner->name < name;
+        });
+    if (iter == r.end() || (*iter)->name != name)
+        r.insert(iter, this);
+    else {
+        str::print(
+            stderr, "Runner \"{}\" is already registered\n", name);
+        std::exit(EXIT_FAILURE);
+    }
 }
 
 
