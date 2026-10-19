@@ -13,7 +13,7 @@ namespace dp::intl {
 // www.gnu.org/software/gettext/manual/html_node/Header-Entry.html
 struct GnuHeader {
     // Content of the "charset" entry of the "Content-Type" filed.
-    // Empty string if "Content-Type" is missing.
+    // An empty string if "Content-Type" is missing.
     std::string_view charset;
 
     // Content of the "Plural-Forms" field.

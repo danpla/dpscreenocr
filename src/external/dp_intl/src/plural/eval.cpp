@@ -12,8 +12,8 @@
 
 #include "dp_intl/error.h"
 #include "plural/token.h"
-#include "plural/token_map.h"
 #include "plural/token_stream.h"
+#include "plural/token_type_map.h"
 #include "plural/tokenizer.h"
 
 
@@ -45,7 +45,7 @@ struct EvalCtx;
 
 struct Node {
     using Idx = std::uint16_t;
-    using EvalFn = CountT (&)(EvalCtx ctx);
+    using EvalFn = CountT (&)(const EvalCtx& ctx);
 
     EvalFn evalFn;
     CountT value{};
@@ -76,13 +76,13 @@ struct EvalCtx {
 namespace evalFn {
 
 
-CountT num(EvalCtx ctx)
+CountT num(const EvalCtx& ctx)
 {
     return ctx.self.value;
 }
 
 
-CountT varN(EvalCtx ctx)
+CountT varN(const EvalCtx& ctx)
 {
     return ctx.n;
 }
@@ -93,31 +93,31 @@ CountT varN(EvalCtx ctx)
 // errors (e.g., overflow and division by 0) and perform short-circuit
 // evaluation.
 template<typename Op>
-CountT bin(EvalCtx ctx)
+CountT bin(const EvalCtx& ctx)
 {
     return Op{}(ctx.evalChild<0>(), ctx.evalChild<1>());
 }
 
 
-CountT logicalAnd(EvalCtx ctx)
+CountT logicalAnd(const EvalCtx& ctx)
 {
     return ctx.evalChild<0>() && ctx.evalChild<1>();
 }
 
 
-CountT logicalOr(EvalCtx ctx)
+CountT logicalOr(const EvalCtx& ctx)
 {
     return ctx.evalChild<0>() || ctx.evalChild<1>();
 }
 
 
-CountT logicalNot(EvalCtx ctx)
+CountT logicalNot(const EvalCtx& ctx)
 {
     return !ctx.evalChild<0>();
 }
 
 
-CountT plus(EvalCtx ctx)
+CountT plus(const EvalCtx& ctx)
 {
     const auto a = ctx.evalChild<0>();
     const auto b = ctx.evalChild<1>();
@@ -129,7 +129,7 @@ CountT plus(EvalCtx ctx)
 }
 
 
-CountT minus(EvalCtx ctx)
+CountT minus(const EvalCtx& ctx)
 {
     const auto a = ctx.evalChild<0>();
     const auto b = ctx.evalChild<1>();
@@ -141,7 +141,7 @@ CountT minus(EvalCtx ctx)
 }
 
 
-CountT mul(EvalCtx ctx)
+CountT mul(const EvalCtx& ctx)
 {
     const auto a = ctx.evalChild<0>();
     const auto b = ctx.evalChild<1>();
@@ -156,7 +156,7 @@ CountT mul(EvalCtx ctx)
 }
 
 
-CountT div(EvalCtx ctx)
+CountT div(const EvalCtx& ctx)
 {
     const auto a = ctx.evalChild<0>();
     const auto b = ctx.evalChild<1>();
@@ -168,7 +168,7 @@ CountT div(EvalCtx ctx)
 }
 
 
-CountT mod(EvalCtx ctx)
+CountT mod(const EvalCtx& ctx)
 {
     const auto a = ctx.evalChild<0>();
     const auto b = ctx.evalChild<1>();
@@ -180,7 +180,7 @@ CountT mod(EvalCtx ctx)
 }
 
 
-CountT conditional(EvalCtx ctx)
+CountT conditional(const EvalCtx& ctx)
 {
     return ctx.evalChild<0>()
         ? ctx.evalChild<1>() : ctx.evalChild<2>();
@@ -236,7 +236,7 @@ Node::Idx nudLParen(ParsingCtx& ctx, const Token&)
 
 Node::Idx nudNot(ParsingCtx& ctx, const Token&)
 {
-    return ctx.addNode({evalFn::logicalNot, 0, parse(ctx, 100)});
+    return ctx.addNode({evalFn::logicalNot, 0, {parse(ctx, 100)}});
 }
 
 
@@ -246,7 +246,7 @@ Node::Idx ledBinary(
 {
     // + 1 for bindingPower for left associativity.
     return ctx.addNode(
-        {evalFn, 0, left, parse(ctx, bindingPower + 1)});
+        {evalFn, 0, {left, parse(ctx, bindingPower + 1)}});
 }
 
 
@@ -264,7 +264,7 @@ Node::Idx ledTernary(
     const auto falseBranch = parse(ctx, bindingPower);
 
     return ctx.addNode({
-        evalFn::conditional, 0, left, trueBranch, falseBranch});
+        evalFn::conditional, 0, {left, trueBranch, falseBranch}});
 }
 
 
@@ -280,7 +280,7 @@ struct OpInfo {
 };
 
 
-TokenTypeMap<OpInfo> buildOpInfoMap()
+constexpr TokenTypeMap<OpInfo> buildOpInfoMap()
 {
     TokenTypeMap<OpInfo> result;
 
@@ -293,10 +293,10 @@ TokenTypeMap<OpInfo> buildOpInfoMap()
     result[TT::Not] = {100, nudNot};
 
     const auto set =
-        [&result](TT type, int bindingPower, OpInfo::Led led)
-        {
-            result[type] = {bindingPower, {}, led};
-        };
+    [&result](TT type, int bindingPower, OpInfo::Led led)
+    {
+        result[type] = {bindingPower, {}, led};
+    };
 
     using namespace evalFn;
 
@@ -321,7 +321,7 @@ TokenTypeMap<OpInfo> buildOpInfoMap()
 
 const OpInfo& getOpInfo(Token::Type type)
 {
-    static const auto map = buildOpInfoMap();
+    static constexpr auto map = buildOpInfoMap();
     return map[type];
 }
 

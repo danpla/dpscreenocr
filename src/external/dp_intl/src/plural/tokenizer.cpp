@@ -21,12 +21,12 @@ std::vector<Token> tokenize(std::string_view s)
     std::vector<Token> result;
 
     while (!s.empty()) {
-        if (isBlank(s.front())) {
+        if (isBlank(s[0])) {
             s.remove_prefix(1);
             continue;
         }
 
-        {
+        if (isDigit(s[0])) {
             const auto* sBegin = s.data();
             const auto* sEnd = sBegin + s.size();
 
@@ -45,8 +45,11 @@ std::vector<Token> tokenize(std::string_view s)
                     "Number " + std::string{sBegin, ptr}
                     + "[...] is out of range"};
 
-            // Doesn't start with a digit. Keep parsing.
             assert(ec == std::errc::invalid_argument);
+            // We checked that the first character is a digit before
+            // calling from_chars(), so std::errc::invalid_argument
+            // will never happen.
+            assert(false);
         }
 
         using TT = Token::Type;
@@ -91,7 +94,6 @@ std::vector<Token> tokenize(std::string_view s)
                 // Include some extra characters, if any, for context.
                 + std::string{s, 0, 10}
                 + "\""};
-
 
         result.push_back(
             {iter->type, 0, s.substr(0, iter->str.size())});

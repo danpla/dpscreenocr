@@ -4,6 +4,8 @@
 #include <string_view>
 #include <vector>
 
+#include "dp_intl/impl/export.h"
+
 
 namespace dp::intl {
 
@@ -17,9 +19,9 @@ namespace dp::intl {
  */
 struct LangTagFormat {
     /**
-     * The separator to be inserted between subtags.
+     * The separator to insert between subtags.
      *
-     * buildLangTag() is designed to make tags compatible with the
+     * buildLangTag() is designed to create tags compatible with the
      * matchLang() function, so the separators are intentionally
      * limited to hyphens and underscores.
      */
@@ -38,7 +40,7 @@ struct LangTagFormat {
      * language tags, where all subtags are in lowercase with two
      * exceptions: 2-letter and 4-letter subtags that neither appear
      * at the start of the tag nor occur after 1-letter subtags. Such
-     * 2-letter subtags are in uppercase, and 4-letter subtags are
+     * 2-letter subtags are in uppercase, and 4-letter subtags are in
      * titlecase.
      */
     enum class LetterCase {
@@ -62,6 +64,7 @@ struct LangTagFormat {
  * you cannot perform a case-insensitive string comparison, such as
  * when querying the file system.
  */
+DP_INTL_EXPORT
 std::string buildLangTag(
     const std::vector<std::string_view>& subtags,
     const LangTagFormat& format = {});

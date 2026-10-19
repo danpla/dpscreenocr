@@ -13,21 +13,21 @@ namespace {
 
 
 [[noreturn]]
-void throwUnknownFieldPropertyError(std::string_view prop)
+void throwUnknownPropertyError(std::string_view prop)
 {
     throw Error{"Unknown property \"" + std::string{prop} + "\""};
 }
 
 
 [[noreturn]]
-void throwMissingFieldPropertyError(std::string_view prop)
+void throwMissingPropertyError(std::string_view prop)
 {
     throw Error{"Missing \"" + std::string{prop} + "\" property"};
 }
 
 
 [[noreturn]]
-void throwInvalidFieldPropertyError(
+void throwInvalidPropertyError(
     std::string_view prop, std::string_view description)
 {
     throw Error{
@@ -48,11 +48,11 @@ PropKV splitProp(std::string_view prop)
     if (p == prop.npos)
         throw Error{"No \"=\" separator"};
 
-    const auto key = trimBlanks(prop.substr(0, p));
+    const auto key = trim(prop.substr(0, p), isBlank);
     if (key.empty())
         throw Error{"Key is empty (nothing before \"=\")"};
 
-    const auto val = trimBlanks(prop.substr(p + 1));
+    const auto val = trim(prop.substr(p + 1), isBlank);
     if (val.empty())
         throw Error{"Value is empty (nothing after \"=\")"};
 
@@ -67,7 +67,7 @@ void forEachProp(std::string_view fieldVal, Fn fn)
         // ";" after the last property is optional.
         const auto p = std::min(fieldVal.find(';'), fieldVal.size());
 
-        const auto prop = trimBlanks(fieldVal.substr(0, p));
+        const auto prop = trim(fieldVal.substr(0, p), isBlank);
         if (!prop.empty())
             fn(prop);
 
@@ -94,17 +94,17 @@ void processContentTypeField(GnuHeader& header, std::string_view val)
             try {
                 propKv = splitProp(prop);
             } catch (const Error& e) {
-                throwInvalidFieldPropertyError(prop, e.what());
+                throwInvalidPropertyError(prop, e.what());
             }
 
             if (propKv.key == charsetProp)
                 header.charset = propKv.val;
             else
-                throwUnknownFieldPropertyError(propKv.key);
+                throwUnknownPropertyError(propKv.key);
         });
 
     if (header.charset.empty())
-        throwMissingFieldPropertyError(charsetProp);
+        throwMissingPropertyError(charsetProp);
 }
 
 
@@ -124,7 +124,7 @@ void processPluralFormsField(GnuHeader& header, std::string_view val)
             try {
                 propKv = splitProp(prop);
             } catch (const Error& e) {
-                throwInvalidFieldPropertyError(prop, e.what());
+                throwInvalidPropertyError(prop, e.what());
             }
 
             if (propKv.key == npluralsProp)
@@ -132,13 +132,13 @@ void processPluralFormsField(GnuHeader& header, std::string_view val)
             else if (propKv.key == pluralProp)
                 plural = propKv.val;
             else
-                throwUnknownFieldPropertyError(propKv.key);
+                throwUnknownPropertyError(propKv.key);
         });
 
     if (nplurals.empty())
-        throwMissingFieldPropertyError(npluralsProp);
+        throwMissingPropertyError(npluralsProp);
     if (plural.empty())
-        throwMissingFieldPropertyError(pluralProp);
+        throwMissingPropertyError(pluralProp);
 
     const auto* nBegin = nplurals.data();
     const auto* nEnd = nBegin + nplurals.size();
@@ -146,13 +146,13 @@ void processPluralFormsField(GnuHeader& header, std::string_view val)
     const auto [ptr, ec] = std::from_chars(nBegin, nEnd, n);
     if (ec != std::errc{} || ptr != nEnd) {
         if (ec == std::errc::result_out_of_range)
-            throwInvalidFieldPropertyError(
+            throwInvalidPropertyError(
                 npluralsProp,
                 "Number "
                     + std::string{nBegin, ptr}
                     + "[...] is out of range");
 
-        throwInvalidFieldPropertyError(
+        throwInvalidPropertyError(
             npluralsProp,
             "Invalid number format \""
                 + std::string{nplurals} + "\"");
@@ -184,30 +184,30 @@ GnuHeader GnuHeader::parse(std::string_view s)
         if (p == s.npos)
             break;
 
+        // A valid header entry in PO/MO file always consists of "key:
+        // value" pairs. However, when using the msgcat utility, the
+        // resulting PO can have conflicts that will be marked by
+        // "#-#-#-#-#" comments, like:
+        //
+        // "#-#-#-#-# a.po #-#-#-#-#"
+        // "Text A"
+        // "#-#-#-#-# b.po #-#-#-#-#"
+        // "Text B"
+        //
+        // See:
+        // https://www.gnu.org/software/gettext/manual/html_node/Creating-Compendia.html
+        //
+        // This type of a comment can appear in any "msgstr" entry of
+        // a PO file, including the header. There are projects that
+        // actually have such headers in their MO files:
+        // https://github.com/python/cpython/issues/80420
+        //
+        // Although such a header is clearly incorrect (as it can have
+        // conflicting definitions of character encodings, plural
+        // rules, etc.), we skip such entries because we are not doing
+        // the full header validation anyway, and other software
+        // (including the Gettext runtime) accepts them.
         if (s[p] == '\n') {
-            // A valid header entry in PO/MO file always consists of
-            // "key: value" pairs. However, when using the msgcat
-            // utility, the resulting PO can have conflicts that will
-            // be marked by "#-#-#-#-#" comments, like:
-            //
-            // "#-#-#-#-# a.po #-#-#-#-#"
-            // "Text A"
-            // "#-#-#-#-# b.po #-#-#-#-#"
-            // "Text B"
-            //
-            // See:
-            // https://www.gnu.org/software/gettext/manual/html_node/Creating-Compendia.html
-            //
-            // This type of comment can appear in any "msgstr" entry
-            // of a PO file, including the header. There are projects
-            // that actually have such headers in their MO files:
-            // https://github.com/python/cpython/issues/80420
-            //
-            // Although such a header is clearly incorrect (as it can
-            // have conflicting definitions of character encodings,
-            // plural rules, etc.), we skip such entries since we are
-            // not doing the full header validation anyway, and other
-            // software (including the Gettext runtime) accepts them.
             s.remove_prefix(p + 1);
             continue;
         }
@@ -215,8 +215,9 @@ GnuHeader GnuHeader::parse(std::string_view s)
         const auto valP = p + 1;
         const auto valEndP = std::min(s.find('\n', valP), s.size());
 
-        const auto name = trimBlanks(s.substr(0, p));
-        const auto val = trimBlanks(s.substr(valP, valEndP - valP));
+        const auto name = trim(s.substr(0, p), isBlank);
+        const auto val = trim(
+            s.substr(valP, valEndP - valP), isBlank);
 
         try {
             processField(result, name, val);

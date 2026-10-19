@@ -14,15 +14,12 @@ using Subtags = std::vector<std::string_view>;
 
 void splitTag(std::string_view tag, Subtags& subtags)
 {
-    const auto isSubtagChar = [](unsigned char c)
+    const auto isSubtagChar = [](char c)
     {
-        return
-            (c >= '0' && c <= '9')
-            || (c >= 'a' && c <= 'z')
-            || (c >= 'A' && c <= 'Z');
+        return isAlpha(c) || isDigit(c);
     };
 
-    const auto isSep = [](unsigned char c)
+    const auto isSep = [](char c)
     {
         return c == '-' || c == '_';
     };
@@ -35,9 +32,9 @@ void splitTag(std::string_view tag, Subtags& subtags)
             std::find_if_not(tag.begin(), tag.end(), isSubtagChar)
                 - tag.begin());
         if (subtag.size() < 2)
-            // Either en empty subtag or a single-letter subtag
-            // that, according to BCP 47, starts either extension
-            // subtags or private use subtags.
+            // Either en empty subtag or a single-letter subtag that,
+            // according to BCP 47, starts either extension subtags or
+            // private use subtags.
             break;
 
         subtags.push_back(subtag);
@@ -52,8 +49,6 @@ void splitTag(std::string_view tag, Subtags& subtags)
 
 
 class Matcher {
-    const LangMatchFn& matchFn;
-    std::vector<Subtags> seen;
 public:
     explicit Matcher(const LangMatchFn& matchFn)
         : matchFn{matchFn}
@@ -80,13 +75,16 @@ public:
 
         if (matchFn(subtags))
             // A successful match stops the entire lookup process, so,
-            // as a small optimization, don't add sub-tags to the list
+            // as a small optimization, don't add subtags to the list
             // of seen entries in this case.
             return true;
 
         seen.insert(iter, subtags);
         return false;
     }
+private:
+    const LangMatchFn& matchFn;
+    std::vector<Subtags> seen;
 };
 
 

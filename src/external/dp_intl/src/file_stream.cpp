@@ -1,4 +1,4 @@
-#include "dp_intl/file_data_stream.h"
+#include "dp_intl/file_stream.h"
 
 #include <cstdio>
 #include <cerrno>
@@ -14,7 +14,7 @@ static std::FILE* toFp(void* impl)
 }
 
 
-FileDataStream::FileDataStream(const std::filesystem::path& path)
+FileStream::FileStream(const std::filesystem::path& path)
     : impl{
         #ifdef _WIN32
         _wfopen(path.c_str(), L"rb")
@@ -34,13 +34,13 @@ FileDataStream::FileDataStream(const std::filesystem::path& path)
 }
 
 
-FileDataStream::~FileDataStream()
+FileStream::~FileStream()
 {
     std::fclose(toFp(impl));
 }
 
 
-std::size_t FileDataStream::readSome(void* dst, std::size_t dstSize)
+std::size_t FileStream::readSome(void* dst, std::size_t dstSize)
 {
     const auto numRead = std::fread(dst, 1, dstSize, toFp(impl));
     if (std::ferror(toFp(impl)))
@@ -50,7 +50,7 @@ std::size_t FileDataStream::readSome(void* dst, std::size_t dstSize)
 }
 
 
-void FileDataStream::setPosition(std::int64_t newPosition)
+void FileStream::setPosition(std::int64_t newPosition)
 {
     if (std::fseek(toFp(impl), newPosition, SEEK_SET) != 0)
         throw Error{"fseek(..., SEEK_SET) failed"};

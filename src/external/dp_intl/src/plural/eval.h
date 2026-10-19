@@ -14,6 +14,10 @@ class Eval {
 public:
     // Compile a plural form expression.
     //
+    // In case of the "Plural-Forms" filed of the PO/MO header, the
+    // expression is what comes after the "plural=" part, excluding
+    // the closing ";".
+    //
     // Throws Error.
     explicit Eval(std::string_view expr);
     ~Eval();

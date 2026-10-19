@@ -15,7 +15,7 @@ enum class ByteOrder {
 
 
 template<ByteOrder byteOrder, std::size_t n, typename Fn>
-constexpr void byteOrderLoop(Fn fn)
+void byteOrderLoop(Fn fn)
 {
     if (byteOrder == ByteOrder::Little)
         for (std::size_t i{}; i < n; i++)

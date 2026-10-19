@@ -5,17 +5,18 @@
 
 #include "dp_intl/count_t.h"
 #include "dp_intl/impl/c_str_ref.h"
+#include "dp_intl/impl/export.h"
 
 
 namespace dp::intl {
 
 
-class DataStream;
+class Stream;
 
 
-class MessageCatalog {
+class DP_INTL_EXPORT MessageCatalog {
 public:
-    explicit MessageCatalog(DataStream& stream);
+    explicit MessageCatalog(Stream& stream);
     ~MessageCatalog();
 
     MessageCatalog(const MessageCatalog&) = delete;
@@ -39,4 +40,3 @@ private:
 
 
 }
-

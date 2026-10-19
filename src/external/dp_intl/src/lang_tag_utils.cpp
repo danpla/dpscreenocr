@@ -6,43 +6,6 @@
 
 
 namespace dp::intl {
-namespace {
-
-
-enum class LetterCase {
-    Upper,
-    Lower,
-    Title
-};
-
-
-void append(
-    std::string& result, std::string_view str, LetterCase letterCase)
-{
-    result.reserve(result.size() + str.size());
-
-    switch (letterCase) {
-    case LetterCase::Upper:
-        for (auto c : str)
-            result += toUpper(c);
-        break;
-    case LetterCase::Lower:
-        for (auto c : str)
-            result += toLower(c);
-        break;
-    case LetterCase::Title:
-        if (str.empty())
-            break;
-
-        result += toUpper(str[0]);
-        for (std::size_t i{1}; i < str.size(); ++i)
-            result += toLower(str[i]);
-        break;
-    };
-}
-
-
-}
 
 
 std::string buildLangTag(
@@ -50,6 +13,13 @@ std::string buildLangTag(
     const LangTagFormat& format)
 {
     std::string tag;
+
+    const auto append = [&tag](std::string_view subtag, auto caseFn)
+    {
+        tag.reserve(tag.size() + subtag.size());
+        for (auto c : subtag)
+            tag += caseFn(c);
+    };
 
     const auto sep =
         format.separator == LangTagFormat::Separator::Hyphen
@@ -64,29 +34,30 @@ std::string buildLangTag(
         if (subtag.size() == 1)
             wasSignleton = true;
 
-        LetterCase letterCase{};
         switch (format.letterCase) {
         case LangTagFormat::LetterCase::Lower:
-            letterCase = LetterCase::Lower;
+            append(subtag, toLower);
             break;
         case LangTagFormat::LetterCase::Upper:
-            letterCase = LetterCase::Upper;
+            append(subtag, toUpper);
             break;
         case LangTagFormat::LetterCase::Bcp47:
-            letterCase = LetterCase::Lower;
-
             if (i > 0 && !wasSignleton) {
-                if (subtag.size() == 4)
+                if (subtag.size() == 4) {
                     // Script
-                    letterCase = LetterCase::Title;
-                else if (subtag.size() == 2)
+                    append(subtag.substr(0, 1), toUpper);
+                    append(subtag.substr(1), toLower);
+                    break;
+                } else if (subtag.size() == 2) {
                     // Region
-                    letterCase = LetterCase::Upper;
+                    append(subtag, toUpper);
+                    break;
+                }
             }
+
+            append(subtag, toLower);
             break;
         }
-
-        append(tag, subtag, letterCase);
     }
 
     return tag;

@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "dp_intl/file_data_stream.h"
+#include "dp_intl/file_stream.h"
 #include "dp_intl/lang_match.h"
 #include "dp_intl/lang_tag_utils.h"
 #include "dp_intl/translator.h"
@@ -59,7 +59,7 @@ void pickTranslationLang(const std::vector<std::string>& langTags)
                 / fs::u8path("translations")
                 / fs::u8path(langTag + ".mo");
 
-            std::optional<dp::intl::FileDataStream> file;
+            std::optional<dp::intl::FileStream> file;
             try {
                 file.emplace(moPath);
             } catch (dp::intl::FileNotFoundError&) {

@@ -5,6 +5,8 @@
 #include <string_view>
 #include <vector>
 
+#include "dp_intl/impl/export.h"
+
 
 namespace dp::intl {
 
@@ -29,24 +31,28 @@ using LangMatchFn = std::function<bool(
 /**
  * Choose a language based on the priority list.
  *
- * The purpose of the function is to help you pick the most suitable
- * language based on the language priority list provided by the user.
+ * The purpose of this function is to help you choose the most
+ * suitable application language based on the user-configured language
+ * priority list. You can get this list using system APIs, like
+ * GetUserPreferredUILanguages() on Windows,
+ * NSLocale.preferredLanguages() on Apple platforms,
+ * LocaleList.getAdjustedDefault() on Android, and so on.
  *
  *
  * Language tag format
  * ===================
  *
- * Each tag in the priority list has the format similar to BCP 47
- * ([RFC 5646]) and locale identifiers on most platforms. The tag
- * consists of one or more subtags divided by separators. A subtag is
- * one or more alphanumeric characters (A-Z, a-z, 0-9), a separator is
- * either an underscore or hyphen.
+ * The format of each tag in the priority list is similar to BCP 47
+ * ([RFC 5646]) and locale identifiers on most platforms. A tag
+ * consists of one or more subtags separated by underscores or
+ * hyphens. A subtag consists of one or more alphanumeric characters
+ * (A-Z, a-z, 0-9).
  *
  * [RFC 5646]: https://www.rfc-editor.org/info/rfc5646/
  *
- * In its basic (and most common) form, a language tag consists of:
+ * In its basic and most common form, a language tag consists of:
  *
- * * The primary language subtag, such as `en` for English or `zh` for
+ * * A primary language subtag, such as `en` for English or `zh` for
  *   Chinese.
  *
  * * An optional 4-letter script subtag, such as `Latn` for the Latin
@@ -84,7 +90,7 @@ using LangMatchFn = std::function<bool(
  *
  *   Note that this will effectively strip any platform-specific
  *   "extensions" from locale identifiers, such as `.codeset` and
- *   `@modifier` used in POSIX platforms. For example,
+ *   `@modifier` used on POSIX platforms. For example,
  *   `de_DE.UTF-8@euro` is treated the same as `de_DE`.
  *
  *
@@ -96,15 +102,16 @@ using LangMatchFn = std::function<bool(
  * `matchFn` for each variant until the function either returns `true`
  * (indicating a successful match) or throws an exception.
  *
- * `matchFn` will never be called more than once for the same tag. The
- * tag comparison is case-insensitive, but be aware that the case of
- * the tag passed to `matchFn` will be the same as in the original tag
+ * `matchFn` is never called more than once for the same tag. The tag
+ * comparison is case-insensitive, but be aware that the case of the
+ * tag passed to `matchFn` will be the same as in the original tag
  * string that was encountered first among the possible duplicates.
  *
  * Note that for `matchFn`, a tag is represented as a list of subtags
  * rather than a single string. For simplicity, the rest of this text
- * will denote these lists using the full tag strings, as if subtags
- * were joined by hyphens.
+ * will use the full tag strings to denote these lists, as if the
+ * subtags were joined by hyphens.
+ *
  *
  * Basic tag variants
  * ------------------
@@ -138,13 +145,14 @@ using LangMatchFn = std::function<bool(
  *     1 2
  *     1
  *
+ *
  * Additional tag variants
  * -----------------------
  *
  * During execution of the basic algorithm described above,
  * matchLang() can generate additional tag variants to handle forward
- * and backward compatibility between the naming of you languages and
- * the tags from the priority list.
+ * and backward compatibility between your language names and the tags
+ * from the priority list.
  *
  * The additional tags are not subject to the transformations
  * performed by the tag variant generation algorithm described in the
@@ -176,6 +184,7 @@ using LangMatchFn = std::function<bool(
  *   (e.g. `zh-CN`) or Traditional Chinese (e.g., `zh-TW`), `matchFn`
  *   will also be called with `zh-Hans` or `zh-Hant`, respectively.
  */
+DP_INTL_EXPORT
 void matchLang(
     const std::vector<std::string>& langTagPriorityList,
     const LangMatchFn& matchFn);

@@ -13,12 +13,13 @@
 #include <vector>
 
 #include "byte_order.h"
-#include "data_stream_utils.h"
-#include "dp_intl/data_stream.h"
 #include "dp_intl/error.h"
+#include "dp_intl/stream.h"
 #include "gnu_header.h"
 #include "plural/eval.h"
 #include "str_utils.h"
+#include "stream_utils.h"
+#include "utf.h"
 
 
 using namespace std::literals::string_literals;
@@ -38,6 +39,7 @@ struct StrIRef {
 
     CStrRef getCStrRef(const std::string& data) const
     {
+        assert(U32Max - pos >= size);
         assert(pos < data.size());
         assert(size < data.size() - pos);
         assert(data[pos + size] == 0);
@@ -47,6 +49,7 @@ struct StrIRef {
 
     std::string_view getView(const std::string& data) const
     {
+        assert(U32Max - pos >= size);
         assert(pos <= data.size());
         assert(size <= data.size() - pos);
 
@@ -158,6 +161,9 @@ struct MessageCatalog::Impl {
     std::vector<Item<U32>> pluralItems;
     std::vector<ContextItem<U32>> pluralContextItems;
 
+    // pluralForms is only in std::optional because plural::Eval does
+    // not have a default constructor. It will never be nullopt after
+    // MessageCatalog is constructed.
     std::optional<PluralForms> pluralForms;
 
     template<typename ItemT>
@@ -228,7 +234,7 @@ struct MessageCatalog::Impl {
 };
 
 
-MessageCatalog::MessageCatalog(DataStream& stream)
+MessageCatalog::MessageCatalog(Stream& stream)
     : impl{std::make_unique<Impl>()}
 {
     // The MO file format specification:
@@ -327,7 +333,7 @@ MessageCatalog::MessageCatalog(DataStream& stream)
     };
 
     const auto loadStrTables =
-    [&stream, &readU32, &readOffset, strCount]() -> StrTables
+    [&stream, &readU32, &readOffset, strCount]()
     {
         struct TableInfo {
             const char* name;
@@ -355,8 +361,7 @@ MessageCatalog::MessageCatalog(DataStream& stream)
                 stream.setPosition(tableOffset);
             } catch (const Error& e) {
                 throw Error{
-                    "Can't set stream position to "
-                    + toStr(tableOffset) + ": " + e.what()};
+                    "Can't set stream position: "s + e.what()};
             }
 
             const auto readStrDescriptior = [&]
@@ -389,7 +394,7 @@ MessageCatalog::MessageCatalog(DataStream& stream)
                     throw Error{
                         "String offset (" + toStr(offset) + ") + "
                         "size (" + toStr(sizeWith0) + ", including "
-                        "null terminator) is beyond file size limit "
+                        "null terminator) exceed file size limit "
                         + toStr(fileSizeLimit)};
 
                 return StrIRef{offset, size};
@@ -437,7 +442,7 @@ MessageCatalog::MessageCatalog(DataStream& stream)
                     + e.what()};
             }
 
-        return {
+        return StrTables{
             std::move(tableInfos[0].items),
             std::move(tableInfos[1].items),
             strDataSize};
@@ -448,10 +453,7 @@ MessageCatalog::MessageCatalog(DataStream& stream)
     impl->strData.resize(strTables.strDataSize);
 
     auto readStr =
-    [
-        &stream,
-        &strData = impl->strData,
-        strDataPos = U32{}]
+    [&stream, &strData = impl->strData, strDataPos = U32{}]
     (StrIRef fileStrIRef) mutable
     {
         const auto sizeWith0 = fileStrIRef.size + 1;
@@ -462,9 +464,7 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         try {
             stream.setPosition(fileStrIRef.pos);
         } catch (const Error& e) {
-            throw Error{
-                "Can't set stream position to "
-                + toStr(fileStrIRef.pos) + ": " + e.what()};
+            throw Error{"Can't set stream position: "s + e.what()};
         }
 
         try {
@@ -472,8 +472,7 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         } catch (const Error& e) {
             throw Error{
                 "Can't read " + toStr(sizeWith0) + " bytes of string "
-                "data from position " + toStr(fileStrIRef.pos) + ": "
-                + e.what()};
+                "data: " + e.what()};
         }
 
         if (strData[strDataPos + fileStrIRef.size] != 0)
@@ -487,22 +486,21 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         return StrIRef{pos, fileStrIRef.size};
     };
 
-    enum ItemFlag : U32 {
-        ItemFlagNone = 0,
-        ItemFlagContext = 1 << 0,
-        ItemFlagPlural = 1 << 1,
-        ItemFlagAll = ItemFlagContext | ItemFlagPlural,
+    enum ItemType : U32 {
+        ItemTypeNormal,
+        ItemTypeContext,
+        ItemTypePlural,
+        ItemTypePluralContext,
     };
 
-    using ItemFlags = U32;
-    static const auto numItemFlagCombos = ItemFlagAll + 1;
+    static const U32 numItemTypes{4};
 
     struct ItemInfo {
-        // In case of a plural item, the second from (including its
-        // leading null separator) is already removed.
+        // In case of a plural item, the second from and its leading
+        // null separator is already removed.
         StrIRef strIRef;
         U32 contextSepPos;
-        ItemFlags flags;
+        ItemType type;
 
         StrIRef getContext() const
         {
@@ -535,50 +533,57 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         const auto sepPos = s.find_first_of(
             allSeps, 0, sizeof(allSeps));
         if (sepPos == s.npos)
-            return {strIRef, strIRef.size, ItemFlagNone};
+            return {strIRef, strIRef.size, ItemTypeNormal};
 
         const auto sep = s[sepPos];
         if (sep == contextSep) {
-            ItemFlags flags{ItemFlagContext};
+            ItemType type{ItemTypeContext};
 
             const auto pluralSepPos = s.find(pluralSep, sepPos + 1);
             if (pluralSepPos != s.npos) {
-                flags |= ItemFlagPlural;
+                type = ItemTypePluralContext;
                 strIRef.size = static_cast<U32>(pluralSepPos);
             }
 
-            return {strIRef, static_cast<U32>(sepPos), flags};
+            return {strIRef, static_cast<U32>(sepPos), type};
         }
 
         assert(sep == pluralSep);
         strIRef.size = static_cast<U32>(sepPos);
-        return {strIRef, strIRef.size, ItemFlagPlural};
+        return {strIRef, strIRef.size, ItemTypePlural};
     };
 
     std::vector<ItemInfo> itemInfos(strCount);
-    std::array<U32, numItemFlagCombos> itemTypeCount{};
+    std::array<U32, numItemTypes> itemTypeCount{};
 
     std::optional<U32> headerEntryIdx;
 
     for (U32 i{}; i < strCount; ++i) {
         StrIRef sourceStrIRef;
         try {
+            // As a an optimization, we intentionally read the source
+            // strings as raw bytes rather than UTF-8. There's no need
+            // to validate UTF-8 in this case, because the source
+            // strings are only used for lookup and are never returned
+            // from the API.
             sourceStrIRef = readStr(strTables.source[i]);
         } catch (const Error& e) {
-            throw Error{"Can't read source string: "s + e.what()};
+            throw Error{
+                "Can't read source string at offset "
+                + toStr(strTables.source[i].pos) + ": " + e.what()};
         }
 
         itemInfos[i] = createItemInfo(sourceStrIRef);
         const auto& itemInfo = itemInfos[i];
 
-        // Although we don't return the context string from the API,
-        // make it null-terminated like the other strings for
+        // Although we don't return the context strings from the API,
+        // make them null-terminated like the other strings for
         // consistency.
         if (itemInfo.contextSepPos < itemInfo.strIRef.size)
             impl->strData[
                 itemInfo.strIRef.pos + itemInfo.contextSepPos] = 0;
 
-        ++itemTypeCount[itemInfo.flags];
+        ++itemTypeCount[itemInfo.type];
 
         if (sourceStrIRef.size == 0) {
             if (headerEntryIdx)
@@ -598,16 +603,15 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         == strCount);
 
     const auto resizeItems =
-    [&itemTypeCount](auto& items, ItemFlags itemFlags)
+    [&itemTypeCount](auto& items, ItemType itemType)
     {
-        items.resize(itemTypeCount[itemFlags]);
+        items.resize(itemTypeCount[itemType]);
     };
 
-    resizeItems(impl->items, ItemFlagNone);
-    resizeItems(impl->contextItems, ItemFlagContext);
-    resizeItems(impl->pluralItems, ItemFlagPlural);
-    resizeItems(
-        impl->pluralContextItems, ItemFlagPlural | ItemFlagContext);
+    resizeItems(impl->items, ItemTypeNormal);
+    resizeItems(impl->contextItems, ItemTypeContext);
+    resizeItems(impl->pluralItems, ItemTypePlural);
+    resizeItems(impl->pluralContextItems, ItemTypePluralContext);
 
     // Returns the index of the first plural form in
     // Impl::pluralStrIRefs.
@@ -652,30 +656,29 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         return result;
     };
 
-    std::array<U32, numItemFlagCombos> itemArrayPos{};
+    std::array<U32, numItemTypes> itemArrayPos{};
 
     const auto assignTranslatedStr = [&](U32 idx, StrIRef strIRef)
     {
         assert(idx < itemInfos.size());
         const auto& itemInfo = itemInfos[idx];
-        const auto itemFlags = itemInfo.flags;
 
-        const auto pos = itemArrayPos[itemFlags]++;
-        assert(pos < itemTypeCount[itemFlags]);
+        const auto pos = itemArrayPos[itemInfo.type]++;
+        assert(pos < itemTypeCount[itemInfo.type]);
 
-        switch (itemFlags) {
-        case ItemFlagNone:
+        switch (itemInfo.type) {
+        case ItemTypeNormal:
             impl->items[pos] = {itemInfo.getId(), strIRef};
             break;
-        case ItemFlagPlural:
+        case ItemTypePlural:
             impl->pluralItems[pos] = {
                 itemInfo.getId(), pushPluralForms(strIRef)};
             break;
-        case ItemFlagContext:
+        case ItemTypeContext:
             impl->contextItems[pos] = {
                 itemInfo.getContext(), itemInfo.getId(), strIRef};
             break;
-        case ItemFlagPlural | ItemFlagContext:
+        case ItemTypePluralContext:
             impl->pluralContextItems[pos] = {
                 itemInfo.getContext(),
                 itemInfo.getId(),
@@ -715,8 +718,8 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         // https://www.unicode.org/cldr/charts/48/supplemental/language_plural_rules.html
         // https://docs.translatehouse.org/projects/localization-guide/en/latest/l10n/pluralforms.html
         //
-        // We use a slightly larger limit, but not too much since
-        // this number is used to calculate the size of an array.
+        // We use a larger limit, but not too much since this number
+        // is used to calculate the size of the array.
         static const CountT maxPluralForms{15};
         // Ensure that our limits are sane for the edge case when all
         // strings have plural forms.
@@ -741,16 +744,29 @@ MessageCatalog::MessageCatalog(DataStream& stream)
     };
 
     if (headerEntryIdx) {
+        // Since the message catalog can use an encoding other than
+        // UTF-8, it's technically possible for the header entry (e.g.
+        // the "Last-Translator" field) to contain strings that are
+        // valid for that encoding but not for UTF-8. To provide a
+        // meaningful exception message, we process the header as raw
+        // bytes to postpone the UTF-8 validation until we check that
+        // the "Content-Type" field, if any, is set to "UTF-8".
         StrIRef headerStrIRef;
         try {
             headerStrIRef = readStr(
                 strTables.translated[*headerEntryIdx]);
         } catch (const Error& e) {
-            throw Error{"Can't read header entry: "s + e.what()};
+            throw Error{
+                "Can't read header entry at offset "
+                + toStr(strTables.translated[*headerEntryIdx].pos)
+                + ": " + e.what()};
         }
 
         try {
-            processHeader(headerStrIRef.getView(impl->strData));
+            const auto headerStr = headerStrIRef.getView(
+                impl->strData);
+            processHeader(headerStr);
+            validateUtf8(headerStr);
         } catch (const Error& e) {
             throw Error{"Can't process header entry: "s + e.what()};
         }
@@ -760,15 +776,15 @@ MessageCatalog::MessageCatalog(DataStream& stream)
 
     if (!impl->pluralForms)
         // If there is no header or if the header doesn't have a
-        // "Plural-Forms" entry, follow the gettext behavior and use
-        // the standard Germanic plural rule.
+        // "Plural-Forms" entry, follow the Gettext behavior and use
+        // the Germanic plural rule.
         impl->pluralForms.emplace(2, "n == 1 ? 0 : 1");
 
     const auto numPluralItems =
-        itemTypeCount[ItemFlagPlural]
-        + itemTypeCount[ItemFlagContext | ItemFlagPlural];
+        itemTypeCount[ItemTypePlural]
+        + itemTypeCount[ItemTypePluralContext];
 
-    // The numbers are already checked against sane limits. Double
+    // The numbers are already checked against the sane limits. Double
     // check anyway.
     if (U32Max / impl->pluralForms->numPlurals < numPluralItems)
         throw Error{
@@ -788,8 +804,12 @@ MessageCatalog::MessageCatalog(DataStream& stream)
         StrIRef translatedStrIRef;
         try {
             translatedStrIRef = readStr(strTables.translated[i]);
+            validateUtf8(translatedStrIRef.getView(impl->strData));
         } catch (const Error& e) {
-            throw Error{"Can't read translated string: "s + e.what()};
+            throw Error{
+                "Can't read translated string at offset "
+                + toStr(strTables.translated[i].pos) + ": "
+                + e.what()};
         }
 
         assignTranslatedStr(i, translatedStrIRef);
