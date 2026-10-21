@@ -43,7 +43,7 @@ archive. It has several advantages over the package manager version:
 *   Provides the latest version of Tesseract, while in the package
     manager it may be out of date.
 
-*   Has a [language manager][] that allows you to install and remove
+*   Has a language manager that allows you to install and remove
     languages without leaving dpScreenOCR.
 
 
@@ -79,8 +79,8 @@ or as a TAR.XZ archive. Languages installed for the former will not be
 visible in the latter, and vice versa.
 
 The TAR.XZ version of dpScreenOCR is shipped with the English language
-pack. To install other languages, use the language manager as
-described in the "[Language manager][]" section.
+pack. To install other languages, use the language manager (the
+"Language manager" button below the language list).
 
 If you installed dpScreenOCR using the package manager, you should
 also use the package manager to get the languages for Tesseract.
@@ -100,8 +100,8 @@ detection) and "equ" (math and equation detection) packages.
 ### Windows
 
 dpScreenOCR for Windows is shipped with the English language pack. To
-install other languages, use the language manager as described in the
-"[Language manager][]" section.
+install other languages, use the language manager (the "Language
+manager" button below the language list).
 
 
 # Usage
@@ -141,20 +141,6 @@ blocks, regardless of whether this option is enabled.
 This is the list of languages that dpScreenOCR can use to recognize
 text. You can select more than one, but be aware that this may slow
 down recognition and reduce its accuracy.
-
-
-### Language manager
-
-The language manager allows you to install, update, and remove
-languages. On Unix-like systems it's only available in the TAR.XZ
-version of dpScreenOCR, otherwise you can handle languages through the
-system package manager as described in the "[Installing languages][]"
-section.
-
-When you open the manager, it tries to retrieve the list of available
-languages from the Internet. If this fails (e.g., if there is no
-network connection), you can still remove languages using the
-corresponding tab.
 
 
 ## Actions
