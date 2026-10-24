@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdbool.h>
-#include <stddef.h>
 
 
 #ifdef __cplusplus
@@ -172,7 +171,7 @@ typedef struct UiUpdateCheckerUpdateInfo {
      * List of unmet requirements for latestVersion.
      */
     const UiUpdateCheckerUnmetRequirement* unmetRequirements;
-    size_t numUnmetRequirements;
+    int numUnmetRequirements;
 } UiUpdateCheckerUpdateInfo;
 
 

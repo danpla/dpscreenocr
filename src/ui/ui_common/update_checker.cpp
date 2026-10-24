@@ -252,7 +252,8 @@ UiUpdateCheckerStatus uiUpdateCheckerGetUpdateInfo(
         updateChecker->updateInfo.newVersion.c_str(),
         updateChecker->updateInfo.latestVersion.c_str(),
         updateChecker->publicUnmentRequirements.data(),
-        updateChecker->publicUnmentRequirements.size()};
+        static_cast<int>(
+            updateChecker->publicUnmentRequirements.size())};
 
     return UiUpdateCheckerStatusSuccess;
 }
