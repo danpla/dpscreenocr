@@ -56,6 +56,15 @@ convert_line_endings(
     "${CMAKE_BINARY_DIR}/doc/license.txt"
     CRLF)
 
+set(TPL_DIR_NAME "third-party-licenses")
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/doc/${TPL_DIR_NAME}")
+    message(
+        WARNING
+        "The optional \"${TPL_DIR_NAME}\" directory does not exists "
+        "in \"${CMAKE_BINARY_DIR}/doc\"; it must be set up "
+        "manually")
+endif()
+
 install(
     DIRECTORY "${CMAKE_BINARY_DIR}/doc"
     DESTINATION .)
