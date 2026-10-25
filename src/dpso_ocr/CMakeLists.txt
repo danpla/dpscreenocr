@@ -66,8 +66,7 @@ set_target_properties(
     dpso_ocr PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
-    CXX_EXTENSIONS NO
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+    CXX_EXTENSIONS NO)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(dpso_ocr PRIVATE -Wall -Wextra -pedantic)

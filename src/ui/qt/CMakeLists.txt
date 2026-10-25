@@ -32,8 +32,7 @@ set_target_properties(
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
-    AUTOMOC ON
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+    AUTOMOC ON)
 if(WIN32)
     # Hide the console window.
     set_target_properties(

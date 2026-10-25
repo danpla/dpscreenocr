@@ -8,8 +8,7 @@ set_target_properties(
     dpso_example PROPERTIES
     C_STANDARD 99
     C_STANDARD_REQUIRED YES
-    C_EXTENSIONS NO
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+    C_EXTENSIONS NO)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(

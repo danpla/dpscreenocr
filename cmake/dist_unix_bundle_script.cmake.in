@@ -282,9 +282,12 @@ function(bundle_libs)
     # mess with CMake options to keep the original RPATH (it is
     # useless for the bundled executable anyway).
 
+    set(EXE)
     set(EXTRA_LIBS)
 
     if(DPSO_UI STREQUAL "qt")
+        set(EXE "${CMAKE_BINARY_DIR}/src/ui/qt/${APP_FILE_NAME}")
+
         bundle_qt_plugins(QT_PLUGIN_PATHS)
         list(APPEND EXTRA_LIBS ${QT_PLUGIN_PATHS})
     endif()
@@ -296,7 +299,7 @@ function(bundle_libs)
     # /usr/lib/x86_64-linux-gnu on Debian, but in /usr/lib on Arch.
     file(
         GET_RUNTIME_DEPENDENCIES
-        EXECUTABLES "${CMAKE_BINARY_DIR}/${APP_FILE_NAME}"
+        EXECUTABLES "${EXE}"
         LIBRARIES ${EXTRA_LIBS}
         RESOLVED_DEPENDENCIES_VAR RESOLVED_LIBS
         UNRESOLVED_DEPENDENCIES_VAR UNRESOLVED_LIBS)
