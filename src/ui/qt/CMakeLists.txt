@@ -33,7 +33,6 @@ set_target_properties(
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
     AUTOMOC ON
-    OUTPUT_NAME "dpscreenocr"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 if(WIN32)
     # Hide the console window.
