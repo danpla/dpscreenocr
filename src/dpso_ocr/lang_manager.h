@@ -314,7 +314,7 @@ typedef struct DpsoOcrLangInstallProgress {
      *
      * -1 if installation is not active.
      */
-    int curLangIdx;
+    int langIdx;
 
     /**
      * Installation progress of the current language.
@@ -322,7 +322,7 @@ typedef struct DpsoOcrLangInstallProgress {
      * The progress value is either a percentage (0-100), or -1 if the
      * final size of the language file is unknown.
      */
-    int curLangProgress;
+    int langProgress;
 
     /**
      * 1-based number of the language being installed.
@@ -330,7 +330,7 @@ typedef struct DpsoOcrLangInstallProgress {
      * The number is > 0 and <= totalLangs, or 0 if installation is
      * not active.
      */
-    int curLangNum;
+    int langNum;
 
     /**
      * Total number of languages.

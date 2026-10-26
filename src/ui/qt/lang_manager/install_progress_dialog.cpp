@@ -155,7 +155,7 @@ void InstallProgressDialog::timerEvent(QTimerEvent* /*event*/)
     }
 
     const auto newValue =
-        ((progress.curLangNum - 1) * 100 + progress.curLangProgress)
+        ((progress.langNum - 1) * 100 + progress.langProgress)
         / progress.totalLangs;
 
     if (newValue == progressBar->value())
@@ -164,9 +164,9 @@ void InstallProgressDialog::timerEvent(QTimerEvent* /*event*/)
     progressBar->setValue(newValue);
 
     const auto* langCode = dpsoOcrLangManagerGetLangCode(
-        langManager, progress.curLangIdx);
+        langManager, progress.langIdx);
     const auto* langName = dpsoOcrLangManagerGetLangName(
-        langManager, progress.curLangIdx);
+        langManager, progress.langIdx);
 
     label->setText(strNFormat(
         installMode == InstallMode::install
@@ -176,7 +176,7 @@ void InstallProgressDialog::timerEvent(QTimerEvent* /*event*/)
                 "({current}/{total})"),
         {
             {"name", *langName ? uiTranslate(langName) : langCode},
-            {"current", progress.curLangNum},
+            {"current", progress.langNum},
             {"total", progress.totalLangs}}));
 }
 
