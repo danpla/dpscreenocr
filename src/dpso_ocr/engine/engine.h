@@ -18,15 +18,6 @@ struct EngineInfo {
     std::string id;
     std::string name;
     std::string version;
-
-    // See DpsoOcrEngineDataDirPreference
-    enum class DataDirPreference {
-        noDataDir,
-        preferDefault,
-        preferExplicit,
-    };
-
-    DataDirPreference dataDirPreference;
     bool hasLangManager;
 };
 

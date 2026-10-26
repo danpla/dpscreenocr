@@ -6,6 +6,7 @@
 
 #include "engine/engine.h"
 #include "engine/tesseract/lang_manager.h"
+#include "engine/tesseract/lang_utils.h"
 #include "engine/tesseract/recognizer.h"
 
 
@@ -25,16 +26,6 @@ std::string getMajorVersionString()
 }
 
 
-EngineInfo::DataDirPreference getDataDirPreference()
-{
-    #if DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
-    return EngineInfo::DataDirPreference::preferDefault;
-    #else
-    return EngineInfo::DataDirPreference::preferExplicit;
-    #endif
-}
-
-
 class Engine : public ocr::Engine {
 public:
     Engine()
@@ -42,10 +33,7 @@ public:
             "tesseract_" + getMajorVersionString(),
             "Tesseract",
             ::tesseract::TessBaseAPI::Version(),
-            getDataDirPreference(),
-            getDataDirPreference()
-                    == EngineInfo::DataDirPreference::preferExplicit
-                && hasLangManager()}
+            hasLangManager()}
     {
     }
 
@@ -57,7 +45,12 @@ public:
     std::unique_ptr<Recognizer> createRecognizer(
         std::string_view dataDir) const override
     {
-        return tesseract::createRecognizer(dataDir);
+        // When our library is build without the language manager,
+        // this means that we use the system Tesseract library and
+        // therefore should also enforce the default Tesseract data
+        // path that points to the system data directory.
+        return tesseract::createRecognizer(
+            info.hasLangManager ? dataDir : getDefaultDataDir());
     }
 
     std::unique_ptr<LangManager> createLangManager(

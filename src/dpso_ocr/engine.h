@@ -14,37 +14,6 @@ extern "C" {
 int dpsoOcrGetNumEngines(void);
 
 
-/**
- * What DpsoOcrArgs::dataDir the OCR engine prefers.
- */
-typedef enum {
-    /**
-     * Engine doesn't use external data.
-     *
-     * DpsoOcrArgs::dataDir is ignored.
-     */
-    DpsoOcrEngineDataDirPreferenceNoDataDir,
-
-    /**
-     * Engine prefers the default data directory.
-     *
-     * Usually this means that on the current platform, the data is
-     * installed in a system-wide path that is hardcoded into the OCR
-     * library at build time.
-     */
-    DpsoOcrEngineDataDirPreferencePreferDefault,
-
-    /**
-     * Engine prefers an explicit path to data directory.
-     *
-     * This is normally the default mode for non-Unix platforms, where
-     * the data is usually installed in the application-specific
-     * directory.
-     */
-    DpsoOcrEngineDataDirPreferencePreferExplicit
-} DpsoOcrEngineDataDirPreference;
-
-
 typedef struct DpsoOcrEngineInfo {
     /**
      * Unique engine id.
@@ -71,15 +40,11 @@ typedef struct DpsoOcrEngineInfo {
      */
     const char* version;
 
-    DpsoOcrEngineDataDirPreference dataDirPreference;
-
     /**
      * Whether the engine has a language manager.
      *
      * If hasLangManager is false, dpsoOcrLangManagerCreate() is
-     * guaranteed to fail. This field is always false for any data
-     * directory preference other than
-     * DpsoOcrEngineDataDirPreferencePreferExplicit.
+     * guaranteed to fail.
      */
     bool hasLangManager;
 } DpsoOcrEngineInfo;

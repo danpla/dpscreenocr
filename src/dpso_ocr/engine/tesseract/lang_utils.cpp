@@ -29,6 +29,30 @@ bool isIgnoredLang(std::string_view lang)
 }
 
 
+const std::string& getDefaultDataDir()
+{
+    // Both GetDatapath() and GetAvailableLanguagesAsVector() use
+    // a data path calculated by the last Init(), so we have to
+    // call Init() even if we want to use the compiled-in data
+    // path (for this, we pass an empty path to Init()). At the
+    // same time, Init() requires at least one language (null
+    // language is implicit "eng" in Tesseract versions before 5).
+    // As a workaround, we don't check Init() for errors: it will
+    // fail if "eng" is unavailable, but the path will still be
+    // calculated and stored in TessBaseAPI.
+
+    static std::string result;
+
+    if (result.empty()) {
+        ::tesseract::TessBaseAPI tess;
+        tess.Init("", nullptr);
+        result = tess.GetDatapath();
+    }
+
+    return result;
+}
+
+
 std::vector<std::string> getAvailableLangs(std::string_view dataDir)
 {
     // We collect language files ourself instead of using
@@ -55,28 +79,7 @@ std::vector<std::string> getAvailableLangs(std::string_view dataDir)
 
     namespace fs = std::filesystem;
 
-    fs::path dataDirPath;
-    if (dataDir.empty()) {
-        // This is a request for the compiled-in Tesseract data path,
-        // which is necessary on Unix-like systems when using the
-        // system-wide Tesseract library and language files. This path
-        // is typically configured by the package maintainers may
-        // therefore differ between OS distributions.
-        //
-        // Both GetDatapath() and GetAvailableLanguagesAsVector() use
-        // a data path calculated by the last Init(), so we have to
-        // call Init() even if we want to use the compiled-in data
-        // path (for this, we pass an empty path to Init()). At the
-        // same time, Init() requires at least one language (null
-        // language is implicit "eng" in Tesseract versions before 5).
-        // As a workaround, we don't check Init() for errors: it will
-        // fail if "eng" is unavailable, but the path will still be
-        // calculated and stored in TessBaseAPI.
-        ::tesseract::TessBaseAPI tess;
-        tess.Init("", nullptr);
-        dataDirPath = fs::u8path(tess.GetDatapath());
-    } else
-        dataDirPath = fs::u8path(dataDir);
+    const auto dataDirPath = fs::u8path(dataDir);
 
     std::vector<std::string> result;
 
@@ -103,7 +106,7 @@ std::vector<std::string> getAvailableLangs(std::string_view dataDir)
     if (ec && ec != std::errc::no_such_file_or_directory)
         throw Error{str::format(
             "Directory \"{}\" iterator error: {}",
-            dataDirPath.u8string(), ec.message())};
+            dataDir, ec.message())};
 
     return result;
 }

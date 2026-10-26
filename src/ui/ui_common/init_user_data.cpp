@@ -2,6 +2,8 @@
 
 #include <filesystem>
 
+#include "dpso_ocr/engine.h"
+
 #include "dpso_utils/error_get.h"
 #include "dpso_utils/error_set.h"
 #include "dpso_utils/str.h"
@@ -52,23 +54,20 @@ bool setupOcrData()
         DpsoOcrEngineInfo ocrEngineInfo;
         dpsoOcrGetEngineInfo(i, &ocrEngineInfo);
 
-        const auto dataDir = getDefaultOcrDataDir(ocrEngineInfo);
-        if (!dataDir) {
+        const auto dataDir = getDefaultOcrDataDir(ocrEngineInfo.id);
+        if (dataDir.empty()) {
             dpso::setError(
                 "Can't get default data dir for {} OCR engine: {}",
                 ocrEngineInfo.name, dpsoGetError());
             return false;
         }
 
-        if (dataDir->empty())
-            continue;
-
         try {
-            setupEntry(appDataDir, fs::u8path(*dataDir));
+            setupEntry(appDataDir, fs::u8path(dataDir));
         } catch (fs::filesystem_error& e) {
             dpso::setError(
                 "Can't set up data for {} OCR engine ({}): {}",
-                ocrEngineInfo.name, *dataDir, e.what());
+                ocrEngineInfo.name, dataDir, e.what());
             return false;
         }
     }

@@ -16,6 +16,14 @@ extern const std::string_view traineddataExt;
 bool isIgnoredLang(std::string_view lang);
 
 
+
+// Returns the compiled-in Tesseract data path, which is necessary on
+// Unix-like systems when using the system-wide Tesseract library and
+// language files. This path is typically configured by the package
+// maintainers and can therefore differ between OS distributions.
+const std::string& getDefaultDataDir();
+
+
 // Returns languages from TessBaseAPI::GetAvailableLanguagesAsVector,
 // excluding those that are ignored by isIgnoredLang().
 //

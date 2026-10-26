@@ -17,9 +17,11 @@ typedef struct DpsoOcr DpsoOcr;
 /**
  * Create OCR.
  *
- * engineIdx is in the [0, dpsoOcrGetNumEngines()) range. dataDir may
- * be empty to use the default path, or if the engine doesn't use
- * external data. See DpsoOcrEngineDataDirPreference for the details.
+ * engineIdx is in the [0, dpsoOcrGetNumEngines()) range.
+ *
+ * Some OCR engines can ignore dataDir: for example, if the engine
+ * does not depend on external data or uses a fixed system-wide data
+ * path.
  *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null. In particular, the function will fail if a language manager

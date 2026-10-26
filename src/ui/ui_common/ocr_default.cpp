@@ -12,11 +12,11 @@ DpsoOcr* dpsoOcrCreateDefault(int engineIdx)
     DpsoOcrEngineInfo engineInfo;
     dpsoOcrGetEngineInfo(engineIdx, &engineInfo);
 
-    const auto dataDir = ui::getDefaultOcrDataDir(engineInfo);
-    if (!dataDir)
+    const auto dataDir = ui::getDefaultOcrDataDir(engineInfo.id);
+    if (dataDir.empty())
         return {};
 
-    return dpsoOcrCreate(engineIdx, dataDir->c_str());
+    return dpsoOcrCreate(engineIdx, dataDir.c_str());
 }
 
 
@@ -41,13 +41,13 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreateDefault(int engineIdx)
     DpsoOcrEngineInfo engineInfo;
     dpsoOcrGetEngineInfo(engineIdx, &engineInfo);
 
-    const auto dataDir = ui::getDefaultOcrDataDir(engineInfo);
-    if (!dataDir)
+    const auto dataDir = ui::getDefaultOcrDataDir(engineInfo.id);
+    if (dataDir.empty())
         return {};
 
     return dpsoOcrLangManagerCreate(
         engineIdx,
-        dataDir->c_str(),
+        dataDir.c_str(),
         ui::getUserAgent().c_str(),
         getInfoFileUrl(engineInfo).c_str());
 }

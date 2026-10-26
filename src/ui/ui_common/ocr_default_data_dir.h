@@ -1,22 +1,18 @@
 #pragma once
 
-#include <optional>
 #include <string>
-
-#include "dpso_ocr/engine.h"
+#include <string_view>
 
 
 namespace ui {
 
 
 // Return an absolute path of the OCR data directory for the given
-// engine. The path will be empty if engineInfo.dataDirPreference is
-// not DpsoOcrEngineDataDirPreferencePreferExplicit.
+// engine id.
 //
-// On failure, sets an error message (dpsoGetError()) and returns
-// nullopt.
-std::optional<std::string> getDefaultOcrDataDir(
-    const DpsoOcrEngineInfo& engineInfo);
+// On failure, sets an error message (dpsoGetError()) and returns an
+// empty string.
+std::string getDefaultOcrDataDir(std::string_view ocrEngineId);
 
 
 }

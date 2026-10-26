@@ -5,18 +5,16 @@ project(dpso_ocr)
 include(CMakeDependentOption)
 
 string(
-    JOIN " " DPSO_USE_DEFAULT_TESSERACT_DATA_PATH_DESCRIPTION
-    "Use the default Tesseract data path instead of the explicit one."
-    "You should disable this if Tesseract is going to be shipped"
-    "with the program. Otherwise, the language manager will be"
-    "disabled, because language packs for system-wide Tesseract"
-    "should be installed via the package manager.")
+    JOIN " " DPSO_ENABLE_LANGUAGE_MANAGER_DESCRIPTION
+    "Enable the language manager. If disabled, Tesseract will use"
+    "the default, built-in path to language packs installed via the"
+    "system package manager.")
 cmake_dependent_option(
-    DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
-    "${DPSO_USE_DEFAULT_TESSERACT_DATA_PATH_DESCRIPTION}"
-    YES
+    DPSO_ENABLE_LANGUAGE_MANAGER
+    "${DPSO_ENABLE_LANGUAGE_MANAGER_DESCRIPTION}"
+    NO
     "UNIX; NOT APPLE"
-    NO)
+    YES)
 
 add_library(
     dpso_ocr
@@ -33,8 +31,7 @@ add_library(
     lang_manager.cpp
     ocr.cpp)
 
-# Language manager
-if(NOT DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
+if(DPSO_ENABLE_LANGUAGE_MANAGER)
     target_sources(
         dpso_ocr
         PRIVATE
@@ -56,11 +53,6 @@ else()
     target_sources(
         dpso_ocr PRIVATE engine/tesseract/lang_manager_null.cpp)
 endif()
-
-target_compile_definitions(
-    dpso_ocr
-    PRIVATE
-    DPSO_USE_DEFAULT_TESSERACT_DATA_PATH=$<BOOL:${DPSO_USE_DEFAULT_TESSERACT_DATA_PATH}>)
 
 set_target_properties(
     dpso_ocr PROPERTIES

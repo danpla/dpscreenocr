@@ -11,32 +11,18 @@
 namespace ui {
 
 
-std::optional<std::string> getDefaultOcrDataDir(
-    const DpsoOcrEngineInfo& engineInfo)
+std::string getDefaultOcrDataDir(std::string_view ocrEngineId)
 {
-    std::string result;
-
-    switch (engineInfo.dataDirPreference) {
-    case DpsoOcrEngineDataDirPreferenceNoDataDir:
-    case DpsoOcrEngineDataDirPreferencePreferDefault:
-        break;
-    case DpsoOcrEngineDataDirPreferencePreferExplicit: {
-        const auto* dataDirPath = dpsoGetUserDir(DpsoUserDirData);
-        if (!dataDirPath) {
-            dpso::setError(
-                "Can't get user data dir: {}", dpsoGetError());
-            return {};
-        }
-
-        result = dpso::os::joinPath({
-            dataDirPath,
-            uiAppFileName,
-            std::string{engineInfo.id} + "_data"});
-        break;
-    }
+    const auto* dataDirPath = dpsoGetUserDir(DpsoUserDirData);
+    if (!dataDirPath) {
+        dpso::setError("Can't get user data dir: {}", dpsoGetError());
+        return {};
     }
 
-    return result;
+    return dpso::os::joinPath({
+        dataDirPath,
+        uiAppFileName,
+        std::string{ocrEngineId} + "_data"});
 }
 
 

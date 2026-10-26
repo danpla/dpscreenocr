@@ -32,14 +32,14 @@ function(validate_build_settings)
         message(FATAL_ERROR "\"${BUNDLE_DIR}\" already exists")
     endif()
 
-    set(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH
-        "@DPSO_USE_DEFAULT_TESSERACT_DATA_PATH@")
+    set(DPSO_ENABLE_LANGUAGE_MANAGER
+        "@DPSO_ENABLE_LANGUAGE_MANAGER@")
 
-    if(DPSO_USE_DEFAULT_TESSERACT_DATA_PATH)
+    if(NOT DPSO_ENABLE_LANGUAGE_MANAGER)
         message(
             FATAL_ERROR
-            "DPSO_USE_DEFAULT_TESSERACT_DATA_PATH must be disabled "
-            "for the bundle")
+            "DPSO_ENABLE_LANGUAGE_MANAGER must be enabled for the "
+            "bundle")
     endif()
 
     set(DPSO_DYNAMIC_CURL "@DPSO_DYNAMIC_CURL@")
@@ -53,7 +53,8 @@ function(validate_build_settings)
     if(NOT DPSO_ENABLE_UPDATE_CHECKER)
         message(
             FATAL_ERROR
-            "DPSO_ENABLE_UPDATE_CHECKER must be enabled for the bundle")
+            "DPSO_ENABLE_UPDATE_CHECKER must be enabled for the "
+            "bundle")
     endif()
 
     if(NOT DPSO_UI STREQUAL "qt")
@@ -367,7 +368,8 @@ endfunction()
 function(bundle_tesseract_data)
     file(
         COPY "/usr/local/share/tessdata/eng.traineddata"
-        DESTINATION "${BUNDLE_DIR}/share/${APP_FILE_NAME}/tesseract_5_data")
+        DESTINATION
+            "${BUNDLE_DIR}/share/${APP_FILE_NAME}/tesseract_5_data")
 endfunction()
 
 
