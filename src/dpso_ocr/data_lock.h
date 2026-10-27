@@ -19,7 +19,7 @@ public:
 
     // Throws DataLockedError if data is already locked by another
     // DataLock.
-    DataLock(std::string_view engineId, std::string_view dataDir);
+    explicit DataLock(std::string_view dataDir);
 
     ~DataLock();
 
@@ -38,7 +38,6 @@ class DataLockObserver {
 public:
     DataLockObserver();
     DataLockObserver(
-        std::string_view engineId,
         std::string_view dataDir,
         const std::function<void()>& beforeLockCreated,
         const std::function<void()>& afterLockRemoved);

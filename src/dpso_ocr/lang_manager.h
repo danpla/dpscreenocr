@@ -16,7 +16,7 @@ extern "C" {
  * languages.
  *
  * DpsoOcrLangManager and all DpsoOcr instances created for the same
- * engine and data dir are synchronized as follows. When you create
+ * data dir are synchronized as follows. When you create
  * DpsoOcrLangManager, all DpsoOcr instances will finish their jobs as
  * if by calling dpsoOcrWaitJobsToComplete(). Until DpsoOcrLangManager
  * is deleted, DpsoOcr instances will not allow queuing new jobs, and
@@ -56,7 +56,7 @@ typedef struct DpsoOcrLangManager DpsoOcrLangManager;
  *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null. In particular, the function will fail if another language
- * manager for the same engine and data dir is active.
+ * manager for the same data dir is active.
  */
 DpsoOcrLangManager* dpsoOcrLangManagerCreate(
     int engineIdx,

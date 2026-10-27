@@ -162,14 +162,11 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
         return nullptr;
     }
 
-    const auto& ocrEngine = ocr::Engine::get(engineIdx);
-
     // We don't use OcrUPtr here because dpsoOcrDelete() expects
     // a joinable thread.
     auto ocr = std::make_unique<DpsoOcr>();
 
     ocr->dataLockObserver = ocr::DataLockObserver{
-        ocrEngine.getInfo().id,
         dataDir,
         [&ocr = *ocr]
         {
@@ -193,7 +190,8 @@ DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir)
     }
 
     try {
-        ocr->recognizer = ocrEngine.createRecognizer(dataDir);
+        ocr->recognizer =
+            ocr::Engine::get(engineIdx).createRecognizer(dataDir);
     } catch (ocr::RecognizerError& e) {
         setError("Can't create recognizer: {}", e.what());
         return nullptr;

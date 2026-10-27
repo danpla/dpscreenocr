@@ -25,7 +25,7 @@ typedef struct DpsoOcr DpsoOcr;
  *
  * On failure, sets an error message (dpsoGetError()) and returns
  * null. In particular, the function will fail if a language manager
- * for the same engine and data dir is active.
+ * for the same data dir is active.
  */
 DpsoOcr* dpsoOcrCreate(int engineIdx, const char* dataDir);
 
@@ -131,7 +131,7 @@ typedef unsigned DpsoOcrJobFlags;
  * false. Reasons include:
  *   * img or *img is null
  *   * No active languages
- *   * A language manager for the same engine and data dir is active
+ *   * A language manager for the same data dir is active
  */
 bool dpsoOcrQueueJob(
     DpsoOcr* ocr, DpsoImg** img, DpsoOcrJobFlags flags);

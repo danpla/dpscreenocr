@@ -243,22 +243,19 @@ DpsoOcrLangManager* dpsoOcrLangManagerCreate(
         return nullptr;
     }
 
-    const auto& ocrEngine = ocr::Engine::get(engineIdx);
-
-    const auto& engineId = ocrEngine.getInfo().id;
-
     auto langManager = std::make_unique<DpsoOcrLangManager>();
 
     try {
-        langManager->dataLock = ocr::DataLock{engineId, dataDir};
+        langManager->dataLock = ocr::DataLock{dataDir};
     } catch (ocr::DataLock::DataLockedError& e) {
         setError("{}", e.what());
         return nullptr;
     }
 
     try {
-        langManager->langManager = ocrEngine.createLangManager(
-            dataDir, userAgent, infoFileUrl);
+        langManager->langManager =
+            ocr::Engine::get(engineIdx).createLangManager(
+                dataDir, userAgent, infoFileUrl);
     } catch (ocr::LangManagerError& e) {
         setError("{}", e.what());
         return nullptr;
