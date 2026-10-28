@@ -139,11 +139,11 @@ bool dpsoOcrQueueJob(
 
 typedef struct DpsoOcrProgress {
     /**
-     * Number of the current job (1-based).
+     * 1-based number of the current job.
      *
      * Can be zero if a job (if any) is not yet started.
      */
-    int curJob;
+    int jobNum;
 
     /**
      * Total number of jobs.

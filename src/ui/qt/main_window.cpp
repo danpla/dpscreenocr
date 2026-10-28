@@ -1084,7 +1084,7 @@ void MainWindow::updateStatus()
             strNFormat(
                 progressStatusFmt,
                 {
-                    {"current_job", progress.curJob},
+                    {"current_job", progress.jobNum},
                     {"total_jobs", progress.totalJobs}}));
         return;
     }

@@ -475,7 +475,7 @@ static void threadLoop(DpsoOcr& ocr)
             link->jobQueue.pop();
 
             link->jobActive = true;
-            ++link->progress.curJob;
+            ++link->progress.jobNum;
         }
 
         auto jobResult = processJob(ocr, job);
@@ -551,7 +551,7 @@ bool dpsoOcrProgressEqual(
     return
         a
         && b
-        && a->curJob == b->curJob
+        && a->jobNum == b->jobNum
         && a->totalJobs == b->totalJobs;
 }
 
