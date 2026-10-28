@@ -67,9 +67,6 @@ DPSO_WIN_DLL_FN(
     HRESULT (WINAPI *)(HMONITOR, int, UINT*, UINT*));
 
 
-const auto baseDpi = 96;
-
-
 // Get DPI of monitor containing the point.
 int getDpi(const Point& point)
 {
@@ -91,7 +88,7 @@ int getDpi(const Point& point)
     if (auto dc = windows::getDc(nullptr))
         return GetDeviceCaps(dc.get(), LOGPIXELSX);
 
-    return baseDpi;
+    return USER_DEFAULT_SCREEN_DPI;
 }
 
 
@@ -315,7 +312,7 @@ LRESULT Selection::processMessage(
 void Selection::updateBorderWidth()
 {
     borderWidth = static_cast<float>(baseBorderWidth)
-        * dpi / baseDpi + 0.5f;
+        * dpi / USER_DEFAULT_SCREEN_DPI + 0.5f;
     if (borderWidth < 1)
         borderWidth = 1;
 }
