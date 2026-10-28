@@ -113,7 +113,6 @@ void throwLastError(const char* description)
 
 
 const auto* const windowClassName = L"DpsoSelectionWindow";
-const auto* const thisPropName = L"this";
 
 
 void registerWindowClass(HINSTANCE instance, WNDPROC wndProc)
@@ -177,8 +176,10 @@ Selection::Selection(
             if (!window)
                 throwLastError("Can't create selection window");
 
-            if (!SetPropW(window.get(), thisPropName, this))
-                throwLastError("Can't set window property");
+            SetWindowLongPtrW(
+                window.get(),
+                GWLP_USERDATA,
+                reinterpret_cast<LONG_PTR>(this));
 
             // WM_DPICHANGED is only sent when a window is moved to a
             // display with a different DPI, so we have to query the
@@ -192,16 +193,6 @@ Selection::Selection(
             updatePens();
             updateWindowGeometry();
             updateWindowRegion();
-        });
-}
-
-
-Selection::~Selection()
-{
-    bgThreadExecutor(
-        [&]
-        {
-            RemovePropW(window.get(), thisPropName);
         });
 }
 
@@ -268,10 +259,11 @@ void Selection::update()
 LRESULT CALLBACK Selection::wndProc(
     HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    auto* selection = static_cast<Selection*>(
-        GetPropW(wnd, thisPropName));
+    auto* selection = reinterpret_cast<Selection*>(
+        GetWindowLongPtrW(wnd, GWLP_USERDATA));
     if (!selection)
-        // The window is just created; we don't reach SetProp() yet.
+        // The window is just created; we don't reach the
+        // SetWindowLongPtr() call yet.
         return DefWindowProcW(wnd, msg, wParam, lParam);
 
     return selection->processMessage(msg, wParam, lParam);

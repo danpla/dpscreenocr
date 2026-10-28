@@ -17,7 +17,6 @@ namespace dpso::backend::windows {
 class Selection : public backend::Selection {
 public:
     Selection(BgThreadExecutor& bgThreadExecutor, HINSTANCE instance);
-    ~Selection();
 
     bool getIsEnabled() const override;
     void setIsEnabled(bool newIsEnabled) override;
