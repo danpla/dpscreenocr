@@ -8,13 +8,12 @@ elseif(WIN32)
     endif()
 endif()
 
-# Since we only use CPack to create archives, we only need to set the
-# version variables (we don't set the project version in the project()
-# call, so the CPACK_PACKAGE_VERSION_* variables are not set
-# automatically).
-
+# We don't set the project version in the project() call, so the
+# CPACK_PACKAGE_VERSION_* variables are not set automatically.
 set(CPACK_PACKAGE_VERSION_MAJOR "${APP_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${APP_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${APP_VERSION_PATCH}")
+
+set(CPACK_STRIP_FILES YES)
 
 include(CPack)
