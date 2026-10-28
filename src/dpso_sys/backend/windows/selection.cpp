@@ -186,10 +186,8 @@ Selection::Selection(
             // automatically be scaled by Windows.
             dpi = getDpi(origin);
 
-            updateBorderWidth();
-            updatePens();
-            updateWindowGeometry();
-            updateWindowRegion();
+            updateBorderProperties();
+            updateWindow();
         });
 }
 
@@ -212,7 +210,8 @@ void Selection::setIsEnabled(bool newIsEnabled)
         {
             if (isEnabled) {
                 origin = getMousePos();
-                setGeometry(makeSelectionRect(origin, origin));
+                geom = makeSelectionRect(origin, origin);
+                updateWindow();
             }
 
             ShowWindow(window.get(), isEnabled ? SW_SHOWNA : SW_HIDE);
@@ -230,10 +229,10 @@ void Selection::setBorderWidth(int newBorderWidth)
     bgThreadExecutor(
         [&]
         {
-            updateBorderWidth();
-            updatePens();
-            updateWindowGeometry();
-            updateWindowRegion();
+            updateBorderProperties();
+
+            if (isEnabled)
+                updateWindow();
         });
 }
 
@@ -248,8 +247,15 @@ void Selection::update()
 {
     assert(bgThreadExecutor.isActive());
 
-    if (isEnabled)
-        setGeometry(makeSelectionRect(origin, getMousePos()));
+    if (!isEnabled)
+        return;
+
+    const auto newGeom = makeSelectionRect(origin, getMousePos());
+    if (newGeom == geom)
+        return;
+
+    geom = newGeom;
+    updateWindow();
 }
 
 
@@ -287,10 +293,8 @@ LRESULT Selection::processMessage(
 
         dpi = HIWORD(wParam);
 
-        updateBorderWidth();
-        updatePens();
-        updateWindowGeometry();
-        updateWindowRegion();
+        updateBorderProperties();
+        updateWindow();
 
         return 0;
     case WM_ERASEBKGND:
@@ -309,17 +313,13 @@ LRESULT Selection::processMessage(
 }
 
 
-void Selection::updateBorderWidth()
+void Selection::updateBorderProperties()
 {
     borderWidth = static_cast<float>(baseBorderWidth)
         * dpi / USER_DEFAULT_SCREEN_DPI + 0.5f;
     if (borderWidth < 1)
         borderWidth = 1;
-}
 
-
-void Selection::updatePens()
-{
     const auto commonStyle =
         PS_GEOMETRIC | PS_ENDCAP_FLAT | PS_JOIN_MITER;
 
@@ -340,18 +340,14 @@ void Selection::updatePens()
 }
 
 
-void Selection::updateWindowGeometry()
+void Selection::updateWindow()
 {
     SetWindowPos(
         window.get(), nullptr,
         geom.x - borderWidth, geom.y - borderWidth,
         geom.w + borderWidth * 2, geom.h + borderWidth * 2,
         SWP_NOZORDER | SWP_NOACTIVATE);
-}
 
-
-void Selection::updateWindowRegion()
-{
     windows::ObjectUPtr<HRGN> region{CreateRectRgn(
         0, 0, geom.w + borderWidth * 2, geom.h + borderWidth * 2)};
     if (!region)
@@ -367,21 +363,6 @@ void Selection::updateWindowRegion()
     if (SetWindowRgn(window.get(), region.get(), TRUE) != 0)
         // The region is now owned by the window.
         region.release();
-}
-
-
-void Selection::setGeometry(const Rect& newGeom)
-{
-    const auto newSize = getSize(newGeom) != getSize(geom);
-    if (!newSize && getPos(newGeom) == getPos(geom))
-        return;
-
-    geom = newGeom;
-
-    updateWindowGeometry();
-
-    if (newSize)
-        updateWindowRegion();
 }
 
 
