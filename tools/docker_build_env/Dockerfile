@@ -580,6 +580,12 @@ RUN \
     \
     && rm -rf "$BASE"
 
+# Add dp_intl license
+RUN \
+    wget \
+        --directory-prefix "$MIL_LICENSES_DIR_PATH/dp_intl" \
+        "https://raw.githubusercontent.com/danpla/dp_intl/main/license.txt"
+
 # Tell the linker about new libs in /usr/local/lib.
 RUN ldconfig
 
