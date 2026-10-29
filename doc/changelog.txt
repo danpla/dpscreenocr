@@ -1,3 +1,22 @@
+1.5.2 (2026-10-29)
+==================
+
+* Updated Tesseract to 5.5.4
+* X11:
+  * Significantly improved responsiveness of the selection rectangle,
+    especially when selecting large areas
+* Windows:
+  * Fixed missing command-line output (e.g., "-help")
+* New translations:
+  * Portuguese
+* Updated translations:
+  * German
+  * Spanish
+* CMake:
+  * Replaced DPSO_USE_DEFAULT_TESSERACT_DATA_PATH with
+    DPSO_ENABLE_LANGUAGE_MANAGER
+
+
 1.5.1 (2026-04-23)
 ==================
 
@@ -14,19 +33,19 @@
 1.5.0 (2025-05-31)
 ==================
 
-* Language manager
+* Language manager:
   * Added a file size column to language lists
   * Added text showing the total number and size of selected languages
   * "Update" tab header now shows the number of languages available
     for update
 * Added a "Settings" tab that includes:
   * Hotkey editor (moved from the "Main" tab)
-  * "Interface" group
+  * "Interface" group:
     * A checkbox to control the visibility of the notification area
       icon. If enabled, you can also choose to hide the main window
       when it is minimized or closed (use the notification area icon
       to show it again).
-  * "Behavior" group
+  * "Behavior" group:
     * A checkbox to play a sound when recognition is complete. If
       enabled, you can also select a custom audio file to use instead
       of the built-in one.
@@ -44,9 +63,9 @@
     only be installed automatically for those who run dpScreenOCR for
     the first time.
   * Removed support for 16-bit screen color modes under X11
-* New translations
+* New translations:
   * Portuguese (Brazil)
-* CMake
+* CMake:
   * Minimum required CMake version is raised to 3.22
   * Removed DPSO_ENABLE_NLS
 
@@ -193,7 +212,7 @@
   * Removed options:
     * action_run_executable_wait_to_complete; waiting is now always
       enabled
-    * ocr_dump_debug_image was replaced by the DPSO_DUMP_DEBUG_IMAGE
+    * ocr_dump_debug_image was replaced with the DPSO_DUMP_DEBUG_IMAGE
       environment variable
     * ui_native_file_dialogs
   * Leading and trailing double quotes are no longer treated
@@ -221,7 +240,7 @@
   * Removed DPSO_QT_RCC_ICONS
   * Removed DPSO_QT_X11_SET_WINDOW_TITLE_WORKAROUND; Qt5X11Extras is
     now required when building with Qt 5.0.0-5.3.1.
-  * Replaced DPSO_QT4 by DPSO_QT_VERSION
+  * Replaced DPSO_QT4 with DPSO_QT_VERSION
   * Removed "cpack -G DEB" support
   * Removed "cpack -G NSIS" support in favor of Inno Setup
   * Windows DLLs are now collected automatically when using
