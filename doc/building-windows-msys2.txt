@@ -36,7 +36,8 @@ Required:
   * C++ compiler with C++17 support
   * CMake >= 3.22. A particular version of Qt may require a newer
     version of CMake.
-  * Make
+  * Make or Ninja (usually installed automatically as a CMake
+    dependency)
   * Qt 5.7 - 6. DPSO_QT_VERSION CMake option.
   * tesseract >= 4.1.0
   * jansson >= 2.7
@@ -50,7 +51,6 @@ Optional:
 To install all dependencies except Pandoc, run in a MinGW shell:
 
     pacman -S --needed \
-        make \
         $MINGW_PACKAGE_PREFIX-cmake \
         $MINGW_PACKAGE_PREFIX-gcc \
         $MINGW_PACKAGE_PREFIX-gettext-tools \
@@ -115,11 +115,14 @@ C++/WinRT headers with the DPSO_WINRT_INCLUDE_DIR CMake option.
 You can build dpScreenOCR with the following commands:
 
     cd path_to_dpscreenocr_source
-    mkdir build
-    cd build
-    cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
-    make
+    cmake -DCMAKE_BUILD_TYPE=Release -B build
+    cmake --build build
 
 You can configure the build with various CMake options; run
-"cmake -LH .." to see them all. Options specific to dpScreenOCR have
-the "DPSO_" prefix.
+"cmake -LH -B build" to see them all. Options specific to dpScreenOCR
+have the "DPSO_" prefix.
+
+After building, you can create a standalone directory with the final
+program:
+
+    cmake --install build --strip --prefix dir_path
