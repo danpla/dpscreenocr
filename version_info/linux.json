@@ -1,6 +1,6 @@
 [
   {
-    "version": "1.5.1",
+    "version": "1.5.2",
     "requirements": {
       "glibc": "2.19"
     }

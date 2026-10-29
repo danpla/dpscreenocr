@@ -10,7 +10,7 @@
 <body>
 <header>
 <h1 class="title">dpScreenOCR User Manual</h1>
-<p class="subtitle">Version 1.5.1</p>
+<p class="subtitle">Version 1.5.2</p>
 </header>
 <nav id="TOC">
 <h2 id="toc-title">Table of contents</h2>
@@ -49,8 +49,6 @@ class="toc-section-number">3.1</span> Character recognition</a>
 class="toc-section-number">3.1.1</span> Split text blocks</a></li>
 <li><a href="#languages" id="toc-languages"><span
 class="toc-section-number">3.1.2</span> Languages</a></li>
-<li><a href="#language-manager" id="toc-language-manager"><span
-class="toc-section-number">3.1.3</span> Language manager</a></li>
 </ul></li>
 <li><a href="#actions" id="toc-actions"><span
 class="toc-section-number">3.2</span> Actions</a>
@@ -81,8 +79,8 @@ class="toc-section-number">7</span> Troubleshooting</a></li>
 </nav>
 <h1 data-number="1" id="about"><span
 class="header-section-number">1</span> About</h1>
-<p>dpScreenOCR is a free and open-source program to recognize text on
-the screen. Powered by <a
+<p>dpScreenOCR is a program to recognize text on the screen. Powered by
+<a
 href="https://en.wikipedia.org/wiki/Tesseract_(software)">Tesseract</a>,
 it supports more than 100 languages and can split independent text
 blocks, such as columns.</p>
@@ -112,9 +110,8 @@ anywhere and run <code>dpscreenocr</code>.</p></li>
 around 2014 or later.</p></li>
 <li><p>Provides the latest version of Tesseract, while in the package
 manager it may be out of date.</p></li>
-<li><p>Has a <a href="#language-manager">language manager</a> that
-allows you to install and remove languages without leaving
-dpScreenOCR.</p></li>
+<li><p>Has a language manager that allows you to install and remove
+languages without leaving dpScreenOCR.</p></li>
 </ul>
 <h4 data-number="2.1.1.3" id="build-from-source"><span
 class="header-section-number">2.1.1.3</span> Build from source</h4>
@@ -142,9 +139,8 @@ depending on whether dpScreenOCR was obtained from the package manager
 or as a TAR.XZ archive. Languages installed for the former will not be
 visible in the latter, and vice versa.</p>
 <p>The TAR.XZ version of dpScreenOCR is shipped with the English
-language pack. To install other languages, use the language manager as
-described in the “<a href="#language-manager">Language manager</a>”
-section.</p>
+language pack. To install other languages, use the language manager (the
+“Language manager” button below the language list).</p>
 <p>If you installed dpScreenOCR using the package manager, you should
 also use the package manager to get the languages for Tesseract. Package
 names can vary from system to system, but they usually start with
@@ -161,8 +157,8 @@ detection) and “equ” (math and equation detection) packages.</p>
 <h3 data-number="2.2.2" id="windows-1"><span
 class="header-section-number">2.2.2</span> Windows</h3>
 <p>dpScreenOCR for Windows is shipped with the English language pack. To
-install other languages, use the language manager as described in the
-“<a href="#language-manager">Language manager</a>” section.</p>
+install other languages, use the language manager (the “Language
+manager” button below the language list).</p>
 <h1 data-number="3" id="usage"><span
 class="header-section-number">3</span> Usage</h1>
 <p>dpScreenOCR is easy to use:</p>
@@ -193,17 +189,6 @@ class="header-section-number">3.1.2</span> Languages</h3>
 <p>This is the list of languages that dpScreenOCR can use to recognize
 text. You can select more than one, but be aware that this may slow down
 recognition and reduce its accuracy.</p>
-<h3 data-number="3.1.3" id="language-manager"><span
-class="header-section-number">3.1.3</span> Language manager</h3>
-<p>The language manager allows you to install, update, and remove
-languages. On Unix-like systems it’s only available in the TAR.XZ
-version of dpScreenOCR, otherwise you can handle languages through the
-system package manager as described in the “<a
-href="#installing-languages">Installing languages</a>” section.</p>
-<p>When you open the manager, it tries to retrieve the list of available
-languages from the Internet. If this fails (e.g., if there is no network
-connection), you can still remove languages using the corresponding
-tab.</p>
 <h2 data-number="3.2" id="actions"><span
 class="header-section-number">3.2</span> Actions</h2>
 <p>The Actions group lets you choose what to do with the recognized
@@ -299,16 +284,16 @@ hotkey again to send the selected area for recognition. To cancel the
 selection, press Escape.</p>
 <p>The hotkey is global: it works even if the dpScreenOCR window is
 minimized. If pressing the hotkey has no effect, it probably means that
-another program is already using it. In this case, try another key
-combination.</p>
+another program is already using it. In this case, set up a different
+key combination in the “Settings” tab.</p>
 <h2 data-number="3.4" id="checking-for-updates"><span
 class="header-section-number">3.4</span> Checking for updates</h2>
 <p>If “Check for updates automatically” is enabled in the “Settings”
 tab, dpScreenOCR will check for new program versions at startup, but no
 more often than once a week. You can also check for updates manually
 using the “Check for updates” button in the “About” tab.</p>
-<p>This update check functionality is not needed and is therefore hidden
-from the dpScreenOCR interface if the program was installed from
+<p>The update check functionality is unnecessary and is therefore hidden
+from the dpScreenOCR interface when the program is installed from
 Microsoft Store or the system package manager.</p>
 <h1 data-number="4" id="command-line-options"><span
 class="header-section-number">4</span> Command-line options</h1>
@@ -351,11 +336,10 @@ XDG_DATA_HOME environment variable is set,
 <li><p>Windows: the same directory as for the configuration
 files.</p></li>
 </ul>
-<p>Data files include the languages installed via the <a
-href="#language-manager">language manager</a>. For Tesseract, they are
-located in the “tesseract_N_data” subdirectory, where N is the Tesseract
-version number. You can add your own “.traineddata” files here (e.g.,
-downloaded from <a
+<p>Data files include the languages installed via the language manager.
+For Tesseract, they are located in the “tesseract_N_data” subdirectory,
+where N is the Tesseract version number. You can add your own
+“.traineddata” files here (e.g., downloaded from <a
 href="https://github.com/tesseract-ocr/tessdata_best">tessdata_best</a>
 or elsewhere on the Internet).</p>
 <p>“.sha256” files contain SHA-256 checksums of the corresponding
