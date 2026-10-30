@@ -34,12 +34,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     target_compile_options(dpso_sound PRIVATE -Wall -Wextra -pedantic)
 endif()
 
-include(TestBigEndian)
-test_big_endian(IS_BIG_ENDIAN)
-
 target_compile_definitions(
     dpso_sound
-    PRIVATE DPSO_SOUND_IS_BIG_ENDIAN=$<BOOL:${IS_BIG_ENDIAN}>)
+    PRIVATE
+    DPSO_SOUND_IS_BIG_ENDIAN=$<STREQUAL:${CMAKE_CXX_BYTE_ORDER},BIG_ENDIAN>)
 
 if(NOT TARGET dpso_utils)
     add_subdirectory(
