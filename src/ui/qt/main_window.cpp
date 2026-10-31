@@ -56,8 +56,7 @@ const auto ocrEngineIdx = 0;
 
 
 MainWindow::MainWindow(const UiStartupArgs& startupArgs)
-    : progressStatusFmt{_("Recognition ({current_job}/{total_jobs})")}
-    , updateChecker{
+    : updateChecker{
         this,
         [&]{ return dpsoSelectionGetIsEnabled(selection); }}
 {
@@ -1082,7 +1081,7 @@ void MainWindow::updateStatus()
         setStatus(
             Status::busy,
             strNFormat(
-                progressStatusFmt,
+                _("Recognition ({current_job}/{total_jobs})"),
                 {
                     {"current_job", progress.jobNum},
                     {"total_jobs", progress.totalJobs}}));

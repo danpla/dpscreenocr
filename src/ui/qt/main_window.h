@@ -54,8 +54,6 @@ private:
     DpsoKeyManager* keyManager;
     DpsoSelection* selection;
 
-    std::string progressStatusFmt;
-
     dpso::OcrUPtr ocr;
 
     std::string cfgDirPath;
