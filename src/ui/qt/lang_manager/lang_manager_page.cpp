@@ -109,6 +109,7 @@ LangManagerPage::LangManagerPage(
         });
 
     selectionInfoLabel = new QLabel();
+    selectionInfoLabel->setTextFormat(Qt::PlainText);
 
     actionButton = new QPushButton(actionName);
     actionButton->setAutoDefault(false);
