@@ -77,6 +77,8 @@ private:
     InstallMode installMode;
     ProgressLabel* label;
     QProgressBar* progressBar;
+    int lastLangNum{};
+    int lastTotalLangs{};
 
     bool confirmCancellation();
 };
@@ -154,14 +156,16 @@ void InstallProgressDialog::timerEvent(QTimerEvent* /*event*/)
         return;
     }
 
-    const auto newValue =
+    progressBar->setValue(
         ((progress.langNum - 1) * 100 + progress.langProgress)
-        / progress.totalLangs;
+        / progress.totalLangs);
 
-    if (newValue == progressBar->value())
+    if (progress.langNum == lastLangNum
+            && progress.totalLangs == lastTotalLangs)
         return;
 
-    progressBar->setValue(newValue);
+    lastLangNum = progress.langNum;
+    lastTotalLangs = progress.totalLangs;
 
     const auto* langCode = dpsoOcrLangManagerGetLangCode(
         langManager, progress.langIdx);
