@@ -58,6 +58,16 @@ History::History(const std::string& dirPath)
     layout->addLayout(buttonsLayout);
 
     lastFileName = _("History");
+
+    // Since QFileDialog::getSaveFileName() doesn't have an equivalent
+    // to QFileDialog::setDefaultSuffix(), append the extension of the
+    // default file filter. Otherwise, users will have to type the
+    // extension manually on platforms where the file dialog does not
+    // automatically add it based on the selected file filter (this is
+    // also the case for the Qt's built-in dialog).
+    DpsoHistoryExportFormatInfo exportFormatInfo;
+    dpsoHistoryGetExportFormatInfo({}, &exportFormatInfo);
+    lastFileName += exportFormatInfo.extensions[0];
 }
 
 
