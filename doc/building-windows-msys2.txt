@@ -40,7 +40,7 @@ Required:
     dependency)
   * Qt 5.7 - 6. DPSO_QT_VERSION CMake option.
   * tesseract >= 4.1.0
-  * jansson >= 2.7
+  * jansson >= 2.14
   * gettext tools >= 0.21
   * pkg-config (recent MSYS2 uses a compatible pkgconf tool)
 

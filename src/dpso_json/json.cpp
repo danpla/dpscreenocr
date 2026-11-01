@@ -118,12 +118,12 @@ Object::Object(HandleUPtr h)
 
 
 static json_t* get(
-    const json_t* object, const char* key, JsonType type)
+    const json_t* object, std::string_view key, JsonType type)
 {
     assert(object);
     assert(getType(object) == JsonType::object);
 
-    auto* val = json_object_get(object, key);
+    auto* val = json_object_getn(object, key.data(), key.size());
     if (!val)
         throw Error{str::format("No \"{}\"", key)};
 
@@ -137,35 +137,35 @@ static json_t* get(
 }
 
 
-bool Object::getBool(const char* key) const
+bool Object::getBool(std::string_view key) const
 {
     return json_boolean_value(
         get(handle.get(), key, JsonType::boolean));
 }
 
 
-std::string_view Object::getStr(const char* key) const
+std::string_view Object::getStr(std::string_view key) const
 {
     const auto* val = get(handle.get(), key, JsonType::string);
     return {json_string_value(val), json_string_length(val)};
 }
 
 
-std::int64_t Object::getInt(const char* key) const
+std::int64_t Object::getInt(std::string_view key) const
 {
     return json_integer_value(
         get(handle.get(), key, JsonType::integer));
 }
 
 
-Object Object::getObject(const char* key) const
+Object Object::getObject(std::string_view key) const
 {
     return Object{HandleUPtr{
         json_incref(get(handle.get(), key, JsonType::object))}};
 }
 
 
-Array Object::getArray(const char* key) const
+Array Object::getArray(std::string_view key) const
 {
     return Array{HandleUPtr{
         json_incref(get(handle.get(), key, JsonType::array))}};

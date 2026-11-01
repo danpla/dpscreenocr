@@ -19,7 +19,7 @@ section of "building-unix.txt":
     use the flavor whose runtime version is already installed: this
     avoids downloading unnecessary transitive dependencies.
 
-  * libjansson >= 2.7
+  * libjansson >= 2.14
 
 On Debian, Ubuntu, and derivatives, you can install the above with:
 

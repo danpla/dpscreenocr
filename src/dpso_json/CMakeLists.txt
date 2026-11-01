@@ -16,8 +16,9 @@ endif()
 
 find_package(PkgConfig REQUIRED)
 
-# json_string_length() was added in 2.7.
-pkg_search_module(JANSSON REQUIRED jansson>=2.7)
+# Functions with fixed-length keys like json_object_getn() were added
+# in 2.14.
+pkg_search_module(JANSSON REQUIRED jansson>=2.14)
 
 if(NOT TARGET dpso_utils)
     add_subdirectory(
