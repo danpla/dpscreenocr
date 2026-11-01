@@ -31,15 +31,15 @@ bool isIgnoredLang(std::string_view lang)
 
 const std::string& getDefaultDataDir()
 {
-    // Both GetDatapath() and GetAvailableLanguagesAsVector() use
-    // a data path calculated by the last Init(), so we have to
-    // call Init() even if we want to use the compiled-in data
-    // path (for this, we pass an empty path to Init()). At the
-    // same time, Init() requires at least one language (null
-    // language is implicit "eng" in Tesseract versions before 5).
-    // As a workaround, we don't check Init() for errors: it will
-    // fail if "eng" is unavailable, but the path will still be
-    // calculated and stored in TessBaseAPI.
+    // Both GetDatapath() and GetAvailableLanguagesAsVector() use a
+    // data path calculated by the last Init(), so we have to call
+    // Init() even if we want to use the compiled-in data path (for
+    // this, we pass an empty path to Init()). At the same time,
+    // Init() requires at least one language (null language is
+    // implicit "eng" in Tesseract versions before 5). As a
+    // workaround, we don't check Init() for errors: it will fail if
+    // "eng" is unavailable, but the path will still be calculated and
+    // stored in TessBaseAPI.
 
     static std::string result;
 
@@ -85,11 +85,11 @@ std::vector<std::string> getAvailableLangs(std::string_view dataDir)
 
     std::error_code ec;
     // Like TessBaseAPI::GetAvailableLanguagesAsVector(), we collect
-    // languages recursively, but in practice this only makes sense
-    // on Unix-like systems when the data dir path is empty (i.e. when
-    // using languages from the system package manager), because on
-    // certain OS distributions, some languages are actually placed in
-    // subdirectories (e.g. "script/").
+    // languages recursively, but in practice this only makes sense on
+    // Unix-like systems when using the default data dir path (i.e.,
+    // when using languages from the system package manager), because
+    // on certain OS distributions, some languages are actually placed
+    // in subdirectories (e.g., "script/").
     for (const auto& entry : fs::recursive_directory_iterator{
             dataDirPath,
             fs::directory_options::skip_permission_denied,
