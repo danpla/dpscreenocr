@@ -224,18 +224,22 @@ void dpsoHistoryGetExportFormatInfo(
 }
 
 
-DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
-    const char* filePath,
-    DpsoHistoryExportFormat defaultExportFormat)
+bool dpsoHistoryDetectExportFormat(
+    const char* filePath, DpsoHistoryExportFormat* exportFormat)
 {
     const auto ext = os::getFileExt(filePath);
 
     for (int i{}; i < dpsoNumHistoryExportFormats; ++i)
         for (const auto* formatExt : exportFormatInfos[i].extensions)
-            if (str::equalIgnoreCase(ext, formatExt))
-                return static_cast<DpsoHistoryExportFormat>(i);
+            if (str::equalIgnoreCase(ext, formatExt)) {
+                if (exportFormat)
+                    *exportFormat =
+                        static_cast<DpsoHistoryExportFormat>(i);
 
-    return defaultExportFormat;
+                return true;
+            }
+
+    return false;
 }
 
 

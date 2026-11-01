@@ -43,14 +43,20 @@ void dpsoHistoryGetExportFormatInfo(
 
 
 /**
- * Detect history export format by file name extension.
+ * Detect history export format by the file name extension.
  *
- * Returns defaultExportFormat if filePath has no extension or if the
- * extension is not known. The function is case-insensitive.
+ * The function returns true if the file name has an extension that
+ * matches a supported export format. If exportFormat is not null, it
+ * is set to the detected format.
+ *
+ * Returns false and leaves exportFormat unchanged if the file name
+ * has no extension or if the extension does not match a supported
+ * export format.
+ *
+ * The extension check is case-insensitive.
  */
-DpsoHistoryExportFormat dpsoHistoryDetectExportFormat(
-    const char* filePath,
-    DpsoHistoryExportFormat defaultExportFormat);
+bool dpsoHistoryDetectExportFormat(
+    const char* filePath, DpsoHistoryExportFormat* exportFormat);
 
 
 /**

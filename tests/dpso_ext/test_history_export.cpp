@@ -23,63 +23,77 @@ std::string toStr(DpsoHistoryExportFormat exportFormat)
 }
 
 
-void testDetectExportFormat(
-    const std::string& filePath,
-    DpsoHistoryExportFormat defaultExportFormat,
-    DpsoHistoryExportFormat expectedExportFormat)
-{
-    const auto gotExportFormat = dpsoHistoryDetectExportFormat(
-        filePath.c_str(), defaultExportFormat);
-    if (gotExportFormat == expectedExportFormat)
-        return;
-
-    test::failure(
-        "dpsoHistoryDetectExportFormat(\"{}\", {}): "
-        "expected {}, got {}",
-        filePath,
-        toStr(defaultExportFormat),
-        toStr(expectedExportFormat),
-        toStr(gotExportFormat));
-}
-
-
 void testDetectExportFormat()
 {
     const struct {
         std::vector<std::string> extensions;
         DpsoHistoryExportFormat exportFormat;
-        DpsoHistoryExportFormat defaultExportFormat;
     } tests[]{
         {
             {".txt", ".Txt", ".TXT"},
-            dpsoHistoryExportFormatPlainText,
-            dpsoHistoryExportFormatHtml
+            dpsoHistoryExportFormatPlainText
         },
         {
             {".html", ".Html", ".HTML", ".htm", ".Htm", ".HTM"},
-            dpsoHistoryExportFormatHtml,
-            dpsoHistoryExportFormatPlainText
+            dpsoHistoryExportFormatHtml
         },
         {
             {".json", ".Json", ".JSON"},
-            dpsoHistoryExportFormatJson,
-            dpsoHistoryExportFormatPlainText
+            dpsoHistoryExportFormatJson
         },
     };
     static_assert(std::size(tests) == dpsoNumHistoryExportFormats);
 
     for (const std::string prefix : {"file", "dir.name/file"})
         for (const auto& test : tests) {
-            for (const auto& ext : test.extensions)
-                testDetectExportFormat(
-                    prefix + ext,
-                    test.defaultExportFormat,
-                    test.exportFormat);
+            for (const auto& ext : test.extensions) {
+                const auto path = prefix + ext;
 
-            testDetectExportFormat(
-                prefix + ".unknown_ext",
-                test.defaultExportFormat,
-                test.defaultExportFormat);
+                DpsoHistoryExportFormat exportFormat{};
+                if (!dpsoHistoryDetectExportFormat(
+                        path.c_str(), &exportFormat)) {
+                    test::failure(
+                        "dpsoHistoryDetectExportFormat(\"{}\", ...) "
+                        "returned false",
+                        path);
+                    continue;
+                }
+
+                if (exportFormat != test.exportFormat) {
+                    test::failure(
+                        "dpsoHistoryDetectExportFormat(\"{}\", ...): "
+                        "expected {}, got {}",
+                        path,
+                        toStr(test.exportFormat),
+                        toStr(exportFormat));
+                    continue;
+                }
+
+                if (!dpsoHistoryDetectExportFormat(
+                        path.c_str(), nullptr))
+                    test::failure(
+                        "dpsoHistoryDetectExportFormat(\"{}\", "
+                        "nullptr) returned false",
+                        path);
+            }
+
+            const auto path = prefix + ".unknown_ext";
+
+            DpsoHistoryExportFormat exportFormat{};
+            if (dpsoHistoryDetectExportFormat(
+                    path.c_str(), &exportFormat)) {
+                test::failure(
+                    "dpsoHistoryDetectExportFormat(\"{}\", ...) "
+                    "returned true (detected {})",
+                    path, toStr(exportFormat));
+                continue;
+            }
+
+            if (dpsoHistoryDetectExportFormat(path.c_str(), nullptr))
+                test::failure(
+                    "dpsoHistoryDetectExportFormat(\"{}\", nullptr) "
+                    "returned true",
+                    path);
         }
 }
 

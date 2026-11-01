@@ -122,12 +122,12 @@ void History::doExport()
         return;
 
     const auto filePathUtf8 = filePath.toUtf8();
+
+    auto exportFormat = dpsoHistoryExportFormatPlainText;
+    dpsoHistoryDetectExportFormat(filePathUtf8.data(), &exportFormat);
+
     if (!dpsoHistoryExport(
-            history.get(),
-            filePathUtf8.data(),
-            dpsoHistoryDetectExportFormat(
-                filePathUtf8.data(),
-                dpsoHistoryExportFormatPlainText)))
+            history.get(), filePathUtf8.data(), exportFormat))
         QMessageBox::critical(
             this,
             uiAppName,
