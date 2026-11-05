@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: dpScreenOCR\n"
 "Report-Msgid-Bugs-To: https://github.com/danpla/dpscreenocr/issues\n"
 "POT-Creation-Date: 2026-06-12 02:27+0200\n"
-"PO-Revision-Date: 2026-08-04 22:59+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"PO-Revision-Date: 2026-11-06 22:20+0000\n"
+"Last-Translator: Danyl Plakhotych <danpla@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/dpscreenocr/"
 "dpscreenocr/de/>\n"
 "Language: de\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1.dev0\n"
+"X-Generator: Weblate 2026.11.2.dev0\n"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Afrikaans"
@@ -177,12 +177,10 @@ msgid "French, Middle (ca. 1400-1600)"
 msgstr "Französisch, Mittel- (ca. 1400-1600)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
-#, fuzzy
 msgid "Frisian, Western"
-msgstr "Westfriesisch"
+msgstr "Friesisch, Westfriesisch"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
-#, fuzzy
 msgid "Gaelic, Scottish"
 msgstr "Schottisch-Gälisch"
 
@@ -203,9 +201,8 @@ msgid "Gujarati"
 msgstr "Gujarati"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
-#, fuzzy
 msgid "Creole, Haitian"
-msgstr "Haitianisch; haitianisches Kreol"
+msgstr "Creole, Haitian"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Hebrew"
@@ -276,7 +273,6 @@ msgid "Kazakh"
 msgstr "Kasachisch"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
-#, fuzzy
 msgid "Khmer, Central"
 msgstr "Khmer; Kambodschanisch"
 
@@ -285,7 +281,6 @@ msgid "Kirghiz; Kyrgyz"
 msgstr "Kirgisisch"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
-#, fuzzy
 msgid "Kurdish, Northern"
 msgstr "Kurmandschi (Kurdisch - Lateinisches Alphabet)"
 
@@ -490,9 +485,8 @@ msgid "Tigrinya"
 msgstr "Tigrinya"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
-#, fuzzy
 msgid "Tonga (Tonga Islands)"
-msgstr "Tongaisch"
+msgstr "Tonga (Tonga-Inseln)"
 
 #: src/dpso_ocr/engine/tesseract/lang_names.cpp
 msgid "Turkish"
@@ -633,7 +627,7 @@ msgstr "Abbrechen …"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Are you sure you want to cancel the installation?"
-msgstr ""
+msgstr "Möchten Sie die Installation wirklich abbrechen?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Continue installation"
@@ -645,23 +639,23 @@ msgstr "Installation abbrechen"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Are you sure you want to cancel the update?"
-msgstr ""
+msgstr "Möchten Sie das Update wirklich abbrechen?"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Continue updating"
-msgstr ""
+msgstr "Weiter aktualisieren"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Cancel update"
-msgstr ""
+msgstr "Aktualisierung abbrechen"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Installing “{name}” ({current}/{total})"
-msgstr ""
+msgstr "Installiere “{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/install_progress_dialog.cpp
 msgid "Updating “{name}” ({current}/{total})"
-msgstr ""
+msgstr "Aktualisiere “{name}” ({current}/{total})"
 
 #: src/ui/qt/lang_manager/lang_list_sort_filter_proxy.cpp
 msgctxt "digital_data"
@@ -670,19 +664,19 @@ msgstr "Größe"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp
 msgid "Fetching the language list…"
-msgstr ""
+msgstr "Die Sprachliste wird abgerufen…"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp
 msgid "An error occurred while fetching the list of languages"
-msgstr ""
+msgstr "Beim Abrufen der Sprachenliste ist ein Fehler aufgetreten"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp
 msgid "Update ({count})"
-msgstr ""
+msgstr "Aktualisierung ({count})"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp src/ui/qt/main_window.cpp
 msgid "Language manager"
-msgstr ""
+msgstr "Sprachverwaltung"
 
 #: src/ui/qt/lang_manager/lang_manager.cpp
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
@@ -716,15 +710,15 @@ msgstr[1] "{count} Sprachen ausgewählt ({size})."
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Update"
-msgstr ""
+msgstr "Aktualisierung"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "An error occurred while installing languages"
-msgstr ""
+msgstr "Bei der Installation der Sprachen ist ein Fehler aufgetreten"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "An error occurred while updating languages"
-msgstr ""
+msgstr "Beim Aktualisieren der Sprachen ist ein Fehler aufgetreten"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Remove…"
@@ -732,7 +726,7 @@ msgstr "Entfernen …"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Remove “{name}”?"
-msgstr ""
+msgstr "Entfernen “{name}”?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Remove {count} selected language?"
@@ -742,11 +736,11 @@ msgstr[1] "{count} ausgewählte Sprachen entfernen?"
 
 #: src/ui/qt/lang_manager/lang_manager_page.cpp
 msgid "Some languages were not removed"
-msgstr ""
+msgstr "Einige Sprachen wurden nicht entfernt"
 
 #: src/ui/qt/lang_manager/lang_op_status_error.cpp src/ui/qt/update_checker.cpp
 msgid "Check your network connection and try again."
-msgstr ""
+msgstr "Überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut."
 
 #: src/ui/qt/main.cpp
 msgid "{app_name} is already running"
@@ -794,7 +788,6 @@ msgid "Split text blocks"
 msgstr "Textblöcke aufteilen"
 
 #: src/ui/qt/main_window.cpp
-#, fuzzy
 msgid "Split independent text blocks, such as columns"
 msgstr "Teile voneinander unabhängige Textblöcke, z.B. Spalten, auf"
 
@@ -824,31 +817,35 @@ msgstr "Tastenkürzel"
 
 #: src/ui/qt/main_window.cpp
 msgid "Interface"
-msgstr ""
+msgstr "Benutzeroberfläche"
 
 #: src/ui/qt/main_window.cpp
 msgid "Show notification area icon"
-msgstr ""
+msgstr "Symbol im Infobereich anzeigen"
 
 #: src/ui/qt/main_window.cpp
 msgid "Minimize to notification area"
-msgstr ""
+msgstr "In den Infobereich minimieren"
 
 #: src/ui/qt/main_window.cpp
 msgid ""
 "Minimizing the window will hide {app_name}. Use the notification area icon "
 "to show it again."
 msgstr ""
+"Wenn Sie das Fenster minimieren, wird {app_name} ausgeblendet. Über das "
+"Symbol im Infobereich können Sie es wieder einblenden."
 
 #: src/ui/qt/main_window.cpp
 msgid "Close to notification area"
-msgstr ""
+msgstr "Beim Schließen im Benachrichtigungsbereich geöffnet lassen"
 
 #: src/ui/qt/main_window.cpp
 msgid ""
 "Closing the window will hide {app_name}. Use the notification area icon to "
 "show it again."
 msgstr ""
+"Wenn Sie das Fenster schließen, wird {app_name} ausgeblendet. Über das "
+"Symbol im Infobereich können Sie es wieder einblenden."
 
 #: src/ui/qt/main_window.cpp
 msgid "Behavior"
@@ -856,7 +853,7 @@ msgstr "Verhalten"
 
 #: src/ui/qt/main_window.cpp
 msgid "Play sound when recognition is complete"
-msgstr ""
+msgstr "Ton abspielen, wenn die Erkennung abgeschlossen ist"
 
 #: src/ui/qt/main_window.cpp
 msgid "Play this audio file:"
@@ -868,7 +865,7 @@ msgstr "Automatisch auf Aktualisierungen prüfen"
 
 #: src/ui/qt/main_window.cpp
 msgid "Run at system logon"
-msgstr ""
+msgstr "Bei der Systemanmeldung starten"
 
 #: src/ui/qt/main_window.cpp
 msgid ""
@@ -876,6 +873,9 @@ msgid ""
 "program will be hidden to the notification area if the notification area "
 "icon is enabled, or minimized if the icon is disabled."
 msgstr ""
+"{app_name} wird automatisch gestartet, sobald Sie sich am System anmelden. "
+"Das Programm wird im Infobereich ausgeblendet, wenn das Symbol im "
+"Infobereich aktiviert ist, oder minimiert, wenn das Symbol deaktiviert ist."
 
 #: src/ui/qt/main_window.cpp
 msgid ""
@@ -885,7 +885,11 @@ msgid_plural ""
 "{app_name} will automatically check for updates at startup, but no more "
 "often than once every {count} days"
 msgstr[0] ""
+"{app_name} sucht beim Start automatisch nach Updates, jedoch nicht öfter als "
+"einmal jeden Tag"
 msgstr[1] ""
+"{app_name} sucht beim Start automatisch nach Updates, jedoch nicht öfter als "
+"einmal alle {count} Tage"
 
 #: src/ui/qt/main_window.cpp
 msgid "Please install languages"
@@ -901,41 +905,43 @@ msgstr "Bitte Aktionen auswählen"
 
 #: src/ui/qt/main_window.cpp
 msgid "Press {hotkey} to start area selection"
-msgstr ""
+msgstr "Drücke {hotkey}, um die Bereichsauswahl zu starten"
 
 #: src/ui/qt/main_window.cpp
 msgid "Press {hotkey} to finish selection"
-msgstr ""
+msgstr "Drücke {hotkey}, um die Auswahl abzuschließen"
 
 #: src/ui/qt/update_checker.cpp
 msgid "An error occurred while checking for updates"
-msgstr ""
+msgstr "Bei der Suche nach Updates ist ein Fehler aufgetreten"
 
 #: src/ui/qt/update_checker.cpp
 msgid "{required} (you have {actual})"
-msgstr ""
+msgstr "{required} (Sie haben {actual})"
 
 #: src/ui/qt/update_checker.cpp
 msgid "{app_name} {new_version} is available (you have {current_version})"
-msgstr ""
+msgstr "{app_name} {new_version} ist verfügbar (Sie haben {current_version})"
 
 #: src/ui/qt/update_checker.cpp
 msgid "Visit the website for more information."
-msgstr ""
+msgstr "Weitere Informationen finden Sie auf der Website."
 
 #: src/ui/qt/update_checker.cpp
 msgid "You have the latest version of {app_name}"
-msgstr ""
+msgstr "Sie haben die neueste Version von {app_name}"
 
 #: src/ui/qt/update_checker.cpp
 msgid "You have the latest version of {app_name} available for your system"
-msgstr ""
+msgstr "Für Ihr System steht die neueste Version von {app_name} zur Verfügung"
 
 #: src/ui/qt/update_checker.cpp
 msgid ""
 "The latest version is {latest_version}, but your system does not meet the "
 "following minimum requirements: {requirements}."
 msgstr ""
+"Die aktuellste Version ist {latest_version}, aber Ihr System erfüllt die "
+"folgenden Mindestanforderungen nicht: {requirements}."
 
 #: src/ui/qt/update_checker.cpp
 msgid "Checking for updates…"
@@ -956,3 +962,5 @@ msgid ""
 "Startup is disabled by the user. You can enable it in Windows Settings (Apps "
 "> Startup)."
 msgstr ""
+"Der Autostart wurde vom Benutzer deaktiviert. Sie können ihn in den Windows-"
+"Einstellungen aktivieren (Apps > Autostart)."
