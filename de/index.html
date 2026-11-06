@@ -7,18 +7,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="../favicon.png">
   <link rel="stylesheet" href="../style.css">
+  <noscript><style> .js-only { display: none; } </style></noscript>
 </head>
 <body>
   <header>
     <img id="logo" src="../images/dpscreenocr.svg" alt="">
     <div id="title">dpScreenOCR</div>
   </header>
-  <p>dpScreenOCR is a program to recognize text on the screen. Powered by <a href="https://en.wikipedia.org/wiki/Tesseract_(software)">Tesseract</a>, it supports more than 100 languages and can split independent text blocks, such as columns. Read the <a href="../manual.html">manual</a> for instructions on installing, configuring, and using the program.</p>
-  <img id="screenshot" src="../en/images/screenshot-windows.png" alt="">
-  <p>Version 1.4.1 (<a href="https://raw.githubusercontent.com/danpla/dpscreenocr/v1.4.1/doc/changelog.txt">Änderungen</a>, <a href="https://raw.githubusercontent.com/danpla/dpscreenocr/v1.4.1/LICENSE.txt">Lizenz</a>) <b>herunterladen</b>:</p>
+  <p>dpScreenOCR ist ein Programm, mit dem sich Text aus jedem beliebigen Bereich des Bildschirms extrahieren lässt. Es erspart das manuelle Abtippen bei der Arbeit mit gescannten Dokumenten, Screenshots, Videos, Elementen der Benutzeroberfläche und in anderen Situationen, in denen es nicht möglich ist, Text auf herkömmliche Weise zu kopieren.</p>
+  <img id="screenshot" src="images/screenshot-windows.png" alt="">
+  <p><b>Funktionen:</b></p>
   <ul>
     <li>
-      <b>GNU/Linux</b><br>Download <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.4.1/dpScreenOCR-1.4.1-linux-x86_64.tar.xz">dpScreenOCR-1.4.1-linux-x86_64.tar.xz</a>, which works on most systems, or choose a package for your distribution:
+      <b>Unterstützt über 100 Sprachen.</b> Englisch ist standardmäßig enthalten; weitere Sprachen können über den integrierten Manager installiert werden.
+    </li>
+    <li>
+      <b>Einfach zu bedienen.</b> Drücken Sie eine globale Tastenkombination, um einen Bereich auf dem Bildschirm auszuwählen und den erkannten Text in die Zwischenablage zu kopieren.
+    </li>
+    <li>
+      <b>Funktioniert offline.</b> Die Erkennung erfolgt lokal auf Ihrem Gerät. Eine Internetverbindung ist nur zum Herunterladen zusätzlicher Sprachen erforderlich.
+    </li>
+    <li>
+      <b>Kostenlos und Open Source.</b> Unterstützt von <a href="https://de.wikipedia.org/wiki/Tesseract_(Software)">Tesseract</a>.
+    </li>
+  </ul>
+  <p>Lesen Sie das <b><a href="../manual.html">Handbuch</a></b>, um Anweisungen zur Installation, Konfiguration und Verwendung des Programms zu erhalten.</p>
+  <p>Version 1.5.2 (<a href="https://raw.githubusercontent.com/danpla/dpscreenocr/v1.5.2/doc/changelog.txt">Änderungen</a>, <a href="https://raw.githubusercontent.com/danpla/dpscreenocr/v1.5.2/LICENSE.txt">Lizenz</a>) <b>herunterladen</b>:</p>
+  <ul>
+    <li>
+      <b>Linux</b><br>
+      Laden Sie <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.5.2/dpScreenOCR-1.5.2-linux-x86_64.tar.xz">dpScreenOCR-1.5.2-linux-x86_64.tar.xz</a> herunter, das auf den meisten Systemen läuft, oder wählen Sie ein Paket für Ihre Distribution aus:
       <ul>
         <li>
           <a href="https://software.opensuse.org//download.html?project=home%3Adanpla&package=dpscreenocr">Debian</a>
@@ -29,28 +47,34 @@
       </ul>
     </li>
     <li>
-      <b>Windows</b> 7 oder neuer: <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.4.1/dpScreenOCR-1.4.1-win32.exe">Installationsprogramm</a> oder <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.4.1/dpScreenOCR-1.4.1-win32.zip">ZIP-Archiv</a>
+      <b>Windows</b><br>
+      <a href="https://apps.microsoft.com/detail/9n5pt4jg4qxc">
+        <img class="store-badge" src="https://get.microsoft.com/images/de%20dark.svg" alt="">
+      </a><br>
+      Direkter Download: <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.5.2/dpScreenOCR-1.5.2-win32.exe">Installationsprogramm</a> oder <a href="https://github.com/danpla/dpscreenocr/releases/download/v1.5.2/dpScreenOCR-1.5.2-win32.zip">ZIP-Archiv</a>
     </li>
     <li>
-      <a href="https://github.com/danpla/dpscreenocr/archive/v1.4.1.tar.gz">Quellcode (tar.gz)</a>
+      <a href="https://github.com/danpla/dpscreenocr/archive/v1.5.2.tar.gz">Quellcode (tar.gz)</a>
     </li>
   </ul>
-  <p><b>Contribute</b> by taking part in <a href="https://hosted.weblate.org/engage/dpscreenocr/">translation</a> or <a href="https://github.com/danpla/dpscreenocr">development</a>.</p>
+  <p><b>Leisten Sie einen Beitrag</b>, indem Sie sich an der <a href="https://hosted.weblate.org/engage/dpscreenocr/">Übersetzung</a> oder der <a href="https://github.com/danpla/dpscreenocr">Entwicklung</a> beteiligen.</p>
   <footer>
-    <div id="copyright">© 2019-2025 <a href="mailto:daniel.plakhotich@gmail.com?subject=dpScreenOCR">Daniel Plakhotich</a></div>
-    <script>
-      function onLangClick(element) {
-        try {
-          localStorage.setItem("lang", element.lang);
-        } catch {
-        }
-        return true;
-      }
-    </script>
-    <details>
-      <summary>Sprache</summary>
-      <a lang="ca" hreflang="ca" href="../ca/" onclick="onLangClick(this)">Català</a>&emsp;<b>Deutsch</b>&emsp;<a lang="en" hreflang="en" href="../en/" onclick="onLangClick(this)">English</a>&emsp;<a lang="es" hreflang="es" href="../es/" onclick="onLangClick(this)">Español</a>&emsp;<a lang="hr" hreflang="hr" href="../hr/" onclick="onLangClick(this)">Hrvatski</a>&emsp;<a lang="pt-BR" hreflang="pt-BR" href="../pt-BR/" onclick="onLangClick(this)">Português&nbsp;(Brasil)</a>&emsp;<a lang="ru" hreflang="ru" href="../ru/" onclick="onLangClick(this)">Русский</a>&emsp;<a lang="uk" hreflang="uk" href="../uk/" onclick="onLangClick(this)">Українська</a>&emsp;<a lang="zh-Hans" hreflang="zh-Hans" href="../zh-Hans/" onclick="onLangClick(this)">中文（简体）</a>
-    </details>
+    <div id="copyright">© 2019-2026 <a href="mailto:danyl.plakhotych@gmail.com?subject=dpScreenOCR">Danyl Plakhotych</a></div>
+    <select title="Sprache" id="lang-menu" class="js-only">
+      <option lang="de" value="../de/" selected>Deutsch</option>
+      <option lang="en" value="../en/">English</option>
+      <option lang="es" value="../es/">Español</option>
+      <option lang="hr" value="../hr/">Hrvatski</option>
+      <option lang="ru" value="../ru/">Русский</option>
+      <option lang="uk" value="../uk/">Українська</option>
+      <option lang="zh-Hans" value="../zh-Hans/">中文（简体）</option>
+    </select>
+    <script src="../lang-menu.js"></script>
+    <noscript>
+      <hr>
+      <b>Sprache</b><br>
+      <b>Deutsch</b> | <a lang="en" href="../en/">English</a> | <a lang="es" href="../es/">Español</a> | <a lang="hr" href="../hr/">Hrvatski</a> | <a lang="ru" href="../ru/">Русский</a> | <a lang="uk" href="../uk/">Українська</a> | <a lang="zh-Hans" href="../zh-Hans/">中文（简体）</a>
+    </noscript>
   </footer>
 </body>
 </html>
