@@ -1,7 +1,5 @@
 #include "download_file.h"
 
-#include <chrono>
-#include <cstdint>
 #include <string>
 
 #include "dpso_utils/os.h"
@@ -41,11 +39,6 @@ void downloadFile(
     const auto fileSize = response->getSize();
     std::int64_t partSize{};
 
-    using Clock = std::chrono::steady_clock;
-
-    Clock::time_point lastProgressReportTime;
-    const std::chrono::milliseconds progressReportInterval{1000 / 30};
-
     std::uint8_t buf[16 * 1024];
     while (true) {
         const auto numRead = response->read(buf, sizeof(buf));
@@ -62,18 +55,7 @@ void downloadFile(
 
         partSize += numRead;
 
-        if (!progressHandler)
-            continue;
-
-        const auto curTime = Clock::now();
-        if (lastProgressReportTime != Clock::time_point{}
-                && curTime - lastProgressReportTime
-                    < progressReportInterval)
-            continue;
-
-        lastProgressReportTime = curTime;
-
-        if (!progressHandler(partSize, fileSize)) {
+        if (progressHandler && !progressHandler(partSize, fileSize)) {
             partFile.reset();
 
             try {

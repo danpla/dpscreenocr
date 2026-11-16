@@ -22,9 +22,9 @@ using DownloadProgressHandler = std::function<
 
 
 // The function will not download the file directly to filePath, but
-// instead will use a temporary file named as filePath, but with an
-// additional extension. Once the temporary file is downloaded, it's
-// renamed to filePath, silently rewriting an existing file, if any.
+// instead will use a temporary file named as filePath with an extra
+// extension. Once the temporary file is downloaded, it's renamed to
+// filePath, silently rewriting an existing file, if any.
 //
 // The function does not create the directory chain for filePath.
 //
