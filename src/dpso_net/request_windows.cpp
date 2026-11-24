@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <charconv>
 #include <cstdint>
 #include <string>
 #include <utility>
@@ -38,16 +39,18 @@ using InternetUPtr = std::unique_ptr<HINTERNET, InternetCloser>;
 [[noreturn]]
 void throwLastError(const char* info)
 {
+    const auto lastError = GetLastError();
+
     const auto message = str::format(
         "{}: {} ({})",
         info,
         windows::getErrorMessage(
-            GetLastError(), GetModuleHandleW(L"wininet")),
+            lastError, GetModuleHandleW(L"wininet")),
         // Include the code so that we can do a quick search on
         // https://learn.microsoft.com/en-us/windows/win32/wininet/wininet-errors
-        GetLastError());
+        lastError);
 
-    switch (GetLastError()) {
+    switch (lastError) {
     // Despite its name, ERROR_INTERNET_CANNOT_CONNECT is not reported
     // when there's no connection (ERROR_INTERNET_NAME_NOT_RESOLVED is
     // set in this case instead). I do not know under what
@@ -69,38 +72,117 @@ void throwLastError(const char* info)
 }
 
 
-DWORD getStatusCode(HINTERNET hConnection)
-{
-    DWORD result{};
-    DWORD resultSize = sizeof(result);
-    if (HttpQueryInfoW(
-            hConnection,
-            HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
-            &result,
-            &resultSize,
-            0))
-        return result;
+// Using the HTTP_QUERY_FLAG_NUMBER flag (which implies DWORD) for
+// the "Content-Length" header field limits the size to 4 GB. The
+// 64-bit version of this flag (HTTP_QUERY_FLAG_NUMBER64) solves the
+// problem, but it was only added in one of the Windows 10 versions
+// and is not available on older systems. As a workaround, we query
+// numeric fields as strings and parse numbers manually.
 
-    throwLastError("HttpQueryInfoW (HTTP_QUERY_STATUS_CODE)");
+
+std::optional<std::string> queryStrInfo(
+    HINTERNET hConnection, DWORD infoLevel)
+{
+    std::wstring str;
+
+    // HttpQueryInfoW() null-terminates the string. The data pointer
+    // of an empty std:: wstring points to the terminating null, so we
+    // include it in dataSize to avoid the second HttpQueryInfoW()
+    // call for empty strings, i.e., when the routine only needs to
+    // write the terminating null. Alternatively, we could also set
+    // dataSize to 0 and detect this case when HttpQueryInfoW() sets
+    // dataSize to 1 and returns ERROR_INSUFFICIENT_BUFFER.
+    auto* data = str.data();
+    DWORD dataSize{sizeof(wchar_t)};
+
+    const auto queryInfo = [&]()
+    {
+        return HttpQueryInfoW(
+            hConnection, infoLevel, data, &dataSize, nullptr);
+    };
+
+    if (queryInfo())
+        return std::string{};
+
+    if (const auto lastError = GetLastError();
+            lastError == ERROR_HTTP_HEADER_NOT_FOUND)
+        return {};
+    else if (lastError != ERROR_INSUFFICIENT_BUFFER)
+        throwLastError("HttpQueryInfoW");
+
+    // In case of ERROR_INSUFFICIENT_BUFFER (but not on success), the
+    // returned size includes the terminating null.
+    str.resize(dataSize / sizeof(wchar_t) - 1);
+    data = str.data();
+
+    if (!queryInfo())
+        throwLastError("HttpQueryInfoW");
+
+    try {
+        return windows::utf16ToUtf8(str);
+    } catch (windows::CharConversionError& e) {
+        throw Error{str::format(
+            "Can't convert header field from UTF-16 to UTF-8: {}",
+            e.what())};
+    }
+}
+
+
+std::optional<std::int64_t> queryNumInfo(
+    HINTERNET hConnection, DWORD infoLevel)
+{
+    const auto str = queryStrInfo(hConnection, infoLevel);
+    if (!str)
+        return {};
+
+    const auto* begin = str->data();
+    const auto* end = begin + str->size();
+    std::int64_t n;
+
+    const auto [ptr, ec] = std::from_chars(begin, end, n);
+    if (ec == std::errc{} && ptr == end)
+        return n;
+
+    if (ec == std::errc::result_out_of_range)
+        throw Error{str::format(
+            "Number {}[...] is out of range",
+            std::string{begin, ptr})};
+
+    throw Error{str::format("Invalid number format \"{}\"", *str)};
+}
+
+
+int getStatusCode(HINTERNET hConnection)
+{
+    try {
+        if (const auto result = queryNumInfo(
+                hConnection, HTTP_QUERY_STATUS_CODE))
+            return *result;
+    } catch (Error& e) {
+        throw Error{str::format(
+            "queryNumInfo(HTTP_QUERY_STATUS_CODE): {}", e.what())};
+    }
+
+    throw Error{"No status code (HTTP_QUERY_STATUS_CODE)"};
 }
 
 
 std::optional<std::int64_t> getContentLength(HINTERNET hConnection)
 {
-    DWORD result{};
-    DWORD resultSize = sizeof(result);
-    if (HttpQueryInfoW(
-            hConnection,
-            HTTP_QUERY_CONTENT_LENGTH | HTTP_QUERY_FLAG_NUMBER,
-            &result,
-            &resultSize,
-            0))
-        return result;
+    std::optional<std::int64_t> result;
 
-    if (GetLastError() == ERROR_HTTP_HEADER_NOT_FOUND)
-        return {};
+    try {
+        result = queryNumInfo(hConnection, HTTP_QUERY_CONTENT_LENGTH);
+    } catch (Error& e) {
+        throw Error{str::format(
+            "queryNumInfo(HTTP_QUERY_CONTENT_LENGTH): {}", e.what())};
+    }
 
-    throwLastError("HttpQueryInfoW (HTTP_QUERY_CONTENT_LENGTH)");
+    if (result && *result < 0)
+        throw Error{str::format(
+            "Negative Content-Length ({})", *result)};
+
+    return result;
 }
 
 
@@ -258,8 +340,7 @@ std::unique_ptr<Response> makeGetRequest(
         throw Error{str::format("HTTP status code {}", statusCode)};
 
     return std::make_unique<WindowsResponse>(
-        std::move(hInternet),
-        std::move(hConnection));
+        std::move(hInternet), std::move(hConnection));
 }
 
 
