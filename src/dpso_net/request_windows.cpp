@@ -86,12 +86,10 @@ std::optional<std::string> queryStrInfo(
     std::wstring str;
 
     // HttpQueryInfoW() null-terminates the string. The data pointer
-    // of an empty std:: wstring points to the terminating null, so we
-    // include it in dataSize to avoid the second HttpQueryInfoW()
-    // call for empty strings, i.e., when the routine only needs to
-    // write the terminating null. Alternatively, we could also set
-    // dataSize to 0 and detect this case when HttpQueryInfoW() sets
-    // dataSize to 1 and returns ERROR_INSUFFICIENT_BUFFER.
+    // of an empty std::wstring points to the terminating null, so we
+    // include it in dataSize to avoid a second HttpQueryInfoW() call
+    // for empty strings, i.e., when the routine only needs to write
+    // the terminating null.
     auto* data = str.data();
     DWORD dataSize{sizeof(wchar_t)};
 
