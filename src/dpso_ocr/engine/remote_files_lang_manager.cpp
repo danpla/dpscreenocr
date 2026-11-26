@@ -119,27 +119,18 @@ static net::DownloadProgressHandler makeDownloadProgressHandler(
     const LangManager::ProgressHandler& progressHandler,
     bool& canceled)
 {
-    return [&, lastProgress = -1](
-        std::int64_t curSize,
-        std::optional<std::int64_t> totalSize) mutable
+    return [&](
+        std::int64_t curSize, std::optional<std::int64_t> totalSize)
     {
         if (!progressHandler)
             return true;
 
         auto progress = -1;
 
-        if (totalSize) {
-            if (*totalSize == 0)
-                progress = 100;
-            else
-                progress =
-                    static_cast<float>(curSize) / *totalSize * 100;
-
-            if (progress == lastProgress)
-                return true;
-
-            lastProgress = progress;
-        }
+        if (totalSize)
+            progress = *totalSize == 0
+                ? 100
+                : (static_cast<float>(curSize) / *totalSize * 100);
 
         canceled = !progressHandler(progress);
         return !canceled;
